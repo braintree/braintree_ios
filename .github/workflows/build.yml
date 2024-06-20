@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   cocoapods:
-    name: CocoaPods (Xcode 15.4)
+    name: CocoaPods (Xcode 15.0.1)
     runs-on: macOS-14-xlarge
     steps:
       - name: Check out repository
@@ -13,14 +13,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 15.4
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+      - name: Use Xcode 15.0.1
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
         run: pod lib lint
   carthage:
-    name: Carthage (Xcode 15.4)
+    name: Carthage (Xcode 15.0.1)
     runs-on: macOS-14-xlarge
     steps:
       - name: Check out repository
@@ -29,8 +29,8 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 15.4
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+      - name: Use Xcode 15.0.1
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
       - name: Remove SPMTest
         run: |
           git checkout $GITHUB_HEAD_REF
@@ -47,7 +47,7 @@ jobs:
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
-    name: SPM (Xcode 15.4)
+    name: SPM (Xcode 15.0.1)
     runs-on: macOS-14-xlarge
     steps:
       - name: Check out repository
@@ -55,8 +55,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 15.4
-        run: sudo xcode-select -switch /Applications/Xcode_15.4.app
+      - name: Use Xcode 15.0.1
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF//\//\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
