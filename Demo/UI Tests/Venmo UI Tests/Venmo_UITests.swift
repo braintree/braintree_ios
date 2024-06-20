@@ -21,9 +21,9 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(demoApp.buttons["Venmo"])
         waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
     }
-
+    
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
-        demoApp.buttons["Venmo"].tap() 
+        demoApp.buttons["Venmo"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
