@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import BraintreePayPalNativeCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
 	lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
