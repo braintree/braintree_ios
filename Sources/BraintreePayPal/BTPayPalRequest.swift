@@ -171,8 +171,8 @@ import BraintreeCore
         }
 
         if let universalLink {
-            parameters["return_url"] = universalLink.absoluteString + "/\(BTPayPalRequest.callbackURLHostAndPath)success"
-            parameters["cancel_url"] = universalLink.absoluteString + "/\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+            parameters["return_url"] = universalLink.absoluteString + "?success"
+            parameters["cancel_url"] = universalLink.absoluteString + "?cancel"
         } else {
             parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
             parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
