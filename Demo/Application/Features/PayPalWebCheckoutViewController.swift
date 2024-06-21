@@ -42,7 +42,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let newPayPalCheckoutToggle = UISwitch()
 
     override func viewDidLoad() {
-        super.heightConstraint = 350
+        super.heightConstraint = 300
         super.viewDidLoad()
     }
 
