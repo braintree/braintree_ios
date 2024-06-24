@@ -70,7 +70,7 @@ public struct BTPayPalBillingCycle {
         var parameters: [String: Any] = [:]
         
         parameters["billing_frequency"] = billingIntervalCount
-        parameters["billing_frequency_unit"] = billingInterval
+        parameters["billing_frequency_unit"] = billingInterval.rawValue
         parameters["number_of_executions"] = numberOfExecutions
         parameters["trial"] = isTrial
         

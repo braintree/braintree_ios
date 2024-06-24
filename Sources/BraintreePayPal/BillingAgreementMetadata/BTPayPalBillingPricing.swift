@@ -33,7 +33,7 @@ public struct BTPayPalBillingPricing {
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [:]
         
-        parameters["pricing_model"] = pricingModel
+        parameters["pricing_model"] = pricingModel.rawValue
         parameters["price"] = price
         
         if let reloadThresholdAmount {

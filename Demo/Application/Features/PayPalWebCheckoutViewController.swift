@@ -67,7 +67,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
                 payPalCheckoutButton
             ]),
-            buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
+            buttonsStackView(label: "Vault", views: [
+                UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+                payPalVaultButton,
+                payPalAppSwitchButton
+            ])
         ])
         
         stackView.axis = .vertical

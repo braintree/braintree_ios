@@ -78,7 +78,7 @@ import BraintreeCore
         }
         
         if let billingAgreementPlanType {
-            baseParameters["plan_type"] = billingAgreementPlanType
+            baseParameters["plan_type"] = billingAgreementPlanType.rawValue
         }
         
         if let billingAgreementMetadata {
