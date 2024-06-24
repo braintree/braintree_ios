@@ -27,7 +27,7 @@ public struct BTPayPalBillingAgreementDetails {
     let shippingAmount: String?
     
     /// The item price for the product associated with the billing cycle at the time of checkout.
-    let productPrice: String?
+    let productAmount: String?
     
     /// The taxes for the billing cycle at the time of checkout.
     let taxAmount: String?
@@ -42,7 +42,7 @@ public struct BTPayPalBillingAgreementDetails {
         productQuantity: Int?,
         oneTimeFeeAmount: String?,
         shippingAmount: String?,
-        productPrice: String?,
+        productAmount: String?,
         taxAmount: String?
     ) {
         self.billingCycles = billingCycles
@@ -52,7 +52,7 @@ public struct BTPayPalBillingAgreementDetails {
         self.productQuantity = productQuantity
         self.oneTimeFeeAmount = oneTimeFeeAmount
         self.shippingAmount = shippingAmount
-        self.productPrice = productPrice
+        self.productAmount = productAmount
         self.taxAmount = taxAmount
     }
     
@@ -84,8 +84,8 @@ public struct BTPayPalBillingAgreementDetails {
             parameters["shipping_amount"] = shippingAmount
         }
         
-        if let productPrice {
-            parameters["product_price"] = productPrice
+        if let productAmount {
+            parameters["product_price"] = productAmount
         }
         
         if let taxAmount {
