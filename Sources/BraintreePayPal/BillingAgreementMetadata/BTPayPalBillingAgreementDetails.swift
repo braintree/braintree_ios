@@ -1,6 +1,7 @@
 import Foundation
 
-public struct BTPayPalBillingAgreementMetadata {
+/// PayPal Recurring Billing Agreement product details.
+public struct BTPayPalBillingAgreementDetails {
     
     // MARK: - Internal Properties
     

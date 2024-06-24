@@ -1,13 +1,14 @@
 import Foundation
 
+/// PayPal Recurring Billing Agreement pricing details.
 public struct BTPayPalBillingPricing {
     
     // MARK: - Internal Properties
     
-    /// FIXED, VARIABLE, AUTO_RELOAD
+    /// The pricing model associated with the billing agreement.
     let pricingModel: PricingModel
     
-    // TODO docs
+    /// Recurring Billing Agreement pricing model types.
     public enum PricingModel: String {
         case fixed = "FIXED"
         case variable = "VARIABLE"

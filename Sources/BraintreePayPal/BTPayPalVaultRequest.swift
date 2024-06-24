@@ -23,7 +23,7 @@ import BraintreeCore
     var billingAgreementPlanType: BTPayPalBillingAgreementPlanType?
     
     /// TODO: - Docstrings
-    var billingAgreementMetadata: BTPayPalBillingAgreementMetadata?
+    var billingAgreementDetails: BTPayPalBillingAgreementDetails?
 
     // MARK: - Initializers
 
@@ -49,12 +49,12 @@ import BraintreeCore
     ///   - TODO
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
-        billingAgreementMetadata: BTPayPalBillingAgreementMetadata? = nil,
+        billingAgreementDetails: BTPayPalBillingAgreementDetails? = nil,
         billingAgreementPlanType: BTPayPalBillingAgreementPlanType? = nil,
         offerCredit: Bool = false,
         userAuthenticationEmail: String? = nil
     ) {
-        self.billingAgreementMetadata = billingAgreementMetadata
+        self.billingAgreementDetails = billingAgreementDetails
         self.billingAgreementPlanType = billingAgreementPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
         super.init(offerCredit: offerCredit)
@@ -81,8 +81,8 @@ import BraintreeCore
             baseParameters["plan_type"] = billingAgreementPlanType.rawValue
         }
         
-        if let billingAgreementMetadata {
-            baseParameters["plan_metadata"] = billingAgreementMetadata.parameters()
+        if let billingAgreementDetails {
+            baseParameters["plan_metadata"] = billingAgreementDetails.parameters()
         }
 
         return baseParameters
