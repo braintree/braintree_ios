@@ -1425,6 +1425,7 @@
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */,
+				457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
 			);
@@ -1495,7 +1496,6 @@
 				BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */,
 				8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */,
 				BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */,
-				457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -1561,7 +1561,6 @@
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
 				BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */,
 				800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */,
-				457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -1967,6 +1966,7 @@
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
 				BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */,
+				457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */,
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
