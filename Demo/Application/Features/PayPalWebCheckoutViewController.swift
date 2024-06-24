@@ -136,7 +136,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
                 pricingModel: .autoReload,
-                price: "9.99",
+                amount: "9.99",
                 reloadThresholdAmount: "100.00"
             )
             

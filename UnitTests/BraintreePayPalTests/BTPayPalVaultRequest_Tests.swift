@@ -87,7 +87,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     func testParameters_withRecurringBillingDetails_returnsAllParams() {
         let billingPricing = BTPayPalBillingPricing(
             pricingModel: .autoReload,
-            price: "test-price",
+            amount: "test-price",
             reloadThresholdAmount: "test-threshold"
         )
         

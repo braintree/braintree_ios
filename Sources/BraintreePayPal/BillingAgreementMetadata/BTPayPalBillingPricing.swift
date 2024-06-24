@@ -14,7 +14,7 @@ public struct BTPayPalBillingPricing {
         case autoReload = "AUTO_RELOAD"
     }
     
-    private let price: String
+    private let amount: String
     
     private let reloadThresholdAmount: String?
     
@@ -23,11 +23,11 @@ public struct BTPayPalBillingPricing {
     /// Initialilize a `BTPayPalBillingPricing` object.
     /// - Parameters:
     ///   - pricingModel: The pricing model associated with the billing agreement.
-    ///   - price: The amount to charge for the subscription, recurring, UCOF or installments.
+    ///   - amount: Price. The amount to charge for the subscription, recurring, UCOF or installments.
     ///   - reloadThresholdAmount: The reload trigger threshold condition amount when the customer is charged.
-    public init(pricingModel: PricingModel, price: String, reloadThresholdAmount: String?) {
+    public init(pricingModel: PricingModel, amount: String, reloadThresholdAmount: String?) {
         self.pricingModel = pricingModel
-        self.price = price
+        self.amount = amount
         self.reloadThresholdAmount = reloadThresholdAmount
     }
     
@@ -37,7 +37,7 @@ public struct BTPayPalBillingPricing {
         var parameters: [String: Any] = [:]
         
         parameters["pricing_model"] = pricingModel.rawValue
-        parameters["price"] = price
+        parameters["price"] = amount
         
         if let reloadThresholdAmount {
             parameters["reload_threshold_amount"] = reloadThresholdAmount
