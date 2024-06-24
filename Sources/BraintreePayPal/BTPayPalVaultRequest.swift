@@ -19,10 +19,10 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
     
-    /// AKA charge pattern
+    /// Optional: Recurring Billing Agreement plan type, or charge pattern.
     var billingAgreementPlanType: BTPayPalBillingAgreementPlanType?
     
-    /// TODO: - Docstrings
+    /// Optional: Recurring Billing Agreement product details.
     var billingAgreementDetails: BTPayPalBillingAgreementDetails?
 
     // MARK: - Initializers
@@ -45,8 +45,9 @@ import BraintreeCore
 
     /// Initializes a PayPal Vault request
     /// - Parameters:
+    ///   - billingAgreementDetails: Optional: Recurring Billing Agreement product details.
+    ///   - billingAgreementPlanType: Optional: Recurring Billing Agreement plan type.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    ///   - TODO
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
         billingAgreementDetails: BTPayPalBillingAgreementDetails? = nil,
