@@ -3,56 +3,55 @@ import XCTest
 
 class RepeatingTimerTests: XCTestCase {
 
-    func testTimer_ResumesAndSuspend() {
-        let timer = RepeatingTimer()
+    func testTimerResumesAndSuspends() {
+        let sut = RepeatingTimer(timeInterval: 2)
+        let expectation = expectation(description: "Timer should fire")
+        var handlerCalled = false
         
-        XCTAssertFalse(isTimerRunning(timer), "Timer should not be running immediately after initialization")
-        timer.resume()
+        sut.eventHandler = {
+            handlerCalled = true
+            expectation.fulfill()
+        }
         
-        XCTAssertTrue(isTimerRunning(timer), "Timer should be running after resume")
-        timer.suspend()
+        sut.resume()
+        waitForExpectations(timeout: 3, handler: nil)
+        XCTAssertTrue(handlerCalled, "Event handler should be called after timer resumes")
         
-        XCTAssertFalse(isTimerRunning(timer), "Timer should stop running after suspend")
+        handlerCalled = false
+        sut.suspend()
+        
+        let suspensionExpectation = self.expectation(description: "Timer should not fire after suspension")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            suspensionExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertFalse(handlerCalled, "Event handler should not be called after timer is suspended")
     }
+
 
     func testEventHandler_IsCalled() {
         let expectation = expectation(description: "EventHandler should be called")
-        let timer = RepeatingTimer(timeInterval: 1)
+        let sut = RepeatingTimer(timeInterval: 1)
         
-        timer.eventHandler = {
+        sut.eventHandler = {
             expectation.fulfill()
         }
         
-        timer.resume()
+        sut.resume()
         waitForExpectations(timeout: 2, handler: nil)
-        timer.suspend()
+        sut.suspend()
     }
 
     func testDeinit() {
-        var timer: RepeatingTimer? = RepeatingTimer(timeInterval: 1)
-        timer?.resume()
+        var sut: RepeatingTimer? = RepeatingTimer(timeInterval: 1)
+        sut?.resume()
         
         addTeardownBlock {
-            timer?.suspend()
+            sut?.suspend()
         }
         
-        timer = nil
-        XCTAssertNil(timer, "Timer should be deallocated")
-    }
-    
-    private func isTimerRunning(_ timer: RepeatingTimer) -> Bool {
-        let expectation = expectation(description: "Timer should fire")
-        var didFire = false
-        
-        timer.eventHandler = {
-            didFire = true
-            expectation.fulfill()
-        }
-        
-        timer.resume()
-        waitForExpectations(timeout: 2, handler: nil)
-        timer.suspend()
-        
-        return didFire
+        sut = nil
+        XCTAssertNil(sut, "Timer should be deallocated")
     }
 }
