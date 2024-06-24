@@ -64,7 +64,6 @@ import BraintreeCore
         if let preferences = settings.object(forKey: "PreferenceSpecifiers") as? Array<[String: Any]> {
             var defaultsToRegister: [String: Any] = [:]
             preferences.forEach { prefSpecification in
-                print(prefSpecification)
                 if let key = prefSpecification["Key"] as? String, prefSpecification.keys.contains("DefaultValue") {
                     defaultsToRegister[key] = prefSpecification["DefaultValue"]
                 }
