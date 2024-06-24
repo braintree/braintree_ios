@@ -1,6 +1,6 @@
 import Foundation
 
-/// PayPal Recurring Billing Agreement billing cycle details.
+/// PayPal recurring billing cycle details.
 public struct BTPayPalBillingCycle {
     
     // MARK: - Private Properties
