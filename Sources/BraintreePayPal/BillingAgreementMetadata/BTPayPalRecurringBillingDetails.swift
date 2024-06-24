@@ -1,7 +1,7 @@
 import Foundation
 
-/// PayPal Recurring Billing Agreement product details.
-public struct BTPayPalBillingAgreementDetails {
+/// PayPal Recurring Billing product details.
+public struct BTPayPalRecurringBillingDetails {
     
     // MARK: - Private Properties
     
@@ -25,7 +25,7 @@ public struct BTPayPalBillingAgreementDetails {
     
     // MARK: - Initializer
     
-    /// Initialize a `BTPayPalBillingAgreementDetails` object.
+    /// Initialize a `BTPayPalRecurringBillingDetails` object.
     /// - Parameters:
     ///   - billingCycles: An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
     ///   - currencyISOCode: The three-character ISO-4217 currency code that identifies the currency.

@@ -20,10 +20,10 @@ import BraintreeCore
     var enablePayPalAppSwitch: Bool = false
     
     /// Optional: Recurring Billing Agreement plan type, or charge pattern.
-    var billingAgreementPlanType: BTPayPalBillingAgreementPlanType?
+    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     
     /// Optional: Recurring Billing Agreement product details.
-    var billingAgreementDetails: BTPayPalBillingAgreementDetails?
+    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
 
@@ -45,18 +45,18 @@ import BraintreeCore
 
     /// Initializes a PayPal Vault request
     /// - Parameters:
-    ///   - billingAgreementDetails: Optional: Recurring Billing Agreement product details.
-    ///   - billingAgreementPlanType: Optional: Recurring Billing Agreement plan type.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    ///   - recurringBillingDetails: Optional: Recurring Billing Agreement product details.
+    ///   - recurringBillingPlanType: Optional: Recurring Billing Agreement plan type.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
-        billingAgreementDetails: BTPayPalBillingAgreementDetails? = nil,
-        billingAgreementPlanType: BTPayPalBillingAgreementPlanType? = nil,
         offerCredit: Bool = false,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAuthenticationEmail: String? = nil
     ) {
-        self.billingAgreementDetails = billingAgreementDetails
-        self.billingAgreementPlanType = billingAgreementPlanType
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
         super.init(offerCredit: offerCredit)
     }
@@ -78,12 +78,12 @@ import BraintreeCore
             return baseParameters.merging(appSwitchParameters) { $1 }
         }
         
-        if let billingAgreementPlanType {
-            baseParameters["plan_type"] = billingAgreementPlanType.rawValue
+        if let recurringBillingPlanType {
+            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
         }
         
-        if let billingAgreementDetails {
-            baseParameters["plan_metadata"] = billingAgreementDetails.parameters()
+        if let recurringBillingDetails {
+            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
 
         return baseParameters

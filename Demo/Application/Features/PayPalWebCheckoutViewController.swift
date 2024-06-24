@@ -150,7 +150,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 pricing: billingPricing
             )
             
-            let billingAgreementDetails = BTPayPalBillingAgreementDetails(
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
                 billingCycles: [billingCycle],
                 currencyISOCode: "USD",
                 productName: "Vogue Magazine Subscription",
@@ -162,7 +162,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 taxAmount: "0.59"
             )
             
-            request = BTPayPalVaultRequest(billingAgreementDetails: billingAgreementDetails, billingAgreementPlanType: .subscription)
+            request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         }
 
         payPalClient.tokenize(request) { nonce, error in

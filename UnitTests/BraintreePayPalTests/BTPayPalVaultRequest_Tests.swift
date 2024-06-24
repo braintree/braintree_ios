@@ -101,7 +101,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             pricing: billingPricing
         )
         
-        let billingAgreementDetails = BTPayPalBillingAgreementDetails(
+        let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
             productName: "test-product-name",
@@ -113,7 +113,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             taxAmount: "test-tax"
         )
         
-        let request = BTPayPalVaultRequest(billingAgreementDetails: billingAgreementDetails, billingAgreementPlanType: .subscription)
+        let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
