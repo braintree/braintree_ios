@@ -16,24 +16,30 @@ class BTAnalyticsService: Equatable {
     // MARK: - Private Properties
 
     private static let events = BTAnalyticsEventsStorage()
+    
+    private static var timer = RepeatingTimer()
 
     private let apiClient: BTAPIClient
-    /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private let timerInterval = 15
-
-    private static var timer: DispatchSourceTimer?
     
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
+        
+        Self.timer.eventHandler = { [weak self] in
+            guard let self else { return }
+            Task {
+                await self.sendQueuedAnalyticsEvents()
+            }
+        }
+        Self.timer.resume()
     }
 
     // MARK: - Deinit
 
     deinit {
-        BTAnalyticsService.timer?.cancel()
-        BTAnalyticsService.timer = nil
+        Self.timer.suspend()
     }
 
     // MARK: - Internal Methods
@@ -103,36 +109,8 @@ class BTAnalyticsService: Equatable {
 
         await BTAnalyticsService.events.append(event)
         
-        // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
-        if self.http == nil {
-            self.http = BTHTTP(authorization: self.apiClient.authorization, customBaseURL: BTAnalyticsService.url)
-        }
-        
-        // A special value passed in by unit tests to prevent BTHTTP from actually posting
-        if let http = self.http, http.customBaseURL?.absoluteString == "test://do-not-send.url" {
-            return
-        }
-        
         if shouldBypassTimerQueue {
             await self.sendQueuedAnalyticsEvents()
-            return
-        }
-        
-        if BTAnalyticsService.timer == nil {
-            BTAnalyticsService.timer = DispatchSource.makeTimerSource(queue: self.http?.dispatchQueue)
-            BTAnalyticsService.timer?.schedule(
-                deadline: .now() + .seconds(self.timerInterval),
-                repeating: .seconds(self.timerInterval),
-                leeway: .seconds(1)
-            )
-            
-            BTAnalyticsService.timer?.setEventHandler {
-                Task {
-                    await self.sendQueuedAnalyticsEvents()
-                }
-            }
-            
-            BTAnalyticsService.timer?.resume()
         }
     }
 
@@ -142,9 +120,9 @@ class BTAnalyticsService: Equatable {
         if await !BTAnalyticsService.events.isEmpty {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
-                let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: BTAnalyticsService.events.allValues)
+                let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: Self.events.allValues)
                 http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-                await BTAnalyticsService.events.removeAll()
+                await Self.events.removeAll()
             } catch {
                 return
             }
