@@ -5,7 +5,6 @@ public struct BTPayPalBillingPricing {
     
     // MARK: - Internal Properties
     
-    /// The pricing model associated with the billing agreement.
     let pricingModel: PricingModel
     
     /// Recurring Billing Agreement pricing model types.
@@ -15,14 +14,17 @@ public struct BTPayPalBillingPricing {
         case autoReload = "AUTO_RELOAD"
     }
     
-    /// The amount to charge for the subscription, recurring, UCOF or installments.
     let price: String
     
-    /// The reload trigger threshold condition amount when the customer is charged.
     let reloadThresholdAmount: String?
     
     // MARK: - Initializer
     
+    /// Initialilize a `BTPayPalBillingPricing` object.
+    /// - Parameters:
+    ///   - pricingModel: The pricing model associated with the billing agreement.
+    ///   - price: The amount to charge for the subscription, recurring, UCOF or installments.
+    ///   - reloadThresholdAmount: The reload trigger threshold condition amount when the customer is charged.
     public init(pricingModel: PricingModel, price: String, reloadThresholdAmount: String?) {
         self.pricingModel = pricingModel
         self.price = price

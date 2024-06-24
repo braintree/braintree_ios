@@ -5,35 +5,37 @@ public struct BTPayPalBillingAgreementDetails {
     
     // MARK: - Internal Properties
     
-    /// An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
     let billingCycles: [BTPayPalBillingCycle]
     
-    /// The three-character ISO-4217 currency code that identifies the currency.
     let currencyISOCode: String
     
-    /// Indicates the name of the plan to displayed at checkout.
     let productName: String?
     
-    /// Description at the checkout.
     let productDescription: String?
     
-    /// Quantity associated with the product.
     let productQuantity: Int?
     
-    /// Price and currency for any one-time charges due at plan signup.
     let oneTimeFeeAmount: String?
     
-    /// The shipping amount for the billing cycle at the time of checkout.
     let shippingAmount: String?
     
-    /// The item price for the product associated with the billing cycle at the time of checkout.
     let productAmount: String?
     
-    /// The taxes for the billing cycle at the time of checkout.
     let taxAmount: String?
     
     // MARK: - Initializer
     
+    /// Initialize a `BTPayPalBillingAgreementDetails` object.
+    /// - Parameters:
+    ///   - billingCycles: An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
+    ///   - currencyISOCode: The three-character ISO-4217 currency code that identifies the currency.
+    ///   - productName: The name of the plan to display at checkout.
+    ///   - productDescription: Product description to display at the checkout.
+    ///   - productQuantity: Quantity associated with the product.
+    ///   - oneTimeFeeAmount: Price and currency for any one-time charges due at plan signup.
+    ///   - shippingAmount: The shipping amount for the billing cycle at the time of checkout.
+    ///   - productAmount: The item price for the product associated with the billing cycle at the time of checkout.
+    ///   - taxAmount: The taxes for the billing cycle at the time of checkout.
     public init(
         billingCycles: [BTPayPalBillingCycle],
         currencyISOCode: String,
