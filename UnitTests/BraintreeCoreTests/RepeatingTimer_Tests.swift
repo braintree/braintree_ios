@@ -3,7 +3,7 @@ import XCTest
 
 class RepeatingTimerTests: XCTestCase {
 
-    func testTimerResumesAndSuspends() {
+    func testTimer_resumesAndSuspends() {
         let sut = RepeatingTimer(timeInterval: 2)
         let expectation = expectation(description: "Timer should fire")
         var handlerCalled = false
@@ -29,8 +29,7 @@ class RepeatingTimerTests: XCTestCase {
         XCTAssertFalse(handlerCalled, "Event handler should not be called after timer is suspended")
     }
 
-
-    func testEventHandler_IsCalled() {
+    func testEventHandler_isCalled() {
         let expectation = expectation(description: "EventHandler should be called")
         let sut = RepeatingTimer(timeInterval: 1)
         
