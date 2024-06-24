@@ -113,12 +113,36 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
         
-        // TODO
         if rbaDataToggle.isOn {
-            request = BTPayPalVaultRequest(
-                planType: "STUFF",
-                planMetadata: nil
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .autoReload,
+                price: "9.99",
+                reloadThresholdAmount: "100.00"
             )
+            
+            let billingCycle = BTPayPalBillingCycle(
+                billingInterval: .month,
+                billingIntervalCount: 1,
+                numberOfExecutions: 12,
+                sequence: 9,
+                startDate: "2024-04-06T00:00:00Z",
+                isTrial: false,
+                pricing: billingPricing
+            )
+            
+            let billingAgreementMetadata = BTPayPalBillingAgreementMetadata(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                productName: "Vogue Magazine Subscription",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "5.99",
+                shippingAmount: "1.99",
+                productPrice: "9.99",
+                taxAmount: "0.59"
+            )
+            
+            request = BTPayPalVaultRequest(billingAgreementMetadata: billingAgreementMetadata, billingAgreementPlanType: .subscription)
         }
 
         payPalClient.tokenize(request) { nonce, error in

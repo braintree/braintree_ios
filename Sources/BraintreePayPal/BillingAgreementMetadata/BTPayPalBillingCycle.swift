@@ -2,6 +2,8 @@ import Foundation
 
 public struct BTPayPalBillingCycle {
     
+    // MARK: - Internal Properties
+    
     /// The interval at which the payment is charged or billed.
     let billingInterval: BillingInterval
     
@@ -36,11 +38,33 @@ public struct BTPayPalBillingCycle {
     let startDate: String?
     
     /// The tenure type of the billing cycle. In case of a plan having trial cycle, only 2 trial cycles are allowed per plan.
-    let trial: Bool
+    let isTrial: Bool
     
     /// The active pricing scheme for this billing cycle. A free trial billing cycle does not require a pricing scheme.
     /// Required if `trial` is false. Optional if `trial` is true.
     let pricing: BTPayPalBillingPricing?
+    
+    // MARK: - Initializer
+    
+    public init(
+        billingInterval: BillingInterval,
+        billingIntervalCount: Int,
+        numberOfExecutions: Int,
+        sequence: Int?,
+        startDate: String?,
+        isTrial: Bool,
+        pricing: BTPayPalBillingPricing?
+    ) {
+        self.billingInterval = billingInterval
+        self.billingIntervalCount = billingIntervalCount
+        self.numberOfExecutions = numberOfExecutions
+        self.sequence = sequence
+        self.startDate = startDate
+        self.isTrial = isTrial
+        self.pricing = pricing
+    }
+    
+    // MARK: - Internal Methods
     
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [:]
@@ -48,7 +72,7 @@ public struct BTPayPalBillingCycle {
         parameters["billing_frequency"] = billingIntervalCount
         parameters["billing_frequency_unit"] = billingInterval
         parameters["number_of_executions"] = numberOfExecutions
-        parameters["trial"] = trial
+        parameters["trial"] = isTrial
         
         if let sequence {
             parameters["sequence"] = sequence

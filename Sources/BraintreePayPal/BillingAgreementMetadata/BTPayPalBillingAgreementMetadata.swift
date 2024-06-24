@@ -2,6 +2,8 @@ import Foundation
 
 public struct BTPayPalBillingAgreementMetadata {
     
+    // MARK: - Internal Properties
+    
     /// An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
     let billingCycles: [BTPayPalBillingCycle]
     
@@ -9,7 +11,7 @@ public struct BTPayPalBillingAgreementMetadata {
     let currencyISOCode: String
     
     /// Indicates the name of the plan to displayed at checkout.
-    let name: String?
+    let productName: String?
     
     /// Description at the checkout.
     let productDescription: String?
@@ -29,14 +31,40 @@ public struct BTPayPalBillingAgreementMetadata {
     /// The taxes for the billing cycle at the time of checkout.
     let taxAmount: String?
     
+    // MARK: - Initializer
+    
+    public init(
+        billingCycles: [BTPayPalBillingCycle],
+        currencyISOCode: String,
+        productName: String?,
+        productDescription: String?,
+        productQuantity: Int?,
+        oneTimeFeeAmount: String?,
+        shippingAmount: String?,
+        productPrice: String?,
+        taxAmount: String?
+    ) {
+        self.billingCycles = billingCycles
+        self.currencyISOCode = currencyISOCode
+        self.productName = productName
+        self.productDescription = productDescription
+        self.productQuantity = productQuantity
+        self.oneTimeFeeAmount = oneTimeFeeAmount
+        self.shippingAmount = shippingAmount
+        self.productPrice = productPrice
+        self.taxAmount = taxAmount
+    }
+    
+    // MARK: - Internal Methods
+    
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [:]
         
         parameters["currency_iso_code"] = currencyISOCode
         parameters["billing_cycles"] = billingCycles.map({ $0.parameters() })
         
-        if let name {
-            parameters["name"] = name
+        if let productName {
+            parameters["name"] = productName
         }
         
         if let productDescription {
