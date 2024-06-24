@@ -50,6 +50,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let rbaDataToggle = UISwitch()
 
+    override func viewDidLoad() {
+        super.heightConstraint = 300
+        super.viewDidLoad()
+    }
+
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
