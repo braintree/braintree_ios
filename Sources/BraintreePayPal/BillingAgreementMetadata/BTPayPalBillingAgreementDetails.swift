@@ -3,25 +3,25 @@ import Foundation
 /// PayPal Recurring Billing Agreement product details.
 public struct BTPayPalBillingAgreementDetails {
     
-    // MARK: - Internal Properties
+    // MARK: - Private Properties
     
-    let billingCycles: [BTPayPalBillingCycle]
+    private let billingCycles: [BTPayPalBillingCycle]
     
-    let currencyISOCode: String
+    private let currencyISOCode: String
     
-    let productName: String?
+    private let productName: String?
     
-    let productDescription: String?
+    private let productDescription: String?
     
-    let productQuantity: Int?
+    private let productQuantity: Int?
     
-    let oneTimeFeeAmount: String?
+    private let oneTimeFeeAmount: String?
     
-    let shippingAmount: String?
+    private let shippingAmount: String?
     
-    let productAmount: String?
+    private let productAmount: String?
     
-    let taxAmount: String?
+    private let taxAmount: String?
     
     // MARK: - Initializer
     
@@ -71,7 +71,7 @@ public struct BTPayPalBillingAgreementDetails {
         }
         
         if let productDescription {
-            parameters["product_desription"] = productDescription
+            parameters["product_description"] = productDescription
         }
         
         if let productQuantity {

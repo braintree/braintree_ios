@@ -3,9 +3,9 @@ import Foundation
 /// PayPal Recurring Billing Agreement billing cycle details.
 public struct BTPayPalBillingCycle {
     
-    // MARK: - Internal Properties
+    // MARK: - Private Properties
     
-    let billingInterval: BillingInterval
+    private let billingInterval: BillingInterval
     
     /// The interval at which the payment is charged or billed.
     public enum BillingInterval: String {
@@ -14,18 +14,18 @@ public struct BTPayPalBillingCycle {
         case month = "MONTH"
         case year = "YEAR"
     }
-
-    let billingIntervalCount: Int
     
-    let numberOfExecutions: Int
+    private let billingIntervalCount: Int
     
-    let sequence: Int?
+    private let numberOfExecutions: Int
     
-    let startDate: String?
+    private let sequence: Int?
     
-    let isTrial: Bool
-
-    let pricing: BTPayPalBillingPricing?
+    private let startDate: String?
+    
+    private let isTrial: Bool
+    
+    private let pricing: BTPayPalBillingPricing?
     
     // MARK: - Initializer
     
@@ -75,9 +75,9 @@ public struct BTPayPalBillingCycle {
         }
         
         if let pricing {
-            parameters["price_scheme"] = pricing.parameters()
+            parameters["pricing_scheme"] = pricing.parameters()
         }
-
+        
         return parameters
     }
 }
