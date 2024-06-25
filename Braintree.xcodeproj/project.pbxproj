@@ -1363,7 +1363,7 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
-				807D22F32C29ADA8009FFEA4 /* BillingAgreementMetadata */,
+				807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */,
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				57544F5B295254A500DEB7B0 /* BTJSON+PayPal.swift */,
 				57544F572952298900DEB7B0 /* BTPayPalAccountNonce.swift */,
@@ -1504,7 +1504,7 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
-		807D22F32C29ADA8009FFEA4 /* BillingAgreementMetadata */ = {
+		807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */ = {
 			isa = PBXGroup;
 			children = (
 				807D22ED2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift */,
@@ -1512,7 +1512,7 @@
 				807D22EF2C29A93A009FFEA4 /* BTPayPalBillingCycle.swift */,
 				807D22F12C29A972009FFEA4 /* BTPayPalBillingPricing.swift */,
 			);
-			path = BillingAgreementMetadata;
+			path = RecurringBillingMetadata;
 			sourceTree = "<group>";
 		};
 		80824659252C19F5000AD8FF /* Sources */ = {
