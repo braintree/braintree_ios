@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+* BraintreePayPal
+  * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
 
 ## 6.21.0 (2024-06-12)
 * BraintreePayPal
