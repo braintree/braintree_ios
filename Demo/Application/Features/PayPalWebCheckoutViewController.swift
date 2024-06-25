@@ -141,8 +141,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             )
             
             let billingCycle = BTPayPalBillingCycle(
-                billingInterval: .month,
-                billingIntervalCount: 1,
+                interval: .month,
+                intervalCount: 1,
                 numberOfExecutions: 12,
                 sequence: 9,
                 startDate: "2024-04-06T00:00:00Z",
