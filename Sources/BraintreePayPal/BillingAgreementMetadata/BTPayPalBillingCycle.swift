@@ -3,10 +3,8 @@ import Foundation
 /// PayPal recurring billing cycle details.
 public struct BTPayPalBillingCycle {
     
-    // MARK: - Private Properties
-    
-    private let interval: BillingInterval
-    
+    // MARK: - Public Types
+        
     /// The interval at which the payment is charged or billed.
     public enum BillingInterval: String {
         case day = "DAY"
@@ -14,6 +12,10 @@ public struct BTPayPalBillingCycle {
         case month = "MONTH"
         case year = "YEAR"
     }
+    
+    // MARK: - Private Properties
+    
+    private let interval: BillingInterval
     
     private let intervalCount: Int
     

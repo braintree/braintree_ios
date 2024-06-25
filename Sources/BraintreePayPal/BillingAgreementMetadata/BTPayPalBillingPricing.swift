@@ -3,9 +3,7 @@ import Foundation
 /// PayPal Recurring Billing Agreement pricing details.
 public struct BTPayPalBillingPricing {
     
-    // MARK: - Private Properties
-    
-    private let pricingModel: PricingModel
+    // MARK: - Public Types
     
     /// Recurring Billing Agreement pricing model types.
     public enum PricingModel: String {
@@ -13,6 +11,10 @@ public struct BTPayPalBillingPricing {
         case variable = "VARIABLE"
         case autoReload = "AUTO_RELOAD"
     }
+    
+    // MARK: - Private Properties
+    
+    private let pricingModel: PricingModel
     
     private let amount: String
     
