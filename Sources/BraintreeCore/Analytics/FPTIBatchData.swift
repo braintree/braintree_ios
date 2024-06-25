@@ -29,6 +29,8 @@ struct FPTIBatchData: Codable {
         static var application: URLOpener = UIApplication.shared
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
+        ///
+        /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
         let endpoint: String?
@@ -84,7 +86,7 @@ struct FPTIBatchData: Codable {
 
         let clientOS: String = UIDevice.current.systemName + " " + UIDevice.current.systemVersion
 
-        let component = "sammy-test"
+        let component = "braintreeclientsdk"
 
         let deviceManufacturer = "Apple"
 
