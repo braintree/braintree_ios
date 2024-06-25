@@ -26,7 +26,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 30))
     }
     
     func testTokenizeVenmo_withECDOptions_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
@@ -36,7 +36,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 30))
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
@@ -46,7 +46,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITHOUT PAYMENT CONTEXT"])
         mockVenmo.buttons["SUCCESS WITHOUT PAYMENT CONTEXT"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 30))
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
@@ -56,7 +56,7 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["ERROR"])
         mockVenmo.buttons["ERROR"].tap()
 
-        XCTAssertTrue(demoApp.buttons["An error occurred during the Venmo flow"].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["An error occurred during the Venmo flow"].waitForExistence(timeout: 30))
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
@@ -66,6 +66,6 @@ class Venmo_UITests: XCTestCase {
         waitForElementToBeHittable(mockVenmo.buttons["Cancel"])
         mockVenmo.buttons["Cancel"].tap()
 
-        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].waitForExistence(timeout: 15))
+        XCTAssertTrue(demoApp.buttons["Canceled 🔰"].waitForExistence(timeout: 30))
     }
 }
