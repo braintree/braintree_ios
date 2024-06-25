@@ -5,7 +5,7 @@ final class RepeatingTimer {
     /// Amount of time, in seconds.
     private let timeInterval: Int
     
-    init(timeInterval: Int = 15) {
+    init(timeInterval: Int) {
         self.timeInterval = timeInterval
     }
     

@@ -14,10 +14,13 @@ class BTAnalyticsService: Equatable {
     var shouldBypassTimerQueue = false
 
     // MARK: - Private Properties
-
+    
     private static let events = BTAnalyticsEventsStorage()
     
-    private static var timer = RepeatingTimer()
+    /// Amount of time, in seconds, between batch API requests sent to FPTI
+    private static let timeInterval = 15
+    
+    private static let timer = RepeatingTimer(timeInterval: timeInterval)
 
     private let apiClient: BTAPIClient
     
