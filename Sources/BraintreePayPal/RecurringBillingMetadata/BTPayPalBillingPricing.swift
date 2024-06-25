@@ -15,9 +15,7 @@ public struct BTPayPalBillingPricing {
     // MARK: - Private Properties
     
     private let pricingModel: PricingModel
-    
     private let amount: String
-    
     private let reloadThresholdAmount: String?
     
     // MARK: - Initializer
@@ -36,10 +34,10 @@ public struct BTPayPalBillingPricing {
     // MARK: - Internal Methods
     
     func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        
-        parameters["pricing_model"] = pricingModel.rawValue
-        parameters["price"] = amount
+        var parameters: [String: Any] = [
+            "pricing_model": pricingModel.rawValue,
+            "price": amount
+        ]
         
         if let reloadThresholdAmount {
             parameters["reload_threshold_amount"] = reloadThresholdAmount

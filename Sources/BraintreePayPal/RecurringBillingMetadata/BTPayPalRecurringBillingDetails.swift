@@ -6,21 +6,13 @@ public struct BTPayPalRecurringBillingDetails {
     // MARK: - Private Properties
     
     private let billingCycles: [BTPayPalBillingCycle]
-    
     private let currencyISOCode: String
-    
     private let productName: String?
-    
     private let productDescription: String?
-    
     private let productQuantity: Int?
-    
     private let oneTimeFeeAmount: String?
-    
     private let shippingAmount: String?
-    
     private let productAmount: String?
-    
     private let taxAmount: String?
     
     // MARK: - Initializer
@@ -61,10 +53,10 @@ public struct BTPayPalRecurringBillingDetails {
     // MARK: - Internal Methods
     
     func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        
-        parameters["currency_iso_code"] = currencyISOCode
-        parameters["billing_cycles"] = billingCycles.map({ $0.parameters() })
+        var parameters: [String: Any] = [
+            "currency_iso_code": currencyISOCode,
+            "billing_cycles": billingCycles.map { $0.parameters() }
+        ]
         
         if let productName {
             parameters["name"] = productName

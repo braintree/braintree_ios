@@ -4,7 +4,7 @@ import Foundation
 public struct BTPayPalBillingCycle {
     
     // MARK: - Public Types
-        
+    
     /// The interval at which the payment is charged or billed.
     public enum BillingInterval: String {
         case day = "DAY"
@@ -16,24 +16,18 @@ public struct BTPayPalBillingCycle {
     // MARK: - Private Properties
     
     private let interval: BillingInterval
-    
     private let intervalCount: Int
-    
     private let numberOfExecutions: Int
-    
     private let sequence: Int?
-    
     private let startDate: String?
-    
     private let isTrial: Bool
-    
     private let pricing: BTPayPalBillingPricing?
     
     // MARK: - Initializer
     
     /// Initialize a `BTPayPalBillingCycle` object.
     /// - Parameters:
-    ///   - intervalCount: The number of intervals after which a subscriber is charged or billed.
+    ///   - interval: The number of intervals after which a subscriber is charged or billed.
     ///   - intervalCount: The number of times this billing cycle gets executed. For example, if the `intervalCount` is DAY with an `intervalCount` of 2, the subscription is billed once every two days. Maximum values {DAY -> 365}, {WEEK, 52}, {MONTH, 12}, {YEAR, 1}.
     ///   - numberOfExecutions: The number of times this billing cycle gets executed. Trial billing cycles can only be executed a finite number of times (value between 1 and 999). Regular billing cycles can be executed infinite times (value of 0) or a finite number of times (value between 1 and 999).
     ///   - sequence: The sequence of the billing cycle. Used to identify unique billing cycles. For example, sequence 1 could be a 3 month trial period, and sequence 2 could be a longer term full rater cycle. Max value 100. All billing cycles should have unique sequence values.
@@ -61,12 +55,12 @@ public struct BTPayPalBillingCycle {
     // MARK: - Internal Methods
     
     func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        
-        parameters["billing_frequency"] = intervalCount
-        parameters["billing_frequency_unit"] = interval.rawValue
-        parameters["number_of_executions"] = numberOfExecutions
-        parameters["trial"] = isTrial
+        var parameters: [String: Any] = [
+            "billing_frequency": intervalCount,
+            "billing_frequency_unit": interval.rawValue,
+            "number_of_executions": numberOfExecutions,
+            "trial": isTrial
+        ]
         
         if let sequence {
             parameters["sequence"] = sequence
