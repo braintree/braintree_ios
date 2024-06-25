@@ -17,12 +17,10 @@ class Venmo_UITests: XCTestCase {
         demoApp.launchArguments.append("-ClientToken")
         demoApp.launchArguments.append("-Integration:VenmoViewController")
         demoApp.launch()
-        
-        waitForElementToBeHittable(demoApp.buttons["Venmo"])
-        waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
+        waitForElementToBeHittable(demoApp.buttons["Venmo"])
         demoApp.buttons["Venmo"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
@@ -32,6 +30,7 @@ class Venmo_UITests: XCTestCase {
     }
     
     func testTokenizeVenmo_withECDOptions_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
+        waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
         demoApp.buttons["Venmo (with ECD options)"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
@@ -41,6 +40,7 @@ class Venmo_UITests: XCTestCase {
     }
     
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
+        waitForElementToBeHittable(demoApp.buttons["Venmo"])
         demoApp.buttons["Venmo"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITHOUT PAYMENT CONTEXT"])
@@ -50,6 +50,7 @@ class Venmo_UITests: XCTestCase {
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
+        waitForElementToBeHittable(demoApp.buttons["Venmo"])
         demoApp.buttons["Venmo"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["ERROR"])
@@ -59,6 +60,7 @@ class Venmo_UITests: XCTestCase {
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
+        waitForElementToBeHittable(demoApp.buttons["Venmo"])
         demoApp.buttons["Venmo"].tap()
         
         waitForElementToBeHittable(mockVenmo.buttons["Cancel"])
