@@ -36,7 +36,7 @@ public struct BTPayPalBillingCycle {
     ///   - intervalCount: The number of intervals after which a subscriber is charged or billed.
     ///   - intervalCount: The number of times this billing cycle gets executed. For example, if the `intervalCount` is DAY with an `intervalCount` of 2, the subscription is billed once every two days. Maximum values {DAY -> 365}, {WEEK, 52}, {MONTH, 12}, {YEAR, 1}.
     ///   - numberOfExecutions: The number of times this billing cycle gets executed. Trial billing cycles can only be executed a finite number of times (value between 1 and 999). Regular billing cycles can be executed infinite times (value of 0) or a finite number of times (value between 1 and 999).
-    ///   - sequence: The sequence of the billing cycle. Starting value 1 and max value 100. All billing cycles should have unique sequence values.
+    ///   - sequence: The sequence of the billing cycle. Used to identify unique billing cycles. For example, sequence 1 could be a 3 month trial period, and sequence 2 could be a longer term full rater cycle. Max value 100. All billing cycles should have unique sequence values.
     ///   - startDate: The date and time when the billing cycle starts, in Internet date and time format `YYYY-MM-DDT00:00:00Z`. If not provided the billing cycle starts at the time of checkout. If provided and the merchant wants the billing cycle to start at the time of checkout, provide the current time. Otherwise the `startDate` can be in future.
     ///   - isTrial: The tenure type of the billing cycle. In case of a plan having trial cycle, only 2 trial cycles are allowed per plan.
     ///   - pricing: The active pricing scheme for this billing cycle. Required if `trial` is false. Optional if `trial` is true.
