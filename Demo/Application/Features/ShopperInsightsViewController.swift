@@ -40,42 +40,26 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView,])
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
         stackView.axis = .vertical
         stackView.spacing = 10
-        stackView.distribution = .fill
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        stackView.insetsLayoutMarginsFromSafeArea = false
         return stackView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(shopperInsightsInputView)
-        view.addSubview(shopperInsightsButton)
-        
-        NSLayoutConstraint.activate(
-            [
-                shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                shopperInsightsInputView.topAnchor.constraint(equalTo: view.topAnchor),
-                shopperInsightsInputView.widthAnchor.constraint(equalTo: view.widthAnchor),
-                shopperInsightsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-                shopperInsightsButton.topAnchor.constraint(equalTo: shopperInsightsInputView.bottomAnchor, constant: 10),
-                shopperInsightsButton.widthAnchor.constraint(
-                    equalTo: shopperInsightsInputView.widthAnchor,
-                    multiplier: 0.8
-                ),
-            ]
-        )
+
+        createSubviews()
+        layoutConstraints()
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [payPalVaultButton, venmoButton]
-        buttons.forEach { $0.isEnabled = false }
+        let buttons = [shopperInsightsButton, payPalVaultButton, venmoButton]
+        shopperInsightsButton.isEnabled = true
+        payPalVaultButton.isEnabled = false
+        venmoButton.isEnabled = false
 
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
@@ -149,6 +133,22 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         } else {
             self.progressBlock("Canceled")
         }
+    }
+
+    private func createSubviews() {
+        shopperInsightsInputView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shopperInsightsInputView)
+    }
+
+    private func layoutConstraints() {
+        NSLayoutConstraint.activate(
+            [
+                shopperInsightsInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 200)
+            ]
+        )
     }
 }
 
