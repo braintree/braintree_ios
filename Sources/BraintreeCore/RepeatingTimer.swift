@@ -24,6 +24,8 @@ final class RepeatingTimer {
     
     var eventHandler: (() -> Void)?
     
+    private var state: State = .suspended
+    
     private enum State {
         case suspended
         case resumed
@@ -38,7 +40,7 @@ final class RepeatingTimer {
         eventHandler = nil
     }
     
-    // MARK: - GCD Timer Management
+    // MARK: - Public Methods
     
     /*
      GCD timers are sensitive to errors. It is crucial to maintain
@@ -52,7 +54,6 @@ final class RepeatingTimer {
      call to `dispatch_resume` to ensure proper event delivery and avoid crashes.
      For more information: https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html#//apple_ref/doc/uid/TP40008091-CH103-SW8
     */
-    private var state: State = .suspended
     
     func resume() {
         guard state != .resumed else { return }
