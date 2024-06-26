@@ -410,7 +410,13 @@ class BTAPIClient_Tests: XCTestCase {
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
         apiClient.analyticsService = mockAnalyticsService
 
-        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/configuration", startTime: 12345678, endTime: 0987654)
+        apiClient.fetchAPITiming(
+            path: "/merchants/1234567890/client_api/v1/configuration",
+            connectionStartTime: 123,
+            requestStartTime: 456,
+            startTime: 12345678,
+            endTime: 0987654
+        )
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
         XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/configuration")
@@ -421,7 +427,13 @@ class BTAPIClient_Tests: XCTestCase {
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
         apiClient.analyticsService = mockAnalyticsService
 
-        apiClient.fetchAPITiming(path: "/v1/tracking/batch/events", startTime: 12345678, endTime: 0987654)
+        apiClient.fetchAPITiming(
+            path: "/v1/tracking/batch/events",
+            connectionStartTime: 123,
+            requestStartTime: 456,
+            startTime: 12345678,
+            endTime: 0987654
+        )
 
         XCTAssertNil(mockAnalyticsService.lastEvent)
         XCTAssertNil(mockAnalyticsService.endpoint)
@@ -432,7 +444,13 @@ class BTAPIClient_Tests: XCTestCase {
         let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
         apiClient.analyticsService = mockAnalyticsService
 
-        apiClient.fetchAPITiming(path: "/merchants/1234567890/client_api/v1/paypal_hermes/create_payment_resource", startTime: 12345678, endTime: 0987654)
+        apiClient.fetchAPITiming(
+            path: "/merchants/1234567890/client_api/v1/paypal_hermes/create_payment_resource",
+            connectionStartTime: 123,
+            requestStartTime: 456,
+            startTime: 12345678,
+            endTime: 0987654
+        )
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "core:api-request-latency")
         XCTAssertEqual(mockAnalyticsService.endpoint, "/v1/paypal_hermes/create_payment_resource")
