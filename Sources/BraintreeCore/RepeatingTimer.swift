@@ -16,9 +16,9 @@ final class RepeatingTimer {
             repeating: .seconds(timeInterval),
             leeway: .seconds(1)
         )
-        timerSource.setEventHandler(handler: { [weak self] in
+        timerSource.setEventHandler { [weak self] in
             self?.eventHandler?()
-        })
+        }
         return timerSource
     }()
     
@@ -29,18 +29,30 @@ final class RepeatingTimer {
         case resumed
     }
     
-    private var state: State = .suspended
-    
     deinit {
-        timer.setEventHandler {}
+        timer.setEventHandler { }
         timer.cancel()
-        /*
-         If the timer is suspended, calling cancel without resuming afterwards
-         triggers a crash. This is documented here https://forums.developer.apple.com/thread/15902
-         */
+        // If the timer is suspended, calling cancel without resuming afterwards
+        // triggers a crash. This is documented here https://forums.developer.apple.com/thread/15902
         resume()
         eventHandler = nil
     }
+    
+    // MARK: - GCD Timer Management
+    
+    /*
+     GCD timers are sensitive to errors. It is crucial to maintain
+     balance between calls to `dispatch_suspend` and `dispatch_resume`. Failure to do so
+     results in crashes with errors similar to:
+
+       BUG IN CLIENT OF LIBDISPATCH: Over-resume of an object
+
+     Such errors indicate an attempt to resume an already resumed timer. According to the
+     documentation, each call to `dispatch_suspend` must be matched with a corresponding
+     call to `dispatch_resume` to ensure proper event delivery and avoid crashes.
+     For more information: https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html#//apple_ref/doc/uid/TP40008091-CH103-SW8
+    */
+    private var state: State = .suspended
     
     func resume() {
         guard state != .resumed else { return }
