@@ -390,7 +390,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         metrics.transactionMetrics.forEach { transaction in
             if let startDate = transaction.fetchStartDate,
                let endDate = transaction.responseEndDate,
-               let path = transaction.request.url?.path {
+               var path = transaction.request.url?.path {
+                
+                if path.contains("graphql"), 
+                   let data = task.originalRequest?.httpBody,
+                   let mutationName = getGraphQLMutationName(data) {
+                    path = mutationName
+                }
+                
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
                     startTime: startDate.utcTimestampMilliseconds,
@@ -398,5 +405,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 )
             }
         }
+    }
+    
+    private func getGraphQLMutationName(_ data: Data) -> String? {
+        let json = try? JSONSerialization.jsonObject(with: data)
+        let body = BTJSON(value: json)
+        
+        guard let mutationName = body["operationName"].asString() else { return nil }
+        
+        return "mutation \(mutationName)"
     }
 }
