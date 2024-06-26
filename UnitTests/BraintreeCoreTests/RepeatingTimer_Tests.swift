@@ -2,8 +2,8 @@ import XCTest
 @testable import BraintreeCore
 
 class RepeatingTimerTests: XCTestCase {
-
-    func testTimer_resumesAndSuspends() {
+    
+    func testResume_callsEventHandler() {
         let sut = RepeatingTimer(timeInterval: 2)
         let expectation = expectation(description: "Timer should fire")
         var handlerCalled = false
@@ -16,13 +16,22 @@ class RepeatingTimerTests: XCTestCase {
         sut.resume()
         waitForExpectations(timeout: 3, handler: nil)
         XCTAssertTrue(handlerCalled, "Event handler should be called after timer resumes")
+    }
+    
+    func testSuspend_preventsEventHandler() {
+        let sut = RepeatingTimer(timeInterval: 2)
+        let expectation = expectation(description: "Timer should not fire after suspension")
+        var handlerCalled = false
+
+        sut.eventHandler = {
+            handlerCalled = true
+        }
         
-        handlerCalled = false
+        sut.resume()
         sut.suspend()
         
-        let suspensionExpectation = self.expectation(description: "Timer should not fire after suspension")
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            suspensionExpectation.fulfill()
+            expectation.fulfill()
         }
         
         waitForExpectations(timeout: 4, handler: nil)
