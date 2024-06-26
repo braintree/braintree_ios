@@ -8,7 +8,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - Internal Properties
 
-    /// An array of pinned certificates, each an Data instance consisting of DER encoded x509 certificates
+    /// An array of pinned certificates, each a Data instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [Data] = BTAPIPinnedCertificates.trustedCertificates()
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
