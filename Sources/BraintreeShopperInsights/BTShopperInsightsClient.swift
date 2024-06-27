@@ -39,7 +39,11 @@ public class BTShopperInsightsClient {
             email: request.email,
             phone: request.phone
         )
-        
+
+        if apiClient.authorization.type != .clientToken {
+            throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization)
+        }
+
         do {
             let (json, _) = try await apiClient.post(
                 "/v2/payments/find-eligible-methods",
