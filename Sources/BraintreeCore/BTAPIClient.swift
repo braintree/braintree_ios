@@ -424,14 +424,16 @@ import Foundation
 
     // MARK: BTAPITimingDelegate conformance
 
-    func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
+    func fetchAPITiming(path: String, connectionStartTime: Int?, requestStartTime: Int?, startTime: Int, endTime: Int) {
         let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
 
         if cleanedPath != "/v1/tracking/batch/events" {
             analyticsService?.sendAnalyticsEvent(
                 BTCoreAnalytics.apiRequestLatency,
+                connectionStartTime: connectionStartTime,
                 endpoint: cleanedPath,
                 endTime: endTime,
+                requestStartTime: requestStartTime,
                 startTime: startTime
             )
         }

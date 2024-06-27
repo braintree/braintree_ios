@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+  * For analytics, add additional metrics on networking timing
   * Fix bug causing random crashes in `BTAnalyticsService`
 
 ## 6.21.0 (2024-06-12)

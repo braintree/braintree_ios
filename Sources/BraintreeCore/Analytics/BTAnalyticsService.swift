@@ -60,6 +60,7 @@ class BTAnalyticsService: Equatable {
     ///   - startTime: Optional. The start time of the networking request.
     func sendAnalyticsEvent(
         _ eventName: String,
+        connectionStartTime: Int? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -67,11 +68,13 @@ class BTAnalyticsService: Equatable {
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
+        requestStartTime: Int? = nil,
         startTime: Int? = nil
     ) {
         Task(priority: .background) {
             await performEventRequest(
                 eventName,
+                connectionStartTime: connectionStartTime,
                 correlationID: correlationID,
                 endpoint: endpoint,
                 endTime: endTime,
@@ -79,6 +82,7 @@ class BTAnalyticsService: Equatable {
                 isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID,
+                requestStartTime: requestStartTime,
                 startTime: startTime
             )
         }
@@ -87,6 +91,7 @@ class BTAnalyticsService: Equatable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(
         _ eventName: String,
+        connectionStartTime: Int? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -94,10 +99,12 @@ class BTAnalyticsService: Equatable {
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
+        requestStartTime: Int? = nil,
         startTime: Int? = nil
     ) async {
         let timestampInMilliseconds = Date().utcTimestampMilliseconds
         let event = FPTIBatchData.Event(
+            connectionStartTime: connectionStartTime,
             correlationID: correlationID,
             endpoint: endpoint,
             endTime: endTime,
@@ -106,6 +113,7 @@ class BTAnalyticsService: Equatable {
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID,
+            requestStartTime: requestStartTime,
             startTime: startTime,
             timestamp: String(timestampInMilliseconds)
         )
