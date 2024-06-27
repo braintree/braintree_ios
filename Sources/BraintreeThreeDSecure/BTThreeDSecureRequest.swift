@@ -13,7 +13,7 @@ import BraintreeCore
     public var nonce: String?
     
     /// Object where each key is the name of a custom field which has been configured in the Control Panel. In the Control Panel you can configure 3D Secure Rules which trigger on certain values.
-    public var customFields: [String: Any]? = [:]
+    public var customFields: [String: String]? = nil
 
     /// The amount for the transaction
     public var amount: NSDecimalNumber? = 0
