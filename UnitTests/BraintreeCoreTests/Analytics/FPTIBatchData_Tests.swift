@@ -17,6 +17,7 @@ final class FPTIBatchData_Tests: XCTestCase {
     
     let eventParams = [
         FPTIBatchData.Event(
+            connectionStartTime: 123,
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
@@ -25,10 +26,12 @@ final class FPTIBatchData_Tests: XCTestCase {
             isVaultRequest: false,
             linkType: "universal",
             payPalContextID: "fake-order-id",
+            requestStartTime: 456,
             startTime: 999888777666,
             timestamp: "fake-time-1"
         ),
         FPTIBatchData.Event(
+            connectionStartTime: nil,
             correlationID: nil,
             endpoint: nil,
             endTime: nil,
@@ -37,6 +40,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             isVaultRequest: true,
             linkType: nil,
             payPalContextID: "fake-order-id-2",
+            requestStartTime: nil,
             startTime: nil,
             timestamp: "fake-time-2"
         )
@@ -109,6 +113,10 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["end_time"])
         XCTAssertEqual(eventParams[0]["start_time"] as? Int, 999888777666)
         XCTAssertNil(eventParams[1]["start_time"])
+        XCTAssertEqual(eventParams[0]["connect_start_time"] as? Int, 123)
+        XCTAssertNil(eventParams[1]["connect_start_time"])
+        XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
+        XCTAssertNil(eventParams[1]["request_start_time"])
     }
 }
 
