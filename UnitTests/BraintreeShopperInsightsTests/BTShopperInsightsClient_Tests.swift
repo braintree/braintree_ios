@@ -6,7 +6,8 @@ import XCTest
 
 class BTShopperInsightsClient_Tests: XCTestCase {
     
-    var mockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    let clientToken = TestClientTokenFactory.token(withVersion: 3)
+    var mockAPIClient: MockAPIClient?
     var sut: BTShopperInsightsClient!
     
     let request = BTShopperInsightsRequest(
@@ -19,7 +20,8 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient)
+        mockAPIClient = MockAPIClient(authorization: clientToken)
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -27,11 +29,11 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testGetRecommendedPaymentMethods_callsEligiblePaymentsAPI() async {
         _ = try? await sut.getRecommendedPaymentMethods(request: request)
         
-        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/payments/find-eligible-methods")
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .payPalAPI)
-        XCTAssertEqual(mockAPIClient.lastPOSTAdditionalHeaders?["PayPal-Client-Metadata-Id"], mockAPIClient.metadata.sessionID)
-        
-        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+        XCTAssertEqual(mockAPIClient?.lastPOSTPath, "/v2/payments/find-eligible-methods")
+        XCTAssertEqual(mockAPIClient?.lastPOSTAPIClientHTTPType, .payPalAPI)
+        XCTAssertEqual(mockAPIClient?.lastPOSTAdditionalHeaders?["PayPal-Client-Metadata-Id"], mockAPIClient?.metadata.sessionID)
+
+        guard let lastPostParameters = mockAPIClient?.lastPOSTParameters else {
             XCTFail()
             return
         }
@@ -54,8 +56,8 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
     
     func testGetRecommendedPaymentMethods_whenAPIError_throws() async {
-        mockAPIClient.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
-        
+        mockAPIClient?.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
+
         do {
             _ = try await sut.getRecommendedPaymentMethods(request: request)
             XCTFail("Expected error to be thrown.")
@@ -64,7 +66,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, "fake-error-description")
             XCTAssertEqual(error.domain, "fake-error-domain")
             
-            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
+            XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
         }
     }
     
@@ -82,12 +84,12 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                     ]
                 ]
             )
-            mockAPIClient.cannedResponseBody = mockEligiblePaymentMethodResponse
+            mockAPIClient?.cannedResponseBody = mockEligiblePaymentMethodResponse
             let result = try await sut.getRecommendedPaymentMethods(request: request)
             XCTAssertNotNil(result)
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertFalse(result.isPayPalRecommended)
-            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
         } catch let error as NSError {
             XCTFail("An error was not expected.")
         }
@@ -107,12 +109,12 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                     ]
                 ]
             )
-            mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
+            mockAPIClient?.cannedResponseBody = mockPayPalRecommendedResponse
             let result = try await sut.getRecommendedPaymentMethods(request: request)
             XCTAssertTrue(result.isPayPalRecommended)
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
-            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -132,12 +134,12 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                     ]
                 ]
             )
-            mockAPIClient.cannedResponseBody = mockVenmoRecommendedResponse
+            mockAPIClient?.cannedResponseBody = mockVenmoRecommendedResponse
             let result = try await sut.getRecommendedPaymentMethods(request: request)
             XCTAssertFalse(result.isPayPalRecommended)
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
-            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -161,36 +163,49 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                     ]
                 ]
             )
-            mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
+            mockAPIClient?.cannedResponseBody = mockPayPalRecommendedResponse
             let result = try await sut.getRecommendedPaymentMethods(request: request)
             XCTAssertFalse(result.isPayPalRecommended)
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertFalse(result.isEligibleInPayPalNetwork)
-            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
         } catch {
             XCTFail("An error was not expected.")
         }
     }
-    
+
+    func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
+        var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
+        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
+
+        do {
+            let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
+        } catch {
+            let error = error as NSError
+            XCTAssertEqual(error.code, 1)
+            XCTAssertEqual(error.localizedDescription, "Invalid authorization. This feature can only be used with a client token.")
+        }
+    }
+
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
         sut.sendPayPalPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+        XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     
     func testSendPayPalSelectedEvent_sendsAnalytic() {
         sut.sendPayPalSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
+        XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
     }
     
     func testSendVenmoPresentedEvent_sendsAnalytic() {
         sut.sendVenmoPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
+        XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendVenmoSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+        XCTAssertEqual(mockAPIClient?.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
     }
 }
