@@ -7,6 +7,7 @@ class FakeAnalyticsService: BTAnalyticsService {
 
     override func sendAnalyticsEvent(
         _ eventName: String,
+        connectionStartTime: Int? = nil,
         correlationID: String? = nil,
         endpoint: String? = nil,
         endTime: Int? = nil,
@@ -14,6 +15,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
+        requestStartTime: Int? = nil,
         startTime: Int? = nil
     ) {
         self.lastEvent = eventName
