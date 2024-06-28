@@ -19,7 +19,7 @@ class AmericanExpress_UITests: XCTestCase {
         app.buttons["Valid card"].tap()
         sleep(2)
 
-        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 20))
     }
 
     func testInsufficientPointsCard_receivesErrorMessage() {
