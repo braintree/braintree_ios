@@ -46,6 +46,7 @@ final class PayPalMessaging_Failure_UITests: XCTestCase {
 
     func testStart_withInvalidTokenizationKey_firesErrorDelegate() {
         let expectedErrorText = "DELEGATE: onError fired with Could not find PayPal client ID in Braintree configuration."
+        
         XCTAssertTrue(app.buttons[expectedErrorText].waitForExistence(timeout: 20))
     }
 }
