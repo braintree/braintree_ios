@@ -42,7 +42,7 @@ class PayPal_Checkout_UITests: XCTestCase {
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
-        self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"], timeout: 20)
+        self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
 
         webviewElementsQuery.links["Cancel Sandbox Purchase"].forceTapElement()
 
