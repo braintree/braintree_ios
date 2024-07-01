@@ -53,6 +53,8 @@
 		428F976626727333001042E1 /* BTMockOpenURLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 428F976526727333001042E1 /* BTMockOpenURLContext.m */; };
 		42FC218B25CDE0290047C49A /* BTPayPalRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */; };
 		42FC237125CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */; };
+		45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */; };
+		45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */; };
 		460C0C220F594AE8EE205E57 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A528809AD9007946B9 /* BTJSON.swift */; };
 		5708E0A828809BC6007946B9 /* BTJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A728809BC6007946B9 /* BTJSONError.swift */; };
@@ -772,6 +774,8 @@
 		42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient_Tests.swift; sourceTree = "<group>"; };
 		42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalRequest_Tests.swift; sourceTree = "<group>"; };
 		42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
+		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
+		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
 		463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5708E0A528809AD9007946B9 /* BTJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON.swift; sourceTree = "<group>"; };
@@ -1964,6 +1968,8 @@
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
+				45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */,
+				45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */,
 			);
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
@@ -3556,6 +3562,7 @@
 				BEBC6F3229380B82004E25A0 /* BTExceptionCatcher.m in Sources */,
 				8053F05429FAB6B00076F988 /* FPTIBatchData_Tests.swift in Sources */,
 				A908436D24FD8A59004134CA /* BTPaymentMethodNonceParser_Tests.swift in Sources */,
+				45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */,
 				A908436B24FD89DA004134CA /* BTJSON_Tests.swift in Sources */,
 				BEBC6F262937A510004E25A0 /* BTClientMetadata_Tests.swift in Sources */,
 				A908436624FD8791004134CA /* BTConfiguration_Tests.swift in Sources */,
@@ -3571,6 +3578,7 @@
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
 				80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */,
 				8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */,
+				45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */,
 				BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
