@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+  * For analytics, add additional metrics on networking timing
 * BraintreePayPalNativeCheckout (DEPRECATED)  
   * **Note:** This module is deprecated and will be removed in a future version of the SDK
   * Add deprecated warning message to all public classes and methods

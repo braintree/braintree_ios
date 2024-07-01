@@ -8,7 +8,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - Internal Properties
 
-    /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
+    /// An array of pinned certificates, each a NSData instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
@@ -393,6 +393,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                let path = transaction.request.url?.path {
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
+                    connectionStartTime: transaction.connectStartDate?.utcTimestampMilliseconds,
+                    requestStartTime: transaction.requestStartDate?.utcTimestampMilliseconds,
                     startTime: startDate.utcTimestampMilliseconds,
                     endTime: endDate.utcTimestampMilliseconds
                 )

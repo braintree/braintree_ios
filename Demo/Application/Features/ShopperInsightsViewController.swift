@@ -50,6 +50,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         createSubviews()
         layoutConstraints()
     }
