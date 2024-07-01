@@ -39,9 +39,9 @@ import PayPalCheckout
         self.nativeCheckoutProvider = nativeCheckoutProvider
     }
 
-    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     // MARK: - Public Methods
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
