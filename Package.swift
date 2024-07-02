@@ -144,9 +144,14 @@ let package = Package(
             dependencies: ["BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
+        // .binaryTarget(
+        //     name: "PPRiskMagnes",
+        //     path: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip"
+        // )
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip"
+            url: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip",
+            checksum: "3983fe0561b8242062e083f36c406b416e2e0b0483cc030257b1a49d1635c7e2"
         )
     ]
 )
