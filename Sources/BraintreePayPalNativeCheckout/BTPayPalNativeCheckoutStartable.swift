@@ -5,6 +5,7 @@ import PayPalCheckout
 import BraintreePayPal
 #endif
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 protocol BTPayPalNativeCheckoutStartable {
 
     typealias StartableApproveCallback = (String?, User?) -> Void

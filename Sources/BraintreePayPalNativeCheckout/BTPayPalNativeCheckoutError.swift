@@ -1,6 +1,7 @@
 import Foundation
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Error returned from the native PayPal flow
 public enum BTPayPalNativeCheckoutError: Error, CustomNSError, LocalizedError, Equatable {
 
