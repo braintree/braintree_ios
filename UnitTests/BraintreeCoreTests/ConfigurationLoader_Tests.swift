@@ -20,7 +20,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         super.tearDown()
     }
   
-    func testFetchOrReturnRemoteConfiguration_whenCached_returnsConfigFromCache() {
+    func testGetConfig_whenCached_returnsConfigFromCache() {
         let sampleJSON = ["test": "value", "environment": "fake-env1"]
         try? ConfigurationCache.shared.putInCache(authorization: "development_tokenization_key", configuration: BTConfiguration(json: BTJSON(value: sampleJSON)))
         let mockClientAuthorization = MockClientAuthorization(bearer: "development_tokenization_key")
@@ -35,7 +35,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
+    func testGetConfig_performsGETWithCorrectPayload() {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
         let mockClientAuthorization = MockClientAuthorization()
 
@@ -49,7 +49,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testAPIClient_canGetRemoteConfiguration() {
+    func testGetConfig_canGetRemoteConfiguration() {
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
         let mockClientAuthorization = MockClientAuthorization()
@@ -68,7 +68,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testConfiguration_whenServerRespondsWithNon200StatusCode_returnsAPIClientError() {
+    func testGetConfig_whenServerRespondsWithNon200StatusCode_returnsAPIClientError() {
         mockHTTP.stubRequest(
             withMethod: "GET",
             toEndpoint: "/client_api/v1/configuration",
@@ -90,7 +90,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testConfiguration_whenNetworkHasError_returnsNetworkErrorInCallback() {
+    func testGetConfig_whenNetworkHasError_returnsNetworkErrorInCallback() {
         ConfigurationCache.shared.cacheInstance.removeAllObjects()
         let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
         let mockClientAuthorization = MockClientAuthorization()
