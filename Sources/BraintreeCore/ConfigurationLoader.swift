@@ -2,13 +2,14 @@ import Foundation
 
 final class ConfigurationLoader {
     
+    // MARK: - Private Properties
+    
     private let configPath = "v1/configuration"
-    private let configurationCache: ConfigurationCache
+    private let configurationCache: ConfigurationCache = ConfigurationCache.shared
     private let http: BTHTTP
     
-    init(http: BTHTTP, configurationCache: ConfigurationCache = ConfigurationCache.shared) {
+    init(http: BTHTTP) {
         self.http = http
-        self.configurationCache = configurationCache
     }
     
     deinit {
@@ -41,11 +42,6 @@ final class ConfigurationLoader {
                 completion(nil, BTAPIClientError.configurationUnavailable)
                 return
             } else {
-                guard let body else {
-                    completion(nil, BTAPIClientError.configurationUnavailable)
-                    return
-                }
-                
                 let configuration = BTConfiguration(json: body)
 
                 try? configurationCache.putInCache(authorization: authorization.bearer, configuration: configuration)
