@@ -34,12 +34,12 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
-        let timestamp = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
-        let eventName = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+        let timestamp = parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
+        let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
         
         XCTAssertEqual(eventName!, "any.analytics.event")
-        XCTAssertGreaterThanOrEqual(timestamp, self.currentTime)
-        XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
+        XCTAssertGreaterThanOrEqual(timestamp, currentTime)
+        XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
         self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
