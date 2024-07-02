@@ -7,6 +7,14 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
 
     // MARK: - accountTypeAsString
 
+    func testCustomFields_notNil() {
+        let request = BTThreeDSecureRequest()
+        XCTAssertNil(request.customFields)
+        
+        request.customFields = ["test": "test"]
+        XCTAssertNotNil(request.customFields)
+    }
+
     func testAccountTypeAsString_whenAccountTypeIsCredit_returnsCredit() {
         let request = BTThreeDSecureRequest()
         request.accountType = .credit

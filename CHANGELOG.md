@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeThreeDSecure
+  * Add `customFields` param to `BTThreeDSecureRequest`
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
   * For analytics, add additional metrics on networking timing
