@@ -22,6 +22,8 @@ import Foundation
     var graphQLHTTP: BTGraphQLHTTP?
     var payPalHTTP: BTHTTP?
 
+    var configurationLoader: ConfigurationLoader
+    
     /// Exposed for testing analytics
     /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
     /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
@@ -50,7 +52,6 @@ import Foundation
         case .tokenizationKey:
             do {
                 self.authorization =  try TokenizationKey(authorization)
-                http = BTHTTP(authorization: self.authorization)
             } catch {
                 return nil
             }
@@ -58,12 +59,14 @@ import Foundation
             do {
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
-
-                http = BTHTTP(authorization: self.authorization)
             } catch {
                 return nil
             }
         }
+        
+        let btHttp = BTHTTP(authorization: self.authorization)
+        http = btHttp
+        configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
         BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
@@ -101,55 +104,24 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
-        //
-        // Rules:
-        //   - If cachedConfiguration is present, return it without a request
-        //   - If cachedConfiguration is not present, fetch it and cache the successful response
-        //   - If fetching fails, return error
-
-        let configPath = "v1/configuration"
-        
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
-            setupHTTPCredentials(cachedConfig)
-            completion(cachedConfig, nil)
-            return
-        }
-
-        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        configurationLoader.getConfig(authorization) { [weak self] configuration, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
             }
-
-            if error != nil {
+            
+            if let error {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 || body == nil {
-                completion(nil, BTAPIClientError.configurationUnavailable)
-                return
-            } else {
-                let configuration = BTConfiguration(json: body)
-
-                setupHTTPCredentials(configuration)
-                try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
-                
-                completion(configuration, nil)
-                return
             }
+            
+            setupHTTPCredentials(configuration)
+            completion(configuration, nil)
         }
     }
     
     func fetchConfiguration() async throws -> BTConfiguration {
-        try await withCheckedThrowingContinuation { continuation in
-            fetchOrReturnRemoteConfiguration { configuration, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let configuration {
-                    continuation.resume(returning: configuration)
-                }
-            }
-        }
+        try await configurationLoader.getConfig(authorization)
     }
 
     /// Fetches a customer's vaulted payment method nonces.
@@ -392,19 +364,14 @@ import Foundation
     
     // MARK: - Private Methods
     
-    private func setupHTTPCredentials(_ configuration: BTConfiguration) {
-        if http == nil {
-            http = BTHTTP(authorization: authorization)
-            http?.networkTimingDelegate = self
-        }
-
+    private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
             graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             graphQLHTTP?.networkTimingDelegate = self
         }
         
         if payPalHTTP == nil {
-            let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration.environment ?? "")
+            let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
             
             if authorization.type == .clientToken {
                 payPalHTTP = BTHTTP(authorization: authorization, customBaseURL: paypalBaseURL)
