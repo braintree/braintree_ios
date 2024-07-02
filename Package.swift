@@ -146,7 +146,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+            path: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip"
         )
     ]
 )
