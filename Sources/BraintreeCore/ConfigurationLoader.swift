@@ -1,6 +1,6 @@
 import Foundation
 
-final class ConfigurationLoader {
+class ConfigurationLoader {
     
     // MARK: - Private Properties
     
