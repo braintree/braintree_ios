@@ -2,12 +2,10 @@ import Foundation
 
 final class RepeatingTimer {
     
+    // MARK: - Private Properties
+    
     /// Amount of time, in seconds.
     private let timeInterval: Int
-    
-    init(timeInterval: Int) {
-        self.timeInterval = timeInterval
-    }
     
     private lazy var timer: DispatchSourceTimer = {
         let timerSource = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
@@ -22,15 +20,23 @@ final class RepeatingTimer {
         return timerSource
     }()
     
-    var eventHandler: (() -> Void)?
-    
     private var state: State = .suspended
     
     private enum State {
         case suspended
         case resumed
     }
+        
+    // MARK: - Internal Properties
     
+    var eventHandler: (() -> Void)?
+    
+    // MARK: - Initializer
+    
+    init(timeInterval: Int) {
+        self.timeInterval = timeInterval
+    }
+        
     deinit {
         timer.setEventHandler { }
         timer.cancel()
@@ -40,7 +46,7 @@ final class RepeatingTimer {
         eventHandler = nil
     }
     
-    // MARK: - Public Methods
+    // MARK: - Internal Methods
     
     /*
      GCD timers are sensitive to errors. It is crucial to maintain
