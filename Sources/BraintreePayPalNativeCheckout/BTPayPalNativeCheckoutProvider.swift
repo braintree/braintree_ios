@@ -5,6 +5,7 @@ import PayPalCheckout
 import BraintreePayPal
 #endif
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
 
     /// Used in POST body for FPTI analytics.
