@@ -1,10 +1,15 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeThreeDSecure
+  * Add `customFields` param to `BTThreeDSecureRequest`
 * BraintreeCore
   * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
   * For analytics, add additional metrics on networking timing
   * Fix bug causing random crashes in `BTAnalyticsService`
+* BraintreePayPalNativeCheckout (DEPRECATED)  
+  * **Note:** This module is deprecated and will be removed in a future version of the SDK
+  * Add deprecated warning message to all public classes and methods
 
 ## 6.21.0 (2024-06-12)
 * BraintreePayPal
