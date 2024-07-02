@@ -135,18 +135,28 @@ let package = Package(
             dependencies: ["BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
+        // .binaryTarget(
+        //     name: "CardinalMobile",
+        //     path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+        // ),
         .binaryTarget(
             name: "CardinalMobile",
-            path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+            url: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.2.2.5-9.xcframework.zip",
+            checksum: "10a2261263e04255c61744eb00338432ec924404253e390742bd791527e30d49"
         ),
         .target(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
+        // .binaryTarget(
+        //     name: "PPRiskMagnes",
+        //     path: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip"
+        // )
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+            url: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/pp-risk-magnes/PPRiskMagnes.5.5.0-static-version-Xcode15-MinOSVersion100.xcframework.zip",
+            checksum: "3983fe0561b8242062e083f36c406b416e2e0b0483cc030257b1a49d1635c7e2"
         )
     ]
 )
