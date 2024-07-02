@@ -135,9 +135,14 @@ let package = Package(
             dependencies: ["BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
+        // .binaryTarget(
+        //     name: "CardinalMobile",
+        //     path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+        // ),
         .binaryTarget(
             name: "CardinalMobile",
-            path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+            url: "https://assets.braintreegateway.com/mobile/ios/carthage-frameworks/cardinal-mobile/CardinalMobile.2.2.5-9.xcframework.zip",
+            checksum: "10a2261263e04255c61744eb00338432ec924404253e390742bd791527e30d49"
         ),
         .target(
             name: "BraintreeVenmo",
