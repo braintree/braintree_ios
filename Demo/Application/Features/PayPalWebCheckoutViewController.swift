@@ -40,9 +40,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let newPayPalCheckoutToggle = UISwitch()
+    
+    lazy var rbaDataToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Recurring Billing (RBA) Data"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let rbaDataToggle = UISwitch()
 
     override func viewDidLoad() {
-        super.heightConstraint = 300
+        super.heightConstraint = 350
         super.viewDidLoad()
     }
 
@@ -55,7 +64,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
+        let vaultStackView = buttonsStackView(label: "Vault", views: [
+            UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+            payPalVaultButton,
+            payPalAppSwitchButton
+        ])
 
 
         let stackView = UIStackView(arrangedSubviews: [
@@ -117,8 +130,40 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultRequest()
+        var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
+        
+        if rbaDataToggle.isOn {
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .autoReload,
+                amount: "9.99",
+                reloadThresholdAmount: "100.00"
+            )
+            
+            let billingCycle = BTPayPalBillingCycle(
+                interval: .month,
+                intervalCount: 1,
+                numberOfExecutions: 12,
+                sequence: 9,
+                startDate: "2024-04-06T00:00:00Z",
+                isTrial: false,
+                pricing: billingPricing
+            )
+            
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                productName: "Vogue Magazine Subscription",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "5.99",
+                shippingAmount: "1.99",
+                productAmount: "9.99",
+                taxAmount: "0.59"
+            )
+            
+            request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
