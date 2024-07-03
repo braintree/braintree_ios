@@ -8,6 +8,8 @@ class ConfigurationLoader {
     private let configurationCache: ConfigurationCache = ConfigurationCache.shared
     private let http: BTHTTP
     
+    // MARK: - Intitializer
+    
     init(http: BTHTTP) {
         self.http = http
     }
@@ -16,14 +18,24 @@ class ConfigurationLoader {
         http.session.finishTasksAndInvalidate()
     }
     
-    func getConfig(_ authorization: ClientAuthorization, completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
-        //
-        // Rules:
-        //   - If cachedConfiguration is present, return it without a request
-        //   - If cachedConfiguration is not present, fetch it and cache the successful response
-        //   - If fetching fails, return error
+    // MARK: - Internal Methods
         
+    /// Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful.
+    ///
+    /// This method attempts to retrieve the configuration in the following order:
+    /// 1. If a cached configuration is available, it returns the cached configuration without making a network request.
+    /// 2. If no cached configuration is found, it fetches the configuration from the server and caches the successful response.
+    /// 3. If fetching the configuration fails, it returns an error.
+    ///
+    /// - Parameters:
+    ///   - authorization: An `ClientAuthorization` object required to access the configuration.
+    ///   - completion: A completion handler that is called with the fetched or cached `BTConfiguration` object or an `Error`.
+    ///
+    /// - Completion:
+    ///   - `BTConfiguration?`: The configuration object if it is successfully fetched or retrieved from the cache.
+    ///   - `Error?`: An error object if fetching the configuration fails or if the instance is deallocated.
+    @_documentation(visibility: private)
+    func getConfig(_ authorization: ClientAuthorization, completion: @escaping (BTConfiguration?, Error?) -> Void) {
         if let cachedConfig = try? configurationCache.getFromCache(authorization: authorization.bearer) {
             completion(cachedConfig, nil)
             return

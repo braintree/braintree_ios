@@ -21,7 +21,6 @@ import Foundation
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
     var payPalHTTP: BTHTTP?
-
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
