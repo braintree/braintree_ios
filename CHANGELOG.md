@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeThreeDSecure
+  * Add error code and error message for `exceededTimeoutLimit`  
+
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
   * Add `customFields` param to `BTThreeDSecureRequest`
