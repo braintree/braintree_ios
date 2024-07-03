@@ -137,7 +137,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "CardinalMobile",
-            path: "Frameworks/XCFrameworks/CardinalMobile.xcframework"
+            url: "https://github.com/scannillo/3ds_binary_ios/releases/download/0.0.2/CardinalMobile.xcframework.zip",
+            checksum: "f97e0643a3d8e8725a5bcf8a48a4a6103f567ab2316b6dc559436328e81aa84e"
         ),
         .target(
             name: "BraintreeVenmo",
