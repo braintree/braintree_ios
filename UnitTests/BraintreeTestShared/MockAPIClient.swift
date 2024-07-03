@@ -72,6 +72,13 @@ public class MockAPIClient: BTAPIClient {
         }
         completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
     }
+    
+    public override func fetchConfiguration() async throws -> BTConfiguration {
+        guard let responseBody = cannedConfigurationResponseBody else {
+            throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
+        }
+        return BTConfiguration(json: responseBody)
+    }
 
     public override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchedPaymentMethods = true
