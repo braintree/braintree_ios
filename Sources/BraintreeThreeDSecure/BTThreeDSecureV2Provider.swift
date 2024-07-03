@@ -122,14 +122,22 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 completion: completionHandler
             )
         case .error, .timeout:
-            let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
+            var userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
+                completionHandler(nil, BTThreeDSecureError.failedAuthentication(""))
+            }
+            else if validateResponse.actionCode == .timeout {
+                errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
+                userInfo = [NSLocalizedDescriptionKey: BTThreeDSecureError.exceededTimeoutLimit.localizedDescription]
+                completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
+            }
+            else {
+                completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: userInfo))
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: userInfo))
         case .cancel:
             completionHandler(nil, BTThreeDSecureError.canceled)
         default:
