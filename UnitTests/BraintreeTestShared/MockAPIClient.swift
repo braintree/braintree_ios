@@ -27,10 +27,6 @@ public class MockAPIClient: BTAPIClient {
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
 
-    override init?(authorization: String, sendAnalyticsEvent: Bool = false) {
-        super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
-    }
-
     public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = try? parameters?.toDictionary()
