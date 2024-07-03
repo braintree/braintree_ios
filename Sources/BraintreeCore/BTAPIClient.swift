@@ -37,11 +37,7 @@ import Foundation
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
     @objc(initWithAuthorization:)
-    public convenience init?(authorization: String) {
-        self.init(authorization: authorization, sendAnalyticsEvent: true)
-    }
-
-    init?(authorization: String, sendAnalyticsEvent: Bool) {
+    public init?(authorization: String) {
         self.metadata = BTClientMetadata()
 
         guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
