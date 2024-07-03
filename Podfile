@@ -8,6 +8,10 @@ inhibit_all_warnings!
 target 'Demo' do
   project 'Demo/Demo'
   pod 'InAppSettingsKit'
+
+  # This will not be required for merchants, but is necessary for testing until we public this
+  # new wrapper module to CocoaPods.org
+  pod 'Braintree3DSBinary', :git => 'https://github.com/scannillo/3ds_binary_ios.git', :tag => '0.0.2'
 end
 
 abstract_target 'Tests' do
