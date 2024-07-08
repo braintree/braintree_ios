@@ -322,11 +322,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await withCheckedThrowingContinuation { continuation in
-            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResonse, error in
+            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResponse, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(returning: (json, httpResonse))
+                    continuation.resume(returning: (json, httpResponse))
                 }
             }
         }

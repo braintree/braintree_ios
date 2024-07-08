@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeShopperInsights (BETA)
+  * Add error when using an invalid authorization type
+
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
   * Add `customFields` param to `BTThreeDSecureRequest`
