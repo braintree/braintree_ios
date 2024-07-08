@@ -10,8 +10,8 @@ import Foundation
 /// in `braintree-ios-certificate-generation` and re-run the certificate generation script.
 class BTAPIPinnedCertificates {
 
-    static func trustedCertificates() -> [NSData] {
-        var result: [NSData] = []
+    static func trustedCertificates() -> [Data] {
+        var result: [Data] = []
 
         // DigiCertTrustedRootG4.crt
         let dataArray0_0: [UInt8] = [
@@ -107,7 +107,7 @@ class BTAPIPinnedCertificates {
             0xCF,0xF3,0x66,0x7E,
         ]
 
-        result.append(NSData(bytes: dataArray0_0, length: dataArray0_0.count))
+        result.append(Data(bytes: dataArray0_0, count: dataArray0_0.count))
 
         // DigiCertTLSECCP384RootG5.crt
         let dataArray1_0: [UInt8] = [
@@ -147,7 +147,7 @@ class BTAPIPinnedCertificates {
             0x0D,0x76,0x43,0x8C,0x2E,0x53,0xCB,0x7C,0xDF,0x0C,0x17,0x96,0x50,
         ]
 
-        result.append(NSData(bytes: dataArray1_0, length: dataArray1_0.count))
+        result.append(Data(bytes: dataArray1_0, count: dataArray1_0.count))
 
         // DigiCertHighAssuranceEVRootCA.crt
         let dataArray2_0: [UInt8] = [
@@ -214,7 +214,7 @@ class BTAPIPinnedCertificates {
             0xF8,0xE9,0x2E,0x13,0xA3,0x77,0xE8,0x1F,0x4A,
         ]
 
-        result.append(NSData(bytes: dataArray2_0, length: dataArray2_0.count))
+        result.append(Data(bytes: dataArray2_0, count: dataArray2_0.count))
 
         // DigiCertClientRSA4096RootG5.crt
         let dataArray3_0: [UInt8] = [
@@ -307,7 +307,7 @@ class BTAPIPinnedCertificates {
             0x0B,0xCE,0x88,0x4D,0x53,0x59,0x20,0x2B,0x96,0x2A,0xC6,0x15,0xC7,0x90,0x0E,0x40,
         ]
 
-        result.append(NSData(bytes: dataArray3_0, length: dataArray3_0.count))
+        result.append(Data(bytes: dataArray3_0, count: dataArray3_0.count))
 
         // DigiCertAssuredIDRootG2.crt
         let dataArray4_0: [UInt8] = [
@@ -371,7 +371,7 @@ class BTAPIPinnedCertificates {
             0x22,0x13,0x73,0x6C,0xCF,0x26,0xF5,0x8A,0x29,0xE7,
         ]
 
-        result.append(NSData(bytes: dataArray4_0, length: dataArray4_0.count))
+        result.append(Data(bytes: dataArray4_0, count: dataArray4_0.count))
 
         // DigiCertAssuredIDRootG3.crt
         let dataArray5_0: [UInt8] = [
@@ -414,7 +414,7 @@ class BTAPIPinnedCertificates {
             0xEA,0x96,0x63,0x6A,0x65,0x45,0x92,0x95,0x01,0xB4,
         ]
 
-        result.append(NSData(bytes: dataArray5_0, length: dataArray5_0.count))
+        result.append(Data(bytes: dataArray5_0, count: dataArray5_0.count))
 
         // DigiCertSMIMEECCP384RootG5.crt
         let dataArray6_0: [UInt8] = [
@@ -454,7 +454,7 @@ class BTAPIPinnedCertificates {
             0x0E,0xFB,0xBC,0x60,0x30,0x7C,0x64,0x3F,0x12,0x1E,0x45,0x7F,0x51,0x3E,0xF4,0xA6,
         ]
 
-        result.append(NSData(bytes: dataArray6_0, length: dataArray6_0.count))
+        result.append(Data(bytes: dataArray6_0, count: dataArray6_0.count))
 
         // payments-braintree-api-com.crt
         let dataArray7_0: [UInt8] = [
@@ -536,7 +536,7 @@ class BTAPIPinnedCertificates {
             0xF1,0x35,0x28,0x13,0xAB,0x26,0x7E,0xD5,0xF7,0x7A,
         ]
 
-        result.append(NSData(bytes: dataArray7_0, length: dataArray7_0.count))
+        result.append(Data(bytes: dataArray7_0, count: dataArray7_0.count))
 
         // payments-braintree-api-com.crt
         let dataArray7_1: [UInt8] = [
@@ -704,7 +704,7 @@ class BTAPIPinnedCertificates {
             0x29,0x2A,0xA4,0x7D,0xBB,0x54,0x61,0x39,0x19,0x30,0xD0,0x07,0xF3,0xCE,
         ]
 
-        result.append(NSData(bytes: dataArray7_1, length: dataArray7_1.count))
+        result.append(Data(bytes: dataArray7_1, count: dataArray7_1.count))
 
         // AmazonRootCA3.crt
         let dataArray8_0: [UInt8] = [
@@ -738,7 +738,7 @@ class BTAPIPinnedCertificates {
             0x63,0x24,0x48,0x1C,0xDF,0x30,0x7D,0xD5,0x68,0x3B,
         ]
 
-        result.append(NSData(bytes: dataArray8_0, length: dataArray8_0.count))
+        result.append(Data(bytes: dataArray8_0, count: dataArray8_0.count))
 
         // DigiCertGlobalRootG2.crt
         let dataArray9_0: [UInt8] = [
@@ -802,7 +802,7 @@ class BTAPIPinnedCertificates {
             0x32,0xB6,
         ]
 
-        result.append(NSData(bytes: dataArray9_0, length: dataArray9_0.count))
+        result.append(Data(bytes: dataArray9_0, count: dataArray9_0.count))
 
         // DigiCertECCP384RootG5.crt
         let dataArray10_0: [UInt8] = [
@@ -842,7 +842,7 @@ class BTAPIPinnedCertificates {
             0x8F,0x5E,0x39,0xDD,0x37,
         ]
 
-        result.append(NSData(bytes: dataArray10_0, length: dataArray10_0.count))
+        result.append(Data(bytes: dataArray10_0, count: dataArray10_0.count))
 
         // DigiCertGlobalRootG3.crt
         let dataArray11_0: [UInt8] = [
@@ -885,7 +885,7 @@ class BTAPIPinnedCertificates {
             0xB3,0x27,0x17,
         ]
 
-        result.append(NSData(bytes: dataArray11_0, length: dataArray11_0.count))
+        result.append(Data(bytes: dataArray11_0, count: dataArray11_0.count))
 
         // payments-sandbox-braintree-api-com.crt
         let dataArray12_0: [UInt8] = [
@@ -967,7 +967,7 @@ class BTAPIPinnedCertificates {
             0xF1,0x35,0x28,0x13,0xAB,0x26,0x7E,0xD5,0xF7,0x7A,
         ]
 
-        result.append(NSData(bytes: dataArray12_0, length: dataArray12_0.count))
+        result.append(Data(bytes: dataArray12_0, count: dataArray12_0.count))
 
         // payments-sandbox-braintree-api-com.crt
         let dataArray12_1: [UInt8] = [
@@ -1138,7 +1138,7 @@ class BTAPIPinnedCertificates {
             0xDF,0x03,0x7D,0x56,0x26,0xCB,0xD0,
         ]
 
-        result.append(NSData(bytes: dataArray12_1, length: dataArray12_1.count))
+        result.append(Data(bytes: dataArray12_1, count: dataArray12_1.count))
 
         // AmazonRootCA2.crt
         let dataArray13_0: [UInt8] = [
@@ -1229,7 +1229,7 @@ class BTAPIPinnedCertificates {
             0xE0,0xFB,0x09,0x60,0x6C,
         ]
 
-        result.append(NSData(bytes: dataArray13_0, length: dataArray13_0.count))
+        result.append(Data(bytes: dataArray13_0, count: dataArray13_0.count))
 
         // DigiCertCSECCP384RootG5.crt
         let dataArray14_0: [UInt8] = [
@@ -1269,7 +1269,7 @@ class BTAPIPinnedCertificates {
             0xA2,0xA5,0x79,0xE8,0xE3,0x21,0xA7,0xCD,0x13,0xB3,
         ]
 
-        result.append(NSData(bytes: dataArray14_0, length: dataArray14_0.count))
+        result.append(Data(bytes: dataArray14_0, count: dataArray14_0.count))
 
         // AmazonRootCA1.crt
         let dataArray15_0: [UInt8] = [
@@ -1328,7 +1328,7 @@ class BTAPIPinnedCertificates {
             0xC4,0x90,0xBE,0xF1,0xB9,
         ]
 
-        result.append(NSData(bytes: dataArray15_0, length: dataArray15_0.count))
+        result.append(Data(bytes: dataArray15_0, count: dataArray15_0.count))
 
         // AmazonRootCA4.crt
         let dataArray16_0: [UInt8] = [
@@ -1366,7 +1366,7 @@ class BTAPIPinnedCertificates {
             0x0A,0x76,0xD4,0xA5,0xBC,0x10,
         ]
 
-        result.append(NSData(bytes: dataArray16_0, length: dataArray16_0.count))
+        result.append(Data(bytes: dataArray16_0, count: dataArray16_0.count))
 
         // DigiCertCSRSA4096RootG5.crt
         let dataArray17_0: [UInt8] = [
@@ -1459,7 +1459,7 @@ class BTAPIPinnedCertificates {
             0x08,0x1F,0x13,0xE0,0x32,0x08,0x72,0xD0,
         ]
 
-        result.append(NSData(bytes: dataArray17_0, length: dataArray17_0.count))
+        result.append(Data(bytes: dataArray17_0, count: dataArray17_0.count))
 
         // DigiCertAssuredIDRootCA.crt
         let dataArray18_0: [UInt8] = [
@@ -1525,7 +1525,7 @@ class BTAPIPinnedCertificates {
             0xE6,0x50,0xB2,0xA7,0xFA,0x0A,0x45,0x2F,0xA2,0xF0,0xF2,
         ]
 
-        result.append(NSData(bytes: dataArray18_0, length: dataArray18_0.count))
+        result.append(Data(bytes: dataArray18_0, count: dataArray18_0.count))
 
         // DigiCertRSA4096RootG5.crt
         let dataArray19_0: [UInt8] = [
@@ -1618,7 +1618,7 @@ class BTAPIPinnedCertificates {
             0xBF,0x27,
         ]
 
-        result.append(NSData(bytes: dataArray19_0, length: dataArray19_0.count))
+        result.append(Data(bytes: dataArray19_0, count: dataArray19_0.count))
 
         // DigiCert High Assurance EV Root CA.crt
         let dataArray20_0: [UInt8] = [
@@ -1685,7 +1685,7 @@ class BTAPIPinnedCertificates {
             0xF8,0xE9,0x2E,0x13,0xA3,0x77,0xE8,0x1F,0x4A,
         ]
 
-        result.append(NSData(bytes: dataArray20_0, length: dataArray20_0.count))
+        result.append(Data(bytes: dataArray20_0, count: dataArray20_0.count))
 
         // DigiCert SHA2 High Assurance Server CA.crt
         let dataArray21_0: [UInt8] = [
@@ -1767,7 +1767,7 @@ class BTAPIPinnedCertificates {
             0x70,0xF5,0x1E,0xC9,0xB4,
         ]
 
-        result.append(NSData(bytes: dataArray21_0, length: dataArray21_0.count))
+        result.append(Data(bytes: dataArray21_0, count: dataArray21_0.count))
 
         // DigiCertSMIMERSA4096RootG5.crt
         let dataArray22_0: [UInt8] = [
@@ -1860,7 +1860,7 @@ class BTAPIPinnedCertificates {
             0x0C,0x52,0x40,0x1F,0xDD,0x4E,0x0F,0x67,0x26,0x16,0xD2,0xAD,0x17,0x1C,
         ]
 
-        result.append(NSData(bytes: dataArray22_0, length: dataArray22_0.count))
+        result.append(Data(bytes: dataArray22_0, count: dataArray22_0.count))
 
         // DigiCertGlobalRootCA.crt
         let dataArray23_0: [UInt8] = [
@@ -1926,7 +1926,7 @@ class BTAPIPinnedCertificates {
             0x95,0x6D,0xDE,
         ]
 
-        result.append(NSData(bytes: dataArray23_0, length: dataArray23_0.count))
+        result.append(Data(bytes: dataArray23_0, count: dataArray23_0.count))
 
         // DigiCertClientECCP384RootG5.crt
         let dataArray24_0: [UInt8] = [
@@ -1967,7 +1967,7 @@ class BTAPIPinnedCertificates {
             0x25,0xE8,0x8C,
         ]
 
-        result.append(NSData(bytes: dataArray24_0, length: dataArray24_0.count))
+        result.append(Data(bytes: dataArray24_0, count: dataArray24_0.count))
 
         // DigiCertTLSRSA4096RootG5.crt
         let dataArray25_0: [UInt8] = [
@@ -2060,7 +2060,7 @@ class BTAPIPinnedCertificates {
             0xDA,0x32,0xFE,0xC3,0x6B,0x83,0x3F,0x38,0xC6,0x7E,
         ]
 
-        result.append(NSData(bytes: dataArray25_0, length: dataArray25_0.count))
+        result.append(Data(bytes: dataArray25_0, count: dataArray25_0.count))
 
         return result
     }

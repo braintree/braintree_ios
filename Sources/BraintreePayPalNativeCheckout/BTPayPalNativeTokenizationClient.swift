@@ -8,6 +8,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class BTPayPalNativeTokenizationClient {
 
     private let apiClient: BTAPIClient

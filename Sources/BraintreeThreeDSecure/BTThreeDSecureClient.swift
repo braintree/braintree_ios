@@ -351,7 +351,8 @@ import BraintreeCore
                 "challengeRequested": request.challengeRequested,
                 "exemptionRequested": request.exemptionRequested,
                 "requestedExemptionType": request.requestedExemptionType.stringValue,
-                "dataOnlyRequested": request.dataOnlyRequested
+                "dataOnlyRequested": request.dataOnlyRequested,
+                "customFields": request.customFields
             ]
 
             if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {

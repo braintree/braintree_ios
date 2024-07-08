@@ -14,6 +14,7 @@ struct BTPayPalNativeOrder: Equatable {
     let orderID: String
 }
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class BTPayPalNativeOrderCreationClient {
 
     var payPalContextID: String? = nil

@@ -749,6 +749,36 @@ final class BTHTTP_Tests: XCTestCase {
             }
         }
     }
+    
+    func testURLSessionTaskDidFinishCollectingMetrics() {
+        let mockDelegate = MockNetworkTimingDelegate()
+        http?.networkTimingDelegate = mockDelegate
+        
+        var originalRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
+        originalRequest.httpBody = """
+            {
+                "operationName": "TestMutation"
+            }
+            """.data(using: .utf8)
+        let task = testURLSession.dataTask(with: originalRequest)
+
+        let transactionMetrics = MockURLSessionTaskTransactionMetrics()
+        transactionMetrics.mockConnectStartDate = Date()
+        transactionMetrics.mockFetchStartDate = Date()
+        transactionMetrics.mockResponseEndDate = Date().addingTimeInterval(1)
+        transactionMetrics.mockRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
+        
+        let metrics = MockURLSessionTaskMetrics(transactionMetrics: [transactionMetrics])
+        
+        http?.urlSession(testURLSession, task: task, didFinishCollecting: metrics)
+        
+        XCTAssertTrue(mockDelegate.didCallFetchAPITiming)
+        XCTAssertEqual(mockDelegate.receivedPath, "mutation TestMutation")
+        XCTAssertNotNil(mockDelegate.receivedConnectionStartTime)
+        XCTAssertNotNil(mockDelegate.receivedRequestStartTime)
+        XCTAssertNotNil(mockDelegate.receivedStartTime)
+        XCTAssertNotNil(mockDelegate.receivedEndTime)
+    }
 
     // MARK: - Helper Methods
 
