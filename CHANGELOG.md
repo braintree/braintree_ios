@@ -10,6 +10,9 @@
 * BraintreePayPalNativeCheckout (DEPRECATED)  
   * **Note:** This module is deprecated and will be removed in a future version of the SDK
   * Add deprecated warning message to all public classes and methods
+* BraintreePayPal
+  * Add `BTPayPalEditRequest` for edit FI flow (Beta)
+  * Add `tokenize` method for edit FI flow (Beta)
 
 ## 6.21.0 (2024-06-12)
 * BraintreePayPal
