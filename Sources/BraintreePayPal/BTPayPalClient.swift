@@ -192,7 +192,6 @@ import BraintreeDataCollector
     ///   - request: A `BTPayPalEditRequest`
     ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-    @objc(tokenizeWithEditRequest:completion:)
     public func tokenize(
         _ request: BTPayPalEditRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -221,7 +220,6 @@ import BraintreeDataCollector
             }
         }
     }
-
 
     // MARK: - Internal Methods
     
