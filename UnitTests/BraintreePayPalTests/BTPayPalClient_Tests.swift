@@ -126,6 +126,25 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
+    func testTokenizePayPalEditRequest_whenResponseIsSuccessful_returnsPayPalAccountNonce() {
+
+        let editRequest = BTPayPalEditRequest(token: "test-token")
+
+        // TODO: implement test to return PayPalAccountNonce
+    }
+
+    func testTokenizePayPalEditRequest_whenResposneIsErorr_returnsError() {
+        let editRequest = BTPayPalEditRequest(token: "test-token")
+
+        // TODO: implement test to return Error
+    }
+
+    func testTokenizePayPalEditRequest_whenUserCancels_returnsError() {
+        let editRequest = BTPayPalEditRequest(token: "test-token")
+
+        // TODO: implement test to return Error
+    }
+
     // MARK: - PayPal approval URL to present in browser
 
     func testTokenizePayPalAccount_checkout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
