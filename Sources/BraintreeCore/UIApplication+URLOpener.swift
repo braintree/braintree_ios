@@ -7,7 +7,7 @@ import UIKit
 public protocol URLOpener {
 
     func canOpenURL(_ url: URL) -> Bool
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
+    func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
     func isPayPalAppInstalled() -> Bool
     func isVenmoAppInstalled() -> Bool
 }
@@ -32,5 +32,9 @@ extension UIApplication: URLOpener {
             return false
         }
         return canOpenURL(payPalURL)
+    }
+
+    public func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
+        UIApplication.shared.open(url, options: options, completionHandler: completion)
     }
 }
