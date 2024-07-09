@@ -127,13 +127,12 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testTokenizePayPalEditRequest_whenResponseIsSuccessful_returnsPayPalAccountNonce() {
-
         let editRequest = BTPayPalEditRequest(token: "test-token")
 
         // TODO: implement test to return PayPalAccountNonce
     }
 
-    func testTokenizePayPalEditRequest_whenResposneIsErorr_returnsError() {
+    func testTokenizePayPalEditRequest_whenResponseIsError_returnsError() {
         let editRequest = BTPayPalEditRequest(token: "test-token")
 
         // TODO: implement test to return Error
