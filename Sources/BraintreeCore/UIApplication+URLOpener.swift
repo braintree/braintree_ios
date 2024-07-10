@@ -7,7 +7,7 @@ import UIKit
 public protocol URLOpener {
 
     func canOpenURL(_ url: URL) -> Bool
-    func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
+    func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
     func isPayPalAppInstalled() -> Bool
     func isVenmoAppInstalled() -> Bool
 }
@@ -38,7 +38,7 @@ extension UIApplication: URLOpener {
     /// Indicates whether the PayPal App is installed.
     // TODO: once Xcode 16 is the minimum supported version remove this method and update the protocol to the default open signature from UIApplication
     @_documentation(visibility: private)
-    public func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
-        UIApplication.shared.open(url, options: options, completionHandler: completion)
+    public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+        UIApplication.shared.open(url, options: [:], completionHandler: completion)
     }
 }

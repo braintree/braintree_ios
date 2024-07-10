@@ -389,7 +389,7 @@ import BraintreeDataCollector
             return
         }
 
-        application.openURL(redirectURL, options: [:]) { success in
+        application.open(redirectURL) { success in
             self.invokedOpenURLSuccessfully(success, completion: completion)
         }
     }

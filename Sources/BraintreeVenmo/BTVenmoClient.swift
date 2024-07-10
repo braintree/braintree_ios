@@ -253,7 +253,7 @@ import BraintreeCore
 
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
-        application.openURL(appStoreURL, options: [:], completionHandler: nil)
+        application.open(appStoreURL, completionHandler: nil)
     }
 
     // MARK: - Internal Methods
@@ -343,7 +343,7 @@ import BraintreeCore
     }
 
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        application.openURL(appSwitchURL, options: [:]) { success in
+        application.open(appSwitchURL) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
         }
     }
