@@ -36,6 +36,7 @@ extension UIApplication: URLOpener {
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Indicates whether the PayPal App is installed.
+    // TODO: once Xcode 16 is the minimum supported version remove this method and update the protocol to the default open signature from UIApplication
     @_documentation(visibility: private)
     public func openURL(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?) {
         UIApplication.shared.open(url, options: options, completionHandler: completion)
