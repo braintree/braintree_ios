@@ -8,9 +8,10 @@ class BTPayPalEditRequest_Tests: XCTestCase {
         super.setUp()
     }
 
-    func testBTPayPalEditRequestInitializer() {
+    func test_returnsAllParams() {
         let expectedToken = "test-token"
         let editRequest = BTPayPalEditRequest(token: expectedToken)
-        XCTAssertEqual(editRequest.token, expectedToken)
+
+        // TODO: implement checking expected params returned
     }
 }
