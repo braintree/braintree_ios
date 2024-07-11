@@ -183,6 +183,44 @@ import BraintreeDataCollector
         }
     }
 
+    /// Tokenize a PayPal request to be used with the Edit FI flow.
+    ///
+    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameters:
+    ///   - request: A `BTPayPalEditRequest`
+    ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    public func tokenize(
+        _ request: BTPayPalEditRequest,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
+        // TODO: call API to get FI URL and return a BTPayPalNonce or Error
+        completion(nil, nil)
+    }
+
+    /// Tokenize a PayPal request to be used with the Edit FI flow.
+    ///
+    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameter request: A `BTPayPalEditRequest`
+    /// - Returns: A `BTPayPalAccountNonce` if successful
+    /// - Throws: An `Error` describing the failure
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    public func tokenize(_ request: BTPayPalEditRequest) async throws -> BTPayPalAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            tokenize(request) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
+    }
+
     // MARK: - Internal Methods
     
     func handleReturn(
