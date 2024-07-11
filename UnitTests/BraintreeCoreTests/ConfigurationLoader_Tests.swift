@@ -74,7 +74,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         )
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             guard let error = error as NSError? else { return }
             XCTAssertNil(configuration)
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
