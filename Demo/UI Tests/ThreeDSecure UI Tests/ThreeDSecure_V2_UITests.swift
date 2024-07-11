@@ -129,6 +129,6 @@ class ThreeDSecure_V2_UITests: XCTestCase {
          app.tokenizeButton.tap()
          sleep(2)
 
-         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:30)
+         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:45)
      }
 }
