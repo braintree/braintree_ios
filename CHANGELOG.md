@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeShopperInsights (BETA)
   * Add error when using an invalid authorization type
+* BraintreeThreeDSecure
+  * Fix bug to conditionally unwrap `customFields` - this caused an error when this value was not set on `BTThreeDSecureRequest`
 
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
