@@ -8,8 +8,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - Internal Properties
 
-    /// An array of pinned certificates, each a NSData instance consisting of DER encoded x509 certificates
-    let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+    /// An array of pinned certificates, each a Data instance consisting of DER encoded x509 certificates
+    let pinnedCertificates: [Data] = BTAPIPinnedCertificates.trustedCertificates()
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
     var dispatchQueue: DispatchQueue = DispatchQueue.main
@@ -390,7 +390,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         metrics.transactionMetrics.forEach { transaction in
             if let startDate = transaction.fetchStartDate,
                let endDate = transaction.responseEndDate,
-               let path = transaction.request.url?.path {
+               var path = transaction.request.url?.path {
+                
+                if path.contains("graphql"), 
+                   let data = task.originalRequest?.httpBody,
+                   let mutationName = getGraphQLMutationName(data) {
+                    path = mutationName
+                }
+                
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
                     connectionStartTime: transaction.connectStartDate?.utcTimestampMilliseconds,
@@ -400,5 +407,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 )
             }
         }
+    }
+    
+    private func getGraphQLMutationName(_ data: Data) -> String? {
+        let json = try? JSONSerialization.jsonObject(with: data)
+        let body = BTJSON(value: json)
+        
+        guard let mutationName = body["operationName"].asString() else { return nil }
+        
+        return "mutation \(mutationName)"
     }
 }

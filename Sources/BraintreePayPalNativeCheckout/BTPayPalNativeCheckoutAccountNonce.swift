@@ -10,6 +10,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Contains information about a PayPal payment method.
 @objcMembers public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
 

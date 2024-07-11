@@ -10,6 +10,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Client used to collect PayPal payment methods. If possible, this client will present a native flow; otherwise, it will fall back to a web flow.
 @objc public class BTPayPalNativeCheckoutClient: NSObject {
 
@@ -25,6 +26,7 @@ import PayPalCheckout
     private let nativeCheckoutProvider: BTPayPalNativeCheckoutStartable
 
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     ///  Initializes a PayPal Native client.
     /// - Parameter apiClient: The Braintree API client
     @objc(initWithAPIClient:)
@@ -39,6 +41,7 @@ import PayPalCheckout
 
     // MARK: - Public Methods
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
@@ -56,6 +59,7 @@ import PayPalCheckout
         tokenize(request: request, userAuthenticationEmail: request.userAuthenticationEmail, completion: completion)
     }
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     /// Tokenize a PayPal request to be used with the PayPal Native Checkout flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
@@ -77,6 +81,7 @@ import PayPalCheckout
         }
     }
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     /// Tokenize a PayPal request to be used with the PayPal Native Vault flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
@@ -94,6 +99,7 @@ import PayPalCheckout
         tokenize(request: request, completion: completion)
     }
 
+    @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
     /// Tokenize a PayPal request to be used with the PayPal Native Vault flow.
     ///
     /// On success, you will receive an instance of `BTPayPalNativeCheckoutAccountNonce`.
