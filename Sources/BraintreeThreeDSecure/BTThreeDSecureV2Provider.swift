@@ -135,7 +135,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
             }
             else {
-                completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: userInfo))
+                completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
         case .cancel:
