@@ -25,7 +25,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         try? ConfigurationCache.shared.putInCache(authorization: "development_tokenization_key", configuration: BTConfiguration(json: BTJSON(value: sampleJSON)))
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             XCTAssertEqual(configuration?.environment, "fake-env1")
             XCTAssertEqual(configuration?.json?["test"].asString(), "value")
             XCTAssertNil(self.mockHTTP.lastRequestEndpoint)
