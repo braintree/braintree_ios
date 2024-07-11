@@ -99,7 +99,7 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        configurationLoader.getConfig() { [weak self] configuration, error in
+        configurationLoader.getConfig { [weak self] configuration, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
