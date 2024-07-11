@@ -92,7 +92,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         let expectation = expectation(description: "Fetch configuration")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             // BTAPIClient fetches the config when initialized so there can potentially be 2 requests here
             XCTAssertLessThanOrEqual(self.mockHTTP.GETRequestCount, 2)
             XCTAssertNil(configuration)
