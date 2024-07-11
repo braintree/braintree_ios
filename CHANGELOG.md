@@ -1,6 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeShopperInsights (BETA)
+  * Add error when using an invalid authorization type
+* BraintreeCore
+  * Update `URLOpener.openURL(_:options:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
 
