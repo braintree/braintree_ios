@@ -38,7 +38,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { _,_ in
+        sut.getConfig { _, _ in
             XCTAssertEqual(self.mockHTTP.lastRequestEndpoint, "v1/configuration")
             XCTAssertEqual(self.mockHTTP.lastRequestParameters?["configVersion"] as? String, "3")
             expectation.fulfill()
