@@ -2,10 +2,10 @@
 
 ## unreleased
 * BraintreePayPal
-   * Add PayPal edit funding instrument flow (BETA)
-     * Add `BTPayPalEditRequest` for edit FI flow
-     * Add `BTPayPalClient.tokenize(_:completion:)` method that takes in a `BTPayPalEditRequest`
-     * **Note:** This feature is currently in beta and may change or be removed in future releases
+  * Add PayPal edit funding instrument flow (BETA)
+    * Add `BTPayPalEditRequest` for edit FI flow
+    * Add `BTPayPalClient.tokenize(_:completion:)` method that takes in a `BTPayPalEditRequest`
+    * **Note:** This feature is currently in beta and may change or be removed in future releases
   
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
