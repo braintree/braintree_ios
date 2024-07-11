@@ -52,7 +52,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
         
         let expectation = expectation(description: "Fetch configuration")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             XCTAssertNotNil(configuration)
             XCTAssertNil(error)
             XCTAssertGreaterThanOrEqual(self.mockHTTP.GETRequestCount, 1)
