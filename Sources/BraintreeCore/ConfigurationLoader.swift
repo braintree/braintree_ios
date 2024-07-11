@@ -65,7 +65,7 @@ class ConfigurationLoader {
     
     func getConfig() async throws -> BTConfiguration {
         try await withCheckedThrowingContinuation { continuation in
-            getConfig() { configuration, error in
+            getConfig { configuration, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let configuration {
