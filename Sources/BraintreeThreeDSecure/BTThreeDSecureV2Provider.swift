@@ -128,13 +128,11 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
                 completionHandler(nil, BTThreeDSecureError.failedAuthentication(""))
-            }
-            else if validateResponse.actionCode == .timeout {
+            } else if validateResponse.actionCode == .timeout {
                 errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
                 userInfo = [NSLocalizedDescriptionKey: BTThreeDSecureError.exceededTimeoutLimit.localizedDescription]
                 completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
-            }
-            else {
+            } else {
                 completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
