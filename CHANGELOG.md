@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeShopperInsights (BETA)
   * Add error when using an invalid authorization type
+* BraintreeCore
+  * Update `URLOpener.openURL(_:options:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
 
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
