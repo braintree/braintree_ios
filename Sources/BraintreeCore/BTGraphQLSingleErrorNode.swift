@@ -12,7 +12,7 @@ class BTGraphQLSingleErrorNode: BTGraphQLErrorNode {
         self.code = code
     }
     
-    func toDictionary() -> [String : Any] {
+    func toDictionary() -> [String: Any] {
         var result = ["field": field, "message": message]
         if let code = code {
             result["code"] = code

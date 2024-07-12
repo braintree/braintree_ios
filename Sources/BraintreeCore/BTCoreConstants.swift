@@ -20,9 +20,11 @@ import Foundation
     
     static let graphQLVersion: String = "2018-03-06"
 
+    // swiftlint:disable force_unwrapping
     static let payPalProductionURL = URL(string: "https://api.paypal.com")!
     
     static let payPalSandboxURL = URL(string: "https://api.sandbox.paypal.com")!
+    // swiftlint:enable force_unwrapping
 
     // MARK: - BTHTTPError Constants
 

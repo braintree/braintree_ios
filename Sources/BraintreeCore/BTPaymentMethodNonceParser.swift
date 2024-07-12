@@ -96,6 +96,7 @@ import Foundation
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func cardType(from cardType: String) -> String {
         let cardType = cardType.lowercased()
 
@@ -129,4 +130,5 @@ import Foundation
 
         return "Unknown"
     }
+    // swiftlint:enable cyclomatic_complexity
 }

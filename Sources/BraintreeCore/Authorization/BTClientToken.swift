@@ -2,8 +2,9 @@ import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
 @_documentation(visibility: private)
-@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
-    
+@objcMembers
+public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
+
     // NEXT_MAJOR_VERSION (v7): properties exposed for Objective-C interoperability + Drop-in access.
     // Once the entire SDK is in Swift, determine if we want public properties to be internal and
     // what we can make internal without breaking the Drop-in.
@@ -38,8 +39,7 @@ import Foundation
         // Client token must be decoded first because the other values are retrieved from it
         self.json = try Self.decodeClientToken(clientToken)
         
-        guard let authorizationFingerprint = json["authorizationFingerprint"].asString(),
-              !authorizationFingerprint.isEmpty else {
+        guard let authorizationFingerprint = json["authorizationFingerprint"].asString(), !authorizationFingerprint.isEmpty else {
             throw BTClientTokenError.invalidAuthorizationFingerprint
         }
         
@@ -113,8 +113,7 @@ import Foundation
     // MARK: - NSObject override
 
     public override func isEqual(_ object: Any?) -> Bool {
-        guard object is BTClientToken,
-              let otherToken = object as? BTClientToken else {
+        guard object is BTClientToken, let otherToken = object as? BTClientToken else {
             return false
         }
 

@@ -5,7 +5,7 @@ class ConfigurationLoader {
     // MARK: - Private Properties
     
     private let configPath = "v1/configuration"
-    private let configurationCache: ConfigurationCache = ConfigurationCache.shared
+    private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
     
     // MARK: - Intitializer
