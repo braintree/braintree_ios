@@ -133,10 +133,10 @@ class ConfigurationLoader_Tests: XCTestCase {
     }
     
     func testGetConfig_whenCalledInQuickSequence_onlySendsOneNetworkRequest() {
-        sut.getConfig(completion: { _,_ in })
-        sut.getConfig(completion: { _,_ in })
-        sut.getConfig(completion: { _,_ in })
-        sut.getConfig(completion: { _,_ in })
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
 
         XCTAssertEqual(mockHTTP.GETRequestCount, 1)
     }
