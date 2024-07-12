@@ -2,8 +2,7 @@ import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
 @_documentation(visibility: private)
-@objcMembers
-public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
+@objcMembers public class BTClientToken: NSObject, NSCoding, NSCopying, ClientAuthorization {
 
     // NEXT_MAJOR_VERSION (v7): properties exposed for Objective-C interoperability + Drop-in access.
     // Once the entire SDK is in Swift, determine if we want public properties to be internal and
