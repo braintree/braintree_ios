@@ -41,32 +41,30 @@ class ConfigurationLoader {
             return
         }
         
-        Task {
-            await pendingCompletions.add(completion)
-            
-            // If this is the 1st `v1/config` GET attempt, proceed with firing the network request.
-            // Otherwise, there is already a pending network request.
-            if await pendingCompletions.count == 1 {
-                http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
-                    guard let self else {
-                        self?.notifyCompletions(nil, BTAPIClientError.deallocated)
-                        return
-                    }
+        pendingCompletions.add(completion)
+        
+        // If this is the 1st `v1/config` GET attempt, proceed with firing the network request.
+        // Otherwise, there is already a pending network request.
+        if pendingCompletions.count == 1 {
+            http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+                guard let self else {
+                    self?.notifyCompletions(nil, BTAPIClientError.deallocated)
+                    return
+                }
+                
+                if let error {
+                    notifyCompletions(nil, error)
+                    return
+                } else if response?.statusCode != 200 || body == nil {
+                    notifyCompletions(nil, BTAPIClientError.configurationUnavailable)
+                    return
+                } else {
+                    let configuration = BTConfiguration(json: body)
                     
-                    if let error {
-                        notifyCompletions(nil, error)
-                        return
-                    } else if response?.statusCode != 200 || body == nil {
-                        notifyCompletions(nil, BTAPIClientError.configurationUnavailable)
-                        return
-                    } else {
-                        let configuration = BTConfiguration(json: body)
-                        
-                        try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
-                        
-                        notifyCompletions(configuration, nil)
-                        return
-                    }
+                    try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
+                    
+                    notifyCompletions(configuration, nil)
+                    return
                 }
             }
         }
@@ -87,6 +85,6 @@ class ConfigurationLoader {
     // MARK: - Private Methods
     
     func notifyCompletions(_ configuration: BTConfiguration?, _ error: Error?) {
-        Task { await pendingCompletions.invoke(configuration, error) }
+        pendingCompletions.invoke(configuration, error)
     }
 }
