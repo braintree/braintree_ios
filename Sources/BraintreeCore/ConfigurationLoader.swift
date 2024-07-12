@@ -49,7 +49,8 @@ class ConfigurationLoader {
         if pendingCompletions.count == 1 {
             http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
                 guard let self else {
-                    completion(nil, BTAPIClientError.deallocated)
+                    _ = self?.pendingCompletions.map { $0(nil, BTAPIClientError.deallocated) }
+                    self?.pendingCompletions.removeAll()
                     return
                 }
 
