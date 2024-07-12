@@ -49,24 +49,22 @@ class ConfigurationLoader {
         if pendingCompletions.count == 1 {
             http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
                 guard let self else {
-                    self?.pendingCompletions.forEach { $0(nil, BTAPIClientError.deallocated) }
-                    self?.pendingCompletions.removeAll()
+                    self?.notifyCompletions(nil, BTAPIClientError.deallocated)
                     return
                 }
 
                 if let error {
-                    completion(nil, error)
+                    notifyCompletions(nil, error)
                     return
                 } else if response?.statusCode != 200 || body == nil {
-                    completion(nil, BTAPIClientError.configurationUnavailable)
+                    notifyCompletions(nil, BTAPIClientError.configurationUnavailable)
                     return
                 } else {
                     let configuration = BTConfiguration(json: body)
 
                     try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
                     
-                    pendingCompletions.forEach { $0(configuration, nil) }
-                    pendingCompletions.removeAll()
+                    notifyCompletions(configuration, nil)
                     return
                 }
             }
@@ -83,5 +81,12 @@ class ConfigurationLoader {
                 }
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    func notifyCompletions(_ configuration: BTConfiguration?, _ error: Error?) {
+        pendingCompletions.forEach { $0(configuration, error) }
+        pendingCompletions.removeAll()
     }
 }
