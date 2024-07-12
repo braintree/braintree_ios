@@ -49,7 +49,7 @@ class ConfigurationLoader {
         if pendingCompletions.count == 1 {
             http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
                 guard let self else {
-                    _ = self?.pendingCompletions.map { $0(nil, BTAPIClientError.deallocated) }
+                    self?.pendingCompletions.forEach { $0(nil, BTAPIClientError.deallocated) }
                     self?.pendingCompletions.removeAll()
                     return
                 }
@@ -65,7 +65,7 @@ class ConfigurationLoader {
 
                     try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
                     
-                    _ = pendingCompletions.map { $0(configuration, nil) }
+                    pendingCompletions.forEach { $0(configuration, nil) }
                     pendingCompletions.removeAll()
                     return
                 }
