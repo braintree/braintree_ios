@@ -1,15 +1,18 @@
 import UIKit
 
+// swiftlint:disable nesting
 /// The POST body for a batch upload of FPTI events
 struct FPTIBatchData: Codable {
     
     let events: [EventsContainer] // Single-element "events" array required by FPTI formatting
     
     init(metadata: Metadata, events fptiEvents: [Event]?) {
-        self.events = [EventsContainer(
-            metadata: metadata,
-            fptiEvents: fptiEvents ?? []
-        )]
+        self.events = [
+            EventsContainer(
+                metadata: metadata,
+                fptiEvents: fptiEvents ?? []
+            )
+        ]
     }
     
     struct EventsContainer: Codable {

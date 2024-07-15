@@ -3,7 +3,7 @@ import Foundation
 class BTGraphQLErrorTree {
 
     let message: String
-    let rootNode: BTGraphQLMultiErrorNode = BTGraphQLMultiErrorNode()
+    let rootNode = BTGraphQLMultiErrorNode()
     
     init(message: String) {
         self.message = message

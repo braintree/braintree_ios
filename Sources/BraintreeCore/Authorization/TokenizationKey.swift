@@ -27,10 +27,10 @@ class TokenizationKey: ClientAuthorization {
         guard tokenizationKey.range(of: pattern, options: .regularExpression) != nil else { return nil }
 
         let tokenizationKeyParts = tokenizationKey.split(separator: "_", maxSplits: 3)
-        let environment: String = String(tokenizationKeyParts[0])
-        let merchantID: String = String(tokenizationKeyParts[2])
+        let environment = String(tokenizationKeyParts[0])
+        let merchantID = String(tokenizationKeyParts[2])
 
-        var components: URLComponents = URLComponents()
+        var components = URLComponents()
         components.scheme = environment == "development" ? "http" : "https"
 
         guard let host = host(for: environment) else { return nil }
