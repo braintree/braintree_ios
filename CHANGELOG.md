@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)
   * Add error when using an invalid authorization type
 * BraintreeCore
