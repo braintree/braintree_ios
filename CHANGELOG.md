@@ -4,7 +4,7 @@
 * BraintreeShopperInsights (BETA)
   * Add error when using an invalid authorization type
 * BraintreeCore
-  * Update `URLOpener.openURL(_:options:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
+  * Update `URLOpener.openURL(_:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
 * BraintreeThreeDSecure
   * Fix bug to conditionally unwrap `customFields` - this caused an error when this value was not set on `BTThreeDSecureRequest`
 
