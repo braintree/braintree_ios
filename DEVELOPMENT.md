@@ -6,6 +6,16 @@ This document outlines development practices that we follow while developing thi
 
 The included demo app utilizes a [sandbox sample merchant server](https://braintree-sample-merchant.herokuapp.com) hosted on Heroku.
 
+## SwiftLint
+
+Ensure that you have [SwiftLint](https://github.com/realm/SwiftLint) installed as we utilize it within our project.
+
+To install via [Homebrew](https://brew.sh/) run:
+```
+brew install swiftlint
+```
+Our Xcode workspace has a `Run Phase` which integrates in `SwiftLint` so the only prerequisite is installing via `Homebrew`.
+
 ## Tests
 
 Each module has a corresponding unit test target. These can be run individually, or all at once via the `UnitTests` scheme.
