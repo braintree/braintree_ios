@@ -11,7 +11,7 @@ excluded:
 
 disabled_rules:
   - todo
-  - type_name # tests will have have the format <SUT>_Tests
+  - type_name # tests will have the format <SUT>_Tests
   - xctfail_message
   - blanket_disable_command
   - non_optional_string_data_conversion
