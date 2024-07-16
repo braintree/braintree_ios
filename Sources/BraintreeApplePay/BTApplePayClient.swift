@@ -59,7 +59,7 @@ import BraintreeCore
     /// - Throws: An `Error` describing the failure
     public func makePaymentRequest() async throws -> PKPaymentRequest {
         try await withCheckedThrowingContinuation { continuation in
-            makePaymentRequest() { paymentRequest, error in
+            makePaymentRequest { paymentRequest, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let paymentRequest {
@@ -102,7 +102,7 @@ import BraintreeCore
                     return
                 }
 
-                guard let applePayNonce: BTApplePayCardNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
+                guard let applePayNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
                     self.notifyFailure(with: BTApplePayError.failedToCreateNonce, completion: completion)
                     return
                 }
