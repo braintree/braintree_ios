@@ -5,7 +5,7 @@ class ConfigurationLoader {
     // MARK: - Private Properties
     
     private let configPath = "v1/configuration"
-    private let configurationCache: ConfigurationCache = ConfigurationCache.shared
+    private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
     private let pendingCompletions = ConfigurationCallbackStorage()
     
@@ -72,7 +72,7 @@ class ConfigurationLoader {
     
     func getConfig() async throws -> BTConfiguration {
         try await withCheckedThrowingContinuation { continuation in
-            getConfig() { configuration, error in
+            getConfig { configuration, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let configuration {

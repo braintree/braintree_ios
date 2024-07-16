@@ -25,7 +25,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         try? ConfigurationCache.shared.putInCache(authorization: "development_tokenization_key", configuration: BTConfiguration(json: BTJSON(value: sampleJSON)))
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             XCTAssertEqual(configuration?.environment, "fake-env1")
             XCTAssertEqual(configuration?.json?["test"].asString(), "value")
             XCTAssertNil(self.mockHTTP.lastRequestEndpoint)
@@ -38,7 +38,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/v1/configuration", respondWith: [] as [Any?], statusCode: 200)
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { _,_ in
+        sut.getConfig { _, _ in
             XCTAssertEqual(self.mockHTTP.lastRequestEndpoint, "v1/configuration")
             XCTAssertEqual(self.mockHTTP.lastRequestParameters?["configVersion"] as? String, "3")
             expectation.fulfill()
@@ -52,7 +52,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
         
         let expectation = expectation(description: "Fetch configuration")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             XCTAssertNotNil(configuration)
             XCTAssertNil(error)
             XCTAssertGreaterThanOrEqual(self.mockHTTP.GETRequestCount, 1)
@@ -74,7 +74,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         )
         
         let expectation = expectation(description: "Callback invoked")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             guard let error = error as NSError? else { return }
             XCTAssertNil(configuration)
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
@@ -92,7 +92,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         let expectation = expectation(description: "Fetch configuration")
-        sut.getConfig() { configuration, error in
+        sut.getConfig { configuration, error in
             // BTAPIClient fetches the config when initialized so there can potentially be 2 requests here
             XCTAssertLessThanOrEqual(self.mockHTTP.GETRequestCount, 2)
             XCTAssertNil(configuration)

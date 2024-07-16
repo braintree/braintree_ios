@@ -43,7 +43,7 @@ class BTGraphQLMultiErrorNode: BTGraphQLErrorNode {
         return result
     }
     
-    func toDictionary() -> [String : Any] {
+    func toDictionary() -> [String: Any] {
         var result: [String: Any] = ["field": field]
         result["fieldErrors"] = mapChildrenInOrder { $0.toDictionary() }
         return result

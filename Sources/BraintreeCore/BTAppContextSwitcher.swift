@@ -18,8 +18,8 @@ import UIKit
 
     // MARK: - Private Properties
     
-    private var appContextSwitchClients = [BTAppContextSwitchClient.Type]()
-    
+    private var appContextSwitchClients: [BTAppContextSwitchClient.Type] = []
+
     // MARK: - Public Methods
     
     /// Determine whether the return URL can be handled.
@@ -35,11 +35,9 @@ import UIKit
     /// - Returns: `true` when the SDK has handled the URL successfully
     @objc(handleOpenURL:)
     @discardableResult public func handleOpen(_ url: URL) -> Bool {
-        for appContextSwitchClient in appContextSwitchClients {
-            if appContextSwitchClient.canHandleReturnURL(url) {
-                appContextSwitchClient.handleReturnURL(url)
-                return true
-            }
+        for appContextSwitchClient in appContextSwitchClients where appContextSwitchClient.canHandleReturnURL(url) {
+            appContextSwitchClient.handleReturnURL(url)
+            return true
         }
         return false
     }
