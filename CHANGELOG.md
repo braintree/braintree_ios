@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Prevent duplicate outbound `v1/configuration` requests
+
 ## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)
   * Add error when using an invalid authorization type
