@@ -4,8 +4,9 @@
 
 # Paths to include in lint
 included:
-  - Sources/BraintreeCore
+  - Sources/BraintreeAmericanExpress
   - Sources/BraintreeApplePay
+  - Sources/BraintreeCore
 
 excluded:
   - Sources/BraintreeCore/BTAPIPinnedCertificates.swift

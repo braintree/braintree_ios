@@ -100,7 +100,7 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        configurationLoader.getConfig(authorization) { [weak self] configuration, error in
+        configurationLoader.getConfig { [weak self] configuration, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -117,7 +117,7 @@ import Foundation
     }
     
     func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig(authorization)
+        try await configurationLoader.getConfig()
     }
 
     /// Fetches a customer's vaulted payment method nonces.
