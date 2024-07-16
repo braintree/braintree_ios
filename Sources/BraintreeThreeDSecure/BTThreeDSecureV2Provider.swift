@@ -135,8 +135,7 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
 
             if validateResponse.actionCode == .timeout {
                 errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
-                completionHandler(nil, NSError(domain: timeoutUserInfo.description, code: errorCode, userInfo: timeoutUserInfo)
-                )
+                completionHandler(nil, NSError(domain: timeoutUserInfo.description, code: errorCode, userInfo: timeoutUserInfo))
             }
         case .cancel:
             completionHandler(nil, BTThreeDSecureError.canceled)
