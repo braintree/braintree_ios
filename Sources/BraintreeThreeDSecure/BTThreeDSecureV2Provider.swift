@@ -14,6 +14,7 @@ class BTThreeDSecureV2Provider {
 
     var lookupResult: BTThreeDSecureResult? = nil
     var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
+    var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
     // MARK: - Initializer
 
@@ -121,21 +122,22 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 forResult: lookupResult,
                 completion: completionHandler
             )
-        case .error, .timeout:
-            var userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
-            var errorCode: Int = BTThreeDSecureError.unknown.errorCode
+        case .error:
+            let errorUserInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
 
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
-                completionHandler(nil, BTThreeDSecureError.failedAuthentication(""))
-            } else if validateResponse.actionCode == .timeout {
-                errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
-                userInfo = [NSLocalizedDescriptionKey: BTThreeDSecureError.exceededTimeoutLimit.localizedDescription]
-                completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
-            } else {
-                completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
+                completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+        case .timeout:
+            let timeoutUserInfo = [NSLocalizedDescriptionKey: BTThreeDSecureError.exceededTimeoutLimit.localizedDescription]
+
+            if validateResponse.actionCode == .timeout {
+                errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
+                completionHandler(nil, NSError(domain: timeoutUserInfo.description, code: errorCode, userInfo: timeoutUserInfo)
+                )
+            }
         case .cancel:
             completionHandler(nil, BTThreeDSecureError.canceled)
         default:
