@@ -1,7 +1,7 @@
 import Foundation
 
 /// :nodoc: This class is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-///A helper class for converting URL queries to and from dictionaries
+/// A helper class for converting URL queries to and from dictionaries
 @_documentation(visibility: private)
 @objc public class BTURLUtils: NSObject {
 
@@ -25,9 +25,14 @@ import Foundation
                 }
             } else if let dictValue = value as? [String: String] {
                 for (subKey, subValue) in dictValue {
-                    queryString = queryString.appendingFormat("%@%%5B%@%%5D=%@&", encodedKey, encode(subKey.description), encode(subValue.description))
+                    queryString = queryString.appendingFormat(
+                        "%@%%5B%@%%5D=%@&",
+                        encodedKey,
+                        encode(subKey.description),
+                        encode(subValue.description)
+                    )
                 }
-            } else if let _ = value as? NSNull {
+            } else if value as? NSNull != nil {
                 queryString = queryString.appendingFormat("%@=&", encodedKey)
             } else {
                 queryString = queryString.appendingFormat("%@=%@&", encodedKey, encode(String(describing: value).description))

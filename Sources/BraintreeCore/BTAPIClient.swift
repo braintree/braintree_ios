@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -46,7 +47,7 @@ import Foundation
         switch authorizationType {
         case .tokenizationKey:
             do {
-                self.authorization =  try TokenizationKey(authorization)
+                self.authorization = try TokenizationKey(authorization)
             } catch {
                 return nil
             }
@@ -68,7 +69,7 @@ import Foundation
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { configuration, error in
+        fetchOrReturnRemoteConfiguration { _, _ in
             // No-op
         }
     }
@@ -99,7 +100,7 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        configurationLoader.getConfig(authorization) { [weak self] configuration, error in
+        configurationLoader.getConfig { [weak self] configuration, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
@@ -116,7 +117,7 @@ import Foundation
     }
     
     func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig(authorization)
+        try await configurationLoader.getConfig()
     }
 
     /// Fetches a customer's vaulted payment method nonces.
@@ -148,7 +149,7 @@ import Foundation
             "session_id": metadata.sessionID
         ]
 
-        get("v1/payment_methods", parameters: parameters) { body, response, error in
+        get("v1/payment_methods", parameters: parameters) { body, _, error in
             if let error {
                 completion(nil, error)
                 return
@@ -158,7 +159,10 @@ import Foundation
 
             body?["paymentMethods"].asArray()?.forEach { paymentInfo in
                 let type: String? = paymentInfo["type"].asString()
-                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(paymentInfo, withParsingBlockForType: type)
+                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(
+                    paymentInfo,
+                    withParsingBlockForType: type
+                )
 
                 if let paymentMethodNonce {
                     paymentMethodNonces.append(paymentMethodNonce)
@@ -269,7 +273,13 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, headers: headers, completion: completion)
+            http(for: httpType)?.post(
+                path,
+                configuration: configuration,
+                parameters: postParameters,
+                headers: headers,
+                completion: completion
+            )
         }
     }
     
@@ -339,7 +349,11 @@ import Foundation
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
 
-        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(in: authorization, options: [], range: NSRange(location: 0, length: authorization.count))
+        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
+            in: authorization,
+            options: [],
+            range: NSRange(location: 0, length: authorization.count)
+        )
 
         return tokenizationKeyMatch != nil ? .tokenizationKey : .clientToken
     }

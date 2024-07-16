@@ -37,6 +37,7 @@ public enum BTClientTokenError: Error, CustomNSError, LocalizedError, Equatable 
         }
     }
     
+    // swiftlint:disable line_length
     public var errorDescription: String? {
         switch self {
         case .invalidAuthorizationFingerprint:
@@ -51,4 +52,5 @@ public enum BTClientTokenError: Error, CustomNSError, LocalizedError, Equatable 
             return "Failed to decode client token. \(description)"
         }
     }
+    // swiftlint:enable line_length
 }

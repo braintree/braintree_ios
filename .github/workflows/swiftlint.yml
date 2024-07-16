@@ -1,0 +1,18 @@
+name: Lint
+on: [pull_request]
+concurrency:
+  group: lint-${{ github.event.number }}
+  cancel-in-progress: true
+jobs:
+  swiftlint:
+    name: SwiftLint
+    runs-on: macOS-14-xlarge
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Use Xcode 15.0.1
+        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Install SwiftLint
+        run: brew install swiftlint
+      - name: Run SwiftLint
+        run: swiftlint --strict

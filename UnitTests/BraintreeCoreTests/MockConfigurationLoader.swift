@@ -12,7 +12,7 @@ class MockConfigurationLoader: ConfigurationLoader {
         super.init(http: http)
     }
     
-    override func getConfig(_ authorization: ClientAuthorization, completion: @escaping (BTConfiguration?, Error?) -> Void) {
+    override func getConfig(completion: @escaping (BTConfiguration?, Error?) -> Void) {
         if let error = mockError {
             completion(nil, error)
         } else {
@@ -20,7 +20,7 @@ class MockConfigurationLoader: ConfigurationLoader {
         }
     }
     
-    override func getConfig(_ authorization: ClientAuthorization) async throws -> BTConfiguration {
+    override func getConfig() async throws -> BTConfiguration {
         if let error = mockError {
             throw error
         } else if let config = mockConfig {
