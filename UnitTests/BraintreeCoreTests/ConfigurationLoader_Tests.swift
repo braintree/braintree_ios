@@ -131,4 +131,13 @@ class ConfigurationLoader_Tests: XCTestCase {
             XCTAssertEqual(error as NSError, mockError)
         }
     }
+    
+    func testGetConfig_whenCalledInQuickSequence_onlySendsOneNetworkRequest() {
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
+        sut.getConfig() { _, _ in }
+
+        XCTAssertEqual(mockHTTP.GETRequestCount, 1)
+    }
 }
