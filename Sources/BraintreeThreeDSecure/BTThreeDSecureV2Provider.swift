@@ -14,7 +14,6 @@ class BTThreeDSecureV2Provider {
 
     var lookupResult: BTThreeDSecureResult? = nil
     var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
-    var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
     // MARK: - Initializer
 
@@ -124,20 +123,15 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
             )
         case .error:
             let errorUserInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
+            var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
-                completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
         case .timeout:
-            let timeoutUserInfo = [NSLocalizedDescriptionKey: BTThreeDSecureError.exceededTimeoutLimit.localizedDescription]
-
-            if validateResponse.actionCode == .timeout {
-                errorCode = BTThreeDSecureError.exceededTimeoutLimit.errorCode
-                completionHandler(nil, NSError(domain: timeoutUserInfo.description, code: errorCode, userInfo: timeoutUserInfo)
-                )
-            }
+            completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
         case .cancel:
             completionHandler(nil, BTThreeDSecureError.canceled)
         default:
