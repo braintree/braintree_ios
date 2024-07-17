@@ -1399,6 +1399,7 @@
 			children = (
 				80F4F4D529F8A628003EACB1 /* Analytics */,
 				80B207342BF6D3B000787E37 /* Authorization */,
+				80482BD82C484ADC00C71D03 /* Configuration */,
 				BEBC6E5D2927CF59004E25A0 /* Braintree.h */,
 				570B93AF2853980C0041BAFE /* BTAPIClient.swift */,
 				BE24C66D28E49A730067B11A /* BTAPIClientError.swift */,
@@ -1413,9 +1414,6 @@
 				574891EC286F7ECA0020DA36 /* BTClientMetadata.swift */,
 				574891EA286F7E4F0020DA36 /* BTClientMetadataIntegration.swift */,
 				574891E8286F7D300020DA36 /* BTClientMetadataSource.swift */,
-				BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */,
-				BE5C8C0228A2C183004F9130 /* BTConfiguration+Core.swift */,
-				804DC45C2B2D08FF00F17A15 /* BTConfigurationRequest.swift */,
 				BE698EA328AD2C10001D9B10 /* BTCoreConstants.swift */,
 				BC17F9BD28D25054004B18CC /* BTGraphQLErrorNode.swift */,
 				BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */,
@@ -1434,9 +1432,6 @@
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
 				BEBD05212A1FE8BE0003C15C /* BTWebAuthenticationSession.swift */,
 				BEB9BF522A26872B00A3673E /* BTWebAuthenticationSessionClient.swift */,
-				BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */,
-				807296032C41B63F0093F2AB /* ConfigurationCallbackStorage.swift */,
-				45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */,
 				80D280CC2BE9354B00762D27 /* Date+MillisecondTimestamp.swift */,
 				80F86FEF29FC2ED6003297FF /* Encodable+Dictionary.swift */,
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
@@ -1503,6 +1498,30 @@
 				804698482B27C71C0090878E /* Info.plist */,
 			);
 			path = BraintreeShopperInsightsTests;
+			sourceTree = "<group>";
+		};
+		80482BD82C484ADC00C71D03 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				BE2F98CF28A2BCCD008EF189 /* BTConfiguration.swift */,
+				BE5C8C0228A2C183004F9130 /* BTConfiguration+Core.swift */,
+				804DC45C2B2D08FF00F17A15 /* BTConfigurationRequest.swift */,
+				BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */,
+				807296032C41B63F0093F2AB /* ConfigurationCallbackStorage.swift */,
+				45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		80482BD92C484D6F00C71D03 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */,
+				BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */,
+				458570772C34A699009CEF7A /* ConfigurationLoader_Tests.swift */,
+				4585707B2C34B7B5009CEF7A /* MockConfigurationLoader.swift */,
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		8053F05529FAB6FF0076F988 /* Analytics */ = {
@@ -1970,11 +1989,11 @@
 			children = (
 				8053F05529FAB6FF0076F988 /* Analytics */,
 				800BB3EF2BFCAC1100F30CE8 /* Authorization */,
+				80482BD92C484D6F00C71D03 /* Configuration */,
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
 				BEBC6F252937A510004E25A0 /* BTClientMetadata_Tests.swift */,
-				A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */,
 				BEBC6F272937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift */,
 				BE54C0322912B68E009C6CEE /* BTHTTP_Tests.swift */,
 				16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */,
@@ -1982,15 +2001,12 @@
 				805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */,
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
-				BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */,
-				458570772C34A699009CEF7A /* ConfigurationLoader_Tests.swift */,
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
 				45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */,
 				45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */,
 				458570792C34B1E1009CEF7A /* MockClientAuthorization.swift */,
-				4585707B2C34B7B5009CEF7A /* MockConfigurationLoader.swift */,
 			);
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
