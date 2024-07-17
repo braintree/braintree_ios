@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
+* Prevent duplicate outbound `v1/configuration` requests
 
 ## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)

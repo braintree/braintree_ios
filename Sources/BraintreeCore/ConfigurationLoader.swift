@@ -7,6 +7,7 @@ class ConfigurationLoader {
     private let configPath = "v1/configuration"
     private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
+    private let pendingCompletions = ConfigurationCallbackStorage()
     
     // MARK: - Intitializer
     
@@ -39,26 +40,32 @@ class ConfigurationLoader {
             completion(cachedConfig, nil)
             return
         }
-
-        http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
-            guard let self else {
-                completion(nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, error)
-                return
-            } else if response?.statusCode != 200 || body == nil {
-                completion(nil, BTAPIClientError.configurationUnavailable)
-                return
-            } else {
-                let configuration = BTConfiguration(json: body)
-
-                try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
+        
+        pendingCompletions.add(completion)
+        
+        // If this is the 1st `v1/config` GET attempt, proceed with firing the network request.
+        // Otherwise, there is already a pending network request.
+        if pendingCompletions.count == 1 {
+            http.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+                guard let self else {
+                    self?.notifyCompletions(nil, BTAPIClientError.deallocated)
+                    return
+                }
                 
-                completion(configuration, nil)
-                return
+                if let error {
+                    notifyCompletions(nil, error)
+                    return
+                } else if response?.statusCode != 200 || body == nil {
+                    notifyCompletions(nil, BTAPIClientError.configurationUnavailable)
+                    return
+                } else {
+                    let configuration = BTConfiguration(json: body)
+                    
+                    try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
+                    
+                    notifyCompletions(configuration, nil)
+                    return
+                }
             }
         }
     }
@@ -73,5 +80,11 @@ class ConfigurationLoader {
                 }
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    func notifyCompletions(_ configuration: BTConfiguration?, _ error: Error?) {
+        pendingCompletions.invoke(configuration, error)
     }
 }

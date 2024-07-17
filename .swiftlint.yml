@@ -4,6 +4,8 @@
 
 # Paths to include in lint
 included:
+  - Sources/BraintreeAmericanExpress
+  - Sources/BraintreeApplePay
   - Sources/BraintreeCore
 
 excluded:
