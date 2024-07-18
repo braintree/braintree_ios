@@ -3,7 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Add PayPal edit funding instrument flow (BETA)
-    * Add `BTPayPalEditRequest` for edit FI flow
+    * Add `BTPayPalVaultEditRequest` for edit FI flow
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditResult`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
   
