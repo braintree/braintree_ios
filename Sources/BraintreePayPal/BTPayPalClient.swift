@@ -61,7 +61,7 @@ import BraintreeDataCollector
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
     
-    /// Used for analytics purposes, to determine if an end event (success, cancel, fail) is associated with a pre-cached, or remotely fetched `BTConfiguration`
+    /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
