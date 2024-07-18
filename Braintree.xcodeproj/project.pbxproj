@@ -228,7 +228,7 @@
 		BE139DB928EF12CF0044CD8C /* CardinalMobile.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */; };
 		BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */; };
 		BE1ACEF72938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */; };
-		BE223AD22C4956FD00B7C8E7 /* BTPayPalEditResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE223AD12C4956FD00B7C8E7 /* BTPayPalEditResult.swift */; };
+		BE223AD22C4956FD00B7C8E7 /* BTPayPalVaultEditResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE223AD12C4956FD00B7C8E7 /* BTPayPalVaultEditResult.swift */; };
 		BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C66D28E49A730067B11A /* BTAPIClientError.swift */; };
 		BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */; };
 		BE24C67528E7491E0067B11A /* ClientAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE24C67428E7491E0067B11A /* ClientAuthorization.swift */; };
@@ -961,7 +961,7 @@
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
 		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:H7M4G5NDNU:CardinalCommerce Corp"; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
-		BE223AD12C4956FD00B7C8E7 /* BTPayPalEditResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalEditResult.swift; sourceTree = "<group>"; };
+		BE223AD12C4956FD00B7C8E7 /* BTPayPalVaultEditResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalVaultEditResult.swift; sourceTree = "<group>"; };
 		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:H7M4G5NDNU:CardinalCommerce Corp"; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE24C66D28E49A730067B11A /* BTAPIClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientError.swift; sourceTree = "<group>"; };
 		BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientHTTPType.swift; sourceTree = "<group>"; };
@@ -1378,7 +1378,6 @@
 				57544F5929524E4D00DEB7B0 /* BTPayPalClient.swift */,
 				5754481F294A2EBE00DEB7B0 /* BTPayPalCreditFinancing.swift */,
 				5754481D294A2A1D00DEB7B0 /* BTPayPalCreditFinancingAmount.swift */,
-				BE223AD12C4956FD00B7C8E7 /* BTPayPalEditResult.swift */,
 				57544F5D295258AC00DEB7B0 /* BTPayPalError.swift */,
 				BEF5D2E5294A18B300FFD56D /* BTPayPalLineItem.swift */,
 				57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */,
@@ -1386,6 +1385,7 @@
 				BE6BC22D2BA9CFFC00C3E321 /* BTPayPalReturnURL.swift */,
 				BE6BC22B2BA9C67600C3E321 /* BTPayPalVaultBaseRequest.swift */,
 				3B5CD9AF2C3C3FCC002EE8F7 /* BTPayPalVaultEditRequest.swift */,
+				BE223AD12C4956FD00B7C8E7 /* BTPayPalVaultEditResult.swift */,
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
 				62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */,
 			);
@@ -3205,7 +3205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57544822294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift in Sources */,
-				BE223AD22C4956FD00B7C8E7 /* BTPayPalEditResult.swift in Sources */,
+				BE223AD22C4956FD00B7C8E7 /* BTPayPalVaultEditResult.swift in Sources */,
 				57544F5E295258AC00DEB7B0 /* BTPayPalError.swift in Sources */,
 				BEF5D2E6294A18B300FFD56D /* BTPayPalLineItem.swift in Sources */,
 				BE349113294B798300D2CF68 /* BTPayPalRequest.swift in Sources */,
