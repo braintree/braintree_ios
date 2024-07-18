@@ -40,6 +40,7 @@ class ConfigurationCache {
         
         let timeInCache = Date().timeIntervalSince1970 - cachedConfig.time
         if timeInCache < (timeToLiveMinutes * 60) {
+            cachedConfig.isFromCache = true
             return cachedConfig
         } else {
             cacheInstance.removeObject(forKey: cacheKey)

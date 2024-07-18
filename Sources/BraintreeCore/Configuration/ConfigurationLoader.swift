@@ -61,7 +61,6 @@ class ConfigurationLoader {
                 } else {
                     let configuration = BTConfiguration(json: body)
                     
-                    configuration.isFromCache = true
                     try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
                     
                     notifyCompletions(configuration, nil)
