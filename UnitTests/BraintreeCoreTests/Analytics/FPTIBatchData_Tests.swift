@@ -23,6 +23,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             endTime: 111222333444555,
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1", 
+            isConfigFromCache: false,
             isVaultRequest: false,
             linkType: "universal",
             payPalContextID: "fake-order-id",
@@ -37,6 +38,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             endTime: nil,
             errorDescription: nil,
             eventName: "fake-event-2", 
+            isConfigFromCache: true,
             isVaultRequest: true,
             linkType: nil,
             payPalContextID: "fake-order-id-2",
@@ -107,6 +109,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["correlation_id"])
         XCTAssertEqual(eventParams[0]["is_vault"] as? Bool, false)
         XCTAssertEqual(eventParams[1]["is_vault"] as? Bool, true)
+        XCTAssertEqual(eventParams[0]["remote_config"] as? Bool, false)
+        XCTAssertEqual(eventParams[1]["remote_config"] as? Bool, true)
         XCTAssertEqual(eventParams[0]["endpoint"] as? String, "/v1/paypal_hermes/setup_billing_agreement")
         XCTAssertNil(eventParams[1]["endpoint"])
         XCTAssertEqual(eventParams[0]["end_time"] as? Int, 111222333444555)

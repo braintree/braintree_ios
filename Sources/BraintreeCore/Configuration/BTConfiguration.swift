@@ -15,6 +15,9 @@ import Foundation
         json?["environment"].asString()
     }
     
+    /// :nodoc: If this instance has lived in the local `ConfigurationCache`. False if fetched directly from network.
+    public var isFromCache = false
+    
     /// The Braintree GW URL to use for REST requests
     var clientAPIURL: URL? {
         json?["clientApiUrl"].asURL()
@@ -33,7 +36,7 @@ import Foundation
     /// :nodoc: Timestamp of initialization of each `BTConfiguration` instance
     /// Mutable for testing.
     var time = Date().timeIntervalSince1970
-
+    
     /// :nodoc: This initalizer is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///  Used to initialize a `BTConfiguration`
     /// - Parameter json: The `BTJSON` to initialize with

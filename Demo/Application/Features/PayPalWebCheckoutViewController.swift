@@ -97,16 +97,25 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.lineItems = [lineItem]        
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
-
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
+        
+        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
+            guard let clientToken else {
+                self.progressBlock("Error fetching Client Token")
                 return
             }
-
-            self.completionBlock(nonce)
+            
+            let freshAPIClient = BTAPIClient(authorization: clientToken)!
+            let newPayPalClient = BTPayPalClient(apiClient: freshAPIClient)
+            newPayPalClient.tokenize(request) { nonce, error in
+                sender.isEnabled = true
+                
+                guard let nonce else {
+                    self.progressBlock(error?.localizedDescription)
+                    return
+                }
+                
+                self.completionBlock(nonce)
+            }
         }
     }
     
