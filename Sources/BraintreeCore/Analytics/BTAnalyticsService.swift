@@ -29,10 +29,12 @@ class BTAnalyticsService: Equatable {
     // MARK: - Initializer
 
     init(apiClient: BTAPIClient) {
+        print("⏰ BTAnalyticsService init")
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
         Self.timer.eventHandler = { [weak self] in
+            print("⏰ Timer handler called")
             guard let self else { return }
             Task {
                 await self.sendQueuedAnalyticsEvents()
@@ -44,6 +46,7 @@ class BTAnalyticsService: Equatable {
     // MARK: - Deinit
 
     deinit {
+        print("⏰ BTAnalyticsService deinit")
         Self.timer.suspend()
     }
 
