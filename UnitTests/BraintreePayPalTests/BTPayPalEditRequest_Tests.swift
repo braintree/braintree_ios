@@ -9,8 +9,8 @@ class BTPayPalEditRequest_Tests: XCTestCase {
     }
 
     func test_returnsAllParams() {
-        let expectedToken = "test-token"
-        let editRequest = BTPayPalEditRequest(token: expectedToken)
+        let expectedEncryptedBillingAgreementID = "test-encryped-billing-agreement-id"
+        let editRequest = BTPayPalVaultEditRequest(encryptedBillingAgreementID: expectedEncryptedBillingAgreementID)
 
         // TODO: implement checking expected params returned
     }

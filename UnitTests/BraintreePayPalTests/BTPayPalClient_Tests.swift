@@ -127,19 +127,19 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testTokenizePayPalEditRequest_whenResponseIsSuccessful_returnsPayPalAccountNonce() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+        let editRequest = BTPayPalVaultEditRequest(encryptedBillingAgreementID: "test-token")
 
-        // TODO: implement test to return PayPalAccountNonce
+        // TODO: implement test to return BTPayPalVaultEditResult
     }
 
     func testTokenizePayPalEditRequest_whenResponseIsError_returnsError() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+        let editRequest = BTPayPalVaultEditRequest(encryptedBillingAgreementID: "test-token")
 
         // TODO: implement test to return Error
     }
 
     func testTokenizePayPalEditRequest_whenUserCancels_returnsError() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+        let editRequest = BTPayPalVaultEditRequest(encryptedBillingAgreementID: "test-token")
 
         // TODO: implement test to return Error
     }
