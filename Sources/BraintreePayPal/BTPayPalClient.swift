@@ -452,6 +452,7 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID
@@ -491,7 +492,6 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
             correlationID: clientMetadataID,
-            isConfigFromCache: isConfigFromCache,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
@@ -504,7 +504,6 @@ import BraintreeDataCollector
             BTPayPalAnalytics.tokenizeFailed,
             correlationID: clientMetadataID,
             errorDescription: error.localizedDescription,
-            isConfigFromCache: isConfigFromCache,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
@@ -516,7 +515,6 @@ import BraintreeDataCollector
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
             correlationID: clientMetadataID,
-            isConfigFromCache: isConfigFromCache,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
