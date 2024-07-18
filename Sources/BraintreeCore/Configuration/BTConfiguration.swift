@@ -15,7 +15,7 @@ import Foundation
         json?["environment"].asString()
     }
     
-    /// :nodoc: True if this instance has lived in the in-memory `ConfigurationCache`. False if fetched directly from network.
+    /// :nodoc: True if this instance is from in-memory `ConfigurationCache`. False if fetched directly from network.
     public var isFromCache = false
     
     /// The Braintree GW URL to use for REST requests

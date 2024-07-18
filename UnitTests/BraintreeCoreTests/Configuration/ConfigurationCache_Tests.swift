@@ -38,7 +38,11 @@ class ConfigurationCache_Tests: XCTestCase {
         fakeConfiguration.time = Date().timeIntervalSince1970 - 299 // 4 minutes, and 59 second ago
         sut.cacheInstance.setObject(fakeConfiguration, forKey: base64EndodedCat)
 
-        let cachedItem = try sut.getFromCache(authorization: "cat")
-        XCTAssertEqual(cachedItem, fakeConfiguration)
+        if let cachedItem = try sut.getFromCache(authorization: "cat") {
+            XCTAssertEqual(cachedItem, fakeConfiguration)
+            XCTAssertTrue(cachedItem.isFromCache)
+        } else {
+            XCTFail("Expected non-nil cache item")
+        }
     }
 }
