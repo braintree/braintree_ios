@@ -779,6 +779,12 @@ final class BTHTTP_Tests: XCTestCase {
         XCTAssertNotNil(mockDelegate.receivedStartTime)
         XCTAssertNotNil(mockDelegate.receivedEndTime)
     }
+    
+    func testURLSessionConfiguration_hasCustomTimeoutSettings() {
+        let sut = BTHTTP(authorization: fakeTokenizationKey)
+        XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
+        XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
+    }
 
     // MARK: - Helper Methods
 
