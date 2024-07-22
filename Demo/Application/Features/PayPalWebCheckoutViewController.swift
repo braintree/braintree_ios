@@ -159,7 +159,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 oneTimeFeeAmount: "5.99",
                 shippingAmount: "1.99",
                 productAmount: "9.99",
-                taxAmount: "0.59"
+                taxAmount: "0.59", 
+                totalAmount: "35.99"
             )
             
             request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
