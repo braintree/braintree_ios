@@ -27,10 +27,6 @@ public class MockAPIClient: BTAPIClient {
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
 
-    override init?(authorization: String, sendAnalyticsEvent: Bool = false) {
-        super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
-    }
-
     public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = try? parameters?.toDictionary()
@@ -71,6 +67,13 @@ public class MockAPIClient: BTAPIClient {
             return
         }
         completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
+    }
+    
+    public override func fetchConfiguration() async throws -> BTConfiguration {
+        guard let responseBody = cannedConfigurationResponseBody else {
+            throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
+        }
+        return BTConfiguration(json: responseBody)
     }
 
     public override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {

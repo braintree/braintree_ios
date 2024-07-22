@@ -4,8 +4,10 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
 
+    // swiftlint:disable force_unwrapping
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api.paypal.com")!
+    // swiftlint:enable force_unwrapping
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
@@ -131,7 +133,11 @@ class BTAnalyticsService: Equatable {
         if await !BTAnalyticsService.events.isEmpty {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
-                let postParameters = await createAnalyticsEvent(config: configuration, sessionID: apiClient.metadata.sessionID, events: Self.events.allValues)
+                let postParameters = await createAnalyticsEvent(
+                    config: configuration,
+                    sessionID: apiClient.metadata.sessionID,
+                    events: Self.events.allValues
+                )
                 http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
                 await Self.events.removeAll()
             } catch {

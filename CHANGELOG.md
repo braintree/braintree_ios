@@ -1,12 +1,23 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Prevent duplicate outbound `v1/configuration` requests
+* BraintreeThreeDSecure
+  * Add error code and error message for `exceededTimeoutLimit`  
 * BraintreePayPal
   * Add PayPal edit funding instrument flow (BETA)
     * Add `BTPayPalVaultEditRequest` for edit FI flow
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditResult`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
-  
+
+## 6.23.0 (2024-07-15)
+* BraintreeShopperInsights (BETA)
+  * Add error when using an invalid authorization type
+* BraintreeCore
+  * Update `URLOpener.openURL(_:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
+* BraintreeThreeDSecure
+  * Fix bug to conditionally unwrap `customFields` - this caused an error when this value was not set on `BTThreeDSecureRequest`
+
 ## 6.22.0 (2024-07-02)
 * BraintreeThreeDSecure
   * Add `customFields` param to `BTThreeDSecureRequest`

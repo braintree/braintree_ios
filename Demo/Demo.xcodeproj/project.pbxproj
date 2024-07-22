@@ -992,6 +992,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
@@ -1015,6 +1016,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";

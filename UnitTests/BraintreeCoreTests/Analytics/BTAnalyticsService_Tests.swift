@@ -48,7 +48,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
     // MARK: - Helper Functions
 
     func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
-        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)
+        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")
 
         if analyticsURL != nil {
             stubAPIClient?.cannedConfigurationResponseBody = BTJSON(

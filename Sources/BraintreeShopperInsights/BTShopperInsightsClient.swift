@@ -34,12 +34,16 @@ public class BTShopperInsightsClient {
     ///         Venmo recommendation is only available for US merchants.
     public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
-        
+
+        if apiClient.authorization.type != .clientToken {
+            throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization)
+        }
+
         let postParameters = BTEligiblePaymentsRequest(
             email: request.email,
             phone: request.phone
         )
-        
+
         do {
             let (json, _) = try await apiClient.post(
                 "/v2/payments/find-eligible-methods",

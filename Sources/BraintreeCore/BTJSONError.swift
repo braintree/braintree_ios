@@ -19,9 +19,9 @@ public enum BTJSONError: Error, CustomNSError, LocalizedError, Equatable {
         switch self {
         case .jsonSerializationFailure:
             return 0
-        case .indexInvalid(_):
+        case .indexInvalid:
             return 1
-        case .keyInvalid(_):
+        case .keyInvalid:
             return 2
         }
     }
