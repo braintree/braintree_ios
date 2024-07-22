@@ -12,7 +12,7 @@ public struct BTPayPalRecurringBillingDetails {
     private let productQuantity: Int?
     private let oneTimeFeeAmount: String?
     private let shippingAmount: String?
-    private let productAmount: String?
+    private let productPrice: String?
     private let taxAmount: String?
     private let totalAmount: String?
     
@@ -27,7 +27,7 @@ public struct BTPayPalRecurringBillingDetails {
     ///   - productQuantity: Quantity associated with the product.
     ///   - oneTimeFeeAmount: Price and currency for any one-time charges due at plan signup.
     ///   - shippingAmount: The shipping amount for the billing cycle at the time of checkout.
-    ///   - productAmount: The item price for the product associated with the billing cycle at the time of checkout.
+    ///   - productPrice: The item price for the product associated with the billing cycle at the time of checkout.
     ///   - taxAmount: The taxes for the billing cycle at the time of checkout.
     ///   - totalAmount: The total amount associated with the billing cycle at the time of checkout.
     public init(
@@ -38,7 +38,7 @@ public struct BTPayPalRecurringBillingDetails {
         productQuantity: Int?,
         oneTimeFeeAmount: String?,
         shippingAmount: String?,
-        productAmount: String?,
+        productPrice: String?,
         taxAmount: String?,
         totalAmount: String
     ) {
@@ -49,7 +49,7 @@ public struct BTPayPalRecurringBillingDetails {
         self.productQuantity = productQuantity
         self.oneTimeFeeAmount = oneTimeFeeAmount
         self.shippingAmount = shippingAmount
-        self.productAmount = productAmount
+        self.productPrice = productPrice
         self.taxAmount = taxAmount
         self.totalAmount = totalAmount
     }
@@ -82,8 +82,8 @@ public struct BTPayPalRecurringBillingDetails {
             parameters["shipping_amount"] = shippingAmount
         }
         
-        if let productAmount {
-            parameters["product_price"] = productAmount
+        if let productPrice {
+            parameters["product_price"] = productPrice
         }
         
         if let taxAmount {
