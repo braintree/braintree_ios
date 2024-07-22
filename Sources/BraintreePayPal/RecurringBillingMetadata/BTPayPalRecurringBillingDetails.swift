@@ -29,7 +29,7 @@ public struct BTPayPalRecurringBillingDetails {
     ///   - shippingAmount: The shipping amount for the billing cycle at the time of checkout.
     ///   - productAmount: The item price for the product associated with the billing cycle at the time of checkout.
     ///   - taxAmount: The taxes for the billing cycle at the time of checkout.
-    ///   - totalAmount: The total amount to pay at the time of checkout.
+    ///   - totalAmount: The total amount associated with the billing cycle at the time of checkout.
     public init(
         billingCycles: [BTPayPalBillingCycle],
         currencyISOCode: String,
@@ -40,7 +40,7 @@ public struct BTPayPalRecurringBillingDetails {
         shippingAmount: String?,
         productAmount: String?,
         taxAmount: String?,
-        totalAmount: String?
+        totalAmount: String
     ) {
         self.billingCycles = billingCycles
         self.currencyISOCode = currencyISOCode
