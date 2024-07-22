@@ -1,16 +1,17 @@
 import Foundation
 
-/// Options for the PayPal Edit FI flow
+/// Options for the PayPal edit funding instrument flow
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public class BTPayPalVaultEditRequest {
 
-    private let encryptedBillingAgreementID: String
+    private let editPayPalVaultID: String
 
-    /// Initializes a PayPal Edit Request for the Edit FI flow
-    /// - Parameters:
-    ///   - encryptedBillingAgreementID: Required: Used to initiate tokenize call to edit funding instrument in customer's PayPal account.
     //   TODO: specify endpoint for merchant to retrieve the token
-    public init(encryptedBillingAgreementID: String) {
-        self.encryptedBillingAgreementID = encryptedBillingAgreementID
+    /// Initializes a PayPal Edit Request for the edit funding instrument flow
+    /// - Parameters:
+    ///   - editPayPalVaultID: Required: The `edit_paypal_vault_id` returned from the server side request
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    public init(editPayPalVaultID: String) {
+        self.editPayPalVaultID = editPayPalVaultID
     }
 }

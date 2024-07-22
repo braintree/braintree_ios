@@ -196,7 +196,7 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: call API to get FI URL and return a BTPayPalNonce or Error
+        // TODO: call API to get FI URL and return a BTPayPalVaultEditResult or Error
         completion(nil, nil)
     }
 
