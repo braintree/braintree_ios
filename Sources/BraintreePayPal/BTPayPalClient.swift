@@ -183,39 +183,39 @@ import BraintreeDataCollector
         }
     }
 
-    /// Tokenize a PayPal request to be used with the Edit FI flow.
+    /// Allows a customer to edit their PayPal payment method.
     ///
-    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
     /// - Parameters:
-    ///   - request: A `BTPayPalEditRequest`
-    ///   - completion: This completion will be invoked exactly once when tokenization is complete or an error occurs.
+    ///   - request: A `BTPayPalVaultEditRequest`
+    ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-    public func tokenize(
-        _ request: BTPayPalEditRequest,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    public func edit(
+        _ request: BTPayPalVaultEditRequest,
+        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: call API to get FI URL and return a BTPayPalNonce or Error
+        // TODO: call API to get FI URL and return a BTPayPalVaultEditResult or Error
         completion(nil, nil)
     }
 
-    /// Tokenize a PayPal request to be used with the Edit FI flow.
+    /// Allows a customer to edit their PayPal payment method.
     ///
-    /// On success, you will receive an instance of `BTPayPalAccountNonce`; on failure or user cancelation you will receive an error.
+    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
-    /// - Parameter request: A `BTPayPalEditRequest`
-    /// - Returns: A `BTPayPalAccountNonce` if successful
+    /// - Parameter request: A `BTPayPalVaultEditRequest`
+    /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-    public func tokenize(_ request: BTPayPalEditRequest) async throws -> BTPayPalAccountNonce {
+    public func edit(_ request: BTPayPalVaultEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
-            tokenize(request) { nonce, error in
+            edit(request) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
-                } else if let nonce {
-                    continuation.resume(returning: nonce)
+                } else if let result {
+                    continuation.resume(returning: result)
                 }
             }
         }

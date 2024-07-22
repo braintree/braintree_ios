@@ -126,22 +126,28 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
-    func testTokenizePayPalEditRequest_whenResponseIsSuccessful_returnsPayPalAccountNonce() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+    func testEdit_whenResponseIsSuccessful_returnsPayPalVaultEditResult() {
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
 
-        // TODO: implement test to return PayPalAccountNonce
+        payPalClient.edit(editRequest) { editResult, error in
+            // TODO: implement test to return BTPayPalVaultEditResult
+        }
     }
 
-    func testTokenizePayPalEditRequest_whenResponseIsError_returnsError() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+    func testEdit_whenResponseIsError_returnsError() {
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
 
-        // TODO: implement test to return Error
+        payPalClient.edit(editRequest) { editResult, error in
+            // TODO: implement test to return error
+        }
     }
 
-    func testTokenizePayPalEditRequest_whenUserCancels_returnsError() {
-        let editRequest = BTPayPalEditRequest(token: "test-token")
+    func testEdit_whenUserCancels_returnsError() {
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
 
-        // TODO: implement test to return Error
+        payPalClient.edit(editRequest) { editResult, error in
+            // TODO: implement test to return error
+        }
     }
 
     // MARK: - PayPal approval URL to present in browser
