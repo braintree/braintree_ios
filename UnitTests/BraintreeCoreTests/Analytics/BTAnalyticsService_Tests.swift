@@ -6,6 +6,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     var currentTime: UInt64!
     var oneSecondLater: UInt64!
+    let fakeAuth = try! TokenizationKey("development_tokenization_key")
 
     override func setUp() {
         super.setUp()
@@ -14,21 +15,22 @@ final class BTAnalyticsService_Tests: XCTestCase {
     }
 
     func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let analyticsService = BTAnalyticsService(authorization: fakeAuth, metadata: BTClientMetadata())
         
         await analyticsService.performEventRequest("any.analytics.event")
         
-        XCTAssertEqual(analyticsService.http?.customBaseURL?.absoluteString, "https://api.paypal.com")
+        XCTAssertEqual(analyticsService.http.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
-        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let mockConfigLoader = MockConfigurationLoader(http: mockAnalyticsHTTP)
+        mockConfigLoader.mockConfig = BTConfiguration(json: BTJSON(value: ["merchantId": "a-fake-merchantID"]))
+        
+        let analyticsService = BTAnalyticsService(authorization: fakeAuth, metadata: BTClientMetadata())
         analyticsService.shouldBypassTimerQueue = true
-
         analyticsService.http = mockAnalyticsHTTP
+        analyticsService.configurationLoader = mockConfigLoader
         
         await analyticsService.performEventRequest("any.analytics.event")
         
@@ -46,23 +48,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
     }
 
     // MARK: - Helper Functions
-
-    func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
-        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")
-
-        if analyticsURL != nil {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(
-                value: [
-                    "analytics": ["url": analyticsURL],
-                    "merchantId": "a-fake-merchantID"
-                ]
-            )
-        } else {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
-        }
-
-        return stubAPIClient!
-    }
 
     func validateMetadataParameters(_ postParameters: [String: Any]?) {
         let topLevelEvent = postParameters?["events"] as? [[String: Any]]

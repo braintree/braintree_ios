@@ -3,7 +3,7 @@ import Foundation
 
 class MockConfigurationLoader: ConfigurationLoader {
     
-    private let mockConfig: BTConfiguration?
+    var mockConfig: BTConfiguration?
     private let mockError: Error?
     
     init(http: BTHTTP, mockConfig: BTConfiguration? = nil, mockError: Error? = nil) {

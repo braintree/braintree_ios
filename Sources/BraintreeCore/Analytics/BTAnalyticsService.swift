@@ -13,6 +13,9 @@ class BTAnalyticsService {
     var http: BTHTTP
 
     /// Exposed for testing only
+    var configurationLoader: ConfigurationLoader
+    
+    /// Exposed for testing only
     var shouldBypassTimerQueue = false
 
     // MARK: - Private Properties
@@ -25,7 +28,6 @@ class BTAnalyticsService {
     private static let timer = RepeatingTimer(timeInterval: timeInterval)
     
     private let authorization: ClientAuthorization
-    private let configurationLoader: ConfigurationLoader
     private let metadata: BTClientMetadata
     
     // MARK: - Initializer
