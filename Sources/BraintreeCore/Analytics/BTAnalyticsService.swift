@@ -1,6 +1,6 @@
 import Foundation
 
-class BTAnalyticsService: Equatable {
+class BTAnalyticsService {
 
     // MARK: - Internal Properties
 
@@ -10,7 +10,7 @@ class BTAnalyticsService: Equatable {
     // swiftlint:enable force_unwrapping
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
-    var http: BTHTTP?
+    var http: BTHTTP
 
     /// Exposed for testing only
     var shouldBypassTimerQueue = false
@@ -23,14 +23,18 @@ class BTAnalyticsService: Equatable {
     private static let timeInterval = 15
     
     private static let timer = RepeatingTimer(timeInterval: timeInterval)
-
-    private let apiClient: BTAPIClient
+    
+    private let authorization: ClientAuthorization
+    private let configurationLoader: ConfigurationLoader
+    private let metadata: BTClientMetadata
     
     // MARK: - Initializer
-
-    init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
-        self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
+    
+    init(authorization: ClientAuthorization, metadata: BTClientMetadata) {
+        self.authorization = authorization
+        self.http = BTHTTP(authorization: authorization, customBaseURL: Self.url)
+        self.configurationLoader = ConfigurationLoader(http: self.http)
+        self.metadata = metadata
         
         Self.timer.eventHandler = { [weak self] in
             guard let self else { return }
@@ -132,13 +136,13 @@ class BTAnalyticsService: Equatable {
     func sendQueuedAnalyticsEvents() async {
         if await !BTAnalyticsService.events.isEmpty {
             do {
-                let configuration = try await apiClient.fetchConfiguration()
+                let configuration = try await configurationLoader.getConfig()
                 let postParameters = await createAnalyticsEvent(
                     config: configuration,
-                    sessionID: apiClient.metadata.sessionID,
+                    sessionID: metadata.sessionID,
                     events: Self.events.allValues
                 )
-                http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+                http.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
                 await Self.events.removeAll()
             } catch {
                 return
@@ -149,20 +153,14 @@ class BTAnalyticsService: Equatable {
     /// Constructs POST params to be sent to FPTI
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: apiClient.authorization.type == .clientToken ? apiClient.authorization.bearer : nil,
+            authorizationFingerprint: authorization.type == .clientToken ? authorization.bearer : nil,
             environment: config.fptiEnvironment,
-            integrationType: apiClient.metadata.integration.stringValue,
+            integrationType: metadata.integration.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
-            tokenizationKey: apiClient.authorization.type == .tokenizationKey ? apiClient.authorization.originalValue : nil
+            tokenizationKey: authorization.type == .tokenizationKey ? authorization.originalValue : nil
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)
-    }
-
-    // MARK: Equitable Protocol Conformance
-
-    static func == (lhs: BTAnalyticsService, rhs: BTAnalyticsService) -> Bool {
-        lhs.http == rhs.http && lhs.apiClient == rhs.apiClient
     }
 }
