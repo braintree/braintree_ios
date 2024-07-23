@@ -757,7 +757,8 @@ final class BTHTTP_Tests: XCTestCase {
         var originalRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
         originalRequest.httpBody = """
             {
-                "operationName": "TestMutation"
+                "operationName": "TestMutation",
+                "query": "mutation TestMutation()"
             }
             """.data(using: .utf8)
         let task = testURLSession.dataTask(with: originalRequest)
