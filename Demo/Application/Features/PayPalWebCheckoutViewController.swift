@@ -158,7 +158,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 productQuantity: 1,
                 oneTimeFeeAmount: "5.99",
                 shippingAmount: "1.99",
-                productPrice: "9.99",
+                productAmount: "9.99",
                 taxAmount: "0.59", 
                 totalAmount: "35.99"
             )

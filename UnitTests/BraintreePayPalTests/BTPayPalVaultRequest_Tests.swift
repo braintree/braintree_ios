@@ -109,7 +109,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             productQuantity: 1,
             oneTimeFeeAmount: "test-fee",
             shippingAmount: "test-shipping",
-            productPrice: "test-price",
+            productAmount: "test-price",
             taxAmount: "test-tax",
             totalAmount: "test-total"
         )
