@@ -7,6 +7,7 @@ public struct BTPayPalRecurringBillingDetails {
     
     private let billingCycles: [BTPayPalBillingCycle]
     private let currencyISOCode: String
+    private let totalAmount: String
     private let productName: String?
     private let productDescription: String?
     private let productQuantity: Int?
@@ -14,7 +15,6 @@ public struct BTPayPalRecurringBillingDetails {
     private let shippingAmount: String?
     private let productAmount: String?
     private let taxAmount: String?
-    private let totalAmount: String
     
     // MARK: - Initializer
     
