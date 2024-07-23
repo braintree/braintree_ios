@@ -104,14 +104,14 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
+            totalAmount: "test-total",
             productName: "test-product-name",
             productDescription: "test-product-description",
             productQuantity: 1,
             oneTimeFeeAmount: "test-fee",
             shippingAmount: "test-shipping",
             productAmount: "test-price",
-            taxAmount: "test-tax",
-            totalAmount: "test-total"
+            taxAmount: "test-tax"
         )
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)

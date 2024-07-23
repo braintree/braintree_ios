@@ -153,14 +153,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             let recurringBillingDetails = BTPayPalRecurringBillingDetails(
                 billingCycles: [billingCycle],
                 currencyISOCode: "USD",
+                totalAmount: "35.99",
                 productName: "Vogue Magazine Subscription",
                 productDescription: "Home delivery to Chicago, IL",
                 productQuantity: 1,
                 oneTimeFeeAmount: "5.99",
                 shippingAmount: "1.99",
                 productAmount: "9.99",
-                taxAmount: "0.59", 
-                totalAmount: "35.99"
+                taxAmount: "0.59"
             )
             
             request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
