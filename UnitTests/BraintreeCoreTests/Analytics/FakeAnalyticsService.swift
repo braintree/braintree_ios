@@ -4,6 +4,14 @@ import Foundation
 class FakeAnalyticsService: BTAnalyticsService {
     var lastEvent: String? = nil
     var endpoint: String? = nil
+    
+    convenience init() {
+        self.init(
+            authorization: try! TokenizationKey("development_tokenization_key"),
+            configuration:  BTConfiguration(json: BTJSON(value: ["environment": "fake-env1"])),
+            metadata: BTClientMetadata()
+        )
+    }
 
     override func sendAnalyticsEvent(
         _ eventName: String,

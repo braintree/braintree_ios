@@ -25,7 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    var analyticsService: BTAnalyticsService
+    var analyticsService: BTAnalyticsService?
 
     // MARK: - Initializers
 
@@ -56,14 +56,19 @@ import Foundation
         let btHttp = BTHTTP(authorization: self.authorization)
         http = btHttp
         configurationLoader = ConfigurationLoader(http: btHttp)
-        analyticsService = BTAnalyticsService(authorization: self.authorization, metadata: self.metadata)
 
         super.init()
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { _, _ in
-            // No-op
+        fetchOrReturnRemoteConfiguration { configuration, _ in
+            if let configuration {
+                self.analyticsService = BTAnalyticsService(
+                    authorization: self.authorization,
+                    configuration: configuration,
+                    metadata: self.metadata
+                )
+            }
         }
     }
 
@@ -312,7 +317,7 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService.sendAnalyticsEvent(
+        analyticsService?.sendAnalyticsEvent(
             eventName,
             correlationID: correlationID,
             errorDescription: errorDescription,
@@ -397,7 +402,7 @@ import Foundation
         let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
 
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService.sendAnalyticsEvent(
+            analyticsService?.sendAnalyticsEvent(
                 BTCoreAnalytics.apiRequestLatency,
                 connectionStartTime: connectionStartTime,
                 endpoint: cleanedPath,

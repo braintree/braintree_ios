@@ -7,7 +7,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
     var currentTime: UInt64!
     var oneSecondLater: UInt64!
     let fakeAuth = try! TokenizationKey("development_tokenization_key")
-
+    let fakeConfig = BTConfiguration(json: BTJSON(value: ["test": "value", "environment": "fake-env1"]))
+    
     override func setUp() {
         super.setUp()
         currentTime = UInt64(Date().timeIntervalSince1970 * 1000)
@@ -15,7 +16,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
     }
 
     func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
-        let analyticsService = BTAnalyticsService(authorization: fakeAuth, metadata: BTClientMetadata())
+        let analyticsService = BTAnalyticsService(authorization: fakeAuth, configuration: fakeConfig, metadata: BTClientMetadata())
         
         await analyticsService.performEventRequest("any.analytics.event")
         
@@ -24,13 +25,10 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let mockConfigLoader = MockConfigurationLoader(http: mockAnalyticsHTTP)
-        mockConfigLoader.mockConfig = BTConfiguration(json: BTJSON(value: ["merchantId": "a-fake-merchantID"]))
         
-        let analyticsService = BTAnalyticsService(authorization: fakeAuth, metadata: BTClientMetadata())
+        let analyticsService = BTAnalyticsService(authorization: fakeAuth, configuration: fakeConfig, metadata: BTClientMetadata())
         analyticsService.shouldBypassTimerQueue = true
         analyticsService.http = mockAnalyticsHTTP
-        analyticsService.configurationLoader = mockConfigLoader
         
         await analyticsService.performEventRequest("any.analytics.event")
         

@@ -294,28 +294,20 @@ class BTAPIClient_Tests: XCTestCase {
     }
 
     func testSendAnalyticsEvent_whenCalled_callsAnalyticsService() {
-        let tokenizationKey = "development_tokenization_key"
-        let apiClient = BTAPIClient(authorization: tokenizationKey)!
-        let mockAnalyticsService = FakeAnalyticsService(
-            authorization: try! TokenizationKey(tokenizationKey),
-            metadata: BTClientMetadata()
-        )
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService()
+
         apiClient.analyticsService = mockAnalyticsService
-        
         apiClient.sendAnalyticsEvent("blahblah")
 
         XCTAssertEqual(mockAnalyticsService.lastEvent, "blahblah")
     }
 
     func testFetchAPITiming_whenConfigurationPathIsValid_sendsLatencyEvent() {
-        let tokenizationKey = "development_tokenization_key"
-        let apiClient = BTAPIClient(authorization: tokenizationKey)!
-        let mockAnalyticsService = FakeAnalyticsService(
-            authorization: try! TokenizationKey(tokenizationKey),
-            metadata: BTClientMetadata()
-        )
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
-        
+
         apiClient.fetchAPITiming(
             path: "/merchants/1234567890/client_api/v1/configuration",
             connectionStartTime: 123,
@@ -329,12 +321,8 @@ class BTAPIClient_Tests: XCTestCase {
     }
 
     func testFetchAPITiming_whenPathIsBatchEvents_doesNotSendLatencyEvent() {
-        let tokenizationKey = "development_tokenization_key"
-        let apiClient = BTAPIClient(authorization: tokenizationKey)!
-        let mockAnalyticsService = FakeAnalyticsService(
-            authorization: try! TokenizationKey(tokenizationKey),
-            metadata: BTClientMetadata()
-        )
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
 
         apiClient.fetchAPITiming(
@@ -350,12 +338,8 @@ class BTAPIClient_Tests: XCTestCase {
     }
 
     func testFetchAPITiming_whenPathIsNotBatchEvents_sendLatencyEvent() {
-        let tokenizationKey = "development_tokenization_key"
-        let apiClient = BTAPIClient(authorization: tokenizationKey)!
-        let mockAnalyticsService = FakeAnalyticsService(
-            authorization: try! TokenizationKey(tokenizationKey),
-            metadata: BTClientMetadata()
-        )
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
 
         apiClient.fetchAPITiming(

@@ -11,9 +11,6 @@ class BTAnalyticsService {
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP
-
-    /// Exposed for testing only
-    var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing only
     var shouldBypassTimerQueue = false
@@ -28,14 +25,15 @@ class BTAnalyticsService {
     private static let timer = RepeatingTimer(timeInterval: timeInterval)
     
     private let authorization: ClientAuthorization
+    private let configuration: BTConfiguration
     private let metadata: BTClientMetadata
     
     // MARK: - Initializer
     
-    init(authorization: ClientAuthorization, metadata: BTClientMetadata) {
+    init(authorization: ClientAuthorization, configuration: BTConfiguration, metadata: BTClientMetadata) {
         self.authorization = authorization
+        self.configuration = configuration
         self.http = BTHTTP(authorization: authorization, customBaseURL: Self.url)
-        self.configurationLoader = ConfigurationLoader(http: self.http)
         self.metadata = metadata
         
         Self.timer.eventHandler = { [weak self] in
@@ -137,28 +135,19 @@ class BTAnalyticsService {
 
     func sendQueuedAnalyticsEvents() async {
         if await !BTAnalyticsService.events.isEmpty {
-            do {
-                let configuration = try await configurationLoader.getConfig()
-                let postParameters = await createAnalyticsEvent(
-                    config: configuration,
-                    sessionID: metadata.sessionID,
-                    events: Self.events.allValues
-                )
-                http.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-                await Self.events.removeAll()
-            } catch {
-                return
-            }
+            let postParameters = await createAnalyticsEvent(sessionID: metadata.sessionID, events: Self.events.allValues)
+            http.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+            await Self.events.removeAll()
         }
     }
 
     /// Constructs POST params to be sent to FPTI
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    func createAnalyticsEvent(sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: authorization.type == .clientToken ? authorization.bearer : nil,
-            environment: config.fptiEnvironment,
+            environment: configuration.fptiEnvironment,
             integrationType: metadata.integration.stringValue,
-            merchantID: config.merchantID,
+            merchantID: configuration.merchantID,
             sessionID: sessionID,
             tokenizationKey: authorization.type == .tokenizationKey ? authorization.originalValue : nil
         )
