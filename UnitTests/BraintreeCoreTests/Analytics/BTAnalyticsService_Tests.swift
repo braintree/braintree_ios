@@ -8,7 +8,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
     var oneSecondLater: UInt64!
     var analyticsService: BTAnalyticsService!
     let fakeAuth = try! TokenizationKey("development_tokenization_key")
-    let fakeConfig = BTConfiguration(json: BTJSON(value: ["test": "value", "environment": "fake-env1"]))
+    let fakeConfig = BTConfiguration(json: BTJSON(value: ["merchantId": "fake-id", "environment": "fake-env1"]))
     
     override func setUp() {
         super.setUp()

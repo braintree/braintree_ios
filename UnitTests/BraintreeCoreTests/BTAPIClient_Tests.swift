@@ -290,6 +290,8 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testAnalyticsService_isCreatedDuringInitialization() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        
+        let mockConfigurationLoader = MockConfigurationLoader(
         XCTAssertTrue(apiClient?.analyticsService is BTAnalyticsService)
     }
 
