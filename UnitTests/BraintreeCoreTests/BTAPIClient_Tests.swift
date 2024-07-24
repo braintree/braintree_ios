@@ -288,11 +288,15 @@ class BTAPIClient_Tests: XCTestCase {
 
     // MARK: - Analytics
 
-    func testAnalyticsService_isCreatedDuringInitialization() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+    func testAnalyticsService_afterConfigFetch_isCreatedDuringInitialization() {
+        try? ConfigurationCache.shared.putInCache(
+            authorization: "development_tokenization_key",
+            configuration: BTConfiguration(json: BTJSON(value: ["merchantId": "fake-id", "environment": "fake-env1"]))
+        )
         
-        let mockConfigurationLoader = MockConfigurationLoader(
-        XCTAssertTrue(apiClient?.analyticsService is BTAnalyticsService)
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        
+        XCTAssertNotNil(apiClient.analyticsService)
     }
 
     func testSendAnalyticsEvent_whenCalled_callsAnalyticsService() {
