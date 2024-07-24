@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.1 (2024-07-24)
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
 * BraintreeCore
