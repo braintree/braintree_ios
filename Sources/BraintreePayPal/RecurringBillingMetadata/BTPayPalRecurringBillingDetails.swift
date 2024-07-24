@@ -58,6 +58,7 @@ public struct BTPayPalRecurringBillingDetails {
     
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [
+            "total_amount": totalAmount,
             "currency_iso_code": currencyISOCode,
             "billing_cycles": billingCycles.map { $0.parameters() }
         ]
@@ -89,8 +90,6 @@ public struct BTPayPalRecurringBillingDetails {
         if let taxAmount {
             parameters["tax_amount"] = taxAmount
         }
-        
-        parameters["total_amount"] = totalAmount
         
         return parameters
     }
