@@ -6,7 +6,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     var currentTime: UInt64!
     var oneSecondLater: UInt64!
-    var sut: BTAnalyticsService!
+    var analyticsService: BTAnalyticsService!
     let fakeAuth = try! TokenizationKey("development_tokenization_key")
     let fakeConfig = BTConfiguration(json: BTJSON(value: ["test": "value", "environment": "fake-env1"]))
     
@@ -15,22 +15,22 @@ final class BTAnalyticsService_Tests: XCTestCase {
         currentTime = UInt64(Date().timeIntervalSince1970 * 1000)
         oneSecondLater = UInt64((Date().timeIntervalSince1970 * 1000) + 999)
         
-        sut = BTAnalyticsService(authorization: fakeAuth, configuration: fakeConfig, metadata: BTClientMetadata())
+        analyticsService = BTAnalyticsService(authorization: fakeAuth, configuration: fakeConfig, metadata: BTClientMetadata())
     }
 
     func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
-        await sut.performEventRequest("any.analytics.event")
+        await analyticsService.performEventRequest("any.analytics.event")
         
-        XCTAssertEqual(sut.http.customBaseURL?.absoluteString, "https://api.paypal.com")
+        XCTAssertEqual(analyticsService.http.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         
-        sut.shouldBypassTimerQueue = true
-        sut.http = mockAnalyticsHTTP
+        analyticsService.shouldBypassTimerQueue = true
+        analyticsService.http = mockAnalyticsHTTP
         
-        await sut.performEventRequest("any.analytics.event")
+        await analyticsService.performEventRequest("any.analytics.event")
         
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
