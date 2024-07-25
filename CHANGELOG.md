@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
+
 ## 6.23.1 (2024-07-24)
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
