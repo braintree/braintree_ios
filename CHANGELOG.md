@@ -5,8 +5,7 @@
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
 * BraintreePayPal
-  * Add PayPal edit funding instrument flow (BETA)
-    * Add `BTPayPalVaultEditRequest` for edit FI flow
+  * Add PayPal vault edit flow (BETA)
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditRequest`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
 
