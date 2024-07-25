@@ -7,6 +7,7 @@ public struct BTPayPalRecurringBillingDetails {
     
     private let billingCycles: [BTPayPalBillingCycle]
     private let currencyISOCode: String
+    private let totalAmount: String
     private let productName: String?
     private let productDescription: String?
     private let productQuantity: Int?
@@ -21,6 +22,7 @@ public struct BTPayPalRecurringBillingDetails {
     /// - Parameters:
     ///   - billingCycles: An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle.
     ///   - currencyISOCode: The three-character ISO-4217 currency code that identifies the currency.
+    ///   - totalAmount: The total amount associated with the billing cycle at the time of checkout.
     ///   - productName: The name of the plan to display at checkout.
     ///   - productDescription: Product description to display at the checkout.
     ///   - productQuantity: Quantity associated with the product.
@@ -31,6 +33,7 @@ public struct BTPayPalRecurringBillingDetails {
     public init(
         billingCycles: [BTPayPalBillingCycle],
         currencyISOCode: String,
+        totalAmount: String,
         productName: String?,
         productDescription: String?,
         productQuantity: Int?,
@@ -41,6 +44,7 @@ public struct BTPayPalRecurringBillingDetails {
     ) {
         self.billingCycles = billingCycles
         self.currencyISOCode = currencyISOCode
+        self.totalAmount = totalAmount
         self.productName = productName
         self.productDescription = productDescription
         self.productQuantity = productQuantity
@@ -54,6 +58,7 @@ public struct BTPayPalRecurringBillingDetails {
     
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [
+            "total_amount": totalAmount,
             "currency_iso_code": currencyISOCode,
             "billing_cycles": billingCycles.map { $0.parameters() }
         ]

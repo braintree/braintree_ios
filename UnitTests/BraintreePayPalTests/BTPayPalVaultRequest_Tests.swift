@@ -104,6 +104,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
+            totalAmount: "test-total",
             productName: "test-product-name",
             productDescription: "test-product-description",
             productQuantity: 1,
@@ -127,6 +128,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(planMetadata["shipping_amount"] as! String, "test-shipping")
         XCTAssertEqual(planMetadata["product_price"] as! String, "test-price")
         XCTAssertEqual(planMetadata["tax_amount"] as! String, "test-tax")
+        XCTAssertEqual(planMetadata["total_amount"] as! String, "test-total")
 
         guard let billingCycles = planMetadata["billing_cycles"] as? [[String:Any]] else { XCTFail(); return }
         XCTAssertEqual(billingCycles[0]["billing_frequency"] as! Int, 13)
