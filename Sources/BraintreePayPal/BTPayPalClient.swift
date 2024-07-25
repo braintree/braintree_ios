@@ -291,11 +291,7 @@ import BraintreeDataCollector
 
         switch returnURL.state {
         case .succeeded, .canceled:
-            guard let payPalRequest else {
-                notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: appSwitchCompletion)
-                return
-            }
-            handleReturn(url, paymentType: payPalRequest.paymentType, completion: appSwitchCompletion)
+            handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
         case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
         }
