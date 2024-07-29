@@ -446,8 +446,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         let json = try? JSONSerialization.jsonObject(with: data)
         let body = BTJSON(value: json)
         
-        guard let mutationName = body["operationName"].asString() else { return nil }
-        
-        return "mutation \(mutationName)"
+        guard let query = body["query"].asString() else {
+            return nil
+        }
+
+        let queryDiscardHolder = query.replacingOccurrences(of: #"^[^\(]*"#, with: "", options: .regularExpression)
+        let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
+        return finalQuery
     }
 }
