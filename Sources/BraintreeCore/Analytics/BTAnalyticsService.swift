@@ -55,16 +55,7 @@ class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Internal Methods
     
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
-    /// - Parameters:
-    ///   - eventName: Name of analytic event.
-    ///   - correlationID: Optional. CorrelationID associated with the checkout session.
-    ///   - endpoint: Optional. The endpoint of the API request send during networking requests.
-    ///   - endTime: Optional. The end time of the roundtrip networking request.
-    ///   - errorDescription: Optional. Full error description returned to merchant.
-    ///   - isVaultRequest: Optional. If the Venmo or PayPal request is being vaulted.
-    ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
-    ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
-    ///   - startTime: Optional. The start time of the networking request.
+    /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
         Task(priority: .background) {
             await performEventRequest(event)
