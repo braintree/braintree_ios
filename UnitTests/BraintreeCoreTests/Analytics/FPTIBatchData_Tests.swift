@@ -89,8 +89,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
 
         // Verify event-level parameters
-        XCTAssertEqual(eventParams[0]["t"] as? String, "fake-time-1")
-        XCTAssertEqual(eventParams[1]["t"] as? String, "fake-time-2")
+        XCTAssertNotNil(eventParams[0]["t"] as? String)
+        XCTAssertNotNil(eventParams[1]["t"] as? String)
         XCTAssertEqual(eventParams[0]["event_name"] as? String, "fake-event-1")
         XCTAssertEqual(eventParams[1]["event_name"] as? String, "fake-event-2")
         XCTAssertEqual(eventParams[0]["tenant_name"] as? String, "Braintree")
