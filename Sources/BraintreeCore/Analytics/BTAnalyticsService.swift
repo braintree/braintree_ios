@@ -1,12 +1,5 @@
 import Foundation
 
-// For testing
-protocol AnalyticsSendable: AnyObject {
-    
-    func sendAnalyticsEvent(_ event: FPTIBatchData.Event)
-    func setAPIClient(_ apiClient: BTAPIClient)
-}
-
 class BTAnalyticsService: AnalyticsSendable {
 
     // MARK: - Internal Properties
@@ -29,7 +22,7 @@ class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     
     /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private static let timeInterval = 10
+    private static let timeInterval = 15
     
     private let timer = RepeatingTimer(timeInterval: timeInterval)
 
@@ -41,12 +34,10 @@ class BTAnalyticsService: AnalyticsSendable {
     
     /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
     func setAPIClient(_ apiClient: BTAPIClient) {
-        print("⏰ BTAnalyticsService init")
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
         self.timer.eventHandler = { [weak self] in
-            print("⏰ Timer handler called")
             guard let self else { return }
             Task {
                 await self.sendQueuedAnalyticsEvents()
@@ -58,7 +49,6 @@ class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Deinit
 
     deinit {
-        print("⏰ BTAnalyticsService deinit")
         self.timer.suspend()
     }
 

@@ -10,8 +10,7 @@ actor BTAnalyticsEventsStorage {
     }
 
     var allValues: [FPTIBatchData.Event] {
-        print("🔥 Events: \(events.map { $0.eventName })")
-        return events
+        events
     }
 
     init() {

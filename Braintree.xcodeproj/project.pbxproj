@@ -121,6 +121,7 @@
 		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
 		80842DA72B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */; };
 		8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */; };
+		808E4A162C581CD40006A737 /* AnalyticsSendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808E4A152C581CD40006A737 /* AnalyticsSendable.swift */; };
 		80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */; };
 		80AB424F2B27CAC200249218 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
 		80AB42542B27DF5B00249218 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
@@ -860,6 +861,7 @@
 		8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIRequest.swift; sourceTree = "<group>"; };
 		80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationKey_Tests.swift; sourceTree = "<group>"; };
+		808E4A152C581CD40006A737 /* AnalyticsSendable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSendable.swift; sourceTree = "<group>"; };
 		80A1EE3D2236AAC600F6218B /* BTThreeDSecureAdditionalInformation_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAdditionalInformation_Tests.swift; sourceTree = "<group>"; };
 		80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+URLOpener.swift"; sourceTree = "<group>"; };
 		80AD35F12BFBB1DD00BF890E /* TokenizationKeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationKeyError.swift; sourceTree = "<group>"; };
@@ -1591,6 +1593,7 @@
 		80F4F4D529F8A628003EACB1 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				808E4A152C581CD40006A737 /* AnalyticsSendable.swift */,
 				BE549F132BF6576300B6F441 /* BTAnalyticsEventsStorage.swift */,
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
@@ -3318,6 +3321,7 @@
 				574891E9286F7D300020DA36 /* BTClientMetadataSource.swift in Sources */,
 				BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */,
 				BEBD05222A1FE8BE0003C15C /* BTWebAuthenticationSession.swift in Sources */,
+				808E4A162C581CD40006A737 /* AnalyticsSendable.swift in Sources */,
 				BE698EA028AA8DCB001D9B10 /* BTHTTP.swift in Sources */,
 				BC17F9B428D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift in Sources */,
 				5708E0A828809BC6007946B9 /* BTJSONError.swift in Sources */,
