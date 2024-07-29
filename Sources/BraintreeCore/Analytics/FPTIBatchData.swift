@@ -53,7 +53,7 @@ struct FPTIBatchData: Codable {
         let requestStartTime: Int?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
-        let timestamp: String = String(Date().utcTimestampMilliseconds)
+        let timestamp = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
         
