@@ -1,6 +1,11 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeCore
+  * Fix bug where analytics wouldn't send on `BTAPIClient` instantiation on button click
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
+
+## 6.23.1 (2024-07-24)
 * BraintreeThreeDSecure
   * Add error code and error message for `exceededTimeoutLimit`  
 * BraintreeCore
