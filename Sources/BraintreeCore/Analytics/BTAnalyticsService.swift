@@ -3,6 +3,8 @@ import Foundation
 class BTAnalyticsService: Equatable {
 
     // MARK: - Internal Properties
+    
+    static let shared = BTAnalyticsService()
 
     // swiftlint:disable force_unwrapping
     /// The FPTI URL to post all analytic events.
@@ -20,34 +22,37 @@ class BTAnalyticsService: Equatable {
     private static let events = BTAnalyticsEventsStorage()
     
     /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private static let timeInterval = 15
+    private static let timeInterval = 5
     
-    private static let timer = RepeatingTimer(timeInterval: timeInterval)
+    private let timer = RepeatingTimer(timeInterval: timeInterval)
 
-    private let apiClient: BTAPIClient
-    
+    private var apiClient: BTAPIClient?
+            
     // MARK: - Initializer
-
-    init(apiClient: BTAPIClient) {
+    
+    private init() { }
+    
+    /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
+    func setAPIClient(_ apiClient: BTAPIClient) {
         print("⏰ BTAnalyticsService init")
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
-        Self.timer.eventHandler = { [weak self] in
+        self.timer.eventHandler = { [weak self] in
             print("⏰ Timer handler called")
             guard let self else { return }
             Task {
                 await self.sendQueuedAnalyticsEvents()
             }
         }
-        Self.timer.resume()
+        self.timer.resume()
     }
 
     // MARK: - Deinit
 
     deinit {
         print("⏰ BTAnalyticsService deinit")
-        Self.timer.suspend()
+        self.timer.suspend()
     }
 
     // MARK: - Internal Methods
@@ -133,7 +138,7 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     func sendQueuedAnalyticsEvents() async {
-        if await !BTAnalyticsService.events.isEmpty {
+        if await !BTAnalyticsService.events.isEmpty, let apiClient {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
                 let postParameters = await createAnalyticsEvent(
@@ -152,12 +157,12 @@ class BTAnalyticsService: Equatable {
     /// Constructs POST params to be sent to FPTI
     func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: apiClient.authorization.type == .clientToken ? apiClient.authorization.bearer : nil,
+            authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
             environment: config.fptiEnvironment,
-            integrationType: apiClient.metadata.integration.stringValue,
+            integrationType: apiClient?.metadata.integration.stringValue ?? BTClientMetadataIntegration.custom.stringValue,
             merchantID: config.merchantID,
             sessionID: sessionID,
-            tokenizationKey: apiClient.authorization.type == .tokenizationKey ? apiClient.authorization.originalValue : nil
+            tokenizationKey: apiClient?.authorization.type == .tokenizationKey ? apiClient?.authorization.originalValue : nil
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)

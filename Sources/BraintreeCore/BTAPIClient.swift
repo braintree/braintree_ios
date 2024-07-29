@@ -25,14 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    weak var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
-
-    private static var _analyticsService: BTAnalyticsService?
+    weak var analyticsService: BTAnalyticsService? = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -65,7 +58,7 @@ import Foundation
         configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        analyticsService?.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
