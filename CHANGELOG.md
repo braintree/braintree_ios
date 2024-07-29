@@ -6,6 +6,7 @@
 * BraintreeCore
   * Prevent duplicate outbound `v1/configuration` requests
   * Add network timeout of 30 seconds
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
 
 ## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)
