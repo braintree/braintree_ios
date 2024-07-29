@@ -424,8 +424,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let paypalAccount = lastPostParameters["paypal_account"] as! [String: Any]
         XCTAssertEqual(paypalAccount["intent"] as? String, "sale")
 
-        let options = paypalAccount["options"] as! [String:
-                                                        Any]
+        let options = paypalAccount["options"] as! [String: Any]
         XCTAssertFalse(options["validate"] as! Bool)
     }
 
