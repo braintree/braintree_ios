@@ -98,25 +98,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
-        // Creates a new BTAPIClient on each button click. BTAPIClient lifecycle dies when completion handler executed.
-        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
-            guard let clientToken else {
-                self.progressBlock("Error fetching Client Token")
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
                 return
             }
-            
-            let freshAPIClient = BTAPIClient(authorization: clientToken)!
-            let newPayPalClient = BTPayPalClient(apiClient: freshAPIClient)
-            newPayPalClient.tokenize(request) { nonce, error in
-                sender.isEnabled = true
-                
-                guard let nonce else {
-                    self.progressBlock(error?.localizedDescription)
-                    return
-                }
-                
-                self.completionBlock(nonce)
-            }
+
+            self.completionBlock(nonce)
         }
     }
     
