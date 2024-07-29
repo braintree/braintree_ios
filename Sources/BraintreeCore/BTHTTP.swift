@@ -26,6 +26,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 30
         
         let delegateQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
