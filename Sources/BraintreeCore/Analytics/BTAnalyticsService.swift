@@ -1,6 +1,13 @@
 import Foundation
 
-class BTAnalyticsService: Equatable {
+// For testing
+protocol AnalyticsSendable: AnyObject {
+    
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event)
+    func setAPIClient(_ apiClient: BTAPIClient)
+}
+
+class BTAnalyticsService: AnalyticsSendable {
 
     // MARK: - Internal Properties
     
@@ -19,10 +26,10 @@ class BTAnalyticsService: Equatable {
 
     // MARK: - Private Properties
     
-    private static let events = BTAnalyticsEventsStorage()
+    private let events = BTAnalyticsEventsStorage()
     
     /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private static let timeInterval = 5
+    private static let timeInterval = 10
     
     private let timer = RepeatingTimer(timeInterval: timeInterval)
 
@@ -68,67 +75,15 @@ class BTAnalyticsService: Equatable {
     ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
     ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
     ///   - startTime: Optional. The start time of the networking request.
-    func sendAnalyticsEvent(
-        _ eventName: String,
-        connectionStartTime: Int? = nil,
-        correlationID: String? = nil,
-        endpoint: String? = nil,
-        endTime: Int? = nil,
-        errorDescription: String? = nil,
-        isVaultRequest: Bool? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil,
-        requestStartTime: Int? = nil,
-        startTime: Int? = nil
-    ) {
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
         Task(priority: .background) {
-            await performEventRequest(
-                eventName,
-                connectionStartTime: connectionStartTime,
-                correlationID: correlationID,
-                endpoint: endpoint,
-                endTime: endTime,
-                errorDescription: errorDescription,
-                isVaultRequest: isVaultRequest,
-                linkType: linkType,
-                payPalContextID: payPalContextID,
-                requestStartTime: requestStartTime,
-                startTime: startTime
-            )
+            await performEventRequest(event)
         }
     }
     
     /// Exposed to be able to execute this function synchronously in unit tests
-    func performEventRequest(
-        _ eventName: String,
-        connectionStartTime: Int? = nil,
-        correlationID: String? = nil,
-        endpoint: String? = nil,
-        endTime: Int? = nil,
-        errorDescription: String? = nil,
-        isVaultRequest: Bool? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil,
-        requestStartTime: Int? = nil,
-        startTime: Int? = nil
-    ) async {
-        let timestampInMilliseconds = Date().utcTimestampMilliseconds
-        let event = FPTIBatchData.Event(
-            connectionStartTime: connectionStartTime,
-            correlationID: correlationID,
-            endpoint: endpoint,
-            endTime: endTime,
-            errorDescription: errorDescription,
-            eventName: eventName,
-            isVaultRequest: isVaultRequest,
-            linkType: linkType,
-            payPalContextID: payPalContextID,
-            requestStartTime: requestStartTime,
-            startTime: startTime,
-            timestamp: String(timestampInMilliseconds)
-        )
-
-        await BTAnalyticsService.events.append(event)
+    func performEventRequest(_ event: FPTIBatchData.Event) async {
+        await events.append(event)
         
         if shouldBypassTimerQueue {
             await self.sendQueuedAnalyticsEvents()
@@ -138,16 +93,16 @@ class BTAnalyticsService: Equatable {
     // MARK: - Helpers
 
     func sendQueuedAnalyticsEvents() async {
-        if await !BTAnalyticsService.events.isEmpty, let apiClient {
+        if await !events.isEmpty, let apiClient {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
                 let postParameters = await createAnalyticsEvent(
                     config: configuration,
                     sessionID: apiClient.metadata.sessionID,
-                    events: Self.events.allValues
+                    events: events.allValues
                 )
                 http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-                await Self.events.removeAll()
+                await events.removeAll()
             } catch {
                 return
             }
@@ -166,11 +121,5 @@ class BTAnalyticsService: Equatable {
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)
-    }
-
-    // MARK: Equitable Protocol Conformance
-
-    static func == (lhs: BTAnalyticsService, rhs: BTAnalyticsService) -> Bool {
-        lhs.http == rhs.http && lhs.apiClient == rhs.apiClient
     }
 }

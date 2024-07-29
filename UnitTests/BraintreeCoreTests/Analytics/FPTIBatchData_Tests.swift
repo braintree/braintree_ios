@@ -27,8 +27,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: "universal",
             payPalContextID: "fake-order-id",
             requestStartTime: 456,
-            startTime: 999888777666,
-            timestamp: "fake-time-1"
+            startTime: 999888777666
         ),
         FPTIBatchData.Event(
             connectionStartTime: nil,
@@ -41,8 +40,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: nil,
             payPalContextID: "fake-order-id-2",
             requestStartTime: nil,
-            startTime: nil,
-            timestamp: "fake-time-2"
+            startTime: nil
         )
     ]
     

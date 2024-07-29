@@ -53,9 +53,35 @@ struct FPTIBatchData: Codable {
         let requestStartTime: Int?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
-        let timestamp: String
+        let timestamp: String = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
+        
+        init(
+            connectionStartTime: Int? = nil,
+            correlationID: String? = nil,
+            endpoint: String? = nil,
+            endTime: Int? = nil,
+            errorDescription: String? = nil,
+            eventName: String,
+            isVaultRequest: Bool? = nil,
+            linkType: String? = nil,
+            payPalContextID: String? = nil,
+            requestStartTime: Int? = nil,
+            startTime: Int? = nil
+        ) {
+            self.connectionStartTime = connectionStartTime
+            self.correlationID = correlationID
+            self.endpoint = endpoint
+            self.endTime = endTime
+            self.errorDescription = errorDescription
+            self.eventName = eventName
+            self.isVaultRequest = isVaultRequest
+            self.linkType = linkType
+            self.payPalContextID = payPalContextID
+            self.requestStartTime = requestStartTime
+            self.startTime = startTime
+        }
 
         enum CodingKeys: String, CodingKey {
             case connectionStartTime = "connect_start_time"

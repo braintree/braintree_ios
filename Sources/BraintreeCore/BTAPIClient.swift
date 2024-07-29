@@ -25,7 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    weak var analyticsService: BTAnalyticsService? = BTAnalyticsService.shared
+    weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -312,14 +312,14 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(
-            eventName,
+        analyticsService?.sendAnalyticsEvent(FPTIBatchData.Event(
             correlationID: correlationID,
             errorDescription: errorDescription,
+            eventName: eventName,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
-        )
+        ))
     }
 
     // MARK: Analytics Internal Methods
@@ -397,14 +397,14 @@ import Foundation
         let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
 
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
-                BTCoreAnalytics.apiRequestLatency,
+            analyticsService?.sendAnalyticsEvent(FPTIBatchData.Event(
                 connectionStartTime: connectionStartTime,
                 endpoint: cleanedPath,
                 endTime: endTime,
+                eventName: BTCoreAnalytics.apiRequestLatency,
                 requestStartTime: requestStartTime,
                 startTime: startTime
-            )
+            ))
         }
     }
 }
