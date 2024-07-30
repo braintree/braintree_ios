@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPal
   * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
+* BraintreeCore
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
 
 ## 6.23.1 (2024-07-24)
 * BraintreeThreeDSecure
@@ -10,7 +12,6 @@
 * BraintreeCore
   * Prevent duplicate outbound `v1/configuration` requests
   * Add network timeout of 30 seconds
-  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
 
 ## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)
