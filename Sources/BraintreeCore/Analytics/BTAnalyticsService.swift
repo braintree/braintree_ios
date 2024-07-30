@@ -50,7 +50,7 @@ class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Deinit
 
     deinit {
-        self.timer.suspend()
+        timer.suspend()
     }
 
     // MARK: - Internal Methods

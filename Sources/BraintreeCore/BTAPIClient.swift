@@ -312,14 +312,16 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(FPTIBatchData.Event(
-            correlationID: correlationID,
-            errorDescription: errorDescription,
-            eventName: eventName,
-            isVaultRequest: isVaultRequest,
-            linkType: linkType,
-            payPalContextID: payPalContextID
-        ))
+        analyticsService?.sendAnalyticsEvent(
+            FPTIBatchData.Event(
+                correlationID: correlationID,
+                errorDescription: errorDescription,
+                eventName: eventName,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID
+            )
+        )
     }
 
     // MARK: Analytics Internal Methods
@@ -400,16 +402,18 @@ import Foundation
             with: "payment_methods/three_d_secure",
             options: .regularExpression
         )
-
+        
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(FPTIBatchData.Event(
-                connectionStartTime: connectionStartTime,
-                endpoint: cleanedPath,
-                endTime: endTime,
-                eventName: BTCoreAnalytics.apiRequestLatency,
-                requestStartTime: requestStartTime,
-                startTime: startTime
-            ))
+            analyticsService?.sendAnalyticsEvent(
+                FPTIBatchData.Event(
+                    connectionStartTime: connectionStartTime,
+                    endpoint: cleanedPath,
+                    endTime: endTime,
+                    eventName: BTCoreAnalytics.apiRequestLatency,
+                    requestStartTime: requestStartTime,
+                    startTime: startTime
+                )
+            )
         }
     }
 }
