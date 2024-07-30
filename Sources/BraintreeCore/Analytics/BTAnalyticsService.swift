@@ -59,12 +59,12 @@ class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
         Task(priority: .background) {
-            await performEventRequest(event)
+            await performEventRequest(with: event)
         }
     }
     
     /// Exposed to be able to execute this function synchronously in unit tests
-    func performEventRequest(_ event: FPTIBatchData.Event) async {
+    func performEventRequest(with event: FPTIBatchData.Event) async {
         await events.append(event)
         
         if shouldBypassTimerQueue {

@@ -18,7 +18,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let sut = BTAnalyticsService.shared
         sut.setAPIClient(stubAPIClient)
         
-        await sut.performEventRequest(FPTIBatchData.Event(eventName: "any.analytics.event"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
         
         XCTAssertEqual(sut.http?.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
@@ -32,7 +32,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
         sut.http = mockAnalyticsHTTP
         
-        await sut.performEventRequest(FPTIBatchData.Event(eventName: "any.analytics.event"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
 
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
