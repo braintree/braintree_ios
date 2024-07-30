@@ -26,7 +26,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     private let timer = RepeatingTimer(timeInterval: timeInterval)
 
-    private var apiClient: BTAPIClient?
+    private weak var apiClient: BTAPIClient?
             
     // MARK: - Initializer
     

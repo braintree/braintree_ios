@@ -25,7 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
+    var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -58,7 +58,7 @@ import Foundation
         configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
-        analyticsService?.setAPIClient(self)
+        analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
@@ -313,7 +313,7 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(
+        analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 correlationID: correlationID,
                 errorDescription: errorDescription,
@@ -406,7 +406,7 @@ import Foundation
         )
         
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
+            analyticsService.sendAnalyticsEvent(
                 FPTIBatchData.Event(
                     connectionStartTime: connectionStartTime,
                     endpoint: cleanedPath,
