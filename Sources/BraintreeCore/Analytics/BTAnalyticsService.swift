@@ -43,7 +43,8 @@ class BTAnalyticsService: AnalyticsSendable {
                 await self.sendQueuedAnalyticsEvents()
             }
         }
-        self.timer.resume()
+
+        timer.resume()
     }
 
     // MARK: - Deinit
