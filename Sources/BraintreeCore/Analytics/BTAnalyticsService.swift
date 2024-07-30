@@ -72,9 +72,9 @@ class BTAnalyticsService: AnalyticsSendable {
         }
     }
 
-    // MARK: - Helpers
+    // MARK: - Private Methods
 
-    func sendQueuedAnalyticsEvents() async {
+    private func sendQueuedAnalyticsEvents() async {
         if await !events.isEmpty, let apiClient {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
@@ -92,7 +92,7 @@ class BTAnalyticsService: AnalyticsSendable {
     }
 
     /// Constructs POST params to be sent to FPTI
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
             environment: config.fptiEnvironment,
