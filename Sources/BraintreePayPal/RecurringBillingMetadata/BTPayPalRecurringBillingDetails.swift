@@ -20,7 +20,7 @@ public struct BTPayPalRecurringBillingDetails {
     
     /// Initialize a `BTPayPalRecurringBillingDetails` object.
     /// - Parameters:
-    ///   - billingCycles: An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle. Exceeding 3 items in this array results in error.
+    ///   - billingCycles: An array of billing cycles for trial billing and regular billing. A plan can have at most two trial cycles and only one regular cycle. Exceeding 3 items in this array results in an error.
     ///   - currencyISOCode: The three-character ISO-4217 currency code that identifies the currency.
     ///   - totalAmount: The total amount associated with the billing cycle at the time of checkout.
     ///   - productName: The name of the plan to display at checkout.
