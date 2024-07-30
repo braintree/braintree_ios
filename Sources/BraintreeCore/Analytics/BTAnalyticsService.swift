@@ -1,6 +1,6 @@
 import Foundation
 
-class BTAnalyticsService: AnalyticsSendable {
+final class BTAnalyticsService: AnalyticsSendable {
 
     // MARK: - Internal Properties
     
