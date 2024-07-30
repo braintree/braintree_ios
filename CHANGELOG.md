@@ -2,8 +2,10 @@
 
 ## unreleased
 * BraintreeCore
-  * Fix bug where analytics wouldn't send on `BTAPIClient` instantiation on button click
+  * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
   * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
+* BraintreePayPal
+  * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
 
 ## 6.23.1 (2024-07-24)
 * BraintreeThreeDSecure
