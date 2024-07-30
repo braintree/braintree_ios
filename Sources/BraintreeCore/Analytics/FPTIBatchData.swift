@@ -41,6 +41,9 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
+        /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
+        let isConfigFromCache: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -64,6 +67,7 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             payPalContextID: String? = nil,
@@ -76,6 +80,7 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.payPalContextID = payPalContextID
@@ -88,6 +93,7 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"

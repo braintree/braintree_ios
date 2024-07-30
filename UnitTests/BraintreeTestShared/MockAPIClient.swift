@@ -92,6 +92,7 @@ public class MockAPIClient: BTAPIClient {
         _ name: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
