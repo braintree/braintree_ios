@@ -37,7 +37,7 @@ class BTAnalyticsService: AnalyticsSendable {
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
-        self.timer.eventHandler = { [weak self] in
+        timer.eventHandler = { [weak self] in
             guard let self else { return }
             Task {
                 await self.sendQueuedAnalyticsEvents()
