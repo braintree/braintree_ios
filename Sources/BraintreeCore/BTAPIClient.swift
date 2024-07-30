@@ -315,6 +315,7 @@ import Foundation
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
@@ -323,6 +324,7 @@ import Foundation
             eventName,
             correlationID: correlationID,
             errorDescription: errorDescription,
+            isConfigFromCache: isConfigFromCache,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID

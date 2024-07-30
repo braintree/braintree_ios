@@ -12,6 +12,7 @@ class FakeAnalyticsService: BTAnalyticsService {
         endpoint: String? = nil,
         endTime: Int? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil,
