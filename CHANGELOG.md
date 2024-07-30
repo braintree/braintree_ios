@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.2 (2024-07-30)
 * BraintreePayPal
   * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
 * BraintreeCore
