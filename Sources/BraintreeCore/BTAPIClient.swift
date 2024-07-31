@@ -25,14 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    weak var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
-
-    private static var _analyticsService: BTAnalyticsService?
+    var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -65,7 +58,7 @@ import Foundation
         configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
@@ -320,14 +313,16 @@ import Foundation
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(
-            eventName,
-            correlationID: correlationID,
-            errorDescription: errorDescription,
-            isConfigFromCache: isConfigFromCache,
-            isVaultRequest: isVaultRequest,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+        analyticsService.sendAnalyticsEvent(
+            FPTIBatchData.Event(
+                correlationID: correlationID,
+                errorDescription: errorDescription,
+                eventName: eventName,
+                isConfigFromCache: isConfigFromCache,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID
+            )
         )
     }
 
@@ -409,15 +404,17 @@ import Foundation
             with: "payment_methods/three_d_secure",
             options: .regularExpression
         )
-
+        
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
-                BTCoreAnalytics.apiRequestLatency,
-                connectionStartTime: connectionStartTime,
-                endpoint: cleanedPath,
-                endTime: endTime,
-                requestStartTime: requestStartTime,
-                startTime: startTime
+            analyticsService.sendAnalyticsEvent(
+                FPTIBatchData.Event(
+                    connectionStartTime: connectionStartTime,
+                    endpoint: cleanedPath,
+                    endTime: endTime,
+                    eventName: BTCoreAnalytics.apiRequestLatency,
+                    requestStartTime: requestStartTime,
+                    startTime: startTime
+                )
             )
         }
     }

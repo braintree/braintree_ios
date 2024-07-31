@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+
 ## 6.23.2 (2024-07-30)
 * BraintreePayPal
   * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
