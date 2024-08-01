@@ -33,7 +33,8 @@ final class RepeatingTimer {
     
     // MARK: - Initializer
     
-    init(timeInterval: Int) {
+    /// exposed for testing shorter time intervals
+    init(timeInterval: Int = 15) {
         self.timeInterval = timeInterval
     }
         

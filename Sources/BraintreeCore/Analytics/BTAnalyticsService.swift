@@ -20,11 +20,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Private Properties
     
     private let events = BTAnalyticsEventsStorage()
-    
-    /// Amount of time, in seconds, between batch API requests sent to FPTI
-    private static let timeInterval = 15
-    
-    private let timer = RepeatingTimer(timeInterval: timeInterval)
+    private let timer = RepeatingTimer()
 
     private weak var apiClient: BTAPIClient?
             
