@@ -37,9 +37,6 @@ import BraintreeDataCollector
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
 
-    /// Exposed for testing to check if the PayPal app is installed
-    var payPalAppInstalled: Bool = false
-
     /// True if `tokenize()` was called with a Vault request object type
     var isVaultRequest: Bool = false
 
@@ -311,8 +308,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        payPalAppInstalled = application.isPayPalAppInstalled()
-        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true && payPalAppInstalled ? "universal" : "deeplink"
+        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? "universal" : "deeplink"
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -331,10 +327,6 @@ import BraintreeDataCollector
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
-            }
-
-            if !self.payPalAppInstalled {
-                (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
             }
 
             self.payPalRequest = request

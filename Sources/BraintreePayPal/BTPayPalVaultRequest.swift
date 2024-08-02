@@ -19,6 +19,8 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
+    private var application: URLOpener = UIApplication.shared
+
     // MARK: - Initializers
 
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
@@ -34,7 +36,7 @@ import BraintreeCore
         offerCredit: Bool = false
     ) {
         self.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
-        self.enablePayPalAppSwitch = enablePayPalAppSwitch
+        self.enablePayPalAppSwitch = !application.isPayPalAppInstalled() ? false : enablePayPalAppSwitch
     }
 
     /// Initializes a PayPal Vault request
