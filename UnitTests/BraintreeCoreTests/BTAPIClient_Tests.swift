@@ -288,12 +288,6 @@ class BTAPIClient_Tests: XCTestCase {
 
     // MARK: - Analytics
 
-    func testAnalyticsService_byDefault_isASingleton() {
-        let firstAPIClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        let secondAPIClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")
-        XCTAssertEqual(firstAPIClient?.analyticsService, secondAPIClient?.analyticsService)
-    }
-
     func testAnalyticsService_isCreatedDuringInitialization() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         XCTAssertTrue(apiClient?.analyticsService is BTAnalyticsService)
@@ -301,7 +295,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testSendAnalyticsEvent_whenCalled_callsAnalyticsService() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        let mockAnalyticsService = FakeAnalyticsService()
 
         apiClient.analyticsService = mockAnalyticsService
         apiClient.sendAnalyticsEvent("blahblah")
@@ -311,7 +305,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testFetchAPITiming_whenConfigurationPathIsValid_sendsLatencyEvent() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
 
         apiClient.fetchAPITiming(
@@ -328,7 +322,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testFetchAPITiming_whenPathIsBatchEvents_doesNotSendLatencyEvent() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
 
         apiClient.fetchAPITiming(
@@ -345,7 +339,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     func testFetchAPITiming_whenPathIsNotBatchEvents_sendLatencyEvent() {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsService = FakeAnalyticsService(apiClient: apiClient)
+        let mockAnalyticsService = FakeAnalyticsService()
         apiClient.analyticsService = mockAnalyticsService
 
         apiClient.fetchAPITiming(

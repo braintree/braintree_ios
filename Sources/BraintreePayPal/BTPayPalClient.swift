@@ -60,6 +60,9 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
+    
+    /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
+    private var isConfigFromCache: Bool?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: String? = nil
@@ -291,7 +294,12 @@ import BraintreeDataCollector
 
         switch returnURL.state {
         case .succeeded, .canceled:
-            handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
+            guard let payPalRequest else {
+                notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: appSwitchCompletion)
+                return
+            }
+
+            handleReturn(url, paymentType: payPalRequest.paymentType, completion: appSwitchCompletion)
         case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
         }
@@ -317,6 +325,8 @@ import BraintreeDataCollector
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
+            
+            self.isConfigFromCache = configuration.isFromCache
 
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
@@ -439,7 +449,12 @@ import BraintreeDataCollector
 
             switch returnURL.state {
             case .succeeded, .canceled:
-                handleReturn(url, paymentType: .vault, completion: completion)
+                guard let payPalRequest else {
+                    notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: appSwitchCompletion)
+                    return
+                }
+
+                handleReturn(url, paymentType: payPalRequest.paymentType, completion: completion)
             case .unknownPath:
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
@@ -447,6 +462,7 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID
