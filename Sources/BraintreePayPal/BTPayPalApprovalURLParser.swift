@@ -45,8 +45,9 @@ struct BTPayPalApprovalURLParser {
         return nil
     }
 
-    init?(body: BTJSON, linkType: String?) {
-        if linkType == "universal", let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {
+    // TODO: do we need this
+    init?(body: BTJSON, linkType: LinkType?) {
+        if linkType == .universal, let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {
             redirectType = .payPalApp(url: payPalAppRedirectURL)
             url = payPalAppRedirectURL
         } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??

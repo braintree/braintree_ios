@@ -310,7 +310,7 @@ import Foundation
         errorDescription: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
-        linkType: String? = nil,
+        linkType: LinkType? = nil,
         payPalContextID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
@@ -320,7 +320,7 @@ import Foundation
                 eventName: eventName,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
-                linkType: linkType,
+                linkType: linkType?.rawValue,
                 payPalContextID: payPalContextID
             )
         )

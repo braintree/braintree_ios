@@ -19,7 +19,8 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
-    private var application: URLOpener = UIApplication.shared
+    /// exposed for mocking not installed tests
+    var application: URLOpener = UIApplication.shared
 
     // MARK: - Initializers
 

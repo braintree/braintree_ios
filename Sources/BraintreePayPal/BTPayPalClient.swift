@@ -62,7 +62,7 @@ import BraintreeDataCollector
     private var isConfigFromCache: Bool?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: String? = nil
+    private var linkType: LinkType? = nil
 
     // MARK: - Initializer
 
@@ -308,7 +308,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? "universal" : "deeplink"
+        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
