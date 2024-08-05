@@ -23,7 +23,7 @@ import BraintreeDataCollector
     /// https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
     public var paymentTypeCountryCode: String?
     
-    /// Optional: The address of the customer. An error will occur if this address is not valid.
+    /// Optional: A non-default merchant account to use for tokenization.
     public var merchantAccountID: String?
     
     /// Optional: The address of the customer. An error will occur if this address is not valid.
