@@ -5,7 +5,7 @@ import Foundation
 public class BTPayPalVaultEditRequest {
 
     private let editPayPalVaultID: String
-    public var merchantAccountID: String?
+    private let merchantAccountID: String?
 
     //   TODO: specify endpoint for merchant to retrieve the token
     /// Initializes a PayPal Edit Request for the edit funding instrument flow
