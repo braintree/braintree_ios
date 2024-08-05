@@ -239,8 +239,6 @@ class BTPayPalClient_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        vaultRequest.application.payPalAppInstalled = true
-
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "paypalAppApprovalUrl": "https://www.paypal.com?ba_token=BA-Random-Value"
@@ -932,6 +930,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrueAndSendsAnalytics() {
         let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
         payPalClient.application = fakeApplication
 
         let vaultRequest = BTPayPalVaultRequest(
@@ -939,7 +938,7 @@ class BTPayPalClient_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        vaultRequest.application.payPalAppInstalled = true
+        vaultRequest.application = fakeApplication
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [

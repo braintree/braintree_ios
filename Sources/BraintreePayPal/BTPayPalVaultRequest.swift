@@ -19,7 +19,7 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
-    /// exposed for mocking not installed tests
+    /// exposed for mocking in tests
     var application: URLOpener = UIApplication.shared
 
     // MARK: - Initializers
@@ -37,7 +37,7 @@ import BraintreeCore
         offerCredit: Bool = false
     ) {
         self.init(offerCredit: offerCredit, userAuthenticationEmail: userAuthenticationEmail)
-        self.enablePayPalAppSwitch = !application.isPayPalAppInstalled() ? false : enablePayPalAppSwitch
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
     /// Initializes a PayPal Vault request
@@ -56,7 +56,7 @@ import BraintreeCore
             baseParameters["payer_email"] = userAuthenticationEmail
         }
         
-        if enablePayPalAppSwitch, let universalLink {
+        if enablePayPalAppSwitch, application.isPayPalAppInstalled(), let universalLink {
             let appSwitchParameters: [String: Any] = [
                 "launch_paypal_app": enablePayPalAppSwitch,
                 "os_version": UIDevice.current.systemVersion,

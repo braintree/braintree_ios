@@ -1,6 +1,7 @@
 import XCTest
 @testable import BraintreeCore
 @testable import BraintreePayPal
+@testable import BraintreeTestShared
 
 class BTPayPalVaultRequest_Tests: XCTestCase {
 
@@ -75,6 +76,10 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true
         )
+
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
+        request.application = fakeApplication
 
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
 
