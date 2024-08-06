@@ -1,7 +1,7 @@
 import Foundation
 
-/// Used to store, access, and manage an array of to-be-invoked `BTConfiguration` GET result callbacks in a thread-safe manner
-actor ConfigurationCallbackStorage {
+/// Used to store, access, and manage an array of to-be-invoked `BTConfiguration` GET result callbacks
+class ConfigurationCallbackStorage {
     
     private var pendingCompletions: [(BTConfiguration?, Error?) -> Void] = []
     
