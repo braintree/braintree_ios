@@ -135,31 +135,31 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
-                pricingModel: .autoReload,
+                pricingModel: .fixed,
                 amount: "9.99",
-                reloadThresholdAmount: "100.00"
+                reloadThresholdAmount: "99.99"
             )
             
             let billingCycle = BTPayPalBillingCycle(
                 interval: .month,
                 intervalCount: 1,
-                numberOfExecutions: 12,
-                sequence: 9,
-                startDate: "2024-04-06T00:00:00Z",
-                isTrial: false,
+                numberOfExecutions: 1,
+                sequence: 1,
+                startDate: "2024-08-01",
+                isTrial: true,
                 pricing: billingPricing
             )
             
             let recurringBillingDetails = BTPayPalRecurringBillingDetails(
                 billingCycles: [billingCycle],
                 currencyISOCode: "USD",
-                totalAmount: "35.99",
+                totalAmount: "32.56",
                 productName: "Vogue Magazine Subscription",
                 productDescription: "Home delivery to Chicago, IL",
                 productQuantity: 1,
-                oneTimeFeeAmount: "5.99",
+                oneTimeFeeAmount: "9.99",
                 shippingAmount: "1.99",
-                productAmount: "9.99",
+                productAmount: "19.99",
                 taxAmount: "0.59"
             )
             
