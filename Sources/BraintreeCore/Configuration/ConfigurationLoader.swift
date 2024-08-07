@@ -8,7 +8,8 @@ class ConfigurationLoader {
     private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
     private let pendingCompletions = ConfigurationCallbackStorage()
-    
+    private var isConfigCached = false // TODO: - Rename; should this bool live here?
+
     // MARK: - Intitializer
     
     init(http: BTHTTP) {
@@ -69,17 +70,38 @@ class ConfigurationLoader {
             }
         }
     }
-    
+        
     func getConfig() async throws -> BTConfiguration {
-        try await withCheckedThrowingContinuation { continuation in
-            getConfig { configuration, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let configuration {
-                    continuation.resume(returning: configuration)
+        if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
+            isConfigCached = true
+            return cachedConfig
+        }
+     
+        while !isConfigCached {
+            print("While loop body")
+            
+            do {
+                print("🤞GET request made")
+                let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
+                
+                if response.statusCode != 200 { // || body == nil {
+                    throw BTAPIClientError.configurationUnavailable
+                } else {
+                    let configuration = BTConfiguration(json: body)
+                    
+                    try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
+                    
+                    NotificationCenter.default.post(name: Notification.Name("ConfigGet"), object: configuration)
+                    isConfigCached = true
+
+                    return configuration
                 }
+            } catch {
+                throw error
             }
         }
+        print("Exited while loop")
+        throw BTAPIClientError.configurationUnavailable
     }
     
     // MARK: - Private Methods

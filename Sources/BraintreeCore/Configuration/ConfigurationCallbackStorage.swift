@@ -1,8 +1,11 @@
 import Foundation
 
+// TODO: - Do we still need this class? It no-longer wraps an array to provide thread-safety
+
 /// Used to store, access, and manage an array of to-be-invoked `BTConfiguration` GET result callbacks
 class ConfigurationCallbackStorage {
     
+    // TODO: - Remove. Not an option to store array of completions.
     private var pendingCompletions: [(BTConfiguration?, Error?) -> Void] = []
     
     /// The number of completions that are waiting to be invoked

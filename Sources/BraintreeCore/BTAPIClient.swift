@@ -93,19 +93,15 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        configurationLoader.getConfig { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, BTAPIClientError.deallocated)
-                return
-            }
-            
-            if let error {
+        // TODO: - Consider updating all feature clients to use async version of this method?
+        Task {
+            do {
+                let configuration = try await configurationLoader.getConfig()
+                setupHTTPCredentials(configuration)
+                completion(configuration, nil)
+            } catch {
                 completion(nil, error)
-                return
             }
-            
-            setupHTTPCredentials(configuration)
-            completion(configuration, nil)
         }
     }
     

@@ -77,6 +77,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             completion(nil, nil, error)
         }
     }
+    
+    func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil) async throws -> (BTJSON, HTTPURLResponse) {
+        try await withCheckedThrowingContinuation { continuation in
+            get(path, configuration: configuration, parameters: parameters) { body, response, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let body, let response {
+                    continuation.resume(returning: (body, response))
+                }
+            }
+            // TODO: - How do we want to handle case of nil body or response
+        }
+    }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
     func post(
