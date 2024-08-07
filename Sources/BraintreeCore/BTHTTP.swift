@@ -78,7 +78,11 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
     }
     
-    func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil) async throws -> (BTJSON, HTTPURLResponse) {
+    func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         try await withCheckedThrowingContinuation { continuation in
             get(path, configuration: configuration, parameters: parameters) { body, response, error in
                 if let error {

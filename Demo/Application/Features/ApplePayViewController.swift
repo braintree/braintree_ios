@@ -40,6 +40,7 @@ class ApplePayViewController: PaymentButtonBaseViewController {
             paymentAuthorizationViewController.delegate = self
 
             self.progressBlock("Presenting Apple Pay Sheet")
+            // TODO: why does this need dispatch queue main
             self.present(paymentAuthorizationViewController, animated: true)
         }
     }
