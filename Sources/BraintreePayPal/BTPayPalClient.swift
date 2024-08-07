@@ -332,7 +332,11 @@ import BraintreeDataCollector
             self.payPalRequest = request
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(with: configuration, universalLink: self.universalLink)
+                parameters: request.parameters(
+                    with: configuration,
+                    universalLink: self.universalLink,
+                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
+                )
             ) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {

@@ -938,8 +938,6 @@ class BTPayPalClient_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        vaultRequest.application = fakeApplication
-
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"

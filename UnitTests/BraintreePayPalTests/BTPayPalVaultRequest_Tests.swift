@@ -77,11 +77,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = true
-        request.application = fakeApplication
-
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))

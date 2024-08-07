@@ -19,9 +19,6 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
 
-    /// exposed for mocking in tests
-    var application: URLOpener = UIApplication.shared
-
     // MARK: - Initializers
 
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
@@ -49,14 +46,14 @@ import BraintreeCore
         super.init(offerCredit: offerCredit)
     }
 
-    public override func parameters(with configuration: BTConfiguration, universalLink: URL? = nil) -> [String: Any] {
+    public override func parameters(with configuration: BTConfiguration, universalLink: URL? = nil, isPayPalAppInstalled: Bool = false) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
 
         if let userAuthenticationEmail {
             baseParameters["payer_email"] = userAuthenticationEmail
         }
         
-        if let universalLink, enablePayPalAppSwitch, application.isPayPalAppInstalled() {
+        if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [
                 "launch_paypal_app": enablePayPalAppSwitch,
                 "os_version": UIDevice.current.systemVersion,
