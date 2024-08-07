@@ -87,8 +87,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             get(path, configuration: configuration, parameters: parameters) { body, response, error in
                 if let error {
                     continuation.resume(throwing: error)
-                } else if let body, let response {
-                    continuation.resume(returning: (body, response))
+                } else if let response {
+                    continuation.resume(returning: (body ?? BTJSON(), response))
                 }
             }
             // TODO: - How do we want to handle case of nil body or response
