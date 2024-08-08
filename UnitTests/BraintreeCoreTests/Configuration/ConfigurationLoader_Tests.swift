@@ -39,11 +39,12 @@ class ConfigurationLoader_Tests: XCTestCase {
 
         do {
             let _ = try await sut.getConfig()
-            XCTAssertEqual(self.mockHTTP.lastRequestEndpoint, "v1/configuration")
-            XCTAssertEqual(self.mockHTTP.lastRequestParameters?["configVersion"] as? String, "3")
         } catch {
-            XCTFail("Should not fail")
+            // no-op
         }
+
+        XCTAssertEqual(self.mockHTTP.lastRequestEndpoint, "v1/configuration")
+        XCTAssertEqual(self.mockHTTP.lastRequestParameters?["configVersion"] as? String, "3")
     }
 
     func testGetConfig_canGetRemoteConfiguration() async {

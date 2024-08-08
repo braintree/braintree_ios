@@ -54,8 +54,7 @@ class ConfigurationLoader {
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
 
-                // TODO: do we care if body is nil?
-                if response?.statusCode != 200 {
+                if response?.statusCode != 200 || body == nil {
                     throw BTAPIClientError.configurationUnavailable
                 } else {
                     let configuration = BTConfiguration(json: body)
