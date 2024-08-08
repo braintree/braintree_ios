@@ -94,7 +94,7 @@ import Foundation
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // TODO: - Consider updating all feature clients to use async version of this method?
-        Task {
+        Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
                 setupHTTPCredentials(configuration)

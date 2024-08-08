@@ -91,7 +91,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                     continuation.resume(returning: (body ?? BTJSON(), response))
                 }
             }
-            // TODO: - How do we want to handle case of nil body or response
         }
     }
 
