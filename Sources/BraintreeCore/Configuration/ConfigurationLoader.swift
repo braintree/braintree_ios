@@ -7,7 +7,8 @@ class ConfigurationLoader {
     private let configPath = "v1/configuration"
     private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
-    private var isConfigCached = false // TODO: - Rename; should this bool live here?
+
+    private var existingTask: Task<BTConfiguration, Error>?
 
     // MARK: - Initializer
     
@@ -36,25 +37,24 @@ class ConfigurationLoader {
     ///   - `Error?`: An error object if fetching the configuration fails or if the instance is deallocated.
     @_documentation(visibility: private)
     func getConfig() async throws -> BTConfiguration {
+        if let existingTask {
+            return try await existingTask.value
+        }
+
         if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
-            isConfigCached = true
             return cachedConfig
         }
      
-        while !isConfigCached {
+        let task = Task {
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
-                
-                if response?.statusCode != 200 || body == nil {
+
+                // TODO: do we care if body is nil?
+                if response?.statusCode != 200 {
                     throw BTAPIClientError.configurationUnavailable
                 } else {
                     let configuration = BTConfiguration(json: body)
-                    
                     try? configurationCache.putInCache(authorization: http.authorization.bearer, configuration: configuration)
-                    
-                    NotificationCenter.default.post(name: Notification.Name("ConfigGet"), object: configuration)
-                    isConfigCached = true
-
                     return configuration
                 }
             } catch {
@@ -62,6 +62,7 @@ class ConfigurationLoader {
             }
         }
 
-        throw BTAPIClientError.configurationUnavailable
+        existingTask = task
+        return try await task.value
     }
 }
