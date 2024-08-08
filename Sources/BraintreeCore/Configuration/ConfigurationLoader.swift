@@ -45,7 +45,12 @@ class ConfigurationLoader {
             return cachedConfig
         }
      
-        let task = Task {
+        let task = Task { [weak self] in
+            guard let self = self else {
+                throw BTAPIClientError.deallocated
+            }
+
+            defer { self.existingTask = nil }
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
 
