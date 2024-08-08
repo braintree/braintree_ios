@@ -37,16 +37,16 @@ class ConfigurationLoader {
     ///   - `Error?`: An error object if fetching the configuration fails or if the instance is deallocated.
     @_documentation(visibility: private)
     func getConfig() async throws -> BTConfiguration {
-        if let existingTask {
-            return try await existingTask.value
-        }
-
         if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
             return cachedConfig
         }
+        
+        if let existingTask {
+            return try await existingTask.value
+        }
      
         let task = Task { [weak self] in
-            guard let self = self else {
+            guard let self else {
                 throw BTAPIClientError.deallocated
             }
 
