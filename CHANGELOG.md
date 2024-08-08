@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeCore
   * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+* BraintreePayPal
+  * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
 
 ## 6.23.2 (2024-07-30)
 * BraintreePayPal
