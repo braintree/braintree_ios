@@ -6,15 +6,26 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Properties
 
-    private let exceptionName: NSExceptionName = NSExceptionName("")
+    private let exceptionName = NSExceptionName("")
 
     // MARK: - Overrides
 
-    override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
+    override func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil,
+        completion: @escaping RequestCompletion
+    ) {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
-    override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
+    override func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: [String: Any]? = nil,
+        headers: [String: String]? = nil,
+        completion: @escaping RequestCompletion
+    ) {
         httpRequest(method: "POST", configuration: configuration, parameters: parameters, completion: completion)
     }
 
@@ -103,7 +114,7 @@ class BTGraphQLHTTP: BTHTTP {
         let body = BTJSON(value: json)
 
         // Success case
-        if let _ = body.asDictionary(), body["errors"].asArray() == nil {
+        if body.asDictionary() != nil, body["errors"].asArray() == nil {
             callCompletionAsync(with: completion, body: body, response: httpResponse, error: nil)
             return
         }

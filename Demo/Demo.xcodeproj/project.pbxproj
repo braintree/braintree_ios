@@ -705,7 +705,6 @@
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
 				80D36DEE2A7967F20035380E /* VenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */,
-				BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */,
 				57108A152832E789004EB870 /* PayPalNativeCheckoutViewController.swift in Sources */,
 				BEBD52832AAB62FB005D6687 /* ApplePayViewController.swift in Sources */,
 				BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */,
@@ -993,6 +992,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
@@ -1016,6 +1016,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintree.DemoUITests;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";

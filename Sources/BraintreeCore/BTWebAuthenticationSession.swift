@@ -20,12 +20,12 @@ public class BTWebAuthenticationSession: NSObject {
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { url, error in
-                if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                    sessionDidCancel()
-                } else {
-                    sessionDidComplete(url, error)
-                }
+            if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
+                sessionDidCancel()
+            } else {
+                sessionDidComplete(url, error)
             }
+        }
 
         authenticationSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
 

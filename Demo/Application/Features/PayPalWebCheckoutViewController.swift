@@ -64,11 +64,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
+
+        
         let vaultStackView = buttonsStackView(label: "Vault", views: [
             UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
             payPalVaultButton,
             payPalAppSwitchButton
         ])
+        
+        //let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
 
 
         let stackView = UIStackView(arrangedSubviews: [

@@ -29,6 +29,9 @@ public enum BTThreeDSecureError: Error, CustomNSError, LocalizedError, Equatable
     /// 8. Deallocated BTThreeDSecureClient
     case deallocated
 
+    /// 9. 3D Secure was idle and exceeded timout limit
+    case exceededTimeoutLimit
+
     public static var errorDomain: String {
         "com.braintreepayments.BTThreeDSecureFlowErrorDomain"
     }
@@ -53,6 +56,8 @@ public enum BTThreeDSecureError: Error, CustomNSError, LocalizedError, Equatable
             return 7
         case .deallocated:
             return 8
+        case .exceededTimeoutLimit:
+            return 9
         }
     }
 
@@ -76,6 +81,8 @@ public enum BTThreeDSecureError: Error, CustomNSError, LocalizedError, Equatable
             return [NSLocalizedDescriptionKey: "The request could not be serialized."]
         case .deallocated:
             return [NSLocalizedDescriptionKey: "BTThreeDSecureClient has been deallocated."]
+        case .exceededTimeoutLimit:
+            return [NSLocalizedDescriptionKey: "User exceeded timeout limit."]
         }
     }
 

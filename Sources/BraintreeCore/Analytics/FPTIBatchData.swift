@@ -1,15 +1,18 @@
 import UIKit
 
+// swiftlint:disable nesting
 /// The POST body for a batch upload of FPTI events
 struct FPTIBatchData: Codable {
     
     let events: [EventsContainer] // Single-element "events" array required by FPTI formatting
     
     init(metadata: Metadata, events fptiEvents: [Event]?) {
-        self.events = [EventsContainer(
-            metadata: metadata,
-            fptiEvents: fptiEvents ?? []
-        )]
+        self.events = [
+            EventsContainer(
+                metadata: metadata,
+                fptiEvents: fptiEvents ?? []
+            )
+        ]
     }
     
     struct EventsContainer: Codable {
@@ -28,11 +31,19 @@ struct FPTIBatchData: Codable {
 
         static var application: URLOpener = UIApplication.shared
 
+        /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
+        ///
+        /// `nil` if a persistent connection is used.
+        let connectionStartTime: Int?
         let correlationID: String?
         let endpoint: String?
+        /// UTC millisecond timestamp when a networking task completed.
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
+        /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
+        let isConfigFromCache: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -41,19 +52,53 @@ struct FPTIBatchData: Codable {
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
+        /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
+        let requestStartTime: Int?
+        /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
-        let timestamp: String
+        let timestamp = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
+        
+        init(
+            connectionStartTime: Int? = nil,
+            correlationID: String? = nil,
+            endpoint: String? = nil,
+            endTime: Int? = nil,
+            errorDescription: String? = nil,
+            eventName: String,
+            isConfigFromCache: Bool? = nil,
+            isVaultRequest: Bool? = nil,
+            linkType: String? = nil,
+            payPalContextID: String? = nil,
+            requestStartTime: Int? = nil,
+            startTime: Int? = nil
+        ) {
+            self.connectionStartTime = connectionStartTime
+            self.correlationID = correlationID
+            self.endpoint = endpoint
+            self.endTime = endTime
+            self.errorDescription = errorDescription
+            self.eventName = eventName
+            self.isConfigFromCache = isConfigFromCache
+            self.isVaultRequest = isVaultRequest
+            self.linkType = linkType
+            self.payPalContextID = payPalContextID
+            self.requestStartTime = requestStartTime
+            self.startTime = startTime
+        }
 
         enum CodingKeys: String, CodingKey {
+            case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
             case payPalInstalled = "paypal_installed"
+            case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case startTime = "start_time"

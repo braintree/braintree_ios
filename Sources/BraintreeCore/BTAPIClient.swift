@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -21,27 +22,17 @@ import Foundation
     var http: BTHTTP?
     var graphQLHTTP: BTGraphQLHTTP?
     var payPalHTTP: BTHTTP?
-
+    var configurationLoader: ConfigurationLoader
+    
     /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    weak var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
-
-    private static var _analyticsService: BTAnalyticsService?
+    var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
     @objc(initWithAuthorization:)
-    public convenience init?(authorization: String) {
-        self.init(authorization: authorization, sendAnalyticsEvent: true)
-    }
-
-    init?(authorization: String, sendAnalyticsEvent: Bool) {
+    public init?(authorization: String) {
         self.metadata = BTClientMetadata()
 
         guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
@@ -49,8 +40,7 @@ import Foundation
         switch authorizationType {
         case .tokenizationKey:
             do {
-                self.authorization =  try TokenizationKey(authorization)
-                http = BTHTTP(authorization: self.authorization)
+                self.authorization = try TokenizationKey(authorization)
             } catch {
                 return nil
             }
@@ -58,19 +48,21 @@ import Foundation
             do {
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
-
-                http = BTHTTP(authorization: self.authorization)
             } catch {
                 return nil
             }
         }
         
+        let btHttp = BTHTTP(authorization: self.authorization)
+        http = btHttp
+        configurationLoader = ConfigurationLoader(http: btHttp)
+        
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { configuration, error in
+        fetchOrReturnRemoteConfiguration { _, _ in
             // No-op
         }
     }
@@ -101,55 +93,24 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
-        //
-        // Rules:
-        //   - If cachedConfiguration is present, return it without a request
-        //   - If cachedConfiguration is not present, fetch it and cache the successful response
-        //   - If fetching fails, return error
-
-        let configPath = "v1/configuration"
-        
-        if let cachedConfig = try? ConfigurationCache.shared.getFromCache(authorization: self.authorization.bearer) {
-            setupHTTPCredentials(cachedConfig)
-            completion(cachedConfig, nil)
-            return
-        }
-
-        http?.get(configPath, parameters: BTConfigurationRequest()) { [weak self] body, response, error in
+        configurationLoader.getConfig { [weak self] configuration, error in
             guard let self else {
                 completion(nil, BTAPIClientError.deallocated)
                 return
             }
-
-            if error != nil {
+            
+            if let error {
                 completion(nil, error)
                 return
-            } else if response?.statusCode != 200 || body == nil {
-                completion(nil, BTAPIClientError.configurationUnavailable)
-                return
-            } else {
-                let configuration = BTConfiguration(json: body)
-
-                setupHTTPCredentials(configuration)
-                try? ConfigurationCache.shared.putInCache(authorization: authorization.bearer, configuration: configuration)
-                
-                completion(configuration, nil)
-                return
             }
+            
+            setupHTTPCredentials(configuration)
+            completion(configuration, nil)
         }
     }
     
     func fetchConfiguration() async throws -> BTConfiguration {
-        try await withCheckedThrowingContinuation { continuation in
-            fetchOrReturnRemoteConfiguration { configuration, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let configuration {
-                    continuation.resume(returning: configuration)
-                }
-            }
-        }
+        try await configurationLoader.getConfig()
     }
 
     /// Fetches a customer's vaulted payment method nonces.
@@ -181,7 +142,7 @@ import Foundation
             "session_id": metadata.sessionID
         ]
 
-        get("v1/payment_methods", parameters: parameters) { body, response, error in
+        get("v1/payment_methods", parameters: parameters) { body, _, error in
             if let error {
                 completion(nil, error)
                 return
@@ -191,7 +152,10 @@ import Foundation
 
             body?["paymentMethods"].asArray()?.forEach { paymentInfo in
                 let type: String? = paymentInfo["type"].asString()
-                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(paymentInfo, withParsingBlockForType: type)
+                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(
+                    paymentInfo,
+                    withParsingBlockForType: type
+                )
 
                 if let paymentMethodNonce {
                     paymentMethodNonces.append(paymentMethodNonce)
@@ -302,7 +266,13 @@ import Foundation
             }
 
             let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, headers: headers, completion: completion)
+            http(for: httpType)?.post(
+                path,
+                configuration: configuration,
+                parameters: postParameters,
+                headers: headers,
+                completion: completion
+            )
         }
     }
     
@@ -322,11 +292,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await withCheckedThrowingContinuation { continuation in
-            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResonse, error in
+            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResponse, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(returning: (json, httpResonse))
+                    continuation.resume(returning: (json, httpResponse))
                 }
             }
         }
@@ -338,17 +308,21 @@ import Foundation
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: String? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(
-            eventName,
-            correlationID: correlationID,
-            errorDescription: errorDescription,
-            isVaultRequest: isVaultRequest,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+        analyticsService.sendAnalyticsEvent(
+            FPTIBatchData.Event(
+                correlationID: correlationID,
+                errorDescription: errorDescription,
+                eventName: eventName,
+                isConfigFromCache: isConfigFromCache,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID
+            )
         )
     }
 
@@ -372,7 +346,11 @@ import Foundation
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
 
-        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(in: authorization, options: [], range: NSRange(location: 0, length: authorization.count))
+        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
+            in: authorization,
+            options: [],
+            range: NSRange(location: 0, length: authorization.count)
+        )
 
         return tokenizationKeyMatch != nil ? .tokenizationKey : .clientToken
     }
@@ -392,19 +370,14 @@ import Foundation
     
     // MARK: - Private Methods
     
-    private func setupHTTPCredentials(_ configuration: BTConfiguration) {
-        if http == nil {
-            http = BTHTTP(authorization: authorization)
-            http?.networkTimingDelegate = self
-        }
-
+    private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
             graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             graphQLHTTP?.networkTimingDelegate = self
         }
         
         if payPalHTTP == nil {
-            let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration.environment ?? "")
+            let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
             
             if authorization.type == .clientToken {
                 payPalHTTP = BTHTTP(authorization: authorization, customBaseURL: paypalBaseURL)
@@ -424,15 +397,24 @@ import Foundation
 
     // MARK: BTAPITimingDelegate conformance
 
-    func fetchAPITiming(path: String, startTime: Int, endTime: Int) {
-        let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
-
+    func fetchAPITiming(path: String, connectionStartTime: Int?, requestStartTime: Int?, startTime: Int, endTime: Int) {
+        var cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+        cleanedPath = cleanedPath.replacingOccurrences(
+            of: "payment_methods/.*/three_d_secure",
+            with: "payment_methods/three_d_secure",
+            options: .regularExpression
+        )
+        
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
-                BTCoreAnalytics.apiRequestLatency,
-                endpoint: cleanedPath,
-                endTime: endTime,
-                startTime: startTime
+            analyticsService.sendAnalyticsEvent(
+                FPTIBatchData.Event(
+                    connectionStartTime: connectionStartTime,
+                    endpoint: cleanedPath,
+                    endTime: endTime,
+                    eventName: BTCoreAnalytics.apiRequestLatency,
+                    requestStartTime: requestStartTime,
+                    startTime: startTime
+                )
             )
         }
     }

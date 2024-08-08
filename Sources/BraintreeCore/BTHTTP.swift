@@ -1,6 +1,7 @@
 import Foundation
 import Security
 
+// swiftlint:disable type_body_length file_length
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, URLSessionTaskDelegate {
 
@@ -8,11 +9,11 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - Internal Properties
 
-    /// An array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
-    let pinnedCertificates: [NSData] = BTAPIPinnedCertificates.trustedCertificates()
+    /// An array of pinned certificates, each a Data instance consisting of DER encoded x509 certificates
+    let pinnedCertificates: [Data] = BTAPIPinnedCertificates.trustedCertificates()
 
     /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
-    var dispatchQueue: DispatchQueue = DispatchQueue.main
+    var dispatchQueue = DispatchQueue.main
     
     /// A URL set to override the URLs derived from the ClientAuthorization or BTConfiguration response
     let customBaseURL: URL?
@@ -23,10 +24,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     /// Session exposed for testing
     lazy var session: URLSession = {
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+        let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 30
         
-        let delegateQueue: OperationQueue = OperationQueue()
+        let delegateQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
         
         return URLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
@@ -76,11 +79,30 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "POST", path: path, configuration: configuration, parameters: parameters, headers: headers, completion: completion)
+    func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: [String: Any]? = nil,
+        headers: [String: String]? = nil,
+        completion: @escaping RequestCompletion
+    ) {
+        httpRequest(
+            method: "POST",
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers,
+            completion: completion
+        )
     }
     
-    func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable, headers: [String: String]? = nil, completion: @escaping RequestCompletion) {
+    func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable,
+        headers: [String: String]? = nil,
+        completion: @escaping RequestCompletion
+    ) {
         do {
             let dict = try parameters.toDictionary()
             post(path, configuration: configuration, parameters: dict, headers: headers, completion: completion)
@@ -100,8 +122,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         completion: RequestCompletion?
     ) {
         do {
-            let request = try createRequest(method: method, path: path, configuration: configuration, parameters: parameters, headers: headers)
-            
+            let request = try createRequest(
+                method: method,
+                path: path,
+                configuration: configuration,
+                parameters: parameters,
+                headers: headers
+            )
+
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
@@ -139,7 +167,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
-        let mutableParameters: NSMutableDictionary = NSMutableDictionary(dictionary: parameters ?? [:])
+        let mutableParameters = NSMutableDictionary(dictionary: parameters ?? [:])
 
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
@@ -161,7 +189,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         parameters: NSMutableDictionary? = [:],
         headers additionalHeaders: [String: String]? = nil
     ) throws -> URLRequest {
-        guard var components: URLComponents = URLComponents(string: url.absoluteString) else {
+        guard var components = URLComponents(string: url.absoluteString) else {
             throw BTHTTPError.urlStringInvalid
         }
         
@@ -235,13 +263,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             return
         }
 
-        guard let response = response,
-              let httpResponse = createHTTPResponse(response: response) else {
+        guard let response, let httpResponse = createHTTPResponse(response: response) else {
             callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
             return
         }
 
-        guard let data = data else {
+        guard let data else {
             callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.dataNotFound)
             return
         }
@@ -301,7 +328,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         errorUserInfo[NSLocalizedFailureReasonErrorKey] = [HTTPURLResponse.localizedString(forStatusCode: response.statusCode)]
 
-        var json: BTJSON = BTJSON()
+        var json = BTJSON()
         if responseContentType == "application/json" {
             json = data.isEmpty ? BTJSON() : BTJSON(data: data)
 
@@ -315,7 +342,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             }
         }
 
-        var error: BTHTTPError = BTHTTPError.clientError(errorUserInfo)
+        var error = BTHTTPError.clientError(errorUserInfo)
 
         if response.statusCode == 429 {
             errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
@@ -337,11 +364,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         completion: @escaping (Error?) -> Void
     ) {
         let responseContentType: String? = response.mimeType
-        var errorUserInfo: [String : Any] = [BTCoreConstants.urlResponseKey: response]
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
         if let contentType = responseContentType, contentType != "application/json" {
             // Return error for unsupported response type
-            errorUserInfo[NSLocalizedFailureReasonErrorKey] = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
+            let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
+            errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
             completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
         } else {
             completion(json.asError())
@@ -363,10 +391,16 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - URLSessionTaskDelegate conformance
 
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             let domain: String = challenge.protectionSpace.host
+            // swiftlint:disable force_unwrapping
             let serverTrust: SecTrust = challenge.protectionSpace.serverTrust!
+            // swiftlint:enable force_unwrapping
 
             let policies: [SecPolicy] = [SecPolicyCreateSSL(true, domain as CFString)]
             SecTrustSetPolicies(serverTrust, policies as CFArray)
@@ -376,7 +410,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             let trusted: Bool = SecTrustEvaluateWithError(serverTrust, &error)
 
             if trusted && error == nil {
-                let credential: URLCredential = URLCredential(trust: serverTrust)
+                let credential = URLCredential(trust: serverTrust)
                 completionHandler(.useCredential, credential)
             } else {
                 completionHandler(.rejectProtectionSpace, nil)
@@ -389,14 +423,35 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
         metrics.transactionMetrics.forEach { transaction in
             if let startDate = transaction.fetchStartDate,
-               let endDate = transaction.responseEndDate,
-               let path = transaction.request.url?.path {
+                let endDate = transaction.responseEndDate,
+                var path = transaction.request.url?.path {
+                if path.contains("graphql"),
+                    let data = task.originalRequest?.httpBody,
+                    let mutationName = getGraphQLMutationName(data) {
+                        path = mutationName
+                }
+                
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
+                    connectionStartTime: transaction.connectStartDate?.utcTimestampMilliseconds,
+                    requestStartTime: transaction.requestStartDate?.utcTimestampMilliseconds,
                     startTime: startDate.utcTimestampMilliseconds,
                     endTime: endDate.utcTimestampMilliseconds
                 )
             }
         }
+    }
+    
+    private func getGraphQLMutationName(_ data: Data) -> String? {
+        let json = try? JSONSerialization.jsonObject(with: data)
+        let body = BTJSON(value: json)
+        
+        guard let query = body["query"].asString() else {
+            return nil
+        }
+
+        let queryDiscardHolder = query.replacingOccurrences(of: #"^[^\(]*"#, with: "", options: .regularExpression)
+        let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
+        return finalQuery
     }
 }

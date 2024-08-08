@@ -28,7 +28,9 @@ public enum BTApplePayError: Int, Error, CustomNSError, LocalizedError, Equatabl
         case .unknown:
             return ""
         case .unsupported:
+            // swiftlint:disable line_length
             return "Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again."
+            // swiftlint:enable line_length
         case .noApplePayCardsReturned:
             return "No Apple Pay Card data was returned. Please contact support."
         case .failedToCreateNonce:

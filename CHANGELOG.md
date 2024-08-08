@@ -2,9 +2,39 @@
 
 ## unreleased
 * BraintreeCore
-  * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+  * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+
+## 6.23.2 (2024-07-30)
 * BraintreePayPal
-  * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
+  * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
+* BraintreeCore
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
+
+## 6.23.1 (2024-07-24)
+* BraintreeThreeDSecure
+  * Add error code and error message for `exceededTimeoutLimit`  
+* BraintreeCore
+  * Prevent duplicate outbound `v1/configuration` requests
+  * Add network timeout of 30 seconds
+
+## 6.23.0 (2024-07-15)
+* BraintreeShopperInsights (BETA)
+  * Add error when using an invalid authorization type
+* BraintreeCore
+  * Update `URLOpener.openURL(_:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
+* BraintreeThreeDSecure
+  * Fix bug to conditionally unwrap `customFields` - this caused an error when this value was not set on `BTThreeDSecureRequest`
+
+## 6.22.0 (2024-07-02)
+* BraintreeThreeDSecure
+  * Add `customFields` param to `BTThreeDSecureRequest`
+* BraintreeCore
+  * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+  * For analytics, add additional metrics on networking timing
+  * Fix bug causing random crashes in `BTAnalyticsService`
+* BraintreePayPalNativeCheckout (DEPRECATED)  
+  * **Note:** This module is deprecated and will be removed in a future version of the SDK
+  * Add deprecated warning message to all public classes and methods
 
 ## 6.21.0 (2024-06-12)
 * BraintreePayPal

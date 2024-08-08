@@ -17,28 +17,32 @@ final class FPTIBatchData_Tests: XCTestCase {
     
     let eventParams = [
         FPTIBatchData.Event(
+            connectionStartTime: 123,
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1", 
+            isConfigFromCache: false,
             isVaultRequest: false,
             linkType: "universal",
             payPalContextID: "fake-order-id",
-            startTime: 999888777666,
-            timestamp: "fake-time-1"
+            requestStartTime: 456,
+            startTime: 999888777666
         ),
         FPTIBatchData.Event(
+            connectionStartTime: nil,
             correlationID: nil,
             endpoint: nil,
             endTime: nil,
             errorDescription: nil,
             eventName: "fake-event-2", 
+            isConfigFromCache: true,
             isVaultRequest: true,
             linkType: nil,
             payPalContextID: "fake-order-id-2",
-            startTime: nil,
-            timestamp: "fake-time-2"
+            requestStartTime: nil,
+            startTime: nil
         )
     ]
     
@@ -87,8 +91,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
 
         // Verify event-level parameters
-        XCTAssertEqual(eventParams[0]["t"] as? String, "fake-time-1")
-        XCTAssertEqual(eventParams[1]["t"] as? String, "fake-time-2")
+        XCTAssertNotNil(eventParams[0]["t"] as? String)
+        XCTAssertNotNil(eventParams[1]["t"] as? String)
         XCTAssertEqual(eventParams[0]["event_name"] as? String, "fake-event-1")
         XCTAssertEqual(eventParams[1]["event_name"] as? String, "fake-event-2")
         XCTAssertEqual(eventParams[0]["tenant_name"] as? String, "Braintree")
@@ -103,12 +107,18 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["correlation_id"])
         XCTAssertEqual(eventParams[0]["is_vault"] as? Bool, false)
         XCTAssertEqual(eventParams[1]["is_vault"] as? Bool, true)
+        XCTAssertEqual(eventParams[0]["config_cached"] as? Bool, false)
+        XCTAssertEqual(eventParams[1]["config_cached"] as? Bool, true)
         XCTAssertEqual(eventParams[0]["endpoint"] as? String, "/v1/paypal_hermes/setup_billing_agreement")
         XCTAssertNil(eventParams[1]["endpoint"])
         XCTAssertEqual(eventParams[0]["end_time"] as? Int, 111222333444555)
         XCTAssertNil(eventParams[1]["end_time"])
         XCTAssertEqual(eventParams[0]["start_time"] as? Int, 999888777666)
         XCTAssertNil(eventParams[1]["start_time"])
+        XCTAssertEqual(eventParams[0]["connect_start_time"] as? Int, 123)
+        XCTAssertNil(eventParams[1]["connect_start_time"])
+        XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
+        XCTAssertNil(eventParams[1]["request_start_time"])
     }
 }
 
