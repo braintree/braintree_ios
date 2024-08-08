@@ -82,13 +82,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         _ path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
-    ) async throws -> (BTJSON, HTTPURLResponse) {
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await withCheckedThrowingContinuation { continuation in
             get(path, configuration: configuration, parameters: parameters) { body, response, error in
                 if let error {
                     continuation.resume(throwing: error)
-                } else if let response {
-                    continuation.resume(returning: (body ?? BTJSON(), response))
+                } else {
+                    continuation.resume(returning: (body, response))
                 }
             }
         }

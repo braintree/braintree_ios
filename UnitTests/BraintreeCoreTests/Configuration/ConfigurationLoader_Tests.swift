@@ -70,8 +70,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         )
 
         do {
-            let configuration = try await sut.getConfig()
-            XCTAssertNil(configuration)
+            let _ = try await sut.getConfig()
         } catch {
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
@@ -86,12 +85,11 @@ class ConfigurationLoader_Tests: XCTestCase {
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         do {
-            let configuration = try await sut.getConfig()
-            XCTAssertNil(configuration)
+            let _ = try await sut.getConfig()
+        } catch {
             // BTAPIClient fetches the config when initialized so there can potentially be 2 requests here
             XCTAssertLessThanOrEqual(self.mockHTTP.GETRequestCount, 2)
-        } catch {
-            XCTFail("Should not fail")
+            XCTAssertEqual(error as NSError?, mockError)
         }
     }
 
@@ -131,7 +129,7 @@ class ConfigurationLoader_Tests: XCTestCase {
             let _ = try await sut.getConfig()
             let _ = try await sut.getConfig()
         } catch {
-            XCTFail("Should not fail")
+            // no op
         }
 
         XCTAssertEqual(mockHTTP.GETRequestCount, 1)

@@ -42,13 +42,10 @@ class ConfigurationLoader {
         }
      
         while !isConfigCached {
-            print("While loop body")
-            
             do {
-                print("🤞GET request made")
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
                 
-                if response.statusCode != 200 { // || body == nil {
+                if response?.statusCode != 200 || body == nil {
                     throw BTAPIClientError.configurationUnavailable
                 } else {
                     let configuration = BTConfiguration(json: body)
@@ -64,7 +61,7 @@ class ConfigurationLoader {
                 throw error
             }
         }
-        print("Exited while loop")
+
         throw BTAPIClientError.configurationUnavailable
     }
 }
