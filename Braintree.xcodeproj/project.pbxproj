@@ -117,7 +117,6 @@
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
 		806C85632B90EBED00A2754C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */; };
-		807296042C41B63F0093F2AB /* ConfigurationCallbackStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807296032C41B63F0093F2AB /* ConfigurationCallbackStorage.swift */; };
 		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
 		80842DA72B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */; };
 		8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */; };
@@ -858,7 +857,6 @@
 		8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClient_Tests.swift; sourceTree = "<group>"; };
 		8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsRequest.swift; sourceTree = "<group>"; };
 		806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		807296032C41B63F0093F2AB /* ConfigurationCallbackStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCallbackStorage.swift; sourceTree = "<group>"; };
 		8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIRequest.swift; sourceTree = "<group>"; };
 		80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8087C10E2BFBACCA0020FC2E /* TokenizationKey_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationKey_Tests.swift; sourceTree = "<group>"; };
@@ -1511,7 +1509,6 @@
 				BE5C8C0228A2C183004F9130 /* BTConfiguration+Core.swift */,
 				804DC45C2B2D08FF00F17A15 /* BTConfigurationRequest.swift */,
 				BE698EA128AA8EEA001D9B10 /* ConfigurationCache.swift */,
-				807296032C41B63F0093F2AB /* ConfigurationCallbackStorage.swift */,
 				45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */,
 			);
 			path = Configuration;
@@ -3283,7 +3280,6 @@
 				800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */,
 				BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */,
 				5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */,
-				807296042C41B63F0093F2AB /* ConfigurationCallbackStorage.swift in Sources */,
 				574891ED286F7ECA0020DA36 /* BTClientMetadata.swift in Sources */,
 				BE24C66E28E49A730067B11A /* BTAPIClientError.swift in Sources */,
 				BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */,
