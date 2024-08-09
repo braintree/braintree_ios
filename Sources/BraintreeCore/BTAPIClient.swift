@@ -106,7 +106,7 @@ import Foundation
         }
     }
     
-    func fetchConfiguration() async throws -> BTConfiguration {
+    @MainActor func fetchConfiguration() async throws -> BTConfiguration {
         try await configurationLoader.getConfig()
     }
 
