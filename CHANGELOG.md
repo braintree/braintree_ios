@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeCore
   * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+  * Fix low-memory crash in ConfigurationCallbackStorage (fixes #1382)
 
 ## 6.23.2 (2024-07-30)
 * BraintreePayPal
