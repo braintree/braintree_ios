@@ -6,6 +6,7 @@
 included:
   - Sources/BraintreeAmericanExpress
   - Sources/BraintreeApplePay
+  - Sources/BraintreeCard
   - Sources/BraintreeCore
 
 excluded:
