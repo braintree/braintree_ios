@@ -125,10 +125,11 @@ class ConfigurationLoader_Tests: XCTestCase {
     
     func testGetConfig_whenCalledInQuickSequence_onlySendsOneNetworkRequest() async {
         do {
-            let _ = try await sut.getConfig()
-            let _ = try await sut.getConfig()
-            let _ = try await sut.getConfig()
-            let _ = try await sut.getConfig()
+            async let functionOne = sut.getConfig()
+            async let two = sut.getConfig()
+            async let three = sut.getConfig()
+            async let four = sut.getConfig()
+            let _ = try await (functionOne, two, three, four)
         } catch {
             // no op
         }

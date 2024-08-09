@@ -1,5 +1,9 @@
 import Foundation
 
+@globalActor actor ConfigurationActor {
+    static let shared = ConfigurationActor()
+}
+
 class ConfigurationLoader {
     
     // MARK: - Private Properties
@@ -36,6 +40,7 @@ class ConfigurationLoader {
     ///   - `BTConfiguration?`: The configuration object if it is successfully fetched or retrieved from the cache.
     ///   - `Error?`: An error object if fetching the configuration fails or if the instance is deallocated.
     @_documentation(visibility: private)
+    @ConfigurationActor
     func getConfig() async throws -> BTConfiguration {
         if let existingTask {
             return try await existingTask.value
