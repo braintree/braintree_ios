@@ -232,7 +232,6 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDAndLinkTypeInAnalytics() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
-        payPalClient.payPalAppInstalled = true
         payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
 
         let vaultRequest = BTPayPalVaultRequest(
@@ -252,7 +251,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleReturnURL(returnURL)
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "universal")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
@@ -282,7 +281,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
@@ -301,7 +300,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "A_FAKE_BA_TOKEN")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
@@ -931,8 +930,8 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenPayPalInAppURL_returnsTrueAndSendsAnalytics() {
         let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
         payPalClient.application = fakeApplication
-        payPalClient.payPalAppInstalled = true
 
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",

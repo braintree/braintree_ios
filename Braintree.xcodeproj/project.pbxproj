@@ -337,6 +337,7 @@
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
 		BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAF28A579D700D74AEC /* BTClientToken.swift */; };
 		BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */; };
+		BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
 		BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */; };
 		BEDB820229B109EE00075AF3 /* BTApplePayAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDB820129B109EE00075AF3 /* BTApplePayAnalytics.swift */; };
@@ -1066,6 +1067,7 @@
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
 		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
 		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
+		BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkType.swift; sourceTree = "<group>"; };
 		BED7493528579BAC0074C818 /* BTURLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLUtils.swift; sourceTree = "<group>"; };
 		BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsService.swift; sourceTree = "<group>"; };
 		BEDB820129B109EE00075AF3 /* BTApplePayAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayAnalytics.swift; sourceTree = "<group>"; };
@@ -1599,6 +1601,7 @@
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
 				BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */,
 				800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */,
+				BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */,
 				457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */,
 			);
 			path = Analytics;
@@ -3312,6 +3315,7 @@
 				BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */,
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
 				804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */,
+				BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */,
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
 				457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */,
