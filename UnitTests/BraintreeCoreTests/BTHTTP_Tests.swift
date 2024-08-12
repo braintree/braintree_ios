@@ -757,7 +757,8 @@ final class BTHTTP_Tests: XCTestCase {
         var originalRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
         originalRequest.httpBody = """
             {
-                "operationName": "TestMutation"
+                "operationName": "TestMutation",
+                "query": "mutation TestMutation()"
             }
             """.data(using: .utf8)
         let task = testURLSession.dataTask(with: originalRequest)
@@ -778,6 +779,12 @@ final class BTHTTP_Tests: XCTestCase {
         XCTAssertNotNil(mockDelegate.receivedRequestStartTime)
         XCTAssertNotNil(mockDelegate.receivedStartTime)
         XCTAssertNotNil(mockDelegate.receivedEndTime)
+    }
+    
+    func testURLSessionConfiguration_hasCustomTimeoutSettings() {
+        let sut = BTHTTP(authorization: fakeTokenizationKey)
+        XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
+        XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
     }
 
     // MARK: - Helper Methods

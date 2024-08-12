@@ -1,13 +1,28 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Prevent duplicate outbound `v1/configuration` requests
-* BraintreeThreeDSecure
-  * Add error code and error message for `exceededTimeoutLimit`  
 * BraintreePayPal
   * Add PayPal vault edit flow (BETA)
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditRequest`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
+
+## 6.23.3 (2024-08-12)
+* BraintreeCore
+  * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+  * Fix low-memory crash in ConfigurationCallbackStorage (fixes #1382)
+
+## 6.23.2 (2024-07-30)
+* BraintreePayPal
+  * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
+* BraintreeCore
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
+
+## 6.23.1 (2024-07-24)
+* BraintreeThreeDSecure
+  * Add error code and error message for `exceededTimeoutLimit`  
+* BraintreeCore
+  * Prevent duplicate outbound `v1/configuration` requests
+  * Add network timeout of 30 seconds
 
 ## 6.23.0 (2024-07-15)
 * BraintreeShopperInsights (BETA)

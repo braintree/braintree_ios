@@ -37,9 +37,6 @@ import BraintreeDataCollector
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
 
-    /// Exposed for testing to check if the PayPal app is installed
-    var payPalAppInstalled: Bool = false
-
     /// True if `tokenize()` was called with a Vault request object type
     var isVaultRequest: Bool = false
 
@@ -60,9 +57,12 @@ import BraintreeDataCollector
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String? = nil
+    
+    /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
+    private var isConfigFromCache: Bool?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: String? = nil
+    private var linkType: LinkType? = nil
 
     // MARK: - Initializer
 
@@ -329,7 +329,12 @@ import BraintreeDataCollector
 
         switch returnURL.state {
         case .succeeded, .canceled:
-            handleReturn(url, paymentType: .vault, completion: appSwitchCompletion)
+            guard let payPalRequest else {
+                notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: appSwitchCompletion)
+                return
+            }
+
+            handleReturn(url, paymentType: payPalRequest.paymentType, completion: appSwitchCompletion)
         case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid, completion: appSwitchCompletion)
         }
@@ -341,8 +346,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        payPalAppInstalled = application.isPayPalAppInstalled()
-        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true && payPalAppInstalled ? "universal" : "deeplink"
+        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -355,20 +359,22 @@ import BraintreeDataCollector
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
+            
+            self.isConfigFromCache = configuration.isFromCache
 
             guard json["paypalEnabled"].isTrue else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
 
-            if !self.payPalAppInstalled {
-                (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch = false
-            }
-
             self.payPalRequest = request
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(with: configuration, universalLink: self.universalLink)
+                parameters: request.parameters(
+                    with: configuration,
+                    universalLink: self.universalLink,
+                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
+                )
             ) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -383,7 +389,7 @@ import BraintreeDataCollector
                     return
                 }
                 
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body, linkType: self.linkType) else {
+                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
                     self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
@@ -477,7 +483,12 @@ import BraintreeDataCollector
 
             switch returnURL.state {
             case .succeeded, .canceled:
-                handleReturn(url, paymentType: .vault, completion: completion)
+                guard let payPalRequest else {
+                    notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: appSwitchCompletion)
+                    return
+                }
+
+                handleReturn(url, paymentType: payPalRequest.paymentType, completion: completion)
             case .unknownPath:
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
@@ -485,6 +496,7 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
                     linkType: linkType,
                     payPalContextID: payPalContextID

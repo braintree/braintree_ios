@@ -26,6 +26,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = 30
         
         let delegateQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
@@ -73,6 +75,22 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
         } catch let error {
             completion(nil, nil, error)
+        }
+    }
+    
+    func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        try await withCheckedThrowingContinuation { continuation in
+            get(path, configuration: configuration, parameters: parameters) { body, response, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (body, response))
+                }
+            }
         }
     }
 
@@ -444,8 +462,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         let json = try? JSONSerialization.jsonObject(with: data)
         let body = BTJSON(value: json)
         
-        guard let mutationName = body["operationName"].asString() else { return nil }
-        
-        return "mutation \(mutationName)"
+        guard let query = body["query"].asString() else {
+            return nil
+        }
+
+        let queryDiscardHolder = query.replacingOccurrences(of: #"^[^\(]*"#, with: "", options: .regularExpression)
+        let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
+        return finalQuery
     }
 }

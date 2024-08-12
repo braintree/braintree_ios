@@ -25,14 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    /// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
-    /// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
-    weak var analyticsService: BTAnalyticsService? {
-        get { BTAPIClient._analyticsService }
-        set { BTAPIClient._analyticsService = newValue }
-    }
-
-    private static var _analyticsService: BTAnalyticsService?
+    var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -65,7 +58,7 @@ import Foundation
         configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
-        BTAPIClient._analyticsService = BTAnalyticsService(apiClient: self)
+        analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
@@ -100,23 +93,20 @@ import Foundation
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        configurationLoader.getConfig { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, BTAPIClientError.deallocated)
-                return
-            }
-            
-            if let error {
+        // TODO: - Consider updating all feature clients to use async version of this method?
+
+        Task { @MainActor in
+            do {
+                let configuration = try await configurationLoader.getConfig()
+                setupHTTPCredentials(configuration)
+                completion(configuration, nil)
+            } catch {
                 completion(nil, error)
-                return
             }
-            
-            setupHTTPCredentials(configuration)
-            completion(configuration, nil)
         }
     }
     
-    func fetchConfiguration() async throws -> BTConfiguration {
+    @MainActor func fetchConfiguration() async throws -> BTConfiguration {
         try await configurationLoader.getConfig()
     }
 
@@ -315,17 +305,21 @@ import Foundation
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
-        linkType: String? = nil,
+        linkType: LinkType? = nil,
         payPalContextID: String? = nil
     ) {
-        analyticsService?.sendAnalyticsEvent(
-            eventName,
-            correlationID: correlationID,
-            errorDescription: errorDescription,
-            isVaultRequest: isVaultRequest,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+        analyticsService.sendAnalyticsEvent(
+            FPTIBatchData.Event(
+                correlationID: correlationID,
+                errorDescription: errorDescription,
+                eventName: eventName,
+                isConfigFromCache: isConfigFromCache,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType?.rawValue,
+                payPalContextID: payPalContextID
+            )
         )
     }
 
@@ -401,16 +395,23 @@ import Foundation
     // MARK: BTAPITimingDelegate conformance
 
     func fetchAPITiming(path: String, connectionStartTime: Int?, requestStartTime: Int?, startTime: Int, endTime: Int) {
-        let cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
-
+        var cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+        cleanedPath = cleanedPath.replacingOccurrences(
+            of: "payment_methods/.*/three_d_secure",
+            with: "payment_methods/three_d_secure",
+            options: .regularExpression
+        )
+        
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
-                BTCoreAnalytics.apiRequestLatency,
-                connectionStartTime: connectionStartTime,
-                endpoint: cleanedPath,
-                endTime: endTime,
-                requestStartTime: requestStartTime,
-                startTime: startTime
+            analyticsService.sendAnalyticsEvent(
+                FPTIBatchData.Event(
+                    connectionStartTime: connectionStartTime,
+                    endpoint: cleanedPath,
+                    endTime: endTime,
+                    eventName: BTCoreAnalytics.apiRequestLatency,
+                    requestStartTime: requestStartTime,
+                    startTime: startTime
+                )
             )
         }
     }

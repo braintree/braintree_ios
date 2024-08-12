@@ -13,7 +13,7 @@ public class MockAPIClient: BTAPIClient {
 
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
-    public var postedLinkType: String? = nil
+    public var postedLinkType: LinkType? = nil
     public var postedIsVaultRequest = false
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
@@ -92,8 +92,9 @@ public class MockAPIClient: BTAPIClient {
         _ name: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
-        linkType: String? = nil,
+        linkType: LinkType? = nil,
         payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID

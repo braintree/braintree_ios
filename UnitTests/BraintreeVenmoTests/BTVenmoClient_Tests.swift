@@ -584,7 +584,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
     func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSuccessAnalyticsEvent() {
@@ -625,7 +625,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "universal")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
@@ -651,7 +651,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, "deeplink")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
