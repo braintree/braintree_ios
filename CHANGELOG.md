@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.3 (2024-08-12)
 * BraintreeCore
   * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
   * Fix low-memory crash in ConfigurationCallbackStorage (fixes #1382)
