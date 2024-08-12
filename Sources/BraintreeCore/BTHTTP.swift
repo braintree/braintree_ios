@@ -146,6 +146,9 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 headers: headers
             )
 
+            if path == "v1/tracking/batch/events" {
+                
+            }
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))

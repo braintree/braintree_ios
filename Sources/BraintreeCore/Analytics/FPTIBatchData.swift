@@ -29,8 +29,6 @@ struct FPTIBatchData: Codable {
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
 
-        static var application: URLOpener = UIApplication.shared
-
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         ///
         /// `nil` if a persistent connection is used.
@@ -51,14 +49,13 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
-        let payPalInstalled: Bool = application.isPayPalAppInstalled()
+
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
-        let venmoInstalled: Bool = application.isVenmoAppInstalled()
         
         init(
             connectionStartTime: Int? = nil,
@@ -97,20 +94,20 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
-            case payPalInstalled = "paypal_installed"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
-            case venmoInstalled = "venmo_installed"
         }
     }
     
     /// The FPTI tags/ metadata applicable to all events in the batch upload.
     struct Metadata: Codable {
-            
+          
+        static var application: URLOpener = UIApplication.shared
+
         let appID: String = Bundle.main.infoDictionary?[kCFBundleIdentifierKey as String] as? String ?? "N/A"
 
         let appName: String = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "N/A"
@@ -164,11 +161,15 @@ struct FPTIBatchData: Codable {
 
         let merchantID: String?
 
+        let payPalInstalled: Bool = application.isPayPalAppInstalled()
+
         let platform = "iOS"
 
         let sessionID: String
 
         let tokenizationKey: String?
+
+        let venmoInstalled: Bool = application.isVenmoAppInstalled()
 
         enum CodingKeys: String, CodingKey {
             case appID = "app_id"
@@ -182,6 +183,7 @@ struct FPTIBatchData: Codable {
             case eventSource = "event_source"
             case environment = "merchant_sdk_env"
             case packageManager = "ios_package_manager"
+            case payPalInstalled = "paypal_installed"
             case integrationType = "api_integration_type"
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
@@ -189,6 +191,7 @@ struct FPTIBatchData: Codable {
             case platform = "platform"
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
+            case venmoInstalled = "venmo_installed"
         }
     }
 }
