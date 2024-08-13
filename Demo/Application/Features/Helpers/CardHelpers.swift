@@ -8,7 +8,7 @@ enum Format {
 
 class CardHelpers {
 
-    static func newCard(from cardFormView: BTCardFormView) -> BTCard {
+    @MainActor static func newCard(from cardFormView: BTCardFormView) -> BTCard {
         let card = BTCard()
 
         if let cardNumber = cardFormView.cardNumber {

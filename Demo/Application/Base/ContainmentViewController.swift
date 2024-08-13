@@ -81,7 +81,7 @@ class ContainmentViewController: UIViewController {
 
     // MARK: - UI Updates
 
-    private func updateStatus(_ status: String) {
+    private nonisolated func updateStatus(_ status: String) {
         DispatchQueue.main.async {
             (self.statusItem?.customView as? UIButton)?.setTitle(status, for: .normal)
             (self.statusItem?.customView as? UIButton)?.setTitleColor(.label, for: .normal)
@@ -113,18 +113,21 @@ class ContainmentViewController: UIViewController {
 
             let merchantAccountID = currentPaymentMethodNonce.type == "UnionPay" ? "fake_switch_usd" : nil
 
+            
             BraintreeDemoMerchantAPIClient.shared.makeTransaction(
                 paymentMethodNonce: nonce,
                 merchantAccountID: merchantAccountID
             ) { transactionID, error in
-                self.currentPaymentMethodNonce = nil
+                DispatchQueue.main.async {
+                    self.currentPaymentMethodNonce = nil
 
-                if let error {
-                    self.updateStatus(error.localizedDescription)
-                } else if let transactionID {
-                    self.updateStatus(transactionID)
-                } else {
-                    self.updateStatus("No nonce or error was returned from the server side request")
+                    if let error {
+                        self.updateStatus(error.localizedDescription)
+                    } else if let transactionID {
+                        self.updateStatus(transactionID)
+                    } else {
+                        self.updateStatus("No nonce or error was returned from the server side request")
+                    }
                 }
             }
         }
@@ -166,13 +169,15 @@ class ContainmentViewController: UIViewController {
             updateStatus("Fetching Client Token...")
 
             BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
-                if let error {
-                    self.updateStatus(error.localizedDescription)
-                } else if let clientToken {
-                    self.updateStatus("Using Client Token")
-                    self.currentViewController = self.instantiateViewController(with: clientToken)
-                } else {
-                    self.updateStatus("No client token or error was returned from the server side request")
+                DispatchQueue.main.async {
+                    if let error {
+                        self.updateStatus(error.localizedDescription)
+                    } else if let clientToken {
+                        self.updateStatus("Using Client Token")
+                        self.currentViewController = self.instantiateViewController(with: clientToken)
+                    } else {
+                        self.updateStatus("No client token or error was returned from the server side request")
+                    }
                 }
             }
 

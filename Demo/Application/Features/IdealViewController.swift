@@ -87,7 +87,7 @@ class IdealViewController: PaymentButtonBaseViewController {
 
 // MARK: - BTLocalPaymentRequestDelegate Conformance
 
-extension IdealViewController: BTLocalPaymentRequestDelegate {
+extension IdealViewController: @preconcurrency BTLocalPaymentRequestDelegate {
 
     func localPaymentStarted(
         _ request: BraintreeLocalPayment.BTLocalPaymentRequest,

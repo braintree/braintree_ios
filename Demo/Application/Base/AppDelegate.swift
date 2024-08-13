@@ -1,7 +1,7 @@
 import UIKit
 import BraintreeCore
 
-@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
+@main class AppDelegate: UIResponder, UIApplicationDelegate {
         
     private let returnURLScheme = "com.braintreepayments.Demo.payments"
     private let processInfoArgs = ProcessInfo.processInfo.arguments

@@ -1,5 +1,5 @@
 import UIKit
-import BraintreeVenmo
+@preconcurrency import BraintreeVenmo
 
 class VenmoViewController: PaymentButtonBaseViewController {
     

@@ -75,7 +75,7 @@ class ApplePayViewController: PaymentButtonBaseViewController {
 
 // MARK: - PKPaymentAuthorizationViewControllerDelegate Conformance
 
-extension ApplePayViewController: PKPaymentAuthorizationViewControllerDelegate {
+extension ApplePayViewController: @preconcurrency PKPaymentAuthorizationViewControllerDelegate {
 
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true)

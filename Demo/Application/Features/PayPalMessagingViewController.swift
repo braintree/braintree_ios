@@ -33,7 +33,7 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     }
 }
 
-extension PayPalMessagingViewController: BTPayPalMessagingDelegate {
+extension PayPalMessagingViewController: @preconcurrency BTPayPalMessagingDelegate {
 
     func didSelect(_ payPalMessagingView: BTPayPalMessagingView) {
         progressBlock("DELEGATE: didSelect fired")

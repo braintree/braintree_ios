@@ -2,7 +2,7 @@ import UIKit
 import BraintreeCore
 import BraintreePayPal
 import BraintreeVenmo
-import BraintreeShopperInsights
+@preconcurrency import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     

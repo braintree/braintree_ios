@@ -184,7 +184,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
 // MARK: - BTThreeDSecureRequestDelegate Conformance
 
-extension ThreeDSecureViewController: BTThreeDSecureRequestDelegate {
+extension ThreeDSecureViewController: @preconcurrency BTThreeDSecureRequestDelegate {
 
     func onLookupComplete(
         _ request: BTThreeDSecureRequest,

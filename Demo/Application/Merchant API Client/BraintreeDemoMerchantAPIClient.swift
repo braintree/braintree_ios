@@ -11,13 +11,13 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         let message: String
     }
     
-    @objc
+    @MainActor @objc
     static let shared = BraintreeDemoMerchantAPIClient()
     
     private override init() {}
     
     @objc
-    func createCustomerAndFetchClientToken(completion: @escaping (String?, Error?) -> Void) {
+    func createCustomerAndFetchClientToken(completion: @escaping @Sendable (String?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/client_token") else { return }
         
         if BraintreeDemoSettings.customerPresent {
@@ -30,7 +30,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         
         let task = URLSession.shared.dataTask(with: urlComponents.url!) { (data, response, error) in
             guard let data = data, error == nil else {
-                DispatchQueue.main.async { completion(nil, error) }
+                DispatchQueue.main.async { completion(nil, error)}
                 return
             }
             
@@ -44,7 +44,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     }
     
     @objc
-    func makeTransaction(paymentMethodNonce: String, merchantAccountID: String? = nil, completion: @escaping (String?, Error?) -> Void) {
+    func makeTransaction(paymentMethodNonce: String, merchantAccountID: String? = nil, completion: @escaping @Sendable (String?, Error?) -> Void) {
         NSLog("Creating a transaction with nonce: %@", paymentMethodNonce)
         
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/nonce/transaction") else { return }
