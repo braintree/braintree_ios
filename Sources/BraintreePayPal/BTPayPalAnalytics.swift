@@ -32,7 +32,7 @@ enum BTPayPalAnalytics {
     static let appSwitchSucceeded = "paypal:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "paypal:tokenize:app-switch:failed"
     
-    // MARK: - Edit FI
+    // MARK: - Edit FI Events
     static let editFIStarted = "paypal:edit:started"
     static let editFIBrowserPresentSucceeded = "paypal:edit:browser-presentation:succeeded"
     static let editFIBrowserPresentFailed = "paypal:edit:browser-presentation:failed"
