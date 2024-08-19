@@ -13,8 +13,6 @@ class ConfigurationLoader {
     private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
 
-    private var existingTask: Task<BTConfiguration, Error>?
-
     // MARK: - Initializer
     
     init(http: BTHTTP) {
@@ -43,21 +41,17 @@ class ConfigurationLoader {
     @_documentation(visibility: private)
     @ConfigurationActor
     func getConfig() async throws -> BTConfiguration {
+        var existingTask: Task<BTConfiguration, Error>
+
         if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
             return cachedConfig
         }
 
-        /// if we are writing to the cache at this time, we can return the existing task
-        if let existingTask {
-            return try await existingTask.value
-        }
-
-        let task = Task { [weak self] in
+        existingTask = Task { [weak self] in
             guard let self else {
                 throw BTAPIClientError.deallocated
             }
 
-            defer { self.existingTask = nil }
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
 
@@ -73,7 +67,6 @@ class ConfigurationLoader {
             }
         }
 
-        existingTask = task
-        return try await task.value
+        return try await existingTask.value
     }
 }
