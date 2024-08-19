@@ -1,5 +1,6 @@
 import Foundation
 
+/// used to isolate `getConfig` to a singleton
 @globalActor actor ConfigurationActor {
     static let shared = ConfigurationActor()
 }
@@ -42,14 +43,15 @@ class ConfigurationLoader {
     @_documentation(visibility: private)
     @ConfigurationActor
     func getConfig() async throws -> BTConfiguration {
+        if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
+            return cachedConfig
+        }
+
+        /// if we are writing to the cache at this time, we can return the existing task
         if let existingTask {
             return try await existingTask.value
         }
 
-        if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
-            return cachedConfig
-        }
-     
         let task = Task { [weak self] in
             guard let self else {
                 throw BTAPIClientError.deallocated
