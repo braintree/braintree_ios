@@ -177,9 +177,19 @@ class ContainmentViewController: UIViewController {
             }
 
         case .newPayPalCheckoutTokenizationKey:
-            updateStatus("Fetching new checkout token...")
-            let newPayPalCheckoutTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
-            currentViewController = instantiateViewController(with: newPayPalCheckoutTokenizationKey)
+            updateStatus("Fetching modXO (origami) checkout token...")
+            
+            var tokenizationKey: String = ""
+            switch BraintreeDemoSettings.currentEnvironment {
+            case .sandbox:
+                tokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+            case .production:
+                tokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+            default:
+                tokenizationKey = "development_testing_integration_merchant_id"
+            }
+
+            currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .mockedPayPalTokenizationKey:
             let tokenizationKey = "sandbox_q7v35n9n_555d2htrfsnnmfb3"
