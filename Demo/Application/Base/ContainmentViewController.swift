@@ -176,6 +176,7 @@ class ContainmentViewController: UIViewController {
                 }
             }
 
+        //TODO Remove this once ModXO goes GA
         case .newPayPalCheckoutTokenizationKey:
             updateStatus("Fetching modXO (origami) checkout token...")
             
