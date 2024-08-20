@@ -49,13 +49,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
+        let payPalEditVaultButton = createButton(title: "Edit PayPal Vault", action: #selector(tappedPayPalEditVault))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
+        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton, payPalEditVaultButton])
 
 
         let stackView = UIStackView(arrangedSubviews: [
@@ -159,7 +160,27 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
-    
+
+    // MARK: Edit FI flow
+
+    @objc func tappedPayPalEditVault(_ sender: UIButton) {
+        progressBlock("Tapped PayPal - Vault using BTPayPalClient")
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "YJbRTegvI/dIDEyFZRa52Twflbn0q2pSktu1llbZmMg=")
+        payPalClient.edit(request) { nonce, error in
+            sender.isEnabled = true
+
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+
+         //   self.completionBlock(nonce)
+        }
+    }
+
     // MARK: - Helpers
     
     private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
