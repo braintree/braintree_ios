@@ -89,6 +89,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
         XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
+        XCTAssertEqual(batchParams["paypal_installed"] as! Bool, false)
+        XCTAssertEqual(batchParams["venmo_installed"] as! Bool, false)
 
         // Verify event-level parameters
         XCTAssertNotNil(eventParams[0]["t"] as? String)
