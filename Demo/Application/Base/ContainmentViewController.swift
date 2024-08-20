@@ -184,7 +184,7 @@ class ContainmentViewController: UIViewController {
             case .sandbox:
                 tokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
             case .production:
-                tokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+                tokenizationKey = "production_t2wns2y2_dfy45jdj3dxkmz5m"
             default:
                 tokenizationKey = "development_testing_integration_merchant_id"
             }
