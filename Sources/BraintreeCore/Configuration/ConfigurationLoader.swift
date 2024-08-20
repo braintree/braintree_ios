@@ -54,6 +54,9 @@ class ConfigurationLoader {
                 throw BTAPIClientError.deallocated
             }
 
+            /// clear out any existing task after current task is complete
+            defer { existingTask = nil }
+
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
 
