@@ -150,6 +150,20 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
 
+    func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+
+        payPalClient.edit(editRequest) { _, _ in }
+
+        XCTAssertEqual("v1/paypal_hermes/generate_edit_fi_url", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["edit_paypal_vault_id"] as? String, "test-ID")
+
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+    }
+
     // MARK: - PayPal approval URL to present in browser
 
     func testTokenizePayPalAccount_checkout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
