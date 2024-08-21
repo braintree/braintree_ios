@@ -6,10 +6,6 @@ class BTPayPalEditRequest_Tests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let json = BTJSON(value: [
-            "paypalEnabled": true,
-            "paypal": ["environment": "offline"]
-        ] as [String: Any])
     }
 
     func test_returnsAllParams() {
