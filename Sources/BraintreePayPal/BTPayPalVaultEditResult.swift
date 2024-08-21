@@ -10,6 +10,7 @@ public struct BTPayPalVaultEditResult {
 
     // MARK: - Public Properties
 
+    // should this be the correlationID?
     /// This ID is used to link subsequent retry attempts if payment is declined
     public let clientMetadataID: String
 
@@ -33,4 +34,18 @@ public struct BTPayPalVaultEditResult {
 
     /// description of the funding source
     public let fundingSourceDescription: String?
+
+    init?(json: BTJSON) {
+
+        let billingAgreement = json["billing_agreement"]
+        let payerInfo = billingAgreement["payerInfo"]
+        self.firstName = payerInfo["firstName"].asString()
+        self.lastName = payerInfo["lastName"].asString()
+        self.phone = payerInfo["phone"].asString()
+        self.email = payerInfo["email"].asString()
+        self.payerID = payerInfo["payer_id"].asString()
+        self.shippingAddress = payerInfo["shippingAddress"].asAddress()
+        self.fundingSourceDescription = payerInfo["funding_source_description"].asString()
+        self.clientMetadataID = "tbd"
+    }
 }

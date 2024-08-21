@@ -27,6 +27,7 @@ import BraintreeDataCollector
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     var clientMetadataID: String? = nil
 
+    // should we use the same clientMetadataID variable?
     /// Exposed for testing the editFI request construction
     var correlationID: String? = nil
 
@@ -242,8 +243,10 @@ import BraintreeDataCollector
                         self.notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
                         return
                     }
-                    // this shouldn't return
+                    // TODO: implement app switch
+                    // now it shouldn't return this option
                     print("🌸 payPal url shouldn't return: \(url.absoluteString)")
+                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
                 case .webBrowser(let url):
                     print("🌸 url \(url.absoluteString)")
                     self.handlePayPalEditFIRequest(with: url, paymentType: .vault, completion: completion)
@@ -394,14 +397,19 @@ import BraintreeDataCollector
             "sessionId": metadata.sessionID
         ]
 
-        apiClient.post("v1/paypal_hermes/lookup_fi_details", parameters: parameters) { body, response, error in
+        apiClient.post("/v1/paypal_hermes/lookup_fi_details", parameters: parameters) { body, response, error in
             if let error {
                 self.notifyEditFIFailure(with: error, completion: completion)
                 return
             }
 
             print("🎉 lookup_details response: \(body)")
-
+            guard let vaultEditResult = BTPayPalVaultEditResult(json: body!) else {
+                // TODO: add failedToCreateVaultEditResult errror
+                self.notifyEditFIFailure(with: BTPayPalError.failedToCreateNonce, completion: completion)
+                return
+            }
+            self.notifyEditFISuccess(with: vaultEditResult, completion: completion)
         }
     }
 
@@ -670,7 +678,7 @@ import BraintreeDataCollector
 
             switch returnURL.state {
             case .succeeded, .canceled:
-                guard let editFIRequest else {
+                guard editFIRequest != nil else {
                     // use different error for missing EditFI Request
                     notifyEditFIFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
                     return
