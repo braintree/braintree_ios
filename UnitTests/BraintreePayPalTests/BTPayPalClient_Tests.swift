@@ -162,6 +162,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+        XCTAssertNotNil(lastPostParameters["correlation_id"])
     }
 
     // MARK: - PayPal approval URL to present in browser
