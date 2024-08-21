@@ -169,15 +169,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "YJbRTegvI/dIDEyFZRa52Twflbn0q2pSktu1llbZmMg=")
-        payPalClient.edit(request) { nonce, error in
+        payPalClient.edit(request) { editResult, error in
             sender.isEnabled = true
 
-            guard let nonce else {
+            guard let editResult else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
 
-         //   self.completionBlock(nonce)
+         //   self.completionBlock(editResult)
         }
     }
 
