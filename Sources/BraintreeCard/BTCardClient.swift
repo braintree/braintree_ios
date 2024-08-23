@@ -34,78 +34,75 @@ import BraintreeCore
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
 
-        apiClient.fetchOrReturnRemoteConfiguration() { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
-            
-            guard let configuration else {
-                self.notifyFailure(with: BTCardError.fetchConfigurationFailed, completion: completion)
-                return
-            }
+        Task {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
 
-            if self.isGraphQLEnabled(for: configuration) {
-                if card.authenticationInsightRequested && card.merchantAccountID == nil {
-                    self.notifyFailure(with: BTCardError.integration, completion: completion)
-                    return
-                }
+                if isGraphQLEnabled(for: configuration) {
+                    if card.authenticationInsightRequested && card.merchantAccountID == nil {
+                        self.notifyFailure(with: BTCardError.integration, completion: completion)
+                        return
+                    }
 
-                let parameters = card.graphQLParameters()
+                    let parameters = card.graphQLParameters()
 
-                self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
-                    if let error = error as NSError? {
-                        let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
-                        var callbackError: Error? = error
+                    apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
+                        if let error = error as NSError? {
+                            let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
+                            var callbackError: Error? = error
 
-                        if response?.statusCode == 422 {
-                            callbackError = self.constructCallbackError(with: error.userInfo, error: error)
+                            if response?.statusCode == 422 {
+                                callbackError = self.constructCallbackError(with: error.userInfo, error: error)
+                            }
+
+                            self.notifyFailure(with: callbackError ?? error, completion: completion)
+                            return
                         }
 
-                        self.notifyFailure(with: callbackError ?? error, completion: completion)
-                        return
-                    }
+                        let cardJSON: BTJSON = body?["data"]["tokenizeCreditCard"] ?? BTJSON()
 
-                    let cardJSON: BTJSON = body?["data"]["tokenizeCreditCard"] ?? BTJSON()
-
-                    if let cardJSONError = cardJSON.asError() {
-                        self.notifyFailure(with: cardJSONError, completion: completion)
-                        return
-                    }
-
-                    let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
-
-                    self.notifySuccess(with: cardNonce, completion: completion)
-                    return
-                }
-            } else {
-                let parameters = self.clientAPIParameters(for: card)
-
-                self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
-                    if let error = error as NSError? {
-                        let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
-                        var callbackError: Error? = error
-
-                        if response?.statusCode == 422 {
-                            callbackError = self.constructCallbackError(with: error.userInfo, error: error)
+                        if let cardJSONError = cardJSON.asError() {
+                            self.notifyFailure(with: cardJSONError, completion: completion)
+                            return
                         }
 
-                        self.notifyFailure(with: callbackError ?? error, completion: completion)
+                        let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
+
+                        self.notifySuccess(with: cardNonce, completion: completion)
                         return
                     }
+                } else {
+                    let parameters = self.clientAPIParameters(for: card)
 
-                    let cardJSON: BTJSON = body?["creditCards"][0] ?? BTJSON()
+                    apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
+                        if let error = error as NSError? {
+                            let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
+                            var callbackError: Error? = error
 
-                    if let cardJSONError = cardJSON.asError() {
-                        self.notifyFailure(with: cardJSONError, completion: completion)
+                            if response?.statusCode == 422 {
+                                callbackError = self.constructCallbackError(with: error.userInfo, error: error)
+                            }
+
+                            self.notifyFailure(with: callbackError ?? error, completion: completion)
+                            return
+                        }
+
+                        let cardJSON: BTJSON = body?["creditCards"][0] ?? BTJSON()
+
+                        if let cardJSONError = cardJSON.asError() {
+                            self.notifyFailure(with: cardJSONError, completion: completion)
+                            return
+                        }
+
+                        let cardNonce: BTCardNonce = BTCardNonce(json: cardJSON)
+
+                        self.notifySuccess(with: cardNonce, completion: completion)
                         return
                     }
-
-                    let cardNonce: BTCardNonce = BTCardNonce(json: cardJSON)
-
-                    self.notifySuccess(with: cardNonce, completion: completion)
-                    return
                 }
+            } catch {
+                notifyFailure(with: error, completion: completion)
+                return
             }
         }
     }
