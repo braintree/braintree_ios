@@ -31,25 +31,27 @@ import BraintreeCore
     public func makePaymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestStarted)
 
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
+        Task { @MainActor in
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+
+                guard configuration.isApplePayEnabled else {
+                    self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
+                    return
+                }
+
+                let paymentRequest = PKPaymentRequest()
+                paymentRequest.countryCode = configuration.applePayCountryCode ?? ""
+                paymentRequest.currencyCode = configuration.applePayCurrencyCode ?? ""
+                paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
+                paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks ?? []
+
+                self.notifySuccess(with: paymentRequest, completion: completion)
+                return
+            } catch {
+                notifyFailure(with: error, completion: completion)
                 return
             }
-
-            guard let configuration, configuration.isApplePayEnabled else {
-                self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
-                return
-            }
-
-            let paymentRequest = PKPaymentRequest()
-            paymentRequest.countryCode = configuration.applePayCountryCode ?? ""
-            paymentRequest.currencyCode = configuration.applePayCurrencyCode ?? ""
-            paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
-            paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks ?? []
-
-            self.notifySuccess(with: paymentRequest, completion: completion)
-            return
         }
     }
 
@@ -78,36 +80,33 @@ import BraintreeCore
     public func tokenize(_ payment: PKPayment, completion: @escaping (BTApplePayCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeStarted)
 
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
+        Task {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
 
-            guard let configuration, configuration.isApplePayEnabled else {
-                self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
-                return
-            }
-            
-            let parameters = BTApplePaymentTokensRequest(token: payment.token)
-
-            self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
-                if let error {
-                    self.notifyFailure(with: error, completion: completion)
+                guard configuration.isApplePayEnabled else {
+                    self.notifyFailure(with: BTApplePayError.unsupported, completion: completion)
                     return
                 }
 
-                guard let body else {
-                    self.notifyFailure(with: BTApplePayError.noApplePayCardsReturned, completion: completion)
-                    return
-                }
+                let parameters = BTApplePaymentTokensRequest(token: payment.token)
 
-                guard let applePayNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
-                    self.notifyFailure(with: BTApplePayError.failedToCreateNonce, completion: completion)
-                    return
-                }
+                let (body, _) = try await apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters)
 
-                self.notifySuccess(with: applePayNonce, completion: completion)
+                    guard let body else {
+                        self.notifyFailure(with: BTApplePayError.noApplePayCardsReturned, completion: completion)
+                        return
+                    }
+
+                    guard let applePayNonce = BTApplePayCardNonce(json: body["applePayCards"][0]) else {
+                        self.notifyFailure(with: BTApplePayError.failedToCreateNonce, completion: completion)
+                        return
+                    }
+
+                    self.notifySuccess(with: applePayNonce, completion: completion)
+                    return
+            } catch {
+                notifyFailure(with: error, completion: completion)
                 return
             }
         }

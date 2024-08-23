@@ -60,7 +60,20 @@ public class MockAPIClient: BTAPIClient {
         }
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
-    
+
+    public override func post(_ path: String, parameters: any Encodable, headers: [String : String]? = nil, httpType: BTAPIClientHTTPService = .gateway) async throws -> (BTJSON?, HTTPURLResponse?) {
+        lastPOSTPath = path
+        lastPOSTParameters = try? parameters.toDictionary()
+        lastPOSTAPIClientHTTPType = httpType
+        lastPOSTAdditionalHeaders = headers
+
+        guard let cannedResponseBody else {
+            throw cannedResponseError ?? NSError()
+        }
+
+        return (cannedResponseBody, cannedHTTPURLResponse)
+    }
+
     public override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
         guard let responseBody = cannedConfigurationResponseBody else {
             completionBlock(nil, cannedConfigurationResponseError)
@@ -73,6 +86,7 @@ public class MockAPIClient: BTAPIClient {
         guard let responseBody = cannedConfigurationResponseBody else {
             throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
         }
+
         return BTConfiguration(json: responseBody)
     }
 
