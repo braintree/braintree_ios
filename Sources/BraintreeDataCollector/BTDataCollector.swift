@@ -83,8 +83,13 @@ import BraintreeCore
     // MARK: Internal methods
     
     func fetchConfiguration(completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            completion(configuration, error)
+        Task { @MainActor in
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+                completion(configuration, nil)
+            } catch {
+                completion(nil, error)
+            }
         }
     }
 
