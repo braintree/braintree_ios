@@ -62,8 +62,8 @@ import Foundation
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { _, _ in
-            // No-op
+        Task {
+            try await fetchConfiguration()
         }
     }
 
@@ -107,9 +107,13 @@ import Foundation
     }
     
     @MainActor public func fetchConfiguration() async throws -> BTConfiguration {
-        let configuration = try await configurationLoader.getConfig()
-        setupHTTPCredentials(configuration)
-        return configuration
+        do {
+            let configuration = try await configurationLoader.getConfig()
+            setupHTTPCredentials(configuration)
+            return configuration
+        } catch {
+            throw error
+        }
     }
 
     /// Fetches a customer's vaulted payment method nonces.
@@ -183,18 +187,14 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
+        Task {
+            do {
+                let configuration = try await fetchConfiguration()
+                http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
+            } catch {
                 completion(nil, nil, error)
                 return
             }
-
-            http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
     }
 
@@ -218,19 +218,15 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
+        Task {
+            do {
+                let configuration = try await fetchConfiguration()
+                let postParameters = metadataParametersWith(parameters, for: httpType)
+                http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
+            } catch {
                 completion(nil, nil, error)
                 return
             }
-
-            let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
         }
     }
     
@@ -253,25 +249,21 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
+        Task {
+            do {
+                let configuration = try await fetchConfiguration()
+                let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
+                http(for: httpType)?.post(
+                    path,
+                    configuration: configuration,
+                    parameters: postParameters,
+                    headers: headers,
+                    completion: completion
+                )
+            } catch {
                 completion(nil, nil, error)
                 return
             }
-
-            let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(
-                path,
-                configuration: configuration,
-                parameters: postParameters,
-                headers: headers,
-                completion: completion
-            )
         }
     }
     
