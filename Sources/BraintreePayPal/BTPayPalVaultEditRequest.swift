@@ -13,6 +13,7 @@ public struct BTPayPalVaultEditRequest {
     /// - Parameters:
     ///   - editPayPalVaultID: Required: The `edit_paypal_vault_id` returned from the server side request
     ///   merchantAccountID: optional ID of the merchant account; if one is not provided the default will be used
+    ///   riskCorrelationID: optional ID passed in by merchant to track errors
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
     public init(editPayPalVaultID: String, merchantAccountID: String? = nil, riskCorrelationID: String? = nil) {
         self.editPayPalVaultID = editPayPalVaultID
