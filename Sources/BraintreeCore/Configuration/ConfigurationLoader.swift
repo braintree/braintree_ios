@@ -1,5 +1,6 @@
 import Foundation
 
+/// used to isolate `getConfig` to a singleton
 @globalActor actor ConfigurationActor {
     static let shared = ConfigurationActor()
 }
@@ -12,6 +13,7 @@ class ConfigurationLoader {
     private let configurationCache = ConfigurationCache.shared
     private let http: BTHTTP
 
+    /// Used to hold an in-flight task to fetch a configuration or return an error
     private var existingTask: Task<BTConfiguration, Error>?
 
     // MARK: - Initializer
@@ -33,29 +35,28 @@ class ConfigurationLoader {
     /// 2. If no cached configuration is found, it fetches the configuration from the server and caches the successful response.
     /// 3. If fetching the configuration fails, it returns an error.
     ///
-    /// - Parameters:
-    ///   - completion: A completion handler that is called with the fetched or cached `BTConfiguration` object or an `Error`.
-    ///
-    /// - Completion:
-    ///   - `BTConfiguration?`: The configuration object if it is successfully fetched or retrieved from the cache.
-    ///   - `Error?`: An error object if fetching the configuration fails or if the instance is deallocated.
+    /// - Returns: A `BTConfiguration` if it is successfully fetched or retrieved from the cache.
+    /// - Throws: An `Error` describing the failure; if fetching the configuration fails or if the instance is deallocated.
     @_documentation(visibility: private)
     @ConfigurationActor
     func getConfig() async throws -> BTConfiguration {
+        if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
+            return cachedConfig
+        }
+
+        /// if we are writing to the cache at this time, we can return the existing task
         if let existingTask {
             return try await existingTask.value
         }
 
-        if let cachedConfig = try? configurationCache.getFromCache(authorization: http.authorization.bearer) {
-            return cachedConfig
-        }
-     
-        let task = Task { [weak self] in
+        existingTask = Task { [weak self] in
             guard let self else {
                 throw BTAPIClientError.deallocated
             }
 
-            defer { self.existingTask = nil }
+            /// clear out any existing task after current task is complete
+            defer { existingTask = nil }
+
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
 
@@ -71,7 +72,10 @@ class ConfigurationLoader {
             }
         }
 
-        existingTask = task
-        return try await task.value
+        guard let existingTask else {
+            throw BTAPIClientError.configurationUnavailable
+        }
+
+        return try await existingTask.value
     }
 }
