@@ -150,6 +150,44 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
 
+    func testTokenizeEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+        mockAPIClient.cannedConfigurationResponseBody = nil
+
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit Vault fails with error")
+
+        payPalClient.edit(editRequest) { editResult, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.fetchConfigurationFailed.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalError.fetchConfigurationFailed.errorDescription)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 1)
+    }
+
+    func testTokenizeEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": false
+        ])
+
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit Vault fails with error")
+
+        payPalClient.edit(editRequest) { result, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(result)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.disabled.errorCode)
+            XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel.")
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 1)
+    }
+
     func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
@@ -342,6 +380,31 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
+
+    func testTEditVault_whenAllApprovalURLsInvalid_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "approvalUrl": "",
+                "paypalAppApprovalUrl": ""
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-id")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    // TODO: test correct parsing of url's, BA token
 
     // MARK: - Browser switch
 

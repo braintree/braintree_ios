@@ -24,12 +24,8 @@ import BraintreeDataCollector
     var approvalURL: URL? = nil
 
     /// Exposed for testing the clientMetadataID associated with this request.
-    /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
+    /// Used in POST body for FPTI analytics & `/paypal_account` fetch & editFI POST body.
     var clientMetadataID: String? = nil
-
-    // should we use the same clientMetadataID variable?
-    /// Exposed for testing the editFI request construction
-    var correlationID: String? = nil
 
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest? = nil
@@ -224,8 +220,8 @@ import BraintreeDataCollector
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
             // TODO: set correlation_id to riskCorrelationId if passed in by merchant
             // note: we don't have payPalContextID from approvalURL yet
-            self.correlationID = dataCollector.clientMetadataID(nil)
-            request.correlationID = self.correlationID
+            self.clientMetadataID = dataCollector.clientMetadataID(nil)
+            request.correlationID = self.clientMetadataID
             self.editFIRequest = request
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
                 if let error = error {
@@ -249,7 +245,8 @@ import BraintreeDataCollector
                     self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
                 case .webBrowser(let url):
                     print("🌸 url \(url.absoluteString)")
-                    self.handlePayPalEditFIRequest(with: url, paymentType: .vault, completion: completion)
+                    // TODO: handle response here per updated reqs
+                //    self.handlePayPalEditFIRequest(with: url, paymentType: .vault, completion: completion)
                 }
             }
         }
