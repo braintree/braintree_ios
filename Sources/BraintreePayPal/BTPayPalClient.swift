@@ -311,67 +311,65 @@ import BraintreeDataCollector
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
+        
+        Task {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
 
-            guard let configuration, let json = configuration.json else {
-                self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-            
-            self.isConfigFromCache = configuration.isFromCache
 
-            guard json["paypalEnabled"].isTrue else {
-                self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
-                return
-            }
+                self.isConfigFromCache = configuration.isFromCache
 
-            self.payPalRequest = request
-            self.apiClient.post(
-                request.hermesPath,
-                parameters: request.parameters(
-                    with: configuration,
-                    universalLink: self.universalLink,
-                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
-                )
-            ) { body, response, error in
-                if let error = error as? NSError {
-                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                        self.notifyFailure(with: error, completion: completion)
+                guard configuration.isPayPalEnabled else {
+                    self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
+                    return
+                }
+
+                self.payPalRequest = request
+                self.apiClient.post(
+                    request.hermesPath,
+                    parameters: request.parameters(
+                        with: configuration,
+                        universalLink: self.universalLink,
+                        isPayPalAppInstalled: self.application.isPayPalAppInstalled()
+                    )
+                ) { body, response, error in
+                    if let error = error as? NSError {
+                        guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                            self.notifyFailure(with: error, completion: completion)
+                            return
+                        }
+
+                        let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+                        var dictionary = error.userInfo
+                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                        self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
                         return
                     }
 
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-                    var dictionary = error.userInfo
-                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
-                    return
-                }
-                
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
-                    return
-                }
-                
-                self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
-
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
-
-                switch approvalURL.redirectType {
-                case .payPalApp(let url):
-                    guard let baToken = approvalURL.baToken else {
-                        self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+                    guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                        self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                         return
                     }
 
-                    self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
-                case .webBrowser(let url):
-                    self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                    self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
+
+                    let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                    self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
+
+                    switch approvalURL.redirectType {
+                    case .payPalApp(let url):
+                        guard let baToken = approvalURL.baToken else {
+                            self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+                            return
+                        }
+
+                        self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
+                    case .webBrowser(let url):
+                        self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                    }
                 }
+            } catch {
+                notifyFailure(with: error, completion: completion)
             }
         }
     }
