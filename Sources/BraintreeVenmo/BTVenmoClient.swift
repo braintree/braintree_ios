@@ -42,7 +42,7 @@ import BraintreeCore
     private var payPalContextID: String? = nil
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: String? = nil
+    private var linkType: LinkType? = nil
 
     // MARK: - Initializer
 
@@ -64,7 +64,7 @@ import BraintreeCore
     ///   If the user cancels out of the flow, the error code will be `.canceled`.
     @objc(tokenizeWithVenmoRequest:completion:)
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        linkType = request.fallbackToWeb ? "universal" : "deeplink"
+        linkType = request.fallbackToWeb ? .universal : .deeplink
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 

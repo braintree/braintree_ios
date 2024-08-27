@@ -1,6 +1,7 @@
 import XCTest
 @testable import BraintreeCore
 @testable import BraintreePayPal
+@testable import BraintreeTestShared
 
 class BTPayPalVaultRequest_Tests: XCTestCase {
 
@@ -76,7 +77,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))

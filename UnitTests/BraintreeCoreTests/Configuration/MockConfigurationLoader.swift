@@ -12,21 +12,11 @@ class MockConfigurationLoader: ConfigurationLoader {
         super.init(http: http)
     }
     
-    override func getConfig(completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        if let error = mockError {
-            completion(nil, error)
-        } else {
-            completion(mockConfig, nil)
-        }
-    }
-    
     override func getConfig() async throws -> BTConfiguration {
         if let error = mockError {
             throw error
-        } else if let config = mockConfig {
-            return config
         } else {
-            throw BTAPIClientError.configurationUnavailable
+            return BTConfiguration(json: nil)
         }
     }
 }
