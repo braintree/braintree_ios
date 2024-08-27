@@ -84,7 +84,13 @@ public class MockAPIClient: BTAPIClient {
     
     public override func fetchConfiguration() async throws -> BTConfiguration {
         guard let responseBody = cannedConfigurationResponseBody else {
-            throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
+            throw cannedConfigurationResponseError ?? NSError(domain: "com.braintreepayments.BTAPIClientErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: BTAPIClientError.configurationUnavailable.errorDescription ?? "Unkonwn error"])
+        }
+
+        
+
+        if let cannedResponseError {
+            throw cannedResponseError
         }
 
         return BTConfiguration(json: responseBody)

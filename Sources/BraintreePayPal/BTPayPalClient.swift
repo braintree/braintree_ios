@@ -316,7 +316,6 @@ import BraintreeDataCollector
             do {
                 let configuration = try await apiClient.fetchConfiguration()
 
-
                 self.isConfigFromCache = configuration.isFromCache
 
                 guard configuration.isPayPalEnabled else {

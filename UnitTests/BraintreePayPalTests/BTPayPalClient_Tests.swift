@@ -33,9 +33,9 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.fetchConfigurationFailed.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalError.fetchConfigurationFailed.errorDescription)
+            XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
+            XCTAssertEqual(error.code, BTAPIClientError.configurationUnavailable.rawValue)
+            XCTAssertEqual(error.localizedDescription, BTAPIClientError.configurationUnavailable.errorDescription)
             expectation.fulfill()
         }
 
