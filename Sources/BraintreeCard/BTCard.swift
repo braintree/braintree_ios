@@ -81,83 +81,36 @@ import Foundation
     // MARK: - Internal Methods
 
     func parameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: false)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: false)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billing_address"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        cardDictionary["options"] = options
-        return cardDictionary
-    }
-
-    func graphQLParameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billingAddress"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
-        var variables: [String: Any] = ["input": inputDictionary]
-
-        if authenticationInsightRequested {
-            if let merchantAccountID {
-                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
-            } else {
-                variables["authenticationInsightInput"] = [:]
-            }
-        }
-
-        return [
-            "operationName": "TokenizeCreditCard",
-            "query": cardTokenizationGraphQLMutation(),
-            "variables": variables
-        ]
-    }
-
-    // MARK: - Private Methods
-
-    private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
-        var cardDictionary: [String: Any] = [:]
+        var parameters: [String: Any] = [:]
 
         if let number {
-            cardDictionary["number"] = number
+            parameters["number"] = number
         }
 
         if let expirationMonth {
-            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
+            parameters["expiration_month"] = expirationMonth
         }
 
         if let expirationYear {
-            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
-        }
-
-        if let cvv {
-            cardDictionary["cvv"] = cvv
+            parameters["expiration_year"] = expirationYear
         }
 
         if let cardholderName {
-            cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
+            parameters["cardholder_name"] = cardholderName
         }
 
-        return cardDictionary
-    }
+        if let cvv {
+            parameters["cvv"] = cvv
+        }
 
-    // swiftlint:disable cyclomatic_complexity
-    private func buildBillingAddressDictionary(isGraphQL: Bool) -> [String: String] {
         var billingAddressDictionary: [String: String] = [:]
 
         if let firstName {
-            billingAddressDictionary[isGraphQL ? "firstName" : "first_name"] = firstName
+            billingAddressDictionary["first_name"] = firstName
         }
 
         if let lastName {
-            billingAddressDictionary[isGraphQL ? "lastName" : "last_name"] = lastName
+            billingAddressDictionary["last_name"] = lastName
         }
 
         if let company {
@@ -165,15 +118,15 @@ import Foundation
         }
 
         if let postalCode {
-            billingAddressDictionary[isGraphQL ? "postalCode" : "postal_code"] = postalCode
+            billingAddressDictionary["postal_code"] = postalCode
         }
 
         if let streetAddress {
-            billingAddressDictionary[isGraphQL ? "streetAddress" : "street_address"] = streetAddress
+            billingAddressDictionary["street_address"] = streetAddress
         }
 
         if let extendedAddress {
-            billingAddressDictionary[isGraphQL ? "extendedAddress" : "extended_address"] = extendedAddress
+            billingAddressDictionary["extended_address"] = extendedAddress
         }
 
         if let locality {
@@ -185,24 +138,123 @@ import Foundation
         }
 
         if let countryName {
-            billingAddressDictionary[isGraphQL ? "countryName" : "country_name"] = countryName
+            billingAddressDictionary["country_name"] = countryName
         }
 
         if let countryCodeAlpha2 {
-            billingAddressDictionary[isGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"] = countryCodeAlpha2
+            billingAddressDictionary["country_code_alpha2"] = countryCodeAlpha2
         }
 
         if let countryCodeAlpha3 {
-            billingAddressDictionary[isGraphQL ? "countryCode" : "country_code_alpha3"] = countryCodeAlpha3
+            billingAddressDictionary["country_code_alpha3"] = countryCodeAlpha3
         }
 
         if let countryCodeNumeric {
-            billingAddressDictionary[isGraphQL ? "countryCodeNumeric" : "country_code_numeric"] = countryCodeNumeric
+            billingAddressDictionary["country_code_numeric"] = countryCodeNumeric
         }
 
-        return billingAddressDictionary
+        if !billingAddressDictionary.isEmpty {
+            parameters["billing_address"] = billingAddressDictionary
+        }
+
+        let options: [String: Bool] = ["validate": shouldValidate]
+        parameters["options"] = options
+        return parameters
     }
-    // swiftlint:enable cyclomatic_complexity
+
+    func graphQLParameters() -> [String: Any] {
+        var cardDictionary: [String: Any] = [:]
+
+        if let number {
+            cardDictionary["number"] = number
+        }
+
+        if let expirationMonth {
+            cardDictionary["expirationMonth"] = expirationMonth
+        }
+
+        if let expirationYear {
+            cardDictionary["expirationYear"] = expirationYear
+        }
+
+        if let cvv {
+            cardDictionary["cvv"] = cvv
+        }
+
+        if let cardholderName {
+            cardDictionary["cardholderName"] = cardholderName
+        }
+
+        var billingAddressDictionary: [String: String] = [:]
+
+        if let firstName {
+            billingAddressDictionary["firstName"] = firstName
+        }
+
+        if let lastName {
+            billingAddressDictionary["lastName"] = lastName
+        }
+
+        if let company {
+            billingAddressDictionary["company"] = company
+        }
+
+        if let postalCode {
+            billingAddressDictionary["postalCode"] = postalCode
+        }
+
+        if let streetAddress {
+            billingAddressDictionary["streetAddress"] = streetAddress
+        }
+
+        if let extendedAddress {
+            billingAddressDictionary["extendedAddress"] = extendedAddress
+        }
+
+        if let locality {
+            billingAddressDictionary["locality"] = locality
+        }
+
+        if let region {
+            billingAddressDictionary["region"] = region
+        }
+
+        if let countryName {
+            billingAddressDictionary["countryName"] = countryName
+        }
+
+        if let countryCodeAlpha2 {
+            billingAddressDictionary["countryCodeAlpha2"] = countryCodeAlpha2
+        }
+
+        if let countryCodeAlpha3 {
+            billingAddressDictionary["countryCode"] = countryCodeAlpha3
+        }
+
+        if let countryCodeNumeric {
+            billingAddressDictionary["countryCodeNumeric"] = countryCodeNumeric
+        }
+
+        if !billingAddressDictionary.isEmpty {
+            cardDictionary["billingAddress"] = billingAddressDictionary
+        }
+
+        let options: [String: Bool] = ["validate": shouldValidate]
+        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
+        var variables: [String: Any] = ["input": inputDictionary]
+
+        if authenticationInsightRequested {
+            variables["authenticationInsightInput"] = merchantAccountID != nil ? ["merchantAccountId": merchantAccountID] : [:] as [String?: Any]?
+        }
+
+        return [
+            "operationName": "TokenizeCreditCard",
+            "query": cardTokenizationGraphQLMutation(),
+            "variables": variables
+        ]
+    }
+
+    // MARK: - Private Methods
 
     private func cardTokenizationGraphQLMutation() -> String {
         var mutation = "mutation TokenizeCreditCard($input: TokenizeCreditCardInput!"
@@ -211,7 +263,6 @@ import Foundation
             mutation.append(", $authenticationInsightInput: AuthenticationInsightInput!")
         }
 
-        // swiftlint:disable indentation_width
         mutation.append(
             """
             ) {
@@ -255,7 +306,6 @@ import Foundation
             }
             """
         )
-        // swiftlint:enable indentation_width
 
         return mutation.replacingOccurrences(of: "\n", with: "")
     }

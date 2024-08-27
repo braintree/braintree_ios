@@ -66,7 +66,7 @@ import BraintreeCore
                             return
                         }
 
-                        let cardNonce = BTCardNonce(graphQLJSON: cardJSON)
+                        let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
 
                         self.notifySuccess(with: cardNonce, completion: completion)
                         return
@@ -74,7 +74,7 @@ import BraintreeCore
                 } else {
                     let parameters = self.clientAPIParameters(for: card)
 
-                    self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
+                    apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
                         if let error = error as NSError? {
                             let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                             var callbackError: Error? = error
@@ -100,7 +100,6 @@ import BraintreeCore
                         return
                     }
                 }
-
             } catch {
                 notifyFailure(with: error, completion: completion)
                 return

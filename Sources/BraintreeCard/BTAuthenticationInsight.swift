@@ -17,8 +17,8 @@ import BraintreeCore
     // MARK: - Initializer
 
     init(json: BTJSON) {
-        if let customerAuthRegulationEnvironment = json["customerAuthenticationRegulationEnvironment"].asString() {
-            self.regulationEnvironment = customerAuthRegulationEnvironment
+        if let customerAuthenticationRegulationEnvironment = json["customerAuthenticationRegulationEnvironment"].asString() {
+            self.regulationEnvironment = customerAuthenticationRegulationEnvironment
         } else if let regulationEnvironment = json["regulationEnvironment"].asString() {
             self.regulationEnvironment = regulationEnvironment
         }

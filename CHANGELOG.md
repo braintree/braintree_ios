@@ -1,9 +1,5 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
-* BraintreePayPal
-  * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
-
 ## 6.23.3 (2024-08-12)
 * BraintreeCore
   * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click

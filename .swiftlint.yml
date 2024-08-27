@@ -6,7 +6,6 @@
 included:
   - Sources/BraintreeAmericanExpress
   - Sources/BraintreeApplePay
-  - Sources/BraintreeCard
   - Sources/BraintreeCore
 
 excluded:
@@ -106,7 +105,4 @@ trailing_whitespace:
   ignores_empty_lines: true
 
 vertical_whitespace:
-  max_empty_lines: 2
-
-cyclomatic_complexity:
-  ignores_case_statements: true
+  max_empty_lines: 2 
