@@ -71,6 +71,10 @@ public class MockAPIClient: BTAPIClient {
             throw cannedResponseError
         }
 
+        guard let cannedResponseBody else {
+            throw NSError()
+        }
+
         return (cannedResponseBody, cannedHTTPURLResponse)
     }
 
