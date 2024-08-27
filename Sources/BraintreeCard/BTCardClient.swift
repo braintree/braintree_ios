@@ -66,7 +66,7 @@ import BraintreeCore
                             return
                         }
 
-                        let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
+                        let cardNonce = BTCardNonce(graphQLJSON: cardJSON)
 
                         self.notifySuccess(with: cardNonce, completion: completion)
                         return
@@ -94,7 +94,7 @@ import BraintreeCore
                             return
                         }
 
-                        let cardNonce: BTCardNonce = BTCardNonce(json: cardJSON)
+                        let cardNonce = BTCardNonce(json: cardJSON)
 
                         self.notifySuccess(with: cardNonce, completion: completion)
                         return
