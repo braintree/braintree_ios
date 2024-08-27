@@ -8,6 +8,7 @@ included:
   - Sources/BraintreeApplePay
   - Sources/BraintreeCard
   - Sources/BraintreeCore
+  - Sources/BraintreeDataCollector
 
 excluded:
   - Sources/BraintreeCore/BTAPIPinnedCertificates.swift
