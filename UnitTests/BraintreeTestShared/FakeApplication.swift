@@ -25,8 +25,6 @@ public class FakeApplication: URLOpener {
             appSwitchCompletion(self.cannedCanOpenURL)
             self.appSwitchCompletion = nil
         }
-
-
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
