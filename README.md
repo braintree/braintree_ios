@@ -69,6 +69,21 @@ Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/st
 
 Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
 
+## Upgrade Your SDK Version
+
+If you're looking to update to a newer version of our SDK, please see our recommended approach below.
+
+### Using Swift Package Manager
+
+ To update using SPM, select _File→ Packages → Update to Latest Package Versions_.
+
+### Using Cocoapods 
+
+You can either update all pods listed within your Podfile using `pod update` or specific pods as needed using `pod update PODNAME`. For additional detail, see these [guidelines](https://guides.cocoapods.org/using/pod-install-vs-update.html).
+
+### Using Carthage
+
+To update to the latest versions of each framework, simply run the `carthage update` command. For more details, check out these [guidelines](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#version-requirement).
 
 ## Versions
 
