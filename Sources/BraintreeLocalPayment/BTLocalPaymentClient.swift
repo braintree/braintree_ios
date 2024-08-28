@@ -29,7 +29,7 @@ import BraintreeDataCollector
 
     /// Used for linking events from the client to server side request
     /// In the Local Payment flow this will be a Payment Token/Order ID
-    private var payPalContextID: String? = nil
+    private var payPalContextID: String?
 
     // MARK: - Initializer
 
@@ -75,7 +75,10 @@ import BraintreeDataCollector
             }
 
             if !configuration.isLocalPaymentEnabled {
-                NSLog("%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.", BTLogLevelDescription.string(for: .critical))
+                NSLog(
+                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                    BTLogLevelDescription.string(for: .critical)
+                )
                 self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
                 return
             } else if request.localPaymentFlowDelegate == nil {
@@ -110,7 +113,7 @@ import BraintreeDataCollector
 
     // MARK: - Internal Methods
 
-    @objc func applicationDidBecomeActive(notification: Notification) {
+    func applicationDidBecomeActive(notification: Notification) {
         webSessionReturned = true
     }
 
@@ -149,7 +152,7 @@ import BraintreeDataCollector
 
         requestParameters["_meta"] = metadataParameters
 
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, response, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, _, error in
             guard let self else {
                 NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                 return
@@ -177,6 +180,39 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) {
+        let requestParameters = buildRequestDictionary(with: request)
+        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, _, error in
+            if let error {
+                self.notifyFailure(with: error, completion: self.merchantCompletion)
+                return
+            }
+
+            if
+                let paymentID = body?["paymentResource"]["paymentToken"].asString(),
+                let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
+                let url = URL(string: approvalURLString) {
+
+                if !paymentID.isEmpty {
+                    self.payPalContextID = paymentID
+                }
+
+                self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
+                    self.onPayment(with: url, error: error)
+                }
+            } else {
+                NSLog(
+                    """
+                    %@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.
+                    """,
+                    BTLogLevelDescription.string(for: .critical)
+                )
+                self.notifyFailure(with: BTLocalPaymentError.appSwitchFailed, completion: self.merchantCompletion)
+                return
+            }
+        }
+    }
+
+    private func buildRequestDictionary(with request: BTLocalPaymentRequest) -> [String: Any] {
         var requestParameters: [String: Any] = [
             "amount": request.amount ?? "",
             "funding_source": request.paymentType ?? "",
@@ -234,29 +270,7 @@ import BraintreeDataCollector
 
         requestParameters["experience_profile"] = experienceProfile
 
-        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, response, error in
-            if let error {
-                self.notifyFailure(with: error, completion: self.merchantCompletion)
-                return
-            }
-
-            if let paymentID = body?["paymentResource"]["paymentToken"].asString(),
-               let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
-               let url = URL(string: approvalURLString) {
-
-                if !paymentID.isEmpty {
-                    self.payPalContextID = paymentID
-                }
-
-                self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
-                    self.onPayment(with: url, error: error)
-                }
-            } else {
-                NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil.  Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.appSwitchFailed, completion: self.merchantCompletion)
-                return
-            }
-        }
+        return requestParameters
     }
 
     private func onPayment(with url: URL?, error: Error?) {
