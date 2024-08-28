@@ -56,42 +56,38 @@ import BraintreeDataCollector
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func startPaymentFlow(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
-
+        
         self.request = request
         self.merchantCompletion = completion
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
+        
+        Task {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+                
+                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                request.correlationID = dataCollector.clientMetadataID(nil)
+                
+                if !configuration.isLocalPaymentEnabled {
+                    NSLog(
+                        "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                        BTLogLevelDescription.string(for: .critical)
+                    )
+                    self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
+                    return
+                } else if request.localPaymentFlowDelegate == nil {
+                    NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                    self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
+                    return
+                } else if request.amount == nil || request.paymentType == nil {
+                    NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
+                    self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
+                    return
+                }
+                
+                self.start(request: request, configuration: configuration)
+            } catch {
+                notifyFailure(with: error, completion: completion)
             }
-
-            let dataCollector = BTDataCollector(apiClient: self.apiClient)
-            request.correlationID = dataCollector.clientMetadataID(nil)
-
-            guard let configuration else {
-                self.notifyFailure(with: BTLocalPaymentError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-
-            if !configuration.isLocalPaymentEnabled {
-                NSLog(
-                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
-                return
-            } else if request.localPaymentFlowDelegate == nil {
-                NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
-            } else if request.amount == nil || request.paymentType == nil {
-                NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
-            }
-
-            self.start(request: request, configuration: configuration)
         }
     }
     

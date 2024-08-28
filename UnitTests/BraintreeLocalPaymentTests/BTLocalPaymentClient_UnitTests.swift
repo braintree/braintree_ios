@@ -133,39 +133,53 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         localPaymentRequest.displayName = "My Brand!"
         localPaymentRequest.bic = "111222333"
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
-
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payment_type_country_code"] as? String, "NL")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["currency_iso_code"] as? String, "EUR")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["amount"] as? String, "1.01")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["first_name"] as? String, "Linh")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["last_name"] as? String, "Ngo")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["phone"] as? String, "639847934")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payer_email"] as? String, "lingo-buyer@paypal.com")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["intent"] as! String, "sale")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["return_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/success")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["cancel_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/cancel")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["line1"] as? String, "836486 of 22321 Park Lake")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["line2"] as? String, "#102")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["city"] as? String, "Den Haag")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["state"] as? String, "CA")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["postal_code"] as? String, "2585 GJ")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["country_code"] as? String, "NL")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["first_name"] as! String, "Linh")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["last_name"] as! String, "Ngo")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payer_email"] as! String, "lingo-buyer@paypal.com")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["phone"] as! String, "639847934")
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["bic"] as! String, "111222333")
-
-        guard let experienceProfile = mockAPIClient.lastPOSTParameters!["experience_profile"] as? [String: Any] else {
-            XCTFail()
-            return
+        let expectation = expectation(description: "Completion Success")
+        client.startPaymentFlow(localPaymentRequest) { _, _ in
+            expectation.fulfill()
         }
 
-        XCTAssertFalse(experienceProfile["no_shipping"] as! Bool)
-        XCTAssertEqual(experienceProfile["brand_name"] as? String, "My Brand!")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
+            let url = URL(string: "sdk.ios.braintree://ontouch/v1/success")
+            if let url {
+                DispatchQueue.main.async {
+                    client.handleOpen(url)
+                }
+            }
+
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["payment_type_country_code"] as? String, "NL")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["currency_iso_code"] as? String, "EUR")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "1.01")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["first_name"] as? String, "Linh")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["last_name"] as? String, "Ngo")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["phone"] as? String, "639847934")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["payer_email"] as? String, "lingo-buyer@paypal.com")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["intent"] as! String, "sale")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["return_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/success")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["cancel_url"] as! String, "sdk.ios.braintree://x-callback-url/braintree/local-payment/cancel")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["line1"] as? String, "836486 of 22321 Park Lake")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["line2"] as? String, "#102")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["city"] as? String, "Den Haag")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["state"] as? String, "CA")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["postal_code"] as? String, "2585 GJ")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["country_code"] as? String, "NL")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["first_name"] as! String, "Linh")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["last_name"] as! String, "Ngo")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["payer_email"] as! String, "lingo-buyer@paypal.com")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["phone"] as! String, "639847934")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["bic"] as! String, "111222333")
+
+            guard let experienceProfile = self.mockAPIClient.lastPOSTParameters!["experience_profile"] as? [String: Any] else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertFalse(experienceProfile["no_shipping"] as! Bool)
+            XCTAssertEqual(experienceProfile["brand_name"] as? String, "My Brand!")
+        }
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testStartPayment_returnsErrorWhenRedirectUrlIsMissing() {
