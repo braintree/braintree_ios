@@ -279,14 +279,20 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Completion Success")
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
 
-        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
-        payPalClient.handleReturnURL(returnURL)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
+            self.payPalClient.handleReturnURL(returnURL)
 
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
-        XCTAssertNotNil(payPalClient.clientMetadataID)
+            XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "BA-Random-Value")
+            XCTAssertEqual(self.mockAPIClient.postedLinkType, .universal)
+            XCTAssertNotNil(self.payPalClient.clientMetadataID)
+        }
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -834,14 +840,13 @@ class BTPayPalClient_Tests: XCTestCase {
 
             let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
 
-            fakeApplication.completeAppSwitch()
             let successReturnRUL = URL(string: "sdk.ios.braintree://onetouch/v1/success")
             if let successReturnRUL {
                 DispatchQueue.main.async {
                     BTPayPalClient.handleReturnURL(successReturnRUL)
                 }
             } else {
-                XCTFail()
+                XCTFail("Expected successfulReturnURL")
             }
 
             XCTAssertEqual(urlComponents?.host, "www.some-url.com")
@@ -859,7 +864,6 @@ class BTPayPalClient_Tests: XCTestCase {
             }
         }
         waitForExpectations(timeout: 2, handler: nil)
-
     }
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
