@@ -86,9 +86,7 @@ public class MockAPIClient: BTAPIClient {
         guard let responseBody = cannedConfigurationResponseBody else {
             throw cannedConfigurationResponseError ?? NSError(domain: "com.braintreepayments.BTAPIClientErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: BTAPIClientError.configurationUnavailable.errorDescription ?? "Unkonwn error"])
         }
-
         
-
         if let cannedResponseError {
             throw cannedResponseError
         }

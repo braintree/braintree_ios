@@ -8,11 +8,25 @@ public class FakeApplication: URLOpener {
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
+    private var appSwitchCompletion: ((Bool) -> Void)? = nil
 
     public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
         lastOpenURL = url
         openURLWasCalled = true
+        appSwitchCompletion = completion
         completion?(cannedOpenURLSuccess)
+    }
+
+    public func completeAppSwitch() {
+        guard let appSwitchCompletion else {
+            return
+        }
+        DispatchQueue.main.async {
+            appSwitchCompletion(self.cannedCanOpenURL)
+            self.appSwitchCompletion = nil
+        }
+
+
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {

@@ -808,7 +808,7 @@ class BTPayPalClient_Tests: XCTestCase {
     
     // MARK: - App Switch - tokenize
 
-    func testTokenizeVaultAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+    func testTokenizeVaultAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
 
@@ -817,32 +817,49 @@ class BTPayPalClient_Tests: XCTestCase {
                 "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
             ]
         ])
-        
+
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
             enablePayPalAppSwitch: true
         )
 
+        let expectation = expectation(description: "completion")
         payPalClient.tokenize(vaultRequest) { _, _ in
-
+            expectation.fulfill()
         }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
-        
-        let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
-        XCTAssertEqual(urlComponents?.host, "www.some-url.com")
-        XCTAssertEqual(urlComponents?.path, "/some-path")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(fakeApplication.openURLWasCalled)
+            XCTAssertNotNil(fakeApplication.lastOpenURL)
 
-        XCTAssertEqual(urlComponents?.queryItems?[0].name, "ba_token")
-        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
-        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
-        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
-        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
-        if let urlTimestamp = urlComponents?.queryItems?[2].value {
-            XCTAssertNotNil(Int(urlTimestamp))
-        } else {
-            XCTFail("Expected integer value for query param `switch_initiated_time`")
+            let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
+
+            fakeApplication.completeAppSwitch()
+            let successReturnRUL = URL(string: "sdk.ios.braintree://onetouch/v1/success")
+            if let successReturnRUL {
+                DispatchQueue.main.async {
+                    BTPayPalClient.handleReturnURL(successReturnRUL)
+                }
+            } else {
+                XCTFail()
+            }
+
+            XCTAssertEqual(urlComponents?.host, "www.some-url.com")
+            XCTAssertEqual(urlComponents?.path, "/some-path")
+
+            XCTAssertEqual(urlComponents?.queryItems?[0].name, "ba_token")
+            XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
+            XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
+            XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
+            XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
+            if let urlTimestamp = urlComponents?.queryItems?[2].value {
+                XCTAssertNotNil(Int(urlTimestamp))
+            } else {
+                XCTFail("Expected integer value for query param `switch_initiated_time`")
+            }
         }
+        waitForExpectations(timeout: 2, handler: nil)
+
     }
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
