@@ -75,15 +75,15 @@ If you're looking to update to a newer version of our SDK, please see our recomm
 
 ### Using Swift Package Manager
 
- To update using SPM, select _File→ Packages → Update to Latest Package Versions_.
+ To update using Swift Package Manager, select _File→ Packages → Update to Latest Package Versions_.
 
 ### Using Cocoapods 
 
-You can either update all pods listed within your Podfile using `pod update` or specific pods as needed using `pod update PODNAME`. For additional detail, see these [guidelines](https://guides.cocoapods.org/using/pod-install-vs-update.html).
+You can either update all pods listed within your Podfile using `pod update` or specific pods as needed using `pod update PODNAME`. For additional details, see the [Cocoapods guidelines](https://guides.cocoapods.org/using/pod-install-vs-update.html).
 
 ### Using Carthage
 
-To update to the latest versions of each framework, simply run the `carthage update` command. For more details, check out these [guidelines](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#version-requirement).
+To update to the latest versions of each framework, simply run the `carthage update` command. For more details, check out the [Carthage guidelines](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#version-requirement).
 
 ## Versions
 
