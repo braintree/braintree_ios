@@ -34,7 +34,7 @@ import BraintreeCore
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
 
-        apiClient.fetchOrReturnRemoteConfiguration() { configuration, error in
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -73,7 +73,7 @@ import BraintreeCore
                         return
                     }
 
-                    let cardNonce: BTCardNonce = BTCardNonce(graphQLJSON: cardJSON)
+                    let cardNonce = BTCardNonce(graphQLJSON: cardJSON)
 
                     self.notifySuccess(with: cardNonce, completion: completion)
                     return
@@ -101,7 +101,7 @@ import BraintreeCore
                         return
                     }
 
-                    let cardNonce: BTCardNonce = BTCardNonce(json: cardJSON)
+                    let cardNonce = BTCardNonce(json: cardJSON)
 
                     self.notifySuccess(with: cardNonce, completion: completion)
                     return

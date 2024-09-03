@@ -417,6 +417,7 @@ import BraintreeDataCollector
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -442,6 +443,7 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID
             )
@@ -450,6 +452,7 @@ import BraintreeDataCollector
         } else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID
             )

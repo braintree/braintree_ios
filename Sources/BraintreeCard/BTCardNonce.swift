@@ -80,7 +80,7 @@ import BraintreeCore
     @_documentation(visibility: private)
     @objc(initWithJSON:)
     public convenience init(json cardJSON: BTJSON?) {
-        var authenticationInsightJSON: BTJSON? = nil
+        var authenticationInsightJSON: BTJSON?
 
         if cardJSON?["authenticationInsight"].asDictionary() != nil {
             authenticationInsightJSON = cardJSON?["authenticationInsight"]
@@ -111,9 +111,9 @@ import BraintreeCore
             lastFour = lastFourString
         }
 
-        let lastTwo: String = String(lastFour.count == 4 ? lastFour.suffix(2) : "")
+        let lastTwo = String(lastFour.count == 4 ? lastFour.suffix(2) : "")
 
-        var authenticationInsightJSON: BTJSON? = nil
+        var authenticationInsightJSON: BTJSON?
 
         if json?["authenticationInsight"].asDictionary() != nil {
             authenticationInsightJSON = json?["authenticationInsight"]
