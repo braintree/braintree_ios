@@ -49,7 +49,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-        let payPalEditVaultButton = createButton(title: "Edit PayPal Vault", action: #selector(tappedPayPalEditVault))
+        let payPalEditVaultButton = createButton(title: "Edit FI", action: #selector(tappedPayPalEditVault))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
@@ -168,7 +168,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "YJbRTegvI/dIDEyFZRa52Twflbn0q2pSktu1llbZmMg=")
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA=")
         payPalClient.edit(request) { editResult, error in
             sender.isEnabled = true
 
@@ -177,7 +177,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 return
             }
 
-         //   self.completionBlock(editResult)
+            self.paypalEditCompletionBlock(editResult.riskCorrelationID)
         }
     }
 

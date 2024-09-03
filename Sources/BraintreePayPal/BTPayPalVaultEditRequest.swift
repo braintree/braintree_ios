@@ -11,7 +11,6 @@ public class BTPayPalVaultEditRequest {
     private let editPayPalVaultID: String
     public let merchantAccountID: String?
     let hermesPath: String = "v1/paypal_hermes/generate_edit_fi_url"
-    var correlationID: String?
 
     // MARK: - Static properties
 
@@ -32,10 +31,6 @@ public class BTPayPalVaultEditRequest {
         var parameters: [String: Any] = [:]
 
         parameters["edit_paypal_vault_id"] = editPayPalVaultID
-
-        if correlationID != nil {
-            parameters["correlation_id"] = correlationID
-        }
 
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"

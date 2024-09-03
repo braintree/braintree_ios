@@ -218,10 +218,8 @@ import BraintreeDataCollector
             }
 
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
-            // TODO: set correlation_id to riskCorrelationId if passed in by merchant
-            // note: we don't have payPalContextID from approvalURL yet
             self.clientMetadataID = dataCollector.clientMetadataID(nil)
-            request.correlationID = self.clientMetadataID
+
             self.editFIRequest = request
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
                 if let error = error {
@@ -241,12 +239,9 @@ import BraintreeDataCollector
                     }
                     // TODO: implement app switch
                     // now it shouldn't return this option
-                    print("🌸 payPal url shouldn't return: \(url.absoluteString)")
                     self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
                 case .webBrowser(let url):
-                    print("🌸 url \(url.absoluteString)")
-                    // TODO: handle response here per updated reqs
-                //    self.handlePayPalEditFIRequest(with: url, paymentType: .vault, completion: completion)
+                    self.handlePayPalEditFIRequest(with: url, paymentType: .vault, completion: completion)
                 }
             }
         }
@@ -351,62 +346,6 @@ import BraintreeDataCollector
             }
 
             self.notifySuccess(with: tokenizedAccount, completion: completion)
-        }
-    }
-
-    func handleEditFIReturn(
-        _ url: URL,
-        paymentType: BTPayPalPaymentType,
-        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
-    ) {
-        // TODO: Analytics Event
-
-        // valid url check? cancel check
-
-        var ba_token: String?
-        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
-            .queryItems?
-            .compactMap {$0}
-
-        if let baToken = queryItems?.filter({$0.name == "ba_token"}).first?.value, !baToken.isEmpty {
-            ba_token = baToken
-        }
-
-        var parameters: [String: Any] = [:]
-
-        if let ba_token {
-            parameters["billing_agreement_token"] = ba_token
-        } else {
-            notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
-            return
-        }
-
-        if let editFIRequest, let merchantAccountID = editFIRequest.merchantAccountID {
-            parameters["merchant_account_id"] = merchantAccountID
-        }
-
-        let metadata = apiClient.metadata
-        metadata.source = .payPalBrowser
-
-        parameters["_meta"] = [
-            "source": metadata.source.stringValue,
-            "integration": metadata.integration.stringValue,
-            "sessionId": metadata.sessionID
-        ]
-
-        apiClient.post("/v1/paypal_hermes/lookup_fi_details", parameters: parameters) { body, response, error in
-            if let error {
-                self.notifyEditFIFailure(with: error, completion: completion)
-                return
-            }
-
-            print("🎉 lookup_details response: \(body)")
-            guard let vaultEditResult = BTPayPalVaultEditResult(json: body!) else {
-                // TODO: add failedToCreateVaultEditResult errror
-                self.notifyEditFIFailure(with: BTPayPalError.failedToCreateNonce, completion: completion)
-                return
-            }
-            self.notifyEditFISuccess(with: vaultEditResult, completion: completion)
         }
     }
 
@@ -538,6 +477,7 @@ import BraintreeDataCollector
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
+            isVaultRequest: isVaultRequest,
             linkType: linkType,
             payPalContextID: payPalContextID
         )
@@ -563,6 +503,7 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID
             )
@@ -571,6 +512,7 @@ import BraintreeDataCollector
         } else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                isVaultRequest: isVaultRequest,
                 linkType: linkType,
                 payPalContextID: payPalContextID
             )
@@ -667,21 +609,31 @@ import BraintreeDataCollector
                 return
             }
 
-            print("🌸 url response from success: \(url?.absoluteString)")
             guard let url, let returnURL = BTPayPalReturnURL(.webBrowser(url: url)) else {
                 notifyEditFIFailure(with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"), completion: completion)
                 return
             }
 
             switch returnURL.state {
-            case .succeeded, .canceled:
+            case .succeeded:
                 guard editFIRequest != nil else {
-                    // use different error for missing EditFI Request
-                    notifyEditFIFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
+                    notifyEditFIFailure(with: BTPayPalError.missingPayPalVaultEditRequest, completion: completion)
                     return
                 }
-                print("🎉 returned! url: \(url.absoluteString)")
-                self.handleEditFIReturn(url, paymentType: .vault, completion: completion)
+
+                guard let clientMetadataID else {
+                    return notifyEditFIFailure(with: BTPayPalError.missingClientMetadataID, completion: completion)
+                }
+
+                notifyEditFISuccess(with: BTPayPalVaultEditResult(riskCorrelationID: clientMetadataID), completion: completion)
+
+            case .canceled:
+                guard editFIRequest != nil else {
+                    notifyEditFIFailure(with: BTPayPalError.missingPayPalVaultEditRequest, completion: completion)
+                    return
+                }
+
+                notifyEditFICancel(completion: completion)
 
             case .unknownPath:
                 notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)

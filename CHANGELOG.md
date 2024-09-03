@@ -5,6 +5,7 @@
   * Add PayPal vault edit flow (BETA)
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditRequest`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
+  * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
 
 ## 6.23.3 (2024-08-12)
 * BraintreeCore
