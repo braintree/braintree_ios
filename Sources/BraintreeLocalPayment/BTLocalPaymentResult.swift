@@ -49,7 +49,7 @@ import BraintreeCore
         let details = paypalAccount["details"]
         clientMetadataID = details["correlationId"].asString()
         
-        if (details["payerInfo"]["email"].isString) {
+        if details["payerInfo"]["email"].isString {
             email = details["payerInfo"]["email"].asString()
         } else {
             email = details["email"].asString()
