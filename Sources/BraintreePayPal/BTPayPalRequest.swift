@@ -135,7 +135,11 @@ import BraintreeCore
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
-    public func parameters(with configuration: BTConfiguration, universalLink: URL? = nil, isPayPalAppInstalled: Bool = false) -> [String: Any] {
+    public func parameters(
+        with configuration: BTConfiguration,
+        universalLink: URL? = nil,
+        isPayPalAppInstalled: Bool = false
+    ) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
 
         experienceProfile["no_shipping"] = !isShippingAddressRequired
@@ -161,7 +165,7 @@ import BraintreeCore
             parameters["correlation_id"] = riskCorrelationID
         }
 
-        if let lineItems, lineItems.count > 0 {
+        if let lineItems, !lineItems.isEmpty {
             let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
             parameters["line_items"] = lineItemsArray
         }
