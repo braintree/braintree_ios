@@ -41,4 +41,3 @@ public struct BTPayPalMessagingRequest {
         self.color = color
     }
 }
-
