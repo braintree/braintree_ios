@@ -9,6 +9,7 @@ import BraintreeCore
 public class BTPayPalVaultEditRequest {
 
     private let editPayPalVaultID: String
+    public var riskCorrelationID: String?
     public let merchantAccountID: String?
     let hermesPath: String = "v1/paypal_hermes/generate_edit_fi_url"
 
@@ -22,9 +23,10 @@ public class BTPayPalVaultEditRequest {
     ///   `gateway.payment_method.find("payment_method_token")` or `gateway.customer.find("customer_id")`
     ///   - merchantAccountID: Optional: ID of the merchant account; if one is not provided the default will be used
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-    public init(editPayPalVaultID: String, merchantAccountID: String? = nil) {
+    public init(editPayPalVaultID: String, merchantAccountID: String? = nil, riskCorrelationID: String? = nil) {
         self.editPayPalVaultID = editPayPalVaultID
         self.merchantAccountID = merchantAccountID
+        self.riskCorrelationID = riskCorrelationID
     }
 
     public func parameters() -> [String: Any] {
@@ -35,6 +37,7 @@ public class BTPayPalVaultEditRequest {
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
 
+        parameters["risk_correlation_id"] = riskCorrelationID
         return parameters
     }
 }

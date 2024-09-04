@@ -50,13 +50,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalEditVaultButton = createButton(title: "Edit FI", action: #selector(tappedPayPalEditVault))
+        let payPalEditVaultErrorHandlingButton = createButton(title: "Edit FI (Error Handling)", action: #selector(tappedPayPalEditVaultErrorHandling))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton, payPalEditVaultButton])
+        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton, payPalEditVaultButton, payPalEditVaultErrorHandlingButton])
 
 
         let stackView = UIStackView(arrangedSubviews: [
@@ -164,7 +165,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     // MARK: Edit FI flow
 
     @objc func tappedPayPalEditVault(_ sender: UIButton) {
-        progressBlock("Tapped PayPal - Vault using BTPayPalClient")
+        progressBlock("Tapped PayPal - Edit FI")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
@@ -180,6 +181,28 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.paypalEditCompletionBlock(editResult.riskCorrelationID)
         }
     }
+
+
+    @objc func tappedPayPalEditVaultErrorHandling(_ sender: UIButton) {
+        progressBlock("Tapped PayPal - Edit FI, ErrorHandling")
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+
+        // TODO: textField for entry of riskCorrelationID
+        let request = BTPayPalVaultErrorHandlingEditRequest(editPayPalVaultID: "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA=", riskCorrelationID: "test")
+
+        payPalClient.edit(request) { editResult, error in
+            sender.isEnabled = true
+
+            guard let editResult else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+
+            self.paypalEditCompletionBlock(editResult.riskCorrelationID)
+        }
+    }
+
 
     // MARK: - Helpers
     

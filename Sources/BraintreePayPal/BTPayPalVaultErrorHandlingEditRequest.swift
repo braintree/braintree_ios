@@ -1,13 +1,22 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 /// Options for the PayPal edit funding instrument flow with retry on failed attempts
 ///
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public struct BTPayPalVaultErrorHandlingEditRequest {
 
     private let editPayPalVaultID: String
-    private let riskCorrelationID: String
+    public let riskCorrelationID: String
     private let merchantAccountID: String?
+    let hermesPath: String = "v1/paypal_hermes/generate_edit_fi_url"
+
+    // MARK: - Static properties
+
+    static let callbackURLHostAndPath: String = "onetouch/v1"
 
     /// Initializes a PayPal Edit Request for the edit funding instrument flow
     /// - Parameters:
@@ -20,5 +29,17 @@ public struct BTPayPalVaultErrorHandlingEditRequest {
         self.editPayPalVaultID = editPayPalVaultID
         self.merchantAccountID = merchantAccountID
         self.riskCorrelationID = riskCorrelationID
+    }
+
+    public func parameters() -> [String: Any] {
+        var parameters: [String: Any] = [:]
+
+        parameters["edit_paypal_vault_id"] = editPayPalVaultID
+
+        parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
+        parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        parameters["risk_correlation_id"] = riskCorrelationID
+
+        return parameters
     }
 }
