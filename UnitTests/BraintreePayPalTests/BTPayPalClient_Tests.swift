@@ -381,7 +381,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
-    func testTEditVault_whenAllApprovalURLsInvalid_returnsError() {
+    func testEditVault_whenAllApprovalURLsInvalid_returnsError() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "approvalUrl": "",
@@ -403,6 +403,51 @@ class BTPayPalClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 1.0)
     }
+
+    func testEditPayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "file://some-url.com"
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            XCTAssertNil(editResult)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
+            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testEditPayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "approvalUrl": "",
+                "paypalAppApprovalUrl": ""
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
 
     // TODO: test correct parsing of url's, BA token
 
