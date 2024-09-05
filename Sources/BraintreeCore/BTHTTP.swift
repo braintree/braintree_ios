@@ -146,19 +146,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 headers: headers
             )
 
-            if path != "v1/tracking/batch/events", let body = request.httpBody {
-                print("🌸 path: \(path)")
-                print("🌸 url request payload: \(String(data: body, encoding: .utf8)!)")
-            }
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
                     return
                 }
-                if path != "v1/tracking/batch/events", let body = data {
-                    print("🌸 path: \(path)")
-                    print("🌸 url response payload: \(String(data: body, encoding: .utf8)!)")
-                }
+
                 handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
             }.resume()
         } catch {

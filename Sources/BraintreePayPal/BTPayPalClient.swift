@@ -219,8 +219,16 @@ import BraintreeDataCollector
             request.riskCorrelationID = self.clientMetadataID
 
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
-                if let error = error {
-                    self.notifyEditFIFailure(with: error, completion: completion)
+                if let error = error as? NSError {
+                    guard error.userInfo[BTCoreConstants.jsonResponseBodyKey] is BTJSON else {
+                        self.notifyEditFIFailure(with: error, completion: completion)
+                        return
+                    }
+
+                    let dictionary = error.userInfo
+
+                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
+                    return
                 }
 
                 guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
@@ -229,11 +237,12 @@ import BraintreeDataCollector
                 }
 
                 switch approvalURL.redirectType {
-                case .payPalApp(let url):
-                    guard let baToken = approvalURL.baToken else {
+                case .payPalApp( _):
+                    if approvalURL.baToken == nil {
                         self.notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
                         return
                     }
+
                     // TODO: implement app switch
                     // now it shouldn't return this option
                     self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
@@ -300,8 +309,16 @@ import BraintreeDataCollector
             self.clientMetadataID = dataCollector.clientMetadataID(request.riskCorrelationID)
 
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
-                if let error = error {
-                    self.notifyEditFIFailure(with: error, completion: completion)
+                if let error = error as? NSError {
+                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                        self.notifyEditFIFailure(with: error, completion: completion)
+                        return
+                    }
+
+                    var dictionary = error.userInfo
+
+                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
+                    return
                 }
 
                 guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
@@ -310,8 +327,8 @@ import BraintreeDataCollector
                 }
 
                 switch approvalURL.redirectType {
-                case .payPalApp(let url):
-                    guard let baToken = approvalURL.baToken else {
+                case .payPalApp(_):
+                    if approvalURL.baToken == nil {
                         self.notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
                         return
                     }

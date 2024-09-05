@@ -9,10 +9,9 @@ import BraintreeCore
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public struct BTPayPalVaultErrorHandlingEditRequest {
 
-    private let editPayPalVaultID: String
     public let riskCorrelationID: String
-    private let merchantAccountID: String?
     let hermesPath: String = "v1/paypal_hermes/generate_edit_fi_url"
+    private let editPayPalVaultID: String
 
     // MARK: - Static properties
 
@@ -25,9 +24,8 @@ public struct BTPayPalVaultErrorHandlingEditRequest {
     ///   - riskCorrelationID: Required: Unique id for each transaction used in subsequent retry in case of failure
     ///   - merchantAccountID: Optional: ID of the merchant account; if one is not provided the default will be used
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-    public init(editPayPalVaultID: String, riskCorrelationID: String, merchantAccountID: String? = nil) {
+    public init(editPayPalVaultID: String, riskCorrelationID: String) {
         self.editPayPalVaultID = editPayPalVaultID
-        self.merchantAccountID = merchantAccountID
         self.riskCorrelationID = riskCorrelationID
     }
 
