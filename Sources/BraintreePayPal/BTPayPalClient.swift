@@ -220,12 +220,17 @@ import BraintreeDataCollector
 
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
                 if let error = error as? NSError {
-                    guard error.userInfo[BTCoreConstants.jsonResponseBodyKey] is BTJSON else {
+                    guard let jsonResponseBody =  error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyEditFIFailure(with: error, completion: completion)
                         return
                     }
 
-                    let dictionary = error.userInfo
+                    var dictionary = error.userInfo
+                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+
+                    if !errorDetailsIssue.isError {
+                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    }
 
                     self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
                     return
@@ -310,12 +315,17 @@ import BraintreeDataCollector
 
             self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
                 if let error = error as? NSError {
-                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                    guard let jsonResponseBody =  error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyEditFIFailure(with: error, completion: completion)
                         return
                     }
 
                     var dictionary = error.userInfo
+                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+
+                    if !errorDetailsIssue.isError {
+                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    }
 
                     self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
                     return
