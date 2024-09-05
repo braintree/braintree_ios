@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable identifier_name
 ///  A locale code to use for a transaction.
 @objc public enum BTPayPalLocaleCode: Int {
     case none
@@ -30,7 +31,8 @@ import Foundation
     case zh_HK
     case zh_TW
     case zh_XC
-    
+    // swiftlint:enable identifier_name
+
     var stringValue: String? {
         switch self {
         case .none:

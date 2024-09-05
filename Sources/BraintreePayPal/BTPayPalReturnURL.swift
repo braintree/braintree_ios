@@ -53,7 +53,7 @@ struct BTPayPalReturnURL {
             .dropLast(1) // remove the action (`success`, `cancel`, etc)
             .joined(separator: "/")
 
-        if hostAndPath.count > 0 {
+        if !hostAndPath.isEmpty {
             hostAndPath.append("/")
         }
 
@@ -63,11 +63,13 @@ struct BTPayPalReturnURL {
             return false
         }
 
-        guard let action = action(from: url),
-              let query = url.query,
-              query.count > 0,
-              action.count >= 0,
-              ["success", "cancel", "authenticate"].contains(action) else {
+        guard
+            let action = action(from: url),
+            let query = url.query,
+            !query.isEmpty,
+            !action.isEmpty,
+            ["success", "cancel", "authenticate"].contains(action)
+        else {
             return false
         }
 

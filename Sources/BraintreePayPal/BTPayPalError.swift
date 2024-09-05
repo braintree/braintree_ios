@@ -99,7 +99,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
         case .invalidURLAction:
             return "The URL action did not contain a valid URL."
         case .failedToCreateNonce:
+            // swiftlint:disable line_length
             return "Unable to create BTPayPalAccountNonce. Either body did not contain paypalAccounts array or contents could not be parsed."
+            // swiftlint:enable line_length
         case .webSessionError(let error):
             return "ASWebAuthenticationSession failed with \(error.localizedDescription)"
         case .deallocated:

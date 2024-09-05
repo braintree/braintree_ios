@@ -9,6 +9,7 @@ import Foundation
     case credit
 }
 
+// swiftlint:disable identifier_name
 /// Use this option to specify  the UPC type of the line item.
 @objc public enum BTPayPalLineItemUPCType: Int {
 
@@ -35,7 +36,8 @@ import Foundation
     
     /// Upc Type 5
     case UPC_5
-    
+    // swiftlint:enable identifier_name
+
     var stringValue: String? {
         switch self {
         case .none:
@@ -88,10 +90,10 @@ import Foundation
     public let productCode: String? = nil
     
     /// Optional: The URL to product image information.
-    public var imageURL: URL? = nil
+    public var imageURL: URL?
 
     /// Optional: UPC code for the item.
-    public var upcCode: String? = nil
+    public var upcCode: String?
 
     /// Optional: UPC type for the item.
     public var upcType: BTPayPalLineItemUPCType = .none
@@ -124,15 +126,15 @@ import Foundation
             "kind": kind == .debit ? "debit" : "credit"
         ]
 
-        if let unitTaxAmount, unitTaxAmount != "" {
+        if let unitTaxAmount, !unitTaxAmount.isEmpty {
             requestParameters["unit_tax_amount"] = unitAmount
         }
 
-        if let itemDescription, itemDescription != "" {
+        if let itemDescription, !itemDescription.isEmpty {
             requestParameters["description"] = itemDescription
         }
 
-        if let productCode, productCode != "" {
+        if let productCode, !productCode.isEmpty {
             requestParameters["product_code"] = productCode
         }
 
@@ -144,7 +146,7 @@ import Foundation
             requestParameters["image_url"] = imageURL.absoluteString
         }
 
-        if let upcCode, upcCode != "" {
+        if let upcCode, !upcCode.isEmpty {
             requestParameters["upc_code"] = upcCode
         }
         
