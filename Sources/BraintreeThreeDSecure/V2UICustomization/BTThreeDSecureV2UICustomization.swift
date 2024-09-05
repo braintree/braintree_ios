@@ -51,7 +51,7 @@ import CardinalMobile
 
     // MARK: - Internal Properties
 
-    let cardinalValue: UiCustomization = UiCustomization()
+    let cardinalValue = UiCustomization()
 
     // MARK: - Public Methods
 

@@ -70,7 +70,7 @@ import Foundation
     // MARK: Private Methods
 
     private func prepend(_ prefix: String?, toKey key: String) -> String {
-        if prefix != "", let prefix {
+        if let prefix, !prefix.isEmpty {
             // Uppercase the first character in the key
             let firstLetter = key.prefix(1).capitalized
             let remainingLetters = key.dropFirst()
