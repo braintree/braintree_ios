@@ -2,6 +2,7 @@ import Foundation
 
 /// Contains information about a PayPal credit financing option
 @objcMembers public class BTPayPalCreditFinancing: NSObject {
+    
     /// Indicates whether the card amount is editable after payer's acceptance on PayPal side.
     public let cardAmountImmutable: Bool
     

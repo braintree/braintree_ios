@@ -26,7 +26,7 @@ struct BTPayPalApprovalURLParser {
             .queryItems?
             .compactMap { $0 }
 
-        if let ecToken = queryItems?.filter({ $0.name == "token" }).first?.value, !ecToken.isEmpty {
+        if let ecToken = queryItems?.first(where: { $0.name == "token" })?.value, !ecToken.isEmpty {
             return ecToken
         }
 
@@ -38,7 +38,7 @@ struct BTPayPalApprovalURLParser {
             .queryItems?
             .compactMap { $0 }
 
-        if let baToken = queryItems?.filter({ $0.name == "ba_token" }).first?.value, !baToken.isEmpty {
+        if let baToken = queryItems?.first(where: { $0.name == "ba_token" })?.value, !baToken.isEmpty {
             return baToken
         }
 
