@@ -12,6 +12,7 @@ included:
   - Sources/BraintreeLocalPayment
   - Sources/BraintreePayPal
   - Sources/BraintreePayPalMessaging
+  - Sources/BraintreeShopperInsights
 
 excluded:
   - Sources/BraintreeCore/BTAPIPinnedCertificates.swift
