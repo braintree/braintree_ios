@@ -209,6 +209,8 @@ import BraintreeDataCollector
                 return
             }
 
+            self.isConfigFromCache = configuration.isFromCache
+
             guard json["paypalEnabled"].isTrue else {
                 self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
                 return
@@ -304,6 +306,8 @@ import BraintreeDataCollector
                 self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
+
+            self.isConfigFromCache = configuration.isFromCache
 
             guard json["paypalEnabled"].isTrue else {
                 self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)

@@ -203,6 +203,39 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNotNil(lastPostParameters["correlation_id"])
     }
 
+    func testEditFI_whenPostRequestContainsError_callsBackWithError() {
+        let stubJSONResponse = BTJSON(
+            value: [
+                "paymentResource" : [
+                    "errorDetails" : [
+                        "issue": "A fake error issue"
+                    ]
+                ]
+            ]
+        )
+
+        let stubError = NSError(
+            domain: BTPayPalError.errorDomain,
+            code: BTPayPalError.httpPostRequestError([:]).errorCode,
+            userInfo: [
+                BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
+            ]
+        )
+
+        mockAPIClient.cannedResponseError = stubError
+
+        let dummyRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit FI fails with error")
+        payPalClient.edit(dummyRequest) { _, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.httpPostRequestError([:]).errorCode)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 1)
+    }
+
     // MARK: - PayPal approval URL to present in browser
 
     func testTokenizePayPalAccount_checkout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
