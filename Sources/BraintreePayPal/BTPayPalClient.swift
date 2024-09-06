@@ -735,7 +735,7 @@ import BraintreeDataCollector
             case .unknownPath:
                 notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
-        } sessionDidAppear: { [self] didAppear in
+        } sessionDidAppear: { didAppear in
             if didAppear {
                 // TODO: Analytics Event
             } else {

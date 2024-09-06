@@ -200,7 +200,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
-        XCTAssertNotNil(lastPostParameters["correlation_id"])
+        XCTAssertNotNil(lastPostParameters["risk_correlation_id"])
     }
 
     func testEditFI_whenPostRequestContainsError_callsBackWithError() {
@@ -481,9 +481,6 @@ class BTPayPalClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
 
-
-    // TODO: test correct parsing of url's, BA token
-
     // MARK: - Browser switch
 
     func testTokenizePayPalAccount_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
@@ -534,6 +531,14 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         payPalClient.tokenize(request) { _, _ in }
+
+        XCTAssertNotNil(payPalClient.webAuthenticationSession)
+        XCTAssertNotNil(payPalClient.clientMetadataID)
+    }
+
+    func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() {
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        payPalClient.edit(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
         XCTAssertNotNil(payPalClient.clientMetadataID)
