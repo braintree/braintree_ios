@@ -60,7 +60,7 @@ import BraintreeDataCollector
         self.request = request
         self.merchantCompletion = completion
         
-        Task {
+        Task { @MainActor in
             do {
                 let configuration = try await apiClient.fetchConfiguration()
                 
