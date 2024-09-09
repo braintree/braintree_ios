@@ -203,7 +203,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
     }
 
-
     // MARK: - Helpers
     
     private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {

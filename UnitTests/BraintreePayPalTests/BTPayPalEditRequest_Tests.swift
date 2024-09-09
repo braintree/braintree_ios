@@ -11,10 +11,9 @@ class BTPayPalEditRequest_Tests: XCTestCase {
     func test_returnsAllParams() {
         let expectedEditPayPalVaultID = "fake-edit-paypal-vault-id"
         let expectedCorrelationID = "test-ID"
-        var editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: expectedEditPayPalVaultID)
-        editRequest.riskCorrelationID = expectedCorrelationID
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: expectedEditPayPalVaultID)
 
-        let parameters = editRequest.parameters()
+        let parameters = editRequest.parameters(riskCorrelationID: expectedCorrelationID)
 
         XCTAssertEqual(parameters["edit_paypal_vault_id"] as? String, expectedEditPayPalVaultID)
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")

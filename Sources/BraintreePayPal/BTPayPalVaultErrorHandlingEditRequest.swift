@@ -10,12 +10,11 @@ import BraintreeCore
 public struct BTPayPalVaultErrorHandlingEditRequest {
 
     public let riskCorrelationID: String
-    let hermesPath: String = "v1/paypal_hermes/generate_edit_fi_url"
     private let editPayPalVaultID: String
 
     // MARK: - Static properties
 
-    static let callbackURLHostAndPath: String = "onetouch/v1"
+    static let callbackURLHostAndPath: String = "onetouch/v1/"
 
     /// Initializes a PayPal Edit Request for the edit funding instrument flow
     /// - Parameters:
@@ -30,14 +29,11 @@ public struct BTPayPalVaultErrorHandlingEditRequest {
     }
 
     public func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [:]
-
-        parameters["edit_paypal_vault_id"] = editPayPalVaultID
-
-        parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
-        parameters["risk_correlation_id"] = riskCorrelationID
-
-        return parameters
+        [
+            "edit_paypal_vault_id": editPayPalVaultID,
+            "return_url": BTCoreConstants.callbackURLScheme + "://\(BTPayPalVaultEditRequest.callbackURLHostAndPath)success",
+            "cancel_url": BTCoreConstants.callbackURLScheme + "://\(BTPayPalVaultEditRequest.callbackURLHostAndPath)cancel",
+            "risk_correlation_id": riskCorrelationID
+        ]
     }
 }

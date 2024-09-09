@@ -217,12 +217,12 @@ import BraintreeDataCollector
             }
 
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
-            self.clientMetadataID = dataCollector.clientMetadataID(nil)
-            request.riskCorrelationID = self.clientMetadataID
+            let riskCorrelationID = dataCollector.clientMetadataID(nil)
+            self.clientMetadataID = riskCorrelationID
 
-            self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
+            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: request.parameters(riskCorrelationID: riskCorrelationID)) { body, response, error in
                 if let error = error as? NSError {
-                    guard let jsonResponseBody =  error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyEditFIFailure(with: error, completion: completion)
                         return
                     }
@@ -238,24 +238,12 @@ import BraintreeDataCollector
                     return
                 }
 
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
                     self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
 
-                switch approvalURL.redirectType {
-                case .payPalApp( _):
-                    if approvalURL.baToken == nil {
-                        self.notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
-                        return
-                    }
-
-                    // TODO: implement app switch
-                    // now it shouldn't return this option
-                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
-                case .webBrowser(let url):
-                    self.handlePayPalEditFIRequest(with: url, completion: completion)
-                }
+                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
             }
         }
     }
@@ -317,7 +305,7 @@ import BraintreeDataCollector
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
             self.clientMetadataID = dataCollector.clientMetadataID(request.riskCorrelationID)
 
-            self.apiClient.post(request.hermesPath, parameters: request.parameters()) { body, response, error in
+            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: request.parameters()) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody =  error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyEditFIFailure(with: error, completion: completion)
@@ -335,23 +323,12 @@ import BraintreeDataCollector
                     return
                 }
 
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
                     self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
                     return
                 }
 
-                switch approvalURL.redirectType {
-                case .payPalApp(_):
-                    if approvalURL.baToken == nil {
-                        self.notifyEditFIFailure(with: BTPayPalError.missingBAToken, completion: completion)
-                        return
-                    }
-                    // TODO: implement app switch
-                    // now it shouldn't return this option
-                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Returned app switch URL when web browser switch was expected"), completion: completion)
-                case .webBrowser(let url):
-                    self.handlePayPalEditFIRequest(with: url, completion: completion)
-                }
+                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
             }
         }
     }
@@ -702,7 +679,6 @@ import BraintreeDataCollector
         editURL: URL,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-
         webSessionReturned = false
 
         webAuthenticationSession.start(url: editURL, context: self) { [weak self] url, error in
@@ -724,7 +700,7 @@ import BraintreeDataCollector
             switch returnURL.state {
             case .succeeded:
                 guard let clientMetadataID else {
-                    return notifyEditFIFailure(with: BTPayPalError.missingClientMetadataID, completion: completion)
+                    return notifyEditFIFailure(with: BTPayPalError.missingRiskCorrelationID, completion: completion)
                 }
 
                 notifyEditFISuccess(with: BTPayPalVaultEditResult(riskCorrelationID: clientMetadataID), completion: completion)
@@ -753,7 +729,6 @@ import BraintreeDataCollector
             return
         }
     }
-
 
     // MARK: - Analytics Helper Methods
 
