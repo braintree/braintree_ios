@@ -18,7 +18,7 @@ struct BTPayPalNativeHermesResponse {
 
         let token = URLComponents(url: url, resolvingAgainstBaseURL: false)?
             .queryItems?
-            .first(where: { $0.name == "token" || $0.name == "ba_token" })?
+            .first { $0.name == "token" || $0.name == "ba_token" }?
             .value
 
         guard let orderID = token else { return nil }

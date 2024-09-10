@@ -1,6 +1,7 @@
 import Foundation
 import PassKit
 
+// swiftlint:disable nesting
 /// The POST body for `v2/payments/find-eligible-methods`
 struct BTEligiblePaymentsRequest: Encodable {
     
@@ -15,6 +16,7 @@ struct BTEligiblePaymentsRequest: Encodable {
     }
     
     struct Customer: Encodable {
+
         let countryCode: String = "US"
         let email: String?
         let phone: Phone?
@@ -27,9 +29,11 @@ struct BTEligiblePaymentsRequest: Encodable {
     }
 
     struct PurchaseUnit: Encodable {
+
         let amount = Amount()
         
         struct Amount: Encodable {
+            
             let currencyCode = "USD"
             
             enum CodingKeys: String, CodingKey {
@@ -39,6 +43,7 @@ struct BTEligiblePaymentsRequest: Encodable {
     }
     
     struct Preferences: Encodable {
+
         let includeAccountDetails = true
         let paymentSourceConstraint = PaymentSourceConstraint()
         
@@ -48,6 +53,7 @@ struct BTEligiblePaymentsRequest: Encodable {
         }
         
         struct PaymentSourceConstraint: Encodable {
+
             let constraintType = "INCLUDE"
             let paymentSources = ["PAYPAL", "VENMO"]
             
@@ -57,7 +63,8 @@ struct BTEligiblePaymentsRequest: Encodable {
             }
         }
     }
-    
+    // swiftlint:enable nesting
+
     init(email: String?, phone: Phone?) {
         self.customer = Customer(email: email, phone: phone)
         self.purchaseUnits = [PurchaseUnit()]

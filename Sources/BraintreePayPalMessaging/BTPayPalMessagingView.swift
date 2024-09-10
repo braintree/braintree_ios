@@ -117,14 +117,18 @@ public extension BTPayPalMessagingView {
         private let apiClient: BTAPIClient
         private let delegate: BTPayPalMessagingDelegate?
 
-        private var request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()
+        private var request = BTPayPalMessagingRequest()
         
         ///  Initializes a `BTPayPalMessagingView`.
         /// - Parameters:
         ///   - apiClient: The Braintree API client
         ///   - request: an optional `BTPayPalMessagingRequest`
         ///   - delegate: an optional `BTPayPalMessagingDelegate`
-        public init(apiClient: BTAPIClient, request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(), delegate: BTPayPalMessagingDelegate? = nil) {
+        public init(
+            apiClient: BTAPIClient,
+            request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(),
+            delegate: BTPayPalMessagingDelegate? = nil
+        ) {
             self.apiClient = apiClient
             self.request = request
             self.delegate = delegate

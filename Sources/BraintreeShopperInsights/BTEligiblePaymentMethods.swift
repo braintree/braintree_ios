@@ -3,6 +3,7 @@ import BraintreeCore
 #endif
 
 struct BTEligiblePaymentMethods {
+
     var payPal: BTEligiblePaymentMethodDetails?
     var venmo: BTEligiblePaymentMethodDetails?
     
@@ -15,6 +16,7 @@ struct BTEligiblePaymentMethods {
 }
 
 struct BTEligiblePaymentMethodDetails {
+    
     let canBeVaulted: Bool
     let eligibleInPayPalNetwork: Bool
     let recommended: Bool

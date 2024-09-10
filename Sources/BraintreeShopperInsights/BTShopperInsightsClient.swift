@@ -52,16 +52,22 @@ public class BTShopperInsightsClient {
                 httpType: .payPalAPI
             )
 
-            guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
-                  eligibleMethodsJSON.count != 0 else {
+            // swiftlint:disable empty_count
+            guard
+                let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
+                eligibleMethodsJSON.count != 0
+            else {
                 throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
             }
-            
+            // swiftlint:enable empty_count
+
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
+            let payPal = eligiblePaymentMethods.payPal
+            let venmo = eligiblePaymentMethods.venmo
             let result = BTShopperInsightsResult(
-                isPayPalRecommended: eligiblePaymentMethods.payPal?.recommended ?? false,
-                isVenmoRecommended: eligiblePaymentMethods.venmo?.recommended ?? false,
-                isEligibleInPayPalNetwork: eligiblePaymentMethods.payPal?.eligibleInPayPalNetwork ?? false || eligiblePaymentMethods.venmo?.eligibleInPayPalNetwork ?? false
+                isPayPalRecommended: payPal?.recommended ?? false,
+                isVenmoRecommended: venmo?.recommended ?? false,
+                isEligibleInPayPalNetwork: payPal?.eligibleInPayPalNetwork ?? false || venmo?.eligibleInPayPalNetwork ?? false
             )
             return self.notifySuccess(with: result)
         } catch {

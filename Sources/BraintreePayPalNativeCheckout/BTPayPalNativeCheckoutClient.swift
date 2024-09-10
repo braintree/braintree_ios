@@ -17,11 +17,11 @@ import PayPalCheckout
     private let apiClient: BTAPIClient
     
     /// Used in POST body for FPTI analytics.
-    private var clientMetadataID: String? = nil
+    private var clientMetadataID: String?
 
     /// Used for linking events from the client to server side request
     /// In the PayPal Native Checkout flow this will be an Order ID
-    private var payPalContextID: String? = nil
+    private var payPalContextID: String?
 
     private let nativeCheckoutProvider: BTPayPalNativeCheckoutStartable
 
