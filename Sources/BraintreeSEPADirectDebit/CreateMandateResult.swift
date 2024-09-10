@@ -28,10 +28,11 @@ struct CreateMandateResult {
     let mandateType: String?
     
     init(json: BTJSON) {
-        self.approvalURL = json["message"]["body"]["sepaDebitAccount"]["approvalUrl"].asString() ?? CreateMandateResult.mandateAlreadyApprovedURLString
-        self.ibanLastFour = json["message"]["body"]["sepaDebitAccount"]["last4"].asString()
-        self.customerID = json["message"]["body"]["sepaDebitAccount"]["merchantOrPartnerCustomerId"].asString()
-        self.bankReferenceToken = json["message"]["body"]["sepaDebitAccount"]["bankReferenceToken"].asString()
-        self.mandateType = json["message"]["body"]["sepaDebitAccount"]["mandateType"].asString()
+        let sepaDebitAccount = json["message"]["body"]["sepaDebitAccount"]
+        self.approvalURL = sepaDebitAccount["approvalUrl"].asString() ?? CreateMandateResult.mandateAlreadyApprovedURLString
+        self.ibanLastFour = sepaDebitAccount["last4"].asString()
+        self.customerID = sepaDebitAccount["merchantOrPartnerCustomerId"].asString()
+        self.bankReferenceToken = sepaDebitAccount["bankReferenceToken"].asString()
+        self.mandateType = sepaDebitAccount["mandateType"].asString()
     }
 }
