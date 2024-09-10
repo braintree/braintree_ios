@@ -15,6 +15,9 @@ import Foundation
 
     /// URL Scheme for PayPal App
     public static let payPalURLScheme: String = "paypal-app-switch-checkout"
+    
+    /// Universal link for PayPal app (app switch flow)
+    public static let payPalUniversalLink: String = "https://paypal.com/app-switch-checkout"
 
     static let apiVersion: String = "2016-10-07"
     

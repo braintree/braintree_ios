@@ -31,7 +31,10 @@ extension UIApplication: URLOpener {
         guard let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://") else {
             return false
         }
-        return canOpenURL(payPalURL)
+        guard let payPalUniversalLinkURL = URL(string: BTCoreConstants.payPalUniversalLink) else {
+            return false
+        }
+        return canOpenURL(payPalURL) && canOpenURL(payPalUniversalLinkURL)
     }
 
     // TODO: once Xcode 16 is the minimum supported version remove this method and update the protocol to the default open signature from UIApplication
