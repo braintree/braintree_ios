@@ -85,7 +85,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         super.heightConstraint = 600
         super.viewDidLoad()
-        errorHandlingToggle.addTarget(self, action: #selector(toggleErrorHandling(_:)), for: .valueChanged)
+        errorHandlingToggle.addTarget(self, action: #selector(toggleErrorHandling), for: .valueChanged)
     }
 
     override func createPaymentButton() -> UIView {
@@ -230,6 +230,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let vaultID = payPalVaultIDTextField.text ?? "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: vaultID)
+
         payPalClient.edit(request) { editResult, error in
             sender.isEnabled = true
 
@@ -249,7 +250,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let vaultID = payPalVaultIDTextField.text ?? "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
         let riskCorrelationID = riskCorrelationIDTextField.text ?? "test"
-
         let request = BTPayPalVaultErrorHandlingEditRequest(editPayPalVaultID: vaultID, riskCorrelationID: riskCorrelationID)
 
         payPalClient.edit(request) { editResult, error in

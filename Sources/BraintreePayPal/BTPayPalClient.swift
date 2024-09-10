@@ -237,6 +237,7 @@ import BraintreeDataCollector
         // TODO: Analytics event
         edit(request: request, completion: completion)
     }
+
     /// Allows a customer to edit their PayPal payment method.
     ///
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
@@ -366,6 +367,7 @@ import BraintreeDataCollector
             notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme), completion: completion)
             return
         }
+
         performEditSwitchRequest(editURL: url, riskCorrelationID: riskCorrelationID, completion: completion)
     }
 
@@ -523,8 +525,6 @@ import BraintreeDataCollector
                 self.handlePayPalEditFIRequest(with: approvalURL, riskCorrelationID: riskCorrelationID,  completion: completion)
             }
         }
-
-
     }
 
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
