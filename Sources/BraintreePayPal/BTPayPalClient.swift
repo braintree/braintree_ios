@@ -490,7 +490,7 @@ import BraintreeDataCollector
             var parameters: [String: Any]
 
             if let editRequest = request as? BTPayPalVaultErrorHandlingEditRequest {
-                riskCorrelationID = dataCollector.clientMetadataID(editRequest.riskCorrelationID)
+                riskCorrelationID = editRequest.riskCorrelationID
                 parameters = editRequest.parameters()
             } else {
                 riskCorrelationID = dataCollector.clientMetadataID(nil)
