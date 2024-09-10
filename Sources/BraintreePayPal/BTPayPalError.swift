@@ -45,9 +45,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 13. Missing PayPal Request
     case missingPayPalRequest
 
-    /// 14. Missing RiskCorrelationID
-    case missingRiskCorrelationID
-
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -82,8 +79,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 12
         case .missingPayPalRequest:
             return 13
-        case .missingRiskCorrelationID:
-            return 14
         }
     }
 
@@ -117,8 +112,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Missing BA Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
-        case .missingRiskCorrelationID:
-            return "Unable to collect riskCorrelationID during the Edit FI or Error Handling flow."
         }
     }
 

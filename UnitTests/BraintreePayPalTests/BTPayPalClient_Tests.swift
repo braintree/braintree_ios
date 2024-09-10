@@ -541,7 +541,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.edit(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
-        XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
     // MARK: - handleBrowserSwitchReturn

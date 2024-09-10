@@ -358,6 +358,7 @@ import BraintreeDataCollector
 
     func handlePayPalEditFIRequest(
         with url: URL,
+        riskCorrelationID: String,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
         // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
@@ -365,7 +366,7 @@ import BraintreeDataCollector
             notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme), completion: completion)
             return
         }
-        performEditSwitchRequest(editURL: url, completion: completion)
+        performEditSwitchRequest(editURL: url, riskCorrelationID: riskCorrelationID, completion: completion)
     }
 
     // MARK: - App Switch Methods
@@ -496,8 +497,6 @@ import BraintreeDataCollector
                 parameters = request.parameters(riskCorrelationID: riskCorrelationID)
             }
 
-            self.clientMetadataID = riskCorrelationID
-
             self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, response, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -521,7 +520,7 @@ import BraintreeDataCollector
                     return
                 }
 
-                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
+                self.handlePayPalEditFIRequest(with: approvalURL, riskCorrelationID: riskCorrelationID,  completion: completion)
             }
         }
 
@@ -646,6 +645,7 @@ import BraintreeDataCollector
 
     private func performEditSwitchRequest(
         editURL: URL,
+        riskCorrelationID: String,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
         webSessionReturned = false
@@ -668,11 +668,7 @@ import BraintreeDataCollector
 
             switch returnURL.state {
             case .succeeded:
-                guard let clientMetadataID else {
-                    return notifyEditFIFailure(with: BTPayPalError.missingRiskCorrelationID, completion: completion)
-                }
-
-                notifyEditFISuccess(with: BTPayPalVaultEditResult(riskCorrelationID: clientMetadataID), completion: completion)
+                notifyEditFISuccess(with: BTPayPalVaultEditResult(riskCorrelationID: riskCorrelationID), completion: completion)
 
             case .canceled:
                 notifyEditFICancel(completion: completion)
