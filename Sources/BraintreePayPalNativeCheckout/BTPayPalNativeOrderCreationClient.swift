@@ -9,6 +9,7 @@ import BraintreePayPal
 import PayPalCheckout
 
 struct BTPayPalNativeOrder: Equatable {
+
     let payPalClientID: String
     let environment: PayPalCheckout.Environment
     let orderID: String
@@ -17,7 +18,7 @@ struct BTPayPalNativeOrder: Equatable {
 @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class BTPayPalNativeOrderCreationClient {
 
-    var payPalContextID: String? = nil
+    var payPalContextID: String?
 
     private let apiClient: BTAPIClient
 
@@ -62,7 +63,7 @@ class BTPayPalNativeOrderCreationClient {
             self.apiClient.post(
                 request.hermesPath,
                 parameters: request.parameters(with: config)
-            ) { json, response, error in
+            ) { json, _, error in
                 guard let hermesResponse = BTPayPalNativeHermesResponse(json: json), error == nil else {
                     let underlyingError = error ?? BTPayPalNativeCheckoutError.invalidJSONResponse
                     completion(.failure(.orderCreationFailed(underlyingError)))

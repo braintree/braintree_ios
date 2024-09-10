@@ -12,6 +12,7 @@ protocol BTPayPalNativeCheckoutStartable {
     typealias StartableErrorCallback = (BTPayPalNativeCheckoutError) -> Void
     typealias StartableCancelCallback = () -> Void
 
+    // swiftlint:disable function_parameter_count
     func start(
         request: BTPayPalRequest,
         order: BTPayPalNativeOrder,
@@ -20,4 +21,5 @@ protocol BTPayPalNativeCheckoutStartable {
         onStartableCancel: @escaping StartableCancelCallback,
         onStartableError: @escaping StartableErrorCallback
     )
+    // swiftlint:enable function_parameter_count
 }
