@@ -251,7 +251,7 @@ import Foundation
             "recurringEnd": recurringEnd,
             "recurringFrequency": recurringFrequency,
             "sdkMaxTimeout": sdkMaxTimeout,
-            "workPhoneNumber": workPhoneNumber,
+            "workPhoneNumber": workPhoneNumber
         ]
 
         let finalShippingAddress = shippingAddress?.asParameters(withPrefix: "shipping")

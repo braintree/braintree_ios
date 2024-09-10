@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-class BTThreeDSecureAuthenticateJWT {
+enum BTThreeDSecureAuthenticateJWT {
 
     static func authenticate(
         jwt cardinalJWT: String,
@@ -42,11 +42,11 @@ class BTThreeDSecureAuthenticateJWT {
                 return
             }
 
-            let threeDSecureResult: BTThreeDSecureResult = BTThreeDSecureResult(json: body)
+            let threeDSecureResult = BTThreeDSecureResult(json: body)
 
             if threeDSecureResult.tokenizedCard != nil && threeDSecureResult.errorMessage == nil {
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthSucceeded)
-            } else {                
+            } else {
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
                 // If authentication wasn't successful, add the BTCardNonce from the lookup result to the authentication result
                 // so that merchants can transact with the lookup nonce if desired.

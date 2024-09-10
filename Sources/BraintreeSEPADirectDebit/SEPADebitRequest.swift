@@ -4,6 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
+// swiftlint:disable nesting
 /// The POST body for `v1/sepa_debit`
 struct SEPADebitRequest: Encodable {
 
@@ -56,6 +57,7 @@ struct SEPADebitRequest: Encodable {
                 case countryCodeAlpha2 = "country_code"
             }
         }
+        // swiftlint:enable nesting
 
         init(sepaDirectDebitRequest: BTSEPADirectDebitRequest) {
             self.merchantOrPartnerCustomerID = sepaDirectDebitRequest.customerID
