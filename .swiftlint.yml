@@ -12,6 +12,8 @@ included:
   - Sources/BraintreeLocalPayment
   - Sources/BraintreePayPal
   - Sources/BraintreePayPalMessaging
+  - Sources/BraintreePayPalNativeCheckout
+  - Sources/BraintreeSEPADirectDebit
   - Sources/BraintreeShopperInsights
 
 excluded:

@@ -21,17 +21,16 @@ class BTPayPalNativeTokenizationClient {
         request: BTPayPalRequest,
         returnURL: String?,
         buyerData: User? = nil,
-        completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeCheckoutError>) -> Void)
-    {
-
+        completion: @escaping (Result<BTPayPalNativeCheckoutAccountNonce, BTPayPalNativeCheckoutError>) -> Void
+    ) {
         guard let returnURL else {
-          completion(.failure(.missingReturnURL))
-          return
+            completion(.failure(.missingReturnURL))
+            return
         }
-        
+
         let tokenizationRequest = BTPayPalNativeTokenizationRequest(
-          request: request,
-          correlationID: request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID ?? ""
+            request: request,
+            correlationID: request.riskCorrelationID ?? State.correlationIDs.riskCorrelationID ?? ""
         )
 
         apiClient.post(
@@ -48,7 +47,7 @@ class BTPayPalNativeTokenizationClient {
                 completion(.failure(.parsingTokenizationResultFailed))
                 return
             }
-            
+
             completion(.success(accountNonce))
         }
     }
