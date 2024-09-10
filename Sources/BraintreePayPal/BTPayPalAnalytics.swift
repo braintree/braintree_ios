@@ -31,4 +31,5 @@ enum BTPayPalAnalytics {
     static let appSwitchStarted = "paypal:tokenize:app-switch:started"
     static let appSwitchSucceeded = "paypal:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "paypal:tokenize:app-switch:failed"
+    static let appSwitchCannotOpenUniversalLink = "paypal:tokenize:app-switch:canOpenDeeplinkButNotOpenUniversalLink"
 }
