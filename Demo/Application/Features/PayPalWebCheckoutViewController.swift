@@ -41,29 +41,65 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let newPayPalCheckoutToggle = UISwitch()
 
+    lazy var payPalVaultIDLabel: UILabel = {
+        let label = UILabel()
+        label.text = "PayPal Vault ID:"
+        return label
+    }()
+
+    lazy var payPalVaultIDTextField: UITextField = {
+        let textField = UITextField()
+        textField.text = "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
+        textField.backgroundColor = .systemBackground
+        return textField
+    }()
+
+    lazy var riskCorrelationIDLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Risk Correlation ID:"
+        label.isHidden = true
+        return label
+    }()
+
+    lazy var riskCorrelationIDTextField: UITextField = {
+        let textField = UITextField()
+        textField.text = "test"
+        textField.backgroundColor = .systemBackground
+        textField.isHidden = true
+        return textField
+    }()
+
+    lazy var errorHandlingToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Error Handling Flow"
+        return label
+    }()
+
+    let errorHandlingToggle = UISwitch()
+
     override func viewDidLoad() {
-        super.heightConstraint = 300
+        super.heightConstraint = 600
         super.viewDidLoad()
+        errorHandlingToggle.addTarget(self, action: #selector(toggleErrorHandling(_:)), for: .valueChanged)
     }
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalEditVaultButton = createButton(title: "Edit FI", action: #selector(tappedPayPalEditVault))
-        let payPalEditVaultErrorHandlingButton = createButton(title: "Edit FI (Error Handling)", action: #selector(tappedPayPalEditVaultErrorHandling))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton, payPalEditVaultButton, payPalEditVaultErrorHandlingButton])
-
-
+        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
+        let editFIStackView = buttonsStackView(label: "Edit FI Flow", views: [payPalVaultIDLabel, payPalVaultIDTextField, UIStackView(arrangedSubviews: [errorHandlingToggleLabel, errorHandlingToggle]), riskCorrelationIDLabel, riskCorrelationIDTextField, payPalEditVaultButton])
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
             oneTimeCheckoutStackView,
-            vaultStackView
+            vaultStackView,
+            editFIStackView
         ])
 
         NSLayoutConstraint.activate([
@@ -71,12 +107,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
             vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+
+            editFIStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            editFIStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
           ])
 
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
-        stackView.spacing = 25
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }
@@ -164,12 +203,28 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     // MARK: Edit FI flow
 
+    @objc func toggleErrorHandling(_ sender: UISwitch) {
+        let showErrorHandlingFields = sender.isOn
+        riskCorrelationIDLabel.isHidden = !showErrorHandlingFields
+        riskCorrelationIDTextField.isHidden = !showErrorHandlingFields
+    }
+
     @objc func tappedPayPalEditVault(_ sender: UIButton) {
+        if errorHandlingToggle.isOn {
+            handlePayPalErrorHandlingEditVault(sender)
+        } else {
+            handlePayPalEditVault(sender)
+        }
+    }
+
+    private func handlePayPalEditVault(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Edit FI")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA=")
+
+        let vaultID = payPalVaultIDTextField.text ?? "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: vaultID)
         payPalClient.edit(request) { editResult, error in
             sender.isEnabled = true
 
@@ -182,14 +237,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
     }
 
-
-    @objc func tappedPayPalEditVaultErrorHandling(_ sender: UIButton) {
+    private func handlePayPalErrorHandlingEditVault(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Edit FI, ErrorHandling")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        // TODO: textField for entry of riskCorrelationID
-        let request = BTPayPalVaultErrorHandlingEditRequest(editPayPalVaultID: "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA=", riskCorrelationID: "test")
+        let vaultID = payPalVaultIDTextField.text ?? "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
+        let riskCorrelationID = riskCorrelationIDTextField.text ?? "test"
+
+        let request = BTPayPalVaultErrorHandlingEditRequest(editPayPalVaultID: vaultID, riskCorrelationID: riskCorrelationID)
 
         payPalClient.edit(request) { editResult, error in
             sender.isEnabled = true
