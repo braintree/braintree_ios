@@ -44,12 +44,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var payPalVaultIDLabel: UILabel = {
         let label = UILabel()
         label.text = "PayPal Vault ID:"
+        label.font = .preferredFont(forTextStyle: .footnote)
         return label
     }()
 
     lazy var payPalVaultIDTextField: UITextField = {
         let textField = UITextField()
         textField.text = "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
+        textField.font = .preferredFont(forTextStyle: .footnote)
         textField.backgroundColor = .systemBackground
         return textField
     }()
@@ -57,6 +59,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var riskCorrelationIDLabel: UILabel = {
         let label = UILabel()
         label.text = "Risk Correlation ID:"
+        label.font = .preferredFont(forTextStyle: .footnote)
         label.isHidden = true
         return label
     }()
@@ -64,6 +67,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var riskCorrelationIDTextField: UITextField = {
         let textField = UITextField()
         textField.text = "test"
+        textField.font = .preferredFont(forTextStyle: .footnote)
         textField.backgroundColor = .systemBackground
         textField.isHidden = true
         return textField
@@ -72,6 +76,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var errorHandlingToggleLabel: UILabel = {
         let label = UILabel()
         label.text = "Error Handling Flow"
+        label.font = .preferredFont(forTextStyle: .footnote)
         return label
     }()
 
