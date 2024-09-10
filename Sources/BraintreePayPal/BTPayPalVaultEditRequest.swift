@@ -8,7 +8,7 @@ import BraintreeCore
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public class BTPayPalVaultEditRequest {
 
-    private let editPayPalVaultID: String
+    let editPayPalVaultID: String
 
     // MARK: - Static properties
 

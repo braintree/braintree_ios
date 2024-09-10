@@ -197,55 +197,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
         // TODO: Analytics event
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyEditFIFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let configuration, let json = configuration.json else {
-                self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-
-            self.isConfigFromCache = configuration.isFromCache
-
-            guard json["paypalEnabled"].isTrue else {
-                self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
-                return
-            }
-
-            let dataCollector = BTDataCollector(apiClient: self.apiClient)
-            let riskCorrelationID = dataCollector.clientMetadataID(nil)
-            self.clientMetadataID = riskCorrelationID
-
-            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: request.parameters(riskCorrelationID: riskCorrelationID)) { body, response, error in
-                if let error = error as? NSError {
-                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                        self.notifyEditFIFailure(with: error, completion: completion)
-                        return
-                    }
-
-                    var dictionary = error.userInfo
-                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-
-                    if !errorDetailsIssue.isError {
-                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    }
-
-                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
-                    return
-                }
-
-                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
-                    return
-                }
-
-                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
-            }
-        }
+        edit(request: request, completion: completion)
     }
 
     /// Allows a customer to edit their PayPal payment method.
@@ -283,56 +235,8 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
         // TODO: Analytics event
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyEditFIFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let configuration, let json = configuration.json else {
-                self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-
-            self.isConfigFromCache = configuration.isFromCache
-
-            guard json["paypalEnabled"].isTrue else {
-                self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
-                return
-            }
-
-            let dataCollector = BTDataCollector(apiClient: self.apiClient)
-            self.clientMetadataID = dataCollector.clientMetadataID(request.riskCorrelationID)
-
-            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: request.parameters()) { body, response, error in
-                if let error = error as? NSError {
-                    guard let jsonResponseBody =  error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                        self.notifyEditFIFailure(with: error, completion: completion)
-                        return
-                    }
-
-                    var dictionary = error.userInfo
-                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
-
-                    if !errorDetailsIssue.isError {
-                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    }
-
-                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
-                    return
-                }
-
-                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
-                    return
-                }
-
-                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
-            }
-        }
+        edit(request: request, completion: completion)
     }
-
     /// Allows a customer to edit their PayPal payment method.
     ///
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
@@ -557,6 +461,71 @@ import BraintreeDataCollector
                 }
             }
         }
+    }
+
+    private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
+    ) {
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error {
+                self.notifyEditFIFailure(with: error, completion: completion)
+                return
+            }
+
+            guard let configuration, let json = configuration.json else {
+                self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
+                return
+            }
+
+            self.isConfigFromCache = configuration.isFromCache
+
+            guard json["paypalEnabled"].isTrue else {
+                self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
+                return
+            }
+
+            let dataCollector = BTDataCollector(apiClient: self.apiClient)
+
+            var riskCorrelationID: String
+            var parameters: [String: Any]
+
+            if let editRequest = request as? BTPayPalVaultErrorHandlingEditRequest {
+                riskCorrelationID = dataCollector.clientMetadataID(editRequest.riskCorrelationID)
+                parameters = editRequest.parameters()
+            } else {
+                riskCorrelationID = dataCollector.clientMetadataID(nil)
+                parameters = request.parameters(riskCorrelationID: riskCorrelationID)
+            }
+
+            self.clientMetadataID = riskCorrelationID
+
+            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, response, error in
+                if let error = error as? NSError {
+                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                        self.notifyEditFIFailure(with: error, completion: completion)
+                        return
+                    }
+
+                    var dictionary = error.userInfo
+                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+
+                    if !errorDetailsIssue.isError {
+                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    }
+
+                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
+                    return
+                }
+
+                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
+                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
+                    return
+                }
+
+                self.handlePayPalEditFIRequest(with: approvalURL, completion: completion)
+            }
+        }
+
+
     }
 
     private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {

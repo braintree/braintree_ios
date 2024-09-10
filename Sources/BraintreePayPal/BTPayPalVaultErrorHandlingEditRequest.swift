@@ -7,14 +7,9 @@ import BraintreeCore
 /// Options for the PayPal edit funding instrument flow with retry on failed attempts
 ///
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
-public struct BTPayPalVaultErrorHandlingEditRequest {
+public class BTPayPalVaultErrorHandlingEditRequest: BTPayPalVaultEditRequest {
 
     public let riskCorrelationID: String
-    private let editPayPalVaultID: String
-
-    // MARK: - Static properties
-
-    static let callbackURLHostAndPath: String = "onetouch/v1/"
 
     /// Initializes a PayPal Edit Request for the edit funding instrument flow
     /// - Parameters:
@@ -24,8 +19,8 @@ public struct BTPayPalVaultErrorHandlingEditRequest {
     ///   - merchantAccountID: Optional: ID of the merchant account; if one is not provided the default will be used
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
     public init(editPayPalVaultID: String, riskCorrelationID: String) {
-        self.editPayPalVaultID = editPayPalVaultID
         self.riskCorrelationID = riskCorrelationID
+        super.init(editPayPalVaultID: editPayPalVaultID)
     }
 
     public func parameters() -> [String: Any] {
