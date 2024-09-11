@@ -128,26 +128,46 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testEdit_whenResponseIsSuccessful_returnsPayPalVaultEditResult() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "tokenId": "BA-777",
+                "approvalUrl": "https://www.sandbox.paypal.com/agreements/approve?ba_token=B!-777"
+            ]
+        ])
 
-        payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return BTPayPalVaultEditResult
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/success")
+        let expectation = expectation(description: "Edit vault completion")
+        payPalClient.edit(editRequest) { result, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(result)
+            expectation.fulfill()
         }
-    }
 
-    func testEdit_whenResponseIsError_returnsError() {
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
-
-        payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return error
-        }
+        let returnURL = URL(string: "https://onetouch/v1/success?ba_token=BA-777")!
+        payPalClient.handleReturnURL(returnURL)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testEdit_whenUserCancels_returnsError() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "tokenId": "BA-777",
+                "approvalUrl": "https://www.sandbox.paypal.com/agreements/approve?ba_token=B!-777"
+            ]
+        ])
 
-        payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return error
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/cancel")
+        let expectation = expectation(description: "Edit vault completion")
+        payPalClient.edit(editRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            expectation.fulfill()
         }
+
+        let returnURL = URL(string: "https://onetouch/v1/cancel?ba_token=BA-777")!
+        payPalClient.handleReturnURL(returnURL)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testTokenizeEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -538,7 +558,9 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() {
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        payPalClient.edit(request) { _, _ in }
+        payPalClient.edit(request) { _, _ in
+
+        }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
     }
