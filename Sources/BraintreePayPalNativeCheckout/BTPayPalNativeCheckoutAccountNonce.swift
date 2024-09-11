@@ -61,7 +61,7 @@ import PayPalCheckout
         payerID = payerInfo["payerId"].asString() ?? buyerData?.userId
 
         let shippingAddressJSON = details["payerInfo"]["shippingAddress"].asAddress()
-        let accountAddressJSON =  details["payerInfo"]["accountAddress"].asAddress()
+        let accountAddressJSON = details["payerInfo"]["accountAddress"].asAddress()
         shippingAddress = shippingAddressJSON ?? accountAddressJSON
 
         let billingAddressJSON = details["payerInfo"]["billingAddress"].asAddress()

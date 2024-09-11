@@ -14,7 +14,7 @@ import BraintreeCore
     
     var webAuthenticationSession: BTWebAuthenticationSession
         
-    var sepaDirectDebitAPI: SEPADirectDebitAPI    
+    var sepaDirectDebitAPI: SEPADirectDebitAPI
 
     // MARK: - Initializers
 
@@ -24,7 +24,7 @@ import BraintreeCore
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
-        self.webAuthenticationSession =  BTWebAuthenticationSession()
+        self.webAuthenticationSession = BTWebAuthenticationSession()
 
         // We do not need to require the user authentication UIAlertViewController on SEPA since user log in is not required
         webAuthenticationSession.prefersEphemeralWebBrowserSession = true
@@ -46,7 +46,7 @@ import BraintreeCore
     @objc(tokenizeWithSEPADirectDebitRequest:completion:)
     public func tokenize(
         _ request: BTSEPADirectDebitRequest,
-        completion:  @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
+        completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeStarted)
         createMandate(request: request) { createMandateResult, error in
@@ -171,19 +171,22 @@ import BraintreeCore
         completion: @escaping (Bool, Error?) -> Void
     ) {
         if let url {
-            guard url.absoluteString.contains("sepa/success"),
-                  let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
-                  queryParameter.contains("true") else {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
+            guard
+                url.absoluteString.contains("sepa/success"),
+                let queryParameter = self.getQueryStringParameter(url: url.absoluteString, param: "success"),
+                queryParameter.contains("true")
+            else {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
                 completion(false, BTSEPADirectDebitError.resultURLInvalid)
                 return
             }
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeSucceeded)
+
+            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeSucceeded)
             completion(true, nil)
         } else {
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
-            self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
+            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeFailed)
+            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeFailed)
             completion(false, error)
             return
         }

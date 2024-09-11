@@ -13,7 +13,7 @@ import BraintreeCore
     public var nonce: String?
     
     /// Object where each key is the name of a custom field which has been configured in the Control Panel. In the Control Panel you can configure 3D Secure Rules which trigger on certain values.
-    public var customFields: [String: String]? = nil
+    public var customFields: [String: String]?
 
     /// The amount for the transaction
     public var amount: NSDecimalNumber? = 0
@@ -23,7 +23,7 @@ import BraintreeCore
     public var accountType: BTThreeDSecureAccountType = .unspecified
 
     /// Optional. The billing address used for verification
-    public var billingAddress: BTThreeDSecurePostalAddress? = nil
+    public var billingAddress: BTThreeDSecurePostalAddress?
 
     /// Optional. The mobile phone number used for verification
     /// - Note: Only numbers. Remove dashes, parentheses and other characters
@@ -67,10 +67,12 @@ import BraintreeCore
         set { _cardAddChallenge = newValue }
     }
 
+    // swiftlint:disable identifier_name
     /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
     /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
     var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
-    
+    // swiftlint:enable identifier_name
+
     /// Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers' credit cards or payment methods) and not for creating transactions.
     /// If set to `true`, a card-add challenge will be requested from the issuer.
     /// If set to `false`, a card-add challenge will not be requested. 
@@ -97,5 +99,5 @@ import BraintreeCore
     // MARK: - Internal Properties
     
     /// The dfReferenceID for the session. Exposed for testing.
-    var dfReferenceID: String? = nil
+    var dfReferenceID: String?
 }

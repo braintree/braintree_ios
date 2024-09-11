@@ -13,8 +13,10 @@ import BraintreeCore
     /// The "PAReq" or "Payment Authentication Request" is the encoded request message used to initiate authentication.
     public var paReq: String?
 
+    // swiftlint:disable identifier_name
     /// The unique 3DS identifier assigned by Braintree to track the 3DS call as it progresses.
     public var md: String?
+    // swiftlint:enable identifier_name
 
     ///  The URL which the customer will be redirected to for a 3DS Interface.
     ///  In 3DS 2, the presence of an acsURL indicates there is a challenge as it would otherwise frictionlessly complete without an acsURL.
