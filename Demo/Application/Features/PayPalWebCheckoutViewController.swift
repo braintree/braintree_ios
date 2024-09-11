@@ -239,7 +239,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 return
             }
 
-            self.paypalEditCompletionBlock(editResult.riskCorrelationID)
+            self.progressBlock(("Edit FI completed.\n riskCorrelationID: \(editResult.riskCorrelationID)"))
         }
     }
 
@@ -260,7 +260,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 return
             }
 
-            self.paypalEditCompletionBlock(editResult.riskCorrelationID)
+            self.progressBlock(("Edit FI completed.\n riskCorrelationID: \(editResult.riskCorrelationID)"))
         }
     }
 
