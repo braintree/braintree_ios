@@ -333,14 +333,7 @@ import BraintreeDataCollector
             }
 
             let isInstalled = self.application.isPayPalAppInstalled()
-            if !isInstalled {
-                // want to log the case where canOpen is true for deeplink but false for universal link
-                if let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://"), self.application.canOpenURL(payPalURL) {
-                    if let universal = URL(string: BTCoreConstants.payPalUniversalLink), !self.application.canOpenURL(universal) {
-                        self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.appSwitchCannotOpenUniversalLink)
-                    }
-                }
-            }
+            self.logPayPalInstalledEventIfNeeded(isInstalled: isInstalled)
             
             self.payPalRequest = request
             self.apiClient.post(
@@ -384,6 +377,17 @@ import BraintreeDataCollector
                     self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                }
+            }
+        }
+    }
+    
+    private func logPayPalInstalledEventIfNeeded(isInstalled: Bool) {
+        if !isInstalled {
+            // want to log the case where canOpen is true for deeplink but false for universal link
+            if let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://"), self.application.canOpenURL(payPalURL) {
+                if let universal = URL(string: BTCoreConstants.payPalUniversalLink), !self.application.canOpenURL(universal) {
+                    self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.appSwitchCannotOpenUniversalLink)
                 }
             }
         }
