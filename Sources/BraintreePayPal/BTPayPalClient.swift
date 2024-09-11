@@ -24,7 +24,7 @@ import BraintreeDataCollector
     var approvalURL: URL? = nil
 
     /// Exposed for testing the clientMetadataID associated with this request.
-    /// Used in POST body for FPTI analytics & `/paypal_account` fetch & editFI POST body.
+    /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     var clientMetadataID: String? = nil
 
     /// Exposed for testing the intent associated with this request
@@ -243,7 +243,7 @@ import BraintreeDataCollector
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
-    /// - Parameter request: A `BTPayPalVaultEditRequest`
+    /// - Parameter request: A `BTPayPalVaultErrorHandlingEditRequest`
     /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
@@ -491,7 +491,7 @@ import BraintreeDataCollector
             var riskCorrelationID: String
 
             if let editRequest = request as? BTPayPalVaultErrorHandlingEditRequest {
-                riskCorrelationID = dataCollector.clientMetadataID( editRequest.riskCorrelationID)
+                riskCorrelationID = dataCollector.clientMetadataID(editRequest.riskCorrelationID)
             } else {
                 riskCorrelationID = dataCollector.clientMetadataID(nil)
             }

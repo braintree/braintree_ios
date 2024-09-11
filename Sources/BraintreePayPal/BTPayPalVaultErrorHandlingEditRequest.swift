@@ -9,7 +9,7 @@ import BraintreeCore
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public class BTPayPalVaultErrorHandlingEditRequest: BTPayPalVaultEditRequest {
 
-    public let riskCorrelationID: String
+    let riskCorrelationID: String
 
     /// Initializes a PayPal Edit Request for the edit funding instrument flow
     /// - Parameters:

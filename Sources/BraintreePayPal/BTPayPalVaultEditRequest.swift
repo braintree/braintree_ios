@@ -8,7 +8,7 @@ import BraintreeCore
 /// - Warning: This feature is currently in beta and may change or be removed in future releases.
 public class BTPayPalVaultEditRequest {
 
-    let editPayPalVaultID: String
+    private let editPayPalVaultID: String
 
     // MARK: - Static properties
 
@@ -24,7 +24,7 @@ public class BTPayPalVaultEditRequest {
         self.editPayPalVaultID = editPayPalVaultID
     }
 
-    public func parameters(riskCorrelationID: String) -> [String: Any] {
+    func parameters(riskCorrelationID: String) -> [String: Any] {
         [
             "edit_paypal_vault_id": editPayPalVaultID,
             "return_url": BTCoreConstants.callbackURLScheme + "://\(BTPayPalVaultEditRequest.callbackURLHostAndPath)success",
