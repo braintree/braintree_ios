@@ -139,7 +139,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let expectation = expectation(description: "Edit vault completion")
         payPalClient.edit(editRequest) { result, error in
             XCTAssertNil(error)
-            XCTAssertNotNil(result)
+            XCTAssertNotNil(result?.riskCorrelationID)
             expectation.fulfill()
         }
 
