@@ -42,10 +42,6 @@ class ContainmentViewController: UIViewController {
         updateStatus("Got a nonce. Tap to make a transaction.")
     }
 
-    func paypalEditCompletionBlock(_ correlationID: String) {
-        updateStatus("Edit FI completed.\n riskCorrelationID: \(correlationID)")
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

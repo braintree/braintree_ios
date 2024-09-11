@@ -30,7 +30,7 @@ import BraintreeDataCollector
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest? = nil
 
- /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
+    /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
 
     /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
