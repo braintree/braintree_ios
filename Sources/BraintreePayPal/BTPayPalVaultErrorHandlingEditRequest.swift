@@ -22,13 +22,4 @@ public class BTPayPalVaultErrorHandlingEditRequest: BTPayPalVaultEditRequest {
         self.riskCorrelationID = riskCorrelationID
         super.init(editPayPalVaultID: editPayPalVaultID)
     }
-
-    public func parameters() -> [String: Any] {
-        [
-            "edit_paypal_vault_id": editPayPalVaultID,
-            "return_url": BTCoreConstants.callbackURLScheme + "://\(BTPayPalVaultEditRequest.callbackURLHostAndPath)success",
-            "cancel_url": BTCoreConstants.callbackURLScheme + "://\(BTPayPalVaultEditRequest.callbackURLHostAndPath)cancel",
-            "risk_correlation_id": riskCorrelationID
-        ]
-    }
 }

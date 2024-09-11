@@ -13,7 +13,7 @@ class BTPayPalVaultErrorHandlingEditRequest_Tests: XCTestCase {
         let expectedRiskCorrelationID = "test-errorHandling-1"
         let editRequest = BTPayPalVaultErrorHandlingEditRequest(editPayPalVaultID: expectedEditPayPalVaultID, riskCorrelationID: expectedRiskCorrelationID)
 
-        let parameters = editRequest.parameters()
+        let parameters = editRequest.parameters(riskCorrelationID: expectedRiskCorrelationID)
 
         XCTAssertEqual(parameters["edit_paypal_vault_id"] as? String, expectedEditPayPalVaultID)
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
