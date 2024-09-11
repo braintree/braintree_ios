@@ -489,7 +489,6 @@ import BraintreeDataCollector
             let dataCollector = BTDataCollector(apiClient: self.apiClient)
 
             var riskCorrelationID: String
-            var parameters: [String: Any]
 
             if let editRequest = request as? BTPayPalVaultErrorHandlingEditRequest {
                 riskCorrelationID = dataCollector.clientMetadataID( editRequest.riskCorrelationID)
@@ -497,7 +496,7 @@ import BraintreeDataCollector
                 riskCorrelationID = dataCollector.clientMetadataID(nil)
             }
 
-            parameters = request.parameters(riskCorrelationID: riskCorrelationID)
+            let parameters = request.parameters(riskCorrelationID: riskCorrelationID)
 
             self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, response, error in
                 if let error = error as? NSError {
