@@ -16,6 +16,7 @@ included:
   - Sources/BraintreeSEPADirectDebit
   - Sources/BraintreeShopperInsights
   - Sources/BraintreeThreeDSecure
+  - Demo
 
 excluded:
   - Sources/BraintreeCore/BTAPIPinnedCertificates.swift

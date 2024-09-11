@@ -1,6 +1,7 @@
 import XCTest
 
 extension XCTestCase {
+
     func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 30) {
         let existsPredicate = NSPredicate(format: "exists == true")
         
@@ -19,6 +20,7 @@ extension XCTestCase {
 }
 
 extension XCUIElement {
+
     func forceTapElement() {
         if self.isHittable {
             self.tap()

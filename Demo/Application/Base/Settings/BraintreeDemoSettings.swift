@@ -33,7 +33,9 @@ class BraintreeDemoSettings: NSObject {
 
     @objc
     static var currentEnvironment: BraintreeDemoEnvironment {
-        return BraintreeDemoEnvironment(rawValue: UserDefaults.standard.integer(forKey: EnvironmentDefaultsKey)) ?? BraintreeDemoEnvironment.sandbox
+        BraintreeDemoEnvironment(
+            rawValue: UserDefaults.standard.integer(forKey: EnvironmentDefaultsKey)
+        ) ?? BraintreeDemoEnvironment.sandbox
     }
 
     @objc
@@ -72,12 +74,14 @@ class BraintreeDemoSettings: NSObject {
 
     @objc
     static var authorizationType: BraintreeDemoAuthType {
-        return BraintreeDemoAuthType(rawValue: UserDefaults.standard.integer(forKey: AuthorizationTypeDefaultsKey))!
+        BraintreeDemoAuthType(rawValue: UserDefaults.standard.integer(forKey: AuthorizationTypeDefaultsKey)) ?? .tokenizationKey
     }
     
     @objc
     static var threeDSecureRequiredStatus: BraintreeDemoThreeDSecureRequiredSetting {
-        return BraintreeDemoThreeDSecureRequiredSetting(rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)) ?? .requiredIfAttempted
+        BraintreeDemoThreeDSecureRequiredSetting(
+            rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)
+        ) ?? .requiredIfAttempted
     }
 
     @objc
