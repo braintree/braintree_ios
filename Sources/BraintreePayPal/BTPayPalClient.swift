@@ -221,7 +221,7 @@ import BraintreeDataCollector
         }
     }
 
-    /// Allows a customer to edit their PayPal payment method.
+    /// Allows a customer to retry alternate funding instruments on failed attempts.
     ///
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
