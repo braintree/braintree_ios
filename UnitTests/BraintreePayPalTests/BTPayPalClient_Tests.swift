@@ -558,9 +558,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() {
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        payPalClient.edit(request) { _, _ in
-
-        }
+        payPalClient.edit(request) { _, _ in }
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
     }
