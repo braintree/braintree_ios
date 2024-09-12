@@ -18,7 +18,7 @@ class ContainmentViewController: UIViewController {
             updateStatus("Presenting \(type(of: currentViewController))")
             currentViewController.progressBlock = progressBlock
             currentViewController.completionBlock = completionBlock
-            
+
             appendViewController(currentViewController)
             title = currentViewController.title
         }
