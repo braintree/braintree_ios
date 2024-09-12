@@ -363,8 +363,8 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
         // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
-        if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
-            notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme), completion: completion)
+        if let urlScheme = url.scheme, !urlScheme.lowercased().hasPrefix("http") {
+            notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(urlScheme), completion: completion)
             return
         }
 
