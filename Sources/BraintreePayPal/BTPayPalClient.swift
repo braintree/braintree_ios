@@ -466,8 +466,7 @@ import BraintreeDataCollector
         }
     }
 
-    private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
-    ) {
+    private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyEditFIFailure(with: error, completion: completion)
