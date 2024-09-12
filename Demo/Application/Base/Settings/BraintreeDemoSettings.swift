@@ -28,7 +28,7 @@ class BraintreeDemoSettings: NSObject {
     
     @objc static let EnvironmentDefaultsKey = "BraintreeDemoSettingsEnvironmentDefaultsKey"
     @objc static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
-    @objc static let CustomEnvironmentURLDefaultsKey = "BraintreeDemoSettingsCustomEnvironmentURLDefaultsKey"
+    @objc static let CustomAuthorizationDefaultsKey = "BraintreeDemoSettingsCustomAuthorizationKey"
     @objc static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
 
     @objc
@@ -39,29 +39,20 @@ class BraintreeDemoSettings: NSObject {
     @objc
     static var currentEnvironmentName: String {
         switch currentEnvironment {
-        case .sandbox:
+        case .sandbox, .custom:
             return "Sandbox"
         case .production:
             return "Production"
-        case .custom:
-            guard var name = UserDefaults.standard.string(forKey: CustomEnvironmentURLDefaultsKey) else {
-                return "(invalid)"
-            }
-            name = name.replacingOccurrences(of: "http://", with: "")
-            name = name.replacingOccurrences(of: "https://", with: "")
-            return name
         }
     }
     
     @objc
     static var currentEnvironmentURLString: String {
         switch currentEnvironment {
-        case .sandbox:
+        case .sandbox, .custom:
             return "https://braintree-sample-merchant.herokuapp.com"
         case .production:
             return "https://executive-sample-merchant.herokuapp.com"
-        case .custom:
-            return UserDefaults.standard.string(forKey: EnvironmentDefaultsKey) ?? ""
         }
     }
     

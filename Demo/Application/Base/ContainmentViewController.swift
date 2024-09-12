@@ -156,8 +156,8 @@ class ContainmentViewController: UIViewController {
                 tokenizationKey = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
             case .production:
                 tokenizationKey = "production_t2wns2y2_dfy45jdj3dxkmz5m"
-            default:
-                tokenizationKey = "development_testing_integration_merchant_id"
+            case .custom:
+                tokenizationKey = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsCustomAuthorizationKey")!
             }
 
             currentViewController = instantiateViewController(with: tokenizationKey)
