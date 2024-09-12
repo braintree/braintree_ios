@@ -227,7 +227,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-
         let vaultID = payPalVaultIDTextField.text ?? "+fZXfUn6nzR+M9661WGnCBfyPlIExIMPY2rS9AC2vmA="
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: vaultID)
 
