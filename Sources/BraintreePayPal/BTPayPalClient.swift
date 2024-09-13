@@ -197,7 +197,6 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: Analytics event
         edit(request: request, completion: completion)
     }
 
@@ -235,7 +234,6 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultErrorHandlingEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: Analytics event
         edit(request: request, completion: completion)
     }
 
@@ -470,6 +468,8 @@ import BraintreeDataCollector
     }
 
     private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFIStarted)
+
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyEditFIFailure(with: error, completion: completion)
@@ -480,8 +480,6 @@ import BraintreeDataCollector
                 self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
-
-            self.isConfigFromCache = configuration.isFromCache
 
             guard json["paypalEnabled"].isTrue else {
                 self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
@@ -497,6 +495,9 @@ import BraintreeDataCollector
             } else {
                 riskCorrelationID = dataCollector.clientMetadataID(nil)
             }
+
+            /// set the clientMetadataID to be used in analytics events
+            self.clientMetadataID = riskCorrelationID
 
             let parameters = request.parameters(riskCorrelationID: riskCorrelationID)
 
@@ -690,16 +691,25 @@ import BraintreeDataCollector
             case .unknownPath:
                 notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
-        } sessionDidAppear: { didAppear in
+        } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                // TODO: Analytics Event
+                apiClient.sendAnalyticsEvent(
+                    BTPayPalAnalytics.editFIBrowserPresentationSucceeded,
+                    correlationID: clientMetadataID
+                )
             } else {
-                // TODO: Analytics Event
+                apiClient.sendAnalyticsEvent(
+                    BTPayPalAnalytics.editFIBrowserPresentationFailed,
+                    correlationID: clientMetadataID
+                )
             }
         } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                // TODO: AnalyticsEvent
+                apiClient.sendAnalyticsEvent(
+                    BTPayPalAnalytics.editFIBrowserLoginAlertCanceled,
+                    correlationID: clientMetadataID
+                )
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
@@ -752,17 +762,17 @@ import BraintreeDataCollector
         with result: BTPayPalVaultEditResult,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: add Analytics Event
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFISucceeded, correlationID: clientMetadataID)
         completion(result, nil)
     }
 
     private func notifyEditFIFailure(with error: Error, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
-        // TODO: add Analytics Event
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFIFailed, correlationID: clientMetadataID)
         completion(nil, error)
     }
 
     private func notifyEditFICancel(completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
-        // TODO: add Analytics Event
+        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFIBrowserLoginCanceled, correlationID: clientMetadataID)
         completion(nil, BTPayPalError.canceled)
     }
 }
