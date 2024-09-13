@@ -128,26 +128,132 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testEdit_whenResponseIsSuccessful_returnsPayPalVaultEditResult() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "tokenId": "BA-777",
+                "approvalUrl": "https://www.sandbox.paypal.com/agreements/approve?ba_token=B!-777"
+            ]
+        ])
 
-        payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return BTPayPalVaultEditResult
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/success")
+        let expectation = expectation(description: "Edit vault completion")
+        payPalClient.edit(editRequest) { result, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(result?.riskCorrelationID)
+            expectation.fulfill()
         }
-    }
 
-    func testEdit_whenResponseIsError_returnsError() {
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
-
-        payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return error
-        }
+        let returnURL = URL(string: "https://onetouch/v1/success?ba_token=BA-777")!
+        payPalClient.handleReturnURL(returnURL)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testEdit_whenUserCancels_returnsError() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "tokenId": "BA-777",
+                "approvalUrl": "https://www.sandbox.paypal.com/agreements/approve?ba_token=B!-777"
+            ]
+        ])
+
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/cancel")
+        let expectation = expectation(description: "Edit vault completion")
+        payPalClient.edit(editRequest) { result, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            expectation.fulfill()
+        }
+
+        let returnURL = URL(string: "https://onetouch/v1/cancel?ba_token=BA-777")!
+        payPalClient.handleReturnURL(returnURL)
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testTokenizeEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+        mockAPIClient.cannedConfigurationResponseBody = nil
+
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit Vault fails with error")
 
         payPalClient.edit(editRequest) { editResult, error in
-            // TODO: implement test to return error
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.fetchConfigurationFailed.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTPayPalError.fetchConfigurationFailed.errorDescription)
+            expectation.fulfill()
         }
+
+        self.waitForExpectations(timeout: 1)
+    }
+
+    func testTokenizeEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": false
+        ])
+
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit Vault fails with error")
+
+        payPalClient.edit(editRequest) { result, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(result)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.disabled.errorCode)
+            XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel.")
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 1)
+    }
+
+    func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+
+        payPalClient.edit(editRequest) { _, _ in }
+
+        XCTAssertEqual("v1/paypal_hermes/generate_edit_fi_url", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["edit_paypal_vault_id"] as? String, "test-ID")
+
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+        XCTAssertNotNil(lastPostParameters["risk_correlation_id"])
+    }
+
+    func testEditFI_whenPostRequestContainsError_callsBackWithError() {
+        let stubJSONResponse = BTJSON(
+            value: [
+                "paymentResource" : [
+                    "errorDetails" : [
+                        "issue": "A fake error issue"
+                    ]
+                ]
+            ]
+        )
+
+        let stubError = NSError(
+            domain: BTPayPalError.errorDomain,
+            code: BTPayPalError.httpPostRequestError([:]).errorCode,
+            userInfo: [
+                BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
+            ]
+        )
+
+        mockAPIClient.cannedResponseError = stubError
+
+        let dummyRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let expectation = expectation(description: "Edit FI fails with error")
+        payPalClient.edit(dummyRequest) { _, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.httpPostRequestError([:]).errorCode)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 1)
     }
 
     // MARK: - PayPal approval URL to present in browser
@@ -328,6 +434,73 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
+    func testEditVault_whenAllApprovalURLsInvalid_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "approvalUrl": "",
+                "paypalAppApprovalUrl": ""
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-id")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testEditPayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "file://some-url.com"
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            XCTAssertNil(editResult)
+            XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
+            XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
+            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testEditPayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "approvalUrl": "",
+                "paypalAppApprovalUrl": ""
+            ]
+        ])
+
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
+        let expectation = expectation(description: "Returns error")
+
+        payPalClient.edit(request) { editResult, error in
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertNil(editResult)
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
     // MARK: - Browser switch
 
     func testTokenizePayPalAccount_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
@@ -381,6 +554,13 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
         XCTAssertNotNil(payPalClient.clientMetadataID)
+    }
+
+    func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() {
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        payPalClient.edit(request) { _, _ in }
+
+        XCTAssertNotNil(payPalClient.webAuthenticationSession)
     }
 
     // MARK: - handleBrowserSwitchReturn

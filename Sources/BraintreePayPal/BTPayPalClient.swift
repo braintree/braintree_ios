@@ -26,7 +26,7 @@ import BraintreeDataCollector
     /// Exposed for testing the clientMetadataID associated with this request.
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     var clientMetadataID: String? = nil
-    
+
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest? = nil
 
@@ -196,8 +196,8 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-        // TODO: call API to get FI URL and return a BTPayPalVaultEditResult or Error
-        completion(nil, nil)
+        // TODO: Analytics event
+        edit(request: request, completion: completion)
     }
 
     /// Allows a customer to edit their PayPal payment method.
@@ -210,6 +210,44 @@ import BraintreeDataCollector
     /// - Throws: An `Error` describing the failure
     /// - Warning: This feature is currently in beta and may change or be removed in future releases.
     public func edit(_ request: BTPayPalVaultEditRequest) async throws -> BTPayPalVaultEditResult {
+        try await withCheckedThrowingContinuation { continuation in
+            edit(request) { result, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let result {
+                    continuation.resume(returning: result)
+                }
+            }
+        }
+    }
+
+    /// Allows a customer to retry alternate funding instruments on failed attempts.
+    ///
+    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameters:
+    ///   - request: A `BTPayPalVaultErrorHandlingEditRequest`
+    ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    public func edit(
+        _ request: BTPayPalVaultErrorHandlingEditRequest,
+        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
+    ) {
+        // TODO: Analytics event
+        edit(request: request, completion: completion)
+    }
+
+    /// Allows a customer to retry alternate funding instruments on failed attempts.
+    ///
+    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
+    /// If the user cancels out of the flow, the error code will be `.canceled`.
+    ///
+    /// - Parameter request: A `BTPayPalVaultErrorHandlingEditRequest`
+    /// - Returns: A `BTPayPalVaultEditResult` if successful
+    /// - Throws: An `Error` describing the failure
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    public func edit(_ request: BTPayPalVaultErrorHandlingEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
             edit(request) { result, error in
                 if let error {
@@ -301,7 +339,7 @@ import BraintreeDataCollector
             self.notifySuccess(with: tokenizedAccount, completion: completion)
         }
     }
-    
+
     @objc func applicationDidBecomeActive(notification: Notification) {
         webSessionReturned = true
     }
@@ -317,6 +355,20 @@ import BraintreeDataCollector
             return
         }
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
+    }
+
+    func handlePayPalEditFIRequest(
+        with url: URL,
+        riskCorrelationID: String,
+        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
+    ) {
+        // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
+        if let urlScheme = url.scheme, !urlScheme.lowercased().hasPrefix("http") {
+            notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(urlScheme), completion: completion)
+            return
+        }
+
+        performEditSwitchRequest(editURL: url, riskCorrelationID: riskCorrelationID, completion: completion)
     }
 
     // MARK: - App Switch Methods
@@ -410,6 +462,65 @@ import BraintreeDataCollector
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
+            }
+        }
+    }
+
+    private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error {
+                self.notifyEditFIFailure(with: error, completion: completion)
+                return
+            }
+
+            guard let configuration, let json = configuration.json else {
+                self.notifyEditFIFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
+                return
+            }
+
+            self.isConfigFromCache = configuration.isFromCache
+
+            guard json["paypalEnabled"].isTrue else {
+                self.notifyEditFIFailure(with: BTPayPalError.disabled, completion: completion)
+                return
+            }
+
+            let dataCollector = BTDataCollector(apiClient: self.apiClient)
+
+            var riskCorrelationID: String
+
+            if let editRequest = request as? BTPayPalVaultErrorHandlingEditRequest {
+                riskCorrelationID = dataCollector.clientMetadataID(editRequest.riskCorrelationID)
+            } else {
+                riskCorrelationID = dataCollector.clientMetadataID(nil)
+            }
+
+            let parameters = request.parameters(riskCorrelationID: riskCorrelationID)
+
+            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, response, error in
+                if let error = error as? NSError {
+                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                        self.notifyEditFIFailure(with: error, completion: completion)
+                        return
+                    }
+
+                    var dictionary = error.userInfo
+                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+
+                    if !errorDetailsIssue.isError {
+                        dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+                    }
+
+                    self.notifyEditFIFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
+                    return
+                }
+
+                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
+                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
+                    return
+                }
+
+                self.handlePayPalEditFIRequest(with: approvalURL, riskCorrelationID: riskCorrelationID,  completion: completion)
             }
         }
     }
@@ -530,6 +641,58 @@ import BraintreeDataCollector
         }
     }
 
+    private func performEditSwitchRequest(
+        editURL: URL,
+        riskCorrelationID: String,
+        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
+    ) {
+        webSessionReturned = false
+
+        webAuthenticationSession.start(url: editURL, context: self) { [weak self] url, error in
+            guard let self else {
+                completion(nil, BTPayPalError.deallocated)
+                return
+            }
+
+            if let error {
+                notifyEditFIFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+                return
+            }
+
+            guard let url, let returnURL = BTPayPalReturnURL(.webBrowser(url: url)) else {
+                notifyEditFIFailure(with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"), completion: completion)
+                return
+            }
+
+            switch returnURL.state {
+            case .succeeded:
+                notifyEditFISuccess(with: BTPayPalVaultEditResult(riskCorrelationID: riskCorrelationID), completion: completion)
+
+            case .canceled:
+                notifyEditFICancel(completion: completion)
+
+            case .unknownPath:
+                notifyEditFIFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
+            }
+        } sessionDidAppear: { didAppear in
+            if didAppear {
+                // TODO: Analytics Event
+            } else {
+                // TODO: Analytics Event
+            }
+        } sessionDidCancel: { [self] in
+            if !webSessionReturned {
+                // User tapped system cancel button on permission alert
+                // TODO: AnalyticsEvent
+            }
+
+            // User canceled by breaking out of the PayPal browser switch flow
+            // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
+            notifyEditFICancel(completion: completion)
+            return
+        }
+    }
+
     // MARK: - Analytics Helper Methods
 
     private func notifySuccess(
@@ -566,6 +729,24 @@ import BraintreeDataCollector
             linkType: linkType,
             payPalContextID: payPalContextID
         )
+        completion(nil, BTPayPalError.canceled)
+    }
+
+    private func notifyEditFISuccess(
+        with result: BTPayPalVaultEditResult,
+        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
+    ) {
+       // TODO: add Analytics Event
+        completion(result, nil)
+    }
+
+    private func notifyEditFIFailure(with error: Error, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
+        // TODO: add Analytics Event
+        completion(nil, error)
+    }
+
+    private func notifyEditFICancel(completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
+       // TODO: add Analytics Event
         completion(nil, BTPayPalError.canceled)
     }
 }
