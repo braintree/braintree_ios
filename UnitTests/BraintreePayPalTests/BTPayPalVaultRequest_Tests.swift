@@ -96,9 +96,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             interval: .month,
             intervalCount: 13,
             numberOfExecutions: 12,
+            isTrial: false,
             sequence: 9,
             startDate: "test-date",
-            isTrial: false,
             pricing: billingPricing
         )
         

@@ -148,9 +148,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 interval: .month,
                 intervalCount: 1,
                 numberOfExecutions: 1,
+                isTrial: true,
                 sequence: 1,
                 startDate: "2024-08-01",
-                isTrial: true,
                 pricing: billingPricing
             )
             
