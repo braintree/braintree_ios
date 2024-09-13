@@ -86,17 +86,17 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         Task {
             do {
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
-                self.progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
-                self.payPalVaultButton.isEnabled = result.isPayPalRecommended
-                self.venmoButton.isEnabled = result.isVenmoRecommended
+                progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
+                payPalVaultButton.isEnabled = result.isPayPalRecommended
+                venmoButton.isEnabled = result.isVenmoRecommended
             } catch {
-                self.progressBlock("Error: \(error.localizedDescription)")
+                progressBlock("Error: \(error.localizedDescription)")
             }
         }
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped PayPal Vault")
+        progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
@@ -112,7 +112,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped Venmo")
+        progressBlock("Tapped Venmo")
         shopperInsightsClient.sendVenmoSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
@@ -127,11 +127,11 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     private func displayResultDetails(nonce: BTPaymentMethodNonce?, error: Error?) {
         if let error {
-            self.progressBlock(error.localizedDescription)
+            progressBlock(error.localizedDescription)
         } else if let nonce {
-            self.completionBlock(nonce)
+            completionBlock(nonce)
         } else {
-            self.progressBlock("Canceled")
+            progressBlock("Canceled")
         }
     }
 

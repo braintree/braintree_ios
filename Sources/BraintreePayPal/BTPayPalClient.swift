@@ -9,6 +9,7 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
+// swiftlint:disable type_body_length file_length
 @objc public class BTPayPalClient: BTWebAuthenticationSessionClient {
     
     // MARK: - Internal Properties
@@ -21,14 +22,14 @@ import BraintreeDataCollector
     var application: URLOpener = UIApplication.shared
 
     /// Exposed for testing the approvalURL construction
-    var approvalURL: URL? = nil
+    var approvalURL: URL?
 
     /// Exposed for testing the clientMetadataID associated with this request.
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
-    var clientMetadataID: String? = nil
+    var clientMetadataID: String?
 
     /// Exposed for testing the intent associated with this request
-    var payPalRequest: BTPayPalRequest? = nil
+    var payPalRequest: BTPayPalRequest?
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
@@ -44,7 +45,7 @@ import BraintreeDataCollector
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
     /// We require a static reference of the client to call `handleReturnURL` and return to the app.
-    static var payPalClient: BTPayPalClient? = nil
+    static var payPalClient: BTPayPalClient?
 
     // MARK: - Private Properties
 
@@ -56,13 +57,13 @@ import BraintreeDataCollector
 
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
-    private var payPalContextID: String? = nil
+    private var payPalContextID: String?
     
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: LinkType? = nil
+    private var linkType: LinkType?
 
     // MARK: - Initializer
 
@@ -300,7 +301,7 @@ import BraintreeDataCollector
 
         if paymentType == .checkout {
             account["options"] = ["validate": false]
-            if let request  = payPalRequest as? BTPayPalCheckoutRequest {
+            if let request = payPalRequest as? BTPayPalCheckoutRequest {
                 account["intent"] = request.intent.stringValue
             }
         }
@@ -324,14 +325,16 @@ import BraintreeDataCollector
             "sessionId": metadata.sessionID
         ]
         
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, response, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
             }
 
-            guard let payPalAccount = body?["paypalAccounts"].asArray()?.first,
-                  let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount) else {
+            guard
+                let payPalAccount = body?["paypalAccounts"].asArray()?.first,
+                let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount)
+            else {
                 self.notifyFailure(with: BTPayPalError.failedToCreateNonce, completion: completion)
                 return
             }
@@ -427,7 +430,7 @@ import BraintreeDataCollector
                     universalLink: self.universalLink,
                     isPayPalAppInstalled: self.application.isPayPalAppInstalled()
                 )
-            ) { body, response, error in
+            ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyFailure(with: error, completion: completion)
@@ -497,7 +500,7 @@ import BraintreeDataCollector
 
             let parameters = request.parameters(riskCorrelationID: riskCorrelationID)
 
-            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, response, error in
+            self.apiClient.post("v1/paypal_hermes/generate_edit_fi_url", parameters: parameters) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
                         self.notifyEditFIFailure(with: error, completion: completion)
@@ -505,7 +508,7 @@ import BraintreeDataCollector
                     }
 
                     var dictionary = error.userInfo
-                    let errorDetailsIssue  = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
 
                     if !errorDetailsIssue.isError {
                         dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
@@ -515,17 +518,27 @@ import BraintreeDataCollector
                     return
                 }
 
-                guard let body, let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??  body["agreementSetup"]["approvalUrl"].asURL() else {
-                    self.notifyEditFIFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
+                guard
+                    let body,
+                    let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ?? body["agreementSetup"]["approvalUrl"].asURL()
+                else {
+                    self.notifyEditFIFailure(
+                        with: BTPayPalError.invalidURL("Missing approval URL in gateway response."),
+                        completion: completion
+                    )
                     return
                 }
 
-                self.handlePayPalEditFIRequest(with: approvalURL, riskCorrelationID: riskCorrelationID,  completion: completion)
+                self.handlePayPalEditFIRequest(with: approvalURL, riskCorrelationID: riskCorrelationID, completion: completion)
             }
         }
     }
 
-    private func launchPayPalApp(with payPalAppRedirectURL: URL, baToken: String, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    private func launchPayPalApp(
+        with payPalAppRedirectURL: URL,
+        baToken: String,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
+    ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
             isVaultRequest: isVaultRequest,
@@ -660,7 +673,10 @@ import BraintreeDataCollector
             }
 
             guard let url, let returnURL = BTPayPalReturnURL(.webBrowser(url: url)) else {
-                notifyEditFIFailure(with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"), completion: completion)
+                notifyEditFIFailure(
+                    with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"),
+                    completion: completion
+                )
                 return
             }
 
@@ -736,7 +752,7 @@ import BraintreeDataCollector
         with result: BTPayPalVaultEditResult,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
     ) {
-       // TODO: add Analytics Event
+        // TODO: add Analytics Event
         completion(result, nil)
     }
 
@@ -746,12 +762,13 @@ import BraintreeDataCollector
     }
 
     private func notifyEditFICancel(completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
-       // TODO: add Analytics Event
+        // TODO: add Analytics Event
         completion(nil, BTPayPalError.canceled)
     }
 }
 
 extension BTPayPalClient: BTAppContextSwitchClient {
+
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {

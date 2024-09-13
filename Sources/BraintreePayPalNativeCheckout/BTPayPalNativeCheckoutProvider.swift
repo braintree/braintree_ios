@@ -17,6 +17,7 @@ class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
         self.checkout = mxo
     }
 
+    // swiftlint:disable function_parameter_count
     func start(
         request: BTPayPalRequest,
         order: BTPayPalNativeOrder,
@@ -66,4 +67,5 @@ class BTPayPalNativeCheckoutProvider: BTPayPalNativeCheckoutStartable {
 
         NotificationCenter.default.post(name: Notification.Name("brain_tree_source_event"), object: nil)
     }
+    // swiftlint:enable function_parameter_count
 }

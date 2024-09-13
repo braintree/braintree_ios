@@ -46,7 +46,11 @@ import BraintreeCore
         super.init(offerCredit: offerCredit)
     }
 
-    public override func parameters(with configuration: BTConfiguration, universalLink: URL? = nil, isPayPalAppInstalled: Bool = false) -> [String: Any] {
+    public override func parameters(
+        with configuration: BTConfiguration,
+        universalLink: URL? = nil,
+        isPayPalAppInstalled: Bool = false
+    ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
 
         if let userAuthenticationEmail {
