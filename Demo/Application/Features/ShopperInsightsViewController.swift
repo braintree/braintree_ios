@@ -85,7 +85,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         )
         Task {
             do {
-                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
+                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: nil)
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
                 payPalVaultButton.isEnabled = result.isPayPalRecommended
                 venmoButton.isEnabled = result.isVenmoRecommended

@@ -30,7 +30,8 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
-        ///
+        /// The position of the button in the list of available payment methods, associated with the payments ready flow
+        let buttonRank: Int?
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
@@ -39,6 +40,8 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// The experiment details associated with a shopper insights flow
+        let experiment: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -58,12 +61,14 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
+            buttonRank: Int? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            experiment: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
@@ -71,12 +76,14 @@ struct FPTIBatchData: Codable {
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
+            self.buttonRank = buttonRank
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.experiment = experiment
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
@@ -86,10 +93,12 @@ struct FPTIBatchData: Codable {
         }
 
         enum CodingKeys: String, CodingKey {
+            case buttonRank = "button_rank"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case experiment = "experiment"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"

@@ -290,6 +290,7 @@ import Foundation
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await withCheckedThrowingContinuation { continuation in
             post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResponse, error in
+                print("httpResponse: \(httpResponse)")
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
@@ -303,8 +304,10 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        buttonRank: Int? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
@@ -312,9 +315,11 @@ import Foundation
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
+                buttonRank: buttonRank,
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,
+                experiment: experiment,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,

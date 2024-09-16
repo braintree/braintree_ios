@@ -27,16 +27,17 @@ public class BTShopperInsightsClient {
     
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
-    ///   - request: A `BTShopperInsightsRequest` containing the buyer's user information
+    ///   - request: Required:  A `BTShopperInsightsRequest` containing the buyer's user information
+    ///   - experiment: Optional:  A `JSONObject` passed in as a string indicating details of the experiment
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
-    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
+    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest, experiment: String? = nil) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
 
         if apiClient.authorization.type != .clientToken {
-            throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization)
+            throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization, for: experiment)
         }
 
         let postParameters = BTEligiblePaymentsRequest(
@@ -51,13 +52,15 @@ public class BTShopperInsightsClient {
                 headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             )
+            
+            print("session id: \(apiClient.metadata.sessionID)")
 
             // swiftlint:disable empty_count
             guard
                 let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
                 eligibleMethodsJSON.count != 0
             else {
-                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
+                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned, for: experiment)
             }
             // swiftlint:enable empty_count
 
@@ -69,16 +72,20 @@ public class BTShopperInsightsClient {
                 isVenmoRecommended: venmo?.recommended ?? false,
                 isEligibleInPayPalNetwork: payPal?.eligibleInPayPalNetwork ?? false || venmo?.eligibleInPayPalNetwork ?? false
             )
-            return self.notifySuccess(with: result)
+            return self.notifySuccess(with: result, for: experiment)
         } catch {
-            throw self.notifyFailure(with: error)
+            throw self.notifyFailure(with: error, for: experiment)
         }
     }
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    public func sendPayPalPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalPresented)
+    public func sendPayPalPresentedEvent(experiment: String? = nil, buttonRank: Int? = nil) {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.payPalPresented,
+            buttonRank: buttonRank,
+            experiment: experiment
+        )
     }
     
     /// Call this method when the PayPal button has been selected/tapped by the buyer.
@@ -89,8 +96,12 @@ public class BTShopperInsightsClient {
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendVenmoPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoPresented)
+    public func sendVenmoPresentedEvent(experiment: String? = nil,buttonRank: Int? = nil) {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.venmoPresented,
+            buttonRank: buttonRank,
+            experiment: experiment
+        )
     }
     
     /// Call this method when the Venmo button has been selected/tapped by the buyer.
@@ -101,13 +112,20 @@ public class BTShopperInsightsClient {
     
     // MARK: - Analytics Helper Methods
     
-    private func notifySuccess(with result: BTShopperInsightsResult) -> BTShopperInsightsResult {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsSucceeded)
+    private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
+            experiment: experiment
+        )
         return result
     }
     
-    private func notifyFailure(with error: Error) -> Error {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
+    private func notifyFailure(with error: Error, for experiment: String?) -> Error {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsFailed,
+            errorDescription: error.localizedDescription,
+            experiment: experiment
+        )
         return error
     }
 }
