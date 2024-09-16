@@ -32,7 +32,7 @@ import Foundation
                         encode(subValue.description)
                     )
                 }
-            } else if value as? NSNull != nil {
+            } else if value is NSNull {
                 queryString = queryString.appendingFormat("%@=&", encodedKey)
             } else {
                 queryString = queryString.appendingFormat("%@=%@&", encodedKey, encode(String(describing: value).description))
