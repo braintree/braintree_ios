@@ -767,7 +767,11 @@ import BraintreeDataCollector
     }
 
     private func notifyEditFIFailure(with error: Error, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFIFailed, correlationID: clientMetadataID)
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.editFIFailed,
+            correlationID: clientMetadataID,
+            errorDescription: error.localizedDescription
+        )
         completion(nil, error)
     }
 
