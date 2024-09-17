@@ -46,14 +46,26 @@ import BraintreeCore
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
 
+    private var universalLink: URL?
+
     // MARK: - Initializer
 
-    /// Creates an Apple Pay client
+    /// Creates an Venmo client
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
         self.apiClient = apiClient
+    }
+
+    /// Initialize a new Venmo client instance.
+    /// - Parameters:
+    ///   - apiClient: The API Client
+    ///   - universalLink: The URL to use for the Venmo flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
+    @objc(initWithAPIClient:universalLink:)
+    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
+        self.init(apiClient: apiClient)
+        self.universalLink = universalLink
     }
 
     // MARK: - Public Methods
@@ -151,9 +163,10 @@ import BraintreeCore
 
                 do {
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
-                        returnURLScheme: returnURLScheme,
                         paymentContextID: paymentContextID,
                         metadata: metadata,
+                        returnURLScheme: returnURLScheme,
+                        universalLink: self.universalLink,
                         forMerchantID: merchantProfileID,
                         accessToken: configuration.venmoAccessToken,
                         bundleDisplayName: bundleDisplayName,
