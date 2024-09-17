@@ -145,7 +145,8 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let returnURL = URL(string: "https://onetouch/v1/success?ba_token=BA-777")!
         payPalClient.handleReturnURL(returnURL)
-        waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:edit:succeeded"))
+        waitForExpectations(timeout: 2)
     }
 
     func testEdit_whenUserCancels_returnsError() {
@@ -167,10 +168,11 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let returnURL = URL(string: "https://onetouch/v1/cancel?ba_token=BA-777")!
         payPalClient.handleReturnURL(returnURL)
-        waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:edit:browser-login:canceled"))
+        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+    func testEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseBody = nil
 
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
@@ -185,10 +187,11 @@ class BTPayPalClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:edit:failed"))
         self.waitForExpectations(timeout: 1)
     }
 
-    func testTokenizeEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() {
+    func testEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": false
         ])

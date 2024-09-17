@@ -35,8 +35,8 @@ enum BTPayPalAnalytics {
     // MARK: - Edit FI Events
     
     static let editFIStarted = "paypal:edit:started"
-    static let editFIBrowserPresentSucceeded = "paypal:edit:browser-presentation:succeeded"
-    static let editFIBrowserPresentFailed = "paypal:edit:browser-presentation:failed"
+    static let editFIBrowserPresentationSucceeded = "paypal:edit:browser-presentation:succeeded"
+    static let editFIBrowserPresentationFailed = "paypal:edit:browser-presentation:failed"
     static let editFIBrowserLoginAlertCanceled = "paypal:edit:browser-login:alert-canceled"
     static let editFIBrowserLoginCanceled = "paypal:edit:browser-login:canceled"
     static let editFIFailed = "paypal:edit:failed"

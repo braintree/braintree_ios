@@ -14,5 +14,15 @@ final class BTPayPalAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalAnalytics.appSwitchStarted, "paypal:tokenize:app-switch:started")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchSucceeded, "paypal:tokenize:app-switch:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchFailed, "paypal:tokenize:app-switch:failed")
+
+        // MARK: Edit FI Events
+
+        XCTAssertEqual(BTPayPalAnalytics.editFIStarted, "paypal:edit:started")
+        XCTAssertEqual(BTPayPalAnalytics.editFIFailed, "paypal:edit:failed")
+        XCTAssertEqual(BTPayPalAnalytics.editFISucceeded, "paypal:edit:succeeded")
+        XCTAssertEqual(BTPayPalAnalytics.editFIBrowserLoginCanceled, "paypal:edit:browser-login:canceled")
+        XCTAssertEqual(BTPayPalAnalytics.editFIBrowserPresentationSucceeded, "paypal:edit:browser-presentation:succeeded")
+        XCTAssertEqual(BTPayPalAnalytics.editFIBrowserPresentationFailed, "paypal:edit:browser-presentation:failed")
+        XCTAssertEqual(BTPayPalAnalytics.editFIBrowserLoginAlertCanceled, "paypal:edit:browser-login:alert-canceled")
     }
 }
