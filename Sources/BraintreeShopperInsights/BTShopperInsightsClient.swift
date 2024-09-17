@@ -52,8 +52,6 @@ public class BTShopperInsightsClient {
                 headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             )
-            
-            print("session id: \(apiClient.metadata.sessionID)")
 
             // swiftlint:disable empty_count
             guard
@@ -80,10 +78,10 @@ public class BTShopperInsightsClient {
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    public func sendPayPalPresentedEvent(experiment: String? = nil, buttonRank: Int? = nil) {
+    public func sendPayPalPresentedEvent(experiment: String? = nil, rank: Int? = nil) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
-            buttonRank: buttonRank,
+            rank: rank,
             experiment: experiment
         )
     }
@@ -96,10 +94,10 @@ public class BTShopperInsightsClient {
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendVenmoPresentedEvent(experiment: String? = nil,buttonRank: Int? = nil) {
+    public func sendVenmoPresentedEvent(experiment: String? = nil, rank: Int? = nil) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
-            buttonRank: buttonRank,
+            rank: rank,
             experiment: experiment
         )
     }

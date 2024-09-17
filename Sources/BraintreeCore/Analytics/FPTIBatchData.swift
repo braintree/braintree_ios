@@ -31,7 +31,7 @@ struct FPTIBatchData: Codable {
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// The position of the button in the list of available payment methods, associated with the payments ready flow
-        let buttonRank: Int?
+        let rank: Int?
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
@@ -61,7 +61,7 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
-            buttonRank: Int? = nil,
+            rank: Int? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
@@ -76,7 +76,6 @@ struct FPTIBatchData: Codable {
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
-            self.buttonRank = buttonRank
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
@@ -88,12 +87,12 @@ struct FPTIBatchData: Codable {
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.payPalContextID = payPalContextID
+            self.rank = rank
             self.requestStartTime = requestStartTime
             self.startTime = startTime
         }
 
         enum CodingKeys: String, CodingKey {
-            case buttonRank = "button_rank"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
@@ -103,6 +102,7 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
+            case rank = "rank"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
