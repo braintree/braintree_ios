@@ -3,6 +3,7 @@ import BraintreePayPalMessaging
 
 final class PayPalMessaging_Success_UITests: XCTestCase {
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
 
     override func setUp() {
@@ -32,6 +33,7 @@ final class PayPalMessaging_Success_UITests: XCTestCase {
 
 final class PayPalMessaging_Failure_UITests: XCTestCase {
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
 
     override func setUp() {

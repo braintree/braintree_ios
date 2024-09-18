@@ -2,6 +2,7 @@ import XCTest
 
 class AmericanExpress_UITests: XCTestCase {
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
 
     override func setUp() {

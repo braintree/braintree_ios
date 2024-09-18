@@ -13,4 +13,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AppSwitcher.openVenmoURL = urlContexts.first?.url
     }
 }
-
