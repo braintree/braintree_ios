@@ -73,16 +73,6 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     @objc func shopperInsightsButtonTapped(_ button: UIButton) {
         self.progressBlock("Fetching shopper insights...")
         
-        let sampleExperimentDetails =
-            """
-            [
-                { "experimentName" : "Shopper Insights Allocation" },
-                { "experimentID" : "a1b2c3" },
-                { "experimentGroup" : "Control" }
-            ]
-            """
-        shopperInsightsClient.experiment = sampleExperimentDetails
-        
         let request = BTShopperInsightsRequest(
             email: emailView.textField.text ?? "",
             phone: Phone(

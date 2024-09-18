@@ -76,6 +76,7 @@ struct FPTIBatchData: Codable {
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
+            self.buttonRank = buttonRank
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
@@ -87,12 +88,12 @@ struct FPTIBatchData: Codable {
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.payPalContextID = payPalContextID
-            self.buttonRank = buttonRank
             self.requestStartTime = requestStartTime
             self.startTime = startTime
         }
 
         enum CodingKeys: String, CodingKey {
+            case buttonRank = "rank"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
@@ -102,7 +103,6 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
-            case buttonRank = "rank"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"

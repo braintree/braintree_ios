@@ -106,7 +106,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrueANDMerchantExperimentSet_returnsOnlyPayPalRecommended() async {
         do {
-            sut.experiment = sampleExperiment
             let mockPayPalRecommendedResponse = BTJSON(
                 value: [
                     "eligible_methods": [
@@ -120,7 +119,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                 ]
             )
             mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
-            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            let result = try await sut.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
             XCTAssertTrue(result.isPayPalRecommended)
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)

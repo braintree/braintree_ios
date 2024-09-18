@@ -9,15 +9,13 @@ import BraintreeCore
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
     
-    // MARK: - Public Properties
-
-    /// A `JSONObject` passed in as a string indicating details of the merchant experiment.
-    public var experiment: String?
-    
     // MARK: - Internal Properties
     
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
     var application: URLOpener = UIApplication.shared
+    
+    /// A `JSONObject` passed in as a string indicating details of the merchant experiment.
+    var experiment: String?
     
     // MARK: - Private Properties
     
@@ -37,7 +35,9 @@ public class BTShopperInsightsClient {
     /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
-    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
+    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest, experiment: String? = nil) async throws -> BTShopperInsightsResult {
+        self.experiment = experiment
+        
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsStarted,
             merchantExperiment: experiment
