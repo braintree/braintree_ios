@@ -5,9 +5,10 @@ class PaymentButtonBaseViewController: BaseViewController {
 
     let apiClient: BTAPIClient
     
-    private var paymentButton: UIView = UIView()
+    private var paymentButton = UIView()
 
     override init(authorization: String) {
+        // swiftlint:disable:next force_unwrapping
         apiClient = BTAPIClient(authorization: authorization)!
         super.init(authorization: authorization)
     }

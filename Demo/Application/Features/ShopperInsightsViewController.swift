@@ -86,6 +86,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         Task {
             do {
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
+                // swiftlint:disable:next line_length
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
                 payPalVaultButton.isEnabled = result.isPayPalRecommended
                 venmoButton.isEnabled = result.isVenmoRecommended
@@ -103,7 +104,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.userAuthenticationEmail = emailView.textField.text ?? nil
+        paypalRequest.userAuthenticationEmail = emailView.textField.text
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
             button.isEnabled = true
@@ -151,4 +152,3 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         )
     }
 }
-

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Provides helper functions to test the SEPA Direct Debit flow in sandbox.
-struct BTSEPADirectDebitTestHelper {
+enum BTSEPADirectDebitTestHelper {
 
     /// Generates a valid 27-digit IBAN (International Bank Account Number) for testing SEPA Direct Debit flows.
     /// - Returns: a valid IBAN
@@ -11,7 +11,11 @@ struct BTSEPADirectDebitTestHelper {
         let branchCode: String = "00001"
         let accountNumber = Int.random(in: 10_000_000_000...100_000_000_000)
 
-        let accountNumberWithChecksum = accountNumberWithChecksum(bankCode: Int(bankCode) ?? 0, branchCode: Int(branchCode) ?? 0, accountNumber: accountNumber)
+        let accountNumberWithChecksum = accountNumberWithChecksum(
+            bankCode: Int(bankCode) ?? 0,
+            branchCode: Int(branchCode) ?? 0,
+            accountNumber: accountNumber
+        )
         let checksum = checksum(bankCode: bankCode, branchCode: branchCode, accountNumber: Int(accountNumberWithChecksum) ?? 0)
 
         return countryCode + "\(checksum)\(bankCode)\(branchCode)\(accountNumberWithChecksum)"
@@ -46,7 +50,8 @@ struct BTSEPADirectDebitTestHelper {
 }
 
 // We need this to calculate the mod result on a large integer since Int cannot handle the calculation of an number of this size
-fileprivate extension Decimal {
+private extension Decimal {
+
     // Allows us to divide by a large integer for use in calculating a checksum
     static func % (lhs: Decimal, rhs: Decimal) -> Decimal {
         precondition(lhs > 0 && rhs > 0)
