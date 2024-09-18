@@ -67,14 +67,21 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        shopperInsightsClient.sendPayPalPresentedEvent()
-        shopperInsightsClient.sendVenmoPresentedEvent()
-        
         return stackView
     }
     
     @objc func shopperInsightsButtonTapped(_ button: UIButton) {
         self.progressBlock("Fetching shopper insights...")
+        
+        let sampleExperimentDetails =
+            """
+            [
+                { "experimentName" : "Shopper Insights Allocation" },
+                { "experimentID" : "a1b2c3" },
+                { "experimentGroup" : "Control" }
+            ]
+            """
+        shopperInsightsClient.experiment = sampleExperimentDetails
         
         let request = BTShopperInsightsRequest(
             email: emailView.textField.text ?? "",
@@ -85,7 +92,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         )
         Task {
             do {
-                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: nil)
+                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
                 payPalVaultButton.isEnabled = result.isPayPalRecommended
                 venmoButton.isEnabled = result.isVenmoRecommended
@@ -96,6 +103,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
+        shopperInsightsClient.sendPayPalPresentedEvent(buttonRank: 0)
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
@@ -112,6 +120,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
+        shopperInsightsClient.sendVenmoPresentedEvent()
         progressBlock("Tapped Venmo")
         shopperInsightsClient.sendVenmoSelectedEvent()
         

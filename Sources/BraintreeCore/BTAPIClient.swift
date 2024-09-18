@@ -303,10 +303,10 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
-        rank: Int? = nil,
+        buttonRank: Int? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
-        experiment: String? = nil,
+        merchantExperiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
@@ -314,11 +314,11 @@ import Foundation
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
-                rank: rank,
+                buttonRank: buttonRank,
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,
-                experiment: experiment,
+                merchantExperiment: merchantExperiment,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,

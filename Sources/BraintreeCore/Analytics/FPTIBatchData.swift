@@ -31,7 +31,7 @@ struct FPTIBatchData: Codable {
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// The position of the button in the list of available payment methods, associated with the payments ready flow
-        let rank: Int?
+        let buttonRank: Int?
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
@@ -41,7 +41,7 @@ struct FPTIBatchData: Codable {
         let errorDescription: String?
         let eventName: String
         /// The experiment details associated with a shopper insights flow
-        let experiment: String?
+        let merchantExperiment: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -61,14 +61,14 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
-            rank: Int? = nil,
+            buttonRank: Int? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
-            experiment: String? = nil,
+            merchantExperiment: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
@@ -82,12 +82,12 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
-            self.experiment = experiment
+            self.merchantExperiment = merchantExperiment
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.payPalContextID = payPalContextID
-            self.rank = rank
+            self.buttonRank = buttonRank
             self.requestStartTime = requestStartTime
             self.startTime = startTime
         }
@@ -97,12 +97,12 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
-            case experiment = "experiment"
+            case merchantExperiment = "experiment"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
-            case rank = "rank"
+            case buttonRank = "rank"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"

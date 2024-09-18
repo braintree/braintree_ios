@@ -9,6 +9,11 @@ import BraintreeCore
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
     
+    // MARK: - Public Properties
+
+    /// A `JSONObject` passed in as a string indicating details of the merchant experiment.
+    public var experiment: String?
+    
     // MARK: - Internal Properties
     
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
@@ -28,13 +33,15 @@ public class BTShopperInsightsClient {
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
     ///   - request: Required:  A `BTShopperInsightsRequest` containing the buyer's user information
-    ///   - experiment: Optional:  A `JSONObject` passed in as a string indicating details of the experiment
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
-    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest, experiment: String? = nil) async throws -> BTShopperInsightsResult {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
+    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsStarted,
+            merchantExperiment: experiment
+        )
 
         if apiClient.authorization.type != .clientToken {
             throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization, for: experiment)
@@ -78,11 +85,12 @@ public class BTShopperInsightsClient {
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    public func sendPayPalPresentedEvent(experiment: String? = nil, rank: Int? = nil) {
+    /// - Parameter buttonRank: Optional:  The position of the button in the list of available payment methods.
+    public func sendPayPalPresentedEvent(buttonRank: Int? = nil) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
-            rank: rank,
-            experiment: experiment
+            buttonRank: buttonRank,
+            merchantExperiment: experiment
         )
     }
     
@@ -93,12 +101,13 @@ public class BTShopperInsightsClient {
     }
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
-    /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendVenmoPresentedEvent(experiment: String? = nil, rank: Int? = nil) {
+    /// This method sends analytics to help improve the Shopper Insights feature experience.
+    /// - Parameter buttonRank: Optional:  The position of the button in the list of available payment methods.
+    public func sendVenmoPresentedEvent(buttonRank: Int? = nil) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
-            rank: rank,
-            experiment: experiment
+            buttonRank: buttonRank,
+            merchantExperiment: experiment
         )
     }
     
@@ -113,7 +122,7 @@ public class BTShopperInsightsClient {
     private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
-            experiment: experiment
+            merchantExperiment: experiment
         )
         return result
     }
@@ -122,7 +131,7 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsFailed,
             errorDescription: error.localizedDescription,
-            experiment: experiment
+            merchantExperiment: experiment
         )
         return error
     }
