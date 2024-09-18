@@ -211,6 +211,20 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
+    func testEdit_withTokenizationKey_returnsError() {
+        var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
+        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+
+        payPalClient.edit(editRequest) { result, error in
+            XCTAssertNil(result)
+
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertEqual(error.code, 14)
+            XCTAssertEqual(error.localizedDescription, "Invalid authorization. This feature can only be used with a client token.")
+        }
+    }
+
     func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
