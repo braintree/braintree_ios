@@ -18,6 +18,15 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
     )
     
+    let sampleExperiment =
+            """
+            [
+                { "experimentName" : "Shopper Insights Experiment" },
+                { "experimentID" : "a1b2c3" },
+                { "experimentGroup" : "Control Group 1" }
+            ]
+            """
+    
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
@@ -95,8 +104,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         }
     }
     
-    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrue_returnsOnlyPayPalRecommended() async {
+    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrueANDMerchantExperimentSet_returnsOnlyPayPalRecommended() async {
         do {
+            sut.experiment = sampleExperiment
             let mockPayPalRecommendedResponse = BTJSON(
                 value: [
                     "eligible_methods": [
@@ -115,6 +125,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedMerchantExperiment, sampleExperiment)
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -191,6 +202,12 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
         sut.sendPayPalPresentedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+    }
+    
+    func testSendPayPalPresentedEvent_whenButtonRankSet_sendsAnalytic() {
+        sut.sendPayPalPresentedEvent(buttonRank: 0)
+        XCTAssertEqual(mockAPIClient.postedButtonRank, 0)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     
