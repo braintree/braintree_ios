@@ -33,8 +33,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
-        timer.eventHandler = { [weak self] in
-            guard let self else { return }
+        timer.eventHandler = {
             Task {
                 await self.sendQueuedAnalyticsEvents()
             }
@@ -54,7 +53,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
-        Task(priority: .background) {
+        Task(priority: .high) {
             await performEventRequest(with: event)
         }
     }
