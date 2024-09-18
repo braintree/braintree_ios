@@ -1,6 +1,7 @@
 import XCTest
 
 internal extension XCUIApplication {
+    
     var cardNumberTextField: XCUIElement {
         return textFields["Card Number"]
     }
@@ -68,5 +69,6 @@ internal extension XCUIApplication {
 }
 
 internal extension TimeInterval {
+    
     static let threeDSecureTimeout = 30.0
 }

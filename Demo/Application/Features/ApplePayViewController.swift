@@ -36,6 +36,7 @@ class ApplePayViewController: PaymentButtonBaseViewController {
             }
 
             let paymentRequest = self.constructPaymentRequest(with: request)
+            // swiftlint:disable:next force_unwrapping
             let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)!
             paymentAuthorizationViewController.delegate = self
 

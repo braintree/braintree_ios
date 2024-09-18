@@ -1,6 +1,8 @@
 import XCTest
 
 class ThreeDSecure_V2_UITests: XCTestCase {
+   
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
     let expirationDate = DateGenerator.sharedInstance.threeDSecure2TestingDate()
 
@@ -72,63 +74,63 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout: 30)
     }
 
-     func testThreeDSecurePaymentFlowV2_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
-         waitForElementToAppear(app.cardNumberTextField)
-         app.enterCardDetailsWith(cardNumber: "4000000000001125")
-         app.tokenizeButton.tap()
-         sleep(2)
+    func testThreeDSecurePaymentFlowV2_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
+        waitForElementToAppear(app.cardNumberTextField)
+        app.enterCardDetailsWith(cardNumber: "4000000000001125")
+        app.tokenizeButton.tap()
+        sleep(2)
 
-         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
+        waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
 
-         let textField = app.textFields.element(boundBy: 0)
-         waitForElementToBeHittable(textField)
-         textField.forceTapElement()
-         sleep(2)
-         textField.typeText("1234")
+        let textField = app.textFields.element(boundBy: 0)
+        waitForElementToBeHittable(textField)
+        textField.forceTapElement()
+        sleep(2)
+        textField.typeText("1234")
 
-         app.cardinalSubmitButton.forceTapElement()
-         sleep(2)
+        app.cardinalSubmitButton.forceTapElement()
+        sleep(2)
 
-         waitForElementToAppear(app.internalErrorMessage, timeout:30)
-     }
+        waitForElementToAppear(app.internalErrorMessage, timeout: 30)
+    }
 
-     func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
-         waitForElementToAppear(app.cardNumberTextField)
-         app.enterCardDetailsWith(cardNumber: "4000000000001091")
-         app.tokenizeButton.tap()
-         sleep(2)
+    func testThreeDSecurePaymentFlowV2_returnsToApp_whenCancelTapped() {
+        waitForElementToAppear(app.cardNumberTextField)
+        app.enterCardDetailsWith(cardNumber: "4000000000001091")
+        app.tokenizeButton.tap()
+        sleep(2)
 
-         waitForElementToAppear(app.buttons["Close"])
+        waitForElementToAppear(app.buttons["Close"])
 
-         app.buttons["Close"].forceTapElement()
+        app.buttons["Close"].forceTapElement()
 
-         waitForElementToAppear(app.buttons["Canceled 🎲"])
-     }
+        waitForElementToAppear(app.buttons["Canceled 🎲"])
+    }
 
-     func testThreeDSecurePaymentFlowV2_bypassedAuthentication() {
-         waitForElementToAppear(app.cardNumberTextField)
-         app.enterCardDetailsWith(cardNumber: "4000000000001083")
-         app.tokenizeButton.tap()
-         sleep(2)
+    func testThreeDSecurePaymentFlowV2_bypassedAuthentication() {
+        waitForElementToAppear(app.cardNumberTextField)
+        app.enterCardDetailsWith(cardNumber: "4000000000001083")
+        app.tokenizeButton.tap()
+        sleep(2)
 
-         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
-     }
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+    }
 
-     func testThreeDSecurePaymentFlowV2_lookupError() {
-         waitForElementToAppear(app.cardNumberTextField)
-         app.enterCardDetailsWith(cardNumber: "4000000000001034")
-         app.tokenizeButton.tap()
-         sleep(2)
+    func testThreeDSecurePaymentFlowV2_lookupError() {
+        waitForElementToAppear(app.cardNumberTextField)
+        app.enterCardDetailsWith(cardNumber: "4000000000001034")
+        app.tokenizeButton.tap()
+        sleep(2)
 
-         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
-     }
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage)
+    }
 
-     func testThreeDSecurePaymentFlowV2_timeout() {
-         waitForElementToAppear(app.cardNumberTextField)
-         app.enterCardDetailsWith(cardNumber: "4000000000001075")
-         app.tokenizeButton.tap()
-         sleep(2)
+    func testThreeDSecurePaymentFlowV2_timeout() {
+        waitForElementToAppear(app.cardNumberTextField)
+        app.enterCardDetailsWith(cardNumber: "4000000000001075")
+        app.tokenizeButton.tap()
+        sleep(2)
 
-         waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout:45)
-     }
+        waitForElementToAppear(app.liabilityCouldNotBeShiftedMessage, timeout: 45)
+    }
 }

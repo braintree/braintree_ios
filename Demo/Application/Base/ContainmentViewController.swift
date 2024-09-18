@@ -49,7 +49,12 @@ class ContainmentViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(tappedRefresh))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(tappedSettings))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Settings",
+            style: .plain,
+            target: self,
+            action: #selector(tappedSettings)
+        )
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
@@ -76,6 +81,7 @@ class ContainmentViewController: UIViewController {
         statusItem = UIBarButtonItem(customView: button)
         statusItem?.isEnabled = false
 
+        // swiftlint:disable:next force_unwrapping
         toolbarItems = [padding, statusItem!, padding]
     }
 
@@ -197,6 +203,7 @@ class ContainmentViewController: UIViewController {
             currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .uiTestHardcodedClientToken:
+            // swiftlint:disable:next line_length
             let uiTestClientToken = "eyJ2ZXJzaW9uIjozLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxYzM5N2E5OGZmZGRkNDQwM2VjNzEzYWRjZTI3NTNiMzJlODc2MzBiY2YyN2M3NmM2OWVmZjlkMTE5MjljOTVkfGNyZWF0ZWRfYXQ9MjAxNy0wNC0wNVQwNjowNzowOC44MTUwOTkzMjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ=="
             currentViewController = instantiateViewController(with: uiTestClientToken)
         }

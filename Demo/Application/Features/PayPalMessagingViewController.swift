@@ -18,6 +18,7 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
         
         payPalMessagingView.delegate = self
         payPalMessagingView.start(request)
+        super.viewDidLoad()
     }
 
     private func setupView() {
@@ -56,4 +57,3 @@ extension PayPalMessagingViewController: BTPayPalMessagingDelegate {
         progressBlock("DELEGATE: onError fired with \(error.localizedDescription)")
     }
 }
-

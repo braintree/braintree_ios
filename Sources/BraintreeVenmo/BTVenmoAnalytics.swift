@@ -6,7 +6,7 @@ enum BTVenmoAnalytics {
     
     static let tokenizeStarted = "venmo:tokenize:started"
     static let tokenizeFailed = "venmo:tokenize:failed"
-    static let tokenizeSucceeded = "venmo:tokenize:succeeded"    
+    static let tokenizeSucceeded = "venmo:tokenize:succeeded"
     static let appSwitchCanceled = "venmo:tokenize:app-switch:canceled"
     
     // MARK: - Additional Detail Events
