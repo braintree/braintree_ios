@@ -93,10 +93,10 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         )
         
         let billingCycle = BTPayPalBillingCycle(
+            isTrial: false,
+            numberOfExecutions: 12,
             interval: .month,
             intervalCount: 13,
-            numberOfExecutions: 12,
-            isTrial: false,
             sequence: 9,
             startDate: "test-date",
             pricing: billingPricing
