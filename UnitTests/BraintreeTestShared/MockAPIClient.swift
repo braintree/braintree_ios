@@ -16,7 +16,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedLinkType: LinkType? = nil
     public var postedIsVaultRequest = false
     public var postedMerchantExperiment: String? = nil
-    public var postedButtonRank: Int? = nil
+    public var postedPaymentMethodsDisplayed: [String?] = []
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -92,20 +92,20 @@ public class MockAPIClient: BTAPIClient {
 
     public override func sendAnalyticsEvent(
         _ name: String,
-        buttonRank rank: Int? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         merchantExperiment experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        paymentMethodsDisplayed: [String?] = []
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false
-        postedButtonRank = rank
         postedMerchantExperiment = experiment
+        postedPaymentMethodsDisplayed = paymentMethodsDisplayed
         postedAnalyticsEvents.append(name)
     }
 

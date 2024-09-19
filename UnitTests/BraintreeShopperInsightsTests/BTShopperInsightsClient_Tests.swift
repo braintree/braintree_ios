@@ -21,9 +21,11 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     let sampleExperiment =
             """
             [
-                { "experimentName" : "Shopper Insights Experiment" },
-                { "experimentID" : "a1b2c3" },
-                { "experimentGroup" : "Control Group 1" }
+              {
+                "experimentName" : "payment ready conversion",
+                "experimentID" : "a1b2c3" ,
+                "treatmentName" : "control group 1",
+              }
             ]
             """
     
@@ -204,9 +206,10 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     
-    func testSendPayPalPresentedEvent_whenButtonRankSet_sendsAnalytic() {
-        sut.sendPayPalPresentedEvent(buttonRank: 0)
-        XCTAssertEqual(mockAPIClient.postedButtonRank, 0)
+    func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
+        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
+        sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
+        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     

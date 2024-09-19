@@ -93,7 +93,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        shopperInsightsClient.sendPayPalPresentedEvent(buttonRank: 0)
+        shopperInsightsClient.sendPayPalPresentedEvent()
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         

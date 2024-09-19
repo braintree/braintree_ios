@@ -85,12 +85,12 @@ public class BTShopperInsightsClient {
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    /// - Parameter buttonRank: Optional:  The position of the button in the list of available payment methods.
-    public func sendPayPalPresentedEvent(buttonRank: Int? = nil) {
+    /// - Parameter paymentMethodsDisplayed: Optional:  The list of available payment methods.
+    public func sendPayPalPresentedEvent(paymentMethodsDisplayed: [String?] = []) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
-            buttonRank: buttonRank,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            paymentMethodsDisplayed: paymentMethodsDisplayed
         )
     }
     
@@ -102,12 +102,12 @@ public class BTShopperInsightsClient {
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    /// - Parameter buttonRank: Optional:  The position of the button in the list of available payment methods.
-    public func sendVenmoPresentedEvent(buttonRank: Int? = nil) {
+    /// - Parameter paymentMethodsDisplayed: Optional:  The list of available payment methods.
+    public func sendVenmoPresentedEvent(paymentMethodsDisplayed: [String?] = []) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
-            buttonRank: buttonRank,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            paymentMethodsDisplayed: paymentMethodsDisplayed
         )
     }
     

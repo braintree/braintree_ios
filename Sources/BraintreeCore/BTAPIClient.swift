@@ -303,18 +303,17 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
-        buttonRank: Int? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         merchantExperiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        paymentMethodsDisplayed: [String?] = []
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
-                buttonRank: buttonRank,
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,
@@ -322,7 +321,8 @@ import Foundation
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
-                payPalContextID: payPalContextID
+                payPalContextID: payPalContextID,
+                paymentMethodsDisplayed: paymentMethodsDisplayed
             )
         )
     }

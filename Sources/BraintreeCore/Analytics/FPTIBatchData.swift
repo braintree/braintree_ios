@@ -30,8 +30,6 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
-        /// The position of the button in the list of available payment methods, associated with the payments ready flow
-        let buttonRank: Int?
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
@@ -49,6 +47,8 @@ struct FPTIBatchData: Codable {
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
+        /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow..
+        let paymentMethodsDisplayed: [String?]
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
@@ -61,7 +61,6 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
-            buttonRank: Int? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
@@ -73,10 +72,10 @@ struct FPTIBatchData: Codable {
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             payPalContextID: String? = nil,
+            paymentMethodsDisplayed: [String?] = [],
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
-            self.buttonRank = buttonRank
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
@@ -88,12 +87,12 @@ struct FPTIBatchData: Codable {
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.payPalContextID = payPalContextID
+            self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.requestStartTime = requestStartTime
             self.startTime = startTime
         }
 
         enum CodingKeys: String, CodingKey {
-            case buttonRank = "rank"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
@@ -103,6 +102,7 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case payPalContextID = "paypal_context_id"
+            case paymentMethodsDisplayed = "payment_methods_displayed"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
