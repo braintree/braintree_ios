@@ -2,7 +2,8 @@ import UIKit
 import BraintreeVenmo
 
 class VenmoViewController: PaymentButtonBaseViewController {
-    
+ 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
     
     override func viewDidLoad() {
@@ -64,7 +65,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
         checkout(request: venmoRequest)
     }
 
-    func checkout(request: BTVenmoRequest)  {
+    func checkout(request: BTVenmoRequest) {
         Task {
             do {
                 let venmoAccount = try await venmoClient.tokenize(request)
