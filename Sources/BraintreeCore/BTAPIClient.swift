@@ -309,8 +309,8 @@ import Foundation
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        payPalContextID: String? = nil,
-        paymentMethodsDisplayed: [String?] = []
+        paymentMethodsDisplayed: [String?] = [],
+        payPalContextID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
@@ -321,8 +321,8 @@ import Foundation
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
-                payPalContextID: payPalContextID,
-                paymentMethodsDisplayed: paymentMethodsDisplayed
+                paymentMethodsDisplayed: paymentMethodsDisplayed,
+                payPalContextID: payPalContextID
             )
         )
     }

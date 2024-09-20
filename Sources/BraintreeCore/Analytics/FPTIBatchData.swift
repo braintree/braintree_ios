@@ -71,8 +71,8 @@ struct FPTIBatchData: Codable {
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
-            payPalContextID: String? = nil,
             paymentMethodsDisplayed: [String?] = [],
+            payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
@@ -86,8 +86,8 @@ struct FPTIBatchData: Codable {
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
-            self.payPalContextID = payPalContextID
             self.paymentMethodsDisplayed = paymentMethodsDisplayed
+            self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
             self.startTime = startTime
         }
@@ -101,8 +101,8 @@ struct FPTIBatchData: Codable {
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
-            case payPalContextID = "paypal_context_id"
             case paymentMethodsDisplayed = "payment_methods_displayed"
+            case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
