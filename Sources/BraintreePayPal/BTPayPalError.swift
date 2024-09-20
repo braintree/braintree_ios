@@ -45,7 +45,7 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 13. Missing PayPal Request
     case missingPayPalRequest
 
-    /// 14. Invalid authorization type
+    /// 14. Invalid Authorization Type
     case invalidAuthorization
 
     public static var errorDomain: String {
