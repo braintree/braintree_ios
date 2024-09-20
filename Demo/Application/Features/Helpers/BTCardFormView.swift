@@ -4,38 +4,45 @@ class BTCardFormView: UIView {
 
     // MARK: - Public Card Form Input Values
 
-    @objc var cardNumber: String? {
+    var cardNumber: String? {
         cardNumberTextField.text?.isEmpty == false ? cardNumberTextField.text : nil
     }
-    @objc var expirationMonth: String? {
+
+    var expirationMonth: String? {
         parseExpirationDate()?.month
     }
-    @objc var expirationYear: String? {
+
+    var expirationYear: String? {
         parseExpirationDate()?.year
     }
-    @objc var cvv: String? {
+
+    var cvv: String? {
         cvvTextField.text?.isEmpty == false ? cvvTextField.text : nil
     }
-    @objc var postalCode: String? {
+
+    var postalCode: String? {
         postalCodeTextField.text?.isEmpty == false ? postalCodeTextField.text : nil
     }
-    @objc var phoneNumber: String? {
+
+    var phoneNumber: String? {
         phoneNumberTextField.text?.isEmpty == false ? phoneNumberTextField.text : nil
     }
 
     // MARK: - Public Card Form Config Options
 
-    @objc var hidePhoneNumberField: Bool = false {
+    var hidePhoneNumberField: Bool = false {
         didSet {
             phoneNumberTextField.isHidden = self.hidePhoneNumberField
         }
     }
-    @objc var hidePostalCodeField: Bool = false {
+
+    var hidePostalCodeField: Bool = false {
         didSet {
             postalCodeTextField.isHidden = self.hidePostalCodeField
         }
     }
-    @objc var hideCVVField: Bool = false {
+
+    var hideCVVField: Bool = false {
         didSet {
             cvvTextField.isHidden = self.hideCVVField
         }
@@ -43,10 +50,10 @@ class BTCardFormView: UIView {
 
     // MARK: - Internal UI Properties
 
-    @objc var cardNumberTextField = UITextField() // exposed for 3DS demo
-    @objc var expirationTextField = UITextField() // exposed for 3DS demo
-    @objc var cvvTextField = UITextField() // exposed for 3DS demo
-    @objc var postalCodeTextField = UITextField() // exposed for 3DS demo
+    var cardNumberTextField = UITextField() // exposed for 3DS demo
+    var expirationTextField = UITextField() // exposed for 3DS demo
+    var cvvTextField = UITextField() // exposed for 3DS demo
+    var postalCodeTextField = UITextField() // exposed for 3DS demo
     var phoneNumberTextField = UITextField()
     var stackView = UIStackView()
 
