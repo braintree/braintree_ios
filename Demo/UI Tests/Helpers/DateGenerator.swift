@@ -20,7 +20,10 @@ class UITestDateGenerator {
     }
 
     func futureDate() -> String {
-        let futureDate = calendar.date(byAdding: .year, value: 3, to: Date())!
+        guard let futureDate = calendar.date(byAdding: .year, value: 3, to: Date()) else {
+            return "12/32"
+        }
+
         return dateFormatter.string(from: futureDate)
     }
 }
