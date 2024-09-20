@@ -192,7 +192,7 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: A `BTPayPalVaultEditRequest`
     ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(
         _ request: BTPayPalVaultEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
@@ -208,7 +208,7 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTPayPalVaultEditRequest`
     /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(_ request: BTPayPalVaultEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
             edit(request) { result, error in
@@ -229,7 +229,7 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: A `BTPayPalVaultErrorHandlingEditRequest`
     ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(
         _ request: BTPayPalVaultErrorHandlingEditRequest,
         completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
@@ -245,7 +245,7 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTPayPalVaultErrorHandlingEditRequest`
     /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases.
+    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(_ request: BTPayPalVaultErrorHandlingEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
             edit(request) { result, error in
@@ -469,6 +469,11 @@ import BraintreeDataCollector
 
     private func edit(request: BTPayPalVaultEditRequest, completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.editFIStarted)
+
+        if apiClient.authorization.type != .clientToken {
+            notifyEditFIFailure(with: BTPayPalError.invalidAuthorization, completion: completion)
+            return
+        }
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
