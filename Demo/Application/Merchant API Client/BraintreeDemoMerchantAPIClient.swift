@@ -1,6 +1,5 @@
 import Foundation
 
-@objc
 class BraintreeDemoMerchantAPIClient: NSObject {
     
     private struct ClientToken: Codable {
@@ -13,12 +12,10 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         let message: String
     }
     
-    @objc
     static let shared = BraintreeDemoMerchantAPIClient()
     
     private override init() {}
     
-    @objc
     func createCustomerAndFetchClientToken(completion: @escaping (String?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/client_token") else { return }
         
@@ -47,7 +44,6 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         task.resume()
     }
     
-    @objc
     func makeTransaction(paymentMethodNonce: String, merchantAccountID: String? = nil, completion: @escaping (String?, Error?) -> Void) {
         NSLog("Creating a transaction with nonce: %@", paymentMethodNonce)
         
