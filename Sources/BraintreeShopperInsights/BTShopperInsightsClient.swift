@@ -82,7 +82,7 @@ public class BTShopperInsightsClient {
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
-    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed.
+    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed i.e. ['Apple Pay', 'PayPal']
     ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
     public func sendPayPalPresentedEvent(paymentMethodsDisplayed: String? = nil, experiment: String? = nil) {
         apiClient.sendAnalyticsEvent(
