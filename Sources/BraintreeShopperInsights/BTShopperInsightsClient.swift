@@ -33,7 +33,10 @@ public class BTShopperInsightsClient {
     /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
-    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest, experiment: String? = nil) async throws -> BTShopperInsightsResult {
+    public func getRecommendedPaymentMethods(
+        request: BTShopperInsightsRequest,
+        experiment: String? = nil
+    ) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsStarted,
             merchantExperiment: experiment

@@ -83,15 +83,13 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         Task {
             do {
                 let sampleExperiment =
-                        """
-                        [
-                          {
-                            "experimentName" : "payment ready conversion",
-                            "experimentID" : "a1b2c3" ,
-                            "treatmentName" : "control group 1",
-                          }
-                        ]
-                        """
+                    """
+                    [
+                        { "experimentName" : "payment ready conversion" },
+                        { "experimentID" : "a1b2c3" },
+                        { "treatmentName" : "control group 1" }
+                    ]
+                    """
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
                 // swiftlint:disable:next line_length
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
@@ -105,15 +103,13 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         let sampleExperiment1 =
-                """
-                [
-                  {
-                    "experimentName" : "payment ready conversion experiment",
-                    "experimentID" : "a1b2c3" ,
-                    "treatmentName" : "treatment group 1",
-                  }
-                ]
-                """
+            """
+            [
+                { "experimentName" : "payment ready conversion experiment" },
+                { "experimentID" : "a1b2c3" },
+                { "treatmentName" : "treatment group 1" }
+            ]
+            """
         let paymentMethods = ["Apple Pay", "Card", "PayPal"].joined(separator: ", ")
         shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment1)
         progressBlock("Tapped PayPal Vault")
