@@ -47,7 +47,7 @@ struct FPTIBatchData: Codable {
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
-        /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow..
+        /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
         let paymentMethodsDisplayed: String?
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
