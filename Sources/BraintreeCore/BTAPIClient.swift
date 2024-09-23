@@ -309,7 +309,7 @@ import Foundation
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        paymentMethodsDisplayed: [String?] = [],
+        paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
