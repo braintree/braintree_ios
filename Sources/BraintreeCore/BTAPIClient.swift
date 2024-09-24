@@ -317,10 +317,10 @@ import Foundation
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,
-                merchantExperiment: merchantExperiment,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
+                merchantExperiment: merchantExperiment,
                 paymentMethodsDisplayed: paymentMethodsDisplayed,
                 payPalContextID: payPalContextID
             )
