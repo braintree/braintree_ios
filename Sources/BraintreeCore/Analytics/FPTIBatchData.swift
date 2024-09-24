@@ -38,8 +38,6 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
-        /// The experiment details associated with a shopper insights flow
-        let merchantExperiment: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -47,6 +45,8 @@ struct FPTIBatchData: Codable {
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
+        /// The experiment details associated with a shopper insights flow
+        let merchantExperiment: String?
         /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
         let paymentMethodsDisplayed: String?
         /// Used for linking events from the client to server side request
@@ -67,10 +67,10 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
-            merchantExperiment: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
+            merchantExperiment: String? = nil,
             paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
@@ -82,10 +82,10 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
-            self.merchantExperiment = merchantExperiment
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
+            self.merchantExperiment = merchantExperiment
             self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
@@ -97,10 +97,10 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
-            case merchantExperiment = "experiment"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
+            case merchantExperiment = "experiment"
             case paymentMethodsDisplayed = "payment_methods_displayed"
             case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"

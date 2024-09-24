@@ -102,7 +102,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        let sampleExperiment1 =
+        let sampleExperiment =
             """
             [
                 { "experimentName" : "payment ready conversion experiment" },
@@ -111,7 +111,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
             ]
             """
         let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment1)
+        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
