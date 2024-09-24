@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
 * BraintreeShopperInsights (BETA)
