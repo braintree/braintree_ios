@@ -209,7 +209,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
         let paymentMethods = ["Apple Pay", "Card", "PayPal"]
         sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
-        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ","))
+        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     

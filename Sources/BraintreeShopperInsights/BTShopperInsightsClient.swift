@@ -88,7 +88,7 @@ public class BTShopperInsightsClient {
     ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed i.e. ['Apple Pay', 'PayPal']
     ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
     public func sendPayPalPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
-        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap{$0}.joined(separator: ", ")
+        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap{ $0 }.joined(separator: ", ")
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
             merchantExperiment: experiment,
@@ -108,7 +108,7 @@ public class BTShopperInsightsClient {
     ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed.
     ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
     public func sendVenmoPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
-        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap{$0}.joined(separator: ", ")
+        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap{ $0 }.joined(separator: ", ")
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
             merchantExperiment: experiment,
