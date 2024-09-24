@@ -110,7 +110,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
                 { "treatmentName" : "treatment group 1" }
             ]
             """
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"].joined(separator: ", ")
+        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
         shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment1)
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
