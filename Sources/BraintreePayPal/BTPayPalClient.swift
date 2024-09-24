@@ -315,7 +315,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         
-        Task {
+        Task { @MainActor in
             do {
                 let configuration = try await apiClient.fetchConfiguration()
 

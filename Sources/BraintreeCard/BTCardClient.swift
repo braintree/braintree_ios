@@ -34,7 +34,7 @@ import BraintreeCore
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
 
-        Task {
+        Task { @MainActor in
             do {
                 let configuration = try await apiClient.fetchConfiguration()
 
