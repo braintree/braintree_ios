@@ -189,29 +189,13 @@ import BraintreeDataCollector
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
-    /// - Parameters:
-    ///   - request: A `BTPayPalVaultEditRequest`
-    ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
-    public func edit(
-        _ request: BTPayPalVaultEditRequest,
-        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
-    ) {
-        edit(request: request, completion: completion)
-    }
-
-    /// Allows a customer to edit their PayPal payment method.
-    ///
-    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
-    /// If the user cancels out of the flow, the error code will be `.canceled`.
-    ///
     /// - Parameter request: A `BTPayPalVaultEditRequest`
     /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
     /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(_ request: BTPayPalVaultEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
-            edit(request) { result, error in
+            edit(request: request) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let result {
@@ -226,29 +210,13 @@ import BraintreeDataCollector
     /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
     /// If the user cancels out of the flow, the error code will be `.canceled`.
     ///
-    /// - Parameters:
-    ///   - request: A `BTPayPalVaultErrorHandlingEditRequest`
-    ///   - completion: This completion will be invoked exactly once when the edit flow is complete or an error occurs.
-    /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
-    public func edit(
-        _ request: BTPayPalVaultErrorHandlingEditRequest,
-        completion: @escaping (BTPayPalVaultEditResult?, Error?) -> Void
-    ) {
-        edit(request: request, completion: completion)
-    }
-
-    /// Allows a customer to retry alternate funding instruments on failed attempts.
-    ///
-    /// On success, you will receive an instance of `BTPayPalVaultEditResult`; on failure or user cancelation you will receive an error.
-    /// If the user cancels out of the flow, the error code will be `.canceled`.
-    ///
     /// - Parameter request: A `BTPayPalVaultErrorHandlingEditRequest`
     /// - Returns: A `BTPayPalVaultEditResult` if successful
     /// - Throws: An `Error` describing the failure
     /// - Warning: This feature is currently in beta and may change or be removed in future releases. Additionally, this feature is currently only supported with client token authorization.
     public func edit(_ request: BTPayPalVaultErrorHandlingEditRequest) async throws -> BTPayPalVaultEditResult {
         try await withCheckedThrowingContinuation { continuation in
-            edit(request) { result, error in
+            edit(request: request) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let result {
