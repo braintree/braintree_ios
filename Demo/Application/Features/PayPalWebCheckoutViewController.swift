@@ -238,9 +238,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             } catch {
                 progressBlock(error.localizedDescription)
             }
-        }
 
-        sender.isEnabled = true
+            sender.isEnabled = true
+        }
     }
 
     // MARK: - Helpers
