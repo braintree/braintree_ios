@@ -76,152 +76,143 @@ import BraintreeCore
             NSLog("%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)", BTLogLevelDescription.string(for: .critical), bundleIdentifier, returnURLScheme)
         }
 
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
-            
-            guard let configuration else {
-                self.notifyFailure(with: BTVenmoError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-            
+        Task { @MainActor in
             do {
+                let configuration = try await apiClient.fetchConfiguration()
+
                 let _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
+
+                // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
+                if ((request.collectCustomerShippingAddress || request.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
+                    self.notifyFailure(with: BTVenmoError.enrichedCustomerDataDisabled, completion: completion)
+                    return
+                }
+
+                let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
+                let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+
+                let metadata = self.apiClient.metadata
+                metadata.source = .venmoApp
+
+                var inputParameters: [String: Any?] = [
+                    "paymentMethodUsage": request.paymentMethodUsage.stringValue,
+                    "merchantProfileId": merchantProfileID,
+                    "customerClient": "MOBILE_APP",
+                    "intent": "CONTINUE",
+                    "isFinalAmount": "\(request.isFinalAmount)"
+                ]
+
+                if let displayName = request.displayName {
+                    inputParameters["displayName"] = displayName
+                }
+
+                var paysheetDetails: [String: Any] = [
+                    "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
+                    "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
+                ]
+
+                var transactionDetails: [String: Any] = [:]
+                if let subTotalAmount = request.subTotalAmount {
+                    transactionDetails["subTotalAmount"] = subTotalAmount
+                }
+
+                if let discountAmount = request.discountAmount {
+                    transactionDetails["discountAmount"] = discountAmount
+                }
+
+                if let taxAmount = request.taxAmount {
+                    transactionDetails["taxAmount"] = taxAmount
+                }
+
+                if let shippingAmount = request.shippingAmount {
+                    transactionDetails["shippingAmount"] = shippingAmount
+                }
+
+                if let totalAmount = request.totalAmount {
+                    transactionDetails["totalAmount"] = totalAmount
+                }
+
+                if let lineItems = request.lineItems, lineItems.count > 0 {
+                    for item in lineItems {
+                        if item.unitTaxAmount == nil || item.unitTaxAmount == "" {
+                            item.unitTaxAmount = "0"
+                        }
+                    }
+                    let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
+                    transactionDetails["lineItems"] = lineItemsArray
+                }
+
+                if !transactionDetails.isEmpty {
+                    paysheetDetails["transactionDetails"] = transactionDetails
+                }
+
+                inputParameters["paysheetDetails"] = paysheetDetails
+
+                let inputDictionary: [String: Any] = ["input": inputParameters]
+                let graphQLParameters: [String: Any] = [
+                    "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
+                    "variables": inputDictionary
+                ]
+
+                self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
+                    if let error = error as? NSError {
+                        let jsonResponse: BTJSON? = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                        let errorMessage = jsonResponse?["error"]["message"].asString()
+                        self.notifyFailure(
+                            with: BTVenmoError.invalidRedirectURL(errorMessage ?? "Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
+                            completion: completion
+                        )
+                        return
+                    }
+
+                    guard let body else {
+                        self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: completion)
+                        return
+                    }
+
+                    guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
+                        self.notifyFailure(
+                            with: BTVenmoError.invalidRedirectURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."),
+                            completion: completion
+                        )
+                        return
+                    }
+
+                    self.payPalContextID = paymentContextID
+
+                    do {
+                        let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
+                            returnURLScheme: returnURLScheme,
+                            paymentContextID: paymentContextID,
+                            metadata: metadata,
+                            forMerchantID: merchantProfileID,
+                            accessToken: configuration.venmoAccessToken,
+                            bundleDisplayName: bundleDisplayName,
+                            environment: configuration.venmoEnvironment
+                        )
+
+                        if request.fallbackToWeb {
+                            guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
+                                self.notifyFailure(with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"), completion: completion)
+                                return
+                            }
+
+                            self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
+                        } else {
+                            guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
+                                self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
+                                return
+                            }
+
+                            self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
+                        }
+                    } catch {
+                        self.notifyFailure(with: error, completion: completion)
+                        return
+                    }
+                }
             } catch {
                 self.notifyFailure(with: error, completion: completion)
-                return
-            }
-            
-            // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
-            if ((request.collectCustomerShippingAddress || request.collectCustomerBillingAddress) && !configuration.isVenmoEnrichedCustomerDataEnabled) {
-                self.notifyFailure(with: BTVenmoError.enrichedCustomerDataDisabled, completion: completion)
-                return
-            }
-            
-            let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
-            let bundleDisplayName = self.bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-            
-            let metadata = self.apiClient.metadata
-            metadata.source = .venmoApp
-            
-            var inputParameters: [String: Any?] = [
-                "paymentMethodUsage": request.paymentMethodUsage.stringValue,
-                "merchantProfileId": merchantProfileID,
-                "customerClient": "MOBILE_APP",
-                "intent": "CONTINUE",
-                "isFinalAmount": "\(request.isFinalAmount)"
-            ]
-            
-            if let displayName = request.displayName {
-                inputParameters["displayName"] = displayName
-            }
-
-            var paysheetDetails: [String: Any] = [
-                "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
-                "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
-            ]
-            
-            var transactionDetails: [String: Any] = [:]
-            if let subTotalAmount = request.subTotalAmount {
-                transactionDetails["subTotalAmount"] = subTotalAmount
-            }
-
-            if let discountAmount = request.discountAmount {
-                transactionDetails["discountAmount"] = discountAmount
-            }
-
-            if let taxAmount = request.taxAmount {
-                transactionDetails["taxAmount"] = taxAmount
-            }
-
-            if let shippingAmount = request.shippingAmount {
-                transactionDetails["shippingAmount"] = shippingAmount
-            }
-
-            if let totalAmount = request.totalAmount {
-                transactionDetails["totalAmount"] = totalAmount
-            }
-            
-            if let lineItems = request.lineItems, lineItems.count > 0 {
-                for item in lineItems {
-                    if item.unitTaxAmount == nil || item.unitTaxAmount == "" {
-                        item.unitTaxAmount = "0"
-                    }
-                }
-                let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-                transactionDetails["lineItems"] = lineItemsArray
-            }
-
-            if !transactionDetails.isEmpty {
-                paysheetDetails["transactionDetails"] = transactionDetails
-            }
-
-            inputParameters["paysheetDetails"] = paysheetDetails
-
-            let inputDictionary: [String: Any] = ["input": inputParameters]
-            let graphQLParameters: [String: Any] = [
-                "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-                "variables": inputDictionary
-            ]
-
-            self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
-                if let error = error as? NSError {
-                    let jsonResponse: BTJSON? = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
-                    let errorMessage = jsonResponse?["error"]["message"].asString()
-                    self.notifyFailure(
-                        with: BTVenmoError.invalidRedirectURL(errorMessage ?? "Failed to fetch a Venmo paymentContextID while constructing the requestURL."),
-                        completion: completion
-                    )
-                    return
-                }
-
-                guard let body else {
-                    self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: completion)
-                    return
-                }
-
-                guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
-                    self.notifyFailure(
-                        with: BTVenmoError.invalidRedirectURL("Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."),
-                        completion: completion
-                    )
-                    return
-                }
-
-                self.payPalContextID = paymentContextID
-
-                do {
-                    let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
-                        returnURLScheme: returnURLScheme,
-                        paymentContextID: paymentContextID,
-                        metadata: metadata,
-                        forMerchantID: merchantProfileID,
-                        accessToken: configuration.venmoAccessToken,
-                        bundleDisplayName: bundleDisplayName,
-                        environment: configuration.venmoEnvironment
-                    )
-
-                    if request.fallbackToWeb {
-                        guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
-                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"), completion: completion)
-                            return
-                        }
-
-                        self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
-                    } else {
-                        guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
-                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
-                            return
-                        }
-
-                        self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
-                    }
-                } catch {
-                    self.notifyFailure(with: error, completion: completion)
-                    return
-                }
             }
         }
     }

@@ -31,6 +31,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+        mockAPIClient.cannedConfigurationResponseBody = nil
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
@@ -99,15 +100,17 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
-            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
-            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
-            XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
-            XCTAssertEqual("CONTINUE",input["intent"] as? String)
-            XCTAssertEqual("app-display-name",input["displayName"] as? String)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String:Any] {
+                XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+                XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+                XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
+                XCTAssertEqual("CONTINUE",input["intent"] as? String)
+                XCTAssertEqual("app-display-name",input["displayName"] as? String)
+            }
         }
     }
 
@@ -120,14 +123,16 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String: Any] {
-            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
-            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
-            XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
-            XCTAssertEqual("CONTINUE",input["intent"] as? String)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String: Any] {
+                XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+                XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+                XCTAssertEqual("MULTI_USE", input["paymentMethodUsage"] as? String)
+                XCTAssertEqual("CONTINUE",input["intent"] as? String)
+            }
         }
     }
     
@@ -177,17 +182,18 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
-        
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String: Any] {
-            if let paysheetDetails = input["paysheetDetails"] as? String {
-                if let jsonData = paysheetDetails.data(using: .utf8),
-                   let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    XCTAssertEqual("true",json["collectCustomerShippingAddress"] as? String)
-                    XCTAssertEqual("true",json["collectCustomerBillingAddress"] as? String)
+ 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String: Any] {
+                if let paysheetDetails = input["paysheetDetails"] as? String {
+                    if let jsonData = paysheetDetails.data(using: .utf8),
+                       let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                        XCTAssertEqual("true",json["collectCustomerShippingAddress"] as? String)
+                        XCTAssertEqual("true",json["collectCustomerBillingAddress"] as? String)
+                    }
                 }
             }
         }
@@ -205,31 +211,33 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
         
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-        let input = inputDict["input"] as? [String: Any] {
-            XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
-            XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
-            
-            if let paysheetDetails = input["paysheetDetails"] as? String {
-                if let jsonData = paysheetDetails.data(using: .utf8),
-                   let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    XCTAssertEqual("false",json["collectCustomerShippingAddress"] as? String)
-                    XCTAssertEqual("false",json["collectCustomerBillingAddress"] as? String)
-                    
-                    if let transactionDetailsString = json["transactionDetails"] as? String {
-                        if let jsonData = transactionDetailsString.data(using: .utf8),
-                           let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                            XCTAssertEqual(json["totalAmount"] as? String, "9")
-                            XCTAssertEqual(json["subTotalAmount"] as? String, "9")
-                            if let lineItems = json["lineItems"] as? String {
-                                XCTAssertTrue(lineItems.contains("\"quantity\":1"))
-                                XCTAssertTrue(lineItems.contains("\"name\":\"name"))
-                                XCTAssertTrue(lineItems.contains("\"unit_amount\":\"9\""))
-                                XCTAssertTrue(lineItems.contains("\"kind\":\"debit\""))
-                                XCTAssertTrue(lineItems.contains("\"unit_tax_amount\":\"0\""))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String: Any] {
+                XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
+                XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
+
+                if let paysheetDetails = input["paysheetDetails"] as? String {
+                    if let jsonData = paysheetDetails.data(using: .utf8),
+                       let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                        XCTAssertEqual("false",json["collectCustomerShippingAddress"] as? String)
+                        XCTAssertEqual("false",json["collectCustomerBillingAddress"] as? String)
+
+                        if let transactionDetailsString = json["transactionDetails"] as? String {
+                            if let jsonData = transactionDetailsString.data(using: .utf8),
+                               let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                                XCTAssertEqual(json["totalAmount"] as? String, "9")
+                                XCTAssertEqual(json["subTotalAmount"] as? String, "9")
+                                if let lineItems = json["lineItems"] as? String {
+                                    XCTAssertTrue(lineItems.contains("\"quantity\":1"))
+                                    XCTAssertTrue(lineItems.contains("\"name\":\"name"))
+                                    XCTAssertTrue(lineItems.contains("\"unit_amount\":\"9\""))
+                                    XCTAssertTrue(lineItems.contains("\"kind\":\"debit\""))
+                                    XCTAssertTrue(lineItems.contains("\"unit_tax_amount\":\"0\""))
+                                }
                             }
                         }
                     }
@@ -246,16 +254,18 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
-        
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        
-        let params = mockAPIClient.lastPOSTParameters as! [String: Any]
-        let queryParams = params["query"] as! String
-        XCTAssertTrue(queryParams.contains("mutation CreateVenmoPaymentContext"))
-        
-        let inputParams = (params["variables"] as! [String: [String: Any]])["input"]
-        let paysheetDetails = inputParams?["paysheetDetails"] as! [String: Any]
-        XCTAssertNil(paysheetDetails["transactionDetails"])
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+
+            let params = self.mockAPIClient.lastPOSTParameters as! [String: Any]
+            let queryParams = params["query"] as! String
+            XCTAssertTrue(queryParams.contains("mutation CreateVenmoPaymentContext"))
+
+            let inputParams = (params["variables"] as! [String: [String: Any]])["input"]
+            let paysheetDetails = inputParams?["paysheetDetails"] as! [String: Any]
+            XCTAssertNil(paysheetDetails["transactionDetails"])
+        }
     }
 
     func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
@@ -267,20 +277,21 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(fakeApplication.openURLWasCalled)
 
-        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
-              let queryItems = urlComponents.queryItems else {
-            XCTFail()
-            return
+            guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
+                  let queryItems = urlComponents.queryItems else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "some-resource-id")))
         }
-
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "some-resource-id")))
-
     }
 
     func testTokenizeVenmoAccount_whenCannotParsePaymentContextID_callsBackWithError() {
@@ -336,18 +347,20 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _,_  -> Void in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(fakeApplication.openURLWasCalled)
 
-        guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
-              let queryItems = urlComponents.queryItems else {
-            XCTFail()
-            return
+            guard let urlComponents = fakeApplication.lastOpenURL.flatMap({ URLComponents(url: $0, resolvingAgainstBaseURL: false)}),
+                  let queryItems = urlComponents.queryItems else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
         }
-
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
-        XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
     }
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_getsResultFromPaymentContext() {
@@ -364,17 +377,18 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "data": [
-                "node": [
-                    "paymentMethodId": "fake-venmo-nonce",
-                    "userName": "fake-venmo-username"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseBody = BTJSON(value: [
+                "data": [
+                    "node": [
+                        "paymentMethodId": "fake-venmo-nonce",
+                        "userName": "fake-venmo-username"
+                    ]
                 ]
-            ]
-        ])
+            ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
-
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        }
         waitForExpectations(timeout: 1)
     }
 
@@ -392,11 +406,12 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseBody = nil
-        mockAPIClient.cannedResponseError = NSError(domain: "some-domain", code: 1, userInfo: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseBody = nil
+            self.mockAPIClient.cannedResponseError = NSError(domain: "some-domain", code: 1, userInfo: nil)
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
-
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        }
         waitForExpectations(timeout: 1)
     }
 
@@ -418,8 +433,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         waitForExpectations(timeout: 2)
     }
     
@@ -443,8 +460,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         waitForExpectations(timeout: 2)
     }
 
@@ -461,7 +480,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+        }
 
         waitForExpectations(timeout: 2)
     }
@@ -480,8 +502,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertTrue(venmoClient.shouldVault)
             expectation.fulfill()
         }
-
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         waitForExpectations(timeout: 2)
     }
 
@@ -490,15 +514,17 @@ class BTVenmoClient_Tests: XCTestCase {
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        
+
         let expectation = expectation(description: "Callback invoked")
-        
+
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             XCTAssertFalse(venmoClient.shouldVault)
             expectation.fulfill()
         }
-        
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         waitForExpectations(timeout: 2)
     }
     
@@ -506,40 +532,42 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        
+
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        
+
         let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             XCTAssertNil(error)
-            
+
             XCTAssertEqual(venmoAccount?.username, "venmojoe")
             XCTAssertEqual(venmoAccount?.nonce, "abcd-venmo-nonce")
             XCTAssertTrue(venmoAccount!.isDefault)
-            
+
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "venmoAccounts": [[
-                "type": "VenmoAccount",
-                "nonce": "abcd-venmo-nonce",
-                "description": "VenmoAccount",
-                "consumed": false,
-                "default": true,
-                "details": [
-                    "cardType": "Discover",
-                    "username": "venmojoe"
-                ]
-            ] as [String: Any]]
-        ])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseBody = BTJSON(value: [
+                "venmoAccounts": [[
+                    "type": "VenmoAccount",
+                    "nonce": "abcd-venmo-nonce",
+                    "description": "VenmoAccount",
+                    "consumed": false,
+                    "default": true,
+                    "details": [
+                        "cardType": "Discover",
+                        "username": "venmojoe"
+                    ]
+                ] as [String: Any]]
+            ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         waitForExpectations(timeout: 2)
     }
     
@@ -565,26 +593,28 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "venmoAccounts": [[
-                "type": "VenmoAccount",
-                "nonce": "abcd-venmo-nonce",
-                "description": "VenmoAccount",
-                "consumed": false,
-                "default": true,
-                "details": [
-                    "cardType": "Discover",
-                    "username": "venmojoe"
-                ]
-            ] as [String: Any]]
-        ])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseBody = BTJSON(value: [
+                "venmoAccounts": [[
+                    "type": "VenmoAccount",
+                    "nonce": "abcd-venmo-nonce",
+                    "description": "VenmoAccount",
+                    "consumed": false,
+                    "default": true,
+                    "details": [
+                        "cardType": "Discover",
+                        "username": "venmojoe"
+                    ]
+                ] as [String: Any]]
+            ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+
+            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
+            XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "some-resource-id")
+            XCTAssertEqual(self.mockAPIClient.postedLinkType, .deeplink)
+        }
         waitForExpectations(timeout: 2)
-
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
     func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSuccessAnalyticsEvent() {
@@ -606,26 +636,28 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "venmoAccounts": [[
-                "type": "VenmoAccount",
-                "nonce": "abcd-venmo-nonce",
-                "description": "VenmoAccount",
-                "consumed": false,
-                "default": true,
-                "details": [
-                    "cardType": "Discover",
-                    "username": "venmojoe"
-                ]
-            ] as [String: Any]]
-        ])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseBody = BTJSON(value: [
+                "venmoAccounts": [[
+                    "type": "VenmoAccount",
+                    "nonce": "abcd-venmo-nonce",
+                    "description": "VenmoAccount",
+                    "consumed": false,
+                    "default": true,
+                    "details": [
+                        "cardType": "Discover",
+                        "username": "venmojoe"
+                    ]
+                ] as [String: Any]]
+            ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=abcd-venmo-nonce&username=venmojoe")!)
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=abcd-venmo-nonce&username=venmojoe")!)
+
+            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
+            XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "some-resource-id")
+            XCTAssertEqual(self.mockAPIClient.postedLinkType, .universal)
+        }
         waitForExpectations(timeout: 2)
-
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
@@ -644,14 +676,16 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+
+            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
+            XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "some-resource-id")
+            XCTAssertEqual(self.mockAPIClient.postedLinkType, .deeplink)
+        }
         waitForExpectations(timeout: 2)
-
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
@@ -659,7 +693,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-
+        
         let expectation = expectation(description: "Callback invoked")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
@@ -671,8 +705,10 @@ class BTVenmoClient_Tests: XCTestCase {
             
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
-
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
+        }
         waitForExpectations(timeout: 2)
     }
 
@@ -685,10 +721,12 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo_merchant_id"));
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(fakeApplication.openURLWasCalled)
+            XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+            XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo_merchant_id"));
+            XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        }
     }
 
     func testAuthorizeAccountWithProfileID_withProfileID_usesProfileIDToAppSwitch() {
@@ -702,10 +740,12 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "second_venmo_merchant_id"));
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(fakeApplication.openURLWasCalled)
+            XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+            XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "second_venmo_merchant_id"));
+            XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        }
     }
 
     func testTokenizeVenmoAccount_whenIsFinalAmountSetAsTrue_createsPaymentContext() {
@@ -720,11 +760,13 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoRequest.isFinalAmount = true
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
-            XCTAssertEqual("true", input["isFinalAmount"] as? String)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String:Any] {
+                XCTAssertEqual("true", input["isFinalAmount"] as? String)
+            }
         }
     }
 
@@ -739,12 +781,13 @@ class BTVenmoClient_Tests: XCTestCase {
 
         venmoRequest.isFinalAmount = false
         venmoClient.tokenize(venmoRequest) { _, _ in }
-
-        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
-        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
-        if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
-            XCTAssertEqual("false", input["isFinalAmount"] as? String)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+            let params = self.mockAPIClient.lastPOSTParameters as? NSDictionary
+            if let inputDict = params?["variables"] as? NSDictionary,
+               let input = inputDict["input"] as? [String:Any] {
+                XCTAssertEqual("false", input["isFinalAmount"] as? String)
+            }
         }
     }
 
@@ -771,7 +814,7 @@ class BTVenmoClient_Tests: XCTestCase {
         } catch {
             let error = error as NSError
             XCTAssertNotNil(error)
-            XCTAssertEqual(error.localizedDescription, BTVenmoError.fetchConfigurationFailed.localizedDescription)
+            XCTAssertEqual(error.localizedDescription, BTAPIClientError.configurationUnavailable.localizedDescription)
         }
     }
 
@@ -850,11 +893,13 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
-        waitForExpectations(timeout: 2)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
+            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
+            XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "some-resource-id")
+        }
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     // Note: testing of handleReturnURL is done implicitly while testing authorizeAccountWithCompletion
