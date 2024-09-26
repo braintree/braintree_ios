@@ -77,7 +77,48 @@ public class BTPayPalMessagingView: UIView {
             }
         }
     }
-    
+
+    @MainActor
+    public func start(_ request: BTPayPalMessagingRequest = BTPayPalMessagingRequest()) async {
+        PayPalMessageConfig.setGlobalAnalytics(
+            integrationName: "BT_SDK",
+            integrationVersion: BTCoreConstants.braintreeSDKVersion
+        )
+
+        apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+
+            guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
+                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
+                return
+            }
+
+            let messageData = PayPalMessageData(
+                clientID: clientID,
+                environment: configuration.environment == "production" ? .live : .sandbox,
+                amount: request.amount,
+                pageType: request.pageType?.pageTypeRawValue,
+                offerType: request.offerType?.offerTypeRawValue
+            )
+
+            messageData.buyerCountry = request.buyerCountry
+
+            let messageConfig = PayPalMessageConfig(
+                data: messageData,
+                style: PayPalMessageStyle(
+                    logoType: request.logoType.logoTypeRawValue,
+                    color: request.color.messageColorRawValue,
+                    textAlign: request.textAlignment.textAlignmentRawValue
+                )
+            )
+
+            self.setupMessageView(with: messageConfig)
+        } catch {
+            self.notifyFailure(with: error)
+        }
+    }
+
     private func setupMessageView(with config: PayPalMessageConfig) {
         if let messageView {
             messageView.setConfig(config)
