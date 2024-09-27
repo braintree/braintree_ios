@@ -56,7 +56,13 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         billingAddress.postalCode = "54321"
         threeDSecureRequest.billingAddress = billingAddress
 
-        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
+        
+        client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as! String, "df-reference-id")
@@ -81,11 +87,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             XCTAssertEqual(additionalInfo["billingState"], "CA")
             XCTAssertEqual(additionalInfo["billingCountryCode"], "US")
             XCTAssertEqual(additionalInfo["billingPostalCode"], "54321")
-
-            expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testPerformThreeDSecureLookup_whenDefaultsArePassed_buildsRequestWithNilValues() {
@@ -95,13 +99,15 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest.amount = 9.99
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.99)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["requestedThreeDSecureVersion"] as! String, "2")
             XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String)
             XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["accountType"] as? String)
             XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["requestedExemptionType"] as? String)
-
-            expectation.fulfill()
         }
 
         waitForExpectations(timeout: 1)
@@ -116,10 +122,12 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         threeDSecureRequest.cardAddChallenge = .notRequested
 
-        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
-
+        client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
         }
 
         waitForExpectations(timeout: 1, handler: nil)
@@ -132,10 +140,12 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.dfReferenceID = "df-reference-id"
 
-        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as? Bool)
-
+        client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as? Bool)
         }
 
         waitForExpectations(timeout: 1, handler: nil)
@@ -150,8 +160,11 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         let expectation = expectation(description: "willCallCompletion")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
-            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
             expectation.fulfill()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
         }
 
         waitForExpectations(timeout: 1)
@@ -179,6 +192,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             }
             """
 
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
         let expectation = self.expectation(description: "willCallCompletion")
 
@@ -210,6 +224,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenLookupFails_callsBackWithError() {
         mockAPIClient.cannedResponseError = NSError(domain:"BTError", code: 0, userInfo: nil)
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let expectation = self.expectation(description: "Post fails with error.")
 
@@ -240,6 +255,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ]
 
         mockAPIClient.cannedResponseError = BTHTTPError.clientError(userInfo) as NSError?
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { result, error in
