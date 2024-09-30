@@ -4,7 +4,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
    
     // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
-    let expirationDate = DateGenerator.sharedInstance.threeDSecure2TestingDate()
+    let expirationDate = UITestDateGenerator.sharedInstance.threeDSecure2TestingDate()
 
     override func setUp() {
         super.setUp()

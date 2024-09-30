@@ -2,8 +2,14 @@
 
 ## unreleased
 * BraintreePayPal
-  * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
   * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
+
+## 6.23.4 (2024-09-24)
+* BraintreePayPal
+  * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
+* BraintreeShopperInsights (BETA)
+  * For analytics, send `experiment` as a parameter to `getRecommendedPaymentMethods` method
+  * For analytics, send `experiment` and `paymentMethodsDisplayed` analytic metrics to FPTI via the button presented methods
 
 ## 6.23.3 (2024-08-12)
 * BraintreeCore

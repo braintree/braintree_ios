@@ -54,7 +54,7 @@ internal extension XCUIApplication {
         return buttons["Internal Error."]
     }
 
-    func enterCardDetailsWith(cardNumber: String, expirationDate: String = DateGenerator.sharedInstance.futureDate()) {
+    func enterCardDetailsWith(cardNumber: String, expirationDate: String = UITestDateGenerator.sharedInstance.futureDate()) {
         cardNumberTextField.tap()
         cardNumberTextField.typeText(cardNumber)
         expirationDateTextField.tap()
