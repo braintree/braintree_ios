@@ -34,11 +34,15 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
 
         let nativeCheckoutRequest = BTPayPalNativeCheckoutRequest(amount: "4.30")
         let checkoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
+        let expectation = expectation(description: "tokenization complete")
         checkoutClient.tokenize(nativeCheckoutRequest) { nonce, error in
             XCTAssertNil(nonce)
             XCTAssertEqual(error as? BTPayPalNativeCheckoutError, .payPalClientIDNotFound)
             XCTAssertEqual(self.apiClient.postedAnalyticsEvents.last, BTPayPalNativeCheckoutAnalytics.tokenizeFailed)
+            expectation.fulfill()
         }
+
+        waitForExpectations(timeout: 2)
     }
 
     func testUserAuthenticationIsPassed_returnsRequestEmail() {
@@ -55,7 +59,10 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient, nativeCheckoutProvider: mockNativeCheckoutProvider)
         let request = BTPayPalNativeCheckoutRequest(amount: "1.99", userAuthenticationEmail: "fake_user_email@mock.paypal.com")
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
-        XCTAssertEqual(mockNativeCheckoutProvider.userAuthenticationEmail, "fake_user_email@mock.paypal.com")
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            XCTAssertEqual(self.mockNativeCheckoutProvider.userAuthenticationEmail, "fake_user_email@mock.paypal.com")
+        }
     }
 
     func testUserAuthenticationIsNil_returnsNilForEmail() async {
@@ -121,10 +128,14 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
 
         let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient, nativeCheckoutProvider: mockNativeCheckoutProvider)
         let request = BTPayPalNativeCheckoutRequest(amount: "1.99")
+        let expectation = expectation(description: "tokenization complete")
         payPalNativeCheckoutClient.tokenize(request) { _, error in
             self.mockNativeCheckoutProvider.triggerError(error: error as! BTPayPalNativeCheckoutError)
             XCTAssertEqual((error as! BTPayPalNativeCheckoutError).errorDescription, "Failed to create PayPal order: Invalid JSON response.")
+            expectation.fulfill()
         }
+        
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testTokenize_whenInvalidRedirectURL_returnsError() {
@@ -230,9 +241,11 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         let request = BTPayPalNativeVaultRequest()
         
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
-        mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
 
-        XCTAssertEqual(apiClient.postedPayPalContextID, "fake-ec-token")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
+            XCTAssertEqual(self.apiClient.postedPayPalContextID, "fake-ec-token")
+        }
     }
 
     func testTokenize_whenOrderIDIsNotReturned_doesNotSendPayPalContextIDInAnalytics() {
