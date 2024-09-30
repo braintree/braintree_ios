@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
+
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)

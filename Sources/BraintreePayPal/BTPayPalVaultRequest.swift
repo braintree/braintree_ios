@@ -18,6 +18,12 @@ import BraintreeCore
     /// Defaults to `false`.
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool = false
+    
+    /// Optional: Recurring billing plan type, or charge pattern.
+    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
+    
+    /// Optional: Recurring billing product details.
+    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
 
@@ -40,8 +46,17 @@ import BraintreeCore
     /// Initializes a PayPal Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    ///   - recurringBillingDetails: Optional: Recurring billing product details.
+    ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public init(offerCredit: Bool = false, userAuthenticationEmail: String? = nil) {
+    public init(
+        offerCredit: Bool = false,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
+        userAuthenticationEmail: String? = nil
+    ) {
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
         super.init(offerCredit: offerCredit)
     }
@@ -66,6 +81,14 @@ import BraintreeCore
             ]
             
             return baseParameters.merging(appSwitchParameters) { $1 }
+        }
+        
+        if let recurringBillingPlanType {
+            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+        
+        if let recurringBillingDetails {
+            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
 
         return baseParameters
