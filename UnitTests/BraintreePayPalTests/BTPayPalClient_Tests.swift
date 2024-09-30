@@ -153,11 +153,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/success")
 
-        do {
-            let _ = try await clientTokenPayPalClient.edit(request)
-        } catch {
-            // no-op
-        }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         let returnURL = URL(string: "https://onetouch/v1/success?ba_token=BA-777")!
         await payPalClient.handleReturnURL(returnURL)
@@ -175,11 +171,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/cancel")
 
-        do {
-            let _ = try await clientTokenPayPalClient.edit(request)
-        } catch {
-            // no-op
-        }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         let returnURL = URL(string: "https://onetouch/v1/cancel?ba_token=BA-777")!
         await payPalClient.handleReturnURL(returnURL)
@@ -240,11 +232,7 @@ class BTPayPalClient_Tests: XCTestCase {
     func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() async {
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        do {
-            let _ = try await clientTokenPayPalClient.edit(request)
-        } catch {
-            // no-op
-        }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         XCTAssertEqual("v1/paypal_hermes/generate_edit_fi_url", clientTokenMockAPIClient.lastPOSTPath)
         guard let lastPostParameters = clientTokenMockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -588,11 +576,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() async {
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        do {
-            _ = try await clientTokenPayPalClient.edit(request)
-        } catch {
-            // no-op
-        }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
     }
