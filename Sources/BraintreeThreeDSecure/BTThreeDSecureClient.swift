@@ -350,9 +350,9 @@ import BraintreeCore
                     if let error = error as NSError? {
                         // Provide more context for card validation error when status code 422
                         if error.domain == BTCoreConstants.httpErrorDomain,
-                           error as? BTHTTPError == .clientError([:]),
-                           let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
-                           urlResponseError.statusCode == 422 {
+                            error as? BTHTTPError == .clientError([:]),
+                            let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
+                            urlResponseError.statusCode == 422 {
                             var userInfo: [String: Any] = error.userInfo
                             let errorBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
 
