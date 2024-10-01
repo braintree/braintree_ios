@@ -248,15 +248,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             request = BTPayPalVaultEditRequest(editPayPalVaultID: vaultID)
         }
 
-        payPalClient.edit(request) { editResult, error in
-            sender.isEnabled = true
-
-            guard let editResult else {
-                self.progressBlock(error?.localizedDescription)
-                return
+        Task {
+            do {
+                let editResult = try await payPalClient.edit(request)
+                progressBlock(("Edit FI completed.\n riskCorrelationID: \(editResult.riskCorrelationID)"))
+            } catch {
+                progressBlock(error.localizedDescription)
             }
 
-            self.progressBlock(("Edit FI completed.\n riskCorrelationID: \(editResult.riskCorrelationID)"))
+            sender.isEnabled = true
         }
     }
 

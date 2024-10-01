@@ -142,8 +142,8 @@ class BTPayPalClient_Tests: XCTestCase {
         self.waitForExpectations(timeout: 1)
     }
 
-    func testEdit_whenResponseIsSuccessful_returnsPayPalVaultEditResult() {
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+    func testEdit_whenResponseIsSuccessful_returnsPayPalVaultEditResult() async {
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "tokenId": "BA-777",
@@ -152,21 +152,16 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/success")
-        let expectation = expectation(description: "Edit vault completion")
-        clientTokenPayPalClient.edit(editRequest) { result, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(result?.riskCorrelationID)
-            expectation.fulfill()
-        }
+
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         let returnURL = URL(string: "https://onetouch/v1/success?ba_token=BA-777")!
-        payPalClient.handleReturnURL(returnURL)
+        await payPalClient.handleReturnURL(returnURL)
         XCTAssertTrue(clientTokenMockAPIClient.postedAnalyticsEvents.contains("paypal:edit:succeeded"))
-        waitForExpectations(timeout: 2)
     }
 
-    func testEdit_whenUserCancels_returnsError() {
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
+    func testEdit_whenUserCancels_returnsError() async {
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "fake-edit-paypal-vault-id")
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "tokenId": "BA-777",
@@ -175,76 +170,69 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "https://onetouch/v1/cancel")
-        let expectation = expectation(description: "Edit vault completion")
-        clientTokenPayPalClient.edit(editRequest) { result, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(result)
-            expectation.fulfill()
-        }
+
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         let returnURL = URL(string: "https://onetouch/v1/cancel?ba_token=BA-777")!
-        payPalClient.handleReturnURL(returnURL)
+        await payPalClient.handleReturnURL(returnURL)
         XCTAssertTrue(clientTokenMockAPIClient.postedAnalyticsEvents.contains("paypal:edit:browser-login:canceled"))
-        waitForExpectations(timeout: 2)
     }
 
-    func testEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+    func testEdit_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() async {
         clientTokenMockAPIClient.cannedConfigurationResponseBody = nil
 
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        let expectation = expectation(description: "Edit Vault fails with error")
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        clientTokenPayPalClient.edit(editRequest) { editResult, error in
+        do {
+            let result = try await clientTokenPayPalClient.edit(request)
+            XCTAssertNil(result)
+        } catch {
             guard let error = error as NSError? else { XCTFail(); return }
-            XCTAssertNil(editResult)
-            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
-            XCTAssertEqual(error.code, BTPayPalError.fetchConfigurationFailed.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTPayPalError.fetchConfigurationFailed.errorDescription)
-            expectation.fulfill()
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPayPalErrorDomain")
+            XCTAssertEqual(error.code, 2)
+            XCTAssertEqual(error.localizedDescription, "Failed to fetch Braintree configuration.")
         }
 
         XCTAssertTrue(clientTokenMockAPIClient.postedAnalyticsEvents.contains("paypal:edit:failed"))
-        self.waitForExpectations(timeout: 1)
     }
 
-    func testEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() {
+    func testEdit_whenPayPalNotEnabledInConfiguration_callsBackWithError() async {
         clientTokenMockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": false
         ])
 
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        let expectation = expectation(description: "Edit Vault fails with error")
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        clientTokenPayPalClient.edit(editRequest) { result, error in
-            guard let error = error as NSError? else { XCTFail(); return }
+        do {
+            let result = try await clientTokenPayPalClient.edit(request)
             XCTAssertNil(result)
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.disabled.errorCode)
             XCTAssertEqual(error.localizedDescription, "PayPal is not enabled for this merchant. Enable PayPal for this merchant in the Braintree Control Panel.")
-            expectation.fulfill()
         }
-
-        self.waitForExpectations(timeout: 1)
     }
 
-    func testEdit_withTokenizationKey_returnsError() {
+    func testEdit_withTokenizationKey_returnsError() async {
         let apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+        let payPalClient = await BTPayPalClient(apiClient: apiClient)
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        payPalClient.edit(editRequest) { result, error in
+        do {
+            let result = try await payPalClient.edit(request)
             XCTAssertNil(result)
-
+        } catch {
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertEqual(error.code, 14)
             XCTAssertEqual(error.localizedDescription, "Invalid authorization. This feature can only be used with a client token.")
         }
     }
 
-    func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let editRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
+    func testEditFI_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() async {
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        clientTokenPayPalClient.edit(editRequest) { _, _ in }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         XCTAssertEqual("v1/paypal_hermes/generate_edit_fi_url", clientTokenMockAPIClient.lastPOSTPath)
         guard let lastPostParameters = clientTokenMockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -256,7 +244,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNotNil(lastPostParameters["risk_correlation_id"])
     }
 
-    func testEditFI_whenPostRequestContainsError_callsBackWithError() {
+    func testEditFI_whenPostRequestContainsError_callsBackWithError() async {
         let stubJSONResponse = BTJSON(
             value: [
                 "paymentResource" : [
@@ -277,17 +265,18 @@ class BTPayPalClient_Tests: XCTestCase {
 
         clientTokenMockAPIClient.cannedResponseError = stubError
 
-        let dummyRequest = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        let expectation = expectation(description: "Edit FI fails with error")
+        let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
 
-        clientTokenPayPalClient.edit(dummyRequest) { _, error in
+        do {
+            let editResult = try await clientTokenPayPalClient.edit(request)
+            XCTAssertNil(editResult)
+        } catch {
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNotNil(error)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.httpPostRequestError([:]).errorCode)
-            expectation.fulfill()
+            XCTAssertTrue(error.localizedDescription.contains("HTTP POST request failed with"))
         }
-        self.waitForExpectations(timeout: 1)
     }
 
     // MARK: - PayPal approval URL to present in browser
@@ -468,7 +457,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
-    func testEditVault_whenAllApprovalURLsInvalid_returnsError() {
+    func testEditVault_whenAllApprovalURLsInvalid_returnsError() async {
         clientTokenMockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "approvalUrl": "",
@@ -477,21 +466,19 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-id")
-        let expectation = expectation(description: "Returns error")
 
-        clientTokenPayPalClient.edit(request) { editResult, error in
-            guard let error = error as NSError? else { XCTFail(); return }
+        do {
+            let editResult = try await clientTokenPayPalClient.edit(request)
             XCTAssertNil(editResult)
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
-    func testEditPayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() {
+    func testEditPayPalAccount_whenApprovalUrlIsNotHTTP_returnsError() async {
         clientTokenMockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
                 "redirectUrl": "file://some-url.com"
@@ -499,20 +486,19 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
-        let expectation = expectation(description: "Returns error")
 
-        clientTokenPayPalClient.edit(request) { editResult, error in
+        do {
+            let editResult = try await clientTokenPayPalClient.edit(request)
             XCTAssertNil(editResult)
-            XCTAssertEqual((error! as NSError).domain, BTPayPalError.errorDomain)
-            XCTAssertEqual((error! as NSError).code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
-            XCTAssertEqual((error! as NSError).localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
-            expectation.fulfill()
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.asWebAuthenticationSessionURLInvalid("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "Attempted to open an invalid URL in ASWebAuthenticationSession: file://. Try again or contact Braintree Support.")
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
-    func testEditPayPalAccount_whenAllApprovalURLsInvalid_returnsError() {
+    func testEditPayPalAccount_whenAllApprovalURLsInvalid_returnsError() async {
         clientTokenMockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "approvalUrl": "",
@@ -521,18 +507,16 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "testID")
-        let expectation = expectation(description: "Returns error")
 
-        clientTokenPayPalClient.edit(request) { editResult, error in
-            guard let error = error as NSError? else { XCTFail(); return }
+        do {
+            let editResult = try await clientTokenPayPalClient.edit(request)
             XCTAssertNil(editResult)
+        } catch {
+            guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.invalidURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "An error occurred with retrieving a PayPal URL: Missing approval URL in gateway response.")
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
     // MARK: - Browser switch
@@ -590,9 +574,9 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
-    func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() {
+    func testEditFI_whenGenerateFIURLSuccessful_performsSwitchRequest() async {
         let request = BTPayPalVaultEditRequest(editPayPalVaultID: "test-ID")
-        payPalClient.edit(request) { _, _ in }
+        let _ = try? await clientTokenPayPalClient.edit(request)
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
     }
