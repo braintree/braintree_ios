@@ -7,6 +7,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
         apiClient: apiClient,
+        // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
     
@@ -100,8 +101,19 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
-        let editFIStackView = buttonsStackView(label: "Edit FI Flow", views: [payPalVaultIDLabel, payPalVaultIDTextField, UIStackView(arrangedSubviews: [errorHandlingToggleLabel, errorHandlingToggle]), riskCorrelationIDLabel, riskCorrelationIDTextField, payPalEditVaultButton])
+        let vaultStackView = buttonsStackView(label: "Vault", views: [payPalVaultButton, payPalAppSwitchButton])
+        let editFIStackView = buttonsStackView(
+            label: "Edit FI Flow",
+            views: [
+                payPalVaultIDLabel,
+                payPalVaultIDTextField,
+                UIStackView(arrangedSubviews: [errorHandlingToggleLabel, errorHandlingToggle]),
+                riskCorrelationIDLabel,
+                riskCorrelationIDTextField,
+                payPalEditVaultButton
+            ]
+        )
+
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
             oneTimeCheckoutStackView,
@@ -109,16 +121,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             editFIStackView
         ])
 
-        NSLayoutConstraint.activate([
-            oneTimeCheckoutStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+        NSLayoutConstraint.activate(
+            [
+                oneTimeCheckoutStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+                vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            editFIStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            editFIStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
-          ])
+                editFIStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                editFIStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            ]
+        )
 
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
@@ -142,7 +156,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
 
-        request.lineItems = [lineItem]        
+        request.lineItems = [lineItem]
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
@@ -201,7 +215,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
-
             }
             
             self.completionBlock(nonce)
@@ -216,7 +229,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }
 
     @objc func tappedPayPalEditVault(_ sender: UIButton) {
-        errorHandlingToggle.isOn ? progressBlock("Tapped PayPal - Edit FI, Error Handling") : progressBlock("Tapped PayPal - Edit FI")
+        if errorHandlingToggle.isOn {
+            progressBlock("Tapped PayPal - Edit FI, Error Handling")
+        } else {
+            progressBlock("Tapped PayPal - Edit FI")
+        }
 
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false

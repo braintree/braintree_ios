@@ -4,8 +4,9 @@ import BraintreeCore
 
 class IdealViewController: PaymentButtonBaseViewController {
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var localPaymentClient: BTLocalPaymentClient!
-    var paymentIDLabel: UILabel = UILabel()
+    var paymentIDLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,7 @@ class IdealViewController: PaymentButtonBaseViewController {
     }
 
     private func startPaymentWithBank() {
+        // swiftlint:disable:next force_unwrapping
         let apiClient = BTAPIClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")!
         localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
 

@@ -305,9 +305,11 @@ import Foundation
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
+        merchantExperiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
+        paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
@@ -318,6 +320,8 @@ import Foundation
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
+                merchantExperiment: merchantExperiment,
+                paymentMethodsDisplayed: paymentMethodsDisplayed,
                 payPalContextID: payPalContextID
             )
         )

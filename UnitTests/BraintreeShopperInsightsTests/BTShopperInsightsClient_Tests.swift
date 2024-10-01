@@ -18,6 +18,17 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
     )
     
+    let sampleExperiment =
+            """
+            [
+              {
+                "experimentName" : "payment ready conversion",
+                "experimentID" : "a1b2c3" ,
+                "treatmentName" : "control group 1",
+              }
+            ]
+            """
+    
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
@@ -95,7 +106,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         }
     }
     
-    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrue_returnsOnlyPayPalRecommended() async {
+    func testGetRecommendedPaymentMethods_whenEligibleInPayPalNetworkTrueANDMerchantExperimentSet_returnsOnlyPayPalRecommended() async {
         do {
             let mockPayPalRecommendedResponse = BTJSON(
                 value: [
@@ -110,11 +121,12 @@ class BTShopperInsightsClient_Tests: XCTestCase {
                 ]
             )
             mockAPIClient.cannedResponseBody = mockPayPalRecommendedResponse
-            let result = try await sut.getRecommendedPaymentMethods(request: request)
+            let result = try await sut.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
             XCTAssertTrue(result.isPayPalRecommended)
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedMerchantExperiment, sampleExperiment)
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -191,6 +203,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
         sut.sendPayPalPresentedEvent()
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+    }
+    
+    func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
+        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
+        sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
+        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
     }
     

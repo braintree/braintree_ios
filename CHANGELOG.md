@@ -1,11 +1,14 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Add PayPal vault edit flow (BETA)
     * Add `BTPayPalClient.edit(_:completion:)` method that takes in a `BTPayPalVaultEditRequest` or a `BTPayPalVaultErrorHandlingEditRequest`
     * **Note:** This feature is currently in beta and may change or be removed in future releases
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
+* BraintreeShopperInsights (BETA)
+  * For analytics, send `experiment` as a parameter to `getRecommendedPaymentMethods` method
+  * For analytics, send `experiment` and `paymentMethodsDisplayed` analytic metrics to FPTI via the button presented methods
 
 ## 6.23.3 (2024-08-12)
 * BraintreeCore

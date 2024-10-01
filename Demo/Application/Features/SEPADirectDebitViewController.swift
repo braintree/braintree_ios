@@ -55,4 +55,3 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
         String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
     }
 }
-
