@@ -163,6 +163,7 @@ class ContainmentViewController: UIViewController {
             case .production:
                 tokenizationKey = "production_t2wns2y2_dfy45jdj3dxkmz5m"
             case .custom:
+                // swiftlint:disable:next force_unwrapping
                 tokenizationKey = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsCustomAuthorizationKey")!
             }
 
@@ -170,6 +171,11 @@ class ContainmentViewController: UIViewController {
 
         case .clientToken:
             updateStatus("Fetching Client Token...")
+
+            if BraintreeDemoSettings.currentEnvironment == .custom {
+                updateStatus("Switch the Authorization Type in settings to Tokenization Key to use the custom environment")
+                return
+            }
 
             BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
                 if let error {
