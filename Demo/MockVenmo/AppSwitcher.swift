@@ -1,6 +1,6 @@
 import Foundation
 
-class AppSwitcher {
+enum AppSwitcher {
 
     static var openVenmoURL: URL?
 
@@ -14,7 +14,10 @@ class AppSwitcher {
 
         successComponents?.queryItems = [
             URLQueryItem(name: "x-source", value: "Venmo"),
-            URLQueryItem(name: "resource_id", value: "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg=")
+            URLQueryItem(
+                name: "resource_id",
+                value: "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
+            )
         ]
 
         return successComponents?.url
@@ -31,7 +34,7 @@ class AppSwitcher {
         successComponents?.queryItems = [
             URLQueryItem(name: "x-source", value: "Venmo"),
             URLQueryItem(name: "username", value: "@fake-venmo-username"),
-            URLQueryItem(name: "paymentMethodNonce", value: "fake-venmo-account-nonce"),
+            URLQueryItem(name: "paymentMethodNonce", value: "fake-venmo-account-nonce")
         ]
 
         return successComponents?.url
@@ -39,7 +42,7 @@ class AppSwitcher {
 
     static var errorURL: URL? {
         var errorComponents = openVenmoURL
-            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false)}?
+            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?
             .queryItems?
             .first { $0.name == "x-error" }?
             .value

@@ -1,13 +1,11 @@
 import Foundation
 
-@objc
 enum BraintreeDemoEnvironment: Int {
     case sandbox
     case production
     case custom
 }
 
-@objc
 enum BraintreeDemoAuthType: Int {
     case clientToken
     case tokenizationKey
@@ -16,27 +14,25 @@ enum BraintreeDemoAuthType: Int {
     case uiTestHardcodedClientToken
 }
 
-@objc
 enum BraintreeDemoThreeDSecureRequiredSetting: Int {
     case requiredIfAttempted
     case required
     case optional
 }
 
-@objc
 class BraintreeDemoSettings: NSObject {
     
-    @objc static let EnvironmentDefaultsKey = "BraintreeDemoSettingsEnvironmentDefaultsKey"
-    @objc static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
-    @objc static let CustomAuthorizationDefaultsKey = "BraintreeDemoSettingsCustomAuthorizationKey"
-    @objc static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
+    static let EnvironmentDefaultsKey = "BraintreeDemoSettingsEnvironmentDefaultsKey"
+    static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
+    static let CustomAuthorizationDefaultsKey = "BraintreeDemoSettingsCustomAuthorizationKey"
+    static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
 
-    @objc
     static var currentEnvironment: BraintreeDemoEnvironment {
-        return BraintreeDemoEnvironment(rawValue: UserDefaults.standard.integer(forKey: EnvironmentDefaultsKey)) ?? BraintreeDemoEnvironment.sandbox
+        BraintreeDemoEnvironment(
+            rawValue: UserDefaults.standard.integer(forKey: EnvironmentDefaultsKey)
+        ) ?? BraintreeDemoEnvironment.sandbox
     }
 
-    @objc
     static var currentEnvironmentName: String {
         switch currentEnvironment {
         case .sandbox, .custom:
@@ -45,8 +41,7 @@ class BraintreeDemoSettings: NSObject {
             return "Production"
         }
     }
-    
-    @objc
+
     static var currentEnvironmentURLString: String {
         switch currentEnvironment {
         case .sandbox, .custom:
@@ -56,32 +51,28 @@ class BraintreeDemoSettings: NSObject {
         }
     }
     
-    @objc
     static var authorizationOverride: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoSettingsAuthorizationOverride")
     }
 
-    @objc
     static var authorizationType: BraintreeDemoAuthType {
-        return BraintreeDemoAuthType(rawValue: UserDefaults.standard.integer(forKey: AuthorizationTypeDefaultsKey))!
+        BraintreeDemoAuthType(rawValue: UserDefaults.standard.integer(forKey: AuthorizationTypeDefaultsKey)) ?? .tokenizationKey
     }
     
-    @objc
     static var threeDSecureRequiredStatus: BraintreeDemoThreeDSecureRequiredSetting {
-        return BraintreeDemoThreeDSecureRequiredSetting(rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)) ?? .requiredIfAttempted
+        BraintreeDemoThreeDSecureRequiredSetting(
+            rawValue: UserDefaults.standard.integer(forKey: ThreeDSecureRequiredDefaultsKey)
+        ) ?? .requiredIfAttempted
     }
 
-    @objc
     static var customerPresent: Bool {
         return UserDefaults.standard.bool(forKey: "BraintreeDemoCustomerPresent")
     }
     
-    @objc
     static var customerIdentifier: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoCustomerIdentifier")
     }
 
-    @objc
     static var clientTokenVersion: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
     }

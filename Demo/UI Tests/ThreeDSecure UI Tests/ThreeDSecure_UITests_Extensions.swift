@@ -1,6 +1,7 @@
 import XCTest
 
 internal extension XCUIApplication {
+    
     var cardNumberTextField: XCUIElement {
         return textFields["Card Number"]
     }
@@ -53,7 +54,7 @@ internal extension XCUIApplication {
         return buttons["Internal Error."]
     }
 
-    func enterCardDetailsWith(cardNumber: String, expirationDate: String = DateGenerator.sharedInstance.futureDate()) {
+    func enterCardDetailsWith(cardNumber: String, expirationDate: String = UITestDateGenerator.sharedInstance.futureDate()) {
         cardNumberTextField.tap()
         cardNumberTextField.typeText(cardNumber)
         expirationDateTextField.tap()
@@ -68,5 +69,6 @@ internal extension XCUIApplication {
 }
 
 internal extension TimeInterval {
+    
     static let threeDSecureTimeout = 30.0
 }

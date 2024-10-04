@@ -1,10 +1,6 @@
-/*
- IMPORTANT
- Hardware keyboard should be disabled on simulator for tests to run reliably.
- */
-
 import XCTest
 
+/// IMPORTANT: Hardware keyboard should be disabled on simulator for tests to run reliably.
 class PayPal_Checkout_UITests: XCTestCase {
 
     var app = XCUIApplication()

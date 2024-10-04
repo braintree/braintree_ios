@@ -27,16 +27,16 @@ import Foundation
     public var kind: BTVenmoLineItemKind
 
     /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public var unitTaxAmount: String? = nil
+    public var unitTaxAmount: String?
 
     /// Optional: Item description. Maximum 127 characters.
-    public var itemDescription: String? = nil
+    public var itemDescription: String?
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public var productCode: String? = nil
+    public var productCode: String?
 
     /// Optional: The URL to product information.
-    public var url: URL? = nil
+    public var url: URL?
 
     // MARK: - Public Initializer
     
@@ -66,15 +66,15 @@ import Foundation
             "type": kind == .debit ? "DEBIT" : "CREDIT"
         ]
 
-        if let unitTaxAmount, unitTaxAmount != "" {
+        if let unitTaxAmount, !unitTaxAmount.isEmpty {
             requestParameters["unitTaxAmount"] = unitTaxAmount
         }
 
-        if let itemDescription, itemDescription != "" {
+        if let itemDescription, !itemDescription.isEmpty {
             requestParameters["description"] = itemDescription
         }
 
-        if let productCode, productCode != "" {
+        if let productCode, !productCode.isEmpty {
             requestParameters["productCode"] = productCode
         }
 
