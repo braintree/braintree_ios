@@ -11,7 +11,6 @@ final class FPTIBatchData_Tests: XCTestCase {
         environment: "fake-env",
         integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
-        sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )
     
@@ -28,6 +27,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: LinkType.universal.rawValue,
             payPalContextID: "fake-order-id",
             requestStartTime: 456,
+            sessionID: "fake-session-id",
             startTime: 999888777666
         ),
         FPTIBatchData.Event(
@@ -42,6 +42,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: nil,
             payPalContextID: "fake-order-id-2",
             requestStartTime: nil,
+            sessionID: "fake-session-id-2",
             startTime: nil
         )
     ]
@@ -121,6 +122,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["connect_start_time"])
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
+        XCTAssertEqual(eventParams[0]["session_id"] as? String, "fake-session-id")
+        XCTAssertEqual(eventParams[1]["session_id"] as? String, "fake-event-id-2")
     }
 }
 

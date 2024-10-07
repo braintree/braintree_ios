@@ -322,7 +322,8 @@ import Foundation
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 paymentMethodsDisplayed: paymentMethodsDisplayed,
-                payPalContextID: payPalContextID
+                payPalContextID: payPalContextID,
+                sessionID: metadata.sessionID
             )
         )
     }
@@ -414,6 +415,7 @@ import Foundation
                     endTime: endTime,
                     eventName: BTCoreAnalytics.apiRequestLatency,
                     requestStartTime: requestStartTime,
+                    sessionID: metadata.sessionID,
                     startTime: startTime
                 )
             )

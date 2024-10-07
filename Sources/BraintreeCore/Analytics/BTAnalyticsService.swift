@@ -94,7 +94,6 @@ final class BTAnalyticsService: AnalyticsSendable {
             environment: config.fptiEnvironment,
             integrationType: apiClient?.metadata.integration.stringValue ?? BTClientMetadataIntegration.custom.stringValue,
             merchantID: config.merchantID,
-            sessionID: sessionID,
             tokenizationKey: apiClient?.authorization.type == .tokenizationKey ? apiClient?.authorization.originalValue : nil
         )
         

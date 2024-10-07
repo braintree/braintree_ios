@@ -52,6 +52,7 @@ public class BTShopperInsightsClient {
         )
 
         do {
+            print("👀SessionID: \(apiClient.metadata.sessionID)")
             let (json, _) = try await apiClient.post(
                 "/v2/payments/find-eligible-methods",
                 parameters: postParameters,

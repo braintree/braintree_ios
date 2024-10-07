@@ -18,7 +18,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let sut = BTAnalyticsService.shared
         sut.setAPIClient(stubAPIClient)
         
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event", sessionID: "fake-session"))
         
         XCTAssertEqual(sut.http?.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
@@ -32,7 +32,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
         sut.http = mockAnalyticsHTTP
         
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event", sessionID: "fake-session"))
 
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
@@ -72,7 +72,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         XCTAssertTrue((batchParams["api_integration_type"] as! String).matches("custom|dropin"))
         XCTAssertNotNil(batchParams["merchant_id"])
-        XCTAssertNotNil(batchParams["session_id"])
         let authKey = batchParams["tokenization_key"] as? String ?? batchParams["auth_fingerprint"] as? String
         XCTAssertNotNil(authKey)
     }

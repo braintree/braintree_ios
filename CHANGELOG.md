@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Fix bug where `session_id` in analytics payload would not always be accurate; move to `event_params` dict
+
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)

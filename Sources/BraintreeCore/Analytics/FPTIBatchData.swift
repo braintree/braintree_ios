@@ -55,6 +55,7 @@ struct FPTIBatchData: Codable {
 
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
+        let sessionID: String
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
@@ -74,6 +75,7 @@ struct FPTIBatchData: Codable {
             paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
+            sessionID: String,
             startTime: Int? = nil
         ) {
             self.connectionStartTime = connectionStartTime
@@ -89,6 +91,7 @@ struct FPTIBatchData: Codable {
             self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
+            self.sessionID = sessionID
             self.startTime = startTime
         }
 
@@ -106,6 +109,7 @@ struct FPTIBatchData: Codable {
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case sessionID = "session_id"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
@@ -174,8 +178,6 @@ struct FPTIBatchData: Codable {
 
         let platform = "iOS"
 
-        let sessionID: String
-
         let tokenizationKey: String?
 
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
@@ -198,7 +200,6 @@ struct FPTIBatchData: Codable {
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
             case platform = "platform"
-            case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"
             case venmoInstalled = "venmo_installed"
         }
