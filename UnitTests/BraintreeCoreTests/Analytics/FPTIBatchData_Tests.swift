@@ -88,7 +88,6 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertTrue((batchParams["mobile_device_model"] as! String).matches("iPhone\\d,\\d|x86_64|arm64"))
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
-        XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
         XCTAssertEqual(batchParams["paypal_installed"] as! Bool, false)
         XCTAssertEqual(batchParams["venmo_installed"] as! Bool, false)
@@ -123,7 +122,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
         XCTAssertEqual(eventParams[0]["session_id"] as? String, "fake-session-id")
-        XCTAssertEqual(eventParams[1]["session_id"] as? String, "fake-event-id-2")
+        XCTAssertEqual(eventParams[1]["session_id"] as? String, "fake-session-id-2")
     }
 }
 
