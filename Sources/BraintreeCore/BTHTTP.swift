@@ -126,6 +126,23 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             completion(nil, nil, error)
         }
     }
+    
+    func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable,
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        try await withCheckedThrowingContinuation { continuation in
+            post(path, configuration: configuration, parameters: parameters, headers: headers) { body, response, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (body, response))
+                }
+            }
+        }
+    }
 
     // MARK: - HTTP Method Helpers
 
@@ -146,6 +163,9 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 headers: headers
             )
 
+            if request.url?.path.contains("tracking") != nil {
+                request.debug()
+            }
             self.session.dataTask(with: request) { [weak self] data, response, error in
                 guard let self else {
                     completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
@@ -469,5 +489,15 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         let queryDiscardHolder = query.replacingOccurrences(of: #"^[^\(]*"#, with: "", options: .regularExpression)
         let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
         return finalQuery
+    }
+}
+
+extension URLRequest {
+    func debug() {
+        print("\(self.httpMethod!) \(self.url!)")
+//        print("Headers:")
+//        print(self.allHTTPHeaderFields!)
+        print("Body:")
+        print(String(data: self.httpBody ?? Data(), encoding: .utf8)!)
     }
 }

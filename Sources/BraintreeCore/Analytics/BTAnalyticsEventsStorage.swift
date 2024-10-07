@@ -1,27 +1,32 @@
 import Foundation
 
-/// Used to store and access our array of events in a thread-safe manner
+/// Used to store and access our dictionary of events in a thread-safe manner
 actor BTAnalyticsEventsStorage {
 
-    private var events: [FPTIBatchData.Event]
+    // A list of analytic events, keyed by sessionID
+    private var events: [String: [FPTIBatchData.Event]]
 
     var isEmpty: Bool {
         events.isEmpty
     }
 
-    var allValues: [FPTIBatchData.Event] {
+    var allValues: [String: [FPTIBatchData.Event]] {
         events
     }
 
     init() {
-        self.events = []
+        self.events = [:]
     }
 
-    func append(_ event: FPTIBatchData.Event) {
-        events.append(event)
+    func append(_ event: FPTIBatchData.Event, sessionID: String) {
+        if let existingEventPerSession = events[sessionID] {
+            events[sessionID] = existingEventPerSession + [event]
+        } else {
+            events[sessionID] = [event]
+        }
     }
-
-    func removeAll() {
-        events.removeAll()
+    
+    func removeFor(sessionID: String) {
+        events.removeValue(forKey: sessionID)
     }
 }
