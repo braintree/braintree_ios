@@ -19,11 +19,7 @@ actor BTAnalyticsEventsStorage {
     }
 
     func append(_ event: FPTIBatchData.Event, sessionID: String) {
-        if let existingEventPerSession = events[sessionID] {
-            events[sessionID] = existingEventPerSession + [event]
-        } else {
-            events[sessionID] = [event]
-        }
+        events[sessionID] = (events[sessionID] ?? []) + [event]
     }
     
     func removeFor(sessionID: String) {
