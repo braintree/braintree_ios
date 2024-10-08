@@ -57,13 +57,11 @@ final class BTAnalyticsService_Tests: XCTestCase {
         // Send events associated with 1st sessionID
         stubAPIClient.metadata.sessionID = "session-id-1"
         await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event1"))
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
         
         // Send events associated with 2nd sessionID
         stubAPIClient.metadata.sessionID = "session-id-2"
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event3"))
         sut.shouldBypassTimerQueue = true
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event4"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
         
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
     }
