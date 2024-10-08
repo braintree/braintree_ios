@@ -47,7 +47,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
-    func testSendAnalyticsEvent_withMultipleSessionIDs_sendsMultiplePOSTs() async {
+    func testSendAnalyticsEvent_whenMultipleSessionIDs_sendsMultiplePOSTs() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let sut = BTAnalyticsService.shared
