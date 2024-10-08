@@ -47,6 +47,27 @@ final class BTAnalyticsService_Tests: XCTestCase {
         self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
+    func testSendAnalyticsEvent_withMultipleSessionIDs_sendsMultiplePOSTs() async {
+        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.http = mockAnalyticsHTTP
+        
+        // Send events associated with 1st sessionID
+        stubAPIClient.metadata.sessionID = "session-id-1"
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event1"))
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
+        
+        // Send events associated with 2nd sessionID
+        stubAPIClient.metadata.sessionID = "session-id-2"
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event3"))
+        sut.shouldBypassTimerQueue = true
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event4"))
+        
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
+    }
+    
     // MARK: - Helper Functions
 
     func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
@@ -91,5 +112,11 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let topLevelEvent = postParameters?["events"] as? [[String: Any]]
         let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
         return eventParams?[index]["event_name"] as? String
+    }
+    
+    func parseSessionID(_ postParameters: [String: Any]?, at index: Int = 0) -> String? {
+        let topLevelEvent = postParameters?["events"] as? [[String: Any]]
+        let batchParams = topLevelEvent?[0]["batch_params"] as? [[String: Any]]
+        return batchParams?[index]["session_id"] as? String
     }
 }
