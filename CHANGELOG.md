@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeCore
   * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
 
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
