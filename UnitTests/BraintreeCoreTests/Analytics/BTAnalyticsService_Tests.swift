@@ -113,10 +113,4 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
         return eventParams?[index]["event_name"] as? String
     }
-    
-    func parseSessionID(_ postParameters: [String: Any]?, at index: Int = 0) -> String? {
-        let topLevelEvent = postParameters?["events"] as? [[String: Any]]
-        let batchParams = topLevelEvent?[0]["batch_params"] as? [[String: Any]]
-        return batchParams?[index]["session_id"] as? String
-    }
 }
