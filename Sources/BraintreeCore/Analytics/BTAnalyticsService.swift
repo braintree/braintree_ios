@@ -61,7 +61,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(with event: FPTIBatchData.Event) async {
-        await events.append(event)
+        if let apiClient {
+            await events.append(event, sessionID: apiClient.metadata.sessionID)
+        }
         
         if shouldBypassTimerQueue {
             await self.sendQueuedAnalyticsEvents()
@@ -74,13 +76,18 @@ final class BTAnalyticsService: AnalyticsSendable {
         if await !events.isEmpty, let apiClient {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
-                let postParameters = await createAnalyticsEvent(
-                    config: configuration,
-                    sessionID: apiClient.metadata.sessionID,
-                    events: events.allValues
-                )
-                http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
-                await events.removeAll()
+                
+                for (sessionID, eventsPerSessionID) in await events.allValues {
+                    let postParameters = createAnalyticsEvent(
+                        config: configuration,
+                        sessionID: sessionID,
+                        events: eventsPerSessionID
+                    )
+                    
+                    _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
+                    
+                    await events.removeFor(sessionID: sessionID)
+                }
             } catch {
                 return
             }
