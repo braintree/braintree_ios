@@ -107,7 +107,13 @@ import Foundation
     }
     
     @MainActor func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig()
+        do {
+            let configuration = try await configurationLoader.getConfig()
+            setupHTTPCredentials(configuration)
+            return configuration
+        } catch {
+            throw error
+        }
     }
 
     /// Fetches a customer's vaulted payment method nonces.
