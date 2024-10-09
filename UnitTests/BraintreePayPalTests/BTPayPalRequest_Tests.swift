@@ -105,4 +105,20 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(request.userAuthenticationEmail, "fake@gmail.com")
         XCTAssertTrue(request.enablePayPalAppSwitch)
     }
+    
+    func testParameters_whenShippingCallbackURLNotSet_returnsParameters() {
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
+        
+        XCTAssertNil(request.shippingCallbackURL)
+        let parameters = request.parameters(with: configuration)
+        XCTAssertNil(parameters["shipping_callback_url"])
+    }
+    
+    func testParameters_whitShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
+        let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout, shippingCallbackURL: URL(string: "www.some-url.com"))
+        
+        XCTAssertNotNil(request.shippingCallbackURL)
+        let parameters = request.parameters(with: configuration)
+        XCTAssertNotNil(parameters["shipping_callback_url"])
+    }
 }

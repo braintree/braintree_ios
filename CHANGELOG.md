@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `shippingCallbackURL` to `BTPayPalRequest`
+
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)

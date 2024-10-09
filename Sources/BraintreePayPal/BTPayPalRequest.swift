@@ -88,6 +88,9 @@ import BraintreeCore
 
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationID: String?
+    
+    /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
+    public var shippingCallbackURL: URL?
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
     @_documentation(visibility: private)
@@ -115,7 +118,8 @@ import BraintreeCore
         merchantAccountID: String? = nil,
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
-        riskCorrelationId: String? = nil
+        riskCorrelationId: String? = nil,
+        shippingCallbackURL: URL? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -129,6 +133,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationId
+        self.shippingCallbackURL = shippingCallbackURL
     }
 
     // MARK: Public Methods
@@ -170,6 +175,10 @@ import BraintreeCore
             parameters["line_items"] = lineItemsArray
         }
 
+        if let shippingCallbackURL {
+            parameters["shipping_callback_url"] = shippingCallbackURL.absoluteString
+        }
+        
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
