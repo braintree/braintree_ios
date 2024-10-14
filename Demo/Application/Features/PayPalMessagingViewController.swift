@@ -14,11 +14,12 @@ class PayPalMessagingViewController: PaymentButtonBaseViewController {
     )
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+        view.removeGestureRecognizer(super.tapToDismissKeyboard)
+
         title = "PayPal Messaging"
-        
         payPalMessagingView.delegate = self
         payPalMessagingView.start(request)
-        super.viewDidLoad()
     }
 
     private func setupView() {
