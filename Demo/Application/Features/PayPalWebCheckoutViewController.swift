@@ -93,7 +93,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
                 payPalCheckoutButton
             ]),
-            buttonsStackView(label: "Vault",views: [payPalVaultButton])
+            buttonsStackView(label: "Vault",views: [payPalVaultButton]),
             oneTimeCheckoutStackView,
             vaultStackView
         ])
