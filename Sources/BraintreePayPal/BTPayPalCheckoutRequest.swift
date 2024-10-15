@@ -143,7 +143,7 @@ import BraintreeCore
         }
         
         if let userPhoneNumber, !userPhoneNumber.isEmpty {
-            checkoutParameters["phone"] = userPhoneNumber
+            checkoutParameters["phone_number"] = userPhoneNumber
         }
 
         if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
