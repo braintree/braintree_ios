@@ -15,39 +15,61 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
     func testSendAnalyticsEvent_whenConfigFetchCompletes_setsUpAnalyticsHTTPToUseBaseURL() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
         
-        await analyticsService.performEventRequest("any.analytics.event")
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
         
-        XCTAssertEqual(analyticsService.http?.baseURL.absoluteString, "https://api.paypal.com")
+        XCTAssertEqual(sut.http?.customBaseURL?.absoluteString, "https://api.paypal.com")
     }
 
     func testSendAnalyticsEvent_sendsAnalyticsEvent() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
-        let analyticsService = BTAnalyticsService(apiClient: stubAPIClient)
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.shouldBypassTimerQueue = true
 
-        analyticsService.http = mockAnalyticsHTTP
+        sut.http = mockAnalyticsHTTP
         
-        await analyticsService.performEventRequest("any.analytics.event")
-        
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "any.analytics.event"))
+
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         
-        let timestamp = self.parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
-        let eventName = self.parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+        let timestamp = parseTimestamp(mockAnalyticsHTTP.lastRequestParameters)!
+        let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
         
         XCTAssertEqual(eventName!, "any.analytics.event")
-        XCTAssertGreaterThanOrEqual(timestamp, self.currentTime)
-        XCTAssertLessThanOrEqual(timestamp, self.oneSecondLater)
+        XCTAssertGreaterThanOrEqual(timestamp, currentTime)
+        XCTAssertLessThanOrEqual(timestamp, oneSecondLater)
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1)
 
         self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
+    func testSendAnalyticsEvent_whenMultipleSessionIDs_sendsMultiplePOSTs() async {
+        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.http = mockAnalyticsHTTP
+        
+        // Send events associated with 1st sessionID
+        stubAPIClient.metadata.sessionID = "session-id-1"
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event1"))
+        
+        // Send events associated with 2nd sessionID
+        stubAPIClient.metadata.sessionID = "session-id-2"
+        sut.shouldBypassTimerQueue = true
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
+        
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
+    }
+    
     // MARK: - Helper Functions
 
     func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
-        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)
+        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")
 
         if analyticsURL != nil {
             stubAPIClient?.cannedConfigurationResponseBody = BTJSON(

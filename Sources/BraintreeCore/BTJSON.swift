@@ -42,6 +42,7 @@ import Foundation
 /// ```
 @_documentation(visibility: private)
 @objcMembers public class BTJSON: NSObject {
+
     var value: Any? = [:] as [AnyHashable?: Any]
 
     // MARK: Initializers
@@ -157,8 +158,7 @@ import Foundation
             return self
         }
 
-        guard let value = value as? [String: Any],
-              let unwrappedResult = value[key] else {
+        guard let value = value as? [String: Any], let unwrappedResult = value[key] else {
             return BTJSON(value: BTJSONError.keyInvalid(key))
         }
         return BTJSON(value: unwrappedResult)
@@ -254,8 +254,7 @@ import Foundation
     ///   - orDefault: The default value if conversion fails
     /// - Returns: An `Enum` representing the `BTJSON` instance
     public func asEnum(_ mapping: [String: Any], orDefault: Int) -> Int {
-        guard let key = value as? String,
-              let result: Int = mapping[key] as? Int else {
+        guard let key = value as? String, let result: Int = mapping[key] as? Int else {
             return orDefault
         }
 

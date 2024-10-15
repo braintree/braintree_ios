@@ -4,10 +4,13 @@ import BraintreeCore
 class PaymentButtonBaseViewController: BaseViewController {
 
     let apiClient: BTAPIClient
-    
-    private var paymentButton: UIView = UIView()
+
+    var heightConstraint: CGFloat?
+
+    private var paymentButton = UIView()
 
     override init(authorization: String) {
+        // swiftlint:disable:next force_unwrapping
         apiClient = BTAPIClient(authorization: authorization)!
         super.init(authorization: authorization)
     }
@@ -29,7 +32,7 @@ class PaymentButtonBaseViewController: BaseViewController {
             paymentButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             paymentButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             paymentButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            paymentButton.heightAnchor.constraint(equalToConstant: 300)
+            paymentButton.heightAnchor.constraint(equalToConstant: heightConstraint ?? 100)
         ])
     }
 

@@ -7,7 +7,7 @@ import BraintreeShopperInsights
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
-    lazy var paypalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
     
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
@@ -40,61 +40,32 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                emailView,
-                countryCodeView,
-                nationalNumberView,
-            ]
-        )
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
         stackView.axis = .vertical
         stackView.spacing = 10
-        stackView.distribution = .fill
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(
-            top: 16.0,
-            left: 16.0,
-            bottom: 16.0,
-            right: 16.0
-        )
-        stackView.insetsLayoutMarginsFromSafeArea = false
         return stackView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addSubview(shopperInsightsInputView)
-        view.addSubview(shopperInsightsButton)
-        
-        NSLayoutConstraint.activate(
-            [
-                shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                shopperInsightsInputView.topAnchor.constraint(equalTo: view.topAnchor),
-                shopperInsightsInputView.widthAnchor.constraint(equalTo: view.widthAnchor),
-                shopperInsightsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-                shopperInsightsButton.topAnchor.constraint(equalTo: shopperInsightsInputView.bottomAnchor, constant: 10),
-                shopperInsightsButton.widthAnchor.constraint(
-                    equalTo: shopperInsightsInputView.widthAnchor,
-                    multiplier: 0.8
-                ),
-            ]
-        )
+
+        createSubviews()
+        layoutConstraints()
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [payPalVaultButton, venmoButton]
-        buttons.forEach { $0.isEnabled = false }
+        let buttons = [shopperInsightsButton, payPalVaultButton, venmoButton]
+        shopperInsightsButton.isEnabled = true
+        payPalVaultButton.isEnabled = false
+        venmoButton.isEnabled = false
+
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        shopperInsightsClient.sendPayPalPresentedEvent()
-        shopperInsightsClient.sendVenmoPresentedEvent()
         
         return stackView
     }
@@ -111,41 +82,61 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         )
         Task {
             do {
-                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
-                self.progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)")
-                self.payPalVaultButton.isEnabled = result.isPayPalRecommended
-                self.venmoButton.isEnabled = result.isVenmoRecommended
+                let sampleExperiment =
+                    """
+                    [
+                        { "experimentName" : "payment ready conversion" },
+                        { "experimentID" : "a1b2c3" },
+                        { "treatmentName" : "control group 1" }
+                    ]
+                    """
+                let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
+                // swiftlint:disable:next line_length
+                progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
+                payPalVaultButton.isEnabled = result.isPayPalRecommended
+                venmoButton.isEnabled = result.isVenmoRecommended
             } catch {
-                self.progressBlock("Error: \(error.localizedDescription)")
+                progressBlock("Error: \(error.localizedDescription)")
             }
         }
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped PayPal Vault")
+        let sampleExperiment =
+            """
+            [
+                { "experimentName" : "payment ready conversion experiment" },
+                { "experimentID" : "a1b2c3" },
+                { "treatmentName" : "treatment group 1" }
+            ]
+            """
+        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
+        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
+        progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.userAuthenticationEmail = emailView.textField.text ?? nil
+        paypalRequest.userAuthenticationEmail = emailView.textField.text
         
-        paypalClient.tokenize(paypalRequest) { (nonce, error) in
+        payPalClient.tokenize(paypalRequest) { nonce, error in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
         }
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
-        self.progressBlock("Tapped Venmo")
+        shopperInsightsClient.sendVenmoPresentedEvent()
+        progressBlock("Tapped Venmo")
         shopperInsightsClient.sendVenmoSelectedEvent()
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
 
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoClient.tokenize(venmoRequest) { (nonce, error) in
+        venmoClient.tokenize(venmoRequest) { nonce, error in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
         }
@@ -153,12 +144,27 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     private func displayResultDetails(nonce: BTPaymentMethodNonce?, error: Error?) {
         if let error {
-            self.progressBlock(error.localizedDescription)
+            progressBlock(error.localizedDescription)
         } else if let nonce {
-            self.completionBlock(nonce)
+            completionBlock(nonce)
         } else {
-            self.progressBlock("Canceled")
+            progressBlock("Canceled")
         }
     }
-}
 
+    private func createSubviews() {
+        shopperInsightsInputView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(shopperInsightsInputView)
+    }
+
+    private func layoutConstraints() {
+        NSLayoutConstraint.activate(
+            [
+                shopperInsightsInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 200)
+            ]
+        )
+    }
+}

@@ -1,16 +1,17 @@
 import Foundation
 @testable import BraintreeCore
 
-class FakeAnalyticsService: BTAnalyticsService {
-    var lastEvent: String = ""
+class FakeAnalyticsService: AnalyticsSendable {
+    
+    var lastEvent: String? = nil
+    var endpoint: String? = nil
+    
+    func setAPIClient(_ apiClient: BraintreeCore.BTAPIClient) {
+        // No-Op
+    }
 
-    override func sendAnalyticsEvent(
-        _ eventName: String,
-        correlationID: String? = nil,
-        errorDescription: String? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil
-    ) {
-        self.lastEvent = eventName
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
+        self.lastEvent = event.eventName
+        self.endpoint = event.endpoint
     }
 }

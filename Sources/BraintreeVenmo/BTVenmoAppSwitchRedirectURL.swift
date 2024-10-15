@@ -16,7 +16,6 @@ struct BTVenmoAppSwitchRedirectURL {
     // MARK: - Private Properties
 
     static private let xCallbackTemplate: String = "scheme://x-callback-url/path"
-    static private let venmoScheme: String = "com.venmo.touch.v2"
 
     private var queryParameters: [String: Any?] = [:]
 
@@ -63,9 +62,14 @@ struct BTVenmoAppSwitchRedirectURL {
     // MARK: - Internal Methods
 
     func universalLinksURL() -> URL? {
-        let universalLinkURL = URL(string: "https://venmo.com/go/checkout")!
+        guard let universalLinkURL = URL(string: "https://venmo.com/go/checkout") else {
+            return nil
+        }
 
-        var urlComponent = URLComponents(url: universalLinkURL, resolvingAgainstBaseURL: false)!
+        guard var urlComponent = URLComponents(url: universalLinkURL, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        
         urlComponent.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
 
         return urlComponent.url
@@ -89,7 +93,7 @@ struct BTVenmoAppSwitchRedirectURL {
 
     private static func appSwitchBaseURLComponents() -> URLComponents {
         var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
-        components.scheme = venmoScheme
+        components.scheme = BTCoreConstants.venmoURLScheme
         components.percentEncodedPath = "/vzero/auth"
         return components
     }

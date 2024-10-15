@@ -42,8 +42,8 @@ import BraintreeCore
         let details = json["details"]
         let payerInfo = details["payerInfo"]
 
-        self.email = payerInfo["email"].asString() ?? details["email"].asString()        
-        self.firstName = payerInfo["firstName"].asString()  
+        self.email = payerInfo["email"].asString() ?? details["email"].asString()
+        self.firstName = payerInfo["firstName"].asString()
         self.lastName = payerInfo["lastName"].asString()
         self.phone = payerInfo["phone"].asString()
         self.billingAddress = payerInfo["billingAddress"].asAddress()

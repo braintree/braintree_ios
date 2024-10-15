@@ -8,7 +8,11 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
+## 📣 Announcements
+
+- **Upgrade your integration to continue accepting Braintree payments** 📣 The SSL certificates for current iOS SDK versions (v5 and v6) are set to expire by June 31, 2025. Upgrade to v5.26.0+ and v6.17.0+, respectively, to continue using the Braintree SDK. ![Click here for more details](https://github.com/braintree/braintree_ios/issues/1277)
+
+- v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
 
 **The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 15.0+ and Swift 5.9+.
 
@@ -65,6 +69,21 @@ Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/st
 
 Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
 
+## Upgrade Your SDK Version
+
+If you're looking to update to a newer version of our SDK, please see our recommended approach below.
+
+### Using Swift Package Manager
+
+ To update using Swift Package Manager, select _File→ Packages → Update to Latest Package Versions_.
+
+### Using Cocoapods 
+
+You can either update all pods listed within your Podfile using `pod update` or specific pods as needed using `pod update PODNAME`. For additional details, see the [Cocoapods guidelines](https://guides.cocoapods.org/using/pod-install-vs-update.html).
+
+### Using Carthage
+
+To update to the latest versions of each framework, simply run the `carthage update` command. For more details, check out the [Carthage guidelines](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#version-requirement).
 
 ## Versions
 
@@ -80,11 +99,12 @@ Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
 
 ## Demo
 
+1. Our Xcode project uses SwiftLint. To ensure you have it installed see [DEVELOPMENT.md](https://github.com/braintree/braintree_ios/blob/main/DEVELOPMENT.md#swiftlint)
 1. Run `pod install`
     * There is a known M1 mac issue with CocoaPods. See [this solution](https://github.com/CocoaPods/CocoaPods/issues/10220#issuecomment-730963835) to resolve `ffi` dependency issues.
-2. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
-3. Open `Braintree.xcworkspace` in Xcode
-4. Select the `Demo` scheme, and then run
+1. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
+1. Open `Braintree.xcworkspace` in Xcode
+1. Select the `Demo` scheme, and then run
 
 Xcode 15.0+ is required to run the demo app.
 

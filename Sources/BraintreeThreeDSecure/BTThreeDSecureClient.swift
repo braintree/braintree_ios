@@ -5,6 +5,7 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
+// swiftlint:disable type_body_length file_length
 @objcMembers public class BTThreeDSecureClient: NSObject {
 
     // MARK: - Internal Properties
@@ -66,7 +67,8 @@ import BraintreeCore
             }
 
             if request.threeDSecureRequestDelegate == nil {
-                let error = BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
+                let message = "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."
+                let error = BTThreeDSecureError.configuration(message)
                 notifyFailure(with: error, completion: completion)
                 return
             }
@@ -93,7 +95,7 @@ import BraintreeCore
     ) {
         self.request = request
         
-        guard apiClient.clientToken != nil else {
+        guard apiClient.authorization.type == .clientToken else {
             notifyFailure(
                 with: BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations."),
                 completion: completion
@@ -117,7 +119,7 @@ import BraintreeCore
 
             var requestParameters: [String: Any?] = [
                 "nonce": request.nonce,
-                "authorizationFingerprint": self.apiClient.clientToken?.authorizationFingerprint,
+                "authorizationFingerprint": self.apiClient.authorization.bearer,
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
@@ -179,7 +181,10 @@ import BraintreeCore
         self.merchantCompletion = completion
         
         guard let dataResponse = lookupResponse.data(using: .utf8) else {
-            merchantCompletion(nil, BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."]))
+            merchantCompletion(
+                nil,
+                BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."])
+            )
             return
         }
 
@@ -340,38 +345,7 @@ import BraintreeCore
                 return
             }
 
-            let customer: [String: String] = [:]
-
-            var requestParameters: [String: Any?] = [
-                "amount": request.amount,
-                "customer": customer,
-                "requestedThreeDSecureVersion": "2",
-                "dfReferenceId": request.dfReferenceID,
-                "accountType": request.accountType.stringValue,
-                "challengeRequested": request.challengeRequested,
-                "exemptionRequested": request.exemptionRequested,
-                "requestedExemptionType": request.requestedExemptionType.stringValue,
-                "dataOnlyRequested": request.dataOnlyRequested
-            ]
-
-            if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
-                requestParameters["cardAdd"] = true
-            } else if request._cardAddChallenge == .notRequested {
-                requestParameters["cardAdd"] = false
-            }
-
-            var additionalInformation: [String: String?] = [
-                "mobilePhoneNumber": request.mobilePhoneNumber,
-                "email": request.email,
-                "shippingMethod": request.shippingMethod.stringValue
-            ]
-
-            additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
-            additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
-
-            requestParameters["additionalInfo"] = additionalInformation
-            requestParameters = requestParameters.compactMapValues { $0 }
-
+            let requestParameters = self.buildRequestDictionary(with: request)
             guard let urlSafeNonce = request.nonce?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
@@ -383,14 +357,14 @@ import BraintreeCore
 
             self.apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
-                parameters: requestParameters as [String: Any] 
+                parameters: requestParameters as [String: Any]
             ) { body, _, error in
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
                     if error.domain == BTCoreConstants.httpErrorDomain,
-                       error as? BTHTTPError == .clientError([:]),
-                       let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
-                       urlResponseError.statusCode == 422 {
+                        error as? BTHTTPError == .clientError([:]),
+                        let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
+                        urlResponseError.statusCode == 422 {
                         var userInfo: [String: Any] = error.userInfo
                         let errorBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
 
@@ -429,6 +403,46 @@ import BraintreeCore
                 return
             }
         }
+    }
+
+    private func buildRequestDictionary(with request: BTThreeDSecureRequest) -> [String: Any?] {
+        let customer: [String: String] = [:]
+
+        var requestParameters: [String: Any?] = [
+            "amount": request.amount,
+            "customer": customer,
+            "requestedThreeDSecureVersion": "2",
+            "dfReferenceId": request.dfReferenceID,
+            "accountType": request.accountType.stringValue,
+            "challengeRequested": request.challengeRequested,
+            "exemptionRequested": request.exemptionRequested,
+            "requestedExemptionType": request.requestedExemptionType.stringValue,
+            "dataOnlyRequested": request.dataOnlyRequested
+        ]
+
+        if let customFields = request.customFields {
+            requestParameters["customFields"] = customFields
+        }
+
+        if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
+            requestParameters["cardAdd"] = true
+        } else if request._cardAddChallenge == .notRequested {
+            requestParameters["cardAdd"] = false
+        }
+
+        var additionalInformation: [String: String?] = [
+            "mobilePhoneNumber": request.mobilePhoneNumber,
+            "email": request.email,
+            "shippingMethod": request.shippingMethod.stringValue
+        ]
+
+        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
+        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
+
+        requestParameters["additionalInfo"] = additionalInformation
+        requestParameters = requestParameters.compactMapValues { $0 }
+
+        return requestParameters
     }
 
     // MARK: - Analytics Helper Methods

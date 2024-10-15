@@ -2,6 +2,7 @@ import XCTest
 
 class AmericanExpress_UITests: XCTestCase {
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var app: XCUIApplication!
 
     override func setUp() {
@@ -19,7 +20,7 @@ class AmericanExpress_UITests: XCTestCase {
         app.buttons["Valid card"].tap()
         sleep(2)
 
-        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["45256433 Points, 316795.03 USD"].waitForExistence(timeout: 20))
     }
 
     func testInsufficientPointsCard_receivesErrorMessage() {

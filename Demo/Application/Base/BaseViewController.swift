@@ -5,7 +5,8 @@ class BaseViewController: UIViewController {
 
     var progressBlock: ((String?) -> Void) = { _ in }
     var completionBlock: ((BTPaymentMethodNonce?) -> Void) = { _ in }
-
+    lazy var tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     init(authorization: String) {
         super.init(nibName: nil, bundle: nil)
     }
@@ -15,8 +16,8 @@ class BaseViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        let tapToDismissKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapToDismissKeyboard)
+        super.viewDidLoad()
     }
 
     @objc func dismissKeyboard() {

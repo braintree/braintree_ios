@@ -37,6 +37,7 @@ public enum BTCardError: Error, CustomNSError, LocalizedError, Equatable {
         }
     }
 
+    // swiftlint:disable line_length
     public var errorUserInfo: [String: Any] {
         switch self {
         case .unknown:
@@ -51,6 +52,7 @@ public enum BTCardError: Error, CustomNSError, LocalizedError, Equatable {
             return [NSLocalizedDescriptionKey: "Failed to fetch Braintree configuration."]
         }
     }
+    // swiftlint:enable line_length
 
     // MARK: - Equatable Conformance
 

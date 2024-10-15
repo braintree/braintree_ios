@@ -1,10 +1,15 @@
 import Foundation
 import UIKit
 import BraintreePayPal
+import BraintreeCore
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(
+        apiClient: apiClient,
+        // swiftlint:disable:next force_unwrapping
+        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+    )
     
     lazy var emailLabel: UILabel = {
         let label = UILabel()
@@ -49,10 +54,36 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let newPayPalCheckoutToggle = UISwitch()
+    
+    lazy var rbaDataToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Recurring Billing (RBA) Data"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let rbaDataToggle = UISwitch()
+
+    override func viewDidLoad() {
+        super.heightConstraint = 350
+        super.viewDidLoad()
+    }
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
+        let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
+
+        let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
+            UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
+            UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
+            payPalCheckoutButton
+        ])
+        let vaultStackView = buttonsStackView(label: "Vault", views: [
+            UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+            payPalVaultButton,
+            payPalAppSwitchButton
+        ])
 
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
@@ -63,8 +94,20 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 payPalCheckoutButton
             ]),
             buttonsStackView(label: "Vault",views: [payPalVaultButton])
+            oneTimeCheckoutStackView,
+            vaultStackView
         ])
-        
+
+        NSLayoutConstraint.activate(
+            [
+                oneTimeCheckoutStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+
+                vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            ]
+        )
+
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
         stackView.spacing = 25
@@ -87,10 +130,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
-        request.lineItems = [lineItem]
-        
-        request.offerPayLater = payLaterToggle.isOn
 
+        request.lineItems = [lineItem]
+        request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
         payPalClient.tokenize(request) { nonce, error in
@@ -112,9 +154,42 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultRequest()
+        var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = phoneNumberTextField.text
+        
+        if rbaDataToggle.isOn {
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .fixed,
+                amount: "9.99",
+                reloadThresholdAmount: "99.99"
+            )
+            
+            let billingCycle = BTPayPalBillingCycle(
+                isTrial: true,
+                numberOfExecutions: 1,
+                interval: .month,
+                intervalCount: 1,
+                sequence: 1,
+                startDate: "2024-08-01",
+                pricing: billingPricing
+            )
+            
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                totalAmount: "32.56",
+                productName: "Vogue Magazine Subscription",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "9.99",
+                shippingAmount: "1.99",
+                productAmount: "19.99",
+                taxAmount: "0.59"
+            )
+            
+            request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
@@ -127,13 +202,39 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
+
+    @objc func tappedPayPalAppSwitch(_ sender: UIButton) {
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+        
+        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
+            self.progressBlock("Email cannot be nil for App Switch flow")
+            sender.isEnabled = true
+            return
+        }
+
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: userEmail,
+            enablePayPalAppSwitch: true
+        )
+
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+            
+            self.completionBlock(nonce)
+        }
+    }
     
     // MARK: - Helpers
     
     private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
         let titleLabel = UILabel()
         titleLabel.text = label
-        titleLabel.font = .preferredFont(forTextStyle: .title3)
         
         let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
         buttonsStackView.axis = .vertical

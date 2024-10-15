@@ -3,6 +3,7 @@ import UIKit
 import BraintreePayPalNativeCheckout
 
 class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
+
 	lazy var payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
 
 	override func createPaymentButton() -> UIView {
@@ -64,7 +65,7 @@ class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
 		sender.setTitle("Processing...", for: .disabled)
 		sender.isEnabled = false
 
-		let request =  BTPayPalNativeCheckoutRequest(amount: "4.30", requestBillingAgreement: true)
+		let request = BTPayPalNativeCheckoutRequest(amount: "4.30", requestBillingAgreement: true)
 
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true

@@ -4,38 +4,45 @@ class BTCardFormView: UIView {
 
     // MARK: - Public Card Form Input Values
 
-    @objc var cardNumber: String? {
-        return cardNumberTextField.text != "" ? cardNumberTextField.text : nil
+    var cardNumber: String? {
+        cardNumberTextField.text?.isEmpty == false ? cardNumberTextField.text : nil
     }
-    @objc var expirationMonth: String? {
-        return parseExpirationDate()?.month
+
+    var expirationMonth: String? {
+        parseExpirationDate()?.month
     }
-    @objc var expirationYear: String? {
-        return parseExpirationDate()?.year
+
+    var expirationYear: String? {
+        parseExpirationDate()?.year
     }
-    @objc var cvv: String? {
-        return cvvTextField.text != "" ? cvvTextField.text : nil
+
+    var cvv: String? {
+        cvvTextField.text?.isEmpty == false ? cvvTextField.text : nil
     }
-    @objc var postalCode: String? {
-        return postalCodeTextField.text != "" ? postalCodeTextField.text : nil
+
+    var postalCode: String? {
+        postalCodeTextField.text?.isEmpty == false ? postalCodeTextField.text : nil
     }
-    @objc var phoneNumber: String? {
-        return phoneNumberTextField.text != "" ? phoneNumberTextField.text : nil
+
+    var phoneNumber: String? {
+        phoneNumberTextField.text?.isEmpty == false ? phoneNumberTextField.text : nil
     }
 
     // MARK: - Public Card Form Config Options
 
-    @objc var hidePhoneNumberField: Bool = false {
+    var hidePhoneNumberField: Bool = false {
         didSet {
             phoneNumberTextField.isHidden = self.hidePhoneNumberField
         }
     }
-    @objc var hidePostalCodeField: Bool = false {
+
+    var hidePostalCodeField: Bool = false {
         didSet {
             postalCodeTextField.isHidden = self.hidePostalCodeField
         }
     }
-    @objc var hideCVVField: Bool = false {
+
+    var hideCVVField: Bool = false {
         didSet {
             cvvTextField.isHidden = self.hideCVVField
         }
@@ -43,12 +50,12 @@ class BTCardFormView: UIView {
 
     // MARK: - Internal UI Properties
 
-    @objc var cardNumberTextField: UITextField = UITextField() // exposed for 3DS demo
-    @objc var expirationTextField: UITextField = UITextField() // exposed for 3DS demo
-    @objc var cvvTextField: UITextField = UITextField() // exposed for 3DS demo
-    @objc var postalCodeTextField: UITextField = UITextField() // exposed for 3DS demo
-    var phoneNumberTextField: UITextField = UITextField()
-    var stackView: UIStackView = UIStackView()
+    var cardNumberTextField = UITextField() // exposed for 3DS demo
+    var expirationTextField = UITextField() // exposed for 3DS demo
+    var cvvTextField = UITextField() // exposed for 3DS demo
+    var postalCodeTextField = UITextField() // exposed for 3DS demo
+    var phoneNumberTextField = UITextField()
+    var stackView = UIStackView()
 
     let padding: CGFloat = 10
 
@@ -79,7 +86,7 @@ class BTCardFormView: UIView {
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: padding),
             stackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -padding),
             stackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            stackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -padding)
         ])
     }
 
@@ -114,7 +121,7 @@ class BTCardFormView: UIView {
     // MARK: - Helpers
 
     func parseExpirationDate() -> (month: String, year: String)? {
-        guard let expirationDate = expirationTextField.text, expirationTextField.text != "" else {
+        guard let expirationDate = expirationTextField.text, expirationTextField.text?.isEmpty == false else {
             return nil
         }
 
@@ -122,8 +129,7 @@ class BTCardFormView: UIView {
         if dateComponents.count != 2 {
             return nil
         } else {
-            return (dateComponents.first!, dateComponents.last!)
+            return (dateComponents.first ?? "12", dateComponents.last ?? "2052")
         }
     }
-
 }

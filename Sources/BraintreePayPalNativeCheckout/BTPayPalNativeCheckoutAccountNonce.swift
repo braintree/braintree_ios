@@ -10,6 +10,7 @@ import BraintreePayPal
 
 import PayPalCheckout
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Contains information about a PayPal payment method.
 @objcMembers public class BTPayPalNativeCheckoutAccountNonce: BTPaymentMethodNonce {
 
@@ -60,7 +61,7 @@ import PayPalCheckout
         payerID = payerInfo["payerId"].asString() ?? buyerData?.userId
 
         let shippingAddressJSON = details["payerInfo"]["shippingAddress"].asAddress()
-        let accountAddressJSON =  details["payerInfo"]["accountAddress"].asAddress()
+        let accountAddressJSON = details["payerInfo"]["accountAddress"].asAddress()
         shippingAddress = shippingAddressJSON ?? accountAddressJSON
 
         let billingAddressJSON = details["payerInfo"]["billingAddress"].asAddress()

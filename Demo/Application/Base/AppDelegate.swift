@@ -7,16 +7,20 @@ import BraintreeCore
     private let processInfoArgs = ProcessInfo.processInfo.arguments
     private let userDefaults = UserDefaults.standard
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
         registerDefaultsFromSettings()
         persistDemoSettings()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
-        
+
         userDefaults.setValue(true, forKey: "magnes.debug.mode")
         
         return true
     }
-    
+
+    // swiftlint:disable:next cyclomatic_complexity
     func registerDefaultsFromSettings() {
         if processInfoArgs.contains("-EnvironmentSandbox") {
             userDefaults.set(BraintreeDemoEnvironment.sandbox.rawValue, forKey: BraintreeDemoSettings.EnvironmentDefaultsKey)
@@ -29,11 +33,20 @@ import BraintreeCore
         } else if processInfoArgs.contains("-TokenizationKey") {
             userDefaults.set(BraintreeDemoAuthType.tokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
         } else if processInfoArgs.contains("-NewPayPalCheckoutTokenizationKey") {
-            userDefaults.set(BraintreeDemoAuthType.newPayPalCheckoutTokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(
+                BraintreeDemoAuthType.newPayPalCheckoutTokenizationKey.rawValue,
+                forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey
+            )
         } else if processInfoArgs.contains("-MockedPayPalTokenizationKey") {
-            userDefaults.set(BraintreeDemoAuthType.mockedPayPalTokenizationKey.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(
+                BraintreeDemoAuthType.mockedPayPalTokenizationKey.rawValue,
+                forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey
+            )
         } else if processInfoArgs.contains("-UITestHardcodedClientToken") {
-            userDefaults.set(BraintreeDemoAuthType.uiTestHardcodedClientToken.rawValue, forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey)
+            userDefaults.set(
+                BraintreeDemoAuthType.uiTestHardcodedClientToken.rawValue,
+                forKey: BraintreeDemoSettings.AuthorizationTypeDefaultsKey
+            )
         }
         
         userDefaults.removeObject(forKey: "BraintreeDemoSettingsAuthorizationOverride")
@@ -55,16 +68,17 @@ import BraintreeCore
     }
     
     func persistDemoSettings() {
-        guard let settingsBundle = Bundle.main.path(forResource: "Settings", ofType: "bundle"),
-              let settings = NSDictionary(contentsOfFile: settingsBundle.appending("/Root.plist")) else {
+        guard
+            let settingsBundle = Bundle.main.path(forResource: "Settings", ofType: "bundle"),
+            let settings = NSDictionary(contentsOfFile: settingsBundle.appending("/Root.plist"))
+        else {
             print("Could not find Settings.bundle")
             return
         }
                 
-        if let preferences = settings.object(forKey: "PreferenceSpecifiers") as? Array<[String: Any]> {
+        if let preferences = settings.object(forKey: "PreferenceSpecifiers") as? [[String: Any]] {
             var defaultsToRegister: [String: Any] = [:]
             preferences.forEach { prefSpecification in
-                print(prefSpecification)
                 if let key = prefSpecification["Key"] as? String, prefSpecification.keys.contains("DefaultValue") {
                     defaultsToRegister[key] = prefSpecification["DefaultValue"]
                 }

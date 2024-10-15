@@ -5,12 +5,14 @@ import BraintreeCore
 extension BTJSON {
 
     func asPayPalCreditFinancingAmount() -> BTPayPalCreditFinancingAmount? {
-        guard self.isObject,
-              let currency = self["currency"].asString(),
-              let value = self["value"].asString() else {
-                  return nil
-              }
-        
+        guard
+            self.isObject,
+            let currency = self["currency"].asString(),
+            let value = self["value"].asString()
+        else {
+            return nil
+        }
+
         return BTPayPalCreditFinancingAmount(currency: currency, value: value)
     }
     

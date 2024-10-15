@@ -1,12 +1,99 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
-* Add BraintreeShopperInsights module (BETA)
+## 6.24.0 (2024-10-15)
+* BraintreePayPal
+  * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
+
+## 6.23.5 (2024-10-09)
+* BraintreeCore
+  * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
+
+## 6.23.4 (2024-09-24)
+* BraintreePayPal
+  * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
+* BraintreeShopperInsights (BETA)
+  * For analytics, send `experiment` as a parameter to `getRecommendedPaymentMethods` method
+  * For analytics, send `experiment` and `paymentMethodsDisplayed` analytic metrics to FPTI via the button presented methods
+
+## 6.23.3 (2024-08-12)
+* BraintreeCore
+  * Fix bug where some analytics wouldn't send if `BTAPIClient` instantiated on button click
+  * Fix low-memory crash in ConfigurationCallbackStorage (fixes #1382)
+
+## 6.23.2 (2024-07-30)
+* BraintreePayPal
+  * Fix bug where `BTPayPalCheckoutRequest` was not passing the correct data causing issues with some transaction attempts
+* BraintreeCore
+  * Update `endpoint` syntax sent to FPTI for 3D Secure and Venmo flows
+
+## 6.23.1 (2024-07-24)
+* BraintreeThreeDSecure
+  * Add error code and error message for `exceededTimeoutLimit`  
+* BraintreeCore
+  * Prevent duplicate outbound `v1/configuration` requests
+  * Add network timeout of 30 seconds
+
+## 6.23.0 (2024-07-15)
+* BraintreeShopperInsights (BETA)
+  * Add error when using an invalid authorization type
+* BraintreeCore
+  * Update `URLOpener.openURL(_:completionHandler:)` protocol method to fix method signature change in Xcode 16 beta 3 (fixes #1359)
+* BraintreeThreeDSecure
+  * Fix bug to conditionally unwrap `customFields` - this caused an error when this value was not set on `BTThreeDSecureRequest`
+
+## 6.22.0 (2024-07-02)
+* BraintreeThreeDSecure
+  * Add `customFields` param to `BTThreeDSecureRequest`
+* BraintreeCore
+  * For analytics, only call `fetchOrReturnRemoteConfig()` when batch uploading, not on each analytic event enqueue
+  * For analytics, add additional metrics on networking timing
+  * Fix bug causing random crashes in `BTAnalyticsService`
+* BraintreePayPalNativeCheckout (DEPRECATED)  
+  * **Note:** This module is deprecated and will be removed in a future version of the SDK
+  * Add deprecated warning message to all public classes and methods
+
+## 6.21.0 (2024-06-12)
+* BraintreePayPal
+  * Add PayPal App Switch vault flow (BETA)
+    * Add `BTPayPalVaultRequest(userAuthenticationEmail:enablePayPalAppSwitch:offerCredit:)`
+    * Add `BTPayPalClient(apiClient:universalLink:)`
+    * Send `link_type` and `paypal_installed` in `event_params` when available to PayPal's analytics service (FPTI)
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
+  
+## 6.20.0 (2024-06-06)
+* Re-use existing URLSession instance for `v1/configuration` and subsequent BT GW API calls
+* BraintreeShopperInsights (BETA)
   * Add PrivacyInfo.xcprivacy file
+  * Add `BTShopperInsightsClient.getRecommendedPaymentMethods()` for returning recommendations based on the buyer
 * BraintreePayPal
   * Add `BTPayPalCheckoutRequest.userAuthenticationEmail` optional property
   * Add `BTPayPalRequest.userPhoneNumber` optional property
-  
+
+## 6.19.0 (2024-05-30)
+* BraintreeCore
+  * Batch analytics events to FPTI
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+  * Send `isVaultRequest` to FPTI for tracking in Venmo and PayPal flows
+* BraintreePayPalMessaging (BETA)
+  * Add BTPayPalMessagingRequest, BTPayPalMessagingColor, BTPayPalMessagingLogoType, BTPayPalMessagingOfferType, BTPayPalMessagingPageType, BTPayPalMessagingTextAlignment, and BTPayPalMessagingDelegate
+  * Add BTPayPalMessagingView to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
+  * To get started create a BTPayPalMessagingView and call start(_:) with a BTPayPalMessagingRequest
+
+## 6.18.2 (2024-05-15)
+* BraintreePayPal
+  * Send `start_time`, `end_time`, and `endpoint` to FPTI for tracking API request latency
+
+## 5.26.0 (2024-05-07)
+* Updated expiring pinned vendor SSL certificates
+
+## 6.18.1 (2024-05-06)
+* Remove throttle delay in accessing configuration, added in v5.9.0
+  * Move from URLCache to NSCache for configuration caching
+
+## 6.18.0 (2024-04-25)
+* BraintreePayPalNativeCheckout
+  * Bump PayPalCheckout to version 1.3.0 with code signing & a privacy manifest file.
+
 ## 5.25.0 (2024-04-10)
 * Require Xcode 15.0+ and Swift 5.9+ (per [Apple App Store requirements](https://developer.apple.com/news/upcoming-requirements/?id=04292024a)) 
 * [Meets Apple's new Privacy Update requirements](https://developer.apple.com/news/?id=3d8a9yyh)

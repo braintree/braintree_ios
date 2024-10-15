@@ -8,8 +8,9 @@ import BraintreeCore
 import BraintreePayPal
 #endif
 
+@available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 /// Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalVaultRequest {
+@objcMembers public class BTPayPalNativeVaultRequest: BTPayPalVaultBaseRequest {
 
     // MARK: - Initializer
 

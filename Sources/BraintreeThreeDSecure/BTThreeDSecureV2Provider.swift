@@ -12,7 +12,7 @@ class BTThreeDSecureV2Provider {
     let cardinalSession: CardinalSessionTestable
     let apiClient: BTAPIClient
 
-    var lookupResult: BTThreeDSecureResult? = nil
+    var lookupResult: BTThreeDSecureResult?
     var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
 
     // MARK: - Initializer
@@ -27,7 +27,7 @@ class BTThreeDSecureV2Provider {
         self.apiClient = apiClient
         self.cardinalSession = cardinalSession
 
-        let cardinalConfiguration: CardinalSessionConfiguration = CardinalSessionConfiguration()
+        let cardinalConfiguration = CardinalSessionConfiguration()
 
         if let v2UICustomization = request.v2UICustomization {
             cardinalConfiguration.uiCustomization = v2UICustomization.cardinalValue
@@ -102,11 +102,13 @@ class BTThreeDSecureV2Provider {
 
 extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
 
+    // swiftlint:disable implicitly_unwrapped_optional
     public func cardinalSession(
         cardinalSession session: CardinalSession!,
         stepUpValidated validateResponse: CardinalResponse!,
         serverJWT: String!
     ) {
+        // swiftlint:enable implicitly_unwrapped_optional
         switch validateResponse.actionCode {
         case .success, .noAction, .failure:
             if validateResponse.actionCode == .failure {
@@ -121,15 +123,17 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 forResult: lookupResult,
                 completion: completionHandler
             )
-        case .error, .timeout:
-            let userInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
+        case .error:
+            let errorUserInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
             if validateResponse.errorNumber == 1050 {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: userInfo))
+            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
+        case .timeout:
+            completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
         case .cancel:
             completionHandler(nil, BTThreeDSecureError.canceled)
         default:

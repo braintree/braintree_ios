@@ -27,19 +27,30 @@ public class BTShopperInsightsClient {
     
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
-    ///   - request: A `BTShopperInsightsRequest` containing the buyer's user information
+    ///   - request: Required:  A `BTShopperInsightsRequest` containing the buyer's user information.
+    ///   - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
     /// - Returns: A `BTShopperInsightsResult` instance
     /// - Warning: This feature is in beta. Its public API may change or be removed in future releases.
     ///         PayPal recommendation is only available for US, AU, FR, DE, ITA, NED, ESP, Switzerland and UK merchants.
     ///         Venmo recommendation is only available for US merchants.
-    public func getRecommendedPaymentMethods(request: BTShopperInsightsRequest) async throws -> BTShopperInsightsResult {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsStarted)
-        
+    public func getRecommendedPaymentMethods(
+        request: BTShopperInsightsRequest,
+        experiment: String? = nil
+    ) async throws -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsStarted,
+            merchantExperiment: experiment
+        )
+
+        if apiClient.authorization.type != .clientToken {
+            throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization, for: experiment)
+        }
+
         let postParameters = BTEligiblePaymentsRequest(
             email: request.email,
             phone: request.phone
         )
-        
+
         do {
             let (json, _) = try await apiClient.post(
                 "/v2/payments/find-eligible-methods",
@@ -47,49 +58,62 @@ public class BTShopperInsightsClient {
                 headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
                 httpType: .payPalAPI
             )
-            guard let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
-                  eligibleMethodsJSON.count != 0 else {
-                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned)
+
+            // swiftlint:disable empty_count
+            guard
+                let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
+                eligibleMethodsJSON.count != 0
+            else {
+                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned, for: experiment)
             }
+            // swiftlint:enable empty_count
+
             let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
+            let payPal = eligiblePaymentMethods.payPal
+            let venmo = eligiblePaymentMethods.venmo
             let result = BTShopperInsightsResult(
-                isPayPalRecommended: isPaymentRecommended(eligiblePaymentMethods.paypal),
-                isVenmoRecommended: isPaymentRecommended(eligiblePaymentMethods.venmo)
+                isPayPalRecommended: payPal?.recommended ?? false,
+                isVenmoRecommended: venmo?.recommended ?? false,
+                isEligibleInPayPalNetwork: payPal?.eligibleInPayPalNetwork ?? false || venmo?.eligibleInPayPalNetwork ?? false
             )
-            return self.notifySuccess(with: result)
+            return self.notifySuccess(with: result, for: experiment)
         } catch {
-            throw self.notifyFailure(with: error)
+            throw self.notifyFailure(with: error, for: experiment)
         }
-    }
-    
-    /// This method determines whether a payment source is recommended
-    /// - Parameters:
-    ///    - paymentMethodDetail: a `BTEligiblePaymentMethodDetails` containing the payment source's information
-    /// - Returns: `true` if both `eligibleInPPNetwork` and `recommended` are enabled, otherwise returns false.
-    private func isPaymentRecommended(_ paymentMethodDetail: BTEligiblePaymentMethodDetails?) -> Bool {
-        if let eligibleInPPNetwork = paymentMethodDetail?.eligibleInPaypalNetwork,
-           let recommended = paymentMethodDetail?.recommended {
-            return eligibleInPPNetwork && recommended
-        }
-        return false
     }
 
     /// Call this method when the PayPal button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
-    public func sendPayPalPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalPresented)
+    /// - Parameters:
+    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed i.e. ['Apple Pay', 'PayPal']
+    ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
+    public func sendPayPalPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
+        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap { $0 }.joined(separator: ", ")
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.payPalPresented,
+            merchantExperiment: experiment,
+            paymentMethodsDisplayed: paymentMethodsDisplayedString
+        )
     }
     
     /// Call this method when the PayPal button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.paypalSelected)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
     }
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
-    /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendVenmoPresentedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoPresented)
+    /// This method sends analytics to help improve the Shopper Insights feature experience.
+    /// - Parameters:
+    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed.
+    ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
+    public func sendVenmoPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
+        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap { $0 }.joined(separator: ", ")
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.venmoPresented,
+            merchantExperiment: experiment,
+            paymentMethodsDisplayed: paymentMethodsDisplayedString
+        )
     }
     
     /// Call this method when the Venmo button has been selected/tapped by the buyer.
@@ -100,13 +124,20 @@ public class BTShopperInsightsClient {
     
     // MARK: - Analytics Helper Methods
     
-    private func notifySuccess(with result: BTShopperInsightsResult) -> BTShopperInsightsResult {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsSucceeded)
+    private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
+            merchantExperiment: experiment
+        )
         return result
     }
     
-    private func notifyFailure(with error: Error) -> Error {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.recommendedPaymentsFailed, errorDescription: error.localizedDescription)
+    private func notifyFailure(with error: Error, for experiment: String?) -> Error {
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.recommendedPaymentsFailed,
+            errorDescription: error.localizedDescription,
+            merchantExperiment: experiment
+        )
         return error
     }
 }

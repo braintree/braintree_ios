@@ -1,113 +1,110 @@
 import Foundation
 
-class BTAnalyticsService: Equatable {
+final class BTAnalyticsService: AnalyticsSendable {
 
     // MARK: - Internal Properties
+    
+    static let shared = BTAnalyticsService()
+
+    // swiftlint:disable force_unwrapping
+    /// The FPTI URL to post all analytic events.
+    static let url = URL(string: "https://api.paypal.com")!
+    // swiftlint:enable force_unwrapping
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?
+
+    /// Exposed for testing only
+    var shouldBypassTimerQueue = false
+
+    // MARK: - Private Properties
     
-    /// The FPTI URL to post all analytic events.
-    static let url = URL(string: "https://api.paypal.com")!
+    private let events = BTAnalyticsEventsStorage()
+    private let timer = RepeatingTimer()
 
-    private let apiClient: BTAPIClient
-
+    private weak var apiClient: BTAPIClient?
+            
     // MARK: - Initializer
-
-    init(apiClient: BTAPIClient) {
+    
+    private init() { }
+    
+    /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
+    func setAPIClient(_ apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
+        
+        timer.eventHandler = { [weak self] in
+            guard let self else { return }
+            Task {
+                await self.sendQueuedAnalyticsEvents()
+            }
+        }
+
+        timer.resume()
+    }
+
+    // MARK: - Deinit
+
+    deinit {
+        timer.suspend()
     }
 
     // MARK: - Internal Methods
     
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
-    /// - Parameters:
-    ///   - eventName: Name of analytic event.
-    ///   - correlationID: Optional. CorrelationID associated with the checkout session.
-    ///   - errorDescription: Optional. Full error description returned to merchant.
-    ///   - linkType: Optional. The type of link the SDK will be handling, currently deeplink or universal.
-    ///   - payPalContextID: Optional. PayPal Context ID associated with the checkout session.
-    func sendAnalyticsEvent(
-        _ eventName: String,
-        correlationID: String? = nil,
-        errorDescription: String? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil
-    ) {
+    /// - Parameter event: A single `FPTIBatchData.Event`
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
         Task(priority: .background) {
-            await performEventRequest(
-                eventName,
-                correlationID: correlationID,
-                errorDescription: errorDescription,
-                linkType: linkType,
-                payPalContextID: payPalContextID
-            )
+            await performEventRequest(with: event)
         }
     }
     
     /// Exposed to be able to execute this function synchronously in unit tests
-    func performEventRequest(
-        _ eventName: String,
-        correlationID: String? = nil,
-        errorDescription: String? = nil,
-        linkType: String? = nil,
-        payPalContextID: String? = nil
-    ) async {
-        let timestampInMilliseconds = UInt64(Date().timeIntervalSince1970 * 1000)
-        let event = FPTIBatchData.Event(
-            correlationID: correlationID,
-            errorDescription: errorDescription,
-            eventName: eventName,
-            linkType: linkType,
-            payPalContextID: payPalContextID,
-            timestamp: String(timestampInMilliseconds)
-        )
-                
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            guard let configuration, error == nil else {
-                return
-            }
-
-            // TODO: - Refactor to make HTTP non-optional property and instantiate in init()
-            if self.http == nil {
-                if let clientToken = self.apiClient.clientToken {
-                    self.http = BTHTTP(url: BTCoreConstants.payPalProductionURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                } else if let tokenizationKey = self.apiClient.tokenizationKey {
-                    self.http = BTHTTP(url: BTCoreConstants.payPalProductionURL, tokenizationKey: tokenizationKey)
-                } else {
-                    return
-                }
-            }
-
-            // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if let http = self.http, http.baseURL.absoluteString == "test://do-not-send.url" {
-                return
-            }
-
-            let postParameters = self.createAnalyticsEvent(config: configuration, sessionID: self.apiClient.metadata.sessionID, event: event)
-            self.http?.post("v1/tracking/batch/events", parameters: postParameters) { _, _, _ in }
+    func performEventRequest(with event: FPTIBatchData.Event) async {
+        if let apiClient {
+            await events.append(event, sessionID: apiClient.metadata.sessionID)
+        }
+        
+        if shouldBypassTimerQueue {
+            await self.sendQueuedAnalyticsEvents()
         }
     }
 
-    // MARK: - Helpers
+    // MARK: - Private Methods
 
-    /// Constructs POST params to be sent to FPTI
-    func createAnalyticsEvent(config: BTConfiguration, sessionID: String, event: FPTIBatchData.Event) -> Codable {
-        let batchMetadata = FPTIBatchData.Metadata(
-            authorizationFingerprint: apiClient.clientToken?.authorizationFingerprint,
-            environment: config.fptiEnvironment,
-            integrationType: apiClient.metadata.integration.stringValue,
-            merchantID: config.merchantID,
-            sessionID: sessionID,
-            tokenizationKey: apiClient.tokenizationKey
-        )
-        
-        return FPTIBatchData(metadata: batchMetadata, events: [event])
+    private func sendQueuedAnalyticsEvents() async {
+        if await !events.isEmpty, let apiClient {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+                
+                for (sessionID, eventsPerSessionID) in await events.allValues {
+                    let postParameters = createAnalyticsEvent(
+                        config: configuration,
+                        sessionID: sessionID,
+                        events: eventsPerSessionID
+                    )
+                    
+                    _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
+                    
+                    await events.removeFor(sessionID: sessionID)
+                }
+            } catch {
+                return
+            }
+        }
     }
 
-    // MARK: Equitable Protocol Conformance
-
-    static func == (lhs: BTAnalyticsService, rhs: BTAnalyticsService) -> Bool {
-        lhs.http == rhs.http && lhs.apiClient == rhs.apiClient
+    /// Constructs POST params to be sent to FPTI
+    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+        let batchMetadata = FPTIBatchData.Metadata(
+            authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
+            environment: config.fptiEnvironment,
+            integrationType: apiClient?.metadata.integration.stringValue ?? BTClientMetadataIntegration.custom.stringValue,
+            merchantID: config.merchantID,
+            sessionID: sessionID,
+            tokenizationKey: apiClient?.authorization.type == .tokenizationKey ? apiClient?.authorization.originalValue : nil
+        )
+        
+        return FPTIBatchData(metadata: batchMetadata, events: events)
     }
 }

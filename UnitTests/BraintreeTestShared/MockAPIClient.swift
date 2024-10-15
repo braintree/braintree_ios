@@ -13,7 +13,10 @@ public class MockAPIClient: BTAPIClient {
 
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
-    public var postedLinkType: String? = nil
+    public var postedLinkType: LinkType? = nil
+    public var postedIsVaultRequest = false
+    public var postedMerchantExperiment: String? = nil
+    public var postedPaymentMethodsDisplayed: String? = nil
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -25,10 +28,6 @@ public class MockAPIClient: BTAPIClient {
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
-
-    override init?(authorization: String, sendAnalyticsEvent: Bool = false) {
-        super.init(authorization: authorization, sendAnalyticsEvent: sendAnalyticsEvent)
-    }
 
     public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
@@ -71,6 +70,13 @@ public class MockAPIClient: BTAPIClient {
         }
         completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
     }
+    
+    public override func fetchConfiguration() async throws -> BTConfiguration {
+        guard let responseBody = cannedConfigurationResponseBody else {
+            throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
+        }
+        return BTConfiguration(json: responseBody)
+    }
 
     public override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchedPaymentMethods = true
@@ -88,11 +94,18 @@ public class MockAPIClient: BTAPIClient {
         _ name: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
-        linkType: String? = nil,
+        merchantExperiment experiment: String? = nil,
+        isConfigFromCache: Bool? = nil,
+        isVaultRequest: Bool? = nil,
+        linkType: LinkType? = nil,
+        paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
+        postedIsVaultRequest = isVaultRequest ?? false
+        postedMerchantExperiment = experiment
+        postedPaymentMethodsDisplayed = paymentMethodsDisplayed
         postedAnalyticsEvents.append(name)
     }
 

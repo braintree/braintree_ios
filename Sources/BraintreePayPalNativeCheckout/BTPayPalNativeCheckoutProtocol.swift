@@ -5,6 +5,7 @@ protocol BTPayPalNativeCheckoutProtocol {
 
     static var showsExitAlert: Bool { get set }
 
+    // swiftlint:disable function_parameter_count
     static func start(
         presentingViewController: UIViewController?,
         createOrder: CheckoutConfig.CreateOrderCallback?,
@@ -13,6 +14,7 @@ protocol BTPayPalNativeCheckoutProtocol {
         onCancel: CheckoutConfig.CancelCallback?,
         onError: CheckoutConfig.ErrorCallback?
     )
+    // swiftlint:enable function_parameter_count
 
     static func set(config: CheckoutConfig)
 }
