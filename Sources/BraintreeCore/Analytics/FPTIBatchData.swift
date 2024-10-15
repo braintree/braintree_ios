@@ -29,6 +29,7 @@ struct FPTIBatchData: Codable {
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
 
+        let appSwitchURL: URL?
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
@@ -61,6 +62,7 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
+            appSwitchURL: URL? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
@@ -76,6 +78,7 @@ struct FPTIBatchData: Codable {
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
+            self.appSwitchURL = appSwitchURL
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
@@ -93,6 +96,7 @@ struct FPTIBatchData: Codable {
         }
 
         enum CodingKeys: String, CodingKey {
+            case appSwitchURL
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
