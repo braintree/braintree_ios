@@ -287,6 +287,8 @@ import BraintreeCore
     // MARK: - App Switch Methods
 
     func handleOpen(_ url: URL) {
+        // TODO: Add properties
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.handleReturnStarted)
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
             notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
             return
@@ -364,6 +366,8 @@ import BraintreeCore
     }
 
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+        // TODO: Add properties
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.appSwitchStarted)
         application.open(appSwitchURL) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
         }
