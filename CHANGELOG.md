@@ -5,6 +5,7 @@
   * Bump minimum supported deployment target to iOS 16+
 * BraintreeVenmo
   * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method.
 * BraintreeSEPADirectDebit
   * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
