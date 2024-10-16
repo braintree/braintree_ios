@@ -30,8 +30,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
     @objc func tappedVenmo() {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
         
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true)
         
         checkout(request: venmoRequest)
     }
@@ -39,18 +38,20 @@ class VenmoViewController: PaymentButtonBaseViewController {
     @objc func tappedVenmoWithECD() {
         self.progressBlock("Tapped Venmo ECD - initiating Venmo auth")
         
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.collectCustomerBillingAddress = true
-        venmoRequest.collectCustomerShippingAddress = true
-        venmoRequest.totalAmount = "30.00"
-        venmoRequest.taxAmount = "1.10"
-        venmoRequest.discountAmount = "1.10"
-        venmoRequest.shippingAmount = "0.00"
-        
         let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "30.00", name: "item-1", kind: .debit)
         lineItem.unitTaxAmount = "1.00"
-        venmoRequest.lineItems = [lineItem]
+        
+        let venmoRequest = BTVenmoRequest(
+            paymentMethodUsage: .multiUse,
+            vault: true,
+            collectCustomerBillingAddress: true,
+            collectCustomerShippingAddress: true,
+            discountAmount: "1.10", 
+            taxAmount: "1.10",
+            shippingAmount: "0.00", 
+            totalAmount: "30.00",
+            lineItems: [lineItem]
+        )
         
         checkout(request: venmoRequest)
     }
@@ -58,9 +59,11 @@ class VenmoViewController: PaymentButtonBaseViewController {
     @objc func tappedVenmoWithUniversalLinks() {
         self.progressBlock("Tapped Venmo Universal Links - initiating Venmo auth")
 
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.fallbackToWeb = true
+        let venmoRequest = BTVenmoRequest(
+            paymentMethodUsage: .multiUse,
+            vault: true,
+            fallbackToWeb: true
+        )
 
         checkout(request: venmoRequest)
     }
