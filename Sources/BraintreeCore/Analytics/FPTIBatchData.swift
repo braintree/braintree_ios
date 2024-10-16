@@ -96,7 +96,7 @@ struct FPTIBatchData: Codable {
         }
 
         enum CodingKeys: String, CodingKey {
-            case appSwitchURL
+            case appSwitchURL = "appSwitchUrl"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
@@ -131,7 +131,7 @@ struct FPTIBatchData: Codable {
 
         let clientOS: String = UIDevice.current.systemName + " " + UIDevice.current.systemVersion
 
-        let component = "braintreeclientsdk"
+        let component = "venmo_10_16_braintreeclientsdk"
 
         let deviceManufacturer = "Apple"
 
