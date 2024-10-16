@@ -99,7 +99,7 @@ import BraintreeCore
     
     /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
-    public var userPhoneNumber: String?
+    public var userPhoneNumber: BTPayPalPhoneNumber?
 
     // MARK: - Static Properties
     
@@ -120,7 +120,7 @@ import BraintreeCore
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
         riskCorrelationId: String? = nil,
-        userPhoneNumber: String? = nil
+        userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -174,6 +174,10 @@ import BraintreeCore
         if let lineItems, !lineItems.isEmpty {
             let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
             parameters["line_items"] = lineItemsArray
+        }
+        
+        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
+            parameters["phone_number"] = userPhoneNumberDict
         }
 
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"

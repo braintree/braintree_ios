@@ -71,10 +71,6 @@ import BraintreeCore
         if let userAuthenticationEmail {
             baseParameters["payer_email"] = userAuthenticationEmail
         }
-        
-        if let userPhoneNumber, !userPhoneNumber.isEmpty {
-            baseParameters["phone_number"] = userPhoneNumber
-        }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [

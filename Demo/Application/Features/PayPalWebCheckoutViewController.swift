@@ -24,17 +24,30 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return textField
     }()
     
-    lazy var phoneNumberLabel: UILabel = {
+    lazy var countryCodeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Buyer phone:"
+        label.text = "Country Code:"
         return label
     }()
     
-    lazy var phoneNumberTextField: UITextField = {
-        let textfield = UITextField()
-        textfield.placeholder = "000-000-000"
-        textfield.backgroundColor = .systemBackground
-        return textfield
+    lazy var countryCodeTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "1"
+        textField.backgroundColor = .systemBackground
+        return textField
+    }()
+    
+    lazy var nationalNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "National Number:"
+        return label
+    }()
+    
+    lazy var nationalNumberTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "000-000-000"
+        textField.backgroundColor = .systemBackground
+        return textField
     }()
     
     lazy var payLaterToggleLabel: UILabel = {
@@ -87,7 +100,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
-            UIStackView(arrangedSubviews: [phoneNumberLabel, phoneNumberTextField]),
+            UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField]),
+            UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField]),
             oneTimeCheckoutStackView,
             vaultStackView
         ])
@@ -118,7 +132,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
         request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = phoneNumberTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
@@ -150,7 +167,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = phoneNumberTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
         
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
