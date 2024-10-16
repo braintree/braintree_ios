@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 7.0
+* BraintreeVenmo
+    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method 
+
 ## 6.23.5 (2024-10-09)
 * BraintreeCore
   * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
