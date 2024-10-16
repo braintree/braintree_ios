@@ -126,6 +126,23 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             completion(nil, nil, error)
         }
     }
+    
+    func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable,
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        try await withCheckedThrowingContinuation { continuation in
+            post(path, configuration: configuration, parameters: parameters, headers: headers) { body, response, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (body, response))
+                }
+            }
+        }
+    }
 
     // MARK: - HTTP Method Helpers
 

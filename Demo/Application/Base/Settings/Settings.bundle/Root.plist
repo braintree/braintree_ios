@@ -59,13 +59,13 @@
 			<array>
 				<string>Sandbox</string>
 				<string>Production</string>
-				<string>Custom (enter below)</string>
+				<string>Custom</string>
 			</array>
 			<key>Titles</key>
 			<array>
 				<string>Sandbox</string>
 				<string>Production</string>
-				<string>Custom (URL on previous screen)</string>
+				<string>Custom</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -78,9 +78,9 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Custom Base URL</string>
+			<string>Custom Authorization</string>
 			<key>Key</key>
-			<string>BraintreeDemoSettingsCustomEnvironmentURLDefaultsKey</string>
+			<string>BraintreeDemoSettingsCustomAuthorizationKey</string>
 			<key>IASKTextAlignment</key>
 			<string>IASKUITextAlignmentRight</string>
 		</dict>

@@ -47,6 +47,25 @@ final class BTAnalyticsService_Tests: XCTestCase {
         self.validateMetadataParameters(mockAnalyticsHTTP.lastRequestParameters)
     }
 
+    func testSendAnalyticsEvent_whenMultipleSessionIDs_sendsMultiplePOSTs() async {
+        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.http = mockAnalyticsHTTP
+        
+        // Send events associated with 1st sessionID
+        stubAPIClient.metadata.sessionID = "session-id-1"
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event1"))
+        
+        // Send events associated with 2nd sessionID
+        stubAPIClient.metadata.sessionID = "session-id-2"
+        sut.shouldBypassTimerQueue = true
+        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
+        
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
+    }
+    
     // MARK: - Helper Functions
 
     func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
