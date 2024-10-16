@@ -286,6 +286,7 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
+    // swiftlint:disable:next function_body_length
     func handleOpen(_ url: URL) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
