@@ -43,8 +43,8 @@ import BraintreeCore
     /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String?
 
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: LinkType?
+    /// Used for sending the type of flow, universal, to FPTI
+    private var linkType: LinkType = .universal
 
     // MARK: - Initializer
 
@@ -67,7 +67,6 @@ import BraintreeCore
     @objc(tokenizeWithVenmoRequest:completion:)
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        linkType = .universal
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
