@@ -783,6 +783,42 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
     
+    func testHandleOpen_sendsHandleReturnStartedEvent() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        let appSwitchURL = URL(string: "some-url")!
+        venmoClient.handleOpen(appSwitchURL)
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.handleReturnStarted)
+    }
+    
+    func testStartVenmoFlow_sendsAppSwitchStartedEvent() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        let appSwitchURL = URL(string: "some-url")!
+        venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.appSwitchStarted)
+    }
+    
+    func testInvokedOpenURLSuccessfully_whenSuccess_sendsAppSwitchSucceeded_withAppSwitchURL() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        let eventName = BTVenmoAnalytics.appSwitchSucceeded
+        let appSwitchURL = URL(string: "some-url")!
+        venmoClient.invokedOpenURLSuccessfully(true, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL)
+    }
+    
+    func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailed_withAppSwitchURL() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+        let eventName = BTVenmoAnalytics.appSwitchFailed
+        let appSwitchURL = URL(string: "some-url")!
+        venmoClient.invokedOpenURLSuccessfully(false, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL)
+    }
+    
     // MARK: - BTAppContextSwitchClient
 
     func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
