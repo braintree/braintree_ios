@@ -34,6 +34,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let textField = UITextField()
         textField.placeholder = "1"
         textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
         return textField
     }()
     
@@ -47,6 +48,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let textField = UITextField()
         textField.placeholder = "000-000-000"
         textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
         return textField
     }()
     
