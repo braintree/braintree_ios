@@ -2,8 +2,10 @@ import XCTest
 
 class Venmo_UITests: XCTestCase {
 
+    // swiftlint:disable implicitly_unwrapped_optional
     var demoApp: XCUIApplication!
     var mockVenmo: XCUIApplication!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() {
         super.setUp()

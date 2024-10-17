@@ -7,6 +7,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
         apiClient: apiClient,
+        // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
     
@@ -20,6 +21,34 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
         textField.backgroundColor = .systemBackground
+        return textField
+    }()
+    
+    lazy var countryCodeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Country Code:"
+        return label
+    }()
+    
+    lazy var countryCodeTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "1"
+        textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
+        return textField
+    }()
+    
+    lazy var nationalNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "National Number:"
+        return label
+    }()
+    
+    lazy var nationalNumberTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "000-000-000"
+        textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
         return textField
     }()
     
@@ -40,9 +69,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let newPayPalCheckoutToggle = UISwitch()
+    
+    lazy var rbaDataToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Recurring Billing (RBA) Data"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let rbaDataToggle = UISwitch()
 
     override func viewDidLoad() {
-        super.heightConstraint = 300
+        super.heightConstraint = 350
         super.viewDidLoad()
     }
 
@@ -50,27 +88,35 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
+
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
             UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
             payPalCheckoutButton
         ])
-        let vaultStackView = buttonsStackView(label: "Vault",views: [payPalVaultButton, payPalAppSwitchButton])
-
+        let vaultStackView = buttonsStackView(label: "Vault", views: [
+            UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+            payPalVaultButton,
+            payPalAppSwitchButton
+        ])
 
         let stackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
+            UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField]),
+            UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField]),
             oneTimeCheckoutStackView,
             vaultStackView
         ])
 
-        NSLayoutConstraint.activate([
-            oneTimeCheckoutStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+        NSLayoutConstraint.activate(
+            [
+                oneTimeCheckoutStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                oneTimeCheckoutStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
 
-            vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
-          ])
+                vaultStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+                vaultStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            ]
+        )
 
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
@@ -88,13 +134,17 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
 
-        request.lineItems = [lineItem]        
+        request.lineItems = [lineItem]
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
@@ -117,8 +167,45 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalVaultRequest()
+        var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
+        
+        if rbaDataToggle.isOn {
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .fixed,
+                amount: "9.99",
+                reloadThresholdAmount: "99.99"
+            )
+            
+            let billingCycle = BTPayPalBillingCycle(
+                isTrial: true,
+                numberOfExecutions: 1,
+                interval: .month,
+                intervalCount: 1,
+                sequence: 1,
+                startDate: "2024-08-01",
+                pricing: billingPricing
+            )
+            
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                totalAmount: "32.56",
+                productName: "Vogue Magazine Subscription",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "9.99",
+                shippingAmount: "1.99",
+                productAmount: "19.99",
+                taxAmount: "0.59"
+            )
+            
+            request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
@@ -153,7 +240,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
-
             }
             
             self.completionBlock(nonce)

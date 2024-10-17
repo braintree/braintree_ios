@@ -30,7 +30,6 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
 
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
-        ///
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
         let correlationID: String?
@@ -46,6 +45,10 @@ struct FPTIBatchData: Codable {
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
+        /// The experiment details associated with a shopper insights flow
+        let merchantExperiment: String?
+        /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
+        let paymentMethodsDisplayed: String?
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
@@ -67,6 +70,8 @@ struct FPTIBatchData: Codable {
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
+            merchantExperiment: String? = nil,
+            paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             startTime: Int? = nil
@@ -80,6 +85,8 @@ struct FPTIBatchData: Codable {
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
+            self.merchantExperiment = merchantExperiment
+            self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
             self.startTime = startTime
@@ -93,6 +100,8 @@ struct FPTIBatchData: Codable {
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
+            case merchantExperiment = "experiment"
+            case paymentMethodsDisplayed = "payment_methods_displayed"
             case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
             case timestamp = "t"

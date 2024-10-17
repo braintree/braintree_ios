@@ -49,7 +49,12 @@ class ContainmentViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(tappedRefresh))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(tappedSettings))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Settings",
+            style: .plain,
+            target: self,
+            action: #selector(tappedSettings)
+        )
 
         navigationController?.setToolbarHidden(false, animated: true)
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
@@ -76,6 +81,7 @@ class ContainmentViewController: UIViewController {
         statusItem = UIBarButtonItem(customView: button)
         statusItem?.isEnabled = false
 
+        // swiftlint:disable:next force_unwrapping
         toolbarItems = [padding, statusItem!, padding]
     }
 
@@ -156,14 +162,20 @@ class ContainmentViewController: UIViewController {
                 tokenizationKey = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
             case .production:
                 tokenizationKey = "production_t2wns2y2_dfy45jdj3dxkmz5m"
-            default:
-                tokenizationKey = "development_testing_integration_merchant_id"
+            case .custom:
+                // swiftlint:disable:next force_unwrapping
+                tokenizationKey = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsCustomAuthorizationKey")!
             }
 
             currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .clientToken:
             updateStatus("Fetching Client Token...")
+
+            if BraintreeDemoSettings.currentEnvironment == .custom {
+                updateStatus("Switch the Authorization Type in settings to Tokenization Key to use the custom environment")
+                return
+            }
 
             BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
                 if let error {
@@ -176,16 +188,28 @@ class ContainmentViewController: UIViewController {
                 }
             }
 
+        // TODO: Remove this once ModXO goes GA
         case .newPayPalCheckoutTokenizationKey:
-            updateStatus("Fetching new checkout token...")
-            let newPayPalCheckoutTokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
-            currentViewController = instantiateViewController(with: newPayPalCheckoutTokenizationKey)
+            updateStatus("Fetching modXO (origami) checkout token...")
+            
+            var tokenizationKey: String = ""
+            switch BraintreeDemoSettings.currentEnvironment {
+            case .sandbox:
+                tokenizationKey = "sandbox_rz48bqvw_jcyycfw6f9j4nj9c"
+            case .production:
+                tokenizationKey = "production_t2wns2y2_dfy45jdj3dxkmz5m"
+            default:
+                tokenizationKey = "development_testing_integration_merchant_id"
+            }
+
+            currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .mockedPayPalTokenizationKey:
             let tokenizationKey = "sandbox_q7v35n9n_555d2htrfsnnmfb3"
             currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .uiTestHardcodedClientToken:
+            // swiftlint:disable:next line_length
             let uiTestClientToken = "eyJ2ZXJzaW9uIjozLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxYzM5N2E5OGZmZGRkNDQwM2VjNzEzYWRjZTI3NTNiMzJlODc2MzBiY2YyN2M3NmM2OWVmZjlkMTE5MjljOTVkfGNyZWF0ZWRfYXQ9MjAxNy0wNC0wNVQwNjowNzowOC44MTUwOTkzMjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ=="
             currentViewController = instantiateViewController(with: uiTestClientToken)
         }

@@ -61,12 +61,13 @@ class AmexViewController: PaymentButtonBaseViewController {
                     return
                 }
 
-                if let errorCode = rewardsBalance.errorCode, let errorMessage = rewardsBalance.errorMessage  {
+                if let errorCode = rewardsBalance.errorCode, let errorMessage = rewardsBalance.errorMessage {
                     self.progressBlock("\(errorCode): \(errorMessage)")
-                } else if let rewardsAmount = rewardsBalance.rewardsAmount,
-                          let rewardsUnit = rewardsBalance.rewardsUnit,
-                          let currencyAmount = rewardsBalance.currencyAmount,
-                          let currencyIsoCode = rewardsBalance.currencyIsoCode {
+                } else if
+                    let rewardsAmount = rewardsBalance.rewardsAmount,
+                    let rewardsUnit = rewardsBalance.rewardsUnit,
+                    let currencyAmount = rewardsBalance.currencyAmount,
+                    let currencyIsoCode = rewardsBalance.currencyIsoCode {
                     self.progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
                 }
             }

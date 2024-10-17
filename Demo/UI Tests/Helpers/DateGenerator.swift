@@ -1,7 +1,8 @@
 import Foundation
 
-class DateGenerator {
-    static let sharedInstance = DateGenerator()
+class UITestDateGenerator {
+
+    static let sharedInstance = UITestDateGenerator()
 
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -13,18 +14,16 @@ class DateGenerator {
 
     private init() {}
 
-    func futureDate() -> String {
-        let futureDate = calendar.date(byAdding: .year, value: 3, to: Date())!
-        return dateFormatter.string(from: futureDate)
-    }
-
-    func pastDate() -> String {
-        let pastDate = calendar.date(byAdding: .year, value: -3, to: Date())!
-        return dateFormatter.string(from: pastDate)
-    }
-
     func threeDSecure2TestingDate() -> String {
         let year = calendar.component(.year, from: Date()) + 3
         return "01/\(year)"
+    }
+
+    func futureDate() -> String {
+        guard let futureDate = calendar.date(byAdding: .year, value: 3, to: Date()) else {
+            return "12/32"
+        }
+
+        return dateFormatter.string(from: futureDate)
     }
 }
