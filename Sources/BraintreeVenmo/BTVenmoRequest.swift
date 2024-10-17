@@ -41,10 +41,10 @@ import Foundation
 
     // MARK: - Initializer
 
-    /// Initialize a Venmo request with a payment method usage.
+    /// Initialize a `BTVenmoRequest`
     /// - Parameters:
-    ///   - paymentMethodUsage: a `BTVenmoPaymentMethodUsage`
-    ///   - profileID: The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile. Venmo profile IDs can be found in the Braintree Control Panel. Leaving this `nil` will use the default Venmo profile.
+    ///   - paymentMethodUsage: a `BTVenmoPaymentMethodUsage` that determines the usage type of a tokenized Venmo account
+    ///   - profileID: The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile. Venmo profile IDs can be found in the Braintree Control      Panel. Leaving this `nil` will use the default Venmo profile.
     ///   - vault: Whether to automatically vault the Venmo account on the client. For client-side vaulting, you must initialize BTAPIClient with a client token that was created with a customer ID.
     ///     Also, `paymentMethodUsage` on the BTVenmoRequest must be set to `.multiUse`. If this property is set to `false`, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is not set to `.singleUse`.
     ///   - displayName: The business name that will be displayed in the Venmo app payment approval screen. Only used by merchants onboarded as PayFast channel partners.
@@ -58,10 +58,8 @@ import Foundation
     ///   - totalAmount: The grand total amount on the transaction that should be displayed on the paysheet.
     ///   - lineItems: The line items for this transaction. It can include up to 249 line items. If this value is set, `totalAmount` must also be set.
     ///   - fallbackToWeb: Used to determine if the customer should fallback to the web flow if Venmo app is not installed. Defaults to `false`
-    @objc(initWithPaymentMethodUsage:profileID:vault:displayName:
-          collectCustomerBillingAddress:collectCustomerShippingAddress:
-          isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:
-          totalAmount:lineItems:fallbackToWeb:)
+    @objc(initWithPaymentMethodUsage:profileID:vault:displayName:collectCustomerBillingAddress:collectCustomerShippingAddress:
+    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:fallbackToWeb:)
     public init(
         paymentMethodUsage: BTVenmoPaymentMethodUsage,
         profileID: String? = nil,

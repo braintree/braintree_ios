@@ -46,9 +46,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
             vault: true,
             collectCustomerBillingAddress: true,
             collectCustomerShippingAddress: true,
-            discountAmount: "1.10", 
+            discountAmount: "1.10",
             taxAmount: "1.10",
-            shippingAmount: "0.00", 
+            shippingAmount: "0.00",
             totalAmount: "30.00",
             lineItems: [lineItem]
         )
