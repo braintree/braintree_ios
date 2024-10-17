@@ -87,7 +87,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
         checkout(request: venmoRequest)
     }
 
-    func checkout(request: BTVenmoRequest) {        
+    func checkout(request: BTVenmoRequest) {
         Task {
             do {
                 let venmoAccount = try await (universalLinkReturnToggle.isOn ? venmoClientUniversalLink : venmoClient).tokenize(request)
