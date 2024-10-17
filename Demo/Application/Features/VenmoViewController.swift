@@ -6,9 +6,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
     // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 
-    let ecdOptionsToggle = ToggleWithLabel("Add ECD Options")
-    let webFallbackToggle = ToggleWithLabel("Enable Web Fallback")
-    let vaultToggle = ToggleWithLabel("Vault")
+    let ecdOptionsToggle = Toggle(title: "Add ECD Options")
+    let webFallbackToggle = Toggle(title: "Enable Web Fallback")
+    let vaultToggle = Toggle(title: "Vault")
     
     override func viewDidLoad() {
         super.viewDidLoad()

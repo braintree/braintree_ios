@@ -1,6 +1,6 @@
 import UIKit
 
-class ToggleWithLabel: UIView {
+class Toggle: UIView {
 
     private let toggle = UISwitch()
     private let title: String
@@ -9,7 +9,7 @@ class ToggleWithLabel: UIView {
         return toggle.isOn
     }
 
-    init(_ title: String) {
+    init(title: String) {
         self.title = title
         super.init(frame: .zero)
         layoutUI()
