@@ -1,7 +1,7 @@
 import Foundation
 
 // TODO: - To be removed once entire SDK is formatting POST bodies using Encodable
-extension Encodable {
+public extension Encodable {
 
     /// Converts to dictionary `[String: Any]` type.
     ///

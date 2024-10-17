@@ -87,6 +87,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.billingAgreementDescription = "description"
         request.userAction = .payNow
         request.userAuthenticationEmail = "fake@email.com"
+        request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
 
         let shippingAddress = BTPostalAddress()
         shippingAddress.streetAddress = "123 Main"
@@ -114,6 +115,13 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["recipient_name"] as? String, "Recipient")
         XCTAssertEqual(parameters["payer_email"] as? String, "fake@email.com")
         XCTAssertEqual(parameters["request_billing_agreement"] as? Bool, true)
+        
+        guard let userPhoneNumberDetails = parameters["phone_number"] as? [String: String] else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(userPhoneNumberDetails["country_code"], "1")
+        XCTAssertEqual(userPhoneNumberDetails["national_number"], "4087463271")
 
         guard let billingAgreementDetails = parameters["billing_agreement_details"] as? [String : String] else {
             XCTFail()
