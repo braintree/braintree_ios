@@ -6,7 +6,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
     // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 
-    let ecdOptionsToggle = Toggle(title: "Add ECD Options")
     let webFallbackToggle = Toggle(title: "Enable Web Fallback")
     let vaultToggle = Toggle(title: "Vault")
     
@@ -19,7 +18,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
 
-        let stackView = UIStackView(arrangedSubviews: [ecdOptionsToggle, webFallbackToggle, vaultToggle, venmoButton])
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, venmoButton])
         stackView.axis = .vertical
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -33,20 +32,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
         
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-
-        if ecdOptionsToggle.isOn {
-            venmoRequest.vault = true
-            venmoRequest.collectCustomerBillingAddress = true
-            venmoRequest.collectCustomerShippingAddress = true
-            venmoRequest.totalAmount = "30.00"
-            venmoRequest.taxAmount = "1.10"
-            venmoRequest.discountAmount = "1.10"
-            venmoRequest.shippingAmount = "0.00"
-            
-            let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "30.00", name: "item-1", kind: .debit)
-            lineItem.unitTaxAmount = "1.00"
-            venmoRequest.lineItems = [lineItem]
-        }
         
         if webFallbackToggle.isOn {
             venmoRequest.fallbackToWeb = true
