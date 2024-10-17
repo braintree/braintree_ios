@@ -5,7 +5,6 @@ import BraintreeVenmo
 class VenmoViewController: PaymentButtonBaseViewController {
  
     var venmoClient: BTVenmoClient!
-    var venmoClientUniversalLink: BTVenmoClient!
     
     lazy var universalLinkReturnToggleLabel: UILabel = {
         let label = UILabel()
@@ -19,11 +18,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         venmoClient = BTVenmoClient(apiClient: apiClient)
-        venmoClientUniversalLink = BTVenmoClient(
-            apiClient: apiClient,
-            // swiftlint:disable:next force_unwrapping
-            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-        )
         title = "Custom Venmo Button"
     }
     
@@ -88,9 +82,17 @@ class VenmoViewController: PaymentButtonBaseViewController {
     }
 
     func checkout(request: BTVenmoRequest) {
+        if universalLinkReturnToggle.isOn {
+            venmoClient = BTVenmoClient(
+                apiClient: apiClient,
+                // swiftlint:disable:next force_unwrapping
+                universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+            )
+        }
+        
         Task {
             do {
-                let venmoAccount = try await (universalLinkReturnToggle.isOn ? venmoClientUniversalLink : venmoClient).tokenize(request)
+                let venmoAccount = try await (venmoClient).tokenize(request)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
