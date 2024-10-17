@@ -1,7 +1,6 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
 * BraintreeVenmo
