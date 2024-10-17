@@ -52,32 +52,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return textField
     }()
     
-    lazy var payLaterToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Offer Pay Later"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
-    }()
-    
-    let payLaterToggle = UISwitch()
 
-    lazy var newPayPalCheckoutToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "New PayPal Checkout Experience"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
-    }()
+    let payLaterToggle = Toggle(title: "Offer Pay Later")
     
-    let newPayPalCheckoutToggle = UISwitch()
+    let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
     
-    lazy var rbaDataToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Recurring Billing (RBA) Data"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
-    }()
-    
-    let rbaDataToggle = UISwitch()
+    let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
 
     override func viewDidLoad() {
         super.heightConstraint = 350
@@ -90,12 +70,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
 
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
-            UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
-            UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
+            payLaterToggle,
+            newPayPalCheckoutToggle,
             payPalCheckoutButton
         ])
         let vaultStackView = buttonsStackView(label: "Vault", views: [
-            UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+            rbaDataToggle,
             payPalVaultButton,
             payPalAppSwitchButton
         ])
