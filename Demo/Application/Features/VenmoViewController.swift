@@ -1,14 +1,25 @@
 import UIKit
 import BraintreeVenmo
 
+// swiftlint:disable implicitly_unwrapped_optional
 class VenmoViewController: PaymentButtonBaseViewController {
  
-    // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
+    var venmoClientUniversalLink: BTVenmoClient!
+    
+    lazy var universalLinkReturnToggleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Use Universal Link Return"
+        label.font = .preferredFont(forTextStyle: .footnote)
+        return label
+    }()
+    
+    let universalLinkReturnToggle = UISwitch()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        venmoClient = BTVenmoClient(
+        venmoClient = BTVenmoClient(apiClient: apiClient)
+        venmoClientUniversalLink = BTVenmoClient(
             apiClient: apiClient,
             // swiftlint:disable:next force_unwrapping
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
@@ -21,7 +32,14 @@ class VenmoViewController: PaymentButtonBaseViewController {
         let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
         let venmoUniversalLinkButton = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
 
-        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton, venmoUniversalLinkButton])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                UIStackView(arrangedSubviews: [universalLinkReturnToggleLabel, universalLinkReturnToggle]),
+                venmoButton,
+                venmoECDButton,
+                venmoUniversalLinkButton
+            ]
+        )
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
@@ -69,10 +87,10 @@ class VenmoViewController: PaymentButtonBaseViewController {
         checkout(request: venmoRequest)
     }
 
-    func checkout(request: BTVenmoRequest) {
+    func checkout(request: BTVenmoRequest) {        
         Task {
             do {
-                let venmoAccount = try await venmoClient.tokenize(request)
+                let venmoAccount = try await (universalLinkReturnToggle.isOn ? venmoClientUniversalLink : venmoClient).tokenize(request)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
