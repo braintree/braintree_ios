@@ -806,7 +806,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.invokedOpenURLSuccessfully(true, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
-        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
     }
     
     func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailed_withAppSwitchURL() {
@@ -816,7 +816,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.invokedOpenURLSuccessfully(false, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
-        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
     }
     
     // MARK: - BTAppContextSwitchClient
