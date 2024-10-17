@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
+* BraintreeVenmo
+    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method 
   
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal

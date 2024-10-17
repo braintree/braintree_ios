@@ -60,7 +60,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
 
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoRequest.vault = true
-        venmoRequest.fallbackToWeb = true
 
         checkout(request: venmoRequest)
     }
