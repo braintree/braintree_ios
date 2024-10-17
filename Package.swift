@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Braintree",
-    platforms: [.iOS(.v16)],
+    platforms: [.iOS(.v14)],
     products: [
         .library(
             name: "BraintreeAmericanExpress",

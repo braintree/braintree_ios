@@ -8,10 +8,6 @@
 * BraintreeCore
   * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
 
-## 7.0.0-beta1
-* Breaking Changes
-  * Bump minimum supported deployment target to iOS 16+
-
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
   * Send `isVaultRequest` for App Switch events to PayPal's analytics service (FPTI)
