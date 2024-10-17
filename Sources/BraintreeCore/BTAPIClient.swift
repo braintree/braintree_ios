@@ -310,10 +310,12 @@ import Foundation
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         paymentMethodsDisplayed: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        appSwitchURL: URL? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
+                appSwitchURL: appSwitchURL,
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,
