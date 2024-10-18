@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
+* BraintreeVenmo
+  * Update`BTVenmoRequest` to make all properties internal and included in the initializer 
   
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
