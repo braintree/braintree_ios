@@ -22,6 +22,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         textField.placeholder = "placeholder@email.com"
         textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
+        textField.keyboardType = .emailAddress
         return textField
     }()
     
