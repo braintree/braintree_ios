@@ -20,8 +20,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         return textField
+    }()
+    
+    lazy var emailStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [emailLabel, emailTextField])
+        stackView.distribution = .fillProportionally
+        return stackView
     }()
     
     lazy var countryCodeLabel: UILabel = {
