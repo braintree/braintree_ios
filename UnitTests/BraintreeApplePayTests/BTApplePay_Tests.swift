@@ -250,9 +250,9 @@ class BTApplePay_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        XCTAssertEqual(mockClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
-
         waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertEqual(mockClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
     }
 
     func testTokenize_whenBodyIsMissingData_returnsError() {
@@ -306,6 +306,13 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "production"
             ]
         ])
+
+        mockClient.cannedResponseBody = BTJSON(value: [
+            "applePayCards" : [
+                "nonce" : "fake-nonce"
+            ] as [String: Any]
+        ])
+
         let applePayClient = BTApplePayClient(apiClient: mockAPIClient)
         let payment = MockPKPayment()
 
