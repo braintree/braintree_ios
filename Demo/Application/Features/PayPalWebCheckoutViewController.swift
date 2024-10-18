@@ -122,9 +122,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         ])
 
         let stackView = UIStackView(arrangedSubviews: [
-            UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
-            UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField]),
-            UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField]),
+            emailStackView,
+            countryCodeStackView,
+            nationalNumberStackView,
             oneTimeCheckoutStackView,
             vaultStackView
         ])
