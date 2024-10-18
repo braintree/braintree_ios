@@ -169,6 +169,8 @@ sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, e
 }
 ```
 
+All properties within `BTSEPADirectDebitRequest` are now internal.
+
 ## Local Payments
 
 We have renamed the module `BraintreePaymentFlow` to `BraintreeLocalPayment`
