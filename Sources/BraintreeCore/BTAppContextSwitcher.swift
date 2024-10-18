@@ -20,6 +20,8 @@ import UIKit
     
     private var appContextSwitchClients: [BTAppContextSwitchClient.Type] = []
 
+    private var asyncAppContextSwitchClients: [BTAsyncAppContextSwitchClient.Type] = []
+
     // MARK: - Public Methods
     
     /// Determine whether the return URL can be handled.
@@ -41,11 +43,23 @@ import UIKit
         }
         return false
     }
-    
+
+    public func handleOpenAsync(_ url: URL) async throws {
+        for client in asyncAppContextSwitchClients where client.canHandleReturnURL(url) {
+            try await client.handleReturnURLForAsync(url)
+            return
+        }
+        // throw random existing error for testing
+        throw BTHTTPError.clientApiURLInvalid
+    }
     /// Registers a class `Type` that can handle a return from app context switch with a static method.
     /// - Parameter client: A class `Type` that implements `BTAppContextSwitchClient`, the methods of which will be invoked statically on the class.
     @objc(registerAppContextSwitchClient:)
     public func register(_ client: BTAppContextSwitchClient.Type) {
         appContextSwitchClients.append(client)
+    }
+
+    public func registerAsyncClient(_ client: BTAsyncAppContextSwitchClient.Type) {
+        asyncAppContextSwitchClients.append(client)
     }
 }

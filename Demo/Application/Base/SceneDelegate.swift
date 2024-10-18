@@ -29,7 +29,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let returnURL = userActivity.webpageURL, returnURL.path.contains("braintree-payments") {
             print("Returned to Demo app via universal link: \(returnURL)")
-            BTAppContextSwitcher.sharedInstance.handleOpen(returnURL)
+            Task {
+                do {
+                    try await BTAppContextSwitcher.sharedInstance.handleOpenAsync(returnURL)
+                } catch {
+                    print("Error handling URL: \(error)")
+                }
+            }
         }
     }
 }

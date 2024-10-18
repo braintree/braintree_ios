@@ -106,7 +106,7 @@ import Foundation
         }
     }
     
-    @MainActor func fetchConfiguration() async throws -> BTConfiguration {
+    @MainActor public func fetchConfiguration() async throws -> BTConfiguration {
         try await configurationLoader.getConfig()
     }
 
@@ -272,7 +272,24 @@ import Foundation
             )
         }
     }
-    
+
+    @_documentation(visibility: private)
+    public func post(
+        _ path: String,
+        parameters: [String: Any]? = nil,
+        headers: [String: String]? = nil,
+        httpType: BTAPIClientHTTPService = .gateway) async throws -> (BTJSON?, HTTPURLResponse?) {
+            try await withCheckedThrowingContinuation { continuation in
+                post(path, parameters: parameters, httpType: httpType) { json, httpResponse, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(returning: (json, httpResponse))
+                    }
+                }
+            }
+        }
+
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.

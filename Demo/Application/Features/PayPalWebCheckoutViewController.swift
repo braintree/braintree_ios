@@ -234,15 +234,15 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             enablePayPalAppSwitch: true
         )
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-            
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
+        Task {
+            do {
+                let nonce = try await payPalClient.asyncVaultTokenize(request: request)
+                sender.isEnabled = true
+                self.completionBlock(nonce)
+            } catch {
+                sender.isEnabled = true
+                self.progressBlock(error.localizedDescription)
             }
-            
-            self.completionBlock(nonce)
         }
     }
     

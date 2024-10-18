@@ -13,3 +13,7 @@ import Foundation
     /// - Parameter url: The URL you receive in `scene(_:openURLContexts:)` (or `application(_:open:options:)` if not using SceneDelegate)
     static func handleReturnURL(_ url: URL)
 }
+
+public protocol BTAsyncAppContextSwitchClient: BTAppContextSwitchClient {
+    static func handleReturnURLForAsync(_ url: URL) async throws
+}
