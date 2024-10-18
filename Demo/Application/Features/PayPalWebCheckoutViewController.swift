@@ -54,9 +54,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var nationalNumberTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "000-000-000"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         textField.keyboardType = .phonePad
         return textField
+    }()
+    
+    lazy var nationalNumberStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField])
+        stackView.distribution = .fillEqually
+        return stackView
     }()
     
     lazy var payLaterToggleLabel: UILabel = {
