@@ -50,7 +50,7 @@ import BraintreeCore
 
     // MARK: - Initializer
 
-    /// Creates an Venmo client
+    /// Creates a Venmo client
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
