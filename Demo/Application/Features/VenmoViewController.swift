@@ -3,7 +3,7 @@ import BraintreeVenmo
 
 class VenmoViewController: PaymentButtonBaseViewController {
 
-    // swiftlint:disable implicitly_unwrapped_optional
+    // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 
     let webFallbackToggle = Toggle(title: "Enable Web Fallback")
