@@ -7,7 +7,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
-2. [Venmo](#venmo)
+1. [Venmo](#venmo)
 
 ## Supported Versions
 
