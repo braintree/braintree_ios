@@ -51,21 +51,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
             )
         }
 
-        checkout(request: venmoRequest)
-    }
-
-    func checkout(request: BTVenmoRequest) {
-        if universalLinkReturnToggle.isOn {
-            venmoClient = BTVenmoClient(
-                apiClient: apiClient,
-                // swiftlint:disable:next force_unwrapping
-                universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-            )
-        }
-        
         Task {
             do {
-                let venmoAccount = try await (venmoClient).tokenize(request)
+                let venmoAccount = try await (venmoClient).tokenize(venmoRequest)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
