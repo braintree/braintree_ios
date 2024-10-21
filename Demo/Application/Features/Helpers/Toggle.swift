@@ -6,7 +6,7 @@ class Toggle: UIView {
     private let title: String
     
     var isOn: Bool {
-        return toggle.isOn
+        toggle.isOn
     }
 
     init(title: String) {
