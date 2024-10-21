@@ -7,7 +7,11 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
+1. [SEPA Direct Debit](#sepa-direct-debit)
 
 ## Supported Versions
 
 v7 bumps to a minimum deployment target of iOS 16+.
+
+## SEPA Direct Debit
+All properties within `BTSEPADirectDebitRequest` are now internal.
