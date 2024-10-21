@@ -20,8 +20,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
+        textField.keyboardType = .emailAddress
         return textField
+    }()
+    
+    lazy var emailStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [emailLabel, emailTextField])
+        stackView.distribution = .fillProportionally
+        return stackView
     }()
     
     lazy var countryCodeLabel: UILabel = {
@@ -33,9 +41,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var countryCodeTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "1"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         textField.keyboardType = .phonePad
         return textField
+    }()
+    
+    lazy var countryCodeStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField])
+        stackView.distribution = .fillEqually
+        return stackView
     }()
     
     lazy var nationalNumberLabel: UILabel = {
@@ -47,12 +62,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var nationalNumberTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "000-000-000"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         textField.keyboardType = .phonePad
         return textField
     }()
     
-
+    lazy var nationalNumberStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField])
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
     let payLaterToggle = Toggle(title: "Offer Pay Later")
     
     let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
@@ -60,7 +81,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
 
     override func viewDidLoad() {
-        super.heightConstraint = 350
+        super.heightConstraint = 400
         super.viewDidLoad()
     }
 
@@ -74,16 +95,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             newPayPalCheckoutToggle,
             payPalCheckoutButton
         ])
+        oneTimeCheckoutStackView.spacing = 12
         let vaultStackView = buttonsStackView(label: "Vault", views: [
             rbaDataToggle,
             payPalVaultButton,
             payPalAppSwitchButton
         ])
+        vaultStackView.spacing = 12
 
         let stackView = UIStackView(arrangedSubviews: [
-            UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
-            UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField]),
-            UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField]),
+            emailStackView,
+            countryCodeStackView,
+            nationalNumberStackView,
             oneTimeCheckoutStackView,
             vaultStackView
         ])
