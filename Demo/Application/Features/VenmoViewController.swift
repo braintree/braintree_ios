@@ -5,6 +5,9 @@ class VenmoViewController: PaymentButtonBaseViewController {
  
     // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
+
+    let webFallbackToggle = Toggle(title: "Enable Web Fallback")
+    let vaultToggle = Toggle(title: "Vault")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,13 +17,11 @@ class VenmoViewController: PaymentButtonBaseViewController {
     
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
-        let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
-        let venmoUniversalLinkButton = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
 
-        let stackView = UIStackView(arrangedSubviews: [venmoButton, venmoECDButton, venmoUniversalLinkButton])
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, venmoButton])
         stackView.axis = .vertical
-        stackView.spacing = 5
-        stackView.alignment = .center
+        stackView.spacing = 15
+        stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -31,44 +32,18 @@ class VenmoViewController: PaymentButtonBaseViewController {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
         
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
         
-        checkout(request: venmoRequest)
-    }
-    
-    @objc func tappedVenmoWithECD() {
-        self.progressBlock("Tapped Venmo ECD - initiating Venmo auth")
+        if webFallbackToggle.isOn {
+            venmoRequest.fallbackToWeb = true
+        }
         
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.collectCustomerBillingAddress = true
-        venmoRequest.collectCustomerShippingAddress = true
-        venmoRequest.totalAmount = "30.00"
-        venmoRequest.taxAmount = "1.10"
-        venmoRequest.discountAmount = "1.10"
-        venmoRequest.shippingAmount = "0.00"
+        if vaultToggle.isOn {
+            venmoRequest.vault = true
+        }
         
-        let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "30.00", name: "item-1", kind: .debit)
-        lineItem.unitTaxAmount = "1.00"
-        venmoRequest.lineItems = [lineItem]
-        
-        checkout(request: venmoRequest)
-    }
-
-    @objc func tappedVenmoWithUniversalLinks() {
-        self.progressBlock("Tapped Venmo Universal Links - initiating Venmo auth")
-
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.fallbackToWeb = true
-
-        checkout(request: venmoRequest)
-    }
-
-    func checkout(request: BTVenmoRequest) {
         Task {
             do {
-                let venmoAccount = try await venmoClient.tokenize(request)
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
