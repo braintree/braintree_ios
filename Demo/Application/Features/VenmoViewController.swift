@@ -5,17 +5,13 @@ import BraintreeVenmo
 class VenmoViewController: PaymentButtonBaseViewController {
  
     var venmoClient: BTVenmoClient!
-    
-    lazy var universalLinkReturnToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Use Universal Link Return"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
-    }()
-    
-    let universalLinkReturnToggle = UISwitch()
-    
+
+    let webFallbackToggle = Toggle(title: "Enable Web Fallback")
+    let vaultToggle = Toggle(title: "Vault")
+    let universalLinkReturnToggle = Toggle(title: "Use Universal Link Return")
+
     override func viewDidLoad() {
+        super.heightConstraint = 150
         super.viewDidLoad()
         venmoClient = BTVenmoClient(apiClient: apiClient)
         title = "Custom Venmo Button"
@@ -23,20 +19,11 @@ class VenmoViewController: PaymentButtonBaseViewController {
     
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
-        let venmoECDButton = createButton(title: "Venmo (with ECD options)", action: #selector(tappedVenmoWithECD))
-        let venmoUniversalLinkButton = createButton(title: "Venmo Universal Links", action: #selector(tappedVenmoWithUniversalLinks))
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, universalLinkReturnToggle, venmoButton])
 
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                UIStackView(arrangedSubviews: [universalLinkReturnToggleLabel, universalLinkReturnToggle]),
-                venmoButton,
-                venmoECDButton,
-                venmoUniversalLinkButton
-            ]
-        )
         stackView.axis = .vertical
-        stackView.spacing = 5
-        stackView.alignment = .center
+        stackView.spacing = 15
+        stackView.alignment = .fill
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -47,36 +34,22 @@ class VenmoViewController: PaymentButtonBaseViewController {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
         
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
         
-        checkout(request: venmoRequest)
-    }
-    
-    @objc func tappedVenmoWithECD() {
-        self.progressBlock("Tapped Venmo ECD - initiating Venmo auth")
+        if webFallbackToggle.isOn {
+            venmoRequest.fallbackToWeb = true
+        }
         
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.collectCustomerBillingAddress = true
-        venmoRequest.collectCustomerShippingAddress = true
-        venmoRequest.totalAmount = "30.00"
-        venmoRequest.taxAmount = "1.10"
-        venmoRequest.discountAmount = "1.10"
-        venmoRequest.shippingAmount = "0.00"
-        
-        let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "30.00", name: "item-1", kind: .debit)
-        lineItem.unitTaxAmount = "1.00"
-        venmoRequest.lineItems = [lineItem]
-        
-        checkout(request: venmoRequest)
-    }
+        if vaultToggle.isOn {
+            venmoRequest.vault = true
+        }
 
-    @objc func tappedVenmoWithUniversalLinks() {
-        self.progressBlock("Tapped Venmo Universal Links - initiating Venmo auth")
-
-        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
-        venmoRequest.vault = true
-        venmoRequest.fallbackToWeb = true
+        if universalLinkReturnToggle.isOn {
+            venmoClient = BTVenmoClient(
+                apiClient: apiClient,
+                // swiftlint:disable:next force_unwrapping
+                universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+            )
+        }
 
         checkout(request: venmoRequest)
     }

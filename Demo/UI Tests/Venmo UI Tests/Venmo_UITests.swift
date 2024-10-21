@@ -31,16 +31,6 @@ class Venmo_UITests: XCTestCase {
         XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 30))
     }
     
-    func testTokenizeVenmo_withECDOptions_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
-        waitForElementToBeHittable(demoApp.buttons["Venmo (with ECD options)"])
-        demoApp.buttons["Venmo (with ECD options)"].tap()
-        
-        waitForElementToBeHittable(mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"])
-        mockVenmo.buttons["SUCCESS WITH PAYMENT CONTEXT"].tap()
-
-        XCTAssertTrue(demoApp.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 30))
-    }
-    
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
         waitForElementToBeHittable(demoApp.buttons["Venmo"])
         demoApp.buttons["Venmo"].tap()
