@@ -1,9 +1,9 @@
 import UIKit
 import BraintreeVenmo
 
-// swiftlint:disable implicitly_unwrapped_optional
 class VenmoViewController: PaymentButtonBaseViewController {
- 
+
+    // swiftlint:disable implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 
     let webFallbackToggle = Toggle(title: "Enable Web Fallback")
@@ -19,8 +19,8 @@ class VenmoViewController: PaymentButtonBaseViewController {
     
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
-        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, universalLinkReturnToggle, venmoButton])
 
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, universalLinkReturnToggle, venmoButton])
         stackView.axis = .vertical
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -53,7 +53,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
 
         Task {
             do {
-                let venmoAccount = try await (venmoClient).tokenize(venmoRequest)
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
                 progressBlock("Got a nonce 💎!")
                 completionBlock(venmoAccount)
             } catch {
