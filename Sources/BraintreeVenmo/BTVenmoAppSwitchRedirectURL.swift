@@ -57,9 +57,9 @@ struct BTVenmoAppSwitchRedirectURL {
         ]
 
         if let universalLink {
-            queryParameters["x-success"] = universalLink.absoluteString + "/success"
-            queryParameters["x-error"] = universalLink.absoluteString + "/error"
-            queryParameters["x-cancel"] = universalLink.absoluteString + "/cancel"
+            queryParameters["x-success"] = universalLink.appendingPathComponent("success").absoluteString
+            queryParameters["x-error"] = universalLink.appendingPathComponent("error").absoluteString
+            queryParameters["x-cancel"] = universalLink.appendingPathComponent("cancel").absoluteString
         } else if let returnURLScheme {
             queryParameters["x-success"] = constructRedirectURL(with: returnURLScheme, result: "success")
             queryParameters["x-error"] = constructRedirectURL(with: returnURLScheme, result: "error")
