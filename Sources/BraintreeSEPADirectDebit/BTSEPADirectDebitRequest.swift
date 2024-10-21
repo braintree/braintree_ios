@@ -9,11 +9,11 @@ import BraintreeCore
 
     // MARK: - Internal Properties
     
-    var accountHolderName: String?
-    var iban: String?
-    var customerID: String?
+    var accountHolderName: String
+    var iban: String
+    var customerID: String
     var mandateType: BTSEPADirectDebitMandateType?
-    var billingAddress: BTPostalAddress?
+    var billingAddress: BTPostalAddress
     var merchantAccountID: String?
     var locale: String?
 
@@ -29,11 +29,11 @@ import BraintreeCore
     ///   See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
     ///   Locale code should be supplied as a BCP-47 formatted locale code.
     public init(
-        accountHolderName: String? = nil,
-        iban: String? = nil,
-        customerID: String? = nil,
+        accountHolderName: String,
+        iban: String,
+        customerID: String,
         mandateType: BTSEPADirectDebitMandateType? = .oneOff,
-        billingAddress: BTPostalAddress? = nil,
+        billingAddress: BTPostalAddress,
         merchantAccountID: String? = nil,
         locale: String? = nil
     ) {
