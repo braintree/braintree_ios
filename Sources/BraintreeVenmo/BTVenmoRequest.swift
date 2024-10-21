@@ -23,10 +23,10 @@ import Foundation
 @objcMembers public class BTVenmoRequest: NSObject {
 
     // MARK: - Internal Properties
-
+    
+    var paymentMethodUsage: BTVenmoPaymentMethodUsage
     var profileID: String?
     var vault: Bool = false
-    var paymentMethodUsage: BTVenmoPaymentMethodUsage
     var displayName: String?
     var collectCustomerBillingAddress: Bool = false
     var collectCustomerShippingAddress: Bool = false

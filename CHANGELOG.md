@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## unreleased (v7)
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
 * BraintreeVenmo
@@ -13,10 +15,6 @@
 ## 6.23.5 (2024-10-09)
 * BraintreeCore
   * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
-
-## 7.0.0-beta1
-* Breaking Changes
-  * Bump minimum supported deployment target to iOS 16+
 
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal

@@ -32,12 +32,6 @@ carthage update --use-xcframeworks
 ## Venmo
 `BTVenmoDriver` has been renamed to `BTVenmoClient`
 
-All properties within `BTVenmoRequest` are now internal and included in the initializer.
-
-```
-let venmoRequest =  BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true,fallbackToWeb: true)
-```
-
 The possible values for `BTVenmoPaymentMethodUsage` include:
 * `.multiUse` - the Venmo payment will be authorized for future payments and can be vaulted.
 * `.singleUse` - the Venmo payment will be authorized for a one-time payment and cannot be vaulted.
