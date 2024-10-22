@@ -27,11 +27,12 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = BTCard()
-        card.number = "123"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "123",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            shouldValidate: true
+        )
 
         let expectation = expectation(description: "Tokenize card")
 
@@ -160,8 +161,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_withCVVOnly_tokenizesSuccessfully() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = BTCard()
-        card.cvv = "123"
+        let card = BTCard(cvv: "123")
 
         let expectation = expectation(description: "Tokenize card")
 
@@ -182,19 +182,21 @@ class BTCardClient_IntegrationTests: XCTestCase {
     // MARK: - Private Helper Methods
 
     func invalidCard() -> BTCard {
-        let card = BTCard()
-        card.number = "123123"
-        card.expirationMonth = "XX"
-        card.expirationYear = "XXXX"
+        let card = BTCard(
+            number: "123123",
+            expirationMonth: "XX",
+            expirationYear: "XXXX"
+        )
         return card
     }
 
     func validCard() -> BTCard {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.cardholderName = "Cookie Monster"
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cardholderName: "Cookie Monster"
+        )
         return card
     }
 }
