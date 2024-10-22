@@ -7,9 +7,10 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
     func testUrlSchemeURL_whenAllValuesAreInitialized_returnsURLWithPaymentContextID() {
         do {
             let requestURL = try BTVenmoAppSwitchRedirectURL(
-                returnURLScheme: "url-scheme",
                 paymentContextID: "12345",
                 metadata: BTClientMetadata(),
+                returnURLScheme: "url-scheme",
+                universalLink: nil,
                 forMerchantID: "merchant-id",
                 accessToken: "access-token",
                 bundleDisplayName: "display-name",
@@ -29,9 +30,10 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
     func testAppSwitchURL_whenMerchantIDNil_throwsError() {
         do {
             _ = try BTVenmoAppSwitchRedirectURL(
-                returnURLScheme: "url-scheme",
                 paymentContextID: "12345",
                 metadata: BTClientMetadata(),
+                returnURLScheme: "url-scheme",
+                universalLink: nil,
                 forMerchantID: nil,
                 accessToken: "access-token",
                 bundleDisplayName: "display-name",
@@ -47,9 +49,10 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
     func testUniversalLinkURL_whenAllValuesInitialized_returnsURLWithAllValues() {
         do {
             let requestURL = try BTVenmoAppSwitchRedirectURL(
-                returnURLScheme: "url-scheme",
                 paymentContextID: "12345",
                 metadata: BTClientMetadata(),
+                returnURLScheme: nil,
+                universalLink: URL(string: "https://mywebsite.com/braintree-payments"),
                 forMerchantID: "merchant-id",
                 accessToken: "access-token",
                 bundleDisplayName: "display-name",
@@ -60,9 +63,9 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
 
             let components = URLComponents(string: requestURL.universalLinksURL()!.absoluteString)
             guard let queryItems = components?.queryItems else { XCTFail(); return }
-            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-success", value: "url-scheme://x-callback-url/vzero/auth/venmo/success")))
-            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-error", value: "url-scheme://x-callback-url/vzero/auth/venmo/error")))
-            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-cancel", value: "url-scheme://x-callback-url/vzero/auth/venmo/cancel")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-success", value: "https://mywebsite.com/braintree-payments/success")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-error", value: "https://mywebsite.com/braintree-payments/error")))
+            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-cancel", value: "https://mywebsite.com/braintree-payments/cancel")))
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "x-source", value: "display-name")))
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "merchant-id")))
             XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "access-token")))

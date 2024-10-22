@@ -41,7 +41,7 @@ struct BTVenmoAppSwitchReturnURL {
     init?(url: URL) {
         let parameters = BTURLUtils.queryParameters(for: url)
 
-        if url.path == "/vzero/auth/venmo/success" {
+        if url.path.contains("success") {
             if let resourceID = parameters["resource_id"] {
                 state = .succeededWithPaymentContext
                 paymentContextID = resourceID
@@ -50,12 +50,12 @@ struct BTVenmoAppSwitchReturnURL {
                 nonce = parameters["paymentMethodNonce"] ?? parameters["payment_method_nonce"]
                 username = parameters["username"]
             }
-        } else if url.path == "/vzero/auth/venmo/error" {
+        } else if url.path.contains("error") {
             state = .failed
             let errorMessage: String? = parameters["errorMessage"] ?? parameters["error_message"]
             let errorCode = Int(parameters["errorCode"] ?? parameters["error_code"] ?? "0")
             error = BTVenmoAppSwitchError.returnURLError(errorCode ?? 0, errorMessage)
-        } else if url.path == "/vzero/auth/venmo/cancel" {
+        } else if url.path.contains("cancel") {
             state = .canceled
         } else {
             state = .unknown
@@ -68,6 +68,7 @@ struct BTVenmoAppSwitchReturnURL {
     /// - Parameter url: an app switch return URL
     /// - Returns: `true` if the url represents a Venmo Touch app switch return
     static func isValid(url: URL) -> Bool {
-        url.host == "x-callback-url" && url.path.hasPrefix("/vzero/auth/venmo/")
+        (url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success") || url.path.contains("error")))
+        || (url.host == "x-callback-url" && url.path.hasPrefix("/vzero/auth/venmo/"))
     }
 }

@@ -22,9 +22,10 @@ struct BTVenmoAppSwitchRedirectURL {
     // MARK: - Initializer
 
     init(
-        returnURLScheme: String,
         paymentContextID: String,
         metadata: BTClientMetadata,
+        returnURLScheme: String?,
+        universalLink: URL?,
         forMerchantID merchantID: String?,
         accessToken: String?,
         bundleDisplayName: String?,
@@ -46,9 +47,6 @@ struct BTVenmoAppSwitchRedirectURL {
         let base64EncodedBraintreeData = serializedBraintreeData?.base64EncodedString()
 
         queryParameters = [
-            "x-success": constructRedirectURL(with: returnURLScheme, result: "success"),
-            "x-error": constructRedirectURL(with: returnURLScheme, result: "error"),
-            "x-cancel": constructRedirectURL(with: returnURLScheme, result: "cancel"),
             "x-source": bundleDisplayName,
             "braintree_merchant_id": merchantID,
             "braintree_access_token": accessToken,
@@ -57,6 +55,16 @@ struct BTVenmoAppSwitchRedirectURL {
             "braintree_sdk_data": base64EncodedBraintreeData ?? "",
             "customerClient": "MOBILE_APP"
         ]
+
+        if let universalLink {
+            queryParameters["x-success"] = universalLink.appendingPathComponent("success").absoluteString
+            queryParameters["x-error"] = universalLink.appendingPathComponent("error").absoluteString
+            queryParameters["x-cancel"] = universalLink.appendingPathComponent("cancel").absoluteString
+        } else if let returnURLScheme {
+            queryParameters["x-success"] = constructRedirectURL(with: returnURLScheme, result: "success")
+            queryParameters["x-error"] = constructRedirectURL(with: returnURLScheme, result: "error")
+            queryParameters["x-cancel"] = constructRedirectURL(with: returnURLScheme, result: "cancel")
+        }
     }
 
     // MARK: - Internal Methods
