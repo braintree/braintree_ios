@@ -4,79 +4,79 @@ import Foundation
 /// Its main purpose is to serve as the input for tokenization.
 @objcMembers public class BTCard: NSObject {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
 
     /// The card number
-    public var number: String?
+    let number: String?
 
     /// The expiration month as a one or two-digit number on the Gregorian calendar
-    public var expirationMonth: String?
+    let expirationMonth: String?
 
     /// The expiration year as a two or four-digit number on the Gregorian calendar
-    public var expirationYear: String?
+    let expirationYear: String?
 
     /// The card verification code (like CVV or CID).
     /// - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault,
     /// omit all other properties to only collect CVV.
-    public var cvv: String?
+    let cvv: String?
 
     /// The postal code associated with the card's billing address
-    public var postalCode: String?
+    let postalCode: String?
 
     /// Optional: the cardholder's name.
-    public var cardholderName: String?
+    let cardholderName: String?
 
     /// Optional: first name on the card.
-    public var firstName: String?
+    let firstName: String?
 
     /// Optional: last name on the card.
-    public var lastName: String?
+    let lastName: String?
 
     /// Optional: company name associated with the card.
-    public var company: String?
+    let company: String?
 
     /// Optional: the street address associated with the card's billing address
-    public var streetAddress: String?
+    let streetAddress: String?
 
     /// Optional: the extended address associated with the card's billing address
-    public var extendedAddress: String?
+    let extendedAddress: String?
 
     /// Optional: the city associated with the card's billing address
-    public var locality: String?
+    let locality: String?
 
     /// Optional: either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
-    public var region: String?
+    let region: String?
 
     /// Optional: the country name associated with the card's billing address.
     /// - Note: Braintree only accepts specific country names.
     /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    public var countryName: String?
+    let countryName: String?
 
     /// Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
     /// - Note: Braintree only accepts specific alpha-2 values.
     /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    public var countryCodeAlpha2: String?
+    let countryCodeAlpha2: String?
 
     /// Optional: the ISO 3166-1 alpha-3 country code specified in the card's billing address.
     /// - Note: Braintree only accepts specific alpha-3 values.
     /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    public var countryCodeAlpha3: String?
+    let countryCodeAlpha3: String?
 
     ///  Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
     ///  - Note: Braintree only accepts specific numeric values.
     /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    public var countryCodeNumeric: String?
+    let countryCodeNumeric: String?
 
     /// Controls whether or not to return validations and/or verification results. By default, this is not enabled.
     /// - Note: Use this flag with caution. By enabling client-side validation, certain tokenize card requests may result in adding the card to the vault.
     /// These semantics are not currently documented.
-    public var shouldValidate: Bool = false
+    var shouldValidate: Bool = false
 
     /// Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountID` must be provided. Defaults to false.
-    public var authenticationInsightRequested: Bool = false
+    var authenticationInsightRequested: Bool = false
 
     /// Optional: The merchant account ID.
-    public var merchantAccountID: String?
+    let merchantAccountID: String?
 
     public init(
         number: String? = nil,
