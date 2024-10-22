@@ -14,11 +14,6 @@ import UIKit
     /// The URL scheme to return to this app after switching to another app or opening a SFSafariViewController.
     /// This URL scheme must be registered as a URL Type in the app's info.plist, and it must start with the app's bundle ID.
     /// - Note: This property should only be used for the Venmo flow.
-    @available(
-        *,
-        deprecated,
-        message: "returnURLScheme is deprecated and will be removed in a future version. Use BTVenmoClient(apiClient:universalLink:)."
-    )
     public var returnURLScheme: String = ""
 
     // MARK: - Private Properties
