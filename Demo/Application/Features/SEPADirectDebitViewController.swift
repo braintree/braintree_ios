@@ -34,8 +34,8 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
             accountHolderName: "John Doe",
             iban: BTSEPADirectDebitTestHelper.generateValidSandboxIBAN(),
             customerID: generateRandomCustomerID(),
-            mandateType: .oneOff,
             billingAddress: billingAddress,
+            mandateType: .oneOff,
             merchantAccountID: "EUR-sepa-direct-debit"
         )
 

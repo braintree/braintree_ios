@@ -38,8 +38,8 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
             accountHolderName: "John Doe",
             iban: "FR891751244434203564412313",
             customerID: "A0E243A0A200491D929D",
-            mandateType: .oneOff,
             billingAddress: billingAddress,
+            mandateType: .oneOff,
             merchantAccountID: "eur_pwpp_multi_account_merchant_account"
         )
         

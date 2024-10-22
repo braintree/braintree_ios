@@ -12,8 +12,8 @@ import BraintreeCore
     var accountHolderName: String
     var iban: String
     var customerID: String
-    var mandateType: BTSEPADirectDebitMandateType?
     var billingAddress: BTPostalAddress
+    var mandateType: BTSEPADirectDebitMandateType?
     var merchantAccountID: String?
     var locale: String?
 
@@ -32,16 +32,16 @@ import BraintreeCore
         accountHolderName: String,
         iban: String,
         customerID: String,
-        mandateType: BTSEPADirectDebitMandateType? = .oneOff,
         billingAddress: BTPostalAddress,
+        mandateType: BTSEPADirectDebitMandateType? = .oneOff,
         merchantAccountID: String? = nil,
         locale: String? = nil
     ) {
         self.accountHolderName = accountHolderName
         self.iban = iban
         self.customerID = customerID
-        self.mandateType = mandateType
         self.billingAddress = billingAddress
+        self.mandateType = mandateType
         self.merchantAccountID = merchantAccountID
         self.locale = locale
     }
