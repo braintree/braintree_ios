@@ -24,11 +24,12 @@ import UIKit
         set { _returnURLScheme = newValue }
     }
 
+    // swiftlint:disable identifier_name
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Property for `returnURLScheme`. Created to avoid deprecation warnings upon accessing
     /// `returnURLScheme` directly within our SDK. Use this value instead.
-    // swiftlint:disable:next identifier_name
     public var _returnURLScheme: String = ""
+    // swiftlint:enable identifier_name
 
     // MARK: - Private Properties
     
