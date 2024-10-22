@@ -14,7 +14,21 @@ import UIKit
     /// The URL scheme to return to this app after switching to another app or opening a SFSafariViewController.
     /// This URL scheme must be registered as a URL Type in the app's info.plist, and it must start with the app's bundle ID.
     /// - Note: This property should only be used for the Venmo flow.
-    public var returnURLScheme: String = ""
+    @available(
+        *,
+        deprecated,
+        message: "returnURLScheme is deprecated and will be removed in a future version. Use BTVenmoClient(apiClient:universalLink:)."
+    )
+    public var returnURLScheme: String {
+        get { _returnURLScheme }
+        set { _returnURLScheme = newValue }
+    }
+
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// Property for `returnURLScheme`. Created to avoid deprecation warnings upon accessing
+    /// `returnURLScheme` directly within our SDK. Use this value instead.
+    // swiftlint:disable:next identifier_name
+    public var _returnURLScheme: String = ""
 
     // MARK: - Private Properties
     

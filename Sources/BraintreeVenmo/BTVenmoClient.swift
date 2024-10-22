@@ -81,7 +81,7 @@ import BraintreeCore
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         linkType = request.fallbackToWeb ? .universal : .deeplink
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
-        let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
+        let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
         if returnURLScheme.isEmpty {
             NSLog(

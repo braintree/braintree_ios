@@ -6,6 +6,8 @@
 * BraintreeVenmo
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
   * Add `BTVenmoClient(apiClient:universalLink:)` to use Universal Links when redirecting back from the Venmo flow
+* BraintreeCore
+  * Deprecate `BTAppContextSwitcher.sharedInstance.returnURLScheme`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
