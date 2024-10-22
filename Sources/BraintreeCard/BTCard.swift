@@ -6,78 +6,61 @@ import Foundation
 
     // MARK: - Internal Properties
 
-    /// The card number
     let number: String?
-
-    /// The expiration month as a one or two-digit number on the Gregorian calendar
     let expirationMonth: String?
-
-    /// The expiration year as a two or four-digit number on the Gregorian calendar
     let expirationYear: String?
-
-    /// The card verification code (like CVV or CID).
-    /// - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault,
-    /// omit all other properties to only collect CVV.
     let cvv: String?
-
-    /// The postal code associated with the card's billing address
     let postalCode: String?
-
-    /// Optional: the cardholder's name.
     let cardholderName: String?
-
-    /// Optional: first name on the card.
     let firstName: String?
-
-    /// Optional: last name on the card.
     let lastName: String?
-
-    /// Optional: company name associated with the card.
     let company: String?
-
-    /// Optional: the street address associated with the card's billing address
     let streetAddress: String?
-
-    /// Optional: the extended address associated with the card's billing address
     let extendedAddress: String?
-
-    /// Optional: the city associated with the card's billing address
     let locality: String?
-
-    /// Optional: either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
     let region: String?
-
-    /// Optional: the country name associated with the card's billing address.
-    /// - Note: Braintree only accepts specific country names.
-    /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
     let countryName: String?
-
-    /// Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
-    /// - Note: Braintree only accepts specific alpha-2 values.
-    /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
     let countryCodeAlpha2: String?
-
-    /// Optional: the ISO 3166-1 alpha-3 country code specified in the card's billing address.
-    /// - Note: Braintree only accepts specific alpha-3 values.
-    /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
     let countryCodeAlpha3: String?
-
-    ///  Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
-    ///  - Note: Braintree only accepts specific numeric values.
-    /// - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
     let countryCodeNumeric: String?
-
-    /// Controls whether or not to return validations and/or verification results. By default, this is not enabled.
-    /// - Note: Use this flag with caution. By enabling client-side validation, certain tokenize card requests may result in adding the card to the vault.
-    /// These semantics are not currently documented.
     var shouldValidate: Bool = false
-
-    /// Optional: If authentication insight is requested. If this property is set to true, a `merchantAccountID` must be provided. Defaults to false.
     var authenticationInsightRequested: Bool = false
-
-    /// Optional: The merchant account ID.
     let merchantAccountID: String?
 
+    // MARK: - Initializer
+    
+    /// Creates a Card
+    /// - Parameters:
+    ///   - number: The card number.
+    ///   - expirationMonth: The expiration month as a one or two-digit number on the Gregorian calendar.
+    ///   - expirationYear:The expiration year as a two or four-digit number on the Gregorian calendar.
+    ///   - cvv: The card verification code (like CVV or CID).
+    ///     - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault, omit all other properties to only collect CVV.
+    ///   - postalCode: The postal code associated with the card's billing address.
+    ///   - cardholderName: Optional: the cardholder's name.
+    ///   - firstName: Optional: first name on the card.
+    ///   - lastName: Optional: last name on the card.
+    ///   - company: Optional: company name associated with the card.
+    ///   - streetAddress: Optional: the street address associated with the card's billing address.
+    ///   - extendedAddress: Optional: the extended address associated with the card's billing address.
+    ///   - locality: Optional: the city associated with the card's billing address.
+    ///   - region: Optional: either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
+    ///   - countryName: Optional: the country name associated with the card's billing address.
+    ///     - Note: Braintree only accepts specific country names.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
+    ///   - countryCodeAlpha2: Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
+    ///     - Note: Braintree only accepts specific alpha-2 values.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
+    ///   - countryCodeAlpha3: Optional: the ISO 3166-1 alpha-3 country code specified in the card's billing address.
+    ///     - Note: Braintree only accepts specific alpha-3 values.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
+    ///   - countryCodeNumeric: Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
+    ///     - Note: Braintree only accepts specific numeric values.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
+    ///   - shouldValidate: Controls whether or not to return validations and/or verification results. By default, this is not enabled.
+    ///     - Note: Use this flag with caution. By enabling client-side validation, certain tokenize card requests may result in adding the card to the vault. These semantics are not currently documented.
+    ///   - authenticationInsightRequested: Optional: If authentication insight is requested. If this property is set to `true`, a `merchantAccountID` must be provided. Defaults to `false`.
+    ///   - merchantAccountID: Optional: The merchant account ID.
     public init(
         number: String? = nil,
         expirationMonth: String? = nil,
