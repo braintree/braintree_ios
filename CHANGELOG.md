@@ -4,7 +4,7 @@
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
 * BraintreeSEPADirectDebit
-  * Make all properties within `BraintreeSEPADirectDebitRequest` internal and included in the initializer.
+  * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal

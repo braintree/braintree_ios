@@ -14,4 +14,5 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 v7 bumps to a minimum deployment target of iOS 16+.
 
 ## SEPA Direct Debit
-All properties within `BTSEPADirectDebitRequest` are now internal.
+All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
+
