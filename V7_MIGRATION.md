@@ -13,9 +13,8 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 
 v7 bumps to a minimum deployment target of iOS 16+.
 
-
 ## Venmo
-All properties within `BTVenmoRequest` are now internal and included in the initializer.
+All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
 
 ```
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
