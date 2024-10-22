@@ -78,6 +78,50 @@ import Foundation
     /// Optional: The merchant account ID.
     public var merchantAccountID: String?
 
+    public init(
+        number: String? = nil,
+        expirationMonth: String? = nil,
+        expirationYear: String? = nil,
+        cvv: String? = nil,
+        postalCode: String? = nil,
+        cardholderName: String? = nil,
+        firstName: String? = nil,
+        lastName: String? = nil,
+        company: String? = nil,
+        streetAddress: String? = nil,
+        extendedAddress: String? = nil,
+        locality: String? = nil,
+        region: String? = nil,
+        countryName: String? = nil,
+        countryCodeAlpha2: String? = nil,
+        countryCodeAlpha3: String? = nil,
+        countryCodeNumeric: String? = nil,
+        shouldValidate: Bool = false,
+        authenticationInsightRequested: Bool = false,
+        merchantAccountID: String? = nil
+    ) {
+        self.number = number
+        self.expirationMonth = expirationMonth
+        self.expirationYear = expirationYear
+        self.cvv = cvv
+        self.postalCode = postalCode
+        self.cardholderName = cardholderName
+        self.firstName = firstName
+        self.lastName = lastName
+        self.company = company
+        self.streetAddress = streetAddress
+        self.extendedAddress = extendedAddress
+        self.locality = locality
+        self.region = region
+        self.countryName = countryName
+        self.countryCodeAlpha2 = countryCodeAlpha2
+        self.countryCodeAlpha3 = countryCodeAlpha3
+        self.countryCodeNumeric = countryCodeNumeric
+        self.shouldValidate = shouldValidate
+        self.authenticationInsightRequested = authenticationInsightRequested
+        self.merchantAccountID = merchantAccountID
+    }
+    
     // MARK: - Internal Methods
 
     func parameters() -> [String: Any] {
