@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
+* BraintreeCard
+  * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
   
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
