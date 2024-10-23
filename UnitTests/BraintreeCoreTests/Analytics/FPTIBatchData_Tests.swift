@@ -25,7 +25,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             eventName: "fake-event-1", 
             isConfigFromCache: false,
             isVaultRequest: false,
-            linkType: LinkType.universal.rawValue,
             payPalContextID: "fake-order-id",
             requestStartTime: 456,
             startTime: 999888777666

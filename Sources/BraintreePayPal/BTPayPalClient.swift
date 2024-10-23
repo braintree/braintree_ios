@@ -62,9 +62,6 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: LinkType?
-
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -198,7 +195,7 @@ import BraintreeDataCollector
             payPalContextID: payPalContextID
         )
 
-        guard let url, BTPayPalReturnURL.isValidURLAction(url: url, linkType: linkType) else {
+        guard let url, BTPayPalReturnURL.isValidURLAction(url: url) else {
             notifyFailure(with: BTPayPalError.invalidURLAction, completion: completion)
             return
         }
@@ -310,8 +307,6 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
-
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
