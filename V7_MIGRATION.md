@@ -8,6 +8,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 
 1. [Supported Versions](#supported-versions)
 1. [Card](#card)
+1. [Venmo](#venmo)
 
 ## Supported Versions
 
@@ -23,4 +24,10 @@ let card = BTCard(
     expirationYear = "2025"
     cvv = "123"
 )
+
+## Venmo
+All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
+
+```
+let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
 ```
