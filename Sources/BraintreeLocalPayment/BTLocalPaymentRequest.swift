@@ -75,7 +75,7 @@ import BraintreeDataCollector
         givenName: String? = nil,
         surname: String? = nil,
         phone: String? = nil,
-        isShippingAddressRequired: Bool,
+        isShippingAddressRequired: Bool = false,
         bic: String? = nil,
         localPaymentFlowDelegate: BTLocalPaymentRequestDelegate? = nil
     ) {
