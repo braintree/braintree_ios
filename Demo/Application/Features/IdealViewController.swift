@@ -60,15 +60,15 @@ class IdealViewController: PaymentButtonBaseViewController {
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
             paymentTypeCountryCode: "NL",
-            address: postalAddress,
             amount: "1.01",
+            address: postalAddress,
             currencyCode: "EUR",
             email: "lingo-buyer@paypal.com",
             givenName: "Linh",
             surname: "Ngo",
-            phone: "639847934",
-            localPaymentFlowDelegate: self
+            phone: "639847934"
         )
+        request.localPaymentFlowDelegate = self
 
         localPaymentClient.startPaymentFlow(request) { result, error in
             guard let result else {
