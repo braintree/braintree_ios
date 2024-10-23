@@ -1,11 +1,13 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## unreleased (v7)
+* BraintreeVenmo
+    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method
+
+## unreleased 
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
-* BraintreeVenmo
-    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method 
-  
+
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
   * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
