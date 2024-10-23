@@ -8,6 +8,8 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 
 1. [Supported Versions](#supported-versions)
 1. [Venmo](#venmo)
+1. [SEPA Direct Debit](#sepa-direct-debit)
+1. [Local Payments](#local-payments)
 
 ## Supported Versions
 
@@ -20,7 +22,10 @@ All properties within `BTVenmoRequest` can only be accessed on the initializer v
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
 ```
 
-## LocalPayments
+## SEPA Direct Debit
+All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
+
+## Local Payments
 v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer:
 
 ```
