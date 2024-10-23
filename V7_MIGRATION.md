@@ -20,9 +20,9 @@ v7 updates `BTCard` to require setting all properties through the initializer, r
 
 ```
 let card = BTCard(
-    number = "4111111111111111"
-    expirationMonth = "12"
-    expirationYear = "2025"
+    number = "4111111111111111",
+    expirationMonth = "12",
+    expirationYear = "2025",
     cvv = "123"
 )
 ```
