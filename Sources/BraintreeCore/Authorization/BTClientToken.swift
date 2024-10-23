@@ -1,7 +1,6 @@
 import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
-@_documentation(visibility: private)
 class BTClientToken: ClientAuthorization {
 
     // MARK: - Internal Properties
