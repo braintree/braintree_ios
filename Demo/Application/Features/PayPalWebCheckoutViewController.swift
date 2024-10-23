@@ -20,36 +20,65 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "placeholder@email.com"
+        textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
+        textField.keyboardType = .emailAddress
         return textField
     }()
     
-    lazy var payLaterToggleLabel: UILabel = {
+    lazy var emailStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [emailLabel, emailTextField])
+        stackView.distribution = .fillProportionally
+        return stackView
+    }()
+    
+    lazy var countryCodeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Offer Pay Later"
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.text = "Country Code:"
         return label
     }()
     
-    let payLaterToggle = UISwitch()
-
-    lazy var newPayPalCheckoutToggleLabel: UILabel = {
+    lazy var countryCodeTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "1"
+        textField.textAlignment = .right
+        textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
+        return textField
+    }()
+    
+    lazy var countryCodeStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, countryCodeTextField])
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    lazy var nationalNumberLabel: UILabel = {
         let label = UILabel()
-        label.text = "New PayPal Checkout Experience"
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.text = "National Number:"
         return label
     }()
     
-    let newPayPalCheckoutToggle = UISwitch()
-    
-    lazy var rbaDataToggleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Recurring Billing (RBA) Data"
-        label.font = .preferredFont(forTextStyle: .footnote)
-        return label
+    lazy var nationalNumberTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "000-000-000"
+        textField.textAlignment = .right
+        textField.backgroundColor = .systemBackground
+        textField.keyboardType = .phonePad
+        return textField
     }()
     
-    let rbaDataToggle = UISwitch()
+    lazy var nationalNumberStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [nationalNumberLabel, nationalNumberTextField])
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    let payLaterToggle = Toggle(title: "Offer Pay Later")
+    
+    let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
+    
+    let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
 
     lazy var payPalVaultIDLabel: UILabel = {
         let label = UILabel()
@@ -94,7 +123,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     override func viewDidLoad() {
         super.heightConstraint = 600
-
         super.viewDidLoad()
 
         errorHandlingToggle.addTarget(self, action: #selector(toggleErrorHandling), for: .valueChanged)
@@ -107,17 +135,17 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let payPalEditVaultButton = createButton(title: "Edit FI", action: #selector(tappedPayPalEditVault))
 
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
-            UIStackView(arrangedSubviews: [payLaterToggleLabel, payLaterToggle]),
-            UIStackView(arrangedSubviews: [newPayPalCheckoutToggleLabel, newPayPalCheckoutToggle]),
+            payLaterToggle,
+            newPayPalCheckoutToggle,
             payPalCheckoutButton
         ])
 
         let vaultStackView = buttonsStackView(label: "Vault", views: [
-            UIStackView(arrangedSubviews: [rbaDataToggleLabel, rbaDataToggle]),
+            rbaDataToggle,
             payPalVaultButton,
             payPalAppSwitchButton
         ])
-        
+
         let editFIStackView = buttonsStackView(
             label: "Edit FI Flow",
             views: [
@@ -130,8 +158,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             ]
         )
 
+        oneTimeCheckoutStackView.spacing = 12
+        vaultStackView.spacing = 12
+        editFIStackView.spacing = 12
+
         let stackView = UIStackView(arrangedSubviews: [
-            UIStackView(arrangedSubviews: [emailLabel, emailTextField]),
+            emailStackView,
+            countryCodeStackView,
+            nationalNumberStackView,
             oneTimeCheckoutStackView,
             vaultStackView,
             editFIStackView
@@ -166,6 +200,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
@@ -197,6 +235,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
+        request.userPhoneNumber = BTPayPalPhoneNumber(
+            countryCode: countryCodeTextField.text ?? "",
+            nationalNumber: nationalNumberTextField.text ?? ""
+        )
         
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(

@@ -71,7 +71,7 @@ import BraintreeCore
         if let userAuthenticationEmail {
             baseParameters["payer_email"] = userAuthenticationEmail
         }
-        
+
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [
                 "launch_paypal_app": enablePayPalAppSwitch,
