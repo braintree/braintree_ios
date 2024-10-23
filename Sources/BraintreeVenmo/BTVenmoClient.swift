@@ -43,9 +43,6 @@ import BraintreeCore
     /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String?
 
-    /// Used for sending the type of flow, universal, to FPTI
-    private var linkType: LinkType = .universal
-
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
@@ -67,7 +64,7 @@ import BraintreeCore
     @objc(tokenizeWithVenmoRequest:completion:)
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme.isEmpty {
@@ -370,7 +367,6 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
                 isVaultRequest: shouldVault,
-                linkType: linkType,
                 payPalContextID: payPalContextID
             )
             BTVenmoClient.venmoClient = self
@@ -379,7 +375,6 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchFailed,
                 isVaultRequest: shouldVault,
-                linkType: linkType,
                 payPalContextID: payPalContextID
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
@@ -418,7 +413,7 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
+        func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
         }
@@ -444,7 +439,6 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
             isVaultRequest: shouldVault,
-            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(result, nil)
@@ -455,7 +449,6 @@ import BraintreeCore
             BTVenmoAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
             isVaultRequest: shouldVault,
-            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, error)
@@ -465,7 +458,6 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchCanceled,
             isVaultRequest: shouldVault,
-            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, BTVenmoError.canceled)

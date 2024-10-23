@@ -13,7 +13,6 @@ public class MockAPIClient: BTAPIClient {
 
     public var postedAnalyticsEvents : [String] = []
     public var postedPayPalContextID: String? = nil
-    public var postedLinkType: LinkType? = nil
     public var postedIsVaultRequest = false
     public var postedMerchantExperiment: String? = nil
     public var postedPaymentMethodsDisplayed: String? = nil
@@ -97,12 +96,10 @@ public class MockAPIClient: BTAPIClient {
         merchantExperiment experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
-        linkType: LinkType? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
-        postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false
         postedMerchantExperiment = experiment
         postedPaymentMethodsDisplayed = paymentMethodsDisplayed
