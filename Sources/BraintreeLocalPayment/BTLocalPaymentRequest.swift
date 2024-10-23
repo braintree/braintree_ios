@@ -14,47 +14,47 @@ import BraintreeDataCollector
     // MARK: - Internal Properties
     
     /// The type of payment.
-    var paymentType: String?
+    let paymentType: String?
     
     ///  The country code of the local payment.
     ///
     ///  This value must be one of the supported country codes for a given local payment type listed at the link below. For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
     ///
     /// https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
-    var paymentTypeCountryCode: String?
+    let paymentTypeCountryCode: String?
     
     /// Optional: A non-default merchant account to use for tokenization.
-    var merchantAccountID: String?
+    let merchantAccountID: String?
     
     /// Optional: The address of the customer. An error will occur if this address is not valid.
-    var address: BTPostalAddress?
+    let address: BTPostalAddress?
     
     /// The amount for the transaction.
-    var amount: String?
+    let amount: String?
     
     /// Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
-    var currencyCode: String?
+    let currencyCode: String?
     
     /// Optional: The merchant name displayed inside of the local payment flow.
-    var displayName: String?
+    let displayName: String?
     
     /// Optional: Payer email of the customer.
-    var email: String?
+    let email: String?
     
     /// Optional: Given (first) name of the customer.
-    var givenName: String?
+    let givenName: String?
     
     /// Optional: Surname (last name) of the customer.
-    var surname: String?
+    let surname: String?
     
     /// Optional: Phone number of the customer.
-    var phone: String?
+    let phone: String?
     
     ///  Indicates whether or not the payment needs to be shipped. For digital goods, this should be false. Defaults to false.
     var isShippingAddressRequired: Bool = false
     
     /// Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
-    var bic: String?
+    let bic: String?
     
     weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
 
