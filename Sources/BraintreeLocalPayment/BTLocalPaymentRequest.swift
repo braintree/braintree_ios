@@ -13,62 +13,50 @@ import BraintreeDataCollector
     
     // MARK: - Internal Properties
     
-    /// The type of payment.
     let paymentType: String?
-    
-    ///  The country code of the local payment.
-    ///
-    ///  This value must be one of the supported country codes for a given local payment type listed at the link below. For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
-    ///
-    /// https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
     let paymentTypeCountryCode: String?
-    
-    /// Optional: A non-default merchant account to use for tokenization.
-    let merchantAccountID: String?
-    
-    /// Optional: The address of the customer. An error will occur if this address is not valid.
-    let address: BTPostalAddress?
-    
-    /// The amount for the transaction.
     let amount: String?
-    
-    /// Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+    let merchantAccountID: String?
+    let address: BTPostalAddress?
     let currencyCode: String?
-    
-    /// Optional: The merchant name displayed inside of the local payment flow.
     let displayName: String?
-    
-    /// Optional: Payer email of the customer.
     let email: String?
-    
-    /// Optional: Given (first) name of the customer.
     let givenName: String?
-    
-    /// Optional: Surname (last name) of the customer.
     let surname: String?
-    
-    /// Optional: Phone number of the customer.
     let phone: String?
-    
-    ///  Indicates whether or not the payment needs to be shipped. For digital goods, this should be false. Defaults to false.
     var isShippingAddressRequired: Bool = false
-    
-    /// Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
     let bic: String?
     
-    weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
+    public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
 
     var paymentID: String?
     var correlationID: String?
     
     // MARK: - Initializer
 
+    /// Creates a LocalPaymentRequest
+    /// - Parameters:
+    ///   - paymentType: The type of payment.
+    ///   - paymentTypeCountryCode: The country code of the local payment. This value must be one of the supported country codes for a given local payment type listed at the link below.
+    ///   For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
+    ///   - amount: The amount for the transaction.
+    ///   - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
+    ///   - address: Optional: The address of the customer. An error will occur if this address is not valid.
+    ///   - currencyCode: Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+    ///   - displayName: Optional: The merchant name displayed inside of the local payment flow.
+    ///   - email: Optional: Payer email of the customer.
+    ///   - givenName: Optional: Given (first) name of the customer.
+    ///   - surname: Optional: Surname (last name) of the customer.
+    ///   - phone: Optional: Phone number of the customer.
+    ///   - isShippingAddressRequired: Indicates whether or not the payment needs to be shipped. For digital goods, this should be `false`. Defaults to `false`.
+    ///   - bic: Optional: Bank Identification Code of the customer (specific to iDEAL transactions).
     public init(
         paymentType: String? = nil,
         paymentTypeCountryCode: String? = nil,
+        amount: String? = nil,
         merchantAccountID: String? = nil,
         address: BTPostalAddress? = nil,
-        amount: String? = nil,
         currencyCode: String? = nil,
         displayName: String? = nil,
         email: String? = nil,
@@ -76,14 +64,13 @@ import BraintreeDataCollector
         surname: String? = nil,
         phone: String? = nil,
         isShippingAddressRequired: Bool = false,
-        bic: String? = nil,
-        localPaymentFlowDelegate: BTLocalPaymentRequestDelegate? = nil
+        bic: String? = nil
     ) {
         self.paymentType = paymentType
         self.paymentTypeCountryCode = paymentTypeCountryCode
+        self.amount = amount
         self.merchantAccountID = merchantAccountID
         self.address = address
-        self.amount = amount
         self.currencyCode = currencyCode
         self.displayName = displayName
         self.email = email
@@ -92,6 +79,5 @@ import BraintreeDataCollector
         self.phone = phone
         self.isShippingAddressRequired = isShippingAddressRequired
         self.bic = bic
-        self.localPaymentFlowDelegate = localPaymentFlowDelegate
     }
 }
