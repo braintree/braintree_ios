@@ -62,4 +62,36 @@ import BraintreeDataCollector
 
     var paymentID: String?
     var correlationID: String?
+    
+    public init(
+        paymentType: String? = nil,
+        paymentTypeCountryCode: String? = nil,
+        merchantAccountID: String? = nil,
+        address: BTPostalAddress? = nil,
+        amount: String? = nil,
+        currencyCode: String? = nil,
+        displayName: String? = nil,
+        email: String? = nil,
+        givenName: String? = nil,
+        surname: String? = nil,
+        phone: String? = nil,
+        isShippingAddressRequired: Bool,
+        bic: String? = nil,
+        localPaymentFlowDelegate: BTLocalPaymentRequestDelegate? = nil
+    ) {
+        self.paymentType = paymentType
+        self.paymentTypeCountryCode = paymentTypeCountryCode
+        self.merchantAccountID = merchantAccountID
+        self.address = address
+        self.amount = amount
+        self.currencyCode = currencyCode
+        self.displayName = displayName
+        self.email = email
+        self.givenName = givenName
+        self.surname = surname
+        self.phone = phone
+        self.isShippingAddressRequired = isShippingAddressRequired
+        self.bic = bic
+        self.localPaymentFlowDelegate = localPaymentFlowDelegate
+    }
 }
