@@ -1,14 +1,14 @@
 /// The POST body for `v1/payment_methods/venmo_accounts`
 struct VenmoAccountsRequest: Encodable {
         
-    private let venmoAccount: VenmoAccountNonce
+    private let venmoAccount: VenmoAccount
     
-    struct VenmoAccountNonce: Encodable {
+    struct VenmoAccount: Encodable {
         
         let nonce: String
     }
 
     init(nonce: String) {
-        self.venmoAccount = VenmoAccountNonce(nonce: nonce)
+        self.venmoAccount = VenmoAccount(nonce: nonce)
     }
 }

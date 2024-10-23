@@ -1363,7 +1363,7 @@
 				9CE8C7F9275ABDE700FB11F9 /* BTAmericanExpressClient.swift */,
 				9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */,
 				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */,
-				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */,
+				805DC57F2CC9974900E6F43F /* Models */,
 				80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeAmericanExpress;
@@ -1495,12 +1495,12 @@
 			isa = PBXGroup;
 			children = (
 				62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */,
-				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
 				8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */,
 				8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */,
 				624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
+				805DC5802CC9976300E6F43F /* Models */,
 				3B29C3942B90F12F0077741D /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeShopperInsights;
@@ -1548,6 +1548,47 @@
 				457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		805DC57C2CC996E900E6F43F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				805DC57A2CC9928500E6F43F /* VenmoAccountsRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		805DC57D2CC9971100E6F43F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		805DC57E2CC9972000E6F43F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */,
+				BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		805DC57F2CC9974900E6F43F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		805DC5802CC9976300E6F43F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */ = {
@@ -1803,8 +1844,8 @@
 				BE895C60299433FB008112AB /* BTApplePayCardNonce.swift */,
 				BE895C6429944BF5008112AB /* BTApplePayClient.swift */,
 				BE895C6229944BD3008112AB /* BTApplePayError.swift */,
-				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
 				BE7A9643299FC5DE009AB920 /* BTConfiguration+ApplePay.swift */,
+				805DC57D2CC9971100E6F43F /* Models */,
 				6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeApplePay;
@@ -1829,7 +1870,6 @@
 		A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */ = {
 			isa = PBXGroup;
 			children = (
-				805DC57A2CC9928500E6F43F /* VenmoAccountsRequest.swift */,
 				BE98349D2A041AA600B6C3CC /* BTConfiguration+Venmo.swift */,
 				BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */,
 				3B1C529329D5EB4E00B68A58 /* BTVenmoAnalytics.swift */,
@@ -1839,6 +1879,7 @@
 				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
 				096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */,
 				BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */,
+				805DC57C2CC996E900E6F43F /* Models */,
 				3BE7386E2BA171A300598F05 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeVenmo;
@@ -2105,10 +2146,9 @@
 				BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */,
 				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
-				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */,
-				BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */,
-				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
+				805DC57E2CC9972000E6F43F /* Models */,
 				62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */,
+				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
 			);
 			path = BraintreeSEPADirectDebit;
 			sourceTree = "<group>";
