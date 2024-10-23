@@ -251,7 +251,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleReturnURL(returnURL)
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
@@ -281,7 +280,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
@@ -300,7 +298,6 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "A_FAKE_BA_TOKEN")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 

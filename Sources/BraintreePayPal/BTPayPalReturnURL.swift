@@ -42,7 +42,7 @@ struct BTPayPalReturnURL {
         url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success"))
     }
 
-    static func isValidURLAction(url: URL, linkType: LinkType?) -> Bool {
+    static func isValidURLAction(url: URL) -> Bool {
         guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
             return false
         }
@@ -59,7 +59,7 @@ struct BTPayPalReturnURL {
 
         /// If we are using the deeplink/ASWeb based PayPal flow we want to check that the host and path matches
         /// the static callbackURLHostAndPath. For the universal link flow we do not care about this check.
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && linkType == .deeplink {
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath {
             return false
         }
 
