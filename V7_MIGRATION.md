@@ -19,3 +19,14 @@ All properties within `BTVenmoRequest` can only be accessed on the initializer v
 ```
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
 ```
+
+## LocalPayments
+v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer:
+
+```
+let localPaymentRequest = BTLocalPaymentRequest(
+    paymentType = "ideal",
+    paymentTypeCountryCode = "NL",
+    amount = "1.01"
+)
+```
