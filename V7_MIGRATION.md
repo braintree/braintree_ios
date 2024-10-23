@@ -7,7 +7,15 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
+1. [Venmo](#venmo)
 
 ## Supported Versions
 
 v7 bumps to a minimum deployment target of iOS 16+.
+
+## Venmo
+All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
+
+```
+let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
+```

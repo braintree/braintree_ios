@@ -1,9 +1,15 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased (v7)
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
+* BraintreeVenmo
+  * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
-  
+
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
   * Add `BTPayPalRecurringBillingDetails` and `BTPayPalRecurringBillingPlanType` opt-in request objects. Including these details will provide transparency to users on their billing schedule, dates, and amounts, as well as launch a modernized checkout UI.
@@ -11,10 +17,6 @@
 ## 6.23.5 (2024-10-09)
 * BraintreeCore
   * Fix analytics bug where sessionID value in analytics payload was inaccurate; send separate FPTI POST requests per unique sessionID
-
-## 7.0.0-beta1
-* Breaking Changes
-  * Bump minimum supported deployment target to iOS 16+
 
 ## 6.23.4 (2024-09-24)
 * BraintreePayPal
