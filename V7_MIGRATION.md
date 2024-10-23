@@ -24,6 +24,7 @@ let card = BTCard(
     expirationYear = "2025"
     cvv = "123"
 )
+```
 
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
