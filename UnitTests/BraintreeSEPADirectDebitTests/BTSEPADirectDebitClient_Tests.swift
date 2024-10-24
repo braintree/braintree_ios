@@ -7,7 +7,7 @@ import AuthenticationServices
 class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     var billingAddress = BTPostalAddress()
-    var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
+    var sepaDirectDebitRequest: BTSEPADirectDebitRequest!
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
 
     override func setUp() {
@@ -20,12 +20,13 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
         
-        sepaDirectDebitRequest.accountHolderName = "John Doe"
-        sepaDirectDebitRequest.iban = "FR891751244434203564412313"
-        sepaDirectDebitRequest.customerID = "A0E243A0A200491D929D"
-        sepaDirectDebitRequest.mandateType = .oneOff
-        sepaDirectDebitRequest.billingAddress = billingAddress
-        sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
+        sepaDirectDebitRequest = BTSEPADirectDebitRequest(
+            accountHolderName: "John Doe",
+            iban: "FR891751244434203564412313",
+            customerID: "A0E243A0A200491D929D",
+            billingAddress: billingAddress,
+            merchantAccountID: "eur_pwpp_multi_account_merchant_account"
+        )
     }
 
     func testTokenizeWithPresentationContext_callsCreateMandateWithError_returnsError_andSendsAnalytics() {

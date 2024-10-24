@@ -1,12 +1,19 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (v7)
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
 * BraintreeVenmo
-    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method; all Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+  * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method; all Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+* BraintreeSEPADirectDebit
+  * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
-## unreleased 
+## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
+* BraintreeVenmo
+  * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
