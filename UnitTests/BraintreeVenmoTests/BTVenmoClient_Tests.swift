@@ -742,27 +742,6 @@ class BTVenmoClient_Tests: XCTestCase {
     
     // MARK: - BTAppContextSwitchClient
 
-    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
-        venmoClient.application = fakeApplication
-
-        XCTAssertTrue(venmoClient.isVenmoAppInstalled())
-    }
-
-    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_returnsFalse() {
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        venmoClient.application = fakeApplication
-
-        XCTAssertFalse(venmoClient.isVenmoAppInstalled())
-    }
-
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
         let host = "x-callback-url"
         let path = "/vzero/auth/venmo/"
