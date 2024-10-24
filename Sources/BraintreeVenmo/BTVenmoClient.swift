@@ -43,6 +43,9 @@ import BraintreeCore
     /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String?
 
+    /// Used for sending the type of flow, universal vs deeplink to FPTI
+    private var linkType: LinkType?
+
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
