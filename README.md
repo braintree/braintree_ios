@@ -10,7 +10,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 ## 📣 Announcements
 
-- **Upgrade your integration to continue accepting Braintree payments** 📣 The SSL certificates for current iOS SDK versions (v5 and v6) are set to expire by June 31, 2025. Upgrade to v5.26.0+ and v6.17.0+, respectively, to continue using the Braintree SDK. ![Click here for more details](https://github.com/braintree/braintree_ios/issues/1277)
+- **Upgrade your integration to continue accepting Braintree payments** 📣 The SSL certificates for current iOS SDK versions (v5 and v6) are set to expire by June 31, 2025. Upgrade to v5.26.0+ and v6.17.0+, respectively, to continue using the Braintree SDK. [Click here for more details](https://github.com/braintree/braintree_ios/issues/1277)
 
 - v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
 
@@ -23,20 +23,19 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 - [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
 - [Apple Pay](https://developer.paypal.com/braintree/docs/guides/apple-pay/overview)
 - [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
-- [Visa Checkout](https://developer.paypal.com/braintree/docs/guides/secure-remote-commerce/overview)
+- [Local Payment Methods](https://developer.paypal.com/braintree/articles/guides/payment-methods/local-payment-methods)
 
 ## Installation
 
 We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Swift Package Manager
-_This feature is only available in v5+._
 
 To add the `Braintree` package to your Xcode project, select _File > Swift Packages > Add Package Dependency_ and enter `https://github.com/braintree/braintree_ios` as the repository URL. Tick the checkboxes for the specific Braintree libraries you wish to include.
 
 If you look at your app target, you will see that the Braintree libraries you chose are automatically linked as a frameworks to your app (see _General > Frameworks, Libraries, and Embedded Content_).
 
-*`BraintreePayPal` and `BraintreePaymentFlow` also require the inclusion of the `PayPalDataCollector` module.*
+*`BraintreePayPal` and `BraintreeLocalPayment` also require the inclusion of the `BraintreeDataCollector` module.*
 
 In your app's source code files, use the following import syntax to include Braintree's libraries:
 ```
@@ -65,7 +64,7 @@ Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the framewor
 
 ## Documentation
 
-Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/start/hello-client/ios/v5) for instructions on basic setup and usage.
+Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/start/hello-client/ios/v6) for instructions on basic setup and usage.
 
 Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
 
@@ -95,13 +94,10 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 | 5.x.x | Inactive | February 2021 | June 2024 | June 2025 |
 | 4.x.x | Unsupported | November 2015 | February 2022 | February 2023 |
 
-Versions 4.9.6 and below use outdated SSL certificates and are unsupported.
-
 ## Demo
 
 1. Our Xcode project uses SwiftLint. To ensure you have it installed see [DEVELOPMENT.md](https://github.com/braintree/braintree_ios/blob/main/DEVELOPMENT.md#swiftlint)
 1. Run `pod install`
-    * There is a known M1 mac issue with CocoaPods. See [this solution](https://github.com/CocoaPods/CocoaPods/issues/10220#issuecomment-730963835) to resolve `ffi` dependency issues.
 1. Resolve the Swift Package Manager packages if needed: `File` > `Packages` > `Resolve Package Versions` or by running `swift package resolve` in Terminal
 1. Open `Braintree.xcworkspace` in Xcode
 1. Select the `Demo` scheme, and then run
@@ -119,7 +115,7 @@ The Braintree iOS SDK is in active development, we welcome your feedback!
 Here are a few ways to get in touch:
 
 * [GitHub Issues](https://github.com/braintree/braintree_ios/issues) - For generally applicable issues and feedback
-* [Braintree Support](https://articles.braintreepayments.com/) / support@braintreepayments.com - for personal support at any phase of integration
+* [Braintree Support](https://articles.braintreepayments.com/) / [Braintree Help Form](https://developer.paypal.com/braintree/help) - for personal support at any phase of integration
 
 ## Help
 
