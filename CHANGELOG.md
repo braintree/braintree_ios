@@ -2,7 +2,7 @@
 
 ## unreleased (v7)
 * BraintreeVenmo
-    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method
+    * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method; all Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
 
 ## unreleased 
 * BraintreePayPal
