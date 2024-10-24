@@ -189,15 +189,6 @@ import BraintreeCore
         }
     }
 
-    /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    @objc public func isVenmoAppInstalled() -> Bool {
-        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
-            return false
-        }
-
-        return application.canOpenURL(appSwitchURL)
-    }
-
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
         application.open(appStoreURL, completionHandler: nil)
@@ -413,14 +404,9 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-        func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
-        }
-
-
-        if !isVenmoAppInstalled() {
-            throw BTVenmoError.appNotAvailable
         }
 
         guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {

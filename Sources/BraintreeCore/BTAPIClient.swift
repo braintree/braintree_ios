@@ -308,6 +308,7 @@ import Foundation
         merchantExperiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
+        linkType: LinkType? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil
     ) {
@@ -318,6 +319,7 @@ import Foundation
                 eventName: eventName,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
+                linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 paymentMethodsDisplayed: paymentMethodsDisplayed,
                 payPalContextID: payPalContextID
