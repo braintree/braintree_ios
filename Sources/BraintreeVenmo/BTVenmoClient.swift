@@ -272,7 +272,6 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             isVaultRequest: shouldVault,
-            linkType: linkType,
             payPalContextID: payPalContextID
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
