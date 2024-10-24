@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.author           = { "Braintree" => "team-bt-sdk@paypal.com" }
   s.source           = { :git => "https://github.com/braintree/braintree_ios.git", :tag => s.version.to_s }
 
-  s.platform         = :ios, "16.0"
+  s.platform         = :ios, "14.0"
   s.compiler_flags   = "-Wall -Werror -Wextra"
   s.swift_version    = "5.9"
 
