@@ -275,7 +275,7 @@ class BTVenmoClient_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(urlComponents.scheme, "https")
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
@@ -344,7 +344,7 @@ class BTVenmoClient_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(urlComponents.scheme, "https")
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
@@ -643,7 +643,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo_merchant_id"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
@@ -660,7 +660,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "second_venmo_merchant_id"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }

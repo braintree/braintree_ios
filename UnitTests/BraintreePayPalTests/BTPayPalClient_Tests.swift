@@ -229,7 +229,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
     
-    func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDInAnalytics() {
+    func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDAndLinkTypeInAnalytics() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
         payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
@@ -251,6 +251,7 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleReturnURL(returnURL)
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
+        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
