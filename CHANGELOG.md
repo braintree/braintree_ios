@@ -5,7 +5,7 @@
   * Bump minimum supported deployment target to iOS 16+
 * BraintreeVenmo
   * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
-  * Remove `fallbacktoWeb` property from the `verifyAppSwitch` method; all Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+  * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
 * BraintreeSEPADirectDebit
   * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
