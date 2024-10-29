@@ -109,7 +109,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
@@ -141,7 +142,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
@@ -374,7 +376,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
@@ -405,7 +408,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         let expectation = self.expectation(description: "Tokenized card")
@@ -450,7 +454,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         let expectation = self.expectation(description: "Tokenized card")
@@ -742,7 +747,8 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
-            expirationYear: "2038"
+            expirationYear: "2038",
+            cvv: "1234"
         )
 
         let expectation = self.expectation(description: "Tokenized card")
