@@ -26,12 +26,4 @@ let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fa
 All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
 
 ## Local Payments
-v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer:
-
-```
-let localPaymentRequest = BTLocalPaymentRequest(
-    paymentType = "ideal",
-    paymentTypeCountryCode = "NL",
-    amount = "1.01"
-)
-```
+v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer.
