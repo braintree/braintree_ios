@@ -43,7 +43,10 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         callbackCount = 0
         updateCallbackCount()
 
-        let card = CardHelpers.newCard(from: cardFormView)
+        guard let card = CardHelpers.newCard(from: cardFormView) else {
+            progressBlock("Fill in all the card fields.")
+            return
+        }
         let cardClient = BTCardClient(apiClient: apiClient)
 
         cardClient.tokenize(card) { tokenizedCard, error in
