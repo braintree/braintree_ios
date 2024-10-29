@@ -182,25 +182,13 @@ class BTCard_Tests: XCTestCase {
             ]
         ] as [String: Any] as NSObject)
     }
-
-    func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
-        let card = BTCard(cvv: "123")
-
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQuery,
-            "variables": [
-                "input": [
-                    "creditCard": ["cvv": "123"] as [String: String],
-                    "options": ["validate": false]
-                ] as [String: Any]
-            ]
-        ] as [String: Any] as NSObject)
-    }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
             number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
             authenticationInsightRequested: true,
             merchantAccountID: "some id"
         )
@@ -211,6 +199,9 @@ class BTCard_Tests: XCTestCase {
             "variables": [
                 "input": [
                     "creditCard": [
+                        "cvv": "1234",
+                        "expirationMonth": "12",
+                        "expirationYear": "2038",
                         "number": "4111111111111111",
                     ],
                     "options": [ "validate": false ],
@@ -225,6 +216,9 @@ class BTCard_Tests: XCTestCase {
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
             number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
             authenticationInsightRequested: false,
             merchantAccountID: "some id"
         )
@@ -234,7 +228,10 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": ["number": "4111111111111111"] as [String: String],
+                    "creditCard": ["number": "4111111111111111",
+                                   "cvv": "1234",
+                                   "expirationMonth": "12",
+                                   "expirationYear": "2038"] as [String: String],
                     "options": ["validate": false],
                 ] as [String: Any]
             ]
@@ -244,6 +241,9 @@ class BTCard_Tests: XCTestCase {
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
             number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
             authenticationInsightRequested: true,
             merchantAccountID: nil
         )
@@ -254,6 +254,9 @@ class BTCard_Tests: XCTestCase {
             "variables": [
                 "input": [
                     "creditCard": [
+                        "cvv": "1234",
+                        "expirationMonth": "12",
+                        "expirationYear": "2038",
                         "number": "4111111111111111",
                     ],
                     "options": [ "validate": false ],
@@ -266,6 +269,9 @@ class BTCard_Tests: XCTestCase {
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
             number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "123",
             authenticationInsightRequested: false,
             merchantAccountID: nil
         )
@@ -275,7 +281,10 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": ["number": "4111111111111111"] as [String: String],
+                    "creditCard": ["number": "4111111111111111",
+                                   "cvv": "123",
+                                   "expirationMonth": "12",
+                                   "expirationYear": "2038"] as [String: String],
                     "options": [ "validate": false ],
                 ] as [String: Any]
             ]
