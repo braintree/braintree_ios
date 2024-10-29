@@ -59,10 +59,10 @@ class IdealViewController: PaymentButtonBaseViewController {
         
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
-            paymentTypeCountryCode: "NL",
             amount: "1.01",
-            address: postalAddress,
             currencyCode: "EUR",
+            paymentTypeCountryCode: "NL",
+            address: postalAddress,
             email: "lingo-buyer@paypal.com",
             givenName: "Linh",
             surname: "Ngo",
