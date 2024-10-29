@@ -6,10 +6,10 @@ import Foundation
 
     // MARK: - Internal Properties
 
-    let number: String?
-    let expirationMonth: String?
-    let expirationYear: String?
-    let cvv: String?
+    let number: String
+    let expirationMonth: String
+    let expirationYear: String
+    let cvv: String
     let postalCode: String?
     let cardholderName: String?
     let firstName: String?
@@ -23,8 +23,8 @@ import Foundation
     let countryCodeAlpha2: String?
     let countryCodeAlpha3: String?
     let countryCodeNumeric: String?
-    var shouldValidate: Bool = false
-    var authenticationInsightRequested: Bool = false
+    let shouldValidate: Bool
+    let authenticationInsightRequested: Bool
     let merchantAccountID: String?
 
     // MARK: - Initializer
@@ -62,10 +62,10 @@ import Foundation
     ///   - authenticationInsightRequested: Optional: If authentication insight is requested. If this property is set to `true`, a `merchantAccountID` must be provided. Defaults to `false`.
     ///   - merchantAccountID: Optional: The merchant account ID.
     public init(
-        number: String? = nil,
-        expirationMonth: String? = nil,
-        expirationYear: String? = nil,
-        cvv: String? = nil,
+        number: String,
+        expirationMonth: String,
+        expirationYear: String,
+        cvv: String,
         postalCode: String? = nil,
         cardholderName: String? = nil,
         firstName: String? = nil,
@@ -151,22 +151,10 @@ import Foundation
 
     private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
         var cardDictionary: [String: Any] = [:]
-
-        if let number {
-            cardDictionary["number"] = number
-        }
-
-        if let expirationMonth {
-            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
-        }
-
-        if let expirationYear {
-            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
-        }
-
-        if let cvv {
-            cardDictionary["cvv"] = cvv
-        }
+        cardDictionary["number"] = number
+        cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
+        cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
+        cardDictionary["cvv"] = cvv
 
         if let cardholderName {
             cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
