@@ -14,9 +14,9 @@ enum CardHelpers {
             let expirationMonth = cardFormView.expirationMonth,
             let expirationYear = cardFormView.expirationYear,
             let cvv = cardFormView.cvv
-        else { return nil}
+        else { return nil }
         
-        return .init(
+        return BTCard(
             number: cardNumber,
             expirationMonth: expirationMonth,
             expirationYear: expirationYear,
