@@ -37,11 +37,12 @@ import BraintreeDataCollector
     /// Creates a LocalPaymentRequest
     /// - Parameters:
     ///   - paymentType: The type of payment.
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v6#invoke-payment-flow
     ///   - amount: The amount for the transaction.
     ///   - currencyCode: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   - paymentTypeCountryCode: The country code of the local payment. This value must be one of the supported country codes for a given local payment type listed at the link below.
     ///   For local payments supported in multiple countries, this value may determine which banks are presented to the customer.
-    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v5#invoke-payment-flow
+    ///     - SeeAlso: https://developer.paypal.com/braintree/docs/guides/local-payment-methods/client-side-custom/ios/v6#invoke-payment-flow
     ///   - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
     ///   - address: Optional: The address of the customer. An error will occur if this address is not valid.
     ///   - displayName: Optional: The merchant name displayed inside of the local payment flow.
