@@ -17,7 +17,6 @@
 			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
-				<string>PayPal - Native Checkout</string>
 				<string>PayPal - Web Checkout</string>
 				<string>Credit Card Tokenization</string>
 				<string>Venmo - Custom Button</string>
@@ -32,7 +31,6 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>PayPalNativeCheckoutViewController</string>
 				<string>PayPalWebCheckoutViewController</string>
 				<string>CardTokenizationViewController</string>
 				<string>VenmoViewController</string>
