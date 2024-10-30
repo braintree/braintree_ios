@@ -139,7 +139,6 @@
 		42C5BDD525A4CE4800E8FF40 /* AmericanExpress_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmericanExpress_UITests.swift; sourceTree = "<group>"; };
 		42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePayPalNativeCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -384,7 +383,6 @@
 				570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */,
 				BE24C66A28E490F30067B11A /* PayPalCheckout.xcframework */,
 				BE9BD75828872E4D00022983 /* BraintreeSEPADirectDebit.framework */,
-				57108A162832EA04004EB870 /* BraintreePayPalNativeCheckout.framework */,
 				9C36BD2826B3071A00F0A559 /* PPRiskMagnes.xcframework */,
 				42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */,
 				803D64EA256DAF9A00ACE692 /* BraintreeAmericanExpress.framework */,
