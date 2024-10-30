@@ -720,7 +720,7 @@
 		42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient_Tests.swift; sourceTree = "<group>"; };
 		42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalRequest_Tests.swift; sourceTree = "<group>"; };
 		42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
-		450442A12CD2B6FF00B45F92 /* BraintreePayPalNativeCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePayPalNativeCheckoutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		450442A12CD2B6FF00B45F92 /* BraintreePayPalNativeCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = BraintreePayPalNativeCheckoutTests.xctest; path = "/Users/ricardherrera/braintree_ios/build/Debug-iphoneos/BraintreePayPalNativeCheckoutTests.xctest"; sourceTree = "<absolute>"; };
 		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
 		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
 		457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
@@ -1642,7 +1642,6 @@
 				8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */,
 				BECC91762B20DDFF00A2EE42 /* BraintreePayPalMessaging.framework */,
 				BECC918D2B20DE7C00A2EE42 /* BraintreePayPalMessagingTests.xctest */,
-				450442A12CD2B6FF00B45F92 /* BraintreePayPalNativeCheckoutTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
