@@ -2,6 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
+  * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
   * Add `BTPayPalRequest.userPhoneNumber` optional property
 * BraintreeVenmo
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
