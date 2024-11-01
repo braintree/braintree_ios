@@ -7,7 +7,7 @@ import XCTest
 class BTThreeDSecureClient_Tests: XCTestCase {
 
     var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))!
-    var threeDSecureRequest = BTThreeDSecureRequest()
+    var threeDSecureRequest: BTThreeDSecureRequest!
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
     
@@ -18,8 +18,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        threeDSecureRequest.amount = 10.0
-        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest = BTThreeDSecureRequest(amount: 10.0, nonce: "fake-card-nonce")
         client = BTThreeDSecureClient(apiClient: mockAPIClient)
         client.cardinalSession = MockCardinalSession()
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
@@ -29,20 +28,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_sendsAllParameters() {
         let expectation = self.expectation(description: "willCallCompletion")
-
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.amount = 9.97
-        threeDSecureRequest.dfReferenceID = "df-reference-id"
-        threeDSecureRequest.accountType = .credit
-        threeDSecureRequest.challengeRequested = true
-        threeDSecureRequest.exemptionRequested = true
-        threeDSecureRequest.dataOnlyRequested = true
-        threeDSecureRequest.cardAddChallenge = .requested
-
-        threeDSecureRequest.mobilePhoneNumber = "5151234321"
-        threeDSecureRequest.email = "tester@example.com"
-        threeDSecureRequest.shippingMethod = .priority
-
+        
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Joe"
         billingAddress.surname = "Guy"
@@ -54,7 +40,21 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         billingAddress.region = "CA"
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.postalCode = "54321"
-        threeDSecureRequest.billingAddress = billingAddress
+        
+        threeDSecureRequest = BTThreeDSecureRequest(
+            accountType: .credit, 
+            amount: 9.97,
+            billingAddress: billingAddress, 
+            cardAddChallengeRequested: true,
+            challengeRequested: true,
+            dataOnlyRequested: true,
+            dfReferenceID: "df-reference-id", 
+            email: "tester@example.com",
+            exemptionRequested: true,
+            mobilePhoneNumber: "5151234321",
+            nonce: "fake-card-nonce",
+            shippingMethod: .priority
+        )
 
         client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
@@ -109,12 +109,13 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeNotRequested_sendsCardAddFalse() {
         let expectation = self.expectation(description: "willCallCompletion")
-
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.amount = 9.97
-        threeDSecureRequest.dfReferenceID = "df-reference-id"
-
-        threeDSecureRequest.cardAddChallenge = .notRequested
+        
+        threeDSecureRequest = BTThreeDSecureRequest(
+            amount: 9.97,
+            cardAddChallengeRequested: false,
+            dfReferenceID: "df-reference-id",
+            nonce: "fake-card-nonce"
+        )
 
         client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
@@ -127,13 +128,15 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeRequestedNotSet_doesNotSendCardAddParameter() {
         let expectation = self.expectation(description: "willCallCompletion")
-
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.amount = 9.97
-        threeDSecureRequest.dfReferenceID = "df-reference-id"
+        
+        threeDSecureRequest = BTThreeDSecureRequest(
+            amount: 9.97,
+            dfReferenceID: "df-reference-id",
+            nonce: "fake-card-nonce"
+        )
 
         client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertNil(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as? Bool)
+            XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
 
             expectation.fulfill()
         }
@@ -142,10 +145,13 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPerformThreeDSecureLookup_whenCardAddChallengeRequested_sendsCardAddTrue() {
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.amount = 9.97
-        threeDSecureRequest.dfReferenceID = "df-reference-id"
-        threeDSecureRequest.cardAddChallengeRequested = true
+        
+        threeDSecureRequest = BTThreeDSecureRequest(
+            amount: 9.97,
+            cardAddChallengeRequested: true,
+            dfReferenceID: "df-reference-id",
+            nonce: "fake-card-nonce"
+        )
 
         let expectation = expectation(description: "willCallCompletion")
 
