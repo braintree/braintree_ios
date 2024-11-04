@@ -9,6 +9,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [Supported Versions](#supported-versions)
 1. [Venmo](#venmo)
 1. [SEPA Direct Debit](#sepa-direct-debit)
+1. [PayPal Native Checkout](#paypal-native-checkout)
 
 ## Supported Versions
 
@@ -23,3 +24,8 @@ let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fa
 
 ## SEPA Direct Debit
 All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
+
+## PayPal Native Checkout
+
+The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 
+use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
