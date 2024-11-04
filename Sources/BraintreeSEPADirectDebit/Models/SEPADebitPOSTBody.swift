@@ -6,7 +6,7 @@ import BraintreeCore
 
 // swiftlint:disable nesting
 /// The POST body for `v1/sepa_debit`
-struct SEPADebitRequest: Encodable {
+struct SEPADebitPOSTBody: Encodable {
 
     let merchantAccountID: String?
     let cancelURL: String?
