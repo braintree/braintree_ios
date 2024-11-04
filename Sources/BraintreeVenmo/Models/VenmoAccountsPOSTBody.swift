@@ -1,5 +1,5 @@
 /// The POST body for `v1/payment_methods/venmo_accounts`
-struct VenmoAccountsRequest: Encodable {
+struct VenmoAccountsPOSTBody: Encodable {
         
     private let venmoAccount: VenmoAccount
     

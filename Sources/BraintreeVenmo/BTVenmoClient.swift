@@ -415,7 +415,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let parameters = VenmoAccountsRequest(nonce: nonce)
+        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
