@@ -720,7 +720,6 @@
 		42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureClient_Tests.swift; sourceTree = "<group>"; };
 		42FC218A25CDE0290047C49A /* BTPayPalRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalRequest_Tests.swift; sourceTree = "<group>"; };
 		42FC237025CE0E110047C49A /* BTPayPalCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
-		450442A12CD2B6FF00B45F92 /* BraintreePayPalNativeCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = BraintreePayPalNativeCheckoutTests.xctest; path = "/Users/ricardherrera/braintree_ios/build/Debug-iphoneos/BraintreePayPalNativeCheckoutTests.xctest"; sourceTree = "<absolute>"; };
 		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
 		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
 		457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
@@ -2231,25 +2230,6 @@
 			productReference = 8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9CE5179A282D54030013C740 /* BraintreePayPalNativeCheckoutTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9CE517A2282D54030013C740 /* Build configuration list for PBXNativeTarget "BraintreePayPalNativeCheckoutTests" */;
-			buildPhases = (
-				9CE51797282D54030013C740 /* Sources */,
-				9CE51798282D54030013C740 /* Frameworks */,
-				9CE51799282D54030013C740 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BraintreePayPalNativeCheckoutTests;
-			packageProductDependencies = (
-			);
-			productName = BraintreePayPalNativeCheckoutTests;
-			productReference = 450442A12CD2B6FF00B45F92 /* BraintreePayPalNativeCheckoutTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A76D7C1B1BB1CAB00000FA6A /* Build configuration list for PBXNativeTarget "BraintreeDataCollector" */;
@@ -2779,7 +2759,6 @@
 				A9E5C1DF24FD665D00EE691F /* BraintreePayPalTests */,
 				BECC91622B20DDFF00A2EE42 /* BraintreePayPalMessaging */,
 				BECC91782B20DE7C00A2EE42 /* BraintreePayPalMessagingTests */,
-				9CE5179A282D54030013C740 /* BraintreePayPalNativeCheckoutTests */,
 				BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */,
 				BE642D8E27D0132A00694A5B /* BraintreeSEPADirectDebitTests */,
 				8046982F2B27C5340090878E /* BraintreeShopperInsights */,
@@ -4503,98 +4482,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeShopperInsightsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		9CE517A3282D54030013C740 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = MR2QQSG594;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = UnitTests/BraintreePayPalNativeCheckoutTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPalNativeCheckoutTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		9CE517A4282D54030013C740 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = MR2QQSG594;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = UnitTests/BraintreePayPalNativeCheckoutTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPalNativeCheckoutTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -6764,15 +6651,6 @@
 			buildConfigurations = (
 				804698462B27C5530090878E /* Debug */,
 				804698472B27C5530090878E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9CE517A2282D54030013C740 /* Build configuration list for PBXNativeTarget "BraintreePayPalNativeCheckoutTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9CE517A3282D54030013C740 /* Debug */,
-				9CE517A4282D54030013C740 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
