@@ -46,7 +46,7 @@ public class BTShopperInsightsClient {
             throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization, for: experiment)
         }
 
-        let postParameters = BTEligiblePaymentsRequest(
+        let postParameters = BTEligiblePaymentsPOSTBody(
             email: request.email,
             phone: request.phone
         )
