@@ -56,7 +56,6 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
     func testThreeDSecurePaymentFlowV2_challengeFlow_andFails() {
         waitForElementToAppear(app.cardNumberTextField)
-        
         app.enterCardDetailsWith(cardNumber: "4000000000001109", expirationDate: expirationDate)
         app.tokenizeButton.tap()
         sleep(2)
