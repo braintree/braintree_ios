@@ -36,25 +36,25 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     func testIntentAsString_whenIntentIsNotSpecified_returnsAuthorize() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        XCTAssertEqual(request.intent.stringValue, "authorize")
+        XCTAssertEqual(request.intent?.stringValue, "authorize")
     }
 
     func testIntentAsString_whenIntentIsAuthorize_returnsAuthorize() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .authorize
-        XCTAssertEqual(request.intent.stringValue, "authorize")
+        XCTAssertEqual(request.intent?.stringValue, "authorize")
     }
 
     func testIntentAsString_whenIntentIsSale_returnsSale() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .sale
-        XCTAssertEqual(request.intent.stringValue, "sale")
+        XCTAssertEqual(request.intent?.stringValue, "sale")
     }
 
     func testIntentAsString_whenIntentIsOrder_returnsOrder() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .order
-        XCTAssertEqual(request.intent.stringValue, "order")
+        XCTAssertEqual(request.intent?.stringValue, "order")
     }
 
     // MARK: - userActionAsString

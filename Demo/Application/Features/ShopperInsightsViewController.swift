@@ -118,8 +118,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.userAuthenticationEmail = emailView.textField.text
+        let paypalRequest = BTPayPalVaultRequest(userAuthenticationEmail: emailView.textField.text)
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
             button.isEnabled = true

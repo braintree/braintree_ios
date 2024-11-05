@@ -7,22 +7,12 @@ import BraintreeCore
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
 
-    // MARK: - Public Properties
-
-    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public var userAuthenticationEmail: String?
-
     // MARK: - Internal Properties
 
-    /// Optional: Used to determine if the customer will use the PayPal app switch flow.
-    /// Defaults to `false`.
-    /// - Warning: This property is currently in beta and may change or be removed in future releases.
+    var userAuthenticationEmail: String?
+    var userPhoneNumber: BTPayPalPhoneNumber?
     var enablePayPalAppSwitch: Bool = false
-    
-    /// Optional: Recurring billing plan type, or charge pattern.
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
-    
-    /// Optional: Recurring billing product details.
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
@@ -30,7 +20,7 @@ import BraintreeCore
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
     /// - Parameters:
     ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
@@ -49,15 +39,19 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
+    /// identified with the same phone number.
     public init(
         offerCredit: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
+        self.userPhoneNumber = userPhoneNumber
         super.init(offerCredit: offerCredit)
     }
 
@@ -70,6 +64,10 @@ import BraintreeCore
 
         if let userAuthenticationEmail {
             baseParameters["payer_email"] = userAuthenticationEmail
+        }
+        
+        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
+            baseParameters["phone_number"] = userPhoneNumberDict
         }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {

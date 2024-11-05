@@ -7,10 +7,9 @@ import BraintreeCore
 ///  Options for the PayPal Vault flow.
 @objcMembers open class BTPayPalVaultBaseRequest: BTPayPalRequest {
 
-    // MARK: - Public Properties
-
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var offerCredit: Bool
+    // MARK: - Internal Properties
+    
+    var offerCredit: Bool
 
     // MARK: - Initializer
 
