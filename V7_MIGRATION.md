@@ -10,6 +10,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [Venmo](#venmo)
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
+1. [3D Secure](#3d-secure)]
 
 ## Supported Versions
 
@@ -27,3 +28,6 @@ All properties within `BTSEPADirectDebitRequest` can only be accessed on the ini
 
 ## Local Payments
 v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer.
+
+## 3D Secure
+All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
