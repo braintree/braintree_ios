@@ -3,6 +3,8 @@
 ## unreleased (v7)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
+  * BraintreePayPalNativeCheckout
+    * Remove entire PayPal Native Checkout module
 * BraintreeVenmo
   * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeSEPADirectDebit
