@@ -11,6 +11,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
 1. [PayPal Native Checkout](#paypal-native-checkout)
+1. [PayPal](#paypal)
 
 ## Supported Versions
 
@@ -33,3 +34,5 @@ v7 updates `BTLocalPaymentRequest` to require setting all properties through the
 The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 
 use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
 
+## PayPal
+v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest`, `BTPayPalVaultBaseRequest`, and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
