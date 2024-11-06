@@ -35,7 +35,6 @@ import Foundation
     ///   - expirationMonth: The expiration month as a one or two-digit number on the Gregorian calendar.
     ///   - expirationYear:The expiration year as a two or four-digit number on the Gregorian calendar.
     ///   - cvv: The card verification code (like CVV or CID).
-    ///     - Note: If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault, omit all other properties to only collect CVV.
     ///   - postalCode: Optional: The postal code associated with the card's billing address.
     ///   - cardholderName: Optional: the cardholder's name.
     ///   - firstName: Optional: first name on the card.
