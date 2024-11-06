@@ -3,16 +3,22 @@
 ## unreleased (v7)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
+  * BraintreePayPalNativeCheckout
+    * Remove entire PayPal Native Checkout module
 * BraintreeVenmo
   * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeCard
   * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeSEPADirectDebit
   * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeLocalPayment
+  * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
+* BraintreeVenmo
+  * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
