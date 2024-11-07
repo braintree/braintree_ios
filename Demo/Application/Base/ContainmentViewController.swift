@@ -5,7 +5,6 @@ import InAppSettingsKit
 class ContainmentViewController: UIViewController {
 
     // MARK: - Private Properties
-
     private var statusItem: UIBarButtonItem?
 
     private var currentViewController: BaseViewController? {
