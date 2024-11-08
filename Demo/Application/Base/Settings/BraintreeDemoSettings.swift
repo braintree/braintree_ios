@@ -45,9 +45,9 @@ class BraintreeDemoSettings: NSObject {
     static var currentEnvironmentURLString: String {
         switch currentEnvironment {
         case .sandbox, .custom:
-            return "https://braintree-sample-merchant.herokuapp.com"
+            return "https://braintree-demo-merchant-63b7a2204f6e.herokuapp.com/"
         case .production:
-            return "https://executive-sample-merchant.herokuapp.com"
+            return "https://braintree-production-merchant-455d21469113.herokuapp.com/"
         }
     }
     
