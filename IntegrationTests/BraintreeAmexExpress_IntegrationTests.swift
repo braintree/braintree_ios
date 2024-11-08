@@ -25,7 +25,7 @@ class BraintreeAmexExpress_IntegrationTests: XCTestCase {
             XCTAssertEqual(rewardsBalance.currencyAmount, "316795.03")
             XCTAssertEqual(rewardsBalance.currencyIsoCode, "USD")
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            XCTFail("Unexpected error: \(error.localizedDescription)")
         }
     }
 }
