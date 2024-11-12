@@ -37,7 +37,6 @@ import Foundation
     var shippingAmount: String?
     var totalAmount: String?
     var lineItems: [BTVenmoLineItem]?
-    var fallbackToWeb: Bool = false
 
     // MARK: - Initializer
 
@@ -57,9 +56,8 @@ import Foundation
     ///   - shippingAmount: The shipping amount for the transaction to be displayed on the paysheet. If this value is set, `totalAmount` must also be set.
     ///   - totalAmount: The grand total amount on the transaction that should be displayed on the paysheet.
     ///   - lineItems: The line items for this transaction. It can include up to 249 line items. If this value is set, `totalAmount` must also be set.
-    ///   - fallbackToWeb: Used to determine if the customer should fallback to the web flow if Venmo app is not installed. Defaults to `false`
     @objc(initWithPaymentMethodUsage:profileID:vault:displayName:collectCustomerBillingAddress:collectCustomerShippingAddress:
-    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:fallbackToWeb:)
+    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:)
     public init(
         paymentMethodUsage: BTVenmoPaymentMethodUsage,
         profileID: String? = nil,
@@ -73,8 +71,7 @@ import Foundation
         taxAmount: String? = nil,
         shippingAmount: String? = nil,
         totalAmount: String? = nil,
-        lineItems: [BTVenmoLineItem]? = [],
-        fallbackToWeb: Bool = false
+        lineItems: [BTVenmoLineItem]? = []
     ) {
         self.paymentMethodUsage = paymentMethodUsage
         self.profileID = profileID
@@ -89,6 +86,5 @@ import Foundation
         self.shippingAmount = shippingAmount
         self.totalAmount = totalAmount
         self.lineItems = lineItems
-        self.fallbackToWeb = fallbackToWeb
     }
 }
