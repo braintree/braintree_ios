@@ -19,8 +19,10 @@ v7 bumps to a minimum deployment target of iOS 16+.
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
 
+Remove the `fallbackToWeb` boolean parameter from `BTVenmoRequest`. If a Buyer has the Venmo app installed and taps on "Pay with Venmo", they will automatically be switched to the Venmo app. If the Venmo app isn't installed, the Buyer will fallback to their default web brower to checkout.
+
 ```
-let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true, fallbackToWeb: true)
+let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true)
 ```
 
 ## SEPA Direct Debit

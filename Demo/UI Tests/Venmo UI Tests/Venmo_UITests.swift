@@ -16,4 +16,6 @@ class Venmo_UITests: XCTestCase {
         demoApp.launchArguments.append("-Integration:VenmoViewController")
         demoApp.launch()
     }
+
+    // TODO: Add UI test
 }
