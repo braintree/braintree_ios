@@ -3,6 +3,7 @@
 ## unreleased (v7)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
+  * `countryCodeAlpha2` now returns a 2 character country code instead of a 3 character country code 
   * BraintreePayPalNativeCheckout
     * Remove entire PayPal Native Checkout module
 * BraintreeVenmo
