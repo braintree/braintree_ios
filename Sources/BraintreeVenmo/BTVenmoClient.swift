@@ -102,6 +102,7 @@ import BraintreeCore
                 _ = try self.verifyAppSwitch(with: configuration)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
+                return
             }
             
             // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
@@ -393,7 +394,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let parameters = VenmoAccountsRequest(nonce: nonce)
+        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
