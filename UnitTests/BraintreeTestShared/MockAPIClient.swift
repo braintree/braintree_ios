@@ -79,18 +79,6 @@ public class MockAPIClient: BTAPIClient {
         return BTConfiguration(json: responseBody)
     }
 
-    public override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = false
-        completion([], nil)
-    }
-    
-    public override func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = false
-        completion([], nil)
-    }
-
     public override func sendAnalyticsEvent(
         _ name: String,
         correlationID: String? = nil,
