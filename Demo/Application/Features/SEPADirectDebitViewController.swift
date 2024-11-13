@@ -30,13 +30,14 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
 
-        let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
-        sepaDirectDebitRequest.accountHolderName = "John Doe"
-        sepaDirectDebitRequest.iban = BTSEPADirectDebitTestHelper.generateValidSandboxIBAN()
-        sepaDirectDebitRequest.customerID = generateRandomCustomerID()
-        sepaDirectDebitRequest.mandateType = .oneOff
-        sepaDirectDebitRequest.billingAddress = billingAddress
-        sepaDirectDebitRequest.merchantAccountID = "EUR-sepa-direct-debit"
+        let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
+            accountHolderName: "John Doe",
+            iban: BTSEPADirectDebitTestHelper.generateValidSandboxIBAN(),
+            customerID: generateRandomCustomerID(),
+            billingAddress: billingAddress,
+            mandateType: .oneOff,
+            merchantAccountID: "EUR-sepa-direct-debit"
+        )
 
         sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
             if let sepaDirectDebitNonce {

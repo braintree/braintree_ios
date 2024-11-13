@@ -275,7 +275,7 @@ class BTVenmoClient_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(urlComponents.scheme, "https")
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
@@ -344,7 +344,7 @@ class BTVenmoClient_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(urlComponents.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(urlComponents.scheme, "https")
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_merchant_id", value: "venmo_merchant_id")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
@@ -584,48 +584,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
-    }
-
-    func testTokenizeVenmoAccount_fallbackToWebTrue_sendsSuccessAnalyticsEvent() {
-        mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
-
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        venmoClient.application = FakeApplication()
-        venmoClient.bundle = FakeBundle()
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-
-        let expectation = expectation(description: "Callback invoked")
-
-        venmoRequest.fallbackToWeb = true
-
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(error)
-            XCTAssertEqual(venmoAccount?.username, "venmojoe")
-            XCTAssertEqual(venmoAccount?.nonce, "abcd-venmo-nonce")
-            expectation.fulfill()
-        }
-
-        mockAPIClient.cannedResponseBody = BTJSON(value: [
-            "venmoAccounts": [[
-                "type": "VenmoAccount",
-                "nonce": "abcd-venmo-nonce",
-                "description": "VenmoAccount",
-                "consumed": false,
-                "default": true,
-                "details": [
-                    "cardType": "Discover",
-                    "username": "venmojoe"
-                ]
-            ] as [String: Any]]
-        ])
-
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=abcd-venmo-nonce&username=venmojoe")!)
-        waitForExpectations(timeout: 2)
-
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
     }
 
     func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
@@ -651,7 +609,6 @@ class BTVenmoClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
@@ -686,7 +643,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo_merchant_id"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
@@ -703,7 +660,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
+        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "second_venmo_merchant_id"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
@@ -820,27 +777,6 @@ class BTVenmoClient_Tests: XCTestCase {
     }
     
     // MARK: - BTAppContextSwitchClient
-
-    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
-        venmoClient.application = fakeApplication
-
-        XCTAssertTrue(venmoClient.isVenmoAppInstalled())
-    }
-
-    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_returnsFalse() {
-        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "scheme"
-        let fakeApplication = FakeApplication()
-        fakeApplication.cannedCanOpenURL = false
-        venmoClient.application = fakeApplication
-
-        XCTAssertFalse(venmoClient.isVenmoAppInstalled())
-    }
 
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
         let host = "x-callback-url"

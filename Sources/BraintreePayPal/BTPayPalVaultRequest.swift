@@ -5,12 +5,15 @@ import BraintreeCore
 #endif
 
 ///  Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
+@objcMembers public class BTPayPalVaultRequest: BTPayPalRequest {
 
     // MARK: - Public Properties
 
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
+
+    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    public var offerCredit: Bool
 
     // MARK: - Internal Properties
 
@@ -55,10 +58,11 @@ import BraintreeCore
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAuthenticationEmail: String? = nil
     ) {
+        self.offerCredit = offerCredit
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
-        super.init(offerCredit: offerCredit)
+        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
     }
 
     public override func parameters(
@@ -68,7 +72,7 @@ import BraintreeCore
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
 
-        if let userAuthenticationEmail {
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             baseParameters["payer_email"] = userAuthenticationEmail
         }
 
@@ -79,18 +83,38 @@ import BraintreeCore
                 "os_type": UIDevice.current.systemName,
                 "merchant_app_return_url": universalLink.absoluteString
             ]
-            
+
             return baseParameters.merging(appSwitchParameters) { $1 }
         }
-        
+
         if let recurringBillingPlanType {
             baseParameters["plan_type"] = recurringBillingPlanType.rawValue
         }
-        
+
         if let recurringBillingDetails {
             baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
 
-        return baseParameters
+        var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
+
+        if let billingAgreementDescription {
+            vaultParameters["description"] = billingAgreementDescription
+        }
+
+        if let shippingAddressOverride {
+            let shippingAddressParameters: [String: String?] = [
+                "line1": shippingAddressOverride.streetAddress,
+                "line2": shippingAddressOverride.extendedAddress,
+                "city": shippingAddressOverride.locality,
+                "state": shippingAddressOverride.region,
+                "postal_code": shippingAddressOverride.postalCode,
+                "country_code": shippingAddressOverride.countryCodeAlpha2,
+                "recipient_name": shippingAddressOverride.recipientName
+            ]
+
+            vaultParameters["shipping_address"] = shippingAddressParameters
+        }
+
+        return baseParameters.merging(vaultParameters) { $1 }
     }
 }

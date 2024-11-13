@@ -22,7 +22,6 @@
 		BE35FCEA2A1C0885008F0326 /* BraintreeDataCollector in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCE92A1C0885008F0326 /* BraintreeDataCollector */; };
 		BE35FCEC2A1C0885008F0326 /* BraintreeLocalPayment in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCEB2A1C0885008F0326 /* BraintreeLocalPayment */; };
 		BE35FCEE2A1C0885008F0326 /* BraintreePayPal in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCED2A1C0885008F0326 /* BraintreePayPal */; };
-		BE35FCF02A1C0885008F0326 /* BraintreePayPalNativeCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCEF2A1C0885008F0326 /* BraintreePayPalNativeCheckout */; };
 		BE35FCF22A1C0885008F0326 /* BraintreeSEPADirectDebit in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCF12A1C0885008F0326 /* BraintreeSEPADirectDebit */; };
 		BE35FCF42A1C0885008F0326 /* BraintreeThreeDSecure in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCF32A1C0885008F0326 /* BraintreeThreeDSecure */; };
 		BE35FCF62A1C0885008F0326 /* BraintreeVenmo in Frameworks */ = {isa = PBXBuildFile; productRef = BE35FCF52A1C0885008F0326 /* BraintreeVenmo */; };
@@ -54,7 +53,6 @@
 				BE35FCDB2A1BD2EF008F0326 /* BraintreeLocalPayment in Frameworks */,
 				BE35FCE42A1C0885008F0326 /* BraintreeApplePay in Frameworks */,
 				BE35FCE62A1C0885008F0326 /* BraintreeCard in Frameworks */,
-				BE35FCF02A1C0885008F0326 /* BraintreePayPalNativeCheckout in Frameworks */,
 				BE35FCF42A1C0885008F0326 /* BraintreeThreeDSecure in Frameworks */,
 				BE35FCF22A1C0885008F0326 /* BraintreeSEPADirectDebit in Frameworks */,
 				BE35FCEA2A1C0885008F0326 /* BraintreeDataCollector in Frameworks */,
@@ -138,7 +136,6 @@
 				BE35FCE92A1C0885008F0326 /* BraintreeDataCollector */,
 				BE35FCEB2A1C0885008F0326 /* BraintreeLocalPayment */,
 				BE35FCED2A1C0885008F0326 /* BraintreePayPal */,
-				BE35FCEF2A1C0885008F0326 /* BraintreePayPalNativeCheckout */,
 				BE35FCF12A1C0885008F0326 /* BraintreeSEPADirectDebit */,
 				BE35FCF32A1C0885008F0326 /* BraintreeThreeDSecure */,
 				BE35FCF52A1C0885008F0326 /* BraintreeVenmo */,
@@ -281,7 +278,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -337,7 +334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -475,11 +472,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE35FCE02A1C0885008F0326 /* XCRemoteSwiftPackageReference "braintree_ios" */;
 			productName = BraintreePayPal;
-		};
-		BE35FCEF2A1C0885008F0326 /* BraintreePayPalNativeCheckout */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BE35FCE02A1C0885008F0326 /* XCRemoteSwiftPackageReference "braintree_ios" */;
-			productName = BraintreePayPalNativeCheckout;
 		};
 		BE35FCF12A1C0885008F0326 /* BraintreeSEPADirectDebit */ = {
 			isa = XCSwiftPackageProductDependency;
