@@ -6,6 +6,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
     // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 
+    let webFallbackToggle = Toggle(title: "Enable Web Fallback")
     let vaultToggle = Toggle(title: "Vault")
     
     override func viewDidLoad() {
@@ -17,7 +18,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
 
-        let stackView = UIStackView(arrangedSubviews: [vaultToggle, venmoButton])
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, venmoButton])
         stackView.axis = .vertical
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -30,12 +31,16 @@ class VenmoViewController: PaymentButtonBaseViewController {
     @objc func tappedVenmo() {
         self.progressBlock("Tapped Venmo - initiating Venmo auth")
         
-        let isVaultingEnabled = vaultToggle.isOn
-        let venmoRequest = BTVenmoRequest(
-            paymentMethodUsage: .multiUse,
-            vault: isVaultingEnabled
-        )
-
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+        
+        if webFallbackToggle.isOn {
+            venmoRequest.fallbackToWeb = true
+        }
+        
+        if vaultToggle.isOn {
+            venmoRequest.vault = true
+        }
+        
         Task {
             do {
                 let venmoAccount = try await venmoClient.tokenize(venmoRequest)

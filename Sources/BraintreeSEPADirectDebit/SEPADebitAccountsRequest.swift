@@ -1,7 +1,7 @@
 import Foundation
 
 /// The POST body for `v1/payment_methods/sepa_debit_accounts`
-struct SEPADebitAccountsPOSTBody: Encodable {
+struct SEPADebitAccountsRequest: Encodable {
 
     private let createMandateResult: SEPADebitAccountRequest
 

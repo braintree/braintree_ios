@@ -116,9 +116,11 @@ import BraintreeCore
         super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
 
-    // MARK: Internal Methods
+    // MARK: Public Methods
 
-    override func parameters(
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    @_documentation(visibility: private)
+    public override func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false

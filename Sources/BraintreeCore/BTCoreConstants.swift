@@ -18,7 +18,7 @@ import Foundation
 
     static let apiVersion: String = "2016-10-07"
     
-    static let graphQLVersion: String = "2024-11-05"
+    static let graphQLVersion: String = "2018-03-06"
 
     // swiftlint:disable force_unwrapping
     static let payPalProductionURL = URL(string: "https://api.paypal.com")!

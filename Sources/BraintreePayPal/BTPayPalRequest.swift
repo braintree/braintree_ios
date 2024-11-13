@@ -88,17 +88,19 @@ import BraintreeCore
 
     /// Optional: A risk correlation ID created with Set Transaction Context on your server.
     public var riskCorrelationID: String?
+
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    @_documentation(visibility: private)
+    public var hermesPath: String
+
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    @_documentation(visibility: private)
+    public var paymentType: BTPayPalPaymentType
     
     /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
     public var userPhoneNumber: BTPayPalPhoneNumber?
 
-    // MARK: - Internal Properties
-    
-    var hermesPath: String
-
-    var paymentType: BTPayPalPaymentType
-    
     // MARK: - Static Properties
     
     static let callbackURLHostAndPath: String = "onetouch/v1/"
@@ -135,9 +137,11 @@ import BraintreeCore
         self.userPhoneNumber = userPhoneNumber
     }
 
-    // MARK: Internal Methods
+    // MARK: Public Methods
 
-    func parameters(
+    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    @_documentation(visibility: private)
+    public func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false

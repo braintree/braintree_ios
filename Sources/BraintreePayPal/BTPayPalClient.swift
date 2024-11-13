@@ -62,7 +62,7 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
-    /// Used for indicating the type of URL link, universal link or deep link, that directs users to a specific URL to FPTI
+    /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
 
     // MARK: - Initializer

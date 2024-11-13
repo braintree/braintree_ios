@@ -67,7 +67,8 @@ import BraintreeCore
     @objc(tokenizeWithVenmoRequest:completion:)
     // swiftlint:disable:next function_body_length cyclomatic_complexity
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
+        linkType = request.fallbackToWeb ? .universal : .deeplink
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
 
         if returnURLScheme.isEmpty {
@@ -99,7 +100,7 @@ import BraintreeCore
             }
             
             do {
-                _ = try self.verifyAppSwitch(with: configuration)
+                _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -159,15 +160,24 @@ import BraintreeCore
                         environment: configuration.venmoEnvironment
                     )
 
-                    guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
-                        self.notifyFailure(
-                            with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"),
-                            completion: completion
-                        )
-                        return
-                    }
+                    if request.fallbackToWeb {
+                        guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
+                            self.notifyFailure(
+                                with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"),
+                                completion: completion
+                            )
+                            return
+                        }
 
-                    self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
+                        self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
+                    } else {
+                        guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
+                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
+                            return
+                        }
+
+                        self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
+                    }
                 } catch {
                     self.notifyFailure(with: error, completion: completion)
                     return
@@ -190,6 +200,15 @@ import BraintreeCore
                 }
             }
         }
+    }
+
+    /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
+    @objc public func isVenmoAppInstalled() -> Bool {
+        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
+            return false
+        }
+
+        return application.canOpenURL(appSwitchURL)
     }
 
     /// Switches to the App Store to download the Venmo application.
@@ -272,6 +291,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
@@ -374,6 +394,7 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
                 isVaultRequest: shouldVault,
+                linkType: linkType,
                 payPalContextID: payPalContextID,
                 appSwitchURL: appSwitchURL
             )
@@ -394,7 +415,8 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
+        let venmoAccount: [String: String] = ["nonce": nonce]
+        let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
@@ -422,9 +444,14 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration, fallbackToWeb: Bool) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
+        }
+
+
+        if !fallbackToWeb && !isVenmoAppInstalled() {
+            throw BTVenmoError.appNotAvailable
         }
 
         guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {
@@ -443,6 +470,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(result, nil)
@@ -453,6 +481,7 @@ import BraintreeCore
             BTVenmoAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, error)
@@ -462,6 +491,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchCanceled,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, BTVenmoError.canceled)

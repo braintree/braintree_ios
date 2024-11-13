@@ -3,7 +3,7 @@ import PassKit
 
 // swiftlint:disable nesting
 /// The POST body for `v2/payments/find-eligible-methods`
-struct BTEligiblePaymentsPOSTBody: Encodable {
+struct BTEligiblePaymentsRequest: Encodable {
     
     private let customer: Customer
     private let purchaseUnits: [PurchaseUnit]

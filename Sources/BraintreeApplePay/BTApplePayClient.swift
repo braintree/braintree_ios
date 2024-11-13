@@ -89,7 +89,7 @@ import BraintreeCore
                 return
             }
             
-            let parameters = BTApplePaymentTokensPOSTBody(token: payment.token)
+            let parameters = BTApplePaymentTokensRequest(token: payment.token)
 
             self.apiClient.post("v1/payment_methods/apple_payment_tokens", parameters: parameters) { body, _, error in
                 if let error {

@@ -85,6 +85,10 @@ import BraintreeDataCollector
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
                 self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
                 return
+            } else if request.amount == nil || request.paymentType == nil {
+                NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
+                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
+                return
             }
 
             self.start(request: request, configuration: configuration)
@@ -210,10 +214,9 @@ import BraintreeDataCollector
 
     private func buildRequestDictionary(with request: BTLocalPaymentRequest) -> [String: Any] {
         var requestParameters: [String: Any] = [
-            "amount": request.amount,
-            "funding_source": request.paymentType,
+            "amount": request.amount ?? "",
+            "funding_source": request.paymentType ?? "",
             "intent": "sale",
-            "currency_iso_code": request.currencyCode,
             "return_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/success",
             "cancel_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/cancel"
         ]
@@ -229,6 +232,10 @@ import BraintreeDataCollector
             requestParameters["state"] = address.region
             requestParameters["postal_code"] = address.postalCode
             requestParameters["country_code"] = address.countryCodeAlpha2
+        }
+
+        if let currencyCode = request.currencyCode {
+            requestParameters["currency_iso_code"] = currencyCode
         }
 
         if let givenName = request.givenName {
