@@ -3,16 +3,18 @@
 ## unreleased (v7)
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
+  * `countryCodeAlpha2` now returns a 2 character country code instead of a 3 character country code 
   * BraintreePayPalNativeCheckout
     * Remove entire PayPal Native Checkout module
-* BraintreeVenmo
-  * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
-* BraintreeSEPADirectDebit
-  * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
-* BraintreeLocalPayment
-  * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
-* BraintreeCard 
-  * Remove `BTCardRequest`, use `BTCard` directly instead
+  * BraintreeVenmo
+    * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+  * BraintreeSEPADirectDebit
+    * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * BraintreeLocalPayment
+    * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * BraintreeCard 
+    * Remove `BTCardRequest`, use `BTCard` directly instead
 
 ## unreleased
 * BraintreePayPal
