@@ -6,14 +6,10 @@ import BraintreeCore
 
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalRequest {
-
-    // MARK: - Public Properties
-
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var offerCredit: Bool
-
+    
     // MARK: - Internal Properties
-
+    
+    var offerCredit: Bool
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
     var enablePayPalAppSwitch: Bool = false
@@ -72,8 +68,8 @@ import BraintreeCore
             baseParameters["payer_email"] = userAuthenticationEmail
         }
         
-        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
-            baseParameters["phone_number"] = userPhoneNumberDict
+        if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary() {
+            baseParameters["phone_number"] = userPhoneNumberDictionary
         }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {

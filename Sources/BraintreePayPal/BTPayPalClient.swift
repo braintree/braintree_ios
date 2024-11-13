@@ -226,7 +226,7 @@ import BraintreeDataCollector
         if paymentType == .checkout {
             account["options"] = ["validate": false]
             if let request = payPalRequest as? BTPayPalCheckoutRequest {
-                account["intent"] = request.intent?.stringValue
+                account["intent"] = request.intent.stringValue
             }
         }
         

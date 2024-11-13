@@ -88,7 +88,7 @@ import BraintreeCore
     ///    - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
     ///    - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///        `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
-    ///    - riskCorrelationId: Optional: A risk correlation ID created with Set Transaction Context on your server.
+    ///    - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     init(
         hermesPath: String,
         paymentType: BTPayPalPaymentType,
@@ -100,7 +100,7 @@ import BraintreeCore
         displayName: String? = nil,
         merchantAccountID: String? = nil,
         billingAgreementDescription: String? = nil,
-        riskCorrelationId: String? = nil
+        riskCorrelationID: String? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -112,7 +112,7 @@ import BraintreeCore
         self.displayName = displayName
         self.merchantAccountID = merchantAccountID
         self.billingAgreementDescription = billingAgreementDescription
-        self.riskCorrelationID = riskCorrelationId
+        self.riskCorrelationID = riskCorrelationID
     }
 
     // MARK: Internal Methods

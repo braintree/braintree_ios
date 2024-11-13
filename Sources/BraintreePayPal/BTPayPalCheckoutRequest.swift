@@ -60,8 +60,8 @@ import BraintreeCore
 
     // MARK: - Internal Properties
     
-    var amount: String?
-    var intent: BTPayPalRequestIntent?
+    var amount: String
+    var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
     var currencyCode: String?
@@ -88,8 +88,8 @@ import BraintreeCore
     /// identified with the same phone number.
     ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items.
     public init(
-        amount: String?,
-        intent: BTPayPalRequestIntent? = .authorize,
+        amount: String,
+        intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
@@ -119,7 +119,7 @@ import BraintreeCore
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
         var checkoutParameters: [String: Any] = [
-            "intent": intent?.stringValue,
+            "intent": intent.stringValue,
             "amount": amount,
             "offer_pay_later": offerPayLater
         ]
