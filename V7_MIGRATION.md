@@ -37,4 +37,4 @@ The PayPal Native Checkout integration is no longer supported. Please remove it 
 use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
 
 ## PayPal
-v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest`, `BTPayPalVaultBaseRequest`, and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
