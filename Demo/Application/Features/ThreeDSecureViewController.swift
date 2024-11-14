@@ -103,11 +103,11 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         billingAddress.phoneNumber = "8101234567"
         
         let request = BTThreeDSecureRequest(
-            accountType: .credit, 
-            amount: 10.32,
+            amount: "10.32",
+            nonce: nonce,
+            accountType: .credit,
             billingAddress: billingAddress,
             email: "test@example.com",
-            nonce: nonce,
             renderTypes: [.otp, .singleSelect, .multiSelect, .oob, .html],
             requestedExemptionType: .lowValue,
             shippingMethod: .sameDay,

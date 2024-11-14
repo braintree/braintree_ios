@@ -59,7 +59,7 @@ import BraintreeCore
                 return
             }
 
-            if request.amount.decimalValue.isNaN == true {
+            if request.amount.isEmpty {
                 NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
                 let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
                 notifyFailure(with: error, completion: completion)
@@ -103,7 +103,7 @@ import BraintreeCore
             return
         }
 
-        guard request.nonce != nil else {
+        if request.nonce.isEmpty {
             notifyFailure(
                 with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce can not be nil."),
                 completion: completion
@@ -346,7 +346,7 @@ import BraintreeCore
             }
 
             let requestParameters = self.buildRequestDictionary(with: request)
-            guard let urlSafeNonce = request.nonce?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
                     with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."),
