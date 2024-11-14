@@ -10,11 +10,12 @@ class BraintreeAmexExpress_IntegrationTests: XCTestCase {
         let cardClient = BTCardClient(apiClient: apiClient)
         let amexClient = BTAmericanExpressClient(apiClient: apiClient)
         
-        let card = BTCard()
-        card.number = "371260714673002"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.cvv = "1234"
+        let card = BTCard(
+            number: "371260714673002",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "1234"
+        )
         
         do {
             let tokenizedCard = try await cardClient.tokenize(card)
