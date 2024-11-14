@@ -8,12 +8,14 @@
     * Remove entire PayPal Native Checkout module
   * BraintreeVenmo
     * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
   * BraintreeSEPADirectDebit
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeLocalPayment
     * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeCard
     * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `BTCardRequest`, use `BTCard` directly instead
 
 ## unreleased
 * BraintreePayPal
