@@ -81,11 +81,24 @@ import BraintreeCore
 
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
-    
-    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public var userAuthenticationEmail: String?
 
-    // MARK: - Initializer
+    // MARK: - Initializers
+    
+    /// Initializes a PayPal Checkout request for the PayPal App Switch flow
+    /// - Parameters:
+    ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+    /// - Note: The PayPal App Switch flow currently only supports the production environment.
+    public convenience init(
+        userAuthenticationEmail: String,
+        enablePayPalAppSwitch: Bool
+    ) {
+        self.init(
+            userAuthenticationEmail: userAuthenticationEmail,
+            enablePayPalAppSwitch: enablePayPalAppSwitch
+        )
+    }
 
     /// Initializes a PayPal Native Checkout request
     /// - Parameters:
@@ -98,13 +111,17 @@ import BraintreeCore
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false
+        requestBillingAgreement: Bool = false,
+        userAuthenticationEmail: String? = nil,
+        enablePayPalAppSwitch: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
@@ -112,8 +129,13 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
-
-        super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
+        
+        super.init(
+            hermesPath: "v1/paypal_hermes/create_payment_resource",
+            paymentType: .checkout,
+            userAuthenticationEmail: userAuthenticationEmail,
+            enablePayPalAppSwitch: enablePayPalAppSwitch
+        )
     }
 
     // MARK: Public Methods
@@ -136,10 +158,6 @@ import BraintreeCore
 
         if currencyCode != nil {
             checkoutParameters["currency_iso_code"] = currencyCode
-        }
-        
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            checkoutParameters["payer_email"] = userAuthenticationEmail
         }
 
         if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
