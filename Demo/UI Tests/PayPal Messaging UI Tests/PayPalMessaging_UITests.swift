@@ -19,9 +19,10 @@ final class PayPalMessaging_Success_UITests: XCTestCase {
     func testStart_withValidRequest_firesDelegates() {
         XCTAssertTrue(app.buttons["DELEGATE: didAppear fired"].waitForExistence(timeout: 30))
 
-        let expectedButtonText = "PayPal - Pay monthly for purchases of $199-$10,000. Learn more"
-        waitForElementToBeHittable(app.buttons[expectedButtonText])
-        app.buttons[expectedButtonText].tap()
+        let expectedButtonTextPredicate = NSPredicate(format: "label CONTAINS[c] 'Pay monthly for purchases of'")
+        let button = app.buttons.containing(expectedButtonTextPredicate)
+        waitForElementToBeHittable(button.element)
+        button.element.tap()
         sleep(2)
 
         app.buttons["PayPal learn more modal close"].tap()
