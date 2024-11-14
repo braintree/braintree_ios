@@ -104,6 +104,14 @@ import Foundation
         self.merchantAccountID = merchantAccountID
     }
     
+    /// Creates a new instance of `BTCard` with only a CVV value,
+    /// setting default values for all other parameters.
+    /// - Parameters:
+    ///   - cvv: The card verification code (like CVV or CID).
+    public convenience init(cvv: String) {
+        self.init(number: "", expirationMonth: "", expirationYear: "", cvv: cvv)
+    }
+    
     // MARK: - Internal Methods
 
     func parameters() -> [String: Any] {

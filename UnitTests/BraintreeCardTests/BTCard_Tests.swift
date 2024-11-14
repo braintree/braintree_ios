@@ -183,6 +183,24 @@ class BTCard_Tests: XCTestCase {
         ] as [String: Any] as NSObject)
     }
     
+    func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
+        let card = BTCard(cvv: "123")
+
+        XCTAssertEqual(card.graphQLParameters() as NSObject, [
+            "operationName": "TokenizeCreditCard",
+            "query": graphQLQuery,
+            "variables": [
+                "input": [
+                    "creditCard": ["cvv": "123",
+                                   "expirationMonth": "",
+                                   "expirationYear": "",
+                                   "number": ""] as [String: String],
+                    "options": ["validate": false]
+                ] as [String: Any]
+            ]
+        ] as [String: Any] as NSObject)
+    }
+    
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
             number: "4111111111111111",

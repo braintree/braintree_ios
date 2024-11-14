@@ -9,12 +9,11 @@ enum Format {
 enum CardHelpers {
 
     static func newCard(from cardFormView: BTCardFormView) -> BTCard? {
-        guard
-            let cardNumber = cardFormView.cardNumber,
-            let expirationMonth = cardFormView.expirationMonth,
-            let expirationYear = cardFormView.expirationYear,
-            let cvv = cardFormView.cvv
-        else { return nil }
+        let cardNumber = cardFormView.cardNumber ?? ""
+        let expirationMonth = cardFormView.expirationMonth ?? ""
+        let expirationYear = cardFormView.expirationYear ?? ""
+        
+        guard let cvv = cardFormView.cvv else { return nil }
         
         return BTCard(
             number: cardNumber,
