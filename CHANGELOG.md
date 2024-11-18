@@ -3,10 +3,9 @@
 ## unreleased
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
-  * Update `BTPayPalRequest` with App-Switch properties, `userAuthenticationEmail` and `enablePayPalAppSwitch`
-  * Add an initializer that requires both App-Switch properties to `BTPayPalCheckoutRequest` 
-  * Remove these properties and related logic from the `BTPayPalVaultRequest`
-  
+  * Add PayPal App Switch checkout Flow (BETA)
+    * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction: offerPayLater:currencyCode:requestBillingAgreement:)`
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
 * BraintreeVenmo
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 
