@@ -60,7 +60,7 @@ import BraintreeCore
             }
 
             if request.amount.isEmpty {
-                NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
+                NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
                 let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
                 notifyFailure(with: error, completion: completion)
                 return
@@ -105,7 +105,7 @@ import BraintreeCore
 
         if request.nonce.isEmpty {
             notifyFailure(
-                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce can not be nil."),
+                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce cannot be an empty string."),
                 completion: completion
             )
             return
