@@ -88,13 +88,34 @@ import BraintreeCore
     /// - Parameters:
     ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    ///   - amount: Required: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.'
+    ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
+    ///   and is limited to 7 digits before the decimal point.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
+    ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+    ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
+    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
+    ///   during checkout. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
         userAuthenticationEmail: String,
-        enablePayPalAppSwitch: Bool
+        enablePayPalAppSwitch: Bool,
+        amount: String,
+        intent: BTPayPalRequestIntent = .authorize,
+        userAction: BTPayPalRequestUserAction = .none,
+        offerPayLater: Bool = false,
+        currencyCode: String? = nil,
+        requestBillingAgreement: Bool = false
     ) {
         self.init(
+            amount: amount,
+            intent: intent,
+            userAction: userAction,
+            offerPayLater: offerPayLater,
+            currencyCode: currencyCode,
+            requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail,
             enablePayPalAppSwitch: enablePayPalAppSwitch
         )
