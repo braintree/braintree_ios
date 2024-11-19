@@ -63,8 +63,10 @@ import BraintreeCore
     var landingPageType: BTPayPalRequestLandingPageType?
     var displayName: String?
     var merchantAccountID: String?
+    var lineItems: [BTPayPalLineItem]?
     var billingAgreementDescription: String?
     var riskCorrelationID: String?
+    var userPhoneNumber: BTPayPalPhoneNumber?
     
     // MARK: - Static Properties
     
@@ -86,9 +88,11 @@ import BraintreeCore
     ///        `.billing` specifies a non-PayPal account landing page is used.
     ///    - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
     ///    - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
+    ///    - lineItems: Optional: The line items for this transaction. It can include up to 249 line items.
     ///    - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///        `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     ///    - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
+    ///    - userPhoneNumber: Optional:  A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     init(
         hermesPath: String,
         paymentType: BTPayPalPaymentType,
@@ -99,8 +103,10 @@ import BraintreeCore
         landingPageType: BTPayPalRequestLandingPageType = .none,
         displayName: String? = nil,
         merchantAccountID: String? = nil,
+        lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
-        riskCorrelationID: String? = nil
+        riskCorrelationID: String? = nil,
+        userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -111,8 +117,10 @@ import BraintreeCore
         self.landingPageType = landingPageType
         self.displayName = displayName
         self.merchantAccountID = merchantAccountID
+        self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationID
+        self.userPhoneNumber = userPhoneNumber
     }
 
     // MARK: Internal Methods
@@ -145,6 +153,15 @@ import BraintreeCore
 
         if riskCorrelationID != nil {
             parameters["correlation_id"] = riskCorrelationID
+        }
+        
+        if let lineItems, !lineItems.isEmpty {
+            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
+            parameters["line_items"] = lineItemsArray
+        }
+        
+        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
+            parameters["phone_number"] = userPhoneNumberDict
         }
 
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"

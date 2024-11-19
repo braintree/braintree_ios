@@ -134,6 +134,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
+        
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
+        lineItem.upcCode = "123456789"
+        lineItem.upcType = .UPC_A
+        lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
 
         let request = BTPayPalCheckoutRequest(
             amount: "5.00",
@@ -143,14 +148,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             userPhoneNumber: BTPayPalPhoneNumber(
                 countryCode: countryCodeTextField.text ?? "",
                 nationalNumber: nationalNumberTextField.text ?? ""
-            )
+            ),
+            lineItems: [lineItem]
         )
-        
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
-        lineItem.upcCode = "123456789"
-        lineItem.upcType = .UPC_A
-        lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
-
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true

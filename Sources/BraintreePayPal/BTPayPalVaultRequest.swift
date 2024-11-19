@@ -11,7 +11,6 @@ import BraintreeCore
     
     var offerCredit: Bool
     var userAuthenticationEmail: String?
-    var userPhoneNumber: BTPayPalPhoneNumber?
     var enablePayPalAppSwitch: Bool = false
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
@@ -53,8 +52,11 @@ import BraintreeCore
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.userAuthenticationEmail = userAuthenticationEmail
-        self.userPhoneNumber = userPhoneNumber
-        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
+        super.init(
+            hermesPath: "v1/paypal_hermes/setup_billing_agreement",
+            paymentType: .vault,
+            userPhoneNumber: userPhoneNumber
+        )
     }
 
     public override func parameters(
@@ -66,10 +68,6 @@ import BraintreeCore
 
         if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             baseParameters["payer_email"] = userAuthenticationEmail
-        }
-        
-        if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary() {
-            baseParameters["phone_number"] = userPhoneNumberDictionary
         }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {

@@ -46,10 +46,16 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.riskCorrelationID = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
-
+        
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)
+        lineItem.imageURL = URL(string: "http://example/image.jpg")
+        lineItem.upcCode = "upc-code"
+        lineItem.upcType = .UPC_A
+        request.lineItems = [lineItem]
+        
         let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
-
+        
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
         XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
@@ -57,7 +63,14 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["merchant_account_id"] as? String, "merchant-account-id")
         XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
-
+        XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
+                                                                           "unit_amount": "1",
+                                                                           "name": "item",
+                                                                           "kind": "credit",
+                                                                           "upc_code": "upc-code",
+                                                                           "upc_type": "UPC-A",
+                                                                           "image_url": "http://example/image.jpg"]])
+        
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
