@@ -191,10 +191,7 @@ class BTCard_Tests: XCTestCase {
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": ["cvv": "123",
-                                   "expirationMonth": "",
-                                   "expirationYear": "",
-                                   "number": ""] as [String: String],
+                    "creditCard": ["cvv": "123"] as [String: String],
                     "options": ["validate": false]
                 ] as [String: Any]
             ]
