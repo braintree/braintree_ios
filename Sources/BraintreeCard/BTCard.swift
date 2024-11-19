@@ -113,16 +113,15 @@ import Foundation
     }
 
     func graphQLParameters(usesGraphQL: Bool) -> BTCreditCardGraphQLBody {
-        let cardBody = BTCreditCardBody.CreditCard(
+        let cardBody = BTCreditCardGraphQLBody.Variables.Input.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
             cvv: cvv,
             expirationYear: expirationYear,
-            cardHolderName: cardholderName,
-            usesGraphQL: usesGraphQL
+            cardHolderName: cardholderName
         )
         
-        cardBody.billingAddress = BTCreditCardBody.CreditCard.BillingAddress(
+        cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
             firstName: firstName,
             lastName: lastName,
             company: company,
@@ -143,7 +142,7 @@ import Foundation
 //            cardDictionary["billingAddress"] = billingAddressDictionary
 //        }
         
-        let options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        let options = BTCreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
         
         let input = BTCreditCardGraphQLBody.Variables.Input(
             creditCard: cardBody,
@@ -152,9 +151,11 @@ import Foundation
         
         let variables = BTCreditCardGraphQLBody.Variables(input: input)
         
-        if authenticationInsightRequested {
+        if true {
             if let merchantAccountID {
-                BTCreditCardGraphQLBody.Variables.AuthenticationInsightInput(merchantAccountId: merchantAccountID)
+                let merchantAccountID = BTCreditCardGraphQLBody.Variables.Input.AuthenticationInsightInput(merchantAccountId: merchantAccountID)
+                
+                input.authenticationInsightInput = merchantAccountID
             }
         }
 
@@ -179,7 +180,21 @@ import Foundation
 //            "variables": variables
 //        ]
         
+        inspectEncodable(body)
         return body
+    }
+    
+    func inspectEncodable<T: Encodable>(_ object: T) {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys] // Optional formatting
+            let jsonData = try encoder.encode(object)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Encoded Object:\n\(jsonString)")
+            }
+        } catch {
+            print("Failed to encode object: \(error)")
+        }
     }
 
     // MARK: - Private Methods
