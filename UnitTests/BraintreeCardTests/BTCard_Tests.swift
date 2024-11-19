@@ -4,12 +4,12 @@ import XCTest
 class BTCard_Tests: XCTestCase {
 
     func testInitialization_withoutParameters() {
-        let card = BTCard()
-
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "2038"
-        card.cvv = "123"
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "123"
+        )
 
         XCTAssertEqual(card.number, "4111111111111111")
         XCTAssertEqual(card.expirationMonth, "12")
@@ -21,25 +21,26 @@ class BTCard_Tests: XCTestCase {
     // MARK: - Non-GraphQL Parameters
 
     func testParameters_setsAllParameters() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "2038"
-        card.cvv = "123"
-        card.cardholderName = "Brian Tree"
-        card.firstName = "Brian"
-        card.lastName = "Tree"
-        card.company = "Braintree"
-        card.postalCode = "11111"
-        card.streetAddress = "123 Main St."
-        card.extendedAddress = "Apt 2"
-        card.locality = "Chicago"
-        card.region = "IL"
-        card.countryName = "US"
-        card.countryCodeAlpha2 = "US"
-        card.countryCodeAlpha3 = "USA"
-        card.countryCodeNumeric = "123"
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "123",
+            postalCode: "11111",
+            cardholderName: "Brian Tree",
+            firstName: "Brian",
+            lastName: "Tree",
+            company: "Braintree",
+            streetAddress: "123 Main St.",
+            extendedAddress: "Apt 2",
+            locality: "Chicago",
+            region: "IL",
+            countryName: "US",
+            countryCodeAlpha2: "US",
+            countryCodeAlpha3: "USA",
+            countryCodeNumeric: "123",
+            shouldValidate: true
+        )
 
         let expectedParameters: [String : Any] = [
             "number": "4111111111111111",
@@ -129,25 +130,26 @@ class BTCard_Tests: XCTestCase {
     """
 
     func testGraphQLParameters_whenInitializedWithInitWithParameters_returnsExpectedValues() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = "20"
-        card.cvv = "123"
-        card.cardholderName = "Brian Tree"
-        card.firstName = "Joe"
-        card.lastName = "Smith"
-        card.company = "Company"
-        card.postalCode = "94107"
-        card.streetAddress = "123 Townsend St"
-        card.extendedAddress = "Unit 1"
-        card.locality = "San Francisco"
-        card.region = "CA"
-        card.countryName = "United States of America"
-        card.countryCodeAlpha2 = "US"
-        card.countryCodeAlpha3 = "USA"
-        card.countryCodeNumeric = "123"
-        card.shouldValidate = false
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "20",
+            cvv: "123",
+            postalCode: "94107",
+            cardholderName: "Brian Tree",
+            firstName: "Joe",
+            lastName: "Smith",
+            company: "Company",
+            streetAddress: "123 Townsend St",
+            extendedAddress: "Unit 1",
+            locality: "San Francisco",
+            region: "CA",
+            countryName: "United States of America",
+            countryCodeAlpha2: "US",
+            countryCodeAlpha3: "USA",
+            countryCodeNumeric: "123",
+            shouldValidate: false
+        )
 
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -180,10 +182,9 @@ class BTCard_Tests: XCTestCase {
             ]
         ] as [String: Any] as NSObject)
     }
-
+    
     func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
-        let card = BTCard()
-        card.cvv = "123"
+        let card = BTCard(cvv: "123")
 
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -198,10 +199,14 @@ class BTCard_Tests: XCTestCase {
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.authenticationInsightRequested = true
-        card.merchantAccountID = "some id"
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
+            authenticationInsightRequested: true,
+            merchantAccountID: "some id"
+        )
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -209,6 +214,9 @@ class BTCard_Tests: XCTestCase {
             "variables": [
                 "input": [
                     "creditCard": [
+                        "cvv": "1234",
+                        "expirationMonth": "12",
+                        "expirationYear": "2038",
                         "number": "4111111111111111",
                     ],
                     "options": [ "validate": false ],
@@ -221,17 +229,24 @@ class BTCard_Tests: XCTestCase {
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.authenticationInsightRequested = false
-        card.merchantAccountID = "some id"
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
+            authenticationInsightRequested: false,
+            merchantAccountID: "some id"
+        )
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": ["number": "4111111111111111"] as [String: String],
+                    "creditCard": ["number": "4111111111111111",
+                                   "cvv": "1234",
+                                   "expirationMonth": "12",
+                                   "expirationYear": "2038"] as [String: String],
                     "options": ["validate": false],
                 ] as [String: Any]
             ]
@@ -239,10 +254,14 @@ class BTCard_Tests: XCTestCase {
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.authenticationInsightRequested = true
-        card.merchantAccountID = nil
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "1234",
+            authenticationInsightRequested: true,
+            merchantAccountID: nil
+        )
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
@@ -250,6 +269,9 @@ class BTCard_Tests: XCTestCase {
             "variables": [
                 "input": [
                     "creditCard": [
+                        "cvv": "1234",
+                        "expirationMonth": "12",
+                        "expirationYear": "2038",
                         "number": "4111111111111111",
                     ],
                     "options": [ "validate": false ],
@@ -260,17 +282,24 @@ class BTCard_Tests: XCTestCase {
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.authenticationInsightRequested = false
-        card.merchantAccountID = nil
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: "2038",
+            cvv: "123",
+            authenticationInsightRequested: false,
+            merchantAccountID: nil
+        )
         
         XCTAssertEqual(card.graphQLParameters() as NSObject, [
             "operationName": "TokenizeCreditCard",
             "query": graphQLQuery,
             "variables": [
                 "input": [
-                    "creditCard": ["number": "4111111111111111"] as [String: String],
+                    "creditCard": ["number": "4111111111111111",
+                                   "cvv": "123",
+                                   "expirationMonth": "12",
+                                   "expirationYear": "2038"] as [String: String],
                     "options": [ "validate": false ],
                 ] as [String: Any]
             ]

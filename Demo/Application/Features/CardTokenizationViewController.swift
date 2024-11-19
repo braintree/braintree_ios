@@ -20,8 +20,11 @@ class CardTokenizationViewController: PaymentButtonBaseViewController {
     @objc func tappedSubmit() {
         progressBlock("Tokenizing card details!")
 
+        guard let card = CardHelpers.newCard(from: cardFormView) else {
+            progressBlock("Fill in all the card fields.")
+            return
+        }
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = CardHelpers.newCard(from: cardFormView)
 
         setFieldsEnabled(false)
         cardClient.tokenize(card) { nonce, error in
