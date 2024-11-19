@@ -8,8 +8,14 @@ class BTCardClient_IntegrationTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
         let cardClient = BTCardClient(apiClient: apiClient)
         let expectation = expectation(description: "Tokenize card")
-
-        cardClient.tokenize(invalidCard()) { tokenizedCard, error in
+        let card = BTCard(
+            number: "123123",
+            expirationMonth: "XX",
+            expirationYear: "XXXX",
+            cvv: "1234"
+        )
+        
+        cardClient.tokenize(card) { tokenizedCard, error in
             guard let tokenizedCard else {
                 XCTFail("Expect a nonce to be returned")
                 return
@@ -27,11 +33,13 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = BTCard()
-        card.number = "123"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "123",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "1234",
+            shouldValidate: true
+        )
 
         let expectation = expectation(description: "Tokenize card")
 
@@ -56,8 +64,15 @@ class BTCardClient_IntegrationTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
         let cardClient = BTCardClient(apiClient: apiClient)
         let expectation = expectation(description: "Tokenize card")
-
-        cardClient.tokenize(validCard()) { tokenizedCard, error in
+        let card = BTCard(
+            number: "123",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "1234",
+            cardholderName: "Cookie Monster"
+        )
+        
+        cardClient.tokenize(card) { tokenizedCard, error in
             guard let tokenizedCard else {
                 XCTFail("Expect a nonce to be returned")
                 return
@@ -89,8 +104,13 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_whenUsingTokenizationKeyAndCardHasValidationEnabled_failsWithAuthorizationError() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = invalidCard()
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "123123",
+            expirationMonth: "XX",
+            expirationYear: "XXXX",
+            cvv: "1234",
+            shouldValidate: true
+        )
 
         let expectation = expectation(description: "Tokenize card")
         cardClient.tokenize(card) { tokenizedCard, error in
@@ -114,8 +134,14 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_whenUsingClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = validCard()
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "123",
+            cardholderName: "Cookie Monster",
+            shouldValidate: true
+        )
 
         let expectation = expectation(description: "Tokenize card")
 
@@ -137,8 +163,13 @@ class BTCardClient_IntegrationTests: XCTestCase {
     func testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
         let cardClient = BTCardClient(apiClient: apiClient)
-        let card = validCard()
-        card.shouldValidate = true
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "123",
+            shouldValidate: true
+        )
 
         let expectation = expectation(description: "Tokenize card")
 
@@ -155,46 +186,5 @@ class BTCardClient_IntegrationTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
-    }
-
-    func testTokenizeCard_withCVVOnly_tokenizesSuccessfully() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
-        let cardClient = BTCardClient(apiClient: apiClient)
-        let card = BTCard()
-        card.cvv = "123"
-
-        let expectation = expectation(description: "Tokenize card")
-
-        cardClient.tokenize(card) { tokenizedCard, error in
-            guard let tokenizedCard else {
-                XCTFail("Expect a nonce to be returned")
-                return
-            }
-
-            XCTAssertTrue(tokenizedCard.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    // MARK: - Private Helper Methods
-
-    func invalidCard() -> BTCard {
-        let card = BTCard()
-        card.number = "123123"
-        card.expirationMonth = "XX"
-        card.expirationYear = "XXXX"
-        return card
-    }
-
-    func validCard() -> BTCard {
-        let card = BTCard()
-        card.number = "4111111111111111"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.cardholderName = "Cookie Monster"
-        return card
     }
 }

@@ -7,6 +7,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
+1. [Card](#card)
 1. [Venmo](#venmo)
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
@@ -17,6 +18,9 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Supported Versions
 
 v7 bumps to a minimum deployment target of iOS 16+.
+
+## Card
+v7 updates `BTCard` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTCard`, pass the properties directly in the initializer.
 
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
