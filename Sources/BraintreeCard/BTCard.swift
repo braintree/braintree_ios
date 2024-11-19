@@ -134,12 +134,6 @@ import Foundation
             countryCodeAlpha3: countryCodeAlpha3,
             countryCodeNumeric: countryCodeNumeric
         )
-//        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
-//        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
-//
-//        if !billingAddressDictionary.isEmpty {
-//            cardDictionary["billingAddress"] = billingAddressDictionary
-//        }
         
         let options = BTCreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
         
@@ -157,28 +151,9 @@ import Foundation
                 input.authenticationInsightInput = merchantAccountID
             }
         }
-
-//        let options: [String: Bool] = ["validate": shouldValidate]
-//        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
-//        var variables: [String: Any] = ["input": inputDictionary]
-//
-//        if authenticationInsightRequested {
-//            if let merchantAccountID {
-//                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
-//            } else {
-//                variables["authenticationInsightInput"] = [:]
-//            }
-//        }
         
         let body = BTCreditCardGraphQLBody(variables: variables, query: cardTokenizationGraphQLMutation(), operationName: "TokenizeCreditCard")
 
-        
-//        return [
-//            "operationName": "TokenizeCreditCard",
-//            "query": cardTokenizationGraphQLMutation(),
-//            "variables": variables
-//        ]
-        
         inspectEncodable(body)
         return body
     }
