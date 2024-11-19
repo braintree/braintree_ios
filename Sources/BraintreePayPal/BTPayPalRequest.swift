@@ -93,6 +93,7 @@ import BraintreeCore
     ///    - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///        `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     ///    - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
+    ///    - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///    - userPhoneNumber: Optional:  A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     init(
         hermesPath: String,
