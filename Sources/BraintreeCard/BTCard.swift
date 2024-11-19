@@ -144,7 +144,7 @@ import Foundation
         
         let variables = BTCreditCardGraphQLBody.Variables(input: input)
         
-        if true {
+        if authenticationInsightRequested {
             if let merchantAccountID {
                 let merchantAccountID = BTCreditCardGraphQLBody.Variables.Input.AuthenticationInsightInput(merchantAccountId: merchantAccountID)
                 

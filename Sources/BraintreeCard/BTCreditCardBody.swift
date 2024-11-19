@@ -11,6 +11,7 @@ class BTCreditCardBody: Encodable {
     enum CodingKeys: String, CodingKey {
         case authenticationInsight
         case meta = "_meta"
+        case merchantAccountId
         case creditCard = "credit_card"
         
     }
@@ -78,7 +79,7 @@ class BTCreditCardBody: Encodable {
             case cvv
             case options
             case expirationYear = "expiration_year"
-            case cardHolderName = "card_holder_name"
+            case cardHolderName = "cardholder_name"
         }
 
         class BillingAddress: Encodable {
