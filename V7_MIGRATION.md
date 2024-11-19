@@ -7,15 +7,21 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 ## Table of Contents
 
 1. [Supported Versions](#supported-versions)
+1. [Card](#card)
 1. [Venmo](#venmo)
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
+1. [3D Secure](#3d-secure)]
 1. [PayPal Native Checkout](#paypal-native-checkout)
 1. [PayPal](#paypal)
+
 
 ## Supported Versions
 
 v7 bumps to a minimum deployment target of iOS 16+.
+
+## Card
+v7 updates `BTCard` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTCard`, pass the properties directly in the initializer.
 
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
@@ -31,6 +37,9 @@ All properties within `BTSEPADirectDebitRequest` can only be accessed on the ini
 
 ## Local Payments
 v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer.
+
+## 3D Secure
+All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
 
 ## PayPal Native Checkout
 The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 

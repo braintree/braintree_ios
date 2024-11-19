@@ -7,51 +7,27 @@ import BraintreeCore
 /// Used to initialize a 3D Secure payment flow
 @objcMembers public class BTThreeDSecureRequest: NSObject {
     
-    // MARK: - Public Properties
-
-    /// A nonce to be verified by ThreeDSecure
-    public var nonce: String?
+    // MARK: - Internal Properties
     
-    /// Object where each key is the name of a custom field which has been configured in the Control Panel. In the Control Panel you can configure 3D Secure Rules which trigger on certain values.
-    public var customFields: [String: String]?
-
-    /// The amount for the transaction
-    public var amount: NSDecimalNumber? = 0
-
-    /// Optional. The account type selected by the cardholder
-    /// - Note: Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
-    public var accountType: BTThreeDSecureAccountType = .unspecified
-
-    /// Optional. The billing address used for verification
-    public var billingAddress: BTThreeDSecurePostalAddress?
-
-    /// Optional. The mobile phone number used for verification
-    /// - Note: Only numbers. Remove dashes, parentheses and other characters
-    public var mobilePhoneNumber: String?
-
-    /// Optional. The email used for verification
-    public var email: String?
-
-    /// Optional. The shipping method chosen for the transaction
-    public var shippingMethod: BTThreeDSecureShippingMethod = .unspecified
-
-    /// Optional. The additional information used for verification
-    public var additionalInformation: BTThreeDSecureAdditionalInformation?
-
-    /// Optional. If set to true, an authentication challenge will be forced if possible.
-    public var challengeRequested: Bool = false
-
-    /// Optional. If set to true, an exemption to the authentication challenge will be requested.
-    public var exemptionRequested: Bool = false
-
-    /// Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
-    public var requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified
-
-    /// Optional. Indicates whether to use the data only flow. In this flow, frictionless 3DS is ensured for Mastercard cardholders as the card scheme provides a risk score
-    /// for the issuer to determine whether to approve. If data only is not supported by the processor, a validation error will be raised.
-    /// Non-Mastercard cardholders will fallback to a normal 3DS flow.
-    public var dataOnlyRequested: Bool = false
-
+    var amount: String
+    var nonce: String
+    var accountType: BTThreeDSecureAccountType
+    var additionalInformation: BTThreeDSecureAdditionalInformation?
+    var billingAddress: BTThreeDSecurePostalAddress?
+    var cardAddChallengeRequested: Bool
+    var challengeRequested: Bool
+    var customFields: [String: String]?
+    var dataOnlyRequested: Bool
+    var dfReferenceID: String?
+    var email: String?
+    var exemptionRequested: Bool
+    var mobilePhoneNumber: String?
+    var renderTypes: [BTThreeDSecureRenderType]?
+    var requestedExemptionType: BTThreeDSecureRequestedExemptionType
+    var shippingMethod: BTThreeDSecureShippingMethod
+    var uiType: BTThreeDSecureUIType
+    var v2UICustomization: BTThreeDSecureV2UICustomization?
+    
     // NEXT_MAJOR_VERSION remove cardAddChallenge in favor of cardAddChallengeRequested
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
     ///
@@ -66,38 +42,76 @@ import BraintreeCore
         get { _cardAddChallenge }
         set { _cardAddChallenge = newValue }
     }
-
+    
     // swiftlint:disable identifier_name
     /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
     /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
     var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
-    // swiftlint:enable identifier_name
-
-    /// Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers' credit cards or payment methods) and not for creating transactions.
-    /// If set to `true`, a card-add challenge will be requested from the issuer.
-    /// If set to `false`, a card-add challenge will not be requested. 
-    /// If the parameter is missing, a card-add challenge will only be requested for $0 amount.
-    public var cardAddChallengeRequested: Bool = false
-
-    /// Optional. UI Customization for 3DS2 challenge views.
-    public var v2UICustomization: BTThreeDSecureV2UICustomization?
-
-    /// Optional. Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge.
-    ///
-    /// Defaults to `.both`
-    public var uiType: BTThreeDSecureUIType = .both
-
-    /// Optional. List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge.
-    ///
-    /// - Note: When using `BTThreeDSecureUIType.both` or `BTThreeDSecureUIType.html`, all `BTThreeDSecureRenderType` options must be set.
-    /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `.html` must be set.
-    public var renderTypes: [BTThreeDSecureRenderType]?
-
+    
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     
-    // MARK: - Internal Properties
+    // MARK: - Initializer
     
-    /// The dfReferenceID for the session. Exposed for testing.
-    var dfReferenceID: String?
+    /// Creates a `BTThreeDSecureRequest`
+    /// - Parameters:
+    ///    - amount: Required. The amount for the transaction.
+    ///    - nonce: Required. A nonce to be verified by ThreeDSecure.
+    ///    - accountType: Optional. The account type selected by the cardholder. Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.
+    ///    - additionalInformation: Optional. The additional information used for verification.
+    ///    - billingAddress: Optional. The billing address used for verification
+    ///    - cardAddChallengeRequested: Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers' credit cards or payment methods) and not for creating transactions. If set to `true`, a card-add challenge will be requested from the issuer. If set to `false`, a card-add challenge will not be requested. If the parameter is missing, a card-add challenge will only be requested for $0 amount.
+    ///    - challengeRequested: Optional. If set to true, an authentication challenge will be forced if possible.
+    ///    - customFields: Optional. Object where each key is the name of a custom field which has been configured in the Control Panel. In the Control Panel you can configure 3D Secure Rules which trigger on certain values.
+    ///    - dataOnlyRequested:  Optional. Indicates whether to use the data only flow. In this flow, frictionless 3DS is ensured for Mastercard cardholders as the card scheme provides a risk score for the issuer to determine whether to approve. If data only is not supported by the processor, a validation error will be raised. Non-Mastercard cardholders will fallback to a normal 3DS flow.
+    ///    - dfReferenceID: Optional. The dfReferenceID for the session, particularly useful for merchants performing 3DS lookup.
+    ///    - email: Optional. The email used for verification.
+    ///    - exemptionRequested: Optional. If set to true, an exemption to the authentication challenge will be requested.
+    ///    - mobilePhoneNumber: Optional. The mobile phone number used for verification. Only numbers. Remove dashes, parentheses and other characters.
+    ///    - renderTypes: Optional: List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge. When using `BTThreeDSecureUIType.both` or `BTThreeDSecureUIType.html`, all `BTThreeDSecureRenderType` options must be set. When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `.html` must be set.
+    ///    - requestedExemptionType: Optional. The exemption type to be requested. If an exemption is requested and the exemption's conditions are satisfied, then it will be applied.
+    ///    - shippingMethod: Optional. The shipping method chosen for the transaction
+    ///    - uiType: Optional: Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge. Defaults to `.both`
+    ///    - v2UICustomization: Optional. UI Customization for 3DS2 challenge views.
+    public init(
+        amount: String,
+        nonce: String,
+        accountType: BTThreeDSecureAccountType = .unspecified,
+        additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
+        billingAddress: BTThreeDSecurePostalAddress? = nil,
+        _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified,
+        cardAddChallengeRequested: Bool = false,
+        challengeRequested: Bool = false,
+        customFields: [String: String]? = nil,
+        dataOnlyRequested: Bool = false,
+        dfReferenceID: String? = nil,
+        email: String? = nil,
+        exemptionRequested: Bool = false,
+        mobilePhoneNumber: String? = nil,
+        renderTypes: [BTThreeDSecureRenderType]? = nil,
+        requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified,
+        shippingMethod: BTThreeDSecureShippingMethod = .unspecified,
+        uiType: BTThreeDSecureUIType = .both,
+        v2UICustomization: BTThreeDSecureV2UICustomization? = nil
+    ) {
+        self.amount = amount
+        self.nonce = nonce
+        self.accountType = accountType
+        self.additionalInformation = additionalInformation
+        self.billingAddress = billingAddress
+        self._cardAddChallenge = _cardAddChallenge
+        self.cardAddChallengeRequested = cardAddChallengeRequested
+        self.challengeRequested = challengeRequested
+        self.customFields = customFields
+        self.dataOnlyRequested = dataOnlyRequested
+        self.dfReferenceID = dfReferenceID
+        self.email = email
+        self.exemptionRequested = exemptionRequested
+        self.mobilePhoneNumber = mobilePhoneNumber
+        self.renderTypes = renderTypes
+        self.requestedExemptionType = requestedExemptionType
+        self.shippingMethod = shippingMethod
+        self.uiType = uiType
+        self.v2UICustomization = v2UICustomization
+    }
 }
