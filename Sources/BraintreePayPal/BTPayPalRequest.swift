@@ -66,6 +66,7 @@ import BraintreeCore
     var lineItems: [BTPayPalLineItem]?
     var billingAgreementDescription: String?
     var riskCorrelationID: String?
+    var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
     
     // MARK: - Static Properties
@@ -106,6 +107,7 @@ import BraintreeCore
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
         riskCorrelationID: String? = nil,
+        userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.hermesPath = hermesPath
@@ -120,6 +122,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationID
+        self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
 
@@ -158,6 +161,10 @@ import BraintreeCore
         if let lineItems, !lineItems.isEmpty {
             let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
             parameters["line_items"] = lineItemsArray
+        }
+        
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
+            parameters["payer_email"] = userAuthenticationEmail
         }
         
         if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {

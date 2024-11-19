@@ -66,7 +66,6 @@ import BraintreeCore
     var offerPayLater: Bool
     var currencyCode: String?
     var requestBillingAgreement: Bool
-    var userAuthenticationEmail: String?
 
     // MARK: - Initializer
 
@@ -102,11 +101,11 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
-        self.userAuthenticationEmail = userAuthenticationEmail
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
             paymentType: .checkout,
             lineItems: lineItems,
+            userAuthenticationEmail: userAuthenticationEmail,
             userPhoneNumber: userPhoneNumber
         )
     }
@@ -129,10 +128,6 @@ import BraintreeCore
 
         if currencyCode != nil {
             checkoutParameters["currency_iso_code"] = currencyCode
-        }
-        
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            checkoutParameters["payer_email"] = userAuthenticationEmail
         }
 
         if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {

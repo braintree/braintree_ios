@@ -10,7 +10,6 @@ import BraintreeCore
     // MARK: - Internal Properties
     
     var offerCredit: Bool
-    var userAuthenticationEmail: String?
     var enablePayPalAppSwitch: Bool = false
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
@@ -51,10 +50,10 @@ import BraintreeCore
         self.offerCredit = offerCredit
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
-        self.userAuthenticationEmail = userAuthenticationEmail
         super.init(
             hermesPath: "v1/paypal_hermes/setup_billing_agreement",
             paymentType: .vault,
+            userAuthenticationEmail: userAuthenticationEmail,
             userPhoneNumber: userPhoneNumber
         )
     }
@@ -65,10 +64,6 @@ import BraintreeCore
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
-
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            baseParameters["payer_email"] = userAuthenticationEmail
-        }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [
