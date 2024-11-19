@@ -15,6 +15,9 @@
     * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeCard 
     * Remove `BTCardRequest`, use `BTCard` directly instead
+  * BraintreeThreeDSecure
+    * Update `BTThreeDSecureRequest` to make all properties accessible on the initializer only vs via the dot syntax.  
+    * Update `BTThreeDSecureRequest.amount` to be a `String`
 
 ## unreleased
 * BraintreePayPal
