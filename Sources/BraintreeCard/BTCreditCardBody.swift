@@ -50,18 +50,17 @@ class BTCreditCardBody: Encodable {
         var options: Options?
         var expirationYear: String?
         var cardHolderName: String?
-        
-        private var usesGraphQL: Bool
 
-        init(
+        init
+        (
             billingAddress: BillingAddress? = nil,
             number: String?,
             expirationMonth: String?,
             cvv: String?,
             options: Options? = nil,
             expirationYear: String?,
-            cardHolderName: String?,
-            usesGraphQL: Bool)
+            cardHolderName: String?            
+        )
         {
             self.billingAddress = billingAddress
             self.number = number
@@ -70,59 +69,67 @@ class BTCreditCardBody: Encodable {
             self.expirationMonth = expirationMonth
             self.expirationYear = expirationYear
             self.cardHolderName = cardHolderName
-            
-            self.usesGraphQL = usesGraphQL
         }
         
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: DynamicCodingKeys.self)
-            
-            let billingAddressKey = "billing_address"
-            let numberKey = "number"
-            let cvvKey = "cvv"
-            let optionsKey = "options"
-            let expirationMonthKey = usesGraphQL ? "expirationMonth" : "expiration_month"
-            let expirationYearKey = usesGraphQL ? "expirationYear" : "expiration_year"
-            let cardHolderNameKey = usesGraphQL ? "cardholderName" : "cardholder_name"
-
-            try container.encode(billingAddress, forKey: DynamicCodingKeys(stringValue: billingAddressKey)!)
-            
-            try container.encode(options, forKey: DynamicCodingKeys(stringValue: optionsKey)!)
-            
-            if let number {
-                try container.encode(number, forKey: DynamicCodingKeys(stringValue: numberKey)!)
-            }
-            
-            if let cvv {
-                try container.encode(cvv, forKey: DynamicCodingKeys(stringValue: cvvKey)!)
-            }
-            
-            if let expirationMonth {
-                try container.encode(expirationMonth, forKey: DynamicCodingKeys(stringValue: expirationMonthKey)!)
-            }
-            
-            if let expirationYear {
-                try container.encode(expirationYear, forKey: DynamicCodingKeys(stringValue: expirationYearKey)!)
-            }
-            
-            if let cardHolderName {
-                try container.encode(cardHolderName, forKey: DynamicCodingKeys(stringValue: cardHolderNameKey)!)
-            }
+        enum CodingKeys: String, CodingKey {
+            case billingAddress = "billing_address"
+            case number
+            case expirationMonth = "expiration_month"
+            case cvv
+            case options
+            case expirationYear = "expiration_year"
+            case cardHolderName = "card_holder_name"
         }
+        
+//        func encode(to encoder: Encoder) throws {
+//            var container = encoder.container(keyedBy: DynamicCodingKeys.self)
+//            
+//            let billingAddressKey = "billing_address"
+//            let numberKey = "number"
+//            let cvvKey = "cvv"
+//            let optionsKey = "options"
+//            let expirationMonthKey = usesGraphQL ? "expirationMonth" : "expiration_month"
+//            let expirationYearKey = usesGraphQL ? "expirationYear" : "expiration_year"
+//            let cardHolderNameKey = usesGraphQL ? "cardholderName" : "cardholder_name"
+//
+//            try container.encode(billingAddress, forKey: DynamicCodingKeys(stringValue: billingAddressKey)!)
+//            
+//            try container.encode(options, forKey: DynamicCodingKeys(stringValue: optionsKey)!)
+//            
+//            if let number {
+//                try container.encode(number, forKey: DynamicCodingKeys(stringValue: numberKey)!)
+//            }
+//            
+//            if let cvv {
+//                try container.encode(cvv, forKey: DynamicCodingKeys(stringValue: cvvKey)!)
+//            }
+//            
+//            if let expirationMonth {
+//                try container.encode(expirationMonth, forKey: DynamicCodingKeys(stringValue: expirationMonthKey)!)
+//            }
+//            
+//            if let expirationYear {
+//                try container.encode(expirationYear, forKey: DynamicCodingKeys(stringValue: expirationYearKey)!)
+//            }
+//            
+//            if let cardHolderName {
+//                try container.encode(cardHolderName, forKey: DynamicCodingKeys(stringValue: cardHolderNameKey)!)
+//            }
+//        }
 
-        private struct DynamicCodingKeys: CodingKey {
-            var stringValue: String
-            var intValue: Int?
-
-            init?(stringValue: String) {
-                self.stringValue = stringValue
-            }
-
-            init?(intValue: Int) {
-                self.intValue = intValue
-                self.stringValue = "\(intValue)"
-            }
-        }
+//        private struct DynamicCodingKeys: CodingKey {
+//            var stringValue: String
+//            var intValue: Int?
+//
+//            init?(stringValue: String) {
+//                self.stringValue = stringValue
+//            }
+//
+//            init?(intValue: Int) {
+//                self.intValue = intValue
+//                self.stringValue = "\(intValue)"
+//            }
+//        }
 
         class BillingAddress: Encodable {
             var firstName: String?
@@ -138,8 +145,6 @@ class BTCreditCardBody: Encodable {
             var countryCodeAlpha3: String?
             var countryCodeNumeric: String?
             
-            private var usesGraphQL: Bool
-
             init(
                 firstName: String?,
                 lastName: String?,
@@ -152,8 +157,7 @@ class BTCreditCardBody: Encodable {
                 countryName: String?,
                 countryCodeAlpha2: String?,
                 countryCodeAlpha3: String?,
-                countryCodeNumeric: String?,
-                usesGraphQL: Bool = false
+                countryCodeNumeric: String?
             ) {
                 self.firstName = firstName
                 self.lastName = lastName
@@ -167,79 +171,92 @@ class BTCreditCardBody: Encodable {
                 self.countryCodeAlpha2 = countryCodeAlpha2
                 self.countryCodeAlpha3 = countryCodeAlpha3
                 self.countryCodeNumeric = countryCodeNumeric
-
-                self.usesGraphQL = usesGraphQL
             }
             
-            func encode(to encoder: Encoder) throws {
-                var container = encoder.container(keyedBy: DynamicCodingKeys.self)
-                
-                // Dynamically set keys based on usesGraphQL
-                let firstNameKey = usesGraphQL ? "firstName" : "first_name"
-                let lastNameKey = usesGraphQL ? "lastName" : "last_name"
-                let companyKey = usesGraphQL ? "company" : "company"
-                let postalCodeKey = usesGraphQL ? "postalCode" : "postal_code"
-                let streetAddressKey = usesGraphQL ? "streetAddress" : "street_address"
-                let extendedAddressKey = usesGraphQL ? "extendedAddress" : "extended_address"
-                let localityKey = usesGraphQL ? "locality" : "locality"
-                let regionKey = usesGraphQL ? "region" : "region"
-                let countryNameKey = usesGraphQL ? "countryName" : "country_name"
-                let countryCodeAlpha2Key = usesGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"
-                let countryCodeAlpha3Key = usesGraphQL ? "countryCodeAlpha3" : "country_code_alpha3"
-                let countryCodeNumericKey = usesGraphQL ? "countryCodeNumeric" : "country_code_numeric"
-
-                // Encode each property conditionally if it is not nil
-                if let firstName = firstName {
-                    try container.encode(firstName, forKey: DynamicCodingKeys(stringValue: firstNameKey)!)
-                }
-                if let lastName = lastName {
-                    try container.encode(lastName, forKey: DynamicCodingKeys(stringValue: lastNameKey)!)
-                }
-                if let company = company {
-                    try container.encode(company, forKey: DynamicCodingKeys(stringValue: companyKey)!)
-                }
-                if let postalCode = postalCode {
-                    try container.encode(postalCode, forKey: DynamicCodingKeys(stringValue: postalCodeKey)!)
-                }
-                if let streetAddress = streetAddress {
-                    try container.encode(streetAddress, forKey: DynamicCodingKeys(stringValue: streetAddressKey)!)
-                }
-                if let extendedAddress = extendedAddress {
-                    try container.encode(extendedAddress, forKey: DynamicCodingKeys(stringValue: extendedAddressKey)!)
-                }
-                if let locality = locality {
-                    try container.encode(locality, forKey: DynamicCodingKeys(stringValue: localityKey)!)
-                }
-                if let region = region {
-                    try container.encode(region, forKey: DynamicCodingKeys(stringValue: regionKey)!)
-                }
-                if let countryName = countryName {
-                    try container.encode(countryName, forKey: DynamicCodingKeys(stringValue: countryNameKey)!)
-                }
-                if let countryCodeAlpha2 = countryCodeAlpha2 {
-                    try container.encode(countryCodeAlpha2, forKey: DynamicCodingKeys(stringValue: countryCodeAlpha2Key)!)
-                }
-                if let countryCodeAlpha3 = countryCodeAlpha3 {
-                    try container.encode(countryCodeAlpha3, forKey: DynamicCodingKeys(stringValue: countryCodeAlpha3Key)!)
-                }
-                if let countryCodeNumeric = countryCodeNumeric {
-                    try container.encode(countryCodeNumeric, forKey: DynamicCodingKeys(stringValue: countryCodeNumericKey)!)
-                }
+            enum CodingKeys: String, CodingKey {
+                case firstName = "first_name"
+                case lastName = "last_name"
+                case company
+                case postalCode = "postal_code"
+                case streetAddress = "street_address"
+                case extendedAddress = "extended_address"
+                case locality
+                case region
+                case countryName = "country_name"
+                case countryCodeAlpha2 = "country_code_alpha2"
+                case countryCodeAlpha3 = "country_code_alpha3"
+                case countryCodeNumeric = "country_code_numeric"
             }
+            
+//            func encode(to encoder: Encoder) throws {
+//                var container = encoder.container(keyedBy: DynamicCodingKeys.self)
+//                
+//                // Dynamically set keys based on usesGraphQL
+//                let firstNameKey = usesGraphQL ? "firstName" : "first_name"
+//                let lastNameKey = usesGraphQL ? "lastName" : "last_name"
+//                let companyKey = usesGraphQL ? "company" : "company"
+//                let postalCodeKey = usesGraphQL ? "postalCode" : "postal_code"
+//                let streetAddressKey = usesGraphQL ? "streetAddress" : "street_address"
+//                let extendedAddressKey = usesGraphQL ? "extendedAddress" : "extended_address"
+//                let localityKey = usesGraphQL ? "locality" : "locality"
+//                let regionKey = usesGraphQL ? "region" : "region"
+//                let countryNameKey = usesGraphQL ? "countryName" : "country_name"
+//                let countryCodeAlpha2Key = usesGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"
+//                let countryCodeAlpha3Key = usesGraphQL ? "countryCodeAlpha3" : "country_code_alpha3"
+//                let countryCodeNumericKey = usesGraphQL ? "countryCodeNumeric" : "country_code_numeric"
+//
+//                // Encode each property conditionally if it is not nil
+//                if let firstName = firstName {
+//                    try container.encode(firstName, forKey: DynamicCodingKeys(stringValue: firstNameKey)!)
+//                }
+//                if let lastName = lastName {
+//                    try container.encode(lastName, forKey: DynamicCodingKeys(stringValue: lastNameKey)!)
+//                }
+//                if let company = company {
+//                    try container.encode(company, forKey: DynamicCodingKeys(stringValue: companyKey)!)
+//                }
+//                if let postalCode = postalCode {
+//                    try container.encode(postalCode, forKey: DynamicCodingKeys(stringValue: postalCodeKey)!)
+//                }
+//                if let streetAddress = streetAddress {
+//                    try container.encode(streetAddress, forKey: DynamicCodingKeys(stringValue: streetAddressKey)!)
+//                }
+//                if let extendedAddress = extendedAddress {
+//                    try container.encode(extendedAddress, forKey: DynamicCodingKeys(stringValue: extendedAddressKey)!)
+//                }
+//                if let locality = locality {
+//                    try container.encode(locality, forKey: DynamicCodingKeys(stringValue: localityKey)!)
+//                }
+//                if let region = region {
+//                    try container.encode(region, forKey: DynamicCodingKeys(stringValue: regionKey)!)
+//                }
+//                if let countryName = countryName {
+//                    try container.encode(countryName, forKey: DynamicCodingKeys(stringValue: countryNameKey)!)
+//                }
+//                if let countryCodeAlpha2 = countryCodeAlpha2 {
+//                    try container.encode(countryCodeAlpha2, forKey: DynamicCodingKeys(stringValue: countryCodeAlpha2Key)!)
+//                }
+//                if let countryCodeAlpha3 = countryCodeAlpha3 {
+//                    try container.encode(countryCodeAlpha3, forKey: DynamicCodingKeys(stringValue: countryCodeAlpha3Key)!)
+//                }
+//                if let countryCodeNumeric = countryCodeNumeric {
+//                    try container.encode(countryCodeNumeric, forKey: DynamicCodingKeys(stringValue: countryCodeNumericKey)!)
+//                }
+//            }
 
-            private struct DynamicCodingKeys: CodingKey {
-                var stringValue: String
-                var intValue: Int?
-
-                init?(stringValue: String) {
-                    self.stringValue = stringValue
-                }
-
-                init?(intValue: Int) {
-                    self.intValue = intValue
-                    self.stringValue = "\(intValue)"
-                }
-            }
+//            private struct DynamicCodingKeys: CodingKey {
+//                var stringValue: String
+//                var intValue: Int?
+//
+//                init?(stringValue: String) {
+//                    self.stringValue = stringValue
+//                }
+//
+//                init?(intValue: Int) {
+//                    self.intValue = intValue
+//                    self.stringValue = "\(intValue)"
+//                }
+//            }
         }
 
         class Options: Encodable {

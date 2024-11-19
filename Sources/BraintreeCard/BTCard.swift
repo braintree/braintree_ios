@@ -86,8 +86,7 @@ import Foundation
             expirationMonth: expirationMonth,
             cvv: cvv,
             expirationYear: expirationYear,
-            cardHolderName: cardholderName,
-            usesGraphQL: usesGraphQL
+            cardHolderName: cardholderName
         )
         
         cardBody.billingAddress = BTCreditCardBody.CreditCard.BillingAddress(
