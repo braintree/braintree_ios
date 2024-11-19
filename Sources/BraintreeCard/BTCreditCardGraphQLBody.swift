@@ -13,28 +13,29 @@ class BTCreditCardGraphQLBody: Encodable {
 
     class Variables: Encodable {
         var input: Input
-        var authenticationInsightInput: AuthenticationInsightInput?
 
-        init(input: Input, authenticationInsightInput: AuthenticationInsightInput? = nil) {
+        init(input: Input) {
             self.input = input
         }
         
-        class AuthenticationInsightInput: Encodable {
-        
-            var merchantAccountId: String?
-            
-            init(merchantAccountId: String) {
-                self.merchantAccountId = merchantAccountId
-            }
-        }
-
         class Input: Encodable {
             var creditCard: BTCreditCardBody.CreditCard
             var options: BTCreditCardBody.CreditCard.Options
+            var authenticationInsightInput: AuthenticationInsightInput?
 
-            init(creditCard: BTCreditCardBody.CreditCard, options: BTCreditCardBody.CreditCard.Options) {
+            init(creditCard: BTCreditCardBody.CreditCard, options: BTCreditCardBody.CreditCard.Options, authenticationInsightInput: AuthenticationInsightInput? = nil) {
                 self.creditCard = creditCard
                 self.options = options
+                self.authenticationInsightInput = authenticationInsightInput
+            }
+            
+            class AuthenticationInsightInput: Encodable {
+            
+                var merchantAccountId: String?
+                
+                init(merchantAccountId: String) {
+                    self.merchantAccountId = merchantAccountId
+                }
             }
 
             class Options: Encodable {
