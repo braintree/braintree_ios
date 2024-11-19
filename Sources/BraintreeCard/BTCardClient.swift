@@ -51,7 +51,7 @@ import BraintreeCore
                     return
                 }
 
-                let parameters = card.graphQLParameters(usesGraphQL: true)
+                let parameters = card.graphQLParameters()
 
                 self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
                     if let error = error as NSError? {
@@ -138,9 +138,9 @@ import BraintreeCore
 
     private func clientAPIParameters(for card: BTCard) -> BTCreditCardBody {
         
-        var creditCardBody = BTCreditCardBody()
+        let creditCardBody = BTCreditCardBody()
         
-        var meta = BTCreditCardBody.Meta(
+        let meta = BTCreditCardBody.Meta(
             integration: apiClient.metadata.integration.stringValue,
             source: apiClient.metadata.source.stringValue,
             sessionId: apiClient.metadata.sessionID
@@ -153,7 +153,7 @@ import BraintreeCore
             creditCardBody.merchantAccountId = card.merchantAccountID
         }
         
-        creditCardBody.creditCard = card.parameters(usesGraphQL: false)
+        creditCardBody.creditCard = card.parameters()
 
         return creditCardBody
     }

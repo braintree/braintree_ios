@@ -80,7 +80,7 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters(usesGraphQL: Bool) -> BTCreditCardBody.CreditCard {
+    func parameters() -> BTCreditCardBody.CreditCard {
         let cardBody = BTCreditCardBody.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
@@ -111,7 +111,7 @@ import Foundation
         return cardBody
     }
 
-    func graphQLParameters(usesGraphQL: Bool) -> BTCreditCardGraphQLBody {
+    func graphQLParameters() -> BTCreditCardGraphQLBody {
         let cardBody = BTCreditCardGraphQLBody.Variables.Input.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
