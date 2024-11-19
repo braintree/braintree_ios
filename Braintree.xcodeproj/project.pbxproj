@@ -213,6 +213,7 @@
 		A9E80A9C24FEF37C00196BD3 /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79395233A65EB001FDD89 /* MockDelegates.swift */; };
 		A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */; };
+		B8559B6C2CEBE9640014AE47 /* BTCreditCardGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8559B6B2CEBE9640014AE47 /* BTCreditCardGraphQLBody.swift */; };
 		B86AF77B2CDBF3C3002CF3B4 /* BTCreditCardBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86AF77A2CDBF3AA002CF3B4 /* BTCreditCardBody.swift */; };
 		BC17F9B428D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */; };
 		BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */; };
@@ -958,6 +959,7 @@
 		A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E5C22824FD6D0800EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
+		B8559B6B2CEBE9640014AE47 /* BTCreditCardGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCreditCardGraphQLBody.swift; sourceTree = "<group>"; };
 		B86AF77A2CDBF3AA002CF3B4 /* BTCreditCardBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCreditCardBody.swift; sourceTree = "<group>"; };
 		BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLMultiErrorNode.swift; sourceTree = "<group>"; };
 		BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLErrorTree.swift; sourceTree = "<group>"; };
@@ -1821,6 +1823,7 @@
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
 				BE80C00829C559B800793A6C /* BTCardRequest.swift */,
 				B86AF77A2CDBF3AA002CF3B4 /* BTCreditCardBody.swift */,
+				B8559B6B2CEBE9640014AE47 /* BTCreditCardGraphQLBody.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
 				806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */,
 			);
@@ -3488,6 +3491,7 @@
 				BE80C00729C5516E00793A6C /* BTThreeDSecureInfo.swift in Sources */,
 				BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */,
 				B86AF77B2CDBF3C3002CF3B4 /* BTCreditCardBody.swift in Sources */,
+				B8559B6C2CEBE9640014AE47 /* BTCreditCardGraphQLBody.swift in Sources */,
 				BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

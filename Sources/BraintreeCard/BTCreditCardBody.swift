@@ -3,8 +3,8 @@ import Foundation
 class BTCreditCardBody: Encodable {
     var authenticationInsight: Bool?
     var merchantAccountId: String?
-    var meta: Meta
-    var creditCard: CreditCard
+    var meta: Meta?
+    var creditCard: CreditCard?
     
     private var usesGraphQL: Bool
 
@@ -15,7 +15,13 @@ class BTCreditCardBody: Encodable {
         
     }
 
-    init(authenticationInsight: Bool?, merchantAccountId: String?, meta: Meta, creditCard: CreditCard, usesGraphQL: Bool = false) {
+    init(
+        authenticationInsight: Bool? = nil,
+        merchantAccountId: String?  = nil,
+        meta: Meta? = nil,
+        creditCard: CreditCard? = nil,
+        usesGraphQL: Bool = false
+    ) {
         self.authenticationInsight = authenticationInsight
         self.merchantAccountId = merchantAccountId
         self.meta = meta
@@ -37,22 +43,22 @@ class BTCreditCardBody: Encodable {
     }
 
     class CreditCard: Encodable {
-        var billingAddress: BillingAddress
+        var billingAddress: BillingAddress?
         var number: String?
         var expirationMonth: String?
         var cvv: String?
-        var options: Options
+        var options: Options?
         var expirationYear: String?
         var cardHolderName: String?
         
         private var usesGraphQL: Bool
 
         init(
-            billingAddress: BillingAddress,
+            billingAddress: BillingAddress? = nil,
             number: String?,
             expirationMonth: String?,
             cvv: String?,
-            options: Options,
+            options: Options? = nil,
             expirationYear: String?,
             cardHolderName: String?,
             usesGraphQL: Bool)
@@ -135,18 +141,18 @@ class BTCreditCardBody: Encodable {
             private var usesGraphQL: Bool
 
             init(
-                firstName: String? = nil,
-                lastName: String? = nil,
-                company: String? = nil,
-                postalCode: String? = nil,
-                streetAddress: String? = nil,
-                extendedAddress: String? = nil,
-                locality: String? = nil,
-                region: String? = nil,
-                countryName: String? = nil,
-                countryCodeAlpha2: String? = nil,
-                countryCodeAlpha3: String? = nil,
-                countryCodeNumeric: String? = nil,
+                firstName: String?,
+                lastName: String?,
+                company: String?,
+                postalCode: String?,
+                streetAddress: String?,
+                extendedAddress: String?,
+                locality: String?,
+                region: String?,
+                countryName: String?,
+                countryCodeAlpha2: String?,
+                countryCodeAlpha3: String?,
+                countryCodeNumeric: String?,
                 usesGraphQL: Bool = false
             ) {
                 self.firstName = firstName

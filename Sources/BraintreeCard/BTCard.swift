@@ -80,44 +80,106 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: false)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: false)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billing_address"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        cardDictionary["options"] = options
-        return cardDictionary
+    func parameters(usesGraphQL: Bool) -> BTCreditCardBody.CreditCard {
+        let cardBody = BTCreditCardBody.CreditCard(
+            number: number,
+            expirationMonth: expirationMonth,
+            cvv: cvv,
+            expirationYear: expirationYear,
+            cardHolderName: cardholderName,
+            usesGraphQL: usesGraphQL
+        )
+        
+        cardBody.billingAddress = BTCreditCardBody.CreditCard.BillingAddress(
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            postalCode: postalCode,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric
+        )
+        
+        let options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        
+        cardBody.options = options
+        
+        return cardBody
     }
 
-    func graphQLParameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billingAddress"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
-        var variables: [String: Any] = ["input": inputDictionary]
-
+    func graphQLParameters(usesGraphQL: Bool) -> BTCreditCardGraphQLBody {
+        let cardBody = BTCreditCardBody.CreditCard(
+            number: number,
+            expirationMonth: expirationMonth,
+            cvv: cvv,
+            expirationYear: expirationYear,
+            cardHolderName: cardholderName,
+            usesGraphQL: usesGraphQL
+        )
+        
+        cardBody.billingAddress = BTCreditCardBody.CreditCard.BillingAddress(
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            postalCode: postalCode,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric
+        )
+//        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
+//        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
+//
+//        if !billingAddressDictionary.isEmpty {
+//            cardDictionary["billingAddress"] = billingAddressDictionary
+//        }
+        
+        let options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        
+        let input = BTCreditCardGraphQLBody.Variables.Input(
+            creditCard: cardBody,
+            options: options
+        )
+        
+        let variables = BTCreditCardGraphQLBody.Variables(input: input)
+        
         if authenticationInsightRequested {
             if let merchantAccountID {
-                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
-            } else {
-                variables["authenticationInsightInput"] = [:]
+                BTCreditCardGraphQLBody.Variables.AuthenticationInsightInput(merchantAccountId: merchantAccountID)
             }
         }
 
-        return [
-            "operationName": "TokenizeCreditCard",
-            "query": cardTokenizationGraphQLMutation(),
-            "variables": variables
-        ]
+//        let options: [String: Bool] = ["validate": shouldValidate]
+//        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
+//        var variables: [String: Any] = ["input": inputDictionary]
+//
+//        if authenticationInsightRequested {
+//            if let merchantAccountID {
+//                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
+//            } else {
+//                variables["authenticationInsightInput"] = [:]
+//            }
+//        }
+        
+        let body = BTCreditCardGraphQLBody(variables: variables, query: cardTokenizationGraphQLMutation(), operationName: "TokenizeCreditCard")
+
+        
+//        return [
+//            "operationName": "TokenizeCreditCard",
+//            "query": cardTokenizationGraphQLMutation(),
+//            "variables": variables
+//        ]
+        
+        return body
     }
 
     // MARK: - Private Methods
