@@ -106,6 +106,8 @@ import Foundation
     
     /// Creates a new instance of `BTCard` with only a CVV value,
     /// setting default values for all other parameters.
+    /// This initializer should only be used if you wish to create a
+    /// CVV-only payment method nonce to verify a card already stored in your Vault.
     /// - Parameters:
     ///   - cvv: The card verification code (like CVV or CID).
     public convenience init(cvv: String) {
@@ -158,9 +160,19 @@ import Foundation
 
     private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
         var cardDictionary: [String: Any] = [:]
-        cardDictionary["number"] = number
-        cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
-        cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
+        
+        if !number.isEmpty {
+            cardDictionary["number"] = number
+        }
+        
+        if !expirationMonth.isEmpty {
+            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
+        }
+        
+        if !expirationYear.isEmpty {
+            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
+        }
+        
         cardDictionary["cvv"] = cvv
 
         if let cardholderName {
