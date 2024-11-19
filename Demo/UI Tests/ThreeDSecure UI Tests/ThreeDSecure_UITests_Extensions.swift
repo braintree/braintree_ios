@@ -29,6 +29,10 @@ internal extension XCUIApplication {
     var liabilityShiftedMessage: XCUIElement {
         return buttons["Liability shift possible and liability shifted"]
     }
+    
+    var liabilityCouldNotBeShiftedMessage: XCUIElement {
+        return buttons["3D Secure authentication was attempted but liability shift is not possible"]
+    }
 
     func enterCardDetailsWith(cardNumber: String, expirationDate: String = UITestDateGenerator.sharedInstance.futureDate()) {
         cardNumberTextField.tap()
