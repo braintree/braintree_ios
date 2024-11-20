@@ -176,8 +176,7 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) {
-        let requestParameters = buildRequestDictionary(with: request)
-        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, _, error in
+        apiClient.post("v1/local_payments/create", parameters: request) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: self.merchantCompletion)
                 return
@@ -207,65 +206,7 @@ import BraintreeDataCollector
             }
         }
     }
-
-    private func buildRequestDictionary(with request: BTLocalPaymentRequest) -> [String: Any] {
-        var requestParameters: [String: Any] = [
-            "amount": request.amount,
-            "funding_source": request.paymentType,
-            "intent": "sale",
-            "currency_iso_code": request.currencyCode,
-            "return_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/success",
-            "cancel_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/cancel"
-        ]
-
-        if let countryCode = request.paymentTypeCountryCode {
-            requestParameters["payment_type_country_code"] = countryCode
-        }
-
-        if let address = request.address {
-            requestParameters["line1"] = address.streetAddress
-            requestParameters["line2"] = address.extendedAddress
-            requestParameters["city"] = address.locality
-            requestParameters["state"] = address.region
-            requestParameters["postal_code"] = address.postalCode
-            requestParameters["country_code"] = address.countryCodeAlpha2
-        }
-
-        if let givenName = request.givenName {
-            requestParameters["first_name"] = givenName
-        }
-
-        if let surname = request.surname {
-            requestParameters["last_name"] = surname
-        }
-
-        if let email = request.email {
-            requestParameters["payer_email"] = email
-        }
-
-        if let phone = request.phone {
-            requestParameters["phone"] = phone
-        }
-
-        if let merchantAccountID = request.merchantAccountID {
-            requestParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        if let bic = request.bic {
-            requestParameters["bic"] = bic
-        }
-
-        var experienceProfile: [String: Any] = ["no_shipping": !request.isShippingAddressRequired]
-
-        if let displayName = request.displayName {
-            experienceProfile["brand_name"] = displayName
-        }
-
-        requestParameters["experience_profile"] = experienceProfile
-
-        return requestParameters
-    }
-
+    
     private func onPayment(with url: URL?, error: Error?) {
         if let error {
             notifyFailure(with: error, completion: merchantCompletion)
