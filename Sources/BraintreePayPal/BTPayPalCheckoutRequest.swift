@@ -115,9 +115,9 @@ import BraintreeCore
             offerPayLater: offerPayLater,
             currencyCode: currencyCode,
             requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail,
-            enablePayPalAppSwitch: enablePayPalAppSwitch
+            userAuthenticationEmail: userAuthenticationEmail
         )
+        super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
     /// Initializes a PayPal Native Checkout request
@@ -132,7 +132,6 @@ import BraintreeCore
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
@@ -140,8 +139,7 @@ import BraintreeCore
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        userAuthenticationEmail: String? = nil,
-        enablePayPalAppSwitch: Bool = false
+        userAuthenticationEmail: String? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -153,8 +151,7 @@ import BraintreeCore
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
             paymentType: .checkout,
-            userAuthenticationEmail: userAuthenticationEmail,
-            enablePayPalAppSwitch: enablePayPalAppSwitch
+            userAuthenticationEmail: userAuthenticationEmail
         )
     }
 

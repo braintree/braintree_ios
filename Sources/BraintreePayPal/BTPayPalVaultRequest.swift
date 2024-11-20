@@ -31,9 +31,9 @@ import BraintreeCore
     ) {
         self.init(
             offerCredit: offerCredit,
-            userAuthenticationEmail: userAuthenticationEmail,
-            enablePayPalAppSwitch: enablePayPalAppSwitch
+            userAuthenticationEmail: userAuthenticationEmail
         )
+        super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
     
     /// Initializes a PayPal Vault request
@@ -42,20 +42,17 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
     public init(
         offerCredit: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAuthenticationEmail: String? = nil,
-        enablePayPalAppSwitch: Bool = false
+        userAuthenticationEmail: String? = nil
     ) {
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         super.init(
             offerCredit: offerCredit,
-            userAuthenticationEmail: userAuthenticationEmail,
-            enablePayPalAppSwitch: enablePayPalAppSwitch
+            userAuthenticationEmail: userAuthenticationEmail
         )
     }
 
