@@ -1,6 +1,6 @@
 import Foundation
 
-class BTCreditCardBody: Encodable {
+class BTCreditCardBody: NSObject, Encodable {
     var authenticationInsight: Bool?
     var merchantAccountId: String?
     var meta: Meta?

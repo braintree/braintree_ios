@@ -1,6 +1,6 @@
 import Foundation
 
-class BTCreditCardGraphQLBody: Encodable {
+class BTCreditCardGraphQLBody: NSObject, Encodable {
     var variables: Variables
     var query: String
     var operationName: String
