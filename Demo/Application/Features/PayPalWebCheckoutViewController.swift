@@ -88,19 +88,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
-        let payPalAppSwitchForCheckoutButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitchForCheckout))
-        let payPalAppSwitchForVaultButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitchForVault))
+        let payPalAppSwitchButton = createButton(title: "PayPal App Switch", action: #selector(tappedPayPalAppSwitch))
 
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
             newPayPalCheckoutToggle,
-            payPalAppSwitchForCheckoutButton
+            payPalCheckoutButton
         ])
         oneTimeCheckoutStackView.spacing = 12
         let vaultStackView = buttonsStackView(label: "Vault", views: [
             rbaDataToggle,
             payPalVaultButton,
-            payPalAppSwitchForVaultButton
+            payPalAppSwitchButton
         ])
         vaultStackView.spacing = 12
 
@@ -222,36 +221,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
-    
-    @objc func tappedPayPalAppSwitchForCheckout(_ sender: UIButton) {
-        sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
-        
-        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
-            self.progressBlock("Email cannot be nil for App Switch flow")
-            sender.isEnabled = true
-            return
-        }
-        
-        let request = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: userEmail,
-            enablePayPalAppSwitch: true,
-            amount: "10.00"
-        )
-        
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-            
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-            
-            self.completionBlock(nonce)
-        }
-    }
 
-    @objc func tappedPayPalAppSwitchForVault(_ sender: UIButton) {
+    @objc func tappedPayPalAppSwitch(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
