@@ -25,6 +25,13 @@ struct LocalPaymentPOSTBody: Encodable {
     private let cancelURL: String
     private let experienceProfile: ExperienceProfile
     
+    private var streetAddress: String?
+    private var extendedAddress: String?
+    private var locality: String?
+    private var countryCodeAlpha2: String?
+    private var postalCode: String?
+    private var region: String?
+    
     // MARK: - Initializer
     
     init(
@@ -48,6 +55,15 @@ struct LocalPaymentPOSTBody: Encodable {
         self.intent = "sale"
         self.returnURL = BTCoreConstants.callbackURLScheme + "://x-callback-url/braintree/local-payment/success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://x-callback-url/braintree/local-payment/cancel"
+        
+        if let address = localPaymentRequest.address {
+            self.streetAddress = address.streetAddress
+            self.extendedAddress = address.extendedAddress
+            self.locality = address.locality
+            self.countryCodeAlpha2 = address.countryCodeAlpha2
+            self.postalCode = address.postalCode
+            self.region = address.region
+        }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -73,33 +89,6 @@ struct LocalPaymentPOSTBody: Encodable {
         case countryCodeAlpha2 = "country_code"
         case postalCode = "postal_code"
         case region = "state"
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(paymentType, forKey: .paymentType)
-        try container.encode(amount, forKey: .amount)
-        try container.encode(currencyCode, forKey: .currencyCode)
-        try container.encodeIfPresent(paymentTypeCountryCode, forKey: .paymentTypeCountryCode)
-        try container.encodeIfPresent(merchantAccountID, forKey: .merchantAccountID)
-        try container.encodeIfPresent(email, forKey: .email)
-        try container.encodeIfPresent(givenName, forKey: .givenName)
-        try container.encodeIfPresent(surname, forKey: .surname)
-        try container.encodeIfPresent(phone, forKey: .phone)
-        try container.encodeIfPresent(bic, forKey: .bic)
-        try container.encodeIfPresent(intent, forKey: .intent)
-        try container.encodeIfPresent(returnURL, forKey: .returnURL)
-        try container.encodeIfPresent(cancelURL, forKey: .cancelURL)
-        try container.encodeIfPresent(experienceProfile, forKey: .experienceProfile)
-          
-        if let address {
-            try container.encodeIfPresent(address.streetAddress, forKey: .streetAddress)
-            try container.encodeIfPresent(address.extendedAddress, forKey: .extendedAddress)
-            try container.encodeIfPresent(address.locality, forKey: .locality)
-            try container.encodeIfPresent(address.countryCodeAlpha2, forKey: .countryCodeAlpha2)
-            try container.encodeIfPresent(address.postalCode, forKey: .postalCode)
-            try container.encodeIfPresent(address.region, forKey: .region)
-        }
     }
 }
 
