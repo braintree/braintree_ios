@@ -1028,4 +1028,34 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
+
+    func test_payPalAppNotInstalled() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertEqual(fakeApplication.isPayPalAppInstalled(), payPalClient.application.isPayPalAppInstalled())
+    }
+
+    func test_payPalAppInstalled() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+
+        XCTAssertEqual(fakeApplication.isPayPalAppInstalled(), payPalClient.application.isPayPalAppInstalled())
+    }
+
+    func test_venmoAppNotInstalled() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertEqual(fakeApplication.isVenmoAppInstalled(), payPalClient.application.isVenmoAppInstalled())
+    }
+
+    func test_venmoAppInstalled() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+
+        XCTAssertEqual(fakeApplication.isVenmoAppInstalled(), payPalClient.application.isVenmoAppInstalled())
+    }
 }
