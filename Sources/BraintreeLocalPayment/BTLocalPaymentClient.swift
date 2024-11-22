@@ -176,7 +176,8 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) {
-        apiClient.post("v1/local_payments/create", parameters: request) { body, _, error in
+        let localPaymentRequest = LocalPaymentPOSTBody(localPaymentRequest: request)
+        apiClient.post("v1/local_payments/create", parameters: localPaymentRequest) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: self.merchantCompletion)
                 return
