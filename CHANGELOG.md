@@ -21,6 +21,8 @@
     * Update `BTThreeDSecureRequest.amount` to be a `String`
   * BraintreeCore
     * Remove `fetchPaymentMethodNonces` methods and parser
+  * BraintreePayPal
+    * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
 
 ## unreleased
 * BraintreePayPal
