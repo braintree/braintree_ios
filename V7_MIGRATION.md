@@ -12,6 +12,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
 1. [3D Secure](#3d-secure)]
+1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
 
 
@@ -39,6 +40,19 @@ v7 updates `BTLocalPaymentRequest` to require setting all properties through the
 
 ## 3D Secure
 All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
+
+## PayPal
+
+### App Switch
+For the App Switch flow, you must update your `info.plist` with a simplified URL query scheme name, `paypal`.
+
+```diff
+<key>LSApplicationQueriesSchemes</key>
+<array>
+-  <string>paypal-app-switch-checkout</string>
++  <string>paypal</string>
+</array>
+```
 
 ## PayPal Native Checkout
 The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 
