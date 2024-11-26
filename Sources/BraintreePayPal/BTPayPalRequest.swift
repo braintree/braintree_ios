@@ -77,10 +77,11 @@ import BraintreeCore
 
     /// Initialize a new `BTPayPalRequest`
     /// - Parameters:
-    ///    - hermesPath: Required :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
-    ///    - paymentType: Required: The payment type, either checkout or vault :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
+    ///    - hermesPath: Required :nodoc: The hermes path or endpoint URI path. This property is not covered by semantic versioning.
+    ///    - paymentType: Required :nodoc: The payment type, either checkout or vault. This property is not covered by semantic versioning.
     ///    - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
-    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address. Only applies when `shippingAddressOverride` is set.
+    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address. 
+    ///     - Note: Only applies when `shippingAddressOverride` is set.
     ///    - localeCode: Optional: A locale code to use for the transaction.
     ///    - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     ///    - landingPageType: Optional: Landing page type. Defaults to `.none`.  
@@ -94,7 +95,7 @@ import BraintreeCore
     ///        `requestBillingAgreement` to `true` on your `BTPayPalCheckoutRequest`.
     ///    - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     ///    - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///    - userPhoneNumber: Optional:  A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
+    ///    - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     init(
         hermesPath: String,
         paymentType: BTPayPalPaymentType,
