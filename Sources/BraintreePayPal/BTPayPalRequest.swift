@@ -100,6 +100,16 @@ import BraintreeCore
     /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
     public var userPhoneNumber: BTPayPalPhoneNumber?
+    
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
+    
+    // MARK: - Internal Properties
+    
+    /// Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
+    /// - Warning: This property is currently in beta and may change or be removed in future releases.
+    var enablePayPalAppSwitch: Bool
+
 
     // MARK: - Static Properties
     
@@ -120,7 +130,9 @@ import BraintreeCore
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
         riskCorrelationId: String? = nil,
-        userPhoneNumber: BTPayPalPhoneNumber? = nil
+        userPhoneNumber: BTPayPalPhoneNumber? = nil,
+        userAuthenticationEmail: String? = nil,
+        enablePayPalAppSwitch: Bool = false
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -135,6 +147,8 @@ import BraintreeCore
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationId
         self.userPhoneNumber = userPhoneNumber
+        self.userAuthenticationEmail = userAuthenticationEmail
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
     // MARK: Public Methods
@@ -179,11 +193,25 @@ import BraintreeCore
         if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
             parameters["phone_number"] = userPhoneNumberDict
         }
+        
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
+            parameters["payer_email"] = userAuthenticationEmail
+        }
 
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
 
+        if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
+            let appSwitchParameters: [String: Any] = [
+                "launch_paypal_app": enablePayPalAppSwitch,
+                "os_version": UIDevice.current.systemVersion,
+                "os_type": UIDevice.current.systemName,
+                "merchant_app_return_url": universalLink.absoluteString
+            ]
+            
+            return parameters.merging(appSwitchParameters) { $1 }
+        }
         return parameters
     }
 }
