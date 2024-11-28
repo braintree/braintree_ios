@@ -164,7 +164,12 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-
+        
+        checkoutParameters["launch_paypal_app"] = true
+        checkoutParameters["os_version"] = UIDevice.current.systemVersion
+        checkoutParameters["os_type"] = UIDevice.current.systemName
+        checkoutParameters["merchant_app_return_url"] = "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments"
+       
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }

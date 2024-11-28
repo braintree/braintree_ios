@@ -50,11 +50,29 @@ struct BTPayPalApprovalURLParser {
             redirectType = .payPalApp(url: payPalAppRedirectURL)
             url = payPalAppRedirectURL
         } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-            body["agreementSetup"]["approvalUrl"].asURL() {
-            redirectType = .webBrowser(url: approvalURL)
-            url = approvalURL
+                    body["agreementSetup"]["approvalUrl"].asURL(), var modifiedURL = approvalURL.modifyHost(["msmaster2intdev51", "msmaster2intdev52"], with: "www.paypal.com") {
+//            redirectType = .webBrowser(url: approvalURL)
+            modifiedURL.deleteLastPathComponent()
+            modifiedURL.appendPathComponent("/app-switch-checkout")
+            redirectType = .payPalApp(url: modifiedURL)
+            url = modifiedURL
         } else {
             return nil
         }
+    }
+}
+
+extension URL {
+    fileprivate func modifyHost(_ oldHost: [String], with newHost: String) -> URL? {
+        // Create URLComponents from the input URL
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+              let host = components.host else {
+            print("Invalid URL or missing host")
+            return nil
+        }
+        for host in oldHost {
+            components.host = host.replacingOccurrences(of: host, with: newHost)
+        }
+        return components.url
     }
 }

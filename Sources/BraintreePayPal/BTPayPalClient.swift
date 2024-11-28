@@ -422,12 +422,12 @@ import BraintreeDataCollector
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    guard let baToken = approvalURL.baToken else {
-                        self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
-                        return
-                    }
+//                    guard let baToken = approvalURL.baToken else {
+//                        self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+//                        return
+//                    }
 
-                    self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
+                    self.launchPayPalApp(with: url, baToken: approvalURL.baToken ?? "", token: approvalURL.ecToken ?? "", completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
@@ -511,6 +511,7 @@ import BraintreeDataCollector
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
         baToken: String,
+        token: String,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent(
@@ -521,11 +522,20 @@ import BraintreeDataCollector
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "ba_token", value: baToken),
-            URLQueryItem(name: "source", value: "braintree_sdk"),
-            URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
-        ]
+        if !baToken.isEmpty {
+            urlComponents?.queryItems = [
+                URLQueryItem(name: "ba_token", value: baToken),
+                URLQueryItem(name: "source", value: "braintree_sdk"),
+                URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
+            ]
+        }
+        if !token.isEmpty {
+            urlComponents?.queryItems = [
+                URLQueryItem(name: "token", value: token),
+                URLQueryItem(name: "source", value: "braintree_sdk"),
+                URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
+            ]
+        }
         
         guard let redirectURL = urlComponents?.url else {
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
