@@ -429,7 +429,8 @@ import BraintreeDataCollector
 
                     self.launchPayPalApp(with: url, baToken: approvalURL.baToken ?? "", token: approvalURL.ecToken ?? "", completion: completion)
                 case .webBrowser(let url):
-                    self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                    let urlnew = URL(string: "https://www.stage2du92.stage.paypal.com/pay/checkout?token=\(approvalURL.ecToken!)")!
+                    self.handlePayPalRequest(with: urlnew, paymentType: request.paymentType, completion: completion)
                 }
             }
         }
