@@ -36,7 +36,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                 var cvv: String?
                 var options: Options?
                 var expirationYear: String?
-                var cardHolderName: String?
+                var cardholderName: String?
 
                 init(
                     billingAddress: BillingAddress? = nil,
@@ -53,7 +53,31 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                     self.cvv = cvv
                     self.options = options
                     self.expirationYear = expirationYear
-                    self.cardHolderName = cardHolderName
+                    self.cardholderName = cardHolderName
+                }
+                
+                func encode(to encoder: any Encoder) throws {
+                    var container = encoder.container(keyedBy: CodingKeys.self)
+                    if let billingAddress {
+                        try container.encodeIfPresent(billingAddress, forKey: .billingAddress)
+                    }
+                    
+                    try container.encodeIfPresent(number, forKey: .number)
+                    try container.encodeIfPresent(expirationMonth, forKey: .expirationMonth)
+                    try container.encodeIfPresent(cvv, forKey: .cvv)
+                    try container.encodeIfPresent(options, forKey: .options)
+                    try container.encodeIfPresent(expirationYear, forKey: .expirationYear)
+                    try container.encodeIfPresent(cardholderName, forKey: .cardholderName)
+                }
+                
+                enum CodingKeys: String, CodingKey {
+                    case billingAddress
+                    case number
+                    case expirationMonth
+                    case cvv
+                    case options
+                    case expirationYear
+                    case cardholderName
                 }
 
                 class BillingAddress: Encodable {
@@ -127,3 +151,20 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
         }
     }
 }
+
+//extension Encodable {
+//    func areAllPropertiesNil() -> Bool {
+//        let mirror = Mirror(reflecting: self)
+//        
+//        for child in mirror.children {
+//            guard let value = child.value as Optional, (value == nil) else {
+//                return false
+//            }
+//            return true
+//        }
+//    }
+//}
+//
+//protocol OptionalProtocol {
+//    var isNil: Bool ()
+//}

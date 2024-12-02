@@ -120,20 +120,23 @@ import Foundation
             cardHolderName: cardholderName
         )
         
-        cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
-            firstName: firstName,
-            lastName: lastName,
-            company: company,
-            postalCode: postalCode,
-            streetAddress: streetAddress,
-            extendedAddress: extendedAddress,
-            locality: locality,
-            region: region,
-            countryName: countryName,
-            countryCodeAlpha2: countryCodeAlpha2,
-            countryCodeAlpha3: countryCodeAlpha3,
-            countryCodeNumeric: countryCodeNumeric
-        )
+        if firstName == nil {
+            cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
+                firstName: firstName,
+                lastName: lastName,
+                company: company,
+                postalCode: postalCode,
+                streetAddress: streetAddress,
+                extendedAddress: extendedAddress,
+                locality: locality,
+                region: region,
+                countryName: countryName,
+                countryCodeAlpha2: countryCodeAlpha2,
+                countryCodeAlpha3: countryCodeAlpha3,
+                countryCodeNumeric: countryCodeNumeric
+            )
+        }
+
         
         let options = BTCreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
         
