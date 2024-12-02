@@ -982,6 +982,24 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNil(lastPostParameters["merchant_app_return_url"] as? String)
     }
 
+    func testInvokedOpenURLSuccessfully_whenSuccess_sendsAppSwitchSucceededWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.appSwitchSucceeded
+        let appSwitchURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLSuccessfully(true, url: appSwitchURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
+    }
+
+    func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailedWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.appSwitchFailed
+        let appSwitchURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLSuccessfully(false, url: appSwitchURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
+    }
+
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
