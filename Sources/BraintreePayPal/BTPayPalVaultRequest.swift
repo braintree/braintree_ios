@@ -6,26 +6,12 @@ import BraintreeCore
 
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalRequest {
-
-    // MARK: - Public Properties
-
-    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    public var userAuthenticationEmail: String?
-
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var offerCredit: Bool
-
+    
     // MARK: - Internal Properties
-
-    /// Optional: Used to determine if the customer will use the PayPal app switch flow.
-    /// Defaults to `false`.
-    /// - Warning: This property is currently in beta and may change or be removed in future releases.
+    
+    var offerCredit: Bool
     var enablePayPalAppSwitch: Bool = false
-    
-    /// Optional: Recurring billing plan type, or charge pattern.
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
-    
-    /// Optional: Recurring billing product details.
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
@@ -33,7 +19,7 @@ import BraintreeCore
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
     /// - Parameters:
     ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
@@ -52,17 +38,24 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
+    /// identified with the same phone number.
     public init(
         offerCredit: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.offerCredit = offerCredit
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
-        self.userAuthenticationEmail = userAuthenticationEmail
-        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
+        super.init(
+            hermesPath: "v1/paypal_hermes/setup_billing_agreement",
+            paymentType: .vault,
+            userAuthenticationEmail: userAuthenticationEmail,
+            userPhoneNumber: userPhoneNumber
+        )
     }
 
     public override func parameters(
@@ -71,10 +64,6 @@ import BraintreeCore
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
-
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            baseParameters["payer_email"] = userAuthenticationEmail
-        }
 
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [

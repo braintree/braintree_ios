@@ -20,19 +20,19 @@ class BTPayPalRequest_Tests: XCTestCase {
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
         let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
-        XCTAssertNil(request.landingPageType.stringValue)
+        XCTAssertNil(request.landingPageType?.stringValue)
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
         let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.landingPageType = .billing
-        XCTAssertEqual(request.landingPageType.stringValue, "billing")
+        XCTAssertEqual(request.landingPageType?.stringValue, "billing")
     }
 
     func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
         let request = BTPayPalRequest(hermesPath: "hermes-test-path", paymentType: .checkout)
         request.landingPageType = .login
-        XCTAssertEqual(request.landingPageType.stringValue, "login")
+        XCTAssertEqual(request.landingPageType?.stringValue, "login")
     }
 
     // MARK: - parametersWithConfiguration
@@ -52,10 +52,10 @@ class BTPayPalRequest_Tests: XCTestCase {
         lineItem.upcCode = "upc-code"
         lineItem.upcType = .UPC_A
         request.lineItems = [lineItem]
-
+        
         let parameters = request.parameters(with: configuration)
         guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
-
+        
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
         XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
@@ -64,13 +64,13 @@ class BTPayPalRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
         XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
-                                                                            "unit_amount": "1",
-                                                                            "name": "item",
-                                                                            "kind": "credit",
-                                                                            "upc_code": "upc-code",
-                                                                            "upc_type": "UPC-A",
-                                                                            "image_url": "http://example/image.jpg"]])
-
+                                                                           "unit_amount": "1",
+                                                                           "name": "item",
+                                                                           "kind": "credit",
+                                                                           "upc_code": "upc-code",
+                                                                           "upc_type": "UPC-A",
+                                                                           "image_url": "http://example/image.jpg"]])
+        
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
