@@ -147,15 +147,14 @@ import BraintreeCore
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         if status == errSecSuccess,
-            let existingItem = item as? [String: Any],
-            let data = existingItem[kSecValueData as String] as? Data,
-            let identifier = String(data: data, encoding: String.Encoding.utf8) {
+            let data = item as? Data,
+            let identifier = String(data: data, encoding: .utf8) {
             return identifier
         }
 
         // If not, generate a new one and save it
         let newIdentifier = UUID().uuidString
-        query[kSecValueData as String] = newIdentifier
+        query[kSecValueData as String] = newIdentifier.data(using: .utf8)
         query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
         SecItemAdd(query as CFDictionary, nil)
         return newIdentifier
