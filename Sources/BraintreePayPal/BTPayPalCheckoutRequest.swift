@@ -155,10 +155,6 @@ import BraintreeCore
             }
         }
 
-        if let shopperSessionID = try? shopperSessionID?.toDictionary() {
-            checkoutParameters["shopper_session_id"] = shopperSessionID
-        }
-        
         if shippingAddressOverride != nil {
             checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
             checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress

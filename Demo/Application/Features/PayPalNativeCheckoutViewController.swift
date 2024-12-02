@@ -48,6 +48,7 @@ class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
 		sender.isEnabled = false
 
 		let request = BTPayPalNativeVaultRequest()
+        request.shopperSessionID = "someShopperID"
 
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true

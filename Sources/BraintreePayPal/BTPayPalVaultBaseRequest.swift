@@ -38,10 +38,6 @@ import BraintreeCore
         if let billingAgreementDescription {
             vaultParameters["description"] = billingAgreementDescription
         }
-        
-        if let shopperSessionID = try? shopperSessionID?.toDictionary() {
-            vaultParameters["shopper_session_id"] = shopperSessionID
-        }
 
         if let shippingAddressOverride {
             let shippingAddressParameters: [String: String?] = [

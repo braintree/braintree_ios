@@ -171,6 +171,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         var request = BTPayPalVaultRequest()
+        request.shopperSessionID = "someShopperID"
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",

@@ -185,7 +185,7 @@ import BraintreeCore
             parameters["phone_number"] = userPhoneNumberDict
         }
         
-        if let shopperSessionID = try? shopperSessionID?.toDictionary() {
+        if let shopperSessionID {
             parameters["shopper_session_id"] = shopperSessionID
         }
 
