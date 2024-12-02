@@ -84,6 +84,9 @@ import BraintreeCore
     
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
+    
+    /// Optional: Contact information of the recipient for the order
+    public var contactInformation: BTContactInformation?
 
     // MARK: - Initializer
 
@@ -164,7 +167,15 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-
+        
+        if let recipientEmail = contactInformation?.recipientEmail {
+            checkoutParameters["recipient_email"] = recipientEmail
+        }
+        
+        if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
+            checkoutParameters["international_phone"] = recipientPhoneNumber
+        }
+        
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
