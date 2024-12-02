@@ -11,6 +11,10 @@ import BraintreeDataCollector
 /// Used to initialize a local payment flow
 @objcMembers public class BTLocalPaymentRequest: NSObject {
     
+    // MARK: - Public Properties
+    
+    public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
+    
     // MARK: - Internal Properties
     
     let paymentType: String
@@ -26,8 +30,6 @@ import BraintreeDataCollector
     let phone: String?
     let isShippingAddressRequired: Bool
     let bic: String?
-    
-    public weak var localPaymentFlowDelegate: BTLocalPaymentRequestDelegate?
 
     var paymentID: String?
     var correlationID: String?
