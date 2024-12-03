@@ -37,10 +37,18 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         return view
     }()
     
+    lazy var shopperInsightsSessionIdView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "(optional) Shopper Insights Session Id"
+        view.textField.placeholder = "session Id"
+        view.textField.text = ""
+        return view
+    }()
+    
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, shopperInsightsSessionIdView])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -119,6 +127,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
+        paypalRequest.shopperSessionID = shopperInsightsSessionIdView.textField.text
         paypalRequest.userAuthenticationEmail = emailView.textField.text
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
