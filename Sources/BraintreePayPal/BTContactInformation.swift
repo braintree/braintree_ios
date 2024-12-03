@@ -11,7 +11,7 @@ public struct BTContactInformation {
     /// Intialize a BTContactInformation
     /// - Parameters:
     ///   - recipientEmail: Optional: Email address of the recipient.
-    ///   - recipientPhoneNumber: Optional:Phone number of the recipient.
+    ///   - recipientPhoneNumber: Optional: Phone number of the recipient.
     public init(recipientEmail: String? = nil, recipientPhoneNumber: BTPayPalPhoneNumber? = nil) {
         self.recipientEmail = recipientEmail
         self.recipientPhoneNumber = recipientPhoneNumber

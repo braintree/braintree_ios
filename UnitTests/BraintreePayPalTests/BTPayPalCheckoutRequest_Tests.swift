@@ -191,7 +191,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(internationalPhone, ["country_code": "US", "national_number": "123456789"])
     }
     
-    func testParametersWithConfiguration_whenContactInformationNotSet_doesNotSetPayerEmailInRequest() {
+    func testParametersWithConfiguration_whenContactInformationNotSet_doesNotSetPayerEmailAndPhoneNumberInRequest() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         
         let parameters = request.parameters(with: configuration)
