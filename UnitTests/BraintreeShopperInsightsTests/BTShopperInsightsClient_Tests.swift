@@ -11,6 +11,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!
     var payPalClient: BTPayPalClient!
     var sut: BTShopperInsightsClient!
+    var mockWebAuthenticationSession: MockWebAuthenticationSession!
     
     let request = BTShopperInsightsRequest(
         email: "my-email",
@@ -35,6 +36,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
         sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
+        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
+        mockWebAuthenticationSession = MockWebAuthenticationSession()
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
     
     // MARK: - getRecommendedPaymentMethods()
