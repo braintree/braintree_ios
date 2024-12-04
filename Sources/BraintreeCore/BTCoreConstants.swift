@@ -14,7 +14,7 @@ import Foundation
     public static let venmoURLScheme: String = "com.venmo.touch.v2"
 
     /// URL Scheme for PayPal App
-    public static let payPalURLScheme: String = "paypal-app-switch-checkout"
+    public static let payPalURLScheme: String = "paypal"
 
     static let apiVersion: String = "2016-10-07"
     
