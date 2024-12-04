@@ -140,4 +140,18 @@ public class BTShopperInsightsClient {
         )
         return error
     }
+
+    // MARK: - Public Methods
+
+    /// Indicates whether the PayPal App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isPayPalAppInstalled() -> Bool {
+        application.isPayPalAppInstalled()
+    }
+
+    /// Indicates whether the Venmo App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isVenmoAppInstalled() -> Bool {
+        application.isVenmoAppInstalled()
+    }
 }

@@ -184,12 +184,6 @@ import BraintreeDataCollector
         }
     }
 
-    /// Indicates whether the PayPal App is installed.
-    /// - Warning: This method is currently in beta and may change or be removed in future releases.
-    public func isPayPalAppInstalled() -> Bool {
-        application.isPayPalAppInstalled()
-    }
-
     // MARK: - Internal Methods
     
     func handleReturn(

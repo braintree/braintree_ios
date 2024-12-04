@@ -1028,19 +1028,4 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
-
-    func testIsPayPalAppInstalled_whenPayPalAppNotInstalled_returnsFalse() {
-        let fakeApplication = FakeApplication()
-        payPalClient.application = fakeApplication
-        fakeApplication.cannedCanOpenURL = false
-
-        XCTAssertFalse(payPalClient.application.isPayPalAppInstalled())
-    }
-
-    func testIsPayPalAppInstalled_whenPayPalAppIsInstalled_returnsTrue() {
-        let fakeApplication = FakeApplication()
-        payPalClient.application = fakeApplication
-
-        XCTAssertTrue(payPalClient.application.isPayPalAppInstalled())
-    }
 }

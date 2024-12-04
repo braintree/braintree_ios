@@ -201,15 +201,9 @@ import BraintreeCore
             }
         }
     }
-    
-    /// Indicates whether the Venmo App is installed.
-    /// - Warning: This method is currently in beta and may change or be removed in future releases.
-    public func isVenmoAppInstalled() -> Bool {
-        application.isVenmoAppInstalled()
-    }
 
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    @objc public func isVenmoAppSwitchAvailable() -> Bool {
+    @objc public func isVenmoAppInstalled() -> Bool {
         guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
             return false
         }

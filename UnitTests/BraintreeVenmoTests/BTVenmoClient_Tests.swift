@@ -829,7 +829,7 @@ class BTVenmoClient_Tests: XCTestCase {
         fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
         venmoClient.application = fakeApplication
 
-        XCTAssertTrue(venmoClient.isVenmoAppSwitchAvailable())
+        XCTAssertTrue(venmoClient.isVenmoAppInstalled())
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_returnsFalse() {
@@ -839,22 +839,7 @@ class BTVenmoClient_Tests: XCTestCase {
         fakeApplication.cannedCanOpenURL = false
         venmoClient.application = fakeApplication
 
-        XCTAssertFalse(venmoClient.isVenmoAppSwitchAvailable())
-    }
-
-    func testIsVenmoAppInstalled_whenVenmoAppNotInstalled_returnsFalse() {
-        let fakeApplication = FakeApplication()
-        payPalClient.application = fakeApplication
-        fakeApplication.cannedCanOpenURL = false
-
-        XCTAssertFalse(payPalClient.application.isVenmoAppInstalled())
-    }
-
-    func testIsVenmoAppInstalled_whenVenmoAppIsInstalled_returnsTrue() {
-        let fakeApplication = FakeApplication()
-        payPalClient.application = fakeApplication
-
-        XCTAssertTrue(payPalClient.application.isVenmoAppInstalled())
+        XCTAssertFalse(venmoClient.isVenmoAppInstalled())
     }
 
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
