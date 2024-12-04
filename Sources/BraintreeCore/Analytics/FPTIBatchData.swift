@@ -53,9 +53,10 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
-
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
+        /// This value should be the shopper session ID returned from your server SDK request
+        let sessionID: String?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
@@ -76,6 +77,7 @@ struct FPTIBatchData: Codable {
             paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
+            sessionID: String? = nil,
             startTime: Int? = nil
         ) {
             self.appSwitchURL = appSwitchURL?.absoluteString
@@ -92,6 +94,7 @@ struct FPTIBatchData: Codable {
             self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
+            self.sessionID = sessionID
             self.startTime = startTime
         }
 
@@ -110,6 +113,7 @@ struct FPTIBatchData: Codable {
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case sessionID = "session_id"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"

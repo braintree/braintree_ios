@@ -17,6 +17,9 @@ public class BTShopperInsightsClient {
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
+
+    /// This value should be the shopper session ID returned from your server SDK request
+    private let shopperSessionID: String? = ""
     
     /// Creates a `BTShopperInsightsClient`
     /// - Parameter apiClient: A `BTAPIClient` instance.
@@ -127,7 +130,8 @@ public class BTShopperInsightsClient {
     private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            sessionID: shopperSessionID
         )
         return result
     }
@@ -136,7 +140,8 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsFailed,
             errorDescription: error.localizedDescription,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            sessionID: shopperSessionID
         )
         return error
     }

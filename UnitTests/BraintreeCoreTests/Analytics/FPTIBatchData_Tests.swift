@@ -28,6 +28,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: LinkType.universal.rawValue,
             payPalContextID: "fake-order-id",
             requestStartTime: 456,
+            sessionID: "123456",
             startTime: 999888777666
         ),
         FPTIBatchData.Event(
@@ -42,16 +43,17 @@ final class FPTIBatchData_Tests: XCTestCase {
             linkType: nil,
             payPalContextID: "fake-order-id-2",
             requestStartTime: nil,
+            sessionID: nil,
             startTime: nil
         )
     ]
-    
+
     override func setUp() {
         super.setUp()
         
         sut = FPTIBatchData(metadata: batchMetadata, events: eventParams)
     }
-    
+
     func testInit_formatsJSONBody() throws {
         let jsonBody = try sut.toDictionary()
         
@@ -59,12 +61,12 @@ final class FPTIBatchData_Tests: XCTestCase {
             XCTFail("JSON body missing top level `events` key.")
             return
         }
-        
+
         guard let eventParams = events[0]["event_params"] as? [[String: Any]] else {
             XCTFail("JSON body missing `event_params` key.")
             return
         }
-        
+
         guard let batchParams = events[0]["batch_params"] as? [String: Any]  else {
             XCTFail("JSON body missing `batch_params` key.")
             return
@@ -121,6 +123,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["connect_start_time"])
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
+        XCTAssertEqual(eventParams[0]["session_id"] as? String, "123456")
+        XCTAssertNil(eventParams[1]["session_id"])
     }
 }
 
