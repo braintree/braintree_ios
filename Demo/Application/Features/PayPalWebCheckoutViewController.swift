@@ -153,10 +153,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.lineItems = [lineItem]
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
-        request.contactInformation = BTContactInformation(
-            recipientEmail: "some@email.com",
-            recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
-        )
 
         if contactInformationToggle.isOn {
             request.contactInformation = BTContactInformation(
