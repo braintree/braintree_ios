@@ -1,9 +1,9 @@
 import Foundation
 import XCTest
+@testable import BraintreePayPal
 @testable import BraintreeTestShared
 @testable import BraintreeShopperInsights
 @testable import BraintreeCore
-@testable import BraintreePayPal
 
 class BTShopperInsightsClient_Tests: XCTestCase {
     
