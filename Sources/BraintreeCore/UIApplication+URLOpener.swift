@@ -28,10 +28,7 @@ extension UIApplication: URLOpener {
     /// Indicates whether the PayPal App is installed.
     @_documentation(visibility: private)
     public func isPayPalAppInstalled() -> Bool {
-        guard let payPalURL = URL(string: "\(BTCoreConstants.payPalURLScheme)://") else {
-            return false
-        }
-        return canOpenURL(payPalURL)
+        true
     }
 
     // TODO: once Xcode 16 is the minimum supported version remove this method and update the protocol to the default open signature from UIApplication
