@@ -95,7 +95,8 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
+            paymentMethodsDisplayed: paymentMethodsDisplayedString,
+            sessionID: shopperSessionID
         )
     }
     
@@ -115,7 +116,8 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
+            paymentMethodsDisplayed: paymentMethodsDisplayedString,
+            sessionID: shopperSessionID
         )
     }
     

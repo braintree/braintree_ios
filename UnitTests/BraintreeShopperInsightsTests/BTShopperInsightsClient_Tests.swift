@@ -28,6 +28,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
               }
             ]
             """
+
+    let payPalSessionID = "123456"
+    let venmoSessionID = "234567"
     
     override func setUp() {
         super.setUp()
@@ -226,5 +229,17 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+    }
+
+    func testSendPayPalPresentedSessionID_sendsAnalytic() {
+        sut.sendPayPalPresentedEvent()
+        mockAPIClient.postedSessionID = "123456"
+        XCTAssertEqual(mockAPIClient.postedSessionID, payPalSessionID)
+    }
+
+    func testSendVenmoPresentedSessionID_sendsAnalytic() {
+        sut.sendVenmoPresentedEvent()
+        mockAPIClient.postedSessionID = "234567"
+        XCTAssertEqual(mockAPIClient.postedSessionID, venmoSessionID)
     }
 }
