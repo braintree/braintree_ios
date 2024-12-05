@@ -10,7 +10,7 @@
 * BraintreeCore
   * Deprecate `BTAppContextSwitcher.sharedInstance.returnURLScheme`
 * BraintreeThreeDSecure
-  * Add `BTThreeDSecureRequest.threeDSRequestorAppURL`
+  * Add `BTThreeDSecureRequest.requestorAppURL`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
