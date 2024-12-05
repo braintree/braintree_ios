@@ -35,7 +35,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient!, sessionID: payPalSessionID)
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -191,7 +191,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
         var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
-        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
+        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, sessionID: payPalSessionID)
 
         do {
             let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
@@ -232,9 +232,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
 
     func testSendPayPalPresentedSessionID_sendsAnalytic() {
-        sut.sendPayPalPresentedEvent()
-        mockAPIClient.postedSessionID = "123456"
-        XCTAssertEqual(mockAPIClient.postedSessionID, payPalSessionID)
+        let lastPostParameters = mockAPIClient.lastPOSTParameters!
+        let metaParameters = lastPostParameters["_meta"] as! [String:Any]
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
     }
 
     func testSendVenmoPresentedSessionID_sendsAnalytic() {

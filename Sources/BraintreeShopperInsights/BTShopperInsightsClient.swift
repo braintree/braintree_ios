@@ -17,15 +17,16 @@ public class BTShopperInsightsClient {
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
-
-    /// This value should be the shopper session ID returned from your server SDK request
-    private let shopperSessionID: String? = ""
+    private var sessionID: String
     
     /// Creates a `BTShopperInsightsClient`
-    /// - Parameter apiClient: A `BTAPIClient` instance.
+    /// - Parameters:
+    ///     - `apiClient`: A `BTAPIClient` instance.
+    ///     - `sessionID`: This value should be the shopper session ID returned from your server SDK request
     /// - Warning: This features only works with a client token.
-    public init(apiClient: BTAPIClient) {
+    public init(apiClient: BTAPIClient, sessionID: String) {
         self.apiClient = apiClient
+        self.sessionID = sessionID
     }
     
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
@@ -95,8 +96,7 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString,
-            sessionID: shopperSessionID
+            paymentMethodsDisplayed: paymentMethodsDisplayedString
         )
     }
     
@@ -116,8 +116,7 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString,
-            sessionID: shopperSessionID
+            paymentMethodsDisplayed: paymentMethodsDisplayedString
         )
     }
     
@@ -132,8 +131,7 @@ public class BTShopperInsightsClient {
     private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
-            merchantExperiment: experiment,
-            sessionID: shopperSessionID
+            merchantExperiment: experiment
         )
         return result
     }
@@ -142,8 +140,7 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsFailed,
             errorDescription: error.localizedDescription,
-            merchantExperiment: experiment,
-            sessionID: shopperSessionID
+            merchantExperiment: experiment
         )
         return error
     }

@@ -6,7 +6,7 @@ import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
-    lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
+    lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, sessionID: "123456")
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
     
@@ -36,19 +36,11 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         view.textField.text = "4082321001"
         return view
     }()
-
-    lazy var sessionIDView: TextFieldWithLabel = {
-        let view = TextFieldWithLabel()
-        view.label.text = "Shopper Session ID"
-        view.textField.placeholder = "Session ID"
-        view.textField.text = "123456"
-        return view
-    }()
     
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView])
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually

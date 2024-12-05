@@ -102,8 +102,7 @@ public class MockAPIClient: BTAPIClient {
         linkType: LinkType? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil,
-        sessionID: String? = nil
+        appSwitchURL: URL? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
@@ -112,7 +111,6 @@ public class MockAPIClient: BTAPIClient {
         postedPaymentMethodsDisplayed = paymentMethodsDisplayed
         postedAppSwitchURL[name] = appSwitchURL?.absoluteString
         postedAnalyticsEvents.append(name)
-        postedSessionID = sessionID
     }
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {
