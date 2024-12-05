@@ -1,6 +1,5 @@
 import Foundation
 import XCTest
-@testable import BraintreePayPal
 @testable import BraintreeTestShared
 @testable import BraintreeShopperInsights
 @testable import BraintreeCore
@@ -9,9 +8,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     var mockAPIClient: MockAPIClient!
-    var payPalClient: BTPayPalClient!
     var sut: BTShopperInsightsClient!
-    var mockWebAuthenticationSession: MockWebAuthenticationSession!
     
     let request = BTShopperInsightsRequest(
         email: "my-email",
@@ -36,9 +33,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
         sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
-        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
-        mockWebAuthenticationSession = MockWebAuthenticationSession()
-        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -241,7 +235,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         payPalClient.application = fakeApplication
         fakeApplication.cannedCanOpenURL = false
 
-        XCTAssertFalse(payPalClient.application.isPayPalAppInstalled())
+        XCTAssertFalse(sut.isPayPalAppInstalled())
     }
 
     func testIsPayPalAppInstalled_whenPayPalAppIsInstalled_returnsTrue() {
@@ -249,7 +243,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         payPalClient.application = fakeApplication
         fakeApplication.cannedCanOpenURL = true
 
-        XCTAssertTrue(payPalClient.application.isPayPalAppInstalled())
+        XCTAssertTrue(sut.isPayPalAppInstalled())
     }
 
     func testIsVenmoAppInstalled_whenVenmoAppNotInstalled_returnsFalse() {
@@ -257,7 +251,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         payPalClient.application = fakeApplication
         fakeApplication.cannedCanOpenURL = false
 
-        XCTAssertFalse(payPalClient.application.isVenmoAppInstalled())
+        XCTAssertFalse(sut.isVenmoAppInstalled())
     }
 
     func testIsVenmoAppInstalled_whenVenmoAppIsInstalled_returnsTrue() {
@@ -265,6 +259,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         payPalClient.application = fakeApplication
         fakeApplication.cannedCanOpenURL = true
 
-        XCTAssertTrue(payPalClient.application.isVenmoAppInstalled())
+        XCTAssertTrue(sut.isVenmoAppInstalled())
     }
 }

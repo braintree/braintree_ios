@@ -8,6 +8,20 @@ import BraintreeCore
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClient {
+
+    // MARK: - Public Methods
+
+    /// Indicates whether the PayPal App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isPayPalAppInstalled() -> Bool {
+        application.isPayPalAppInstalled()
+    }
+
+    /// Indicates whether the Venmo App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isVenmoAppInstalled() -> Bool {
+        application.isVenmoAppInstalled()
+    }
     
     // MARK: - Internal Properties
     
@@ -139,19 +153,5 @@ public class BTShopperInsightsClient {
             merchantExperiment: experiment
         )
         return error
-    }
-
-    // MARK: - Public Methods
-
-    /// Indicates whether the PayPal App is installed.
-    /// - Warning: This method is currently in beta and may change or be removed in future releases.
-    public func isPayPalAppInstalled() -> Bool {
-        application.isPayPalAppInstalled()
-    }
-
-    /// Indicates whether the Venmo App is installed.
-    /// - Warning: This method is currently in beta and may change or be removed in future releases.
-    public func isVenmoAppInstalled() -> Bool {
-        application.isVenmoAppInstalled()
     }
 }
