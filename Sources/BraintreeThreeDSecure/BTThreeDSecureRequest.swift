@@ -95,7 +95,7 @@ import BraintreeCore
 
     /// Optional. Three DS Requester APP URL Merchant app declaring their URL within the CReq message
     /// so that the Authentication app can call the Merchant app after OOB authentication has occurred. 
-    public var threeDSRequestorAppURL: String?
+    public var requestorAppURL: String?
 
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
