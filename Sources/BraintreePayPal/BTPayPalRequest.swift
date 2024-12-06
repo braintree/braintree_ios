@@ -102,7 +102,7 @@ import BraintreeCore
     public var userPhoneNumber: BTPayPalPhoneNumber?
     
     /// Optional: This value should be the shopper session ID returned from your server SDK request.
-    public var shopperSessionID: String? = nil
+    public var shopperSessionID: String?
 
     // MARK: - Static Properties
     
