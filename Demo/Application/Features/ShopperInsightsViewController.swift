@@ -13,6 +13,8 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
+    private var shopperSessionId = "test-shopper-session-id"
+    
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
@@ -119,6 +121,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
+        paypalRequest.shopperSessionID = shopperSessionId
         paypalRequest.userAuthenticationEmail = emailView.textField.text
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
