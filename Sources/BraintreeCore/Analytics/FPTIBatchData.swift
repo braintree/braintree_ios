@@ -53,6 +53,7 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
+
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// UTC millisecond timestamp when a networking task initiated.
@@ -177,7 +178,7 @@ struct FPTIBatchData: Codable {
 
         let platform = "iOS"
 
-        /// This value should be the shopper session ID returned from your server SDK request
+        /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
 
         let tokenizationKey: String?

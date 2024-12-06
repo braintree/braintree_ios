@@ -21,8 +21,8 @@ public class BTShopperInsightsClient {
     
     /// Creates a `BTShopperInsightsClient`
     /// - Parameters:
-    ///     - `apiClient`: A `BTAPIClient` instance.
-    ///     - `shopperSessionID`: This value should be the shopper session ID returned from your server SDK request
+    ///     - apiClient: A `BTAPIClient` instance.
+    ///     - shopperSessionID: This value should be the shopper session ID returned from your server SDK request
     /// - Warning: This features only works with a client token.
     public init(apiClient: BTAPIClient, shopperSessionID: String? = nil) {
         self.apiClient = apiClient

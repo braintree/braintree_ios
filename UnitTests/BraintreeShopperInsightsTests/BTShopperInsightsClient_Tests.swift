@@ -223,7 +223,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
     }
     
-    func testSendVenmoSelectedEvent() {
+    func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
     }
