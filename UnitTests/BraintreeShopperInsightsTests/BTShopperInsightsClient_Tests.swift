@@ -29,13 +29,10 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             ]
             """
 
-    let payPalSessionID = "123456"
-    let venmoSessionID = "234567"
-    
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient!, sessionID: payPalSessionID)
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -191,7 +188,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
         var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
-        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, sessionID: payPalSessionID)
+        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: payPalSessionID)
 
         do {
             let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
@@ -226,21 +223,15 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
     }
     
-    func testSendVenmoSelectedEvent_sendsAnalytic() {
+    func testSendVenmoSelectedEvent() {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
     }
 
-    func testSendPayPalPresentedSessionID_sendsAnalytic() {
-        let lastPostParameters = mockAPIClient.lastPOSTParameters!
-        let metaParameters = lastPostParameters["_meta"] as! [String:Any]
-        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionID)
+    func testShopperInsightsClient_withSessionID_setSessionIdInMetadata() {
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
+        XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
     }
-
-    func testSendVenmoPresentedSessionID_sendsAnalytic() {
-        sut.sendVenmoPresentedEvent()
-        mockAPIClient.postedSessionID = "234567"
-        XCTAssertEqual(mockAPIClient.postedSessionID, venmoSessionID)
 
     // MARK: - App Installed Methods
 

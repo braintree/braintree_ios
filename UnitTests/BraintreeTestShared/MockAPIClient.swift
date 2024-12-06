@@ -18,7 +18,6 @@ public class MockAPIClient: BTAPIClient {
     public var postedMerchantExperiment: String? = nil
     public var postedPaymentMethodsDisplayed: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
-    public var postedSessionID: String? = nil
 
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
