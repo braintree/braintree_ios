@@ -227,4 +227,38 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
     }
+
+    // MARK: - App Installed Methods
+
+    func testIsPayPalAppInstalled_whenPayPalAppNotInstalled_returnsFalse() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertFalse(sut.isPayPalAppInstalled())
+    }
+
+    func testIsPayPalAppInstalled_whenPayPalAppIsInstalled_returnsTrue() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "paypal-app-switch-checkout://x-callback-url/path")!)
+        sut.application = fakeApplication
+
+        XCTAssertTrue(sut.isPayPalAppInstalled())
+    }
+
+    func testIsVenmoAppInstalled_whenVenmoAppNotInstalled_returnsFalse() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertFalse(sut.isVenmoAppInstalled())
+    }
+
+    func testIsVenmoAppInstalled_whenVenmoAppIsInstalled_returnsTrue() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
+        sut.application = fakeApplication
+
+        XCTAssertTrue(sut.isVenmoAppInstalled())
+    }
 }
