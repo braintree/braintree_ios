@@ -24,7 +24,6 @@ public class BTShopperInsightsClient {
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
-
     
     // MARK: - Public Methods
 
