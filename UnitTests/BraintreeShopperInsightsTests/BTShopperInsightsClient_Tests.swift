@@ -188,7 +188,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
         var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
-        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: payPalSessionID)
+        let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
 
         do {
             let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
