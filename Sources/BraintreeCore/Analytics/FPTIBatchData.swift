@@ -178,6 +178,7 @@ struct FPTIBatchData: Codable {
 
         let platform = "iOS"
 
+        /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
 
         let tokenizationKey: String?
