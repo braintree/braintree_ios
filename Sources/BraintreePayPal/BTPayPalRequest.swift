@@ -101,7 +101,7 @@ import BraintreeCore
     /// identified with the same phone number.
     public var userPhoneNumber: BTPayPalPhoneNumber?
     
-    /// Optional: This value should be the shopper session ID returned from your server SDK request.
+    /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
     public var shopperSessionID: String?
 
     // MARK: - Static Properties
