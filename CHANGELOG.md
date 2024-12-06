@@ -7,6 +7,7 @@
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 * BraintreeShopperInsights (BETA)
   * Send `sessionID` to PayPal's analytics service (FPTI)
+  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal

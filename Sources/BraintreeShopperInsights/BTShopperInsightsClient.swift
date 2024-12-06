@@ -29,6 +29,8 @@ public class BTShopperInsightsClient {
         self.sessionID = sessionID
     }
     
+    // MARK: - Public Methods
+
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
     /// - Parameters:
     ///   - request: Required:  A `BTShopperInsightsRequest` containing the buyer's user information.
@@ -125,7 +127,19 @@ public class BTShopperInsightsClient {
     public func sendVenmoSelectedEvent() {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected)
     }
-    
+
+    /// Indicates whether the PayPal App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isPayPalAppInstalled() -> Bool {
+        application.isPayPalAppInstalled()
+    }
+
+    /// Indicates whether the Venmo App is installed.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func isVenmoAppInstalled() -> Bool {
+        application.isVenmoAppInstalled()
+    }
+
     // MARK: - Analytics Helper Methods
     
     private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
