@@ -47,7 +47,7 @@ class PayPalNativeCheckoutViewController: PaymentButtonBaseViewController {
 		sender.setTitle("Processing...", for: .disabled)
 		sender.isEnabled = false
 
-		let request = BTPayPalNativeVaultRequest()   
+		let request = BTPayPalNativeVaultRequest()
 
 		payPalNativeCheckoutClient.tokenize(request) { nonce, error in
 			sender.isEnabled = true
