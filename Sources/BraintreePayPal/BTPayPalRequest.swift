@@ -100,6 +100,9 @@ import BraintreeCore
     /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
     public var userPhoneNumber: BTPayPalPhoneNumber?
+    
+    /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    public var shopperSessionID: String?
 
     // MARK: - Static Properties
     
@@ -120,7 +123,8 @@ import BraintreeCore
         lineItems: [BTPayPalLineItem]? = nil,
         billingAgreementDescription: String? = nil,
         riskCorrelationId: String? = nil,
-        userPhoneNumber: BTPayPalPhoneNumber? = nil
+        userPhoneNumber: BTPayPalPhoneNumber? = nil,
+        shopperSessionID: String? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -135,6 +139,7 @@ import BraintreeCore
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationId
         self.userPhoneNumber = userPhoneNumber
+        self.shopperSessionID = shopperSessionID
     }
 
     // MARK: Public Methods
@@ -178,6 +183,10 @@ import BraintreeCore
         
         if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
             parameters["phone_number"] = userPhoneNumberDict
+        }
+        
+        if let shopperSessionID {
+            parameters["shopper_session_id"] = shopperSessionID
         }
 
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
