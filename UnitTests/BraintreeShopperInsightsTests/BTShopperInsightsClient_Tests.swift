@@ -228,7 +228,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
     }
 
-    func testShopperInsightsClient_withSessionID_setSessionIdInMetadata() {
+    func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
         sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
         XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
     }
