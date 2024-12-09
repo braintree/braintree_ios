@@ -17,7 +17,7 @@ public class BTShopperInsightsClient {
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
-    private var shopperSessionID: String?
+    private let shopperSessionID: String?
     
     /// Creates a `BTShopperInsightsClient`
     /// - Parameters:
