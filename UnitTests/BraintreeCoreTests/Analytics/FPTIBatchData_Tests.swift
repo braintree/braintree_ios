@@ -3,9 +3,9 @@ import XCTest
 @testable import BraintreeCore
 
 final class FPTIBatchData_Tests: XCTestCase {
-    
+
     var sut: FPTIBatchData!
-    
+
     let batchMetadata = FPTIBatchData.Metadata(
         authorizationFingerprint: "fake-auth",
         environment: "fake-env",
@@ -14,7 +14,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )
-    
+
     let eventParams = [
         FPTIBatchData.Event(
             connectionStartTime: 123,
@@ -45,13 +45,13 @@ final class FPTIBatchData_Tests: XCTestCase {
             startTime: nil
         )
     ]
-    
+
     override func setUp() {
         super.setUp()
         
         sut = FPTIBatchData(metadata: batchMetadata, events: eventParams)
     }
-    
+
     func testInit_formatsJSONBody() throws {
         let jsonBody = try sut.toDictionary()
         
@@ -59,12 +59,12 @@ final class FPTIBatchData_Tests: XCTestCase {
             XCTFail("JSON body missing top level `events` key.")
             return
         }
-        
+
         guard let eventParams = events[0]["event_params"] as? [[String: Any]] else {
             XCTFail("JSON body missing `event_params` key.")
             return
         }
-        
+
         guard let batchParams = events[0]["batch_params"] as? [String: Any]  else {
             XCTFail("JSON body missing `batch_params` key.")
             return

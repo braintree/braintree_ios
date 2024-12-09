@@ -28,7 +28,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
               }
             ]
             """
-    
+
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
@@ -226,6 +226,11 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+    }
+
+    func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
+        XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
     }
 
     // MARK: - App Installed Methods
