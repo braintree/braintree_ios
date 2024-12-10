@@ -312,7 +312,12 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
-
+        
+        // The shopper insights server SDK integration
+        if let shopperID = request.shopperSessionID {
+            apiClient.metadata.sessionID = shopperID
+        }
+        
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
