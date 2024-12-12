@@ -33,12 +33,15 @@ struct FPTIBatchData: Codable {
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
+        let buttonType: String?
+        let buttonOrder: Int?
         let correlationID: String?
         let endpoint: String?
         /// UTC millisecond timestamp when a networking task completed.
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        let experimentType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -48,6 +51,7 @@ struct FPTIBatchData: Codable {
         let linkType: String?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
+        let pageType: String?
         /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
         let paymentMethodsDisplayed: String?
         /// Used for linking events from the client to server side request
@@ -63,32 +67,40 @@ struct FPTIBatchData: Codable {
         
         init(
             appSwitchURL: URL? = nil,
+            buttonOrder: Int? = nil,
+            buttonType: String? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
             endpoint: String? = nil,
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            experimentType: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
+            pageType: String? = nil,
             paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             startTime: Int? = nil
         ) {
             self.appSwitchURL = appSwitchURL?.absoluteString
+            self.buttonOrder = buttonOrder
+            self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
             self.endpoint = endpoint
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.experimentType = experimentType
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
+            self.pageType = pageType
             self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
@@ -97,14 +109,18 @@ struct FPTIBatchData: Codable {
 
         enum CodingKeys: String, CodingKey {
             case appSwitchURL = "url"
+            case buttonOrder = "button_rank"
+            case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case experimentType = "experiment_type"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
+            case pageType = "page_type"
             case paymentMethodsDisplayed = "payment_methods_displayed"
             case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
