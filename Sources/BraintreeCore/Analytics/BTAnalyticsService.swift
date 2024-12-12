@@ -83,9 +83,9 @@ final class BTAnalyticsService: AnalyticsSendable {
                         sessionID: sessionID,
                         events: eventsPerSessionID
                     )
-                                                                        //paypal:tokenize:app-switch:started
+                    
                     if eventsPerSessionID.first(where: { $0.eventName == "paypal:tokenize:app-switch:started" }) != nil {
-                        print("Hereee: 🚀 app switch started")
+                        print("Analytics: 🚀 app switch started")
                     }
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
