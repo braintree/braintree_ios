@@ -113,7 +113,15 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
             ]
             """
         let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+
+//        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
+
+        shopperInsightsClient.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
@@ -131,7 +139,12 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
-        shopperInsightsClient.sendVenmoPresentedEvent()
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .second,
+            experimentType: .control,
+            pageType: .about
+        )
+        shopperInsightsClient.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
         progressBlock("Tapped Venmo")
         shopperInsightsClient.sendVenmoSelectedEvent()
         

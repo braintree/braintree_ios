@@ -92,17 +92,19 @@ public class BTShopperInsightsClient {
         }
     }
 
-    /// Call this method when the PayPal button has been successfully displayed to the buyer.
+    /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
-    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed i.e. ['Apple Pay', 'PayPal']
-    ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
-    public func sendPayPalPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
-        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap { $0 }.joined(separator: ", ")
+    ///     - `buttonType`: Type of button presented - PayPal, Venmo, or other
+    ///     - `presentmentDetails`:  Detailed information, including button order, experiment type, and
+    ///     page type about the payment button that issent to analytics to help improve the Shopper Insights
+    ///     feature experience.
+    public func sendPresentedEvent(for buttonType: BTButtonType, presentmentDetails: BTPresentmentDetails) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
-            merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
+            buttonOrder: presentmentDetails.buttonOrder.rawValue,
+            experimentType: presentmentDetails.experimentType.rawValue,
+            pageType: presentmentDetails.pageType.rawValue
         )
     }
     
@@ -110,20 +112,6 @@ public class BTShopperInsightsClient {
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
         apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
-    }
-    
-    /// Call this method when the Venmo button has been successfully displayed to the buyer.
-    /// This method sends analytics to help improve the Shopper Insights feature experience.
-    /// - Parameters:
-    ///    - paymentMethodsDisplayed: Optional:  The list of available payment methods, rendered in the same order in which they are displayed.
-    ///    - experiment: Optional:  A `JSONObject` passed in as a string containing details of the merchant experiment.
-    public func sendVenmoPresentedEvent(paymentMethodsDisplayed: [String?] = [], experiment: String? = nil) {
-        let paymentMethodsDisplayedString = paymentMethodsDisplayed.compactMap { $0 }.joined(separator: ", ")
-        apiClient.sendAnalyticsEvent(
-            BTShopperInsightsAnalytics.venmoPresented,
-            merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
-        )
     }
     
     /// Call this method when the Venmo button has been selected/tapped by the buyer.
