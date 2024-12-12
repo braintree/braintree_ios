@@ -131,7 +131,7 @@ struct FPTIBatchData: Codable {
 
         let clientOS: String = UIDevice.current.systemName + " " + UIDevice.current.systemVersion
 
-        let component = "braintreeclientsdk"
+        let component = "rich_grubhub_12_11_braintreeclientsdk"
 
         let deviceManufacturer = "Apple"
 
@@ -201,6 +201,7 @@ struct FPTIBatchData: Codable {
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
+            
             case platform = "platform"
             case sessionID = "session_id"
             case tokenizationKey = "tokenization_key"

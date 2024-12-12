@@ -3,13 +3,9 @@ import UIKit
 import BraintreePayPal
 import BraintreeCore
 
-class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
+let aauthorization = "production_t2wns2y2_dfy45jdj3dxkmz5m"
 
-    lazy var payPalClient = BTPayPalClient(
-        apiClient: apiClient,
-        // swiftlint:disable:next force_unwrapping
-        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-    )
+class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     lazy var emailLabel: UILabel = {
         let label = UILabel()
@@ -23,6 +19,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         textField.keyboardType = .emailAddress
+        textField.text = "rickyh24mx@gmail.com"
         return textField
     }()
     
@@ -151,16 +148,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            self.completionBlock(nonce)
-        }
+//        payPalClient.tokenize(request) { nonce, error in
+//            sender.isEnabled = true
+//
+//            guard let nonce else {
+//                self.progressBlock(error?.localizedDescription)
+//                return
+//            }
+//
+//            self.completionBlock(nonce)
+//        }
     }
     
     // MARK: - Vault Flows
@@ -210,16 +207,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         }
 
-        payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            self.completionBlock(nonce)
-        }
+//        payPalClient.tokenize(request) { nonce, error in
+//            sender.isEnabled = true
+//
+//            guard let nonce else {
+//                self.progressBlock(error?.localizedDescription)
+//                return
+//            }
+//
+//            self.completionBlock(nonce)
+//        }
     }
 
     @objc func tappedPayPalAppSwitch(_ sender: UIButton) {
@@ -232,12 +229,19 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             return
         }
 
+        guard let aapiClient = BTAPIClient(authorization: aauthorization) else { return }
+        let ppayPalClient = BTPayPalClient(
+            apiClient: aapiClient,
+            // swiftlint:disable:next force_unwrapping
+            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+        )
+        
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: userEmail,
             enablePayPalAppSwitch: true
         )
 
-        payPalClient.tokenize(request) { nonce, error in
+        ppayPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
             
             guard let nonce else {
