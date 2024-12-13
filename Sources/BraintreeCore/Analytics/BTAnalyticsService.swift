@@ -62,6 +62,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(with event: FPTIBatchData.Event) async {
         if let apiClient {
+            if event.eventName != "core:api-request-latency" {
+                print("Analytics: 🔮 \(apiClient.metadata.sessionID), \(event.eventName)")
+            }
             await events.append(event, sessionID: apiClient.metadata.sessionID)
         }
         
@@ -84,8 +87,10 @@ final class BTAnalyticsService: AnalyticsSendable {
                         events: eventsPerSessionID
                     )
                     
+                    print("Analytics: ⭐️ \(sessionID) events sent")
+                    
                     if eventsPerSessionID.first(where: { $0.eventName == "paypal:tokenize:app-switch:started" }) != nil {
-                        print("Analytics: 🚀 app switch started")
+                        print("Analytics: 🚀 \(sessionID) app switch started")
                     }
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)

@@ -54,7 +54,7 @@ final class RepeatingTimer {
     ///
     /// Such errors indicate an attempt to resume an already resumed timer. According to the documentation, each call to `dispatch_suspend`
     /// must be matched with a corresponding call to `dispatch_resume` to ensure proper event delivery and avoid crashes.
-    /// For more information see: https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html#//apple_ref/doc/uid/TP40008091-CH103-SW8    
+    /// For more information see: https://developer.apple.com/library/archive/documentation/General/Conceptual/ConcurrencyProgrammingGuide/GCDWorkQueues/GCDWorkQueues.html#//apple_ref/doc/uid/TP40008091-CH103-SW8
     func resume() {
         guard state != .resumed else { return }
         
