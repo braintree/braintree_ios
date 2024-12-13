@@ -27,10 +27,6 @@ public class BTShopperInsightsClient {
     public init(apiClient: BTAPIClient, shopperSessionID: String? = nil) {
         self.apiClient = apiClient
         self.shopperSessionID = shopperSessionID
-
-        if let shopperSessionID {
-            apiClient.metadata.sessionID = shopperSessionID
-        }
     }
     
     // MARK: - Public Methods
@@ -49,7 +45,8 @@ public class BTShopperInsightsClient {
     ) async throws -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsStarted,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            shopperSessionID: shopperSessionID
         )
 
         if apiClient.authorization.type != .clientToken {
@@ -102,14 +99,15 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.payPalPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
+            paymentMethodsDisplayed: paymentMethodsDisplayedString,
+            shopperSessionID: shopperSessionID
         )
     }
     
     /// Call this method when the PayPal button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendPayPalSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected, shopperSessionID: shopperSessionID)
     }
     
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
@@ -122,14 +120,15 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.venmoPresented,
             merchantExperiment: experiment,
-            paymentMethodsDisplayed: paymentMethodsDisplayedString
+            paymentMethodsDisplayed: paymentMethodsDisplayedString,
+            shopperSessionID: shopperSessionID
         )
     }
     
     /// Call this method when the Venmo button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience
     public func sendVenmoSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected)
+        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected, shopperSessionID: shopperSessionID)
     }
 
     /// Indicates whether the PayPal App is installed.
@@ -149,7 +148,8 @@ public class BTShopperInsightsClient {
     private func notifySuccess(with result: BTShopperInsightsResult, for experiment: String?) -> BTShopperInsightsResult {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsSucceeded,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            shopperSessionID: shopperSessionID
         )
         return result
     }
@@ -158,7 +158,8 @@ public class BTShopperInsightsClient {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsFailed,
             errorDescription: error.localizedDescription,
-            merchantExperiment: experiment
+            merchantExperiment: experiment,
+            shopperSessionID: shopperSessionID
         )
         return error
     }
