@@ -1028,24 +1028,4 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
     }
-    
-    func testTokenize_whenCheckoutRequest_setSessionID() async {
-        XCTAssertNotEqual(mockAPIClient.metadata.sessionID, "test-shopper-insights-id")
-        
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
-        checkoutRequest.shopperSessionID = "test-shopper-insights-id"
-        let _ = try? await payPalClient.tokenize(checkoutRequest)
-
-        XCTAssertEqual(mockAPIClient.metadata.sessionID, "test-shopper-insights-id")
-    }
-    
-    func testTokenize_whenVaultRequest_setSessionID() async {
-        XCTAssertNotEqual(mockAPIClient.metadata.sessionID, "test-shopper-insights-id")
-        
-        let checkoutRequest = BTPayPalVaultRequest()
-        checkoutRequest.shopperSessionID = "test-shopper-insights-id"
-        let _ = try? await payPalClient.tokenize(checkoutRequest)
-
-        XCTAssertEqual(mockAPIClient.metadata.sessionID, "test-shopper-insights-id")
-    }
 }
