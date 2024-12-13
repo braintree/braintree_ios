@@ -40,9 +40,6 @@ import BraintreeDataCollector
 
     /// True if `tokenize()` was called with a Vault request object type
     var isVaultRequest: Bool = false
-    
-    /// Exposed for analytics.
-    var shopperSessionID: String? = nil
 
     // MARK: - Static Properties
 
@@ -67,6 +64,9 @@ import BraintreeDataCollector
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
+    
+    /// Use for analytics purposes. The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
+    private var shopperSessionID: String? = nil
 
     // MARK: - Initializer
 
