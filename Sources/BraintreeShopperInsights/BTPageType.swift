@@ -1,6 +1,7 @@
 import Foundation
 
 /// The type of page where the event occurred.
+/// - Warning: This module is in beta. It's public API may change or be removed in future releases.
 public enum BTPageType: String {
 
     /// A home page is the primary landing page that a visitor will view when they navigate to a website.
@@ -36,9 +37,9 @@ public enum BTPageType: String {
     /// The order confirmation page summarizes an order after checkout completes.
     case orderConfirmation = "order_confirmation"
 
-    /// Any other page available on a merchant’s site.
-    case other = "other"
-
     /// Popup cart displayed after “add to cart” click.
     case miniCart = "mini_cart"
+
+    /// Any other page available on a merchant’s site.
+    case other = "other"
 }

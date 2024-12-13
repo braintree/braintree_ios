@@ -303,6 +303,7 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        appSwitchURL: URL? = nil,
         buttonOrder: Int? = nil,
         buttonType: String? = nil,
         correlationID: String? = nil,
@@ -314,8 +315,7 @@ import Foundation
         linkType: LinkType? = nil,
         pageType: String? = nil,
         paymentMethodsDisplayed: String? = nil,
-        payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil
+        payPalContextID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(

@@ -1,8 +1,9 @@
 import Foundation
 
 /// The button type to be displayed or presented
+/// Warning: This module is in beta. It's public API may change or be removed in future releases.
 public enum BTButtonType: String {
-    case payPal = "paypal"
-    case venmo = "venmo"
-    case other = "other"
+    case other = "Other"
+    case payPal = "Paypal"
+    case venmo = "Venmo"
 }
