@@ -66,7 +66,7 @@ import BraintreeDataCollector
     private var linkType: LinkType?
     
     /// Use for analytics purposes. The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
-    private var shopperSessionID: String? = nil
+    private var shopperSessionID: String?
 
     // MARK: - Initializer
 
@@ -189,6 +189,7 @@ import BraintreeDataCollector
 
     // MARK: - Internal Methods
     
+    // swiftlint:disable function_body_length
     func handleReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
