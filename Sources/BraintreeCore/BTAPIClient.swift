@@ -303,6 +303,7 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        buttonType: String? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         merchantExperiment: String? = nil,
@@ -316,6 +317,7 @@ import Foundation
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 appSwitchURL: appSwitchURL,
+                buttonType: buttonType,
                 correlationID: correlationID,
                 errorDescription: errorDescription,
                 eventName: eventName,

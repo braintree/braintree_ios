@@ -30,6 +30,8 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
 
         let appSwitchURL: String?
+        /// The button type to be displayed or presented
+        let buttonType: String?
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?

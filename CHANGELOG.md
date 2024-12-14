@@ -9,6 +9,7 @@
 * BraintreeShopperInsights (BETA)
   * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
   * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for buttonType: BTButtonType)`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal

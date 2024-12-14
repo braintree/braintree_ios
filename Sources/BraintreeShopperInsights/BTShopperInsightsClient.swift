@@ -105,13 +105,7 @@ public class BTShopperInsightsClient {
             paymentMethodsDisplayed: paymentMethodsDisplayedString
         )
     }
-    
-    /// Call this method when the PayPal button has been selected/tapped by the buyer.
-    /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendPayPalSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.payPalSelected)
-    }
-    
+
     /// Call this method when the Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
@@ -125,11 +119,11 @@ public class BTShopperInsightsClient {
             paymentMethodsDisplayed: paymentMethodsDisplayedString
         )
     }
-    
-    /// Call this method when the Venmo button has been selected/tapped by the buyer.
-    /// This method sends analytics to help improve the Shopper Insights feature experience
-    public func sendVenmoSelectedEvent() {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.venmoSelected)
+
+    /// Call this method when a button has been selected/tapped by the buyer.
+    /// This method sends analytics to help improve the Shopper Insights feature experience.
+    public func sendSelectedEvent(for buttonType: BTButtonType) {
+        apiClient.sendAnalyticsEvent(buttonType.rawValue)
     }
 
     /// Indicates whether the PayPal App is installed.
