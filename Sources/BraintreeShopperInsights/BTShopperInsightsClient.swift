@@ -97,11 +97,14 @@ public class BTShopperInsightsClient {
     /// - Parameters:
     ///     - `buttonType`: Type of button presented - PayPal, Venmo, or other
     ///     - `presentmentDetails`:  Detailed information, including button order, experiment type, and
-    ///     page type about the payment button that issent to analytics to help improve the Shopper Insights
+    ///     page type about the payment button that is sent to analytics to help improve the Shopper Insights
     ///     feature experience.
     public func sendPresentedEvent(for buttonType: BTButtonType, presentmentDetails: BTPresentmentDetails) {
         apiClient.sendAnalyticsEvent(
-            BTShopperInsightsAnalytics.payPalPresented
+            buttonType.rawValue,
+            buttonOrder: presentmentDetails.buttonOrder.rawValue,
+            experimentType: presentmentDetails.experimentType.rawValue,
+            pageType: presentmentDetails.pageType.rawValue
         )
     }
     
