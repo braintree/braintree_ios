@@ -202,15 +202,25 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     // MARK: - Analytics
     
     func testSendPayPalPresentedEvent_sendsAnalytic() {
-        sut.sendPayPalPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "PayPal")
     }
     
     func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
         let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
         XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "PayPal")
     }
     
     func testSendPayPalSelectedEvent_sendsAnalytic() {
@@ -219,8 +229,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
     
     func testSendVenmoPresentedEvent_sendsAnalytic() {
-        sut.sendVenmoPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "Venmo")
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {

@@ -93,6 +93,7 @@ public class MockAPIClient: BTAPIClient {
 
     public override func sendAnalyticsEvent(
         _ name: String,
+        appSwitchURL: URL? = nil,
         buttonOrder: Int? = nil,
         buttonType: String? = nil,
         correlationID: String? = nil,
@@ -104,8 +105,7 @@ public class MockAPIClient: BTAPIClient {
         linkType: LinkType? = nil,
         pageType: String? = nil,
         paymentMethodsDisplayed: String? = nil,
-        payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil
+        payPalContextID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
