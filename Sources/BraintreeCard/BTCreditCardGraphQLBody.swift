@@ -151,20 +151,3 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
         }
     }
 }
-
-//extension Encodable {
-//    func areAllPropertiesNil() -> Bool {
-//        let mirror = Mirror(reflecting: self)
-//        
-//        for child in mirror.children {
-//            guard let value = child.value as Optional, (value == nil) else {
-//                return false
-//            }
-//            return true
-//        }
-//    }
-//}
-//
-//protocol OptionalProtocol {
-//    var isNil: Bool ()
-//}
