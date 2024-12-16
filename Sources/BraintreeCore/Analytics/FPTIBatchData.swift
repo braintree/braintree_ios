@@ -56,6 +56,7 @@ struct FPTIBatchData: Codable {
 
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
+        /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
         let shopperSessionID: String?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
