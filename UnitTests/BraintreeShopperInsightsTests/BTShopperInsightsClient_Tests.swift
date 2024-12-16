@@ -32,7 +32,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient!, shopperSessionID: "fake-shopper-session-id")
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -78,6 +78,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "fake-error-domain")
             
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         }
     }
     
@@ -101,6 +102,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertFalse(result.isPayPalRecommended)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch let error as NSError {
             XCTFail("An error was not expected.")
         }
@@ -127,6 +129,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
             XCTAssertEqual(mockAPIClient.postedMerchantExperiment, sampleExperiment)
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -152,6 +155,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -181,6 +185,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertFalse(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -226,6 +231,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendPayPalSelectedEvent_sendsAnalytic() {
         sut.sendPayPalSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
     
     func testSendVenmoPresentedEvent_sendsAnalytic() {
@@ -241,11 +247,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendVenmoSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
-    }
-
-    func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
-        XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
 
     // MARK: - App Installed Methods
