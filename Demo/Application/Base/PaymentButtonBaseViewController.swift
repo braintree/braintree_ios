@@ -3,12 +3,15 @@ import BraintreeCore
 
 class PaymentButtonBaseViewController: BaseViewController {
 
+//    let apiClient: BTAPIClient
+    
     var heightConstraint: CGFloat?
 
     private var paymentButton = UIView()
 
     override init(authorization: String) {
         // swiftlint:disable:next force_unwrapping
+//        apiClient = BTAPIClient(authorization: authorization)!
         super.init(authorization: "authorization")
     }
     

@@ -7,6 +7,12 @@ let aauthorization = "production_t2wns2y2_dfy45jdj3dxkmz5m"
 
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
+//    lazy var payPalClient = BTPayPalClient(
+//        apiClient: apiClient,
+//        // swiftlint:disable:next force_unwrapping
+//        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+//    )
+    
     lazy var emailLabel: UILabel = {
         let label = UILabel()
         label.text = "Buyer email:"
