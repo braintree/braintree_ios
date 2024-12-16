@@ -46,14 +46,26 @@ import BraintreeCore
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
 
+    private var universalLink: URL?
+
     // MARK: - Initializer
 
-    /// Creates an Apple Pay client
+    /// Creates a Venmo client
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(apiClient: BTAPIClient) {
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
         self.apiClient = apiClient
+    }
+
+    /// Initialize a new Venmo client instance.
+    /// - Parameters:
+    ///   - apiClient: The API Client
+    ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
+    @objc(initWithAPIClient:universalLink:)
+    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
+        self.init(apiClient: apiClient)
+        self.universalLink = universalLink
     }
 
     // MARK: - Public Methods
@@ -69,7 +81,7 @@ import BraintreeCore
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         linkType = request.fallbackToWeb ? .universal : .deeplink
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
-        let returnURLScheme = BTAppContextSwitcher.sharedInstance.returnURLScheme
+        let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
         if returnURLScheme.isEmpty {
             NSLog(
@@ -151,9 +163,10 @@ import BraintreeCore
 
                 do {
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
-                        returnURLScheme: returnURLScheme,
                         paymentContextID: paymentContextID,
                         metadata: metadata,
+                        returnURLScheme: returnURLScheme,
+                        universalLink: self.universalLink,
                         forMerchantID: merchantProfileID,
                         accessToken: configuration.venmoAccessToken,
                         bundleDisplayName: bundleDisplayName,
