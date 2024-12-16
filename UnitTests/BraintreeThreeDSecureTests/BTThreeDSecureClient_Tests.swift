@@ -46,7 +46,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             nonce: "fake-card-nonce",
             accountType: .credit,
             billingAddress: billingAddress,
-            _cardAddChallenge: .requested,
             cardAddChallengeRequested: true,
             challengeRequested: true,
             dataOnlyRequested: true,
@@ -92,8 +91,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPerformThreeDSecureLookup_whenDefaultsArePassed_buildsRequestWithNilValues() {
         let expectation = expectation(description: "willCallCompletion")
 
-        threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.amount = "9.99"
+        let threeDSecureRequest = BTThreeDSecureRequest(amount: "9.99", nonce: "fake-card-nonce")
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! String, "9.99")
@@ -114,7 +112,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest = BTThreeDSecureRequest(
             amount: "9.97",
             nonce: "fake-card-nonce",
-            _cardAddChallenge: .notRequested,
             cardAddChallengeRequested: false,
             dfReferenceID: "df-reference-id"
         )
@@ -285,12 +282,10 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testStartPaymentFlow_whenAmountIsEmpty_throwsError() {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
-        let request = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
-        request.amount = ""
-        
-        let expectation = self.expectation(description: "Callback envoked")
+        threeDSecureRequest = BTThreeDSecureRequest(amount: "", nonce: "fake-card-nonce")
+        let expectation = self.expectation(description: "Callback invoked")
 
-        client.startPaymentFlow(request) { result, error in
+        client.startPaymentFlow(threeDSecureRequest) { result, error in
             XCTAssertNil(result)
             XCTAssertEqual(error?.localizedDescription, "BTThreeDSecureRequest amount can not be nil or NaN.")
             expectation.fulfill()
@@ -640,7 +635,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         let expectation = expectation(description: "willCallCompletion")
 
-        threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
 
         client.prepareLookup(threeDSecureRequest) { clientData, error in
@@ -668,7 +662,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         let client = BTThreeDSecureClient(apiClient: MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!)
         let expectation = expectation(description: "willCallCompletion")
 
-        threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
 
         client.prepareLookup(threeDSecureRequest) { _, error in
