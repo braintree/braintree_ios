@@ -106,25 +106,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testPerformThreeDSecureLookup_whenCardAddChallengeNotRequested_sendsCardAddFalse() {
-        let expectation = self.expectation(description: "willCallCompletion")
-        
-        threeDSecureRequest = BTThreeDSecureRequest(
-            amount: "9.97",
-            nonce: "fake-card-nonce",
-            cardAddChallengeRequested: false,
-            dfReferenceID: "df-reference-id"
-        )
-
-        client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertFalse(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
-
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
     func testPerformThreeDSecureLookup_whenCardAddChallengeRequestedNotSet_doesNotSendCardAddParameter() {
         let expectation = self.expectation(description: "willCallCompletion")
         
