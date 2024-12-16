@@ -424,7 +424,9 @@ import BraintreeCore
             requestParameters["customFields"] = customFields
         }
 
-        requestParameters["cardAdd"] = request.cardAddChallengeRequested
+        if request.cardAddChallengeRequested == true {
+            requestParameters["cardAdd"] = true
+        }
 
         var additionalInformation: [String: String?] = [
             "mobilePhoneNumber": request.mobilePhoneNumber,
