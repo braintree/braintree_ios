@@ -101,9 +101,10 @@ public class BTShopperInsightsClient {
     ///     feature experience.
     public func sendPresentedEvent(for buttonType: BTButtonType, presentmentDetails: BTPresentmentDetails) {
         apiClient.sendAnalyticsEvent(
-            buttonType.rawValue,
+            BTShopperInsightsAnalytics.buttonPresented,
             buttonOrder: presentmentDetails.buttonOrder.rawValue,
-            experimentType: presentmentDetails.experimentType.rawValue,
+            buttonType: buttonType.rawValue,
+            experimentType: presentmentDetails.experimentType.formattedExperiment,
             pageType: presentmentDetails.pageType.rawValue
         )
     }

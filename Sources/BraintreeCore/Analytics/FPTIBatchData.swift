@@ -109,7 +109,7 @@ struct FPTIBatchData: Codable {
 
         enum CodingKeys: String, CodingKey {
             case appSwitchURL = "url"
-            case buttonOrder = "button_rank"
+            case buttonOrder = "button_order"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
