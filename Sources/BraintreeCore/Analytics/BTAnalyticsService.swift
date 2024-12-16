@@ -22,7 +22,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private weak var apiClient: BTAPIClient?
+    private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
     
