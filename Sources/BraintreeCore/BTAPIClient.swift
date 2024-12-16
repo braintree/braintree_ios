@@ -70,6 +70,8 @@ import Foundation
     // MARK: - Deinit
 
     deinit {
+        let reference = ObjectIdentifier(self)
+        print("Analytics: 🌶️ \(reference) API Client")
         if http != nil && http?.session != nil {
             http?.session.finishTasksAndInvalidate()
         }
