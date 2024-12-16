@@ -312,7 +312,8 @@ import Foundation
         linkType: LinkType? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil
+        appSwitchURL: URL? = nil,
+        shopperSessionID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
@@ -326,7 +327,8 @@ import Foundation
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 paymentMethodsDisplayed: paymentMethodsDisplayed,
-                payPalContextID: payPalContextID
+                payPalContextID: payPalContextID,
+                shopperSessionID: shopperSessionID
             )
         )
     }
