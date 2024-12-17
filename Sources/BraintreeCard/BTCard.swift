@@ -154,13 +154,22 @@ import Foundation
         
         if authenticationInsightRequested {
             if let merchantAccountID {
-                let merchantAccountID = BTCreditCardGraphQLBody.Variables.Input.AuthenticationInsightInput(merchantAccountId: merchantAccountID)
+                let merchantAccountID = BTCreditCardGraphQLBody
+                    .Variables
+                    .Input
+                    .AuthenticationInsightInput(
+                        merchantAccountId: merchantAccountID
+                    )
                 
                 input.authenticationInsightInput = merchantAccountID
             }
         }
         
-        let body = BTCreditCardGraphQLBody(variables: variables, query: cardTokenizationGraphQLMutation(), operationName: "TokenizeCreditCard")
+        let body = BTCreditCardGraphQLBody(
+            variables: variables,
+            query: cardTokenizationGraphQLMutation(),
+            operationName: "TokenizeCreditCard"
+        )
 
         inspectEncodable(body)
         return body
