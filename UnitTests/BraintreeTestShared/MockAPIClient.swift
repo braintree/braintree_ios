@@ -12,12 +12,16 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var postedAnalyticsEvents : [String] = []
-    public var postedPayPalContextID: String? = nil
-    public var postedLinkType: LinkType? = nil
-    public var postedIsVaultRequest = false
-    public var postedMerchantExperiment: String? = nil
-    public var postedPaymentMethodsDisplayed: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
+    public var postedButtonOrder: Int? = nil
+    public var postedButtonType: String? = nil
+    public var postedExperimentType: String? = nil
+    public var postedIsVaultRequest = false
+    public var postedLinkType: LinkType? = nil
+    public var postedMerchantExperiment: String? = nil
+    public var postedPageType: String? = nil
+    public var postedPaymentMethodsDisplayed: String? = nil
+    public var postedPayPalContextID: String? = nil
     public var postedShopperSessionID: String? = nil
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil

@@ -214,6 +214,10 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
         sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
+        XCTAssertEqual(mockAPIClient.postedExperimentType, "control")
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
 
     func testSendPayPalSelectedEvent_sendsAnalytic() {
@@ -230,6 +234,10 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
         sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
+        XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedExperimentType, "control")
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {
