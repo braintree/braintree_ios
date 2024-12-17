@@ -424,7 +424,7 @@ import BraintreeCore
             requestParameters["customFields"] = customFields
         }
 
-        if request.cardAddChallengeRequested == true {
+        if request.cardAddChallengeRequested {
             requestParameters["cardAdd"] = true
         }
 
