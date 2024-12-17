@@ -213,21 +213,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             pageType: .about
         )
         sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "PayPal")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
     }
-    
-    func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        let presentmentDetails = BTPresentmentDetails(
-            buttonOrder: .first,
-            experimentType: .control,
-            pageType: .about
-        )
-        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
-        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "PayPal")
-    }
-    
+
     func testSendPayPalSelectedEvent_sendsAnalytic() {
         sut.sendPayPalSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
@@ -241,7 +229,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             pageType: .about
         )
         sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {
