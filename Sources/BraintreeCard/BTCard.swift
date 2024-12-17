@@ -80,44 +80,112 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: false)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: false)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billing_address"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        cardDictionary["options"] = options
-        return cardDictionary
+    func parameters() -> BTCreditCardBody.CreditCard {
+        let cardBody = creditCardParams()
+        
+        cardBody.billingAddress = billingAddress()
+        cardBody.options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        
+        return cardBody
     }
 
-    func graphQLParameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
+    private func creditCardParams() -> BTCreditCardBody.CreditCard {
+        BTCreditCardBody.CreditCard(
+            number: number,
+            expirationMonth: expirationMonth,
+            cvv: cvv,
+            expirationYear: expirationYear,
+            cardHolderName: cardholderName
+        )
+    }
 
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billingAddress"] = billingAddressDictionary
+    private func billingAddress() -> BTCreditCardBody.CreditCard.BillingAddress {
+        BTCreditCardBody.CreditCard.BillingAddress(
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            postalCode: postalCode,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric
+        )
+    }
+
+    func graphQLParameters() -> BTCreditCardGraphQLBody {
+        let cardBody = BTCreditCardGraphQLBody.Variables.Input.CreditCard(
+            number: number,
+            expirationMonth: expirationMonth,
+            cvv: cvv,
+            expirationYear: expirationYear,
+            cardHolderName: cardholderName
+        )
+        
+        if firstName == nil {
+            cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
+                firstName: firstName,
+                lastName: lastName,
+                company: company,
+                postalCode: postalCode,
+                streetAddress: streetAddress,
+                extendedAddress: extendedAddress,
+                locality: locality,
+                region: region,
+                countryName: countryName,
+                countryCodeAlpha2: countryCodeAlpha2,
+                countryCodeAlpha3: countryCodeAlpha3,
+                countryCodeNumeric: countryCodeNumeric
+            )
         }
 
-        let options: [String: Bool] = ["validate": shouldValidate]
-        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
-        var variables: [String: Any] = ["input": inputDictionary]
-
+        
+        let options = BTCreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
+        
+        let input = BTCreditCardGraphQLBody.Variables.Input(
+            creditCard: cardBody,
+            options: options
+        )
+        
+        let variables = BTCreditCardGraphQLBody.Variables(input: input)
+        
         if authenticationInsightRequested {
             if let merchantAccountID {
-                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
-            } else {
-                variables["authenticationInsightInput"] = [:]
+                let merchantAccountID = BTCreditCardGraphQLBody
+                    .Variables
+                    .Input
+                    .AuthenticationInsightInput(
+                        merchantAccountId: merchantAccountID
+                    )
+                
+                input.authenticationInsightInput = merchantAccountID
             }
         }
+        
+        let body = BTCreditCardGraphQLBody(
+            variables: variables,
+            query: cardTokenizationGraphQLMutation(),
+            operationName: "TokenizeCreditCard"
+        )
 
-        return [
-            "operationName": "TokenizeCreditCard",
-            "query": cardTokenizationGraphQLMutation(),
-            "variables": variables
-        ]
+        inspectEncodable(body)
+        return body
+    }
+    
+    func inspectEncodable<T: Encodable>(_ object: T) {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys] // Optional formatting
+            let jsonData = try encoder.encode(object)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Encoded Object:\n\(jsonString)")
+            }
+        } catch {
+            print("Failed to encode object: \(error)")
+        }
     }
 
     // MARK: - Private Methods
