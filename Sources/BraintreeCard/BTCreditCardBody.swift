@@ -1,3 +1,4 @@
+// swiftlint:disable all
 import Foundation
 
 class BTCreditCardBody: NSObject, Encodable {
@@ -13,7 +14,6 @@ class BTCreditCardBody: NSObject, Encodable {
         case meta = "_meta"
         case merchantAccountId
         case creditCard = "credit_card"
-        
     }
 
     init(
@@ -52,8 +52,7 @@ class BTCreditCardBody: NSObject, Encodable {
         var expirationYear: String?
         var cardHolderName: String?
 
-        init
-        (
+        init(
             billingAddress: BillingAddress? = nil,
             number: String?,
             expirationMonth: String?,
@@ -61,8 +60,7 @@ class BTCreditCardBody: NSObject, Encodable {
             options: Options? = nil,
             expirationYear: String?,
             cardHolderName: String?
-        )
-        {
+        ) {
             self.billingAddress = billingAddress
             self.number = number
             self.cvv = cvv

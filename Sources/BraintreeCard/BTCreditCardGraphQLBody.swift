@@ -1,6 +1,8 @@
+// swiftlint:disable all
 import Foundation
 
 class BTCreditCardGraphQLBody: NSObject, Encodable {
+
     var variables: Variables
     var query: String
     var operationName: String
@@ -12,6 +14,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
     }
 
     class Variables: Encodable {
+
         var input: Input
 
         init(input: Input) {
@@ -19,6 +22,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
         }
         
         class Input: Encodable {
+
             var creditCard: CreditCard
             var options: Options
             var authenticationInsightInput: AuthenticationInsightInput?
