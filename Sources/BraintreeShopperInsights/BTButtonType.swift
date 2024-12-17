@@ -5,7 +5,7 @@ import Foundation
 public enum BTButtonType: String {
 
     /// PayPal button
-    case payPal = "Paypal"
+    case payPal = "PayPal"
 
     /// Venmo button
     case venmo = "Venmo"

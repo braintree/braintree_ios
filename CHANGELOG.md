@@ -9,7 +9,7 @@
 * BraintreeShopperInsights (BETA)
   * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
   * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
-  * Replace `sendPayPalPresentedEvent()` and `sendPayPalPresentedEvent()` with `sendPresentedEvent(for buttonType: BTButtonType, presentmentDetails: BTPresentmentDetail)`
+  * Replace `sendPayPalPresentedEvent()` and `sendPayPalPresentedEvent()` with `sendPresentedEvent(for:presentmentDetails:)`
   * Add values to the following parameters to `presentmentDetails`:
     * `experimentType`
     * `pageType`
