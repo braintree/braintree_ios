@@ -81,15 +81,26 @@ import Foundation
     // MARK: - Internal Methods
 
     func parameters() -> BTCreditCardBody.CreditCard {
-        let cardBody = BTCreditCardBody.CreditCard(
+        let cardBody = creditCardParams()
+        
+        cardBody.billingAddress = billingAddress()
+        cardBody.options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        
+        return cardBody
+    }
+
+    private func creditCardParams() -> BTCreditCardBody.CreditCard {
+        BTCreditCardBody.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
             cvv: cvv,
             expirationYear: expirationYear,
             cardHolderName: cardholderName
         )
-        
-        cardBody.billingAddress = BTCreditCardBody.CreditCard.BillingAddress(
+    }
+
+    private func billingAddress() -> BTCreditCardBody.CreditCard.BillingAddress {
+        BTCreditCardBody.CreditCard.BillingAddress(
             firstName: firstName,
             lastName: lastName,
             company: company,
@@ -103,12 +114,6 @@ import Foundation
             countryCodeAlpha3: countryCodeAlpha3,
             countryCodeNumeric: countryCodeNumeric
         )
-        
-        let options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
-        
-        cardBody.options = options
-        
-        return cardBody
     }
 
     func graphQLParameters() -> BTCreditCardGraphQLBody {
