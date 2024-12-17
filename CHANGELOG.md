@@ -9,6 +9,7 @@
 * BraintreeShopperInsights (BETA)
   * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
   * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 * BraintreeVenmo
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)

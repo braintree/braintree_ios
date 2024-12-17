@@ -11,7 +11,8 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
-    public var postedAnalyticsEvents : [String] = []
+    public var postedButtonType: String? = nil
+    public var postedAnalyticsEvents: [String] = []
     public var postedPayPalContextID: String? = nil
     public var postedLinkType: LinkType? = nil
     public var postedIsVaultRequest = false
@@ -94,6 +95,7 @@ public class MockAPIClient: BTAPIClient {
 
     public override func sendAnalyticsEvent(
         _ name: String,
+        buttonType: String? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         merchantExperiment experiment: String? = nil,
@@ -105,6 +107,7 @@ public class MockAPIClient: BTAPIClient {
         appSwitchURL: URL? = nil,
         shopperSessionID: String? = nil
     ) {
+        postedButtonType = buttonType
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false

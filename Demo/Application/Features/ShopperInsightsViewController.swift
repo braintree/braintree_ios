@@ -115,7 +115,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
         let paymentMethods = ["Apple Pay", "Card", "PayPal"]
         shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendPayPalSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .payPal)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
@@ -133,7 +133,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     @objc func venmoButtonTapped(_ button: UIButton) {
         shopperInsightsClient.sendVenmoPresentedEvent()
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendVenmoSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .venmo)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
