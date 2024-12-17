@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
   * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
@@ -14,6 +14,14 @@
     * `experimentType`
     * `pageType`
     * `buttonOrder`
+  * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
+* BraintreeVenmo
+  * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
+  * Add `BTVenmoClient(apiClient:universalLink:)` to use Universal Links when redirecting back from the Venmo flow
+* BraintreeCore
+  * Deprecate `BTAppContextSwitcher.sharedInstance.returnURLScheme`
+* BraintreeThreeDSecure
+  * Add `BTThreeDSecureRequest.requestorAppURL`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal

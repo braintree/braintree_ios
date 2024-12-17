@@ -45,6 +45,10 @@ class BTThreeDSecureV2Provider {
             cardinalConfiguration.renderType = renderTypes.compactMap { $0.cardinalValue }
         }
 
+        if let requestorAppURL = request.requestorAppURL {
+            cardinalConfiguration.threeDSRequestorAppURL = requestorAppURL
+        }
+
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
             completion(nil)
             return
