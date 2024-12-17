@@ -316,7 +316,6 @@ import Foundation
         pageType: String? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil,
         shopperSessionID: String? = nil
     ) {
         analyticsService.sendAnalyticsEvent(

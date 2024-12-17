@@ -5,10 +5,10 @@ import Foundation
 public enum BTExperimentType: String {
 
     /// The test experiment
-    case test = "test"
+    case test
 
     /// The control experiment
-    case control = "control"
+    case control
 
     public var formattedExperiment: String {
         """

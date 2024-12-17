@@ -106,7 +106,8 @@ public class MockAPIClient: BTAPIClient {
         linkType: LinkType? = nil,
         pageType: String? = nil,
         paymentMethodsDisplayed: String? = nil,
-        payPalContextID: String? = nil
+        payPalContextID: String? = nil,
+        shopperSessionID: String? = nil
     ) {
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
