@@ -192,7 +192,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
-        var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
+        let apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
         let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
 
         do {
@@ -222,10 +222,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     func testSendPayPalSelectedEvent_sendsAnalytic() {
         sut.sendSelectedEvent(for: .payPal)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "PayPal")
-
-        sut.sendPayPalSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
         XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
     
@@ -237,15 +234,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendSelectedEvent(for: .venmo)
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
     }
 
     func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
         sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
         XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
-
-        sut.sendVenmoSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
         XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
 
