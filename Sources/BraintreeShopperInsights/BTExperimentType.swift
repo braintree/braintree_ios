@@ -14,7 +14,7 @@ public enum BTExperimentType: String {
         """
             [
                 { "exp_name" : "PaymentReady" }
-                { "treatment_name" : \(self.rawValue) }
+                { "treatment_name" : "\(self.rawValue)" }
             ]
         """
     }

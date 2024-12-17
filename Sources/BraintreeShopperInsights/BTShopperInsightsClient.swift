@@ -102,7 +102,8 @@ public class BTShopperInsightsClient {
             buttonOrder: presentmentDetails.buttonOrder.rawValue,
             buttonType: buttonType.rawValue,
             experimentType: presentmentDetails.experimentType.formattedExperiment,
-            pageType: presentmentDetails.pageType.rawValue
+            pageType: presentmentDetails.pageType.rawValue,
+            shopperSessionID: shopperSessionID
         )
     }
     

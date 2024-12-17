@@ -113,6 +113,10 @@ public class MockAPIClient: BTAPIClient {
         payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
+        postedButtonType = buttonType
+        postedButtonOrder = buttonOrder
+        postedExperimentType = experimentType
+        postedPageType = pageType
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false

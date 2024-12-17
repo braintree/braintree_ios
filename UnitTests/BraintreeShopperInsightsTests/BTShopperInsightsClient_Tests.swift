@@ -216,7 +216,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
         XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
         XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
-        XCTAssertEqual(mockAPIClient.postedExperimentType, "control")
+        XCTAssertEqual(mockAPIClient.postedExperimentType,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
         XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
 
@@ -236,7 +242,13 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
         XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
         XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
-        XCTAssertEqual(mockAPIClient.postedExperimentType, "control")
+        XCTAssertEqual(mockAPIClient.postedExperimentType,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
         XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
     
