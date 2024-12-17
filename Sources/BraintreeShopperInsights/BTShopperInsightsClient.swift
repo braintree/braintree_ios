@@ -122,7 +122,11 @@ public class BTShopperInsightsClient {
     /// Call this method when a button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     public func sendSelectedEvent(for buttonType: BTButtonType) {
-        apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.buttonSelected, shopperSessionID: shopperSessionID)
+        apiClient.sendAnalyticsEvent(
+            BTShopperInsightsAnalytics.buttonSelected,
+            buttonType: buttonType.rawValue,
+            shopperSessionID: shopperSessionID
+        )
     }
 
     /// Indicates whether the PayPal App is installed.

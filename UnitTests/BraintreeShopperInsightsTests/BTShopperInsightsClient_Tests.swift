@@ -224,8 +224,9 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         sut.sendSelectedEvent(for: .payPal)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
         XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
     }
-    
+
     func testSendVenmoPresentedEvent_sendsAnalytic() {
         sut.sendVenmoPresentedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
@@ -235,6 +236,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     func testSendVenmoSelectedEvent_sendsAnalytic() {
         sut.sendSelectedEvent(for: .venmo)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
     }
 
     func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
