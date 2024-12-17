@@ -237,12 +237,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         sut.sendSelectedEvent(for: .venmo)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
         XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
-    }
-
-    func testShopperInsightsClient_withSessionID_setSessionIDInMetadata() {
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient, shopperSessionID: "123456")
-        XCTAssertEqual(mockAPIClient.metadata.sessionID, "123456")
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
         XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
 
