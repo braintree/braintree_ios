@@ -29,6 +29,7 @@ import BraintreeCore
     let shippingMethod: BTThreeDSecureShippingMethod
     let uiType: BTThreeDSecureUIType
     let v2UICustomization: BTThreeDSecureV2UICustomization?
+    let requestorAppURL: String?
 
     var dfReferenceID: String?
 
@@ -54,6 +55,8 @@ import BraintreeCore
     ///    - shippingMethod: Optional. The shipping method chosen for the transaction
     ///    - uiType: Optional: Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge. Defaults to `.both`
     ///    - v2UICustomization: Optional. UI Customization for 3DS2 challenge views.
+    ///    - requestorAppURL: Optional. Three DS Requester APP URL Merchant app declaring their URL within the CReq message
+    ///    so that the Authentication app can call the Merchant app after out of band authentication has occurred.
     public init(
         amount: String,
         nonce: String,
@@ -72,7 +75,8 @@ import BraintreeCore
         requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified,
         shippingMethod: BTThreeDSecureShippingMethod = .unspecified,
         uiType: BTThreeDSecureUIType = .both,
-        v2UICustomization: BTThreeDSecureV2UICustomization? = nil
+        v2UICustomization: BTThreeDSecureV2UICustomization? = nil,
+        requestorAppURL: String? = nil
     ) {
         self.amount = amount
         self.nonce = nonce
@@ -92,5 +96,6 @@ import BraintreeCore
         self.shippingMethod = shippingMethod
         self.uiType = uiType
         self.v2UICustomization = v2UICustomization
+        self.requestorAppURL = requestorAppURL
     }
 }
