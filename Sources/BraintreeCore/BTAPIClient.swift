@@ -304,7 +304,7 @@ import Foundation
     public func sendAnalyticsEvent(
         _ eventName: String,
         appSwitchURL: URL? = nil,
-        buttonOrder: Int? = nil,
+        buttonOrder: String? = nil,
         buttonType: String? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,

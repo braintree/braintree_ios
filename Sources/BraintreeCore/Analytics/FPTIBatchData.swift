@@ -30,10 +30,12 @@ struct FPTIBatchData: Codable {
     struct Event: Codable {
 
         let appSwitchURL: String?
+        /// The order or ranking in which payment buttons appear.
+        let buttonOrder: String?
+        /// The type of button displayed or presented
+        let buttonType: String?
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
-        let buttonOrder: Int?
-        let buttonType: String?
         let connectionStartTime: Int?
         let correlationID: String?
         let endpoint: String?
@@ -41,6 +43,7 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// The experiment type that is sent to analytics to help improve the Shopper Insights feature experience.
         let experimentType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
@@ -51,6 +54,7 @@ struct FPTIBatchData: Codable {
         let linkType: String?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
+        /// The type of page where the payment button is displayed or where an event occured.
         let pageType: String?
         /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
         let paymentMethodsDisplayed: String?
@@ -69,7 +73,7 @@ struct FPTIBatchData: Codable {
         
         init(
             appSwitchURL: URL? = nil,
-            buttonOrder: Int? = nil,
+            buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
@@ -113,7 +117,7 @@ struct FPTIBatchData: Codable {
 
         enum CodingKeys: String, CodingKey {
             case appSwitchURL = "url"
-            case buttonOrder = "button_order"
+            case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
