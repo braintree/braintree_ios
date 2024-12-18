@@ -216,7 +216,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
         XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
         XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
-        XCTAssertEqual(mockAPIClient.postedExperimentType,
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
         """
             [
                 { "exp_name" : "PaymentReady" }
@@ -242,7 +242,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
         XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
         XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
-        XCTAssertEqual(mockAPIClient.postedExperimentType,
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
         """
             [
                 { "exp_name" : "PaymentReady" }
