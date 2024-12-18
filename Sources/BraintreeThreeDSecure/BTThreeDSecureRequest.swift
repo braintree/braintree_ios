@@ -27,7 +27,8 @@ import BraintreeCore
     var shippingMethod: BTThreeDSecureShippingMethod
     var uiType: BTThreeDSecureUIType
     var v2UICustomization: BTThreeDSecureV2UICustomization?
-    
+    var requestorAppURL: String?
+
     // NEXT_MAJOR_VERSION remove cardAddChallenge in favor of cardAddChallengeRequested
     /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
     ///
@@ -47,7 +48,7 @@ import BraintreeCore
     /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
     /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
     var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
-    
+
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     
@@ -73,6 +74,8 @@ import BraintreeCore
     ///    - shippingMethod: Optional. The shipping method chosen for the transaction
     ///    - uiType: Optional: Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge. Defaults to `.both`
     ///    - v2UICustomization: Optional. UI Customization for 3DS2 challenge views.
+    ///    - requestorAppURL: Optional. Three DS Requester APP URL Merchant app declaring their URL within the CReq message
+    ///    so that the Authentication app can call the Merchant app after out of band authentication has occurred.
     public init(
         amount: String,
         nonce: String,
@@ -92,7 +95,8 @@ import BraintreeCore
         requestedExemptionType: BTThreeDSecureRequestedExemptionType = .unspecified,
         shippingMethod: BTThreeDSecureShippingMethod = .unspecified,
         uiType: BTThreeDSecureUIType = .both,
-        v2UICustomization: BTThreeDSecureV2UICustomization? = nil
+        v2UICustomization: BTThreeDSecureV2UICustomization? = nil,
+        requestorAppURL: String? = nil
     ) {
         self.amount = amount
         self.nonce = nonce
@@ -113,5 +117,6 @@ import BraintreeCore
         self.shippingMethod = shippingMethod
         self.uiType = uiType
         self.v2UICustomization = v2UICustomization
+        self.requestorAppURL = requestorAppURL
     }
 }
