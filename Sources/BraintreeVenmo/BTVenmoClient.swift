@@ -56,6 +56,8 @@ import BraintreeCore
     ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
     @objc(initWithAPIClient:universalLink:)
     public init(apiClient: BTAPIClient, universalLink: URL) {
+        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
+
         self.apiClient = apiClient
         self.universalLink = universalLink
     }

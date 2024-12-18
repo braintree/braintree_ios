@@ -43,12 +43,11 @@ struct BTVenmoAppSwitchRedirectURL {
             "braintree_environment": environment,
             "resource_id": paymentContextID,
             "braintree_sdk_data": base64EncodedBraintreeData ?? "",
-            "customerClient": "MOBILE_APP"
+            "customerClient": "MOBILE_APP",
+            "x-success": universalLink.appendingPathComponent("success").absoluteString,
+            "x-error": universalLink.appendingPathComponent("error").absoluteString,
+            "x-cancel": universalLink.appendingPathComponent("cancel").absoluteString
         ]
-
-        queryParameters["x-success"] = universalLink.appendingPathComponent("success").absoluteString
-        queryParameters["x-error"] = universalLink.appendingPathComponent("error").absoluteString
-        queryParameters["x-cancel"] = universalLink.appendingPathComponent("cancel").absoluteString
     }
 
     // MARK: - Internal Methods
