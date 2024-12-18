@@ -6,52 +6,33 @@ import BraintreeCore
 
 /// Used to initialize a 3D Secure payment flow
 @objcMembers public class BTThreeDSecureRequest: NSObject {
-    
-    // MARK: - Internal Properties
-    
-    var amount: String
-    var nonce: String
-    var accountType: BTThreeDSecureAccountType
-    var additionalInformation: BTThreeDSecureAdditionalInformation?
-    var billingAddress: BTThreeDSecurePostalAddress?
-    var cardAddChallengeRequested: Bool
-    var challengeRequested: Bool
-    var customFields: [String: String]?
-    var dataOnlyRequested: Bool
-    var dfReferenceID: String?
-    var email: String?
-    var exemptionRequested: Bool
-    var mobilePhoneNumber: String?
-    var renderTypes: [BTThreeDSecureRenderType]?
-    var requestedExemptionType: BTThreeDSecureRequestedExemptionType
-    var shippingMethod: BTThreeDSecureShippingMethod
-    var uiType: BTThreeDSecureUIType
-    var v2UICustomization: BTThreeDSecureV2UICustomization?
-    var requestorAppURL: String?
-
-    // NEXT_MAJOR_VERSION remove cardAddChallenge in favor of cardAddChallengeRequested
-    /// Optional. An authentication created using this property should only be used for adding a payment method to the merchant's vault and not for creating transactions.
-    ///
-    /// Defaults to `.unspecified.`
-    ///
-    /// If set to `.challengeRequested`, the authentication challenge will be requested from the issuer to confirm adding new card to the merchant's vault.
-    /// If set to `.notRequested` the authentication challenge will not be requested from the issuer.
-    /// If set to `.unspecified`, when the amount is 0, the authentication challenge will be requested from the issuer.
-    /// If set to `.unspecified`, when the amount is greater than 0, the authentication challenge will not be requested from the issuer.
-    @available(*, deprecated, renamed: "cardAddChallengeRequested", message: "Use the `cardAddChallengeRequested` boolean property instead")
-    public var cardAddChallenge: BTThreeDSecureCardAddChallenge {
-        get { _cardAddChallenge }
-        set { _cardAddChallenge = newValue }
-    }
-    
-    // swiftlint:disable identifier_name
-    /// Internal property for `cardAddChallenge`. Created to avoid deprecation warnings upon accessing
-    /// `cardAddChallenge` directly within our SDK. Use this value internally instead.
-    var _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified
 
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
+
+    // MARK: - Internal Properties
     
+    let amount: String
+    let nonce: String
+    let accountType: BTThreeDSecureAccountType
+    let additionalInformation: BTThreeDSecureAdditionalInformation?
+    let billingAddress: BTThreeDSecurePostalAddress?
+    let cardAddChallengeRequested: Bool
+    let challengeRequested: Bool
+    let customFields: [String: String]?
+    let dataOnlyRequested: Bool
+    let email: String?
+    let exemptionRequested: Bool
+    let mobilePhoneNumber: String?
+    let renderTypes: [BTThreeDSecureRenderType]?
+    let requestedExemptionType: BTThreeDSecureRequestedExemptionType
+    let shippingMethod: BTThreeDSecureShippingMethod
+    let uiType: BTThreeDSecureUIType
+    let v2UICustomization: BTThreeDSecureV2UICustomization?
+    let requestorAppURL: String?
+
+    var dfReferenceID: String?
+
     // MARK: - Initializer
     
     /// Creates a `BTThreeDSecureRequest`
@@ -82,7 +63,6 @@ import BraintreeCore
         accountType: BTThreeDSecureAccountType = .unspecified,
         additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
         billingAddress: BTThreeDSecurePostalAddress? = nil,
-        _cardAddChallenge: BTThreeDSecureCardAddChallenge = .unspecified,
         cardAddChallengeRequested: Bool = false,
         challengeRequested: Bool = false,
         customFields: [String: String]? = nil,
@@ -103,7 +83,6 @@ import BraintreeCore
         self.accountType = accountType
         self.additionalInformation = additionalInformation
         self.billingAddress = billingAddress
-        self._cardAddChallenge = _cardAddChallenge
         self.cardAddChallengeRequested = cardAddChallengeRequested
         self.challengeRequested = challengeRequested
         self.customFields = customFields

@@ -21,6 +21,7 @@
   * BraintreeThreeDSecure
     * Update `BTThreeDSecureRequest` to make all properties accessible on the initializer only vs via the dot syntax.  
     * Update `BTThreeDSecureRequest.amount` to be a `String`
+    * Remove `cardAddChallenge` - use `cardAddChallengeRequested` instead
   * BraintreeCore
     * Remove `fetchPaymentMethodNonces` methods and parser
   * BraintreePayPal
