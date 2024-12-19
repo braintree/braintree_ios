@@ -16,11 +16,6 @@ class BTAppContextSwitcher_Tests: XCTestCase {
         super.tearDown()
     }
 
-    func testSetReturnURLScheme() {
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.some.scheme"
-        XCTAssertEqual(appSwitch.returnURLScheme, "com.some.scheme")
-    }
-
     func testHandleOpenURL_whenClientIsRegistered_invokesCanHandleReturnURL() {
         appSwitch.register(MockAppContextSwitchClient.self)
         let expectedURL = URL(string: "fake://url")!

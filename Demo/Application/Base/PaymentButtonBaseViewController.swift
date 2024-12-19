@@ -51,4 +51,20 @@ class PaymentButtonBaseViewController: BaseViewController {
         button.addTarget(self, action: action, for: .touchUpInside)
         return button
     }
+
+    // MARK: - Helpers
+
+    func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
+        let titleLabel = UILabel()
+        titleLabel.text = label
+
+        let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
+        buttonsStackView.axis = .vertical
+        buttonsStackView.distribution = .fillProportionally
+        buttonsStackView.backgroundColor = .systemGray6
+        buttonsStackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
+
+        return buttonsStackView
+    }
 }

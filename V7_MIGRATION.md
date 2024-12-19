@@ -14,8 +14,6 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [3D Secure](#3d-secure)]
 1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
-1. [PayPal](#paypal)
-
 
 ## Supported Versions
 
@@ -27,10 +25,20 @@ v7 updates `BTCard` to require setting all properties through the initializer, r
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
 
-Remove the `fallbackToWeb` boolean parameter from `BTVenmoRequest`. If a Buyer has the Venmo app installed and taps on "Pay with Venmo", they will automatically be switched to the Venmo app. If the Venmo app isn't installed, the Buyer will fallback to their default web brower to checkout.
+Remove the `fallbackToWeb` boolean parameter from `BTVenmoRequest`. If a Buyer has the Venmo app installed and taps on "Pay with Venmo", they will automatically be switched to the Venmo app. If the Venmo app isn't installed, the Buyer will fallback to their default web browser to checkout.
 
 ```
 let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, vault: true)
+```
+
+The `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
+
+```swift
+let apiClient = BTAPIClient("<TOKENIZATION_KEY_OR_CLIENT_TOKEN>")
+let venmoClient = BTVenmoClient(
+    apiClient: apiClient, 
+    universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
+)
 ```
 
 ## SEPA Direct Debit
@@ -43,6 +51,8 @@ v7 updates `BTLocalPaymentRequest` to require setting all properties through the
 All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
 
 ## PayPal
+
+v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
 ### App Switch
 For the App Switch flow, you must update your `info.plist` with a simplified URL query scheme name, `paypal`.
@@ -58,6 +68,3 @@ For the App Switch flow, you must update your `info.plist` with a simplified URL
 ## PayPal Native Checkout
 The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 
 use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
-
-## PayPal
-v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
