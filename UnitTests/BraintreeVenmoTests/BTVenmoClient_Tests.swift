@@ -710,9 +710,7 @@ class BTVenmoClient_Tests: XCTestCase {
     // MARK: - BTAppContextSwitchClient
 
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
-        let host = "x-callback-url"
-        let path = "/vzero/auth/venmo/"
-        XCTAssertTrue(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://\(host)\(path)fake-result")!))
+        XCTAssertTrue(BTVenmoClient.canHandleReturnURL(URL(string: "https://www.braintreesample.com/success")!))
     }
 
     func testCanHandleReturnURL_withInvalidHost_andValidPath_returnsFalse() {
