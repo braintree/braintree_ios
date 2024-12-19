@@ -92,8 +92,8 @@ public class BTShopperInsightsClient {
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
-    ///     - buttonType: Type of button presented - PayPal, Venmo, or Other
-    ///     - presentmentDetails:  Detailed information, including button order, experiment type, and
+    ///    - buttonType: Type of button presented - PayPal, Venmo, or Other
+    ///    - presentmentDetails: Detailed information, including button order, experiment type, and
     ///     page type about the payment button that is sent to analytics to help improve the Shopper Insights
     ///     feature experience.
     public func sendPresentedEvent(for buttonType: BTButtonType, presentmentDetails: BTPresentmentDetails) {
