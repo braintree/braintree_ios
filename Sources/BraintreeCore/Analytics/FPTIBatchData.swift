@@ -118,7 +118,7 @@ struct FPTIBatchData: Codable {
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
-            case eventName = "event_name"            
+            case eventName = "event_name"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
