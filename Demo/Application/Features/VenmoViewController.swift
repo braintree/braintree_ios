@@ -28,8 +28,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
             venmoButton
         ])
 
-        venmoStackView.axis = .vertical
-        venmoStackView.distribution = .fillProportionally
         venmoStackView.spacing = 12
         venmoStackView.translatesAutoresizingMaskIntoConstraints = false
 
