@@ -206,7 +206,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     // MARK: - Analytics
     
-    func testSendPayPalPresentedEvent_sendsAnalytic() {
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsControl_sendsAnalytic() {
         let presentmentDetails = BTPresentmentDetails(
             buttonOrder: .first,
             experimentType: .control,
@@ -214,7 +214,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
         sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
-        XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
         XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
         XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
         """
@@ -224,6 +224,22 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             ]
         """)
         XCTAssertEqual(mockAPIClient.postedPageType, "about")
+    }
+
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
 
     func testSendPayPalSelectedEvent_sendsAnalytic() {
@@ -240,7 +256,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
         )
         sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
-        XCTAssertEqual(mockAPIClient.postedButtonOrder, 0)
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
         XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
         XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
         """
@@ -250,6 +266,22 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             ]
         """)
         XCTAssertEqual(mockAPIClient.postedPageType, "about")
+    }
+
+    func testSendVenmoPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {

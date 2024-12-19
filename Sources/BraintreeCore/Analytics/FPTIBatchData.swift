@@ -43,6 +43,8 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// The experiment type that is sent to analytics to help improve the Shopper Insights feature experience.
+        let experimentType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -79,6 +81,7 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            experimentType: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
@@ -99,6 +102,7 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.experimentType = experimentType
             self.isConfigFromCache = isConfigFromCache
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
@@ -119,6 +123,7 @@ struct FPTIBatchData: Codable {
             case correlationID = "correlation_id"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case experimentType = "experiment_type"
             case isConfigFromCache = "config_cached"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
