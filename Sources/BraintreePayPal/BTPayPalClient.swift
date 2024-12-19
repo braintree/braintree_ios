@@ -412,11 +412,11 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL) { success in
-            self.invokedOpenURLSuccessfully(success, completion: completion)
+            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
 
-    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
