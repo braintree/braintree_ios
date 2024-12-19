@@ -412,28 +412,28 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL) { success in
-            self.invokedOpenURLSuccessfully(success, completion: completion)
+            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
 
-    func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                appSwitchURL: url,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                shopperSessionID: payPalRequest?.shopperSessionID
+                payPalContextID: payPalContextID
             )
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                appSwitchURL: url,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                shopperSessionID: payPalRequest?.shopperSessionID
+                payPalContextID: payPalContextID
             )
             notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
         }
