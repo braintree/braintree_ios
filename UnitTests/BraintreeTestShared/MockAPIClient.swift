@@ -15,7 +15,6 @@ public class MockAPIClient: BTAPIClient {
     public var postedAppSwitchURL: [String: String?] = [:]
     public var postedButtonOrder: Int? = nil
     public var postedButtonType: String? = nil
-    public var postedExperimentType: String? = nil
     public var postedIsVaultRequest = false
     public var postedLinkType: LinkType? = nil
     public var postedMerchantExperiment: String? = nil
@@ -103,11 +102,10 @@ public class MockAPIClient: BTAPIClient {
         buttonType: String? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
-        experimentType: String? = nil,
-        merchantExperiment experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
+        merchantExperiment experiment: String? = nil,
         pageType: String? = nil,
         paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil,
@@ -115,7 +113,6 @@ public class MockAPIClient: BTAPIClient {
     ) {
         postedButtonType = buttonType
         postedButtonOrder = buttonOrder
-        postedExperimentType = experimentType
         postedPageType = pageType
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
