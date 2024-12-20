@@ -7,11 +7,8 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
 
     // MARK: - accountTypeAsString
 
-    func testCustomFields_notNil() {
-        let request = BTThreeDSecureRequest(amount: "10.0", nonce: "fake-nonce")
-        XCTAssertNil(request.customFields)
-        
-        request.customFields = ["test": "test"]
+    func testCustomFields_whenCustomFieldsExist_notNil() {
+        let request = BTThreeDSecureRequest(amount: "10.0", nonce: "fake-nonce", customFields: ["test": "test"])
         XCTAssertNotNil(request.customFields)
     }
 
