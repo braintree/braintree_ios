@@ -7,26 +7,31 @@ class VenmoViewController: PaymentButtonBaseViewController {
     var venmoClient: BTVenmoClient!
 
     let vaultToggle = Toggle(title: "Vault")
-    let universalLinkReturnToggle = Toggle(title: "Use Universal Link Return")
 
     override func viewDidLoad() {
         super.heightConstraint = 150
         super.viewDidLoad()
-        venmoClient = BTVenmoClient(apiClient: apiClient)
+        venmoClient = BTVenmoClient(
+            apiClient: apiClient,
+            // swiftlint:disable:next force_unwrapping
+            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+        )
+
         title = "Custom Venmo Button"
     }
     
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
 
-        let stackView = UIStackView(arrangedSubviews: [vaultToggle, universalLinkReturnToggle, venmoButton])
-        stackView.axis = .vertical
-        stackView.spacing = 15
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let venmoStackView = buttonsStackView(label: "Venmo Payment Flow", views: [
+            vaultToggle,
+            venmoButton
+        ])
 
-        return stackView
+        venmoStackView.spacing = 12
+        venmoStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        return venmoStackView
     }
     
     @objc func tappedVenmo() {
@@ -37,14 +42,6 @@ class VenmoViewController: PaymentButtonBaseViewController {
             paymentMethodUsage: .multiUse,
             vault: isVaultingEnabled
         )
-
-        if universalLinkReturnToggle.isOn {
-            venmoClient = BTVenmoClient(
-                apiClient: apiClient,
-                // swiftlint:disable:next force_unwrapping
-                universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-            )
-        }
 
         Task {
             do {
