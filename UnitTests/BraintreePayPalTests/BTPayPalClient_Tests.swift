@@ -999,7 +999,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
     }
-
+    
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {

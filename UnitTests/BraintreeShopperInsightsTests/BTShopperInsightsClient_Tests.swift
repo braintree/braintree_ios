@@ -206,20 +206,42 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     // MARK: - Analytics
     
-    func testSendPayPalPresentedEvent_sendsAnalytic() {
-        sut.sendPayPalPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
-        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsControl_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
-    
-    func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
-        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
-        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
-    
+
     func testSendPayPalSelectedEvent_sendsAnalytic() {
         sut.sendPayPalSelectedEvent()
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
@@ -227,9 +249,39 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
     
     func testSendVenmoPresentedEvent_sendsAnalytic() {
-        sut.sendVenmoPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
-        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
+    }
+
+    func testSendVenmoPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {

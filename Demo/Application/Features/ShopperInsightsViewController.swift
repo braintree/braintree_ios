@@ -95,25 +95,50 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
                 // swiftlint:disable:next line_length
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
-                payPalVaultButton.isEnabled = result.isPayPalRecommended
-                venmoButton.isEnabled = result.isVenmoRecommended
+                
+                togglePayPalVaultButton(enabled: result.isPayPalRecommended)
+                toggleVenmoButton(enabled: result.isVenmoRecommended)
             } catch {
                 progressBlock("Error: \(error.localizedDescription)")
             }
         }
     }
     
+    private func togglePayPalVaultButton(enabled: Bool) {
+        payPalVaultButton.isEnabled = enabled
+        
+        guard enabled else { return }
+        
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        
+        shopperInsightsClient.sendPresentedEvent(
+            for: .payPal,
+            presentmentDetails: presentmentDetails
+        )
+    }
+    
+    private func toggleVenmoButton(enabled: Bool) {
+        venmoButton.isEnabled = enabled
+        
+        guard enabled else { return }
+        
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .second,
+            experimentType: .control,
+            pageType: .about
+        )
+        
+        shopperInsightsClient.sendPresentedEvent(
+            for: .venmo,
+            presentmentDetails: presentmentDetails
+        )
+    }
+    
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        let sampleExperiment =
-            """
-            [
-                { "experimentName" : "payment ready conversion experiment" },
-                { "experimentID" : "a1b2c3" },
-                { "treatmentName" : "treatment group 1" }
-            ]
-            """
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
         progressBlock("Tapped PayPal Vault")
         shopperInsightsClient.sendPayPalSelectedEvent()
         
@@ -131,7 +156,6 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
-        shopperInsightsClient.sendVenmoPresentedEvent()
         progressBlock("Tapped Venmo")
         shopperInsightsClient.sendVenmoSelectedEvent()
         
