@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
+* BraintreeShopperInsights (BETA)
+  * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
+  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
@@ -11,9 +18,6 @@
   * Deprecate `BTAppContextSwitcher.sharedInstance.returnURLScheme`
 * BraintreeThreeDSecure
   * Add `BTThreeDSecureRequest.requestorAppURL`
-* BraintreeShopperInsights (BETA)
-  * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
-  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
 
 ## 6.24.0 (2024-10-15)
 * BraintreePayPal
