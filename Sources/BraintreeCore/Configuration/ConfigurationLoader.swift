@@ -19,6 +19,8 @@ class ConfigurationLoader {
     // MARK: - Initializer
     
     init(http: BTHTTP) {
+        let reference = ObjectIdentifier(http)
+        print("Analytics: 🫀 \(reference) http reference")
         self.http = http
     }
     
@@ -59,7 +61,9 @@ class ConfigurationLoader {
 
             do {
                 let (body, response) = try await http.get(configPath, parameters: BTConfigurationRequest())
-
+                
+                print("Analytics: 🌝 getConfig api called")
+                
                 if response?.statusCode != 200 || body == nil {
                     throw BTAPIClientError.configurationUnavailable
                 } else {

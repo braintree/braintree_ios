@@ -22,11 +22,13 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private var apiClient: BTAPIClient?
+    private weak var apiClient: BTAPIClient?
             
     // MARK: - Initializer
     
-    private init() { }
+    private init() {
+        print("Analytics: 👀 Analytics Service init")
+    }
     
     /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
     func setAPIClient(_ apiClient: BTAPIClient) {
@@ -62,9 +64,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func performEventRequest(with event: FPTIBatchData.Event) async {
         if let apiClient {
-            if event.eventName != "core:api-request-latency" {
-                print("Analytics: 🔮 \(apiClient.metadata.sessionID), \(event.eventName)")
-            }
+            print("Analytics: 🔮 \(apiClient.metadata.sessionID), \(event.eventName)")
             await events.append(event, sessionID: apiClient.metadata.sessionID)
         }
         
@@ -98,6 +98,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
+                print("Analytics: 👻 events not sent")
                 return
             }
         }
