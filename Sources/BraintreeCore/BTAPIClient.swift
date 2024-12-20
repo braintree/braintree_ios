@@ -25,7 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
+    weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
 
     // MARK: - Initializers
 

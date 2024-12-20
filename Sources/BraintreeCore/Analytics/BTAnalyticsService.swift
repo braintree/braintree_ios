@@ -22,7 +22,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private weak var apiClient: BTAPIClient?
+    private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
     
@@ -98,7 +98,6 @@ final class BTAnalyticsService: AnalyticsSendable {
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
-                print("Analytics: 👻 events not sent")
                 return
             }
         }

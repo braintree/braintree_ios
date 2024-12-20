@@ -464,6 +464,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                         path = mutationName
                 }
                 
+                if networkTimingDelegate == nil {
+                    print("Analytics: ⏬ networkTimingDelegate is nil")
+                } else {
+                    print("Analytics: ⏫ networkTimingDelegate is not nil")
+                }
+                
                 networkTimingDelegate?.fetchAPITiming(
                     path: path,
                     connectionStartTime: transaction.connectStartDate?.utcTimestampMilliseconds,
