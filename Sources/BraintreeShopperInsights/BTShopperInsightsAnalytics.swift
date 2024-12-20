@@ -4,9 +4,7 @@ enum BTShopperInsightsAnalytics {
     
     // MARK: - Merchant Triggered Events
       
-    static let payPalPresented = "shopper-insights:paypal-presented"
-    static let venmoPresented = "shopper-insights:venmo-presented"
-
+    static let buttonPresented = "shopper-insights:button-presented"
     static let buttonSelected = "shopper-insights:button-selected"
 
     // MARK: - SDK Triggered Events
