@@ -11,7 +11,6 @@
     * `experimentType`
     * `pageType`
     * `buttonOrder`
-  * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
