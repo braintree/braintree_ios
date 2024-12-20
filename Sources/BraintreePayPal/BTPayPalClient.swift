@@ -286,6 +286,29 @@ import BraintreeDataCollector
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
     }
 
+    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        if success {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchSucceeded,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID,
+                appSwitchURL: url
+            )
+            BTPayPalClient.payPalClient = self
+            appSwitchCompletion = completion
+        } else {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchFailed,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID,
+                appSwitchURL: url
+            )
+            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+        }
+    }
+
     // MARK: - App Switch Methods
 
     func handleReturnURL(_ url: URL) {
@@ -412,30 +435,7 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL) { success in
-            self.invokedOpenURLSuccessfully(success, completion: completion)
-        }
-    }
-
-    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        if success {
-            apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchSucceeded,
-                isVaultRequest: isVaultRequest,
-                linkType: linkType,
-                payPalContextID: payPalContextID,
-                shopperSessionID: payPalRequest?.shopperSessionID
-            )
-            BTPayPalClient.payPalClient = self
-            appSwitchCompletion = completion
-        } else {
-            apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchFailed,
-                isVaultRequest: isVaultRequest,
-                linkType: linkType,
-                payPalContextID: payPalContextID,
-                shopperSessionID: payPalRequest?.shopperSessionID
-            )
-            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
 
