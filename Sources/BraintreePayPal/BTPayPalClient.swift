@@ -290,20 +290,20 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                appSwitchURL: url,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: url
+                payPalContextID: payPalContextID
             )
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                appSwitchURL: url,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: url
+                payPalContextID: payPalContextID
             )
             notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
         }
