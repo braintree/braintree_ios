@@ -2,13 +2,8 @@ import Foundation
 
 public class BTPresentmentDetails {
 
-    /// The order or ranking in which payment buttons appear.
     var buttonOrder: BTButtonOrder
-
-    /// The experiment type that is sent to analytics to help improve the Shopper Insights feature experience.
     var experimentType: BTExperimentType
-
-    /// The type of page where the event occurred.
     var pageType: BTPageType
 
     /// Detailed information, including button order, experiment type, and page type about the payment button that
