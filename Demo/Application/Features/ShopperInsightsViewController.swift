@@ -140,7 +140,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendPayPalSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .payPal)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
@@ -157,7 +157,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     @objc func venmoButtonTapped(_ button: UIButton) {
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendVenmoSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .venmo)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false

@@ -11,6 +11,7 @@
     * `experimentType`
     * `pageType`
     * `buttonOrder`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal

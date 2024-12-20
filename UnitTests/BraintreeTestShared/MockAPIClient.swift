@@ -11,7 +11,7 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
-    public var postedAnalyticsEvents : [String] = []
+    public var postedAnalyticsEvents: [String] = []
     public var postedAppSwitchURL: [String: String?] = [:]
     public var postedButtonOrder: String? = nil
     public var postedButtonType: String? = nil
