@@ -17,4 +17,9 @@ extension BTConfiguration {
     var isBillingAgreementsEnabled: Bool {
         json?["paypal"]["billingAgreementsEnabled"].isTrue ?? false
     }
+    
+    /// Retrieves the display name associated with the PayPal account.
+    var displayName: String? {
+        json?["paypal"]["displayName"].asString()
+    }
 }
