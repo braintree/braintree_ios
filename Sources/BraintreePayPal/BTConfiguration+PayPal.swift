@@ -23,7 +23,7 @@ extension BTConfiguration {
         json?["paypal"]["displayName"].asString()
     }
     
-    /// Retrieves the currencyIsoCode
+    /// Retrieves the currencyIsoCode.
     var currencyIsoCode: String? {
         json?["paypal"]["currencyIsoCode"].asString()
     }
