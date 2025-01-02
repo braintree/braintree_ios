@@ -80,11 +80,11 @@ import BraintreeCore
     ///    - hermesPath: Required :nodoc: The hermes path or endpoint URI path. This property is not covered by semantic versioning.
     ///    - paymentType: Required :nodoc: The payment type, either checkout or vault. This property is not covered by semantic versioning.
     ///    - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
-    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address. 
+    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
     ///     - Note: Only applies when `shippingAddressOverride` is set.
     ///    - localeCode: Optional: A locale code to use for the transaction.
     ///    - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
-    ///    - landingPageType: Optional: Landing page type. Defaults to `.none`.  
+    ///    - landingPageType: Optional: Landing page type. Defaults to `.none`.
     ///     - Note: Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment.
     ///        `.login` specifies a PayPal account login page is used.
     ///        `.billing` specifies a non-PayPal account landing page is used.
