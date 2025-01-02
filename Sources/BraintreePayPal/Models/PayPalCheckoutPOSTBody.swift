@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The POST body for v1/paypal_hermes/create_payment_resource
-struct BTPayPalCheckoutPOSTBody: Encodable {
+struct PayPalCheckoutPOSTBody: Encodable {
     
     // MARK: - Private Properties
     
@@ -115,7 +115,7 @@ struct BTPayPalCheckoutPOSTBody: Encodable {
     }
 }
 
-extension BTPayPalCheckoutPOSTBody {
+extension PayPalCheckoutPOSTBody {
     
     struct BillingAgreemeentDescription: Encodable {
         
