@@ -163,6 +163,7 @@ extension BTPayPalCheckoutPOSTBody {
             }
         }
         
+        // swiftlint:disable nesting
         enum CodingKeys: String, CodingKey {
             case isShippingAddressRequired = "no_shipping"
             case displayName = "brand_name"
