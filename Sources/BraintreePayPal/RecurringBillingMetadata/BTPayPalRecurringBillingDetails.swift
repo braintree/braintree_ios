@@ -1,7 +1,7 @@
 import Foundation
 
 /// PayPal recurring billing product details.
-public struct BTPayPalRecurringBillingDetails {
+public struct BTPayPalRecurringBillingDetails: Encodable {
     
     // MARK: - Private Properties
     
@@ -52,6 +52,19 @@ public struct BTPayPalRecurringBillingDetails {
         self.shippingAmount = shippingAmount
         self.productAmount = productAmount
         self.taxAmount = taxAmount
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case billingCycles = "billing_cycles"
+        case currencyISOCode = "currency_iso_code"
+        case oneTimeFeeAmount = "one_time_fee_amount"
+        case productAmount = "product_price"
+        case productDescription = "product_description"
+        case productName = "name"
+        case productQuantity = "product_quantity"
+        case shippingAmount = "shipping_amount"
+        case taxAmount = "tax_amount"
+        case totalAmount = "total_amount"
     }
     
     // MARK: - Internal Methods
