@@ -45,6 +45,7 @@
 		4585707A2C34B1E1009CEF7A /* MockClientAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458570792C34B1E1009CEF7A /* MockClientAuthorization.swift */; };
 		4585707C2C34B7B5009CEF7A /* MockConfigurationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4585707B2C34B7B5009CEF7A /* MockConfigurationLoader.swift */; };
 		45E8CE4C2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */; };
+		45E8CE4E2D28611700D7A2DC /* PayPalVaultPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */; };
 		45EFC3972C2DBF32005E7F5B /* ConfigurationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */; };
 		460C0C220F594AE8EE205E57 /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A528809AD9007946B9 /* BTJSON.swift */; };
@@ -727,6 +728,7 @@
 		458570792C34B1E1009CEF7A /* MockClientAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockClientAuthorization.swift; sourceTree = "<group>"; };
 		4585707B2C34B7B5009CEF7A /* MockConfigurationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockConfigurationLoader.swift; sourceTree = "<group>"; };
 		45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalCheckoutPOSTBody.swift; sourceTree = "<group>"; };
+		45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalVaultPOSTBody.swift; sourceTree = "<group>"; };
 		45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationLoader.swift; sourceTree = "<group>"; };
 		463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1320,6 +1322,7 @@
 			isa = PBXGroup;
 			children = (
 				45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */,
+				45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3117,6 +3120,7 @@
 				3B7A261129C0CAA40087059D /* BTPayPalAnalytics.swift in Sources */,
 				BE8E5CEF294B6937001BF017 /* BTPayPalCheckoutRequest.swift in Sources */,
 				807D22F02C29A93A009FFEA4 /* BTPayPalBillingCycle.swift in Sources */,
+				45E8CE4E2D28611700D7A2DC /* PayPalVaultPOSTBody.swift in Sources */,
 				5754481E294A2A1D00DEB7B0 /* BTPayPalCreditFinancingAmount.swift in Sources */,
 				57D9436E2968A8080079EAB1 /* BTPayPalLocaleCode.swift in Sources */,
 				45E8CE4C2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift in Sources */,
