@@ -1,12 +1,12 @@
 import Foundation
 
 /// PayPal recurring billing cycle details.
-public struct BTPayPalBillingCycle {
+public struct BTPayPalBillingCycle: Encodable {
     
     // MARK: - Public Types
     
     /// The interval at which the payment is charged or billed.
-    public enum BillingInterval: String {
+    public enum BillingInterval: String, Encodable {
         case day = "DAY"
         case week = "WEEK"
         case month = "MONTH"
@@ -50,6 +50,16 @@ public struct BTPayPalBillingCycle {
         self.sequence = sequence
         self.startDate = startDate
         self.pricing = pricing
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case numberOfExecutions = "number_of_executions"
+        case isTrial = "trial"
+        case interval = "billing_frequency_unit"
+        case intervalCount = "billing_frequency"
+        case sequence
+        case startDate = "start_date"
+        case pricing = "pricing_scheme"
     }
     
     // MARK: - Internal Methods
