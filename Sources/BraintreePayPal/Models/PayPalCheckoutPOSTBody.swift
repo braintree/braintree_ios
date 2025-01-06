@@ -19,7 +19,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
     private var currencyCode: String?
-    private var lineItems: [[String: String]]?
+    private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
@@ -74,8 +74,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         }
         
         if let lineItems = payPalRequest.lineItems, !lineItems.isEmpty {
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            self.lineItems = lineItemsArray
+            self.lineItems = lineItems
         }
         
         if let userAuthenticationEmail = payPalRequest.userAuthenticationEmail, !userAuthenticationEmail.isEmpty {

@@ -7,6 +7,15 @@ import Foundation
 
     /// Credit
     case credit
+    
+    var stringValue: String {
+        switch self {
+        case .debit:
+            return "debit"
+        case .credit:
+            return "credit"
+        }
+    }
 }
 
 // swiftlint:disable identifier_name
@@ -61,7 +70,7 @@ import Foundation
 }
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
-@objcMembers public class BTPayPalLineItem: NSObject {
+@objcMembers public class BTPayPalLineItem: NSObject, Encodable {
 
     // MARK: - Public Properties
     
@@ -112,6 +121,39 @@ import Foundation
         self.unitAmount = unitAmount
         self.name = name
         self.kind = kind
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case imageURL = "image_url"
+        case itemDescription = "description"
+        case kind
+        case name
+        case productCode = "product_code"
+        case quantity
+        case unitAmount = "unit_amount"
+        case unitTaxAmount = "unit_tax_amount"
+        case upcCode = "upc_code"
+        case upcType = "upc_type"
+        case url
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(quantity, forKey: .quantity)
+        try container.encode(unitAmount, forKey: .unitAmount)
+        try container.encode(name, forKey: .name)
+        try container.encode(kind.stringValue, forKey: .kind)
+        
+        if let unitTaxAmount, !unitTaxAmount.isEmpty {
+            try container.encode(unitAmount, forKey: .unitTaxAmount)
+        }
+        
+        try container.encodeIfPresent(itemDescription, forKey: .itemDescription)
+        try container.encodeIfPresent(productCode, forKey: .productCode)
+        try container.encodeIfPresent(url?.absoluteString, forKey: .url)
+        try container.encodeIfPresent(imageURL?.absoluteString, forKey: .imageURL)
+        try container.encodeIfPresent(upcCode, forKey: .upcCode)
+        try container.encodeIfPresent(upcType.stringValue, forKey: .upcType)
     }
     
     // MARK: - Internal Methods
