@@ -16,8 +16,8 @@ struct PayPalVaultPOSTBody: Encodable {
     private let experienceProfile: ExperienceProfile
     
     private var billingAgreementDescription: String?
-    private var enablePayPalAppSwitch = false
-    private var lineItems: [[String: String]]?
+    private var enablePayPalAppSwitch: Bool?
+    private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
     private var offerCredit = false
     private var osType: String?
@@ -46,8 +46,7 @@ struct PayPalVaultPOSTBody: Encodable {
         }
         
         if let lineItems = payPalRequest.lineItems, !lineItems.isEmpty {
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            self.lineItems = lineItemsArray
+            self.lineItems = lineItems
         }
         
         if let userAuthenticationEmail = payPalRequest.userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
