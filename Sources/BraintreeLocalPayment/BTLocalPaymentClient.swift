@@ -121,34 +121,12 @@ import BraintreeDataCollector
             return
         }
 
-        var paypalAccount: [String: Any] = [
-            "response": ["webURL": url.absoluteString],
-            "response_type": "web",
-            "options": ["validate": false],
-            "intent": "sale"
-        ]
-
-        if let correlationID = request?.correlationID {
-            paypalAccount["correlation_id"] = correlationID
-        }
-
-        var requestParameters: [String: Any] = [:]
-
-        if let merchantAccountID = request?.merchantAccountID {
-            requestParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        requestParameters["paypal_account"] = paypalAccount
-
-        let metadataParameters: [String: String] = [
-            "source": apiClient.metadata.source.stringValue,
-            "integration": apiClient.metadata.integration.stringValue,
-            "sessionId": apiClient.metadata.sessionID
-        ]
-
-        requestParameters["_meta"] = metadataParameters
-
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, _, error in
+        let localPaymentPayPalAccountRequest = LocalPaymentPayPalAccountsPOSTBody(
+            request: request,
+            clientMetadata: apiClient.metadata,
+            url: url
+        )
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: localPaymentPayPalAccountRequest) { [weak self] body, _, error in
             guard let self else {
                 NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                 return
