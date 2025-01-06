@@ -356,13 +356,15 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
+            
+            guard let parameters = self.encodedPostBody(fromRequest: request, configuration: configuration) else {
+                self.notifyFailure(with: BTPayPalError.failedToCreateEncodable, completion: completion)
+                return
+            }
+            
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(
-                    with: configuration,
-                    universalLink: self.universalLink,
-                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
-                )
+                parameters: parameters
             ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -399,6 +401,21 @@ import BraintreeDataCollector
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
             }
+        }
+    }
+    
+    private func encodedPostBody(fromRequest payPalRequest: BTPayPalRequest, configuration: BTConfiguration) -> Encodable? {
+        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest {
+            return PayPalCheckoutPOSTBody(payPalRequest: checkoutRequest, configuration: configuration)
+        } else if let vaultRequest = payPalRequest as? BTPayPalVaultRequest {
+            return PayPalVaultPOSTBody(
+                payPalRequest: vaultRequest,
+                configuration: configuration,
+                isPayPalAppInstalled: application.isPayPalAppInstalled(),
+                universalLink: universalLink
+            )
+        } else {
+            return nil
         }
     }
 
