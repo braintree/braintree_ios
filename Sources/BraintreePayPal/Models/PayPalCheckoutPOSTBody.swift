@@ -15,7 +15,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let userPhoneNumber: BTPayPalPhoneNumber?
     private let returnURL: String
     private let cancelURL: String
-    private let experienceProfile: ExperienceProfile
+    private let experienceProfile: PayPalExperienceProfile
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
     private var currencyCode: String?
@@ -84,7 +84,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
-        self.experienceProfile = ExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
+        self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -126,50 +126,6 @@ extension PayPalCheckoutPOSTBody {
         
         init(description: String) {
             self.description = description
-        }
-    }
-    
-    struct ExperienceProfile: Encodable {
-        
-        // MARK: - Private Properties
-        
-        private let displayName: String?
-        private let isShippingAddressRequired: Bool
-        private let shippingAddressOverride: Bool
-        
-        private var landingPageType: String?
-        private var localeCode: String?
-        private var userAction: String?
-        
-        // MARK: - Initializer
-        
-        init(payPalRequest: BTPayPalCheckoutRequest, configuration: BTConfiguration) {
-            self.displayName = payPalRequest.displayName != nil ? payPalRequest.displayName : configuration.displayName
-            self.isShippingAddressRequired = !payPalRequest.isShippingAddressRequired
-            
-            if let landingPageType = payPalRequest.landingPageType?.stringValue {
-                self.landingPageType = landingPageType
-            }
-            
-            if let localeCode = payPalRequest.localeCode?.stringValue {
-                self.localeCode = localeCode
-            }
-            
-            self.shippingAddressOverride = payPalRequest.shippingAddressOverride != nil ? !payPalRequest.isShippingAddressEditable : false
-            
-            if payPalRequest.userAction != .none {
-                self.userAction = payPalRequest.userAction.stringValue
-            }
-        }
-        
-        // swiftlint:disable nesting
-        enum CodingKeys: String, CodingKey {
-            case isShippingAddressRequired = "no_shipping"
-            case displayName = "brand_name"
-            case landingPageType = "landing_page_type"
-            case localeCode = "locale_code"
-            case shippingAddressOverride = "address_override"
-            case userAction = "user_action"
         }
     }
 }
