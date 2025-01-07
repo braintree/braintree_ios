@@ -164,7 +164,7 @@ import BraintreeCore
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        var baseParameters = super.parameters(with: configuration)
+        var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,
             "amount": amount,
