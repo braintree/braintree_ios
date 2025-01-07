@@ -313,7 +313,6 @@ import Foundation
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         pageType: String? = nil,
-        paymentMethodsDisplayed: String? = nil,
         payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
@@ -330,7 +329,6 @@ import Foundation
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                paymentMethodsDisplayed: paymentMethodsDisplayed,
                 payPalContextID: payPalContextID,
                 shopperSessionID: shopperSessionID
             )
