@@ -9,8 +9,8 @@ struct LocalPaymentPayPalAccountsPOSTBody: Encodable {
     
     // MARK: - Private Properties
     
-    private let paypalAccount: LocalPaymentPayPalAccount
-    private let meta: LocalPaymentPayPalAccountMetadata
+    private let payPalAccount: LocalPaymentPayPalAccount
+    private let payPalAccountMetadata: LocalPaymentPayPalAccountMetadata
     
     private var merchantAccountID: String?
     
@@ -19,8 +19,8 @@ struct LocalPaymentPayPalAccountsPOSTBody: Encodable {
         clientMetadata: BTClientMetadata,
         url: URL
     ) {
-        self.meta = LocalPaymentPayPalAccountMetadata(clientMetadata: clientMetadata)
-        self.paypalAccount = LocalPaymentPayPalAccount(request: request, url: url)
+        self.payPalAccount = LocalPaymentPayPalAccount(request: request, url: url)
+        self.payPalAccountMetadata = LocalPaymentPayPalAccountMetadata(clientMetadata: clientMetadata)
         
         if let merchantAccountID = request?.merchantAccountID {
             self.merchantAccountID = merchantAccountID
@@ -29,8 +29,8 @@ struct LocalPaymentPayPalAccountsPOSTBody: Encodable {
     
     enum CodingKeys: String, CodingKey {
         case merchantAccountID = "merchant_account_id"
-        case meta = "_meta"
-        case paypalAccount = "paypal_account"
+        case payPalAccount = "paypal_account"
+        case payPalAccountMetadata = "_meta"
     }
 }
 
