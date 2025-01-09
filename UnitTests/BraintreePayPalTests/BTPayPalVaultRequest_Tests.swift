@@ -51,7 +51,10 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
@@ -84,8 +87,11 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true
         )
-
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, isPayPalAppInstalled: true, universalLink: URL(string: "some-url")!).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
@@ -125,7 +131,11 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, universalLink: URL(string: "some-url")!).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
         
         guard let planMetadata = parameters["plan_metadata"] as? [String: Any] else { XCTFail(); return }

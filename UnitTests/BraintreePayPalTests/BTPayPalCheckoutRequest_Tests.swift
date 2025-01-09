@@ -100,7 +100,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["intent"] as? String, "sale")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -137,7 +140,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_returnsMinimumParams() {
         let request = BTPayPalCheckoutRequest(amount: "1")
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["intent"] as? String, "authorize")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -153,7 +159,11 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let parameters = request.parameters(with: configuration)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["currency_iso_code"] as? String, "currency-code")
     }
@@ -162,7 +172,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.billingAgreementDescription = "description"
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertNil(parameters["request_billing_agreement"])
         XCTAssertNil(parameters["billing_agreement_details"])
@@ -172,7 +185,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAuthenticationEmail = ""
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertNil(parameters["payer_email"])
     }
