@@ -68,11 +68,6 @@ protocol PayPalRequest {
     
     static var callbackURLHostAndPath: String { get }
     
-    func parameters(
-        with configuration: BTConfiguration,
-        universalLink: URL?,
-        isPayPalAppInstalled: Bool
-    ) -> [String: Any]
 }
 
 extension PayPalRequest {
@@ -160,53 +155,4 @@ extension PayPalRequest {
 
     // MARK: Internal Methods
 
-    func parameters(
-        with configuration: BTConfiguration,
-        universalLink: URL? = nil,
-        isPayPalAppInstalled: Bool = false
-    ) -> [String: Any] {
-        var experienceProfile: [String: Any] = [:]
-
-        experienceProfile["no_shipping"] = !isShippingAddressRequired
-        experienceProfile["brand_name"] = displayName != nil ? displayName : configuration.json?["paypal"]["displayName"].asString()
-
-        if landingPageType?.stringValue != nil {
-            experienceProfile["landing_page_type"] = landingPageType?.stringValue
-        }
-
-        if localeCode?.stringValue != nil {
-            experienceProfile["locale_code"] = localeCode?.stringValue
-        }
-
-        experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
-
-        var parameters: [String: Any] = [:]
-
-        if merchantAccountID != nil {
-            parameters["merchant_account_id"] = merchantAccountID
-        }
-
-        if riskCorrelationID != nil {
-            parameters["correlation_id"] = riskCorrelationID
-        }
-        
-        if let lineItems, !lineItems.isEmpty {
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            parameters["line_items"] = lineItemsArray
-        }
-        
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            parameters["payer_email"] = userAuthenticationEmail
-        }
-        
-        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
-            parameters["phone_number"] = userPhoneNumberDict
-        }
-
-        parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
-        parameters["experience_profile"] = experienceProfile
-
-        return parameters
-    }
 }
