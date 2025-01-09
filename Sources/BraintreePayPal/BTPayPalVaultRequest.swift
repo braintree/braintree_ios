@@ -106,6 +106,7 @@ import BraintreeCore
         self.userPhoneNumber = userPhoneNumber
     }
 
+    // swiftlint:disable cyclomatic_complexity
     func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,

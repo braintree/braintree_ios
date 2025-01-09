@@ -154,6 +154,7 @@ import BraintreeCore
 
     // MARK: Internal Methods
 
+    // swiftlint:disable cyclomatic_complexity
     func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
