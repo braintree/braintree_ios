@@ -44,9 +44,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 13. Missing PayPal Request
     case missingPayPalRequest
-    
-    /// 14. Unable to create Encodable
-    case failedToCreateEncodable
 
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
@@ -82,8 +79,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 12
         case .missingPayPalRequest:
             return 13
-        case .failedToCreateEncodable:
-            return 14
         }
     }
 
@@ -119,8 +114,6 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Missing BA Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
-        case .failedToCreateEncodable:
-            return "The request was not a Checkout or Vault request."
         }
     }
 
