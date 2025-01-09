@@ -48,9 +48,43 @@ import BraintreeCore
     }
 }
 
+protocol PayPalRequest {
+    var hermesPath: String { get }
+    var paymentType: BTPayPalPaymentType { get }
+    var billingAgreementDescription: String? { get }
+    var displayName: String? { get }
+    var isShippingAddressEditable: Bool { get }
+    var isShippingAddressRequired: Bool { get }
+    var landingPageType: BTPayPalRequestLandingPageType? { get }
+    var lineItems: [BTPayPalLineItem]? { get }
+    var localeCode: BTPayPalLocaleCode? { get }
+    var merchantAccountID: String? { get }
+    var riskCorrelationID: String? { get }
+    var shippingAddressOverride: BTPostalAddress? { get }
+    var userAuthenticationEmail: String? { get }
+    var userPhoneNumber: BTPayPalPhoneNumber? { get }
+    
+    // MARK: - Static Properties
+    
+    static var callbackURLHostAndPath: String { get }
+    
+    func parameters(
+        with configuration: BTConfiguration,
+        universalLink: URL?,
+        isPayPalAppInstalled: Bool
+    ) -> [String: Any]
+}
+
+extension PayPalRequest {
+    
+    static var callbackURLHostAndPath: String {
+        "onetouch/v1/"
+    }
+}
+
 /// Base options for PayPal Checkout and PayPal Vault flows.
 /// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers open class BTPayPalRequest: NSObject {
+@objcMembers open class BTPayPalRequest: NSObject, PayPalRequest {
 
     // MARK: - Internal Properties
     
@@ -68,10 +102,6 @@ import BraintreeCore
     var riskCorrelationID: String?
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
-    
-    // MARK: - Static Properties
-    
-    static let callbackURLHostAndPath: String = "onetouch/v1/"
 
     // MARK: - Initializer
 

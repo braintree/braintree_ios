@@ -144,12 +144,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             amount: "5.00",
             intent: newPayPalCheckoutToggle.isOn ? .sale : .authorize,
             offerPayLater: payLaterToggle.isOn,
+            lineItems: [lineItem],
             userAuthenticationEmail: emailTextField.text,
             userPhoneNumber: BTPayPalPhoneNumber(
                 countryCode: countryCodeTextField.text ?? "",
                 nationalNumber: nationalNumberTextField.text ?? ""
-            ),
-            lineItems: [lineItem]
+            )
         )
 
         payPalClient.tokenize(request) { nonce, error in
