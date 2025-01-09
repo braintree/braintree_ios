@@ -54,8 +54,6 @@ struct FPTIBatchData: Codable {
         let merchantExperiment: String?
         /// The type of page where the payment button is displayed or where an event occured.
         let pageType: String?
-        /// The list of payment methods displayed, in the same order in which they are rendered on the page, associated with the `BTShopperInsights` flow.
-        let paymentMethodsDisplayed: String?
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let payPalContextID: String?
@@ -84,7 +82,6 @@ struct FPTIBatchData: Codable {
             linkType: String? = nil,
             merchantExperiment: String? = nil,
             pageType: String? = nil,
-            paymentMethodsDisplayed: String? = nil,
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
@@ -104,7 +101,6 @@ struct FPTIBatchData: Codable {
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
             self.pageType = pageType
-            self.paymentMethodsDisplayed = paymentMethodsDisplayed
             self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
@@ -124,7 +120,6 @@ struct FPTIBatchData: Codable {
             case linkType = "link_type"
             case merchantExperiment = "experiment"
             case pageType = "page_type"
-            case paymentMethodsDisplayed = "payment_methods_displayed"
             case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
