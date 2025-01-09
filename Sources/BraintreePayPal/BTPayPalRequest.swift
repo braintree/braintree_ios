@@ -65,4 +65,6 @@ protocol PayPalRequest {
     var userPhoneNumber: BTPayPalPhoneNumber? { get }
 }
 
+enum PayPalRequestConstants {
+    static let callbackURLHostAndPath = "onetouch/v1/"
 }

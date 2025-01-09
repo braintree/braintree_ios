@@ -54,8 +54,8 @@ struct PayPalVaultPOSTBody: Encodable {
         }
         
         self.userPhoneNumber = payPalRequest.userPhoneNumber
-        self.returnURL = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
-        self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
+        self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
+        self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
         self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
         
         if let universalLink, payPalRequest.enablePayPalAppSwitch, isPayPalAppInstalled {
