@@ -343,7 +343,7 @@ import BraintreeDataCollector
                 return
             }
 
-            guard let configuration, let json = configuration.json else {
+            guard let configuration else {
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
@@ -357,7 +357,7 @@ import BraintreeDataCollector
 
             self.payPalRequest = request
             
-            guard let parameters = self.encodedPostBody(fromRequest: request, configuration: configuration) else {
+            guard let parameters = self.encodedPostBody(from: request, configuration: configuration) else {
                 self.notifyFailure(with: BTPayPalError.failedToCreateEncodable, completion: completion)
                 return
             }
@@ -404,18 +404,20 @@ import BraintreeDataCollector
         }
     }
     
-    private func encodedPostBody(fromRequest payPalRequest: BTPayPalRequest, configuration: BTConfiguration) -> Encodable? {
-        if let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest {
+    private func encodedPostBody(from payPalRequest: PayPalRequest, configuration: BTConfiguration) -> Encodable? {
+        switch payPalRequest.paymentType {
+        case .checkout:
+            guard let checkoutRequest = payPalRequest as? BTPayPalCheckoutRequest else { return nil }
             return PayPalCheckoutPOSTBody(payPalRequest: checkoutRequest, configuration: configuration)
-        } else if let vaultRequest = payPalRequest as? BTPayPalVaultRequest {
+            
+        case .vault:
+            guard let vaultRequest = payPalRequest as? BTPayPalVaultRequest else { return nil }
             return PayPalVaultPOSTBody(
                 payPalRequest: vaultRequest,
                 configuration: configuration,
                 isPayPalAppInstalled: application.isPayPalAppInstalled(),
                 universalLink: universalLink
             )
-        } else {
-            return nil
         }
     }
 

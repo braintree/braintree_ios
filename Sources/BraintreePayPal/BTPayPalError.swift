@@ -120,7 +120,7 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
         case .failedToCreateEncodable:
-            return "Unable to create Encodable object"
+            return "The request was not a Checkout or Vault request."
         }
     }
 
