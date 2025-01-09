@@ -151,4 +151,12 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
+    
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil
+    ) -> Encodable {
+        PayPalCheckoutPOSTBody(payPalRequest: self, configuration: configuration)
+    }
 }

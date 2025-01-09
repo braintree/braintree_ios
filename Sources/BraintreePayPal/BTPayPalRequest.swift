@@ -63,6 +63,8 @@ protocol PayPalRequest {
     var shippingAddressOverride: BTPostalAddress? { get }
     var userAuthenticationEmail: String? { get }
     var userPhoneNumber: BTPayPalPhoneNumber? { get }
+    
+    func encodedPostBodyWith(configuration: BTConfiguration, isPayPalAppInstalled: Bool, universalLink: URL?) -> Encodable
 }
 
 enum PayPalRequestConstants {
