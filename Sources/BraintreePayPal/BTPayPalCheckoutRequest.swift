@@ -165,23 +165,23 @@ import BraintreeCore
         experienceProfile["no_shipping"] = !isShippingAddressRequired
         experienceProfile["brand_name"] = displayName != nil ? displayName : configuration.json?["paypal"]["displayName"].asString()
 
-        if landingPageType?.stringValue != nil {
-            experienceProfile["landing_page_type"] = landingPageType?.stringValue
+        if let landingPageType = landingPageType?.stringValue {
+            experienceProfile["landing_page_type"] = landingPageType
         }
 
-        if localeCode?.stringValue != nil {
-            experienceProfile["locale_code"] = localeCode?.stringValue
+        if let localeCode = localeCode?.stringValue {
+            experienceProfile["locale_code"] = localeCode
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
 
         var baseParameters: [String: Any] = [:]
 
-        if merchantAccountID != nil {
+        if let merchantAccountID {
             baseParameters["merchant_account_id"] = merchantAccountID
         }
 
-        if riskCorrelationID != nil {
+        if let riskCorrelationID {
             baseParameters["correlation_id"] = riskCorrelationID
         }
         
@@ -210,7 +210,7 @@ import BraintreeCore
 
         let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
 
-        if currencyCode != nil {
+        if let currencyCode {
             checkoutParameters["currency_iso_code"] = currencyCode
         }
 
@@ -219,7 +219,7 @@ import BraintreeCore
             baseParameters["experience_profile"] = experienceProfile
         }
 
-        if requestBillingAgreement != false {
+        if requestBillingAgreement {
             checkoutParameters["request_billing_agreement"] = requestBillingAgreement
 
             if billingAgreementDescription != nil {
@@ -227,14 +227,14 @@ import BraintreeCore
             }
         }
 
-        if shippingAddressOverride != nil {
-            checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
-            checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
-            checkoutParameters["city"] = shippingAddressOverride?.locality
-            checkoutParameters["state"] = shippingAddressOverride?.region
-            checkoutParameters["postal_code"] = shippingAddressOverride?.postalCode
-            checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
-            checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
+        if let shippingAddressOverride {
+            checkoutParameters["line1"] = shippingAddressOverride.streetAddress
+            checkoutParameters["line2"] = shippingAddressOverride.extendedAddress
+            checkoutParameters["city"] = shippingAddressOverride.locality
+            checkoutParameters["state"] = shippingAddressOverride.region
+            checkoutParameters["postal_code"] = shippingAddressOverride.postalCode
+            checkoutParameters["country_code"] = shippingAddressOverride.countryCodeAlpha2
+            checkoutParameters["recipient_name"] = shippingAddressOverride.recipientName
         }
 
         return baseParameters.merging(checkoutParameters) { $1 }
