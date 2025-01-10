@@ -60,8 +60,8 @@ import BraintreeCore
     
     // MARK: - Internal Properties
     
-    let hermesPath: String
-    let paymentType: BTPayPalPaymentType
+    let hermesPath = "v1/paypal_hermes/create_payment_resource"
+    let paymentType: BTPayPalPaymentType = .checkout
     
     var amount: String
     var intent: BTPayPalRequestIntent
@@ -130,8 +130,6 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
-        self.hermesPath = "v1/paypal_hermes/create_payment_resource"
-        self.paymentType = .checkout
         self.amount = amount
         self.intent = intent
         self.userAction = userAction
