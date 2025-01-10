@@ -250,8 +250,12 @@ import BraintreeCore
                     request: request,
                     cardinalSession: cardinalSession
                 ) { lookupParameters in
-                    guard let dfReferenceID = lookupParameters?["dfReferenceId"] else {
-                        completion(BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]))
+                    guard let dfReferenceID = lookupParameters?["dfReferenceId"], !dfReferenceID.isEmpty else {
+                        completion(
+                            BTThreeDSecureError.failedLookup(
+                                [NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]
+                            )
+                        )
                         return
                     }
 
