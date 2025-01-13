@@ -61,35 +61,4 @@ public struct BTPayPalBillingCycle: Encodable {
         case startDate = "start_date"
         case pricing = "pricing_scheme"
     }
-    
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "number_of_executions": numberOfExecutions,
-            "trial": isTrial
-        ]
-
-        if let interval {
-            parameters["billing_frequency_unit"] = interval.rawValue
-        }
-
-        if let intervalCount {
-            parameters["billing_frequency"] = intervalCount
-        }
-
-        if let sequence {
-            parameters["sequence"] = sequence
-        }
-        
-        if let startDate {
-            parameters["start_date"] = startDate
-        }
-        
-        if let pricing {
-            parameters["pricing_scheme"] = pricing.parameters()
-        }
-        
-        return parameters
-    }
 }

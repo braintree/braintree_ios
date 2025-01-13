@@ -36,22 +36,4 @@ public struct BTPayPalBillingPricing: Encodable {
         case pricingModel = "pricing_model"
         case reloadThresholdAmount = "reload_threshold_amount"
     }
-    
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "pricing_model": pricingModel.rawValue
-        ]
-
-        if let amount {
-            parameters["price"] = amount
-        }
-
-        if let reloadThresholdAmount {
-            parameters["reload_threshold_amount"] = reloadThresholdAmount
-        }
-        
-        return parameters
-    }
 }
