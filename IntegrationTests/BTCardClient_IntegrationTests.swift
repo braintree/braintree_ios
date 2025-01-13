@@ -131,7 +131,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 5)
     }
 
     func testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
