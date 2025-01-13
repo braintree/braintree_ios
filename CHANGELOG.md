@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 
+* BraintreePayPal
+  * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
+
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
