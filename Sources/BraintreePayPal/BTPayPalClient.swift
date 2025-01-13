@@ -356,12 +356,13 @@ import BraintreeDataCollector
             }
 
             self.payPalRequest = request
-            
-            let parameters = PayPalCheckoutPOSTBody(payPalRequest: request as! BTPayPalCheckoutRequest, configuration: configuration)
-            
             self.apiClient.post(
                 request.hermesPath,
-                parameters: parameters
+                parameters: request.parameters(
+                    with: configuration,
+                    universalLink: self.universalLink,
+                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
+                )
             ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -401,28 +402,6 @@ import BraintreeDataCollector
         }
     }
 
-    func printJSON(from dictionary: [String: Any]) {
-        if let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            print(jsonString)
-        } else {
-            print("Failed to convert dictionary to JSON.")
-        }
-    }
-    
-    func printJSONEncodable(from model: Encodable) {
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            let jsonData = try encoder.encode(model)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print(jsonString)
-            }
-        } catch {
-            print("Error encoding JSON: \(error)")
-        }
-    }
-    
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
         baToken: String,
