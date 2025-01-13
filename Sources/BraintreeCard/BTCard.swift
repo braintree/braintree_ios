@@ -125,7 +125,7 @@ import Foundation
             cardHolderName: cardholderName
         )
         
-        if firstName == nil {
+        if firstName != nil {
             cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
                 firstName: firstName,
                 lastName: lastName,
