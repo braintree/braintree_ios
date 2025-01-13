@@ -66,44 +66,4 @@ public struct BTPayPalRecurringBillingDetails: Encodable {
         case taxAmount = "tax_amount"
         case totalAmount = "total_amount"
     }
-    
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "total_amount": totalAmount,
-            "currency_iso_code": currencyISOCode,
-            "billing_cycles": billingCycles.map { $0.parameters() }
-        ]
-        
-        if let productName {
-            parameters["name"] = productName
-        }
-        
-        if let productDescription {
-            parameters["product_description"] = productDescription
-        }
-        
-        if let productQuantity {
-            parameters["product_quantity"] = productQuantity
-        }
-        
-        if let oneTimeFeeAmount {
-            parameters["one_time_fee_amount"] = oneTimeFeeAmount
-        }
-        
-        if let shippingAmount {
-            parameters["shipping_amount"] = shippingAmount
-        }
-        
-        if let productAmount {
-            parameters["product_price"] = productAmount
-        }
-        
-        if let taxAmount {
-            parameters["tax_amount"] = taxAmount
-        }
-        
-        return parameters
-    }
 }
