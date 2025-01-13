@@ -1,7 +1,7 @@
 import Foundation
 
 /// Use this option to specify whether a line item is a debit (sale) or credit (refund) to the customer.
-@objc public enum BTPayPalLineItemKind: Int {
+@objc public enum BTPayPalLineItemKind: Int, Encodable {
     /// Debit
     case debit
 
@@ -16,11 +16,16 @@ import Foundation
             return "credit"
         }
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
+    }
 }
 
 // swiftlint:disable identifier_name
 /// Use this option to specify  the UPC type of the line item.
-@objc public enum BTPayPalLineItemUPCType: Int {
+@objc public enum BTPayPalLineItemUPCType: Int, Encodable {
 
     /// Default
     case none
@@ -66,6 +71,11 @@ import Foundation
         case .UPC_5:
             return "UPC-5"
         }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
     }
 }
 
@@ -135,25 +145,6 @@ import Foundation
         case upcCode = "upc_code"
         case upcType = "upc_type"
         case url
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(quantity, forKey: .quantity)
-        try container.encode(unitAmount, forKey: .unitAmount)
-        try container.encode(name, forKey: .name)
-        try container.encode(kind.stringValue, forKey: .kind)
-        
-        if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            try container.encode(unitAmount, forKey: .unitTaxAmount)
-        }
-        
-        try container.encodeIfPresent(itemDescription, forKey: .itemDescription)
-        try container.encodeIfPresent(productCode, forKey: .productCode)
-        try container.encodeIfPresent(url?.absoluteString, forKey: .url)
-        try container.encodeIfPresent(imageURL?.absoluteString, forKey: .imageURL)
-        try container.encodeIfPresent(upcCode, forKey: .upcCode)
-        try container.encodeIfPresent(upcType.stringValue, forKey: .upcType)
     }
     
     // MARK: - Internal Methods
