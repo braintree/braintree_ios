@@ -9,8 +9,8 @@ import BraintreeCore
 
     // MARK: - Internal Properties
     
-    let hermesPath: String
-    let paymentType: BTPayPalPaymentType
+    let hermesPath = "v1/paypal_hermes/setup_billing_agreement"
+    let paymentType: BTPayPalPaymentType = .vault
     
     var offerCredit: Bool
     var enablePayPalAppSwitch: Bool = false
@@ -87,8 +87,6 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
-        self.hermesPath = "v1/paypal_hermes/setup_billing_agreement"
-        self.paymentType = .vault
         self.offerCredit = offerCredit
         self.billingAgreementDescription = billingAgreementDescription
         self.displayName = displayName
@@ -105,6 +103,8 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
+    
+    // MARK: Internal Methods
     
     func encodedPostBodyWith(
         configuration: BTConfiguration,
