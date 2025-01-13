@@ -48,7 +48,7 @@ import BraintreeCore
     }
 }
 
-protocol PayPalRequest {
+protocol BTPayPalRequest {
     var hermesPath: String { get }
     var paymentType: BTPayPalPaymentType { get }
     var billingAgreementDescription: String? { get }

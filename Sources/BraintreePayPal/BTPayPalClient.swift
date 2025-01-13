@@ -29,7 +29,7 @@ import BraintreeDataCollector
     var clientMetadataID: String?
     
     /// Exposed for testing the intent associated with this request
-    var payPalRequest: PayPalRequest?
+    var payPalRequest: BTPayPalRequest?
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
@@ -331,7 +331,7 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func tokenize(
-        request: PayPalRequest,
+        request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink

@@ -56,7 +56,7 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers public class BTPayPalCheckoutRequest: NSObject, PayPalRequest {
+@objcMembers public class BTPayPalCheckoutRequest: NSObject, BTPayPalRequest {
     
     // MARK: - Internal Properties
     
