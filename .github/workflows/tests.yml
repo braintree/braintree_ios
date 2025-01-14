@@ -13,8 +13,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.0.app
+      - name: Use Xcode 16.2.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
@@ -30,8 +30,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.0.app
+      - name: Use Xcode 16.2.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run UI Tests
@@ -45,8 +45,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.0.app
+      - name: Use Xcode 16.2.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
