@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeThreeDSecure
+  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
+
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
