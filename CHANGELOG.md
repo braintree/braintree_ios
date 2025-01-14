@@ -1,8 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased 
+## unreleased
 * BraintreePayPal
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
+* BraintreeThreeDSecure
+  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
