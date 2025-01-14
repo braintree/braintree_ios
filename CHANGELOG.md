@@ -2,7 +2,10 @@
 
 ## unreleased
 * BraintreePayPal
+  * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
   * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
+* BraintreeThreeDSecure
+  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
 * BraintreeShopperInsights (BETA)
   * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
   * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
