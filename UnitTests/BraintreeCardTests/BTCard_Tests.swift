@@ -200,33 +200,33 @@ class BTCard_Tests: XCTestCase {
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
-//        let card = BTCard()
-//        card.number = "7111111111111111"
-//        card.authenticationInsightRequested = true
-//        card.merchantAccountID = nil
-//        
-//        let params = card.graphQLParameters()
-//        
-//        XCTAssertEqual(params.variables.input.creditCard.number, "7111111111111111")
-//        XCTAssertEqual(params.operationName, "TokenizeCreditCard")
-//        XCTAssertNotNil(params.query)
-//        XCTAssertEqual(params.variables.input.options.validate,  false)
-//        
-//        XCTAssertNotNil(params.variables.input.authenticationInsightInput)
+        let card = BTCard()
+        card.number = "7111111111111111"
+        card.authenticationInsightRequested = true
+        card.merchantAccountID = nil
         
-//        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-//            "operationName": "TokenizeCreditCard",
-//            "query": graphQLQueryWithAuthInsightRequested,
-//            "variables": [
-//                "input": [
-//                    "creditCard": [
-//                        "number": "4111111111111111",
-//                    ],
-//                    "options": [ "validate": false ],
-//                ],
-//                "authenticationInsightInput": NSDictionary()
-//            ]
-//        ] as [String: Any] as NSObject)
+        let params = card.graphQLParameters()
+        printEncodableObject(params)
+        
+        XCTAssertEqual(params.variables.input.creditCard.number, "7111111111111111")
+        XCTAssertEqual(params.operationName, "TokenizeCreditCard")
+        XCTAssertNotNil(params.query)
+        XCTAssertEqual(params.variables.input.options.validate,  false)
+        
+        XCTAssertNotNil(params.variables.input.authenticationInsightInput)
+    }
+    
+    func printEncodableObject<T: Encodable>(_ object: T) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted // Makes the JSON easier to read
+        do {
+            let jsonData = try encoder.encode(object)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Encoded JSON:\n\(jsonString)")
+            }
+        } catch {
+            print("Failed to encode object: \(error)")
+        }
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {

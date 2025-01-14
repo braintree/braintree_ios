@@ -140,6 +140,10 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
             
                 var merchantAccountId: String?
                 
+                init() {
+                    self.merchantAccountId = nil
+                }
+                
                 init(merchantAccountId: String) {
                     self.merchantAccountId = merchantAccountId
                 }

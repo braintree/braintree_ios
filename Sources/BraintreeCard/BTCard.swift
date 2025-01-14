@@ -162,6 +162,13 @@ import Foundation
                     )
                 
                 input.authenticationInsightInput = merchantAccountID
+            } else {
+                let merchantAccountID = BTCreditCardGraphQLBody
+                    .Variables
+                    .Input
+                    .AuthenticationInsightInput()
+                
+                input.authenticationInsightInput = merchantAccountID
             }
         }
         
