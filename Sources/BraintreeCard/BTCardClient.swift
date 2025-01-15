@@ -136,11 +136,11 @@ import BraintreeCore
         return false
     }
 
-    private func clientAPIParameters(for card: BTCard) -> CreditCardBody {
+    private func clientAPIParameters(for card: BTCard) -> CreditCardPOSTBody {
         
-        var creditCardBody = CreditCardBody()
+        var creditCardBody = CreditCardPOSTBody()
         
-        var meta = CreditCardBody.Meta(
+        var meta = CreditCardPOSTBody.Meta(
             integration: apiClient.metadata.integration.stringValue,
             source: apiClient.metadata.source.stringValue,
             sessionId: apiClient.metadata.sessionID

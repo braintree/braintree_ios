@@ -1,7 +1,7 @@
 // swiftlint:disable all
 import Foundation
 
-struct CreditCardBody: Encodable {
+struct CreditCardPOSTBody: Encodable {
     var authenticationInsight: Bool?
     var merchantAccountId: String?
     var meta: Meta?

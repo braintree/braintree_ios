@@ -80,17 +80,17 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters() -> CreditCardBody.CreditCard {
+    func parameters() -> CreditCardPOSTBody.CreditCard {
         var cardBody = creditCardParams()
         
         cardBody.billingAddress = billingAddress()
-        cardBody.options = CreditCardBody.CreditCard.Options(validate: shouldValidate)
+        cardBody.options = CreditCardPOSTBody.CreditCard.Options(validate: shouldValidate)
         
         return cardBody
     }
 
-    private func creditCardParams() -> CreditCardBody.CreditCard {
-        CreditCardBody.CreditCard(
+    private func creditCardParams() -> CreditCardPOSTBody.CreditCard {
+        CreditCardPOSTBody.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
             cvv: cvv,
@@ -99,8 +99,8 @@ import Foundation
         )
     }
 
-    private func billingAddress() -> CreditCardBody.CreditCard.BillingAddress {
-        CreditCardBody.CreditCard.BillingAddress(
+    private func billingAddress() -> CreditCardPOSTBody.CreditCard.BillingAddress {
+        CreditCardPOSTBody.CreditCard.BillingAddress(
             firstName: firstName,
             lastName: lastName,
             company: company,
