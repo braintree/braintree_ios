@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 /// The card tokenization request represents raw credit or debit card data provided by the customer.
 /// Its main purpose is to serve as the input for tokenization.
 @objcMembers public class BTCard: NSObject {
@@ -80,42 +84,25 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters() -> CreditCardPOSTBody.CreditCard {
-        var cardBody = creditCardParams()
+    func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
+        var creditCardBody = CreditCardPOSTBody(card: self)
         
-        cardBody.billingAddress = billingAddress()
-        cardBody.options = CreditCardPOSTBody.CreditCard.Options(validate: shouldValidate)
+        var meta = CreditCardPOSTBody.Meta(
+            integration: apiClient.metadata.integration.stringValue,
+            source: apiClient.metadata.source.stringValue,
+            sessionId: apiClient.metadata.sessionID
+        )
         
-        return cardBody
+        creditCardBody.meta = meta
+        
+        if authenticationInsightRequested {
+            creditCardBody.authenticationInsight = true
+            creditCardBody.merchantAccountId = merchantAccountID
+        }
+        
+        return creditCardBody
     }
-
-    private func creditCardParams() -> CreditCardPOSTBody.CreditCard {
-        CreditCardPOSTBody.CreditCard(
-            number: number,
-            expirationMonth: expirationMonth,
-            cvv: cvv,
-            expirationYear: expirationYear,
-            cardHolderName: cardholderName
-        )
-    }
-
-    private func billingAddress() -> CreditCardPOSTBody.CreditCard.BillingAddress {
-        CreditCardPOSTBody.CreditCard.BillingAddress(
-            firstName: firstName,
-            lastName: lastName,
-            company: company,
-            postalCode: postalCode,
-            streetAddress: streetAddress,
-            extendedAddress: extendedAddress,
-            locality: locality,
-            region: region,
-            countryName: countryName,
-            countryCodeAlpha2: countryCodeAlpha2,
-            countryCodeAlpha3: countryCodeAlpha3,
-            countryCodeNumeric: countryCodeNumeric
-        )
-    }
-
+    
     func graphQLParameters() -> CreditCardGraphQLBody {
         var cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
             number: number,

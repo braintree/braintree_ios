@@ -5,7 +5,7 @@ struct CreditCardPOSTBody: Encodable {
     var authenticationInsight: Bool?
     var merchantAccountId: String?
     var meta: Meta?
-    var creditCard: CreditCard?
+    let creditCard: CreditCard?
     
     private var usesGraphQL: Bool
 
@@ -17,16 +17,16 @@ struct CreditCardPOSTBody: Encodable {
     }
 
     init(
+        card: BTCard,
         authenticationInsight: Bool? = nil,
         merchantAccountId: String?  = nil,
         meta: Meta? = nil,
-        creditCard: CreditCard? = nil,
         usesGraphQL: Bool = false
     ) {
+        self.creditCard = CreditCard(card: card)
         self.authenticationInsight = authenticationInsight
         self.merchantAccountId = merchantAccountId
         self.meta = meta
-        self.creditCard = creditCard
         self.usesGraphQL = usesGraphQL
         
     }
@@ -43,31 +43,26 @@ struct CreditCardPOSTBody: Encodable {
         }
     }
 
+    /// POST Body Model
     struct CreditCard: Encodable {
-        var billingAddress: BillingAddress?
-        var number: String?
-        var expirationMonth: String?
-        var cvv: String?
-        var options: Options?
-        var expirationYear: String?
-        var cardHolderName: String?
+        let billingAddress: BillingAddress?
+        let number: String?
+        let expirationMonth: String?
+        let cvv: String?
+        let options: Options?
+        let expirationYear: String?
+        let cardHolderName: String?
 
         init(
-            billingAddress: BillingAddress? = nil,
-            number: String?,
-            expirationMonth: String?,
-            cvv: String?,
-            options: Options? = nil,
-            expirationYear: String?,
-            cardHolderName: String?
+            card: BTCard
         ) {
-            self.billingAddress = billingAddress
-            self.number = number
-            self.cvv = cvv
-            self.options = options
-            self.expirationMonth = expirationMonth
-            self.expirationYear = expirationYear
-            self.cardHolderName = cardHolderName
+            self.billingAddress = BillingAddress(card: card)
+            self.number = card.number
+            self.cvv = card.cvv
+            self.options = Options(validate: card.shouldValidate)
+            self.expirationMonth = card.expirationMonth
+            self.expirationYear = card.expirationYear
+            self.cardHolderName = card.cardholderName
         }
         
         enum CodingKeys: String, CodingKey {
@@ -81,45 +76,34 @@ struct CreditCardPOSTBody: Encodable {
         }
 
         struct BillingAddress: Encodable {
-            var firstName: String?
-            var lastName: String?
-            var company: String?
-            var postalCode: String?
-            var streetAddress: String?
-            var extendedAddress: String?
-            var locality: String?
-            var region: String?
-            var countryName: String?
-            var countryCodeAlpha2: String?
-            var countryCodeAlpha3: String?
-            var countryCodeNumeric: String?
+            let firstName: String?
+            let lastName: String?
+            let company: String?
+            let postalCode: String?
+            let streetAddress: String?
+            let extendedAddress: String?
+            let locality: String?
+            let region: String?
+            let countryName: String?
+            let countryCodeAlpha2: String?
+            let countryCodeAlpha3: String?
+            let countryCodeNumeric: String?
             
             init(
-                firstName: String?,
-                lastName: String?,
-                company: String?,
-                postalCode: String?,
-                streetAddress: String?,
-                extendedAddress: String?,
-                locality: String?,
-                region: String?,
-                countryName: String?,
-                countryCodeAlpha2: String?,
-                countryCodeAlpha3: String?,
-                countryCodeNumeric: String?
+                card: BTCard
             ) {
-                self.firstName = firstName
-                self.lastName = lastName
-                self.company = company
-                self.postalCode = postalCode
-                self.streetAddress = streetAddress
-                self.extendedAddress = extendedAddress
-                self.locality = locality
-                self.region = region
-                self.countryName = countryName
-                self.countryCodeAlpha2 = countryCodeAlpha2
-                self.countryCodeAlpha3 = countryCodeAlpha3
-                self.countryCodeNumeric = countryCodeNumeric
+                self.firstName = card.firstName
+                self.lastName = card.lastName
+                self.company = card.company
+                self.postalCode = card.postalCode
+                self.streetAddress = card.streetAddress
+                self.extendedAddress = card.extendedAddress
+                self.locality = card.locality
+                self.region = card.region
+                self.countryName = card.countryName
+                self.countryCodeAlpha2 = card.countryCodeAlpha2
+                self.countryCodeAlpha3 = card.countryCodeAlpha3
+                self.countryCodeNumeric = card.countryCodeNumeric
             }
             
             enum CodingKeys: String, CodingKey {
@@ -139,7 +123,7 @@ struct CreditCardPOSTBody: Encodable {
         }
 
         struct Options: Encodable {
-            var validate: Bool
+            let validate: Bool
 
             init(validate: Bool) {
                 self.validate = validate
