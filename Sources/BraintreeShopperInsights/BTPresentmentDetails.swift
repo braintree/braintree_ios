@@ -1,5 +1,7 @@
 import Foundation
 
+///  `BTPresentmentDetails` Configure detailed information about the presented button.
+/// - Warning: This class is in beta.
 public class BTPresentmentDetails {
 
     var buttonOrder: BTButtonOrder

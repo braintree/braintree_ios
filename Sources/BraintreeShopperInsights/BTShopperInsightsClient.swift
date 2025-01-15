@@ -23,7 +23,7 @@ public class BTShopperInsightsClient {
     /// - Parameters:
     ///     - apiClient: A `BTAPIClient` instance.
     ///     - shopperSessionID: This value should be the shopper session ID returned from your server SDK request
-    /// - Warning: This features only works with a client token.
+    /// - Warning: This init is beta. And this feature only works with a client token.
     public init(apiClient: BTAPIClient, shopperSessionID: String? = nil) {
         self.apiClient = apiClient
         self.shopperSessionID = shopperSessionID
@@ -110,6 +110,7 @@ public class BTShopperInsightsClient {
     /// Call this method when a button has been selected/tapped by the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameter buttonType: Type of button presented - PayPal, Venmo, or Other
+    /// - Warning: This function is in beta.
     public func sendSelectedEvent(for buttonType: BTButtonType) {
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.buttonSelected,
