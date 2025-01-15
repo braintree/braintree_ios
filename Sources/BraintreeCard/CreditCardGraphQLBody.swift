@@ -1,7 +1,7 @@
 // swiftlint:disable all
 import Foundation
 
-class BTCreditCardGraphQLBody: NSObject, Encodable {
+struct CreditCardGraphQLBody: Encodable {
 
     var variables: Variables
     var query: String
@@ -13,7 +13,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
         self.operationName = operationName
     }
 
-    class Variables: Encodable {
+    struct Variables: Encodable {
 
         var input: Input
 
@@ -21,7 +21,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
             self.input = input
         }
         
-        class Input: Encodable {
+        struct Input: Encodable {
 
             var creditCard: CreditCard
             var options: Options
@@ -33,7 +33,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                 self.authenticationInsightInput = authenticationInsightInput
             }
             
-            class CreditCard: Encodable {
+            struct CreditCard: Encodable {
                 var billingAddress: BillingAddress?
                 var number: String?
                 var expirationMonth: String?
@@ -84,7 +84,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                     case cardholderName
                 }
 
-                class BillingAddress: Encodable {
+                struct BillingAddress: Encodable {
                     var firstName: String?
                     var lastName: String?
                     var company: String?
@@ -127,7 +127,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                     }
                 }
 
-                class Options: Encodable {
+                struct Options: Encodable {
                     var validate: Bool?
 
                     init(validate: Bool? = nil) {
@@ -136,7 +136,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                 }
             }
             
-            class AuthenticationInsightInput: Encodable {
+            struct AuthenticationInsightInput: Encodable {
             
                 var merchantAccountId: String?
                 
@@ -149,7 +149,7 @@ class BTCreditCardGraphQLBody: NSObject, Encodable {
                 }
             }
 
-            class Options: Encodable {
+            struct Options: Encodable {
                 var validate: Bool
 
                 init(validate: Bool) {

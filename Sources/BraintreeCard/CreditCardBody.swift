@@ -1,7 +1,7 @@
 // swiftlint:disable all
 import Foundation
 
-class BTCreditCardBody: NSObject, Encodable {
+struct CreditCardBody: Encodable {
     var authenticationInsight: Bool?
     var merchantAccountId: String?
     var meta: Meta?
@@ -31,7 +31,7 @@ class BTCreditCardBody: NSObject, Encodable {
         
     }
 
-    class Meta: Encodable {
+    struct Meta: Encodable {
         var integration: String
         var source: String
         var sessionId: String
@@ -43,7 +43,7 @@ class BTCreditCardBody: NSObject, Encodable {
         }
     }
 
-    class CreditCard: Encodable {
+    struct CreditCard: Encodable {
         var billingAddress: BillingAddress?
         var number: String?
         var expirationMonth: String?
@@ -80,7 +80,7 @@ class BTCreditCardBody: NSObject, Encodable {
             case cardHolderName = "cardholder_name"
         }
 
-        class BillingAddress: Encodable {
+        struct BillingAddress: Encodable {
             var firstName: String?
             var lastName: String?
             var company: String?
@@ -138,7 +138,7 @@ class BTCreditCardBody: NSObject, Encodable {
             }
         }
 
-        class Options: Encodable {
+        struct Options: Encodable {
             var validate: Bool
 
             init(validate: Bool) {

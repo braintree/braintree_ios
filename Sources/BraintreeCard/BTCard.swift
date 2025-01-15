@@ -80,17 +80,17 @@ import Foundation
 
     // MARK: - Internal Methods
 
-    func parameters() -> BTCreditCardBody.CreditCard {
-        let cardBody = creditCardParams()
+    func parameters() -> CreditCardBody.CreditCard {
+        var cardBody = creditCardParams()
         
         cardBody.billingAddress = billingAddress()
-        cardBody.options = BTCreditCardBody.CreditCard.Options(validate: shouldValidate)
+        cardBody.options = CreditCardBody.CreditCard.Options(validate: shouldValidate)
         
         return cardBody
     }
 
-    private func creditCardParams() -> BTCreditCardBody.CreditCard {
-        BTCreditCardBody.CreditCard(
+    private func creditCardParams() -> CreditCardBody.CreditCard {
+        CreditCardBody.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
             cvv: cvv,
@@ -99,8 +99,8 @@ import Foundation
         )
     }
 
-    private func billingAddress() -> BTCreditCardBody.CreditCard.BillingAddress {
-        BTCreditCardBody.CreditCard.BillingAddress(
+    private func billingAddress() -> CreditCardBody.CreditCard.BillingAddress {
+        CreditCardBody.CreditCard.BillingAddress(
             firstName: firstName,
             lastName: lastName,
             company: company,
@@ -116,8 +116,8 @@ import Foundation
         )
     }
 
-    func graphQLParameters() -> BTCreditCardGraphQLBody {
-        let cardBody = BTCreditCardGraphQLBody.Variables.Input.CreditCard(
+    func graphQLParameters() -> CreditCardGraphQLBody {
+        var cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
             number: number,
             expirationMonth: expirationMonth,
             cvv: cvv,
@@ -126,7 +126,7 @@ import Foundation
         )
         
         if firstName != nil {
-            cardBody.billingAddress = BTCreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
+            cardBody.billingAddress = CreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
                 firstName: firstName,
                 lastName: lastName,
                 company: company,
@@ -143,18 +143,18 @@ import Foundation
         }
 
         
-        let options = BTCreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
+        let options = CreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
         
-        let input = BTCreditCardGraphQLBody.Variables.Input(
+        var input = CreditCardGraphQLBody.Variables.Input(
             creditCard: cardBody,
             options: options
         )
         
-        let variables = BTCreditCardGraphQLBody.Variables(input: input)
+        let variables = CreditCardGraphQLBody.Variables(input: input)
         
         if authenticationInsightRequested {
             if let merchantAccountID {
-                let merchantAccountID = BTCreditCardGraphQLBody
+                let merchantAccountID = CreditCardGraphQLBody
                     .Variables
                     .Input
                     .AuthenticationInsightInput(
@@ -163,7 +163,7 @@ import Foundation
                 
                 input.authenticationInsightInput = merchantAccountID
             } else {
-                let merchantAccountID = BTCreditCardGraphQLBody
+                let merchantAccountID = CreditCardGraphQLBody
                     .Variables
                     .Input
                     .AuthenticationInsightInput()
@@ -172,7 +172,7 @@ import Foundation
             }
         }
         
-        let body = BTCreditCardGraphQLBody(
+        let body = CreditCardGraphQLBody(
             variables: variables,
             query: cardTokenizationGraphQLMutation(),
             operationName: "TokenizeCreditCard"
