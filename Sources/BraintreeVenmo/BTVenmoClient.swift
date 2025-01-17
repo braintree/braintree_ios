@@ -83,9 +83,9 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
-        if returnURLScheme.isEmpty {
+        if let universalLink, universalLink.absoluteString.isEmpty || returnURLScheme.isEmpty {
             NSLog(
-                "%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]",
+                "%@ Venmo requires a return URL scheme or universal link to be configured.",
                 BTLogLevelDescription.string(for: .critical)
             )
             notifyFailure(with: BTVenmoError.appNotAvailable, completion: completion)
