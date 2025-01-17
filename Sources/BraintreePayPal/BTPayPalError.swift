@@ -41,6 +41,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 12. Missing BA Token for App Switch
     case missingBAToken
+    
+    /// 13. Missing EC Token for App Switch
+    case missingECToken
 
     /// 13. Missing PayPal Request
     case missingPayPalRequest
@@ -77,8 +80,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 11
         case .missingBAToken:
             return 12
-        case .missingPayPalRequest:
+        case .missingECToken:
             return 13
+        case .missingPayPalRequest:
+            return 14
         }
     }
 
@@ -112,6 +117,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "UIApplication failed to perform app switch to PayPal."
         case .missingBAToken:
             return "Missing BA Token for PayPal App Switch."
+        case .missingECToken:
+            return "Missing EC Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
         }
