@@ -89,6 +89,20 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
+    func testTokenizeVenmoAccount_whenReturnURLSchemeAndUniversalLinkIsNil_andCallsBackWithError() {
+        let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
+
+        let expectation = expectation(description: "authorization callback")
+        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
+            XCTAssertEqual(error.code, BTVenmoError.appNotAvailable.errorCode)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
         let venmoClient = BTVenmoClient(apiClient: mockAPIClient)
         venmoRequest.displayName = "app-display-name"
