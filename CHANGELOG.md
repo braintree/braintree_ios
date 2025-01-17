@@ -5,6 +5,8 @@
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
 * BraintreeThreeDSecure
   * Return error if no `dfReferenceId` is returned in the 3D Secure flow
+* BraintreeVenmo
+  * Allow universal links to be set without a return URL scheme
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
