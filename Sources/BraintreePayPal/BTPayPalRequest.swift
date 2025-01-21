@@ -4,50 +4,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-@objc public enum BTPayPalPaymentType: Int {
-    
-    /// Checkout
-    case checkout
-
-    /// Vault
-    case vault
-    
-    var stringValue: String {
-        switch self {
-        case .vault:
-            return "paypal-ba"
-        case .checkout:
-            return "paypal-single-payment"
-        }
-    }
-}
-
-/// Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
-@objc public enum BTPayPalRequestLandingPageType: Int {
-
-    /// Default
-    case none // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
-
-    /// Login
-    case login
-
-    /// Billing
-    case billing
-
-    var stringValue: String? {
-        switch self {
-        case .login:
-            return "login"
-
-        case .billing:
-            return "billing"
-
-        default:
-            return nil
-        }
-    }
-}
-
+/// Defines the structure and requirements for PayPal Checkout and PayPal Vault flows.
 protocol PayPalRequest {
     var hermesPath: String { get }
     var paymentType: BTPayPalPaymentType { get }
