@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
+  * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
 * BraintreeThreeDSecure
   * Return error if no `dfReferenceId` is returned in the 3D Secure flow
 
