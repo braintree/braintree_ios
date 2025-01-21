@@ -1,12 +1,12 @@
 import Foundation
 
 /// PayPal Recurring Billing Agreement pricing details.
-public struct BTPayPalBillingPricing {
+public struct BTPayPalBillingPricing: Encodable {
     
     // MARK: - Public Types
     
     /// Recurring Billing Agreement pricing model types.
-    public enum PricingModel: String {
+    public enum PricingModel: String, Encodable {
         case fixed = "FIXED"
         case variable = "VARIABLE"
         case autoReload = "AUTO_RELOAD"
@@ -31,21 +31,9 @@ public struct BTPayPalBillingPricing {
         self.reloadThresholdAmount = reloadThresholdAmount
     }
     
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "pricing_model": pricingModel.rawValue
-        ]
-
-        if let amount {
-            parameters["price"] = amount
-        }
-
-        if let reloadThresholdAmount {
-            parameters["reload_threshold_amount"] = reloadThresholdAmount
-        }
-        
-        return parameters
+    enum CodingKeys: String, CodingKey {
+        case amount = "price"
+        case pricingModel = "pricing_model"
+        case reloadThresholdAmount = "reload_threshold_amount"
     }
 }

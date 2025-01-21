@@ -146,47 +146,4 @@ import Foundation
         case upcType = "upc_type"
         case url
     }
-    
-    // MARK: - Internal Methods
-
-    /// Returns the line item in a dictionary.
-    /// - Returns: A dictionary with the line item information formatted for a request.
-    func requestParameters() -> [String: String] {
-        var requestParameters = [
-            "quantity": quantity,
-            "unit_amount": unitAmount,
-            "name": name,
-            "kind": kind == .debit ? "debit" : "credit"
-        ]
-
-        if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            requestParameters["unit_tax_amount"] = unitAmount
-        }
-
-        if let itemDescription, !itemDescription.isEmpty {
-            requestParameters["description"] = itemDescription
-        }
-
-        if let productCode, !productCode.isEmpty {
-            requestParameters["product_code"] = productCode
-        }
-
-        if let url, url != URL(string: "") {
-            requestParameters["url"] = url.absoluteString
-        }
-        
-        if let imageURL, imageURL != URL(string: "") {
-            requestParameters["image_url"] = imageURL.absoluteString
-        }
-
-        if let upcCode, !upcCode.isEmpty {
-            requestParameters["upc_code"] = upcCode
-        }
-        
-        if upcType.stringValue != nil {
-            requestParameters["upc_type"] = upcType.stringValue
-        }
-                
-        return requestParameters
-    }
 }

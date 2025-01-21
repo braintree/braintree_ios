@@ -51,7 +51,10 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["description"] as? String, "desc")
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
@@ -84,8 +87,11 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true
         )
-
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, isPayPalAppInstalled: true, universalLink: URL(string: "some-url")!).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
@@ -125,7 +131,11 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, universalLink: URL(string: "some-url")!).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
         
         guard let planMetadata = parameters["plan_metadata"] as? [String: Any] else { XCTFail(); return }
@@ -151,5 +161,105 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(pricingScheme["pricing_model"], "AUTO_RELOAD")
         XCTAssertEqual(pricingScheme["price"], "test-price")
         XCTAssertEqual(pricingScheme["reload_threshold_amount"], "test-threshold")
+    }
+
+    func testParametersWithConfiguration_returnsAllBaseParams() {
+        let request = BTPayPalVaultRequest()
+        request.isShippingAddressRequired = true
+        request.displayName = "Display Name"
+        request.landingPageType = .login
+        request.localeCode = .en_US
+        request.riskCorrelationID = "123-correlation-id"
+        request.merchantAccountID = "merchant-account-id"
+        request.isShippingAddressEditable = true
+        
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)
+        lineItem.imageURL = URL(string: "http://example/image.jpg")
+        lineItem.upcCode = "upc-code"
+        lineItem.upcType = .UPC_A
+        request.lineItems = [lineItem]
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
+        
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
+        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
+        XCTAssertEqual(experienceProfile["locale_code"] as? String, "en_US")
+        XCTAssertEqual(parameters["merchant_account_id"] as? String, "merchant-account-id")
+        XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
+        XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
+                                                                           "unit_amount": "1",
+                                                                           "name": "item",
+                                                                           "kind": "credit",
+                                                                           "upc_code": "upc-code",
+                                                                           "upc_type": "UPC-A",
+                                                                           "image_url": "http://example/image.jpg"]])
+        
+        XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+    }
+
+    func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
+        let request = BTPayPalVaultRequest()
+        // no_shipping = true should be the default.
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
+
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
+    }
+
+    func testParametersWithConfiguration_whenShippingAddressIsRequiredIsTrue_returnsNoShippingFalse() {
+        let request = BTPayPalVaultRequest()
+        request.isShippingAddressRequired = true
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+    }
+    
+    // MARK: - landingPageTypeAsString
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertNil(request.landingPageType?.stringValue)
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
+        let request = BTPayPalVaultRequest()
+        request.landingPageType = .billing
+        XCTAssertEqual(request.landingPageType?.stringValue, "billing")
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
+        let request = BTPayPalVaultRequest()
+        request.landingPageType = .login
+        XCTAssertEqual(request.landingPageType?.stringValue, "login")
+    }
+    
+    // MARK: - enablePayPalAppSwitch
+    
+    func testEnablePayPalAppSwitch_whenInitialized_setsAllRequiredValues() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true
+        )
+
+        XCTAssertEqual(request.userAuthenticationEmail, "fake@gmail.com")
+        XCTAssertTrue(request.enablePayPalAppSwitch)
     }
 }

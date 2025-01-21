@@ -1,12 +1,12 @@
 import Foundation
 
 /// PayPal recurring billing cycle details.
-public struct BTPayPalBillingCycle {
+public struct BTPayPalBillingCycle: Encodable {
     
     // MARK: - Public Types
     
     /// The interval at which the payment is charged or billed.
-    public enum BillingInterval: String {
+    public enum BillingInterval: String, Encodable {
         case day = "DAY"
         case week = "WEEK"
         case month = "MONTH"
@@ -52,34 +52,13 @@ public struct BTPayPalBillingCycle {
         self.pricing = pricing
     }
     
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "number_of_executions": numberOfExecutions,
-            "trial": isTrial
-        ]
-
-        if let interval {
-            parameters["billing_frequency_unit"] = interval.rawValue
-        }
-
-        if let intervalCount {
-            parameters["billing_frequency"] = intervalCount
-        }
-
-        if let sequence {
-            parameters["sequence"] = sequence
-        }
-        
-        if let startDate {
-            parameters["start_date"] = startDate
-        }
-        
-        if let pricing {
-            parameters["pricing_scheme"] = pricing.parameters()
-        }
-        
-        return parameters
+    enum CodingKeys: String, CodingKey {
+        case numberOfExecutions = "number_of_executions"
+        case isTrial = "trial"
+        case interval = "billing_frequency_unit"
+        case intervalCount = "billing_frequency"
+        case sequence
+        case startDate = "start_date"
+        case pricing = "pricing_scheme"
     }
 }

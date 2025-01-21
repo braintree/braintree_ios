@@ -29,7 +29,7 @@ import BraintreeDataCollector
     var clientMetadataID: String?
     
     /// Exposed for testing the intent associated with this request
-    var payPalRequest: PayPalRequest?
+    var payPalRequest: BTPayPalRequest?
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
@@ -331,7 +331,7 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func tokenize(
-        request: PayPalRequest,
+        request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
@@ -343,26 +343,29 @@ import BraintreeDataCollector
                 return
             }
 
-            guard let configuration, let json = configuration.json else {
+            guard let configuration else {
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
             
             self.isConfigFromCache = configuration.isFromCache
 
-            guard json["paypalEnabled"].isTrue else {
+            guard configuration.isPayPalEnabled else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
 
             self.payPalRequest = request
+            
+            let parameters = request.encodedPostBodyWith(
+                configuration: configuration,
+                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+                universalLink: self.universalLink
+            )
+            
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(
-                    with: configuration,
-                    universalLink: self.universalLink,
-                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
-                )
+                parameters: parameters
             ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {

@@ -1,5 +1,5 @@
 /// PayPal recurring billing plan type, or charge pattern.
-public enum BTPayPalRecurringBillingPlanType: String {
+public enum BTPayPalRecurringBillingPlanType: String, Encodable {
     
     /// Variable amount, fixed frequency, no defined duration. (E.g., utility bills, insurance).
     case recurring = "RECURRING"

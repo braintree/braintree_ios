@@ -56,7 +56,7 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers public class BTPayPalCheckoutRequest: NSObject, PayPalRequest {
+@objcMembers public class BTPayPalCheckoutRequest: NSObject, BTPayPalRequest {
     
     // MARK: - Internal Properties
     
@@ -149,92 +149,14 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
-
+    
     // MARK: Internal Methods
-
-    // swiftlint:disable cyclomatic_complexity
-    func parameters(
-        with configuration: BTConfiguration,
-        universalLink: URL? = nil,
-        isPayPalAppInstalled: Bool = false
-    ) -> [String: Any] {
-        var experienceProfile: [String: Any] = [:]
-
-        experienceProfile["no_shipping"] = !isShippingAddressRequired
-        experienceProfile["brand_name"] = displayName != nil ? displayName : configuration.json?["paypal"]["displayName"].asString()
-
-        if let landingPageType = landingPageType?.stringValue {
-            experienceProfile["landing_page_type"] = landingPageType
-        }
-
-        if let localeCode = localeCode?.stringValue {
-            experienceProfile["locale_code"] = localeCode
-        }
-
-        experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
-
-        var baseParameters: [String: Any] = [:]
-
-        if let merchantAccountID {
-            baseParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        if let riskCorrelationID {
-            baseParameters["correlation_id"] = riskCorrelationID
-        }
-        
-        if let lineItems, !lineItems.isEmpty {
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            baseParameters["line_items"] = lineItemsArray
-        }
-        
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            baseParameters["payer_email"] = userAuthenticationEmail
-        }
-        
-        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
-            baseParameters["phone_number"] = userPhoneNumberDict
-        }
-
-        baseParameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(Self.callbackURLHostAndPath)success"
-        baseParameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(Self.callbackURLHostAndPath)cancel"
-        baseParameters["experience_profile"] = experienceProfile
-        
-        var checkoutParameters: [String: Any] = [
-            "intent": intent.stringValue,
-            "amount": amount,
-            "offer_pay_later": offerPayLater
-        ]
-
-        let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
-
-        if let currencyCode {
-            checkoutParameters["currency_iso_code"] = currencyCode
-        }
-
-        if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
-            experienceProfile["user_action"] = userAction.stringValue
-            baseParameters["experience_profile"] = experienceProfile
-        }
-
-        if requestBillingAgreement {
-            checkoutParameters["request_billing_agreement"] = requestBillingAgreement
-
-            if billingAgreementDescription != nil {
-                checkoutParameters["billing_agreement_details"] = ["description": billingAgreementDescription]
-            }
-        }
-
-        if let shippingAddressOverride {
-            checkoutParameters["line1"] = shippingAddressOverride.streetAddress
-            checkoutParameters["line2"] = shippingAddressOverride.extendedAddress
-            checkoutParameters["city"] = shippingAddressOverride.locality
-            checkoutParameters["state"] = shippingAddressOverride.region
-            checkoutParameters["postal_code"] = shippingAddressOverride.postalCode
-            checkoutParameters["country_code"] = shippingAddressOverride.countryCodeAlpha2
-            checkoutParameters["recipient_name"] = shippingAddressOverride.recipientName
-        }
-
-        return baseParameters.merging(checkoutParameters) { $1 }
+    
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil
+    ) -> Encodable {
+        PayPalCheckoutPOSTBody(payPalRequest: self, configuration: configuration)
     }
 }

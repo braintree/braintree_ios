@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 ///  Options for the PayPal Vault flow.
-@objcMembers public class BTPayPalVaultRequest: NSObject, PayPalRequest {
+@objcMembers public class BTPayPalVaultRequest: NSObject, BTPayPalRequest {
 
     // MARK: - Internal Properties
     
@@ -103,94 +103,19 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
-
-    // swiftlint:disable cyclomatic_complexity function_body_length
-    func parameters(
-        with configuration: BTConfiguration,
-        universalLink: URL? = nil,
-        isPayPalAppInstalled: Bool = false
-    ) -> [String: Any] {
-        var experienceProfile: [String: Any] = [:]
-
-        experienceProfile["no_shipping"] = !isShippingAddressRequired
-        experienceProfile["brand_name"] = displayName != nil ? displayName : configuration.json?["paypal"]["displayName"].asString()
-
-        if let landingPageType = landingPageType?.stringValue {
-            experienceProfile["landing_page_type"] = landingPageType
-        }
-
-        if let localeCode = localeCode?.stringValue {
-            experienceProfile["locale_code"] = localeCode
-        }
-
-        experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
-
-        var baseParameters: [String: Any] = [:]
-
-        if let merchantAccountID {
-            baseParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        if let riskCorrelationID {
-            baseParameters["correlation_id"] = riskCorrelationID
-        }
-        
-        if let lineItems, !lineItems.isEmpty {
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            baseParameters["line_items"] = lineItemsArray
-        }
-        
-        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            baseParameters["payer_email"] = userAuthenticationEmail
-        }
-        
-        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
-            baseParameters["phone_number"] = userPhoneNumberDict
-        }
-
-        baseParameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(Self.callbackURLHostAndPath)success"
-        baseParameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(Self.callbackURLHostAndPath)cancel"
-        baseParameters["experience_profile"] = experienceProfile
-
-        if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
-            let appSwitchParameters: [String: Any] = [
-                "launch_paypal_app": enablePayPalAppSwitch,
-                "os_version": UIDevice.current.systemVersion,
-                "os_type": UIDevice.current.systemName,
-                "merchant_app_return_url": universalLink.absoluteString
-            ]
-
-            return baseParameters.merging(appSwitchParameters) { $1 }
-        }
-
-        if let recurringBillingPlanType {
-            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
-        }
-
-        if let recurringBillingDetails {
-            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
-        }
-
-        var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
-
-        if let billingAgreementDescription {
-            vaultParameters["description"] = billingAgreementDescription
-        }
-
-        if let shippingAddressOverride {
-            let shippingAddressParameters: [String: String?] = [
-                "line1": shippingAddressOverride.streetAddress,
-                "line2": shippingAddressOverride.extendedAddress,
-                "city": shippingAddressOverride.locality,
-                "state": shippingAddressOverride.region,
-                "postal_code": shippingAddressOverride.postalCode,
-                "country_code": shippingAddressOverride.countryCodeAlpha2,
-                "recipient_name": shippingAddressOverride.recipientName
-            ]
-
-            vaultParameters["shipping_address"] = shippingAddressParameters
-        }
-
-        return baseParameters.merging(vaultParameters) { $1 }
+    
+    // MARK: Internal Methods
+    
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil
+    ) -> Encodable {
+        PayPalVaultPOSTBody(
+            payPalRequest: self,
+            configuration: configuration,
+            isPayPalAppInstalled: isPayPalAppInstalled,
+            universalLink: universalLink
+        )
     }
 }
