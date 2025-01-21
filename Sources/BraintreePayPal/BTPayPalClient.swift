@@ -373,7 +373,7 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    self.launchPayPalApp(with: url, token: token, completion: completion)
+                    self.launchPayPalApp(with: url, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
@@ -383,7 +383,6 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
-        token: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent(
@@ -394,11 +393,11 @@ import BraintreeDataCollector
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: isVaultRequest ? "ba_token" : "token", value: token),
+        let additionalQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
+        urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
         
         guard let redirectURL = urlComponents?.url else {
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
