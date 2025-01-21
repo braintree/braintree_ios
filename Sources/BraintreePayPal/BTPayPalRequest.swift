@@ -4,53 +4,44 @@ import UIKit
 import BraintreeCore
 #endif
 
-@objc public enum BTPayPalPaymentType: Int {
+/// Defines the structure and requirements for PayPal Checkout and PayPal Vault flows.
+protocol PayPalRequest {
+    var hermesPath: String { get }
+    var paymentType: BTPayPalPaymentType { get }
+    var billingAgreementDescription: String? { get }
+    var displayName: String? { get }
+    var isShippingAddressEditable: Bool { get }
+    var isShippingAddressRequired: Bool { get }
+    var landingPageType: BTPayPalRequestLandingPageType? { get }
+    var lineItems: [BTPayPalLineItem]? { get }
+    var localeCode: BTPayPalLocaleCode? { get }
+    var merchantAccountID: String? { get }
+    var riskCorrelationID: String? { get }
+    var shippingAddressOverride: BTPostalAddress? { get }
+    var userAuthenticationEmail: String? { get }
+    var userPhoneNumber: BTPayPalPhoneNumber? { get }
     
-    /// Checkout
-    case checkout
-
-    /// Vault
-    case vault
+    // MARK: - Static Properties
     
-    var stringValue: String {
-        switch self {
-        case .vault:
-            return "paypal-ba"
-        case .checkout:
-            return "paypal-single-payment"
-        }
-    }
+    static var callbackURLHostAndPath: String { get }
+    
+    func parameters(
+        with configuration: BTConfiguration,
+        universalLink: URL?,
+        isPayPalAppInstalled: Bool
+    ) -> [String: Any]
 }
 
-/// Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
-@objc public enum BTPayPalRequestLandingPageType: Int {
-
-    /// Default
-    case none // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
-
-    /// Login
-    case login
-
-    /// Billing
-    case billing
-
-    var stringValue: String? {
-        switch self {
-        case .login:
-            return "login"
-
-        case .billing:
-            return "billing"
-
-        default:
-            return nil
-        }
+extension PayPalRequest {
+    
+    static var callbackURLHostAndPath: String {
+        "onetouch/v1/"
     }
 }
 
 /// Base options for PayPal Checkout and PayPal Vault flows.
 /// - Note: Do not instantiate this class directly. Instead, use BTPayPalCheckoutRequest or BTPayPalVaultRequest.
-@objcMembers open class BTPayPalRequest: NSObject {
+@objcMembers open class BTPayPalRequest: NSObject, PayPalRequest {
 
     // MARK: - Internal Properties
     
@@ -68,10 +59,6 @@ import BraintreeCore
     var riskCorrelationID: String?
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
-    
-    // MARK: - Static Properties
-    
-    static let callbackURLHostAndPath: String = "onetouch/v1/"
 
     // MARK: - Initializer
 
@@ -80,11 +67,11 @@ import BraintreeCore
     ///    - hermesPath: Required :nodoc: The hermes path or endpoint URI path. This property is not covered by semantic versioning.
     ///    - paymentType: Required :nodoc: The payment type, either checkout or vault. This property is not covered by semantic versioning.
     ///    - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
-    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address. 
+    ///    - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
     ///     - Note: Only applies when `shippingAddressOverride` is set.
     ///    - localeCode: Optional: A locale code to use for the transaction.
     ///    - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
-    ///    - landingPageType: Optional: Landing page type. Defaults to `.none`.  
+    ///    - landingPageType: Optional: Landing page type. Defaults to `.none`.
     ///     - Note: Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment.
     ///        `.login` specifies a PayPal account login page is used.
     ///        `.billing` specifies a non-PayPal account landing page is used.
