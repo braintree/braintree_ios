@@ -10,10 +10,10 @@ struct PayPalVaultPOSTBody: Encodable {
     
     // MARK: - Private Properties
     
-    private let userPhoneNumber: BTPayPalPhoneNumber?
     private let returnURL: String
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
+    private let userPhoneNumber: BTPayPalPhoneNumber?
     
     private var billingAgreementDescription: String?
     private var enablePayPalAppSwitch: Bool?
