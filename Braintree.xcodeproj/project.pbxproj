@@ -377,6 +377,11 @@
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
 		BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */; };
 		BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */; };
+		E9C39C302D3F98EE00E38BC4 /* AtomicCoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C39C2F2D3F98EE00E38BC4 /* AtomicCoreManager.swift */; };
+		E9C39C322D3F991300E38BC4 /* AtomicEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C39C312D3F991300E38BC4 /* AtomicEventLogger.swift */; };
+		E9C39C342D3F993500E38BC4 /* AtomicEventTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C39C332D3F993500E38BC4 /* AtomicEventTimerHandler.swift */; };
+		E9C39C362D3F994800E38BC4 /* AtomicLoggerEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C39C352D3F994800E38BC4 /* AtomicLoggerEventModel.swift */; };
+		E9C39C382D3F996000E38BC4 /* AtomicPayloadConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C39C372D3F996000E38BC4 /* AtomicPayloadConstructor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1110,6 +1115,11 @@
 		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient.swift; sourceTree = "<group>"; };
 		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
+		E9C39C2F2D3F98EE00E38BC4 /* AtomicCoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCoreManager.swift; sourceTree = "<group>"; };
+		E9C39C312D3F991300E38BC4 /* AtomicEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicEventLogger.swift; sourceTree = "<group>"; };
+		E9C39C332D3F993500E38BC4 /* AtomicEventTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicEventTimerHandler.swift; sourceTree = "<group>"; };
+		E9C39C352D3F994800E38BC4 /* AtomicLoggerEventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicLoggerEventModel.swift; sourceTree = "<group>"; };
+		E9C39C372D3F996000E38BC4 /* AtomicPayloadConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicPayloadConstructor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1422,6 +1432,7 @@
 		570B93AE285397D20041BAFE /* BraintreeCore */ = {
 			isa = PBXGroup;
 			children = (
+				E9C39C2E2D3F98B700E38BC4 /* AtomicEvents */,
 				80F4F4D529F8A628003EACB1 /* Analytics */,
 				80B207342BF6D3B000787E37 /* Authorization */,
 				80482BD82C484ADC00C71D03 /* Configuration */,
@@ -2120,6 +2131,18 @@
 				62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeSEPADirectDebit;
+			sourceTree = "<group>";
+		};
+		E9C39C2E2D3F98B700E38BC4 /* AtomicEvents */ = {
+			isa = PBXGroup;
+			children = (
+				E9C39C2F2D3F98EE00E38BC4 /* AtomicCoreManager.swift */,
+				E9C39C312D3F991300E38BC4 /* AtomicEventLogger.swift */,
+				E9C39C332D3F993500E38BC4 /* AtomicEventTimerHandler.swift */,
+				E9C39C352D3F994800E38BC4 /* AtomicLoggerEventModel.swift */,
+				E9C39C372D3F996000E38BC4 /* AtomicPayloadConstructor.swift */,
+			);
+			path = AtomicEvents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3330,8 +3353,10 @@
 				BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */,
 				BE5C8C0328A2C183004F9130 /* BTConfiguration+Core.swift in Sources */,
 				BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */,
+				E9C39C342D3F993500E38BC4 /* AtomicEventTimerHandler.swift in Sources */,
 				BE9FB82B2898324C00D6FE2F /* BTPaymentMethodNonce.swift in Sources */,
 				BE698EA228AA8EEA001D9B10 /* ConfigurationCache.swift in Sources */,
+				E9C39C362D3F994800E38BC4 /* AtomicLoggerEventModel.swift in Sources */,
 				BEB9BF532A26872B00A3673E /* BTWebAuthenticationSessionClient.swift in Sources */,
 				80F86FF029FC2ED6003297FF /* Encodable+Dictionary.swift in Sources */,
 				579DAEC7286E064500FCE87F /* BTAppContextSwitchClient.swift in Sources */,
@@ -3356,13 +3381,16 @@
 				804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */,
 				BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */,
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
+				E9C39C382D3F996000E38BC4 /* AtomicPayloadConstructor.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
+				E9C39C322D3F991300E38BC4 /* AtomicEventLogger.swift in Sources */,
 				457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,
 				BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */,
 				BEF388C32BE9340C000965C8 /* BTAPITimingDelegate.swift in Sources */,
 				574891E9286F7D300020DA36 /* BTClientMetadataSource.swift in Sources */,
 				BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */,
+				E9C39C302D3F98EE00E38BC4 /* AtomicCoreManager.swift in Sources */,
 				BEBD05222A1FE8BE0003C15C /* BTWebAuthenticationSession.swift in Sources */,
 				808E4A162C581CD40006A737 /* AnalyticsSendable.swift in Sources */,
 				BE698EA028AA8DCB001D9B10 /* BTHTTP.swift in Sources */,

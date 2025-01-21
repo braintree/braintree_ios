@@ -370,6 +370,8 @@ import BraintreeDataCollector
         linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
+        apiClient.sendAtomicStartEvent(AtomicLoggerEventModel.getPayWithPayPalCIStart(task: "select_vaulted_checkout_bt", flow: "modxo_vaulted_not_recurring"))
+        
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)

@@ -26,6 +26,7 @@ import Foundation
     
     /// Exposed for testing analytics
     var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
+    var atomicEventService  = AtomicCoreManager.shared
 
     // MARK: - Initializers
 
@@ -420,5 +421,15 @@ import Foundation
                 )
             )
         }
+    }
+    
+    //MARK: - AtomicEvents Methods
+    
+    public func sendAtomicStartEvent(_ event : AtomicLoggerEventModel){
+        atomicEventService.trackStart(event: event)
+    }
+    
+    public func sendAtomicEndvent(_ event : AtomicLoggerEventModel, startTime : Int64? = nil){
+        atomicEventService.trackEnd(event: event,startTime: startTime)
     }
 }
