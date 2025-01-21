@@ -12,10 +12,10 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let amount: String
     private let intent: String
     private let offerPayLater: Bool
-    private let userPhoneNumber: BTPayPalPhoneNumber?
     private let returnURL: String
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
+    private let userPhoneNumber: BTPayPalPhoneNumber?
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
     private var currencyCode: String?

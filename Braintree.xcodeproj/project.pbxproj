@@ -1331,8 +1331,8 @@
 			isa = PBXGroup;
 			children = (
 				45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */,
-				45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */,
 				45E8CE4F2D2C772000D7A2DC /* PayPalExperienceProfilePOSTBody.swift */,
+				45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
