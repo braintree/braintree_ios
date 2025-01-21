@@ -199,4 +199,20 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["recipient_email"])
         XCTAssertNil(parameters["international_phone"])
     }
+
+    func testParameters_whenShippingCallbackURLNotSet_returnsParameters() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        XCTAssertNil(request.shippingCallbackURL)
+        let parameters = request.parameters(with: configuration)
+        XCTAssertNil(parameters["shipping_callback_url"])
+    }
+
+    func testParameters_whitShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
+        let request = BTPayPalCheckoutRequest(amount: "1", shippingCallbackURL: URL(string: "www.some-url.com"))
+
+        XCTAssertNotNil(request.shippingCallbackURL)
+        let parameters = request.parameters(with: configuration)
+        XCTAssertNotNil(parameters["shipping_callback_url"])
+    }
 }
