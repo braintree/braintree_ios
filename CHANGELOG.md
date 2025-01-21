@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.26.0 (2025-01-21)
 * BraintreePayPal
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
   * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
