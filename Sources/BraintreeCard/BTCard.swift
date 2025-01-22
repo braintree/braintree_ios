@@ -103,96 +103,12 @@ import BraintreeCore
         return creditCardBody
     }
 
-func graphQLParameters() -> CreditCardGraphQLBody {
-    return CreditCardGraphQLBody(
-        card: self,
-        shouldValidate: shouldValidate,
-        authenticationInsightRequested: authenticationInsightRequested,
-        merchantAccountID: merchantAccountID
-    )
-}
-
-    // MARK: - Private Methods
-
-//    private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
-//        var cardDictionary: [String: Any] = [:]
-//
-//        if let number {
-//            cardDictionary["number"] = number
-//        }
-//
-//        if let expirationMonth {
-//            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
-//        }
-//
-//        if let expirationYear {
-//            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
-//        }
-//
-//        if let cvv {
-//            cardDictionary["cvv"] = cvv
-//        }
-//
-//        if let cardholderName {
-//            cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
-//        }
-//
-//        return cardDictionary
-//    }
-
-    // swiftlint:disable cyclomatic_complexity
-//    private func buildBillingAddressDictionary(isGraphQL: Bool) -> [String: String] {
-//        var billingAddressDictionary: [String: String] = [:]
-//
-//        if let firstName {
-//            billingAddressDictionary[isGraphQL ? "firstName" : "first_name"] = firstName
-//        }
-//
-//        if let lastName {
-//            billingAddressDictionary[isGraphQL ? "lastName" : "last_name"] = lastName
-//        }
-//
-//        if let company {
-//            billingAddressDictionary["company"] = company
-//        }
-//
-//        if let postalCode {
-//            billingAddressDictionary[isGraphQL ? "postalCode" : "postal_code"] = postalCode
-//        }
-//
-//        if let streetAddress {
-//            billingAddressDictionary[isGraphQL ? "streetAddress" : "street_address"] = streetAddress
-//        }
-//
-//        if let extendedAddress {
-//            billingAddressDictionary[isGraphQL ? "extendedAddress" : "extended_address"] = extendedAddress
-//        }
-//
-//        if let locality {
-//            billingAddressDictionary["locality"] = locality
-//        }
-//
-//        if let region {
-//            billingAddressDictionary["region"] = region
-//        }
-//
-//        if let countryName {
-//            billingAddressDictionary[isGraphQL ? "countryName" : "country_name"] = countryName
-//        }
-//
-//        if let countryCodeAlpha2 {
-//            billingAddressDictionary[isGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"] = countryCodeAlpha2
-//        }
-//
-//        if let countryCodeAlpha3 {
-//            billingAddressDictionary[isGraphQL ? "countryCode" : "country_code_alpha3"] = countryCodeAlpha3
-//        }
-//
-//        if let countryCodeNumeric {
-//            billingAddressDictionary[isGraphQL ? "countryCodeNumeric" : "country_code_numeric"] = countryCodeNumeric
-//        }
-//
-//        return billingAddressDictionary
-//    }
-    // swiftlint:enable cyclomatic_complexity
+    func graphQLParameters() -> CreditCardGraphQLBody {
+        return CreditCardGraphQLBody(
+            card: self,
+            shouldValidate: shouldValidate,
+            authenticationInsightRequested: authenticationInsightRequested,
+            merchantAccountID: merchantAccountID
+        )
+    }
 }
