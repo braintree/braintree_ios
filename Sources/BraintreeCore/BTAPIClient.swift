@@ -247,7 +247,7 @@ import Foundation
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
-    public func sendAnalyticsEvent(
+    package func sendAnalyticsEvent(
         _ eventName: String,
         correlationID: String? = nil,
         errorDescription: String? = nil,
@@ -259,6 +259,7 @@ import Foundation
         payPalContextID: String? = nil,
         appSwitchURL: URL? = nil
     ) {
+        print("🚀")
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 appSwitchURL: appSwitchURL,
