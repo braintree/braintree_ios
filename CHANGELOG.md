@@ -2,10 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
   * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
-* BraintreeThreeDSecure
-  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
 * BraintreeShopperInsights (BETA)
   * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
   * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
@@ -15,6 +12,13 @@
     * `pageType`
     * `buttonOrder`
   * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
+  
+## 6.26.0 (2025-01-21)
+* BraintreePayPal
+  * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
+  * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
+* BraintreeThreeDSecure
+  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
