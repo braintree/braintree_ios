@@ -107,6 +107,11 @@
                BlueprintName = "BraintreePayPalTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BTPayPalClient_Tests/testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO"
