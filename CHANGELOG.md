@@ -1,6 +1,7 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased (v7)
+* Require Xcode 16.2+ and Swift 5.10+
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
   * `countryCodeAlpha2` now returns a 2 character country code instead of a 3 character country code 
