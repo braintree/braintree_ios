@@ -6,11 +6,70 @@ struct CreditCardGraphQLBody: Encodable {
     var variables: Variables
     var query: String
     var operationName: String
+    
+    init(card: BTCard,
+         shouldValidate: Bool,
+         authenticationInsightRequested: Bool,
+         merchantAccountID: String?
+    ) {
+        var cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
+            number: card.number,
+            expirationMonth: card.expirationMonth,
+            cvv: card.cvv,
+            expirationYear: card.expirationYear,
+            cardHolderName: card.cardholderName
+        )
+        
+        if card.firstName != nil {
+            var billingAddress = Self.Variables.Input.CreditCard.BillingAddress(
+                firstName: card.firstName,
+                lastName: card.lastName,
+                company: card.company,
+                postalCode: card.postalCode,
+                streetAddress: card.streetAddress,
+                extendedAddress: card.extendedAddress,
+                locality: card.locality,
+                region: card.region,
+                countryName: card.countryName,
+                countryCodeAlpha2: card.countryCodeAlpha2,
+                countryCodeAlpha3: card.countryCodeAlpha3,
+                countryCodeNumeric: card.countryCodeNumeric
+            )
+        }
 
-    init(variables: Variables, query: String, operationName: String) {
+
+        let options = Self.Variables.Input.Options(validate: shouldValidate)
+
+        var input = CreditCardGraphQLBody.Variables.Input(
+            creditCard: cardBody,
+            options: options
+        )
+
+        let variables = CreditCardGraphQLBody.Variables(input: input)
+
+        if authenticationInsightRequested {
+            if let merchantAccountID {
+                let merchantAccountID = CreditCardGraphQLBody
+                    .Variables
+                    .Input
+                    .AuthenticationInsightInput(
+                        merchantAccountId: merchantAccountID
+                    )
+
+                input.authenticationInsightInput = merchantAccountID
+            } else {
+                let merchantAccountID = CreditCardGraphQLBody
+                    .Variables
+                    .Input
+                    .AuthenticationInsightInput()
+
+                input.authenticationInsightInput = merchantAccountID
+            }
+        }
+
         self.variables = variables
-        self.query = query
-        self.operationName = operationName
+        self.query = Self.cardTokenizationGraphQLMutation(authenticationInsightRequested: authenticationInsightRequested)
+        self.operationName = "TokenizeCreditCard"
     }
 
     struct Variables: Encodable {
@@ -157,5 +216,61 @@ struct CreditCardGraphQLBody: Encodable {
                 }
             }
         }
+    }
+    
+    static func cardTokenizationGraphQLMutation(authenticationInsightRequested: Bool) -> String {
+        var mutation = "mutation TokenizeCreditCard($input: TokenizeCreditCardInput!"
+
+        if authenticationInsightRequested {
+            mutation.append(", $authenticationInsightInput: AuthenticationInsightInput!")
+        }
+
+        // swiftlint:disable indentation_width
+        mutation.append(
+            """
+            ) {
+              tokenizeCreditCard(input: $input) {
+                token
+                creditCard {
+                  brand
+                  expirationMonth
+                  expirationYear
+                  cardholderName
+                  last4
+                  bin
+                  binData {
+                    prepaid
+                    healthcare
+                    debit
+                    durbinRegulated
+                    commercial
+                    payroll
+                    issuingBank
+                    countryOfIssuance
+                    productId
+                  }
+                }
+            """
+        )
+
+        if authenticationInsightRequested {
+            mutation.append(
+                """
+                    authenticationInsight(input: $authenticationInsightInput) {
+                      customerAuthenticationRegulationEnvironment
+                    }
+                """
+            )
+        }
+
+        mutation.append(
+            """
+              }
+            }
+            """
+        )
+        // swiftlint:enable indentation_width
+
+        return mutation.replacingOccurrences(of: "\n", with: "")
     }
 }

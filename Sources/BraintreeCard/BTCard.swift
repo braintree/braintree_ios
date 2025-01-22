@@ -102,223 +102,97 @@ import BraintreeCore
         
         return creditCardBody
     }
-    
-    func graphQLParameters() -> CreditCardGraphQLBody {
-        var cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
-            number: number,
-            expirationMonth: expirationMonth,
-            cvv: cvv,
-            expirationYear: expirationYear,
-            cardHolderName: cardholderName
-        )
-        
-        if firstName != nil {
-            cardBody.billingAddress = CreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress(
-                firstName: firstName,
-                lastName: lastName,
-                company: company,
-                postalCode: postalCode,
-                streetAddress: streetAddress,
-                extendedAddress: extendedAddress,
-                locality: locality,
-                region: region,
-                countryName: countryName,
-                countryCodeAlpha2: countryCodeAlpha2,
-                countryCodeAlpha3: countryCodeAlpha3,
-                countryCodeNumeric: countryCodeNumeric
-            )
-        }
 
-        
-        let options = CreditCardGraphQLBody.Variables.Input.Options(validate: shouldValidate)
-        
-        var input = CreditCardGraphQLBody.Variables.Input(
-            creditCard: cardBody,
-            options: options
-        )
-        
-        let variables = CreditCardGraphQLBody.Variables(input: input)
-        
-        if authenticationInsightRequested {
-            if let merchantAccountID {
-                let merchantAccountID = CreditCardGraphQLBody
-                    .Variables
-                    .Input
-                    .AuthenticationInsightInput(
-                        merchantAccountId: merchantAccountID
-                    )
-                
-                input.authenticationInsightInput = merchantAccountID
-            } else {
-                let merchantAccountID = CreditCardGraphQLBody
-                    .Variables
-                    .Input
-                    .AuthenticationInsightInput()
-                
-                input.authenticationInsightInput = merchantAccountID
-            }
-        }
-        
-        let body = CreditCardGraphQLBody(
-            variables: variables,
-            query: cardTokenizationGraphQLMutation(),
-            operationName: "TokenizeCreditCard"
-        )
-
-        inspectEncodable(body)
-        return body
-    }
-    
-    func inspectEncodable<T: Encodable>(_ object: T) {
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys] // Optional formatting
-            let jsonData = try encoder.encode(object)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("Encoded Object:\n\(jsonString)")
-            }
-        } catch {
-            print("Failed to encode object: \(error)")
-        }
-    }
+func graphQLParameters() -> CreditCardGraphQLBody {
+    return CreditCardGraphQLBody(
+        card: self,
+        shouldValidate: shouldValidate,
+        authenticationInsightRequested: authenticationInsightRequested,
+        merchantAccountID: merchantAccountID
+    )
+}
 
     // MARK: - Private Methods
 
-    private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
-        var cardDictionary: [String: Any] = [:]
-
-        if let number {
-            cardDictionary["number"] = number
-        }
-
-        if let expirationMonth {
-            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
-        }
-
-        if let expirationYear {
-            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
-        }
-
-        if let cvv {
-            cardDictionary["cvv"] = cvv
-        }
-
-        if let cardholderName {
-            cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
-        }
-
-        return cardDictionary
-    }
+//    private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
+//        var cardDictionary: [String: Any] = [:]
+//
+//        if let number {
+//            cardDictionary["number"] = number
+//        }
+//
+//        if let expirationMonth {
+//            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
+//        }
+//
+//        if let expirationYear {
+//            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
+//        }
+//
+//        if let cvv {
+//            cardDictionary["cvv"] = cvv
+//        }
+//
+//        if let cardholderName {
+//            cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
+//        }
+//
+//        return cardDictionary
+//    }
 
     // swiftlint:disable cyclomatic_complexity
-    private func buildBillingAddressDictionary(isGraphQL: Bool) -> [String: String] {
-        var billingAddressDictionary: [String: String] = [:]
-
-        if let firstName {
-            billingAddressDictionary[isGraphQL ? "firstName" : "first_name"] = firstName
-        }
-
-        if let lastName {
-            billingAddressDictionary[isGraphQL ? "lastName" : "last_name"] = lastName
-        }
-
-        if let company {
-            billingAddressDictionary["company"] = company
-        }
-
-        if let postalCode {
-            billingAddressDictionary[isGraphQL ? "postalCode" : "postal_code"] = postalCode
-        }
-
-        if let streetAddress {
-            billingAddressDictionary[isGraphQL ? "streetAddress" : "street_address"] = streetAddress
-        }
-
-        if let extendedAddress {
-            billingAddressDictionary[isGraphQL ? "extendedAddress" : "extended_address"] = extendedAddress
-        }
-
-        if let locality {
-            billingAddressDictionary["locality"] = locality
-        }
-
-        if let region {
-            billingAddressDictionary["region"] = region
-        }
-
-        if let countryName {
-            billingAddressDictionary[isGraphQL ? "countryName" : "country_name"] = countryName
-        }
-
-        if let countryCodeAlpha2 {
-            billingAddressDictionary[isGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"] = countryCodeAlpha2
-        }
-
-        if let countryCodeAlpha3 {
-            billingAddressDictionary[isGraphQL ? "countryCode" : "country_code_alpha3"] = countryCodeAlpha3
-        }
-
-        if let countryCodeNumeric {
-            billingAddressDictionary[isGraphQL ? "countryCodeNumeric" : "country_code_numeric"] = countryCodeNumeric
-        }
-
-        return billingAddressDictionary
-    }
+//    private func buildBillingAddressDictionary(isGraphQL: Bool) -> [String: String] {
+//        var billingAddressDictionary: [String: String] = [:]
+//
+//        if let firstName {
+//            billingAddressDictionary[isGraphQL ? "firstName" : "first_name"] = firstName
+//        }
+//
+//        if let lastName {
+//            billingAddressDictionary[isGraphQL ? "lastName" : "last_name"] = lastName
+//        }
+//
+//        if let company {
+//            billingAddressDictionary["company"] = company
+//        }
+//
+//        if let postalCode {
+//            billingAddressDictionary[isGraphQL ? "postalCode" : "postal_code"] = postalCode
+//        }
+//
+//        if let streetAddress {
+//            billingAddressDictionary[isGraphQL ? "streetAddress" : "street_address"] = streetAddress
+//        }
+//
+//        if let extendedAddress {
+//            billingAddressDictionary[isGraphQL ? "extendedAddress" : "extended_address"] = extendedAddress
+//        }
+//
+//        if let locality {
+//            billingAddressDictionary["locality"] = locality
+//        }
+//
+//        if let region {
+//            billingAddressDictionary["region"] = region
+//        }
+//
+//        if let countryName {
+//            billingAddressDictionary[isGraphQL ? "countryName" : "country_name"] = countryName
+//        }
+//
+//        if let countryCodeAlpha2 {
+//            billingAddressDictionary[isGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"] = countryCodeAlpha2
+//        }
+//
+//        if let countryCodeAlpha3 {
+//            billingAddressDictionary[isGraphQL ? "countryCode" : "country_code_alpha3"] = countryCodeAlpha3
+//        }
+//
+//        if let countryCodeNumeric {
+//            billingAddressDictionary[isGraphQL ? "countryCodeNumeric" : "country_code_numeric"] = countryCodeNumeric
+//        }
+//
+//        return billingAddressDictionary
+//    }
     // swiftlint:enable cyclomatic_complexity
-
-    private func cardTokenizationGraphQLMutation() -> String {
-        var mutation = "mutation TokenizeCreditCard($input: TokenizeCreditCardInput!"
-
-        if authenticationInsightRequested {
-            mutation.append(", $authenticationInsightInput: AuthenticationInsightInput!")
-        }
-
-        // swiftlint:disable indentation_width
-        mutation.append(
-            """
-            ) {
-              tokenizeCreditCard(input: $input) {
-                token
-                creditCard {
-                  brand
-                  expirationMonth
-                  expirationYear
-                  cardholderName
-                  last4
-                  bin
-                  binData {
-                    prepaid
-                    healthcare
-                    debit
-                    durbinRegulated
-                    commercial
-                    payroll
-                    issuingBank
-                    countryOfIssuance
-                    productId
-                  }
-                }
-            """
-        )
-
-        if authenticationInsightRequested {
-            mutation.append(
-                """
-                    authenticationInsight(input: $authenticationInsightInput) {
-                      customerAuthenticationRegulationEnvironment
-                    }
-                """
-            )
-        }
-
-        mutation.append(
-            """
-              }
-            }
-            """
-        )
-        // swiftlint:enable indentation_width
-
-        return mutation.replacingOccurrences(of: "\n", with: "")
-    }
 }
