@@ -1,5 +1,18 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
+* BraintreeShopperInsights (BETA)
+  * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
+  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+  * Replace `sendPayPalPresentedEvent()` and `sendPayPalPresentedEvent()` with `sendPresentedEvent(for:presentmentDetails:)`
+  * Add values to the following parameters to `presentmentDetails`:
+    * `experimentType`
+    * `pageType`
+    * `buttonOrder`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
+  
 ## 6.26.0 (2025-01-21)
 * BraintreePayPal
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
