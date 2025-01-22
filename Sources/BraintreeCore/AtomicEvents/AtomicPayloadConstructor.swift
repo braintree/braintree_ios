@@ -38,6 +38,7 @@ struct AtomicPayloadConstructor : AtomicPayloadConstructorProviding{
         timerEventPayload.value.metricEventName = metricType.metricEventName
         timerEventPayload.value.metricType = metricType.metricType
         timerEventPayload.value.metricId = metricType.metricId
+        timerEventPayload.value.dimensions.interactionType = nil
         timerEventPayload.value.metricValue = Date().millisecondsSince1970 - startTime
         return timerEventPayload
     }

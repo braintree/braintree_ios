@@ -27,11 +27,17 @@ class AtomicEventLogger : AtomicEventLoggerProviding{
         guard let url = URL(string: "\(baseURLString)/xoplatform/logger/api/ae/") else{
             return
         }
-        do{
+        do {
             var urlRequest = URLRequest(url: url)
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try JSONSerialization.data(withJSONObject: properties)
             urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            if let jsonData = urlRequest.httpBody,
+               let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Payload:")
+                print(jsonString)
+            }
             
             session.dataTask(with: urlRequest) { data, response, error in
                 if let error = error {
