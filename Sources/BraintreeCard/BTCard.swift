@@ -103,7 +103,7 @@ import BraintreeCore
         return creditCardBody
     }
 
-    func graphQLParameters() -> CreditCardGraphQLBody {
+    func parameters() -> CreditCardGraphQLBody {
         return CreditCardGraphQLBody(
             card: self,
             shouldValidate: shouldValidate,

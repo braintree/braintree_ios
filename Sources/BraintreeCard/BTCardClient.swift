@@ -51,7 +51,7 @@ import BraintreeCore
                     return
                 }
 
-                let parameters = card.graphQLParameters()
+                let parameters = card.parameters()
 
                 self.apiClient.post("", parameters: parameters, httpType: .graphQLAPI) { body, _, error in
                     if let error = error as NSError? {
