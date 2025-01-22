@@ -87,7 +87,7 @@ import BraintreeCore
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
         var creditCardBody = CreditCardPOSTBody(card: self)
         
-        var meta = CreditCardPOSTBody.Meta(
+        let meta = CreditCardPOSTBody.Meta(
             integration: apiClient.metadata.integration.stringValue,
             source: apiClient.metadata.source.stringValue,
             sessionId: apiClient.metadata.sessionID
