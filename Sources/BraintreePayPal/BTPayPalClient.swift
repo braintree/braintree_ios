@@ -366,13 +366,6 @@ import BraintreeDataCollector
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    guard let token = self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken else {
-                        self.notifyFailure(
-                            with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
-                            completion: completion
-                        )
-                        return
-                    }
                     self.launchPayPalApp(with: url, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -397,6 +390,7 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
+        
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
         
         guard let redirectURL = urlComponents?.url else {
