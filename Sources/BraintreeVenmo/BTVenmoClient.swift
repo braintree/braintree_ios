@@ -89,7 +89,10 @@ import BraintreeCore
                     "%@ Venmo requires a return URL scheme or universal link to be configured.",
                     BTLogLevelDescription.string(for: .critical)
                 )
-                notifyFailure(with: BTVenmoError.appNotAvailable, completion: completion)
+                notifyFailure(
+                    with: BTVenmoError.invalidReturnURL("Venmo requires a return URL scheme or universal link to be configured."),
+                    completion: completion
+                )
                 return
             } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
                 NSLog(
