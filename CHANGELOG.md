@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.27.0 (2025-01-23)
 * BraintreePayPal
   * Add `BTContactInformation` request object
   * Add `BTPayPalCheckoutRequest.contactInformation` optional property
