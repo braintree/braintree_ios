@@ -259,7 +259,7 @@ import Foundation
         payPalContextID: String? = nil,
         appSwitchURL: URL? = nil
     ) {
-        print("🚀")
+        print("🚀 package 🚀")
         analyticsService.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 appSwitchURL: appSwitchURL,
