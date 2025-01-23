@@ -8,22 +8,19 @@ class VenmoViewController: PaymentButtonBaseViewController {
 
     let webFallbackToggle = Toggle(title: "Enable Web Fallback")
     let vaultToggle = Toggle(title: "Vault")
+    let universalLinkReturnToggle = Toggle(title: "Use Universal Link Return")
 
     override func viewDidLoad() {
         super.heightConstraint = 150
         super.viewDidLoad()
-        venmoClient = BTVenmoClient(
-            apiClient: apiClient,
-            // swiftlint:disable:next force_unwrapping
-            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-        )
+        venmoClient = BTVenmoClient(apiClient: apiClient)
         title = "Custom Venmo Button"
     }
     
     override func createPaymentButton() -> UIView {
         let venmoButton = createButton(title: "Venmo", action: #selector(tappedVenmo))
 
-        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, venmoButton])
+        let stackView = UIStackView(arrangedSubviews: [webFallbackToggle, vaultToggle, universalLinkReturnToggle, venmoButton])
         stackView.axis = .vertical
         stackView.spacing = 15
         stackView.alignment = .fill
@@ -44,6 +41,14 @@ class VenmoViewController: PaymentButtonBaseViewController {
         
         if vaultToggle.isOn {
             venmoRequest.vault = true
+        }
+
+        if universalLinkReturnToggle.isOn {
+            venmoClient = BTVenmoClient(
+                apiClient: apiClient,
+                // swiftlint:disable:next force_unwrapping
+                universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+            )
         }
 
         Task {
