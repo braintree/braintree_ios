@@ -83,21 +83,26 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
-        if returnURLScheme.isEmpty {
-            NSLog(
-                "%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]",
-                BTLogLevelDescription.string(for: .critical)
-            )
-            notifyFailure(with: BTVenmoError.appNotAvailable, completion: completion)
-            return
-        } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
-            NSLog(
-                // swiftlint:disable:next line_length
-                "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
-                BTLogLevelDescription.string(for: .critical),
-                bundleIdentifier,
-                returnURLScheme
-            )
+        if universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil {
+            if returnURLScheme.isEmpty {
+                NSLog(
+                    "%@ Venmo requires a return URL scheme or universal link to be configured.",
+                    BTLogLevelDescription.string(for: .critical)
+                )
+                notifyFailure(
+                    with: BTVenmoError.invalidReturnURL("Venmo requires a return URL scheme or universal link to be configured."),
+                    completion: completion
+                )
+                return
+            } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
+                NSLog(
+                    // swiftlint:disable:next line_length
+                    "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
+                    BTLogLevelDescription.string(for: .critical),
+                    bundleIdentifier,
+                    returnURLScheme
+                )
+            }
         }
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
