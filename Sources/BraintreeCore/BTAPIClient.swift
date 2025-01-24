@@ -425,11 +425,11 @@ import Foundation
     
     //MARK: - AtomicEvents Methods
     
-    public func sendAtomicStartEvent(_ event : AtomicLoggerEventModel){
-        atomicEventService.trackStart(event: event)
+    public func sendAtomicStartEvent(_ event: AtomicLoggerEventModel) {
+        atomicEventService.logCIStartEvent(event)
     }
     
-    public func sendAtomicEndvent(_ event : AtomicLoggerEventModel, startTime : Int64? = nil){
-        atomicEventService.trackEnd(event: event,startTime: startTime)
+    public func sendAtomicEndvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
+        atomicEventService.logCIEndEvent(event, startTime: startTime)
     }
 }
