@@ -21,10 +21,6 @@ Pod::Spec.new do |s|
 
   s.default_subspecs = %w[Core Card PayPal]
 
-  s.pod_target_xcconfig = {
-    'OTHER_SWIFT_FLAGS' => '-package-name btCore'
-  }
-
   s.subspec "AmericanExpress" do |s|
     s.source_files  = "Sources/BraintreeAmericanExpress/**/*.{swift}"
     s.dependency "Braintree/Core"
