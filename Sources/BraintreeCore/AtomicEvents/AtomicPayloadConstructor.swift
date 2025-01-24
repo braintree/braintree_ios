@@ -7,21 +7,21 @@
 
 import Foundation
 
-protocol AtomicPayloadConstructorProviding{
-    func getStartEventPayload(model : AtomicLoggerEventModel) -> [[String : Any]]?
-    func getEndEventPayload(model : AtomicLoggerEventModel, startTime : Int64?) -> [[String : Any]]?
+protocol AtomicPayloadConstructorProviding {
+    func getStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]?
+    func getEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64?) -> [[String: Any]]?
 }
 
 
-struct AtomicPayloadConstructor : AtomicPayloadConstructorProviding{
+struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
     
-    func getStartEventPayload(model : AtomicLoggerEventModel) -> [[String : Any]]?{
+    func getStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]? {
         let start = getPayload(model: model)
         return convertJson(payloads: [start])
     }
     
-    func getEndEventPayload(model : AtomicLoggerEventModel, startTime : Int64? = nil) -> [[String : Any]]?{
-        var payloads : [AnalyticsPayload] = []
+    func getEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64? = nil) -> [[String: Any]]? {
+        var payloads: [AnalyticsPayload] = []
         let end = getPayload(model: model)
         payloads.append(end)
         if let startTime = startTime{
@@ -32,7 +32,7 @@ struct AtomicPayloadConstructor : AtomicPayloadConstructorProviding{
         return convertJson(payloads: payloads)
     }
     
-    private func getHistogramPayload(endEventPayload : AnalyticsPayload,startTime: Int64) -> AnalyticsPayload{
+    private func getHistogramPayload(endEventPayload: AnalyticsPayload, startTime: Int64) -> AnalyticsPayload {
         var timerEventPayload = endEventPayload
         let metricType = AtomicLoggerMetricEventType.exponentialTime
         timerEventPayload.value.metricEventName = metricType.metricEventName
@@ -43,7 +43,7 @@ struct AtomicPayloadConstructor : AtomicPayloadConstructorProviding{
         return timerEventPayload
     }
     
-    private func getPayload(model : AtomicLoggerEventModel) -> AnalyticsPayload{
+    private func getPayload(model: AtomicLoggerEventModel) -> AnalyticsPayload {
         return .init(type: "metric",
                      value: .init(
                         dimensions: .init(
@@ -69,18 +69,17 @@ struct AtomicPayloadConstructor : AtomicPayloadConstructorProviding{
                         metricType: model.metricType.metricType))
     }
     
-    private func convertJson(payloads : [AnalyticsPayload]) -> [[String : Any]]?{
+    private func convertJson(payloads: [AnalyticsPayload]) -> [[String: Any]]? {
         do {
-                let jsonData = try JSONEncoder().encode(payloads)
-                if let jsonArray = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] {
-                    return jsonArray
-                }
-            } catch {
-                print("Error during conversion: \(error)")
+            let jsonData = try JSONEncoder().encode(payloads)
+            if let jsonArray = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] {
+                return jsonArray
             }
-            return nil
+        } catch {
+            print("Error during conversion: \(error)")
+        }
+        return nil
     }
-    
 }
 
 
@@ -93,26 +92,26 @@ struct AnalyticsPayload: Codable {
         var metricEventName: String
         var metricId: String
         var metricType: String
-        var metricValue : Int64?
+        var metricValue: Int64?
         
         struct Dimensions: Codable {
             var domain: String?
-            var startDomain : String?
-            var wasResumed : String?
-            var isCrossApp : String?
+            var startDomain: String?
+            var wasResumed: String?
+            var isCrossApp: String?
             var interaction: String
-            var status : String?
+            var status: String?
             var interactionType: String?
             var navType: String?
             var task: String?
             var flow: String?
-            var viewName : String?
-            var startViewName : String?
-            var startTask : String?
-            var startPath : String?
+            var viewName: String?
+            var startViewName: String?
+            var startTask: String?
+            var startPath: String?
             var path: String?
             var atomicLibVersion: String?
-            var component : String? = "ios_app"
+            var component: String? = "ios_app"
             
             enum CodingKeys: String, CodingKey {
                 case domain

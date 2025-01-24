@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol AtomicEventTimerProviding{
+protocol AtomicEventTimerProviding {
     func recordStartTime(for interaction: String)
     func getStartTime(for interaction: String) -> Int64?
 }
 
-class AtomicEventTimerHandler : AtomicEventTimerProviding{
+class AtomicEventTimerHandler: AtomicEventTimerProviding {
     private var startTimes: [String: Int64] = [:]
      
     func recordStartTime(for interaction: String) {

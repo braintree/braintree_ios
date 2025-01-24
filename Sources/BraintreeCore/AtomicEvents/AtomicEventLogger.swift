@@ -7,13 +7,12 @@
 
 import Foundation
 
-protocol AtomicEventLoggerProviding{
-    func log(_ event: String, with properties: [[String : Any]])
+protocol AtomicEventLoggerProviding {
+    func log(_ event: String, with properties: [[String: Any]])
 }
 
-class AtomicEventLogger : AtomicEventLoggerProviding{
-    
-    private let baseURLString : String
+class AtomicEventLogger: AtomicEventLoggerProviding {
+    private let baseURLString: String
     
     init(baseURLString: String = "https://www.msmaster.qa.paypal.com") {
         self.baseURLString = baseURLString
@@ -23,8 +22,8 @@ class AtomicEventLogger : AtomicEventLoggerProviding{
         URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
     }()
     
-    func log(_ event: String, with properties: [[String : Any]]) {
-        guard let url = URL(string: "\(baseURLString)/xoplatform/logger/api/ae/") else{
+    func log(_ event: String, with properties: [[String: Any]]) {
+        guard let url = URL(string: "\(baseURLString)/xoplatform/logger/api/ae/") else {
             return
         }
         do {
@@ -46,7 +45,7 @@ class AtomicEventLogger : AtomicEventLoggerProviding{
                     print("Analytics Event Sent: \(event)")
                 }
             }.resume()
-        }catch{
+        } catch {
             debugPrint(error)
         }
     }
