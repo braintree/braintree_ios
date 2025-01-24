@@ -8,30 +8,49 @@
 import Foundation
 
 public struct AtomicLoggerEventModel {
-    var metricType: AtomicLoggerMetricEventType
-    var domain: AtomicLoggerDomain?
-    var startDomain: AtomicLoggerDomain?
-    var wasResumed: String?
-    var isCrossApp: String?
-    var interaction: String
-    var status: String?
-    var interactionType: String?
-    var navType: String?
-    var task: String?
-    var flow: String?
-    var viewName: String?
-    var startViewName: String?
-    var startTask: String?
-    var startPath: String?
-    var path: String?
-    var atomicLibVersion: String? = "0.16.0"
+    let metricType: AtomicLoggerMetricEventType
+    let domain: AtomicLoggerDomain?
+    let startDomain: AtomicLoggerDomain?
+    let wasResumed: String?
+    let isCrossApp: String?
+    let interaction: String
+    let status: String?
+    let interactionType: String?
+    let navType: String?
+    let task: String?
+    let flow: String?
+    let viewName: String?
+    let startViewName: String?
+    let startTask: String?
+    let startPath: String?
+    let path: String?
+    let atomicLibVersion: String? = AtomicCoreConstants.version
+    
+    init(metricType: AtomicLoggerMetricEventType, domain: AtomicLoggerDomain? = nil, startDomain: AtomicLoggerDomain? = nil, wasResumed: String? = nil, isCrossApp: String? = nil, interaction: String, status: String? = nil, interactionType: String? = nil, navType: String? = nil, task: String? = nil, flow: String? = nil, viewName: String? = nil, startViewName: String? = nil, startTask: String? = nil, startPath: String? = nil, path: String? = nil) {
+        self.metricType = metricType
+        self.domain = domain
+        self.startDomain = startDomain
+        self.wasResumed = wasResumed
+        self.isCrossApp = isCrossApp
+        self.interaction = interaction
+        self.status = status
+        self.interactionType = interactionType
+        self.navType = navType
+        self.task = task
+        self.flow = flow
+        self.viewName = viewName
+        self.startViewName = startViewName
+        self.startTask = startTask
+        self.startPath = startPath
+        self.path = path
+    }
 }
 
 extension AtomicLoggerEventModel {
     public static func getPayWithPayPalCIStart(task: String, flow: String) -> AtomicLoggerEventModel {
         return .init(metricType: .start,
                      domain: .btSDK,
-                     interaction: "Pay_With_Paypal",
+                     interaction: AtomicCoreConstants.payWithPaypal,
                      interactionType: "click",
                      navType: "navigate",
                      task: task,
@@ -40,7 +59,7 @@ extension AtomicLoggerEventModel {
     }
     
     public static func getPayWithPayPalEnd(task: String, flow: String) -> AtomicLoggerEventModel {
-        return .init(metricType: .end, interaction: "Pay_With_Paypal")
+        return .init(metricType: .end, interaction: AtomicCoreConstants.payWithPaypal)
     }
 }
 

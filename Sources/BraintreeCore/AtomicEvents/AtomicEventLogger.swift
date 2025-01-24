@@ -12,10 +12,12 @@ protocol AtomicEventLoggerProviding {
 }
 
 class AtomicEventLogger: AtomicEventLoggerProviding {
-    private let baseURLString: String
+    private var baseURLString: String = AtomicCoreConstants.URL.baseUrl
     
-    init(baseURLString: String = "https://www.msmaster.qa.paypal.com") {
-        self.baseURLString = baseURLString
+    init(baseURLString: String? = nil) {
+        if let baseURLString {
+            self.baseURLString = baseURLString
+        }
     }
     
     private lazy var session: URLSession = {
@@ -30,19 +32,19 @@ class AtomicEventLogger: AtomicEventLoggerProviding {
             var urlRequest = URLRequest(url: url)
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = try JSONSerialization.data(withJSONObject: properties)
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.setValue(AtomicCoreConstants.URL.applicationJson,
+                                forHTTPHeaderField: AtomicCoreConstants.URL.contentType)
             
             if let jsonData = urlRequest.httpBody,
                let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("Payload:")
-                print(jsonString)
+                debugPrint("Payload: " + jsonString)
             }
             
             session.dataTask(with: urlRequest) { data, response, error in
                 if let error = error {
-                    print("Analytics Error: \(error.localizedDescription)")
+                    debugPrint("Analytics Error: \(error.localizedDescription)")
                 } else {
-                    print("Analytics Event Sent: \(event)")
+                    debugPrint("Analytics Event Sent: \(event)")
                 }
             }.resume()
         } catch {

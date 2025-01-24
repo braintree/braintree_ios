@@ -23,7 +23,7 @@ final class AtomicCoreManager {
     
     //MARK: - Track start and End
     func logCIStartEvent(_ event: AtomicLoggerEventModel) {
-        guard let parameters = payloadConstructor.getStartEventPayload(model: event) else {
+        guard let parameters = payloadConstructor.getCIStartEventPayload(model: event) else {
             return
         }
         let interaction = event.interaction
@@ -34,7 +34,7 @@ final class AtomicCoreManager {
     func logCIEndEvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
         let interaction = event.interaction
         let startTime = startTime ?? eventTimerManager.getStartTime(for: interaction)
-        guard let parameters = payloadConstructor.getEndEventPayload(model: event,startTime: startTime) else {
+        guard let parameters = payloadConstructor.getCIEndEventPayload(model: event,startTime: startTime) else {
             return
         }
         atomicEventLogger.log(interaction, with: parameters)

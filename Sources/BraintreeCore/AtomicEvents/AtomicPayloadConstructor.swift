@@ -8,28 +8,25 @@
 import Foundation
 
 protocol AtomicPayloadConstructorProviding {
-    func getStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]?
-    func getEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64?) -> [[String: Any]]?
+    func getCIStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]?
+    func getCIEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64?) -> [[String: Any]]?
 }
 
-
 struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
-    
-    func getStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]? {
+    func getCIStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]? {
         let start = getPayload(model: model)
-        return convertJson(payloads: [start])
+        return convertToJson(payloads: [start])
     }
     
-    func getEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64? = nil) -> [[String: Any]]? {
+    func getCIEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64? = nil) -> [[String: Any]]? {
         var payloads: [AnalyticsPayload] = []
         let end = getPayload(model: model)
         payloads.append(end)
-        if let startTime = startTime{
+        if let startTime = startTime {
             let timer = getHistogramPayload(endEventPayload: end, startTime: startTime)
             payloads.append(timer)
         }
-        
-        return convertJson(payloads: payloads)
+        return convertToJson(payloads: payloads)
     }
     
     private func getHistogramPayload(endEventPayload: AnalyticsPayload, startTime: Int64) -> AnalyticsPayload {
@@ -44,7 +41,7 @@ struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
     }
     
     private func getPayload(model: AtomicLoggerEventModel) -> AnalyticsPayload {
-        return .init(type: "metric",
+        return .init(type: AtomicCoreConstants.metric,
                      value: .init(
                         dimensions: .init(
                             domain: model.domain?.rawValue,
@@ -69,19 +66,18 @@ struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
                         metricType: model.metricType.metricType))
     }
     
-    private func convertJson(payloads: [AnalyticsPayload]) -> [[String: Any]]? {
+    private func convertToJson(payloads: [AnalyticsPayload]) -> [[String: Any]]? {
         do {
             let jsonData = try JSONEncoder().encode(payloads)
             if let jsonArray = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] {
                 return jsonArray
             }
         } catch {
-            print("Error during conversion: \(error)")
+            debugPrint("Error during conversion: \(error)")
         }
         return nil
     }
 }
-
 
 struct AnalyticsPayload: Codable {
     var type: String
