@@ -80,6 +80,7 @@ import BraintreeCore
     var requestBillingAgreement: Bool
     var riskCorrelationID: String?
     var shippingAddressOverride: BTPostalAddress?
+    var shippingCallbackURL: URL?
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
     
@@ -129,6 +130,7 @@ import BraintreeCore
         requestBillingAgreement: Bool = false,
         riskCorrelationID: String? = nil,
         shippingAddressOverride: BTPostalAddress? = nil,
+        shippingCallbackURL: URL? = nil,
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
@@ -149,6 +151,7 @@ import BraintreeCore
         self.requestBillingAgreement = requestBillingAgreement
         self.riskCorrelationID = riskCorrelationID
         self.shippingAddressOverride = shippingAddressOverride
+        self.shippingCallbackURL = shippingCallbackURL
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
