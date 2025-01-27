@@ -39,8 +39,14 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 11. App Switch could not complete
     case appSwitchFailed
     
+    /// 12. Missing BA Token for App Switch
+    case missingBAToken
+    
     /// 13. Missing PayPal Request
     case missingPayPalRequest
+    
+    /// 14. Missing EC Token for App Switch
+    case missingECToken
 
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
@@ -72,8 +78,12 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 10
         case .appSwitchFailed:
             return 11
-        case .missingPayPalRequest:
+        case .missingBAToken:
             return 12
+        case .missingPayPalRequest:
+            return 13
+        case .missingECToken:
+            return 14
         }
     }
 
@@ -105,8 +115,12 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "The App Switch return URL did not contain the cancel or success path."
         case .appSwitchFailed:
             return "UIApplication failed to perform app switch to PayPal."
+        case .missingBAToken:
+            return "Missing BA Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
+        case .missingECToken:
+            return "Missing EC Token for PayPal App Switch."
         }
     }
 

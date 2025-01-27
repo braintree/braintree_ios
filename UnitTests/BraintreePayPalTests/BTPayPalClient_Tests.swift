@@ -781,6 +781,35 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
     }
+    
+    func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+        
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?token=value1"
+            ]
+        ])
+        
+        let vaultRequest = BTPayPalVaultRequest(
+            userAuthenticationEmail: "fake@gmail.com",
+            enablePayPalAppSwitch: true
+        )
+        
+        let expectation = expectation(description: "completion block called")
+        payPalClient.tokenize(vaultRequest) { nonce, error in
+            XCTAssertNil(nonce)
+            
+            guard let error = error as NSError? else { XCTFail(); return }
+            XCTAssertEqual(error.code, 12)
+            XCTAssertEqual(error.localizedDescription, "Missing BA Token for PayPal App Switch.")
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTPayPalErrorDomain")
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1)
+    }
 
     func testTokenizeVaultAccount_whenOpenURLReturnsFalse_returnsError() {
         let fakeApplication = FakeApplication()
