@@ -79,9 +79,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
     
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
+    
+    let contactInformationToggle = Toggle(title: "Add Contact Information")
 
     override func viewDidLoad() {
-        super.heightConstraint = 400
+        super.heightConstraint = 500
         super.viewDidLoad()
     }
 
@@ -93,6 +95,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
             newPayPalCheckoutToggle,
+            contactInformationToggle,
             payPalCheckoutButton
         ])
         oneTimeCheckoutStackView.spacing = 12
@@ -151,6 +154,13 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 nationalNumber: nationalNumberTextField.text ?? ""
             )
         )
+
+        if contactInformationToggle.isOn {
+            request.contactInformation = BTContactInformation(
+                recipientEmail: "some@email.com",
+                recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+            )
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
