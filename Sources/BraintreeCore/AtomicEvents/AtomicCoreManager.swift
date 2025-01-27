@@ -34,6 +34,7 @@ final class AtomicCoreManager {
     func logCIEndEvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
         let interaction = event.interaction
         let startTime = startTime ?? eventTimerManager.getStartTime(for: interaction)
+        eventTimerManager.removeStartTime(for: interaction)
         guard let parameters = payloadConstructor.getCIEndEventPayload(model: event,startTime: startTime) else {
             return
         }

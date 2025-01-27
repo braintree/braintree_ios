@@ -15,4 +15,5 @@ struct AtomicCoreConstants {
     static let version = "0.16.0"
     static let metric = "metric"
     static let payWithPaypal = "Pay_With_Paypal"
+    static let component = "ios_app"
 }

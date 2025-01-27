@@ -107,7 +107,7 @@ struct AnalyticsPayload: Codable {
             var startPath: String?
             var path: String?
             var atomicLibVersion: String?
-            var component: String? = "ios_app"
+            var component: String? = AtomicCoreConstants.component
             
             enum CodingKeys: String, CodingKey {
                 case domain

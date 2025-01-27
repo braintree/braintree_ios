@@ -429,7 +429,7 @@ import Foundation
         atomicEventService.logCIStartEvent(event)
     }
     
-    public func sendAtomicEndvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
+    public func sendAtomicEndEvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
         atomicEventService.logCIEndEvent(event, startTime: startTime)
     }
 }

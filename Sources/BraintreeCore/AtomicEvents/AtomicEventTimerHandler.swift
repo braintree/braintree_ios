@@ -10,6 +10,7 @@ import Foundation
 protocol AtomicEventTimerProviding {
     func recordStartTime(for interaction: String)
     func getStartTime(for interaction: String) -> Int64?
+    func removeStartTime(for interaction: String)
 }
 
 class AtomicEventTimerHandler: AtomicEventTimerProviding {
@@ -21,5 +22,9 @@ class AtomicEventTimerHandler: AtomicEventTimerProviding {
     
     func getStartTime(for interaction: String) -> Int64? {
         return startTimes[interaction]
+    }
+    
+    func removeStartTime(for interaction: String) {
+        startTimes.removeValue(forKey: interaction)
     }
 }
