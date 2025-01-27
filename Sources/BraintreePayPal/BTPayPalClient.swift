@@ -366,12 +366,14 @@ import BraintreeDataCollector
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    guard let baToken = approvalURL.baToken else {
-                        self.notifyFailure(with: BTPayPalError.missingBAToken, completion: completion)
+                    guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
+                        self.notifyFailure(
+                            with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
+                            completion: completion
+                        )
                         return
                     }
-
-                    self.launchPayPalApp(with: url, baToken: baToken, completion: completion)
+                    self.launchPayPalApp(with: url, completion: completion)
                 case .webBrowser(let url):
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
                 }
@@ -381,7 +383,6 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
-        baToken: String,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent(
@@ -392,11 +393,12 @@ import BraintreeDataCollector
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "ba_token", value: baToken),
+        let additionalQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
         ]
+        
+        urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
         
         guard let redirectURL = urlComponents?.url else {
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
