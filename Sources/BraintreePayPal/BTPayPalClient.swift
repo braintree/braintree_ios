@@ -366,7 +366,7 @@ import BraintreeDataCollector
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
-                    guard let _ = self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken else {
+                    guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
                         self.notifyFailure(
                             with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
                             completion: completion
