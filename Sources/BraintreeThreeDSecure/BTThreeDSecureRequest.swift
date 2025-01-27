@@ -13,7 +13,6 @@ import BraintreeCore
     // MARK: - Internal Properties
     
     let amount: String
-    let nonce: String
     let accountType: BTThreeDSecureAccountType
     let additionalInformation: BTThreeDSecureAdditionalInformation?
     let billingAddress: BTThreeDSecurePostalAddress?
@@ -32,6 +31,7 @@ import BraintreeCore
     let requestorAppURL: String?
 
     var dfReferenceID: String?
+    var nonce: String
 
     // MARK: - Initializer
     
