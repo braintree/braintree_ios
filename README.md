@@ -8,13 +8,13 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
+**The Braintree iOS SDK permits a deployment target of iOS 16.0 or higher**. It requires Xcode 16.2+ and Swift 5.10+.
+
 ## 📣 Announcements
 
 - **Upgrade your integration to continue accepting Braintree payments** 📣 The SSL certificates for current iOS SDK versions (v5 and v6) are set to expire by June 31, 2025. Upgrade to v5.26.0+ and v6.17.0+, respectively, to continue using the Braintree SDK. [Click here for more details](https://github.com/braintree/braintree_ios/issues/1277)
 
 - v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
-
-**The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 15.0+ and Swift 5.9+.
 
 ## Supported Payment Methods
 

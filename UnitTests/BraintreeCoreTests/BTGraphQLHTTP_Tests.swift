@@ -175,7 +175,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         http?.post("", configuration: fakeConfiguration, parameters: nil) { body, _, _ in
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             let requestHeaders = httpRequest.allHTTPHeaderFields
-            XCTAssertEqual(requestHeaders!["Braintree-Version"], "2018-03-06")
+            XCTAssertEqual(requestHeaders!["Braintree-Version"], "2024-11-05")
             expectation.fulfill()
         }
 

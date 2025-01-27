@@ -1,17 +1,31 @@
 import Foundation
 
 /// Use this option to specify whether a line item is a debit (sale) or credit (refund) to the customer.
-@objc public enum BTPayPalLineItemKind: Int {
+@objc public enum BTPayPalLineItemKind: Int, Encodable {
     /// Debit
     case debit
 
     /// Credit
     case credit
+    
+    var stringValue: String {
+        switch self {
+        case .debit:
+            return "debit"
+        case .credit:
+            return "credit"
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
+    }
 }
 
 // swiftlint:disable identifier_name
 /// Use this option to specify  the UPC type of the line item.
-@objc public enum BTPayPalLineItemUPCType: Int {
+@objc public enum BTPayPalLineItemUPCType: Int, Encodable {
 
     /// Default
     case none
@@ -58,10 +72,15 @@ import Foundation
             return "UPC-5"
         }
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
+    }
 }
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
-@objcMembers public class BTPayPalLineItem: NSObject {
+@objcMembers public class BTPayPalLineItem: NSObject, Encodable {
 
     // MARK: - Public Properties
     
@@ -114,46 +133,17 @@ import Foundation
         self.kind = kind
     }
     
-    // MARK: - Internal Methods
-
-    /// Returns the line item in a dictionary.
-    /// - Returns: A dictionary with the line item information formatted for a request.
-    func requestParameters() -> [String: String] {
-        var requestParameters = [
-            "quantity": quantity,
-            "unit_amount": unitAmount,
-            "name": name,
-            "kind": kind == .debit ? "debit" : "credit"
-        ]
-
-        if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            requestParameters["unit_tax_amount"] = unitAmount
-        }
-
-        if let itemDescription, !itemDescription.isEmpty {
-            requestParameters["description"] = itemDescription
-        }
-
-        if let productCode, !productCode.isEmpty {
-            requestParameters["product_code"] = productCode
-        }
-
-        if let url, url != URL(string: "") {
-            requestParameters["url"] = url.absoluteString
-        }
-        
-        if let imageURL, imageURL != URL(string: "") {
-            requestParameters["image_url"] = imageURL.absoluteString
-        }
-
-        if let upcCode, !upcCode.isEmpty {
-            requestParameters["upc_code"] = upcCode
-        }
-        
-        if upcType.stringValue != nil {
-            requestParameters["upc_type"] = upcType.stringValue
-        }
-                
-        return requestParameters
+    enum CodingKeys: String, CodingKey {
+        case imageURL = "image_url"
+        case itemDescription = "description"
+        case kind
+        case name
+        case productCode = "product_code"
+        case quantity
+        case unitAmount = "unit_amount"
+        case unitTaxAmount = "unit_tax_amount"
+        case upcCode = "upc_code"
+        case upcType = "upc_type"
+        case url
     }
 }

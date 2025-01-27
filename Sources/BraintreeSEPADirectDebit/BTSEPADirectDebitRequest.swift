@@ -7,28 +7,15 @@ import BraintreeCore
 /// Parameters for creating a SEPA Direct Debit tokenization request.
 @objcMembers public class BTSEPADirectDebitRequest: NSObject {
 
-    /// Required. The account holder name.
-    public var accountHolderName: String?
-
-    /// Required. The full IBAN.
-    public var iban: String?
-
-    /// Required. The customer ID.
-    public var customerID: String?
+    // MARK: - Internal Properties
     
-    /// Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff`
-    public var mandateType: BTSEPADirectDebitMandateType?
-
-    /// Required. The user's billing address.
-    public var billingAddress: BTPostalAddress?
-
-    /// Optional. A non-default merchant account to use for tokenization.
-    public var merchantAccountID: String?
-
-    /// Optional. A locale code to use for creating a mandate.
-    /// See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
-    /// Locale code should be supplied as a BCP-47 formatted locale code.
-    public var locale: String?
+    var accountHolderName: String
+    var iban: String
+    var customerID: String
+    var billingAddress: BTPostalAddress
+    var mandateType: BTSEPADirectDebitMandateType?
+    var merchantAccountID: String?
+    var locale: String?
 
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
@@ -42,19 +29,19 @@ import BraintreeCore
     ///   See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
     ///   Locale code should be supplied as a BCP-47 formatted locale code.
     public init(
-        accountHolderName: String? = nil,
-        iban: String? = nil,
-        customerID: String? = nil,
+        accountHolderName: String,
+        iban: String,
+        customerID: String,
+        billingAddress: BTPostalAddress,
         mandateType: BTSEPADirectDebitMandateType? = .oneOff,
-        billingAddress: BTPostalAddress? = nil,
         merchantAccountID: String? = nil,
         locale: String? = nil
     ) {
         self.accountHolderName = accountHolderName
         self.iban = iban
         self.customerID = customerID
-        self.mandateType = mandateType
         self.billingAddress = billingAddress
+        self.mandateType = mandateType
         self.merchantAccountID = merchantAccountID
         self.locale = locale
     }

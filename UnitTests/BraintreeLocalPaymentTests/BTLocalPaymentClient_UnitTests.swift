@@ -13,12 +13,13 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        localPaymentRequest = BTLocalPaymentRequest()
-        localPaymentRequest.amount = "10"
-        localPaymentRequest.paymentType = "ideal"
-        mockAPIClient = MockAPIClient(authorization: tempClientToken)!
+        localPaymentRequest = BTLocalPaymentRequest(
+            paymentType: "ideal",
+            amount: "10",
+            currencyCode: "EUR"
+        )
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = "com.my-return-url-scheme"
+        mockAPIClient = MockAPIClient(authorization: tempClientToken)!
     }
     
     func testStartPayment_returnsErrorWhenConfigurationNil() {
@@ -45,38 +46,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.disabled.errorCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testStartPayment_returnsErrorWhenAmountIsNil() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
-        let expectation = expectation(description: "Start payment fails with error")
-        localPaymentRequest.amount = nil
-
-        client.startPaymentFlow(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
-            XCTAssertEqual(error.code, BTLocalPaymentError.integration.errorCode)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testStartPayment_returnsErrorWhenPaymentTypeIsNil() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
-        let client = BTLocalPaymentClient(apiClient: mockAPIClient)
-        let expectation = expectation(description: "Start payment fails with error")
-        localPaymentRequest.paymentType = nil
-
-        client.startPaymentFlow(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
-            XCTAssertEqual(error.code, BTLocalPaymentError.integration.errorCode)
             expectation.fulfill()
         }
 
@@ -113,27 +82,32 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        localPaymentRequest.merchantAccountID = "customer-nl-merchant-account"
-        localPaymentRequest.paymentType = "ideal"
-        localPaymentRequest.paymentTypeCountryCode = "NL"
-        localPaymentRequest.currencyCode = "EUR"
-        localPaymentRequest.amount = "1.01"
-        localPaymentRequest.givenName = "Linh"
-        localPaymentRequest.surname = "Ngo"
-        localPaymentRequest.phone = "639847934"
-        localPaymentRequest.address = BTPostalAddress()
-        localPaymentRequest.address!.countryCodeAlpha2 = "NL"
-        localPaymentRequest.address!.region = "CA"
-        localPaymentRequest.address!.postalCode = "2585 GJ"
-        localPaymentRequest.address!.streetAddress = "836486 of 22321 Park Lake"
-        localPaymentRequest.address!.extendedAddress = "#102"
-        localPaymentRequest.address!.locality = "Den Haag"
-        localPaymentRequest.email = "lingo-buyer@paypal.com"
-        localPaymentRequest.isShippingAddressRequired = true
-        localPaymentRequest.displayName = "My Brand!"
-        localPaymentRequest.bic = "111222333"
-
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        let postalAddress = BTPostalAddress()
+        postalAddress.countryCodeAlpha2 = "NL"
+        postalAddress.region = "CA"
+        postalAddress.postalCode = "2585 GJ"
+        postalAddress.streetAddress = "836486 of 22321 Park Lake"
+        postalAddress.extendedAddress = "#102"
+        postalAddress.locality = "Den Haag"
+        
+        let paymentRequest = BTLocalPaymentRequest(
+            paymentType: "ideal",
+            amount: "1.01",
+            currencyCode: "EUR",
+            paymentTypeCountryCode: "NL",
+            merchantAccountID: "customer-nl-merchant-account",
+            address: postalAddress,
+            displayName: "My Brand!",
+            email: "lingo-buyer@paypal.com",
+            givenName: "Linh",
+            surname: "Ngo",
+            phone: "639847934",
+            isShippingAddressRequired: true,
+            bic: "111222333"
+        )
+        paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
+        
+        client.startPaymentFlow(paymentRequest) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")

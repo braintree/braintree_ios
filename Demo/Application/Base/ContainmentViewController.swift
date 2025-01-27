@@ -231,8 +231,6 @@ class ContainmentViewController: UIViewController {
             return DataCollectorViewController(authorization: authorization)
         case "IdealViewController":
             return IdealViewController(authorization: authorization)
-        case "PayPalNativeCheckoutViewController":
-            return PayPalNativeCheckoutViewController(authorization: authorization)
         case "PayPalWebCheckoutViewController":
             return PayPalWebCheckoutViewController(authorization: authorization)
         case "SEPADirectDebitViewController":

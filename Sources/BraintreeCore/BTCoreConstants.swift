@@ -5,7 +5,7 @@ import Foundation
 @objcMembers public class BTCoreConstants: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public static var braintreeSDKVersion: String = "6.25.0"
+    public static var braintreeSDKVersion: String = "6.27.0"
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
@@ -14,11 +14,11 @@ import Foundation
     public static let venmoURLScheme: String = "com.venmo.touch.v2"
 
     /// URL Scheme for PayPal App
-    public static let payPalURLScheme: String = "paypal-app-switch-checkout"
+    public static let payPalURLScheme: String = "paypal"
 
     static let apiVersion: String = "2016-10-07"
     
-    static let graphQLVersion: String = "2018-03-06"
+    static let graphQLVersion: String = "2024-11-05"
 
     // swiftlint:disable force_unwrapping
     static let payPalProductionURL = URL(string: "https://api.paypal.com")!

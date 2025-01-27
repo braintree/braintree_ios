@@ -6,16 +6,7 @@ import BraintreeCore
 
 struct BTVenmoAppSwitchRedirectURL {
 
-    // MARK: - Internal Properties
-
-    /// The base app switch URL for Venmo. Does not include specific parameters.
-    static var baseAppSwitchURL: URL? {
-        appSwitchBaseURLComponents().url
-    }
-
     // MARK: - Private Properties
-
-    static private let xCallbackTemplate: String = "scheme://x-callback-url/path"
 
     private var queryParameters: [String: Any?] = [:]
 
@@ -24,8 +15,7 @@ struct BTVenmoAppSwitchRedirectURL {
     init(
         paymentContextID: String,
         metadata: BTClientMetadata,
-        returnURLScheme: String?,
-        universalLink: URL?,
+        universalLink: URL,
         forMerchantID merchantID: String?,
         accessToken: String?,
         bundleDisplayName: String?,
@@ -53,18 +43,11 @@ struct BTVenmoAppSwitchRedirectURL {
             "braintree_environment": environment,
             "resource_id": paymentContextID,
             "braintree_sdk_data": base64EncodedBraintreeData ?? "",
-            "customerClient": "MOBILE_APP"
+            "customerClient": "MOBILE_APP",
+            "x-success": universalLink.appendingPathComponent("success").absoluteString,
+            "x-error": universalLink.appendingPathComponent("error").absoluteString,
+            "x-cancel": universalLink.appendingPathComponent("cancel").absoluteString
         ]
-
-        if let universalLink {
-            queryParameters["x-success"] = universalLink.appendingPathComponent("success").absoluteString
-            queryParameters["x-error"] = universalLink.appendingPathComponent("error").absoluteString
-            queryParameters["x-cancel"] = universalLink.appendingPathComponent("cancel").absoluteString
-        } else if let returnURLScheme {
-            queryParameters["x-success"] = constructRedirectURL(with: returnURLScheme, result: "success")
-            queryParameters["x-error"] = constructRedirectURL(with: returnURLScheme, result: "error")
-            queryParameters["x-cancel"] = constructRedirectURL(with: returnURLScheme, result: "cancel")
-        }
     }
 
     // MARK: - Internal Methods
@@ -81,28 +64,5 @@ struct BTVenmoAppSwitchRedirectURL {
         urlComponent.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
 
         return urlComponent.url
-    }
-
-    func urlSchemeURL() -> URL? {
-        var components = BTVenmoAppSwitchRedirectURL.appSwitchBaseURLComponents()
-        components.percentEncodedQuery = BTURLUtils.queryString(from: queryParameters as NSDictionary)
-        
-        return components.url
-    }
-
-    // MARK: - Private Helper Methods
-
-    private func constructRedirectURL(with scheme: String, result: String) -> URL? {
-        var components = URLComponents(string: BTVenmoAppSwitchRedirectURL.xCallbackTemplate)
-        components?.scheme = scheme
-        components?.percentEncodedPath = "/vzero/auth/venmo/\(result)"
-        return components?.url
-    }
-
-    private static func appSwitchBaseURLComponents() -> URLComponents {
-        var components: URLComponents = URLComponents(string: xCallbackTemplate) ?? URLComponents()
-        components.scheme = BTCoreConstants.venmoURLScheme
-        components.percentEncodedPath = "/vzero/auth"
-        return components
     }
 }

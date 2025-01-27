@@ -59,8 +59,8 @@ import BraintreeCore
                 return
             }
 
-            if request.amount?.decimalValue.isNaN == true || request.amount == nil {
-                NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
+            if request.amount.isEmpty {
+                NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
                 let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
                 notifyFailure(with: error, completion: completion)
                 return
@@ -103,9 +103,9 @@ import BraintreeCore
             return
         }
 
-        guard request.nonce != nil else {
+        if request.nonce.isEmpty {
             notifyFailure(
-                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce can not be nil."),
+                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce cannot be an empty string."),
                 completion: completion
             )
             return
@@ -250,9 +250,16 @@ import BraintreeCore
                     request: request,
                     cardinalSession: cardinalSession
                 ) { lookupParameters in
-                    if let dfReferenceID = lookupParameters?["dfReferenceId"] {
-                        request.dfReferenceID = dfReferenceID
+                    guard let dfReferenceID = lookupParameters?["dfReferenceId"], !dfReferenceID.isEmpty else {
+                        completion(
+                            BTThreeDSecureError.failedLookup(
+                                [NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]
+                            )
+                        )
+                        return
                     }
+
+                    request.dfReferenceID = dfReferenceID
                     completion(nil)
                 }
             } else {
@@ -346,7 +353,7 @@ import BraintreeCore
             }
 
             let requestParameters = self.buildRequestDictionary(with: request)
-            guard let urlSafeNonce = request.nonce?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
                     with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."),
@@ -424,10 +431,8 @@ import BraintreeCore
             requestParameters["customFields"] = customFields
         }
 
-        if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
+        if request.cardAddChallengeRequested {
             requestParameters["cardAdd"] = true
-        } else if request._cardAddChallenge == .notRequested {
-            requestParameters["cardAdd"] = false
         }
 
         var additionalInformation: [String: String?] = [

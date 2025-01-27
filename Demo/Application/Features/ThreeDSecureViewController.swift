@@ -43,7 +43,10 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         callbackCount = 0
         updateCallbackCount()
 
-        let card = CardHelpers.newCard(from: cardFormView)
+        guard let card = CardHelpers.newCard(from: cardFormView) else {
+            progressBlock("Fill in all the card fields.")
+            return
+        }
         let cardClient = BTCardClient(apiClient: apiClient)
 
         cardClient.tokenize(card) { tokenizedCard, error in
@@ -90,18 +93,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
     }
 
     private func createThreeDSecureRequest(with nonce: String) -> BTThreeDSecureRequest {
-        let request = BTThreeDSecureRequest()
         
-        request.threeDSecureRequestDelegate = self
-        request.amount = 10.32
-        request.nonce = nonce
-        request.accountType = .credit
-        request.requestedExemptionType = .lowValue
-        request.email = "test@example.com"
-        request.shippingMethod = .sameDay
-        request.uiType = .both
-        request.renderTypes = [.otp, .singleSelect, .multiSelect, .oob, .html]
-
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Jill"
         billingAddress.surname = "Doe"
@@ -112,10 +104,22 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.postalCode = "12345"
         billingAddress.phoneNumber = "8101234567"
-
-        request.billingAddress = billingAddress
-        request.v2UICustomization = createUICustomization()
-
+        
+        let request = BTThreeDSecureRequest(
+            amount: "10.32",
+            nonce: nonce,
+            accountType: .credit,
+            billingAddress: billingAddress,
+            email: "test@example.com",
+            renderTypes: [.otp, .singleSelect, .multiSelect, .oob, .html],
+            requestedExemptionType: .lowValue,
+            shippingMethod: .sameDay,
+            uiType: .both,
+            v2UICustomization: createUICustomization()
+        )
+        
+        request.threeDSecureRequestDelegate = self
+        
         return request
     }
 

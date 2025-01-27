@@ -4,36 +4,12 @@ import XCTest
 
 class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
 
-    func testUrlSchemeURL_whenAllValuesAreInitialized_returnsURLWithPaymentContextID() {
-        do {
-            let requestURL = try BTVenmoAppSwitchRedirectURL(
-                paymentContextID: "12345",
-                metadata: BTClientMetadata(),
-                returnURLScheme: "url-scheme",
-                universalLink: nil,
-                forMerchantID: "merchant-id",
-                accessToken: "access-token",
-                bundleDisplayName: "display-name",
-                environment: "sandbox"
-            )
-
-            XCTAssertTrue(requestURL.urlSchemeURL()!.absoluteString.contains("com.venmo.touch.v2://x-callback-url/vzero/auth"))
-
-            let components = URLComponents(string: requestURL.urlSchemeURL()!.absoluteString)
-            guard let queryItems = components?.queryItems else { XCTFail(); return }
-            XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "12345")))
-        } catch {
-            XCTFail("This request URL should be constructed successfully")
-        }
-    }
-
     func testAppSwitchURL_whenMerchantIDNil_throwsError() {
         do {
             _ = try BTVenmoAppSwitchRedirectURL(
                 paymentContextID: "12345",
                 metadata: BTClientMetadata(),
-                returnURLScheme: "url-scheme",
-                universalLink: nil,
+                universalLink: URL(string: "https://mywebsite.com/braintree-payments")!,
                 forMerchantID: nil,
                 accessToken: "access-token",
                 bundleDisplayName: "display-name",
@@ -41,7 +17,7 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
             )
         } catch {
             XCTAssertEqual(error as? BTVenmoError, .invalidRedirectURLParameter)
-            XCTAssertEqual((error as NSError).code, 11)
+            XCTAssertEqual((error as NSError).code, 10)
             XCTAssertEqual((error as NSError).localizedDescription, "One or more values in redirect URL are invalid.")
         }
     }
@@ -51,8 +27,7 @@ class BTVenmoAppSwitchRedirectURL_Tests: XCTestCase {
             let requestURL = try BTVenmoAppSwitchRedirectURL(
                 paymentContextID: "12345",
                 metadata: BTClientMetadata(),
-                returnURLScheme: nil,
-                universalLink: URL(string: "https://mywebsite.com/braintree-payments"),
+                universalLink: URL(string: "https://mywebsite.com/braintree-payments")!,
                 forMerchantID: "merchant-id",
                 accessToken: "access-token",
                 bundleDisplayName: "display-name",

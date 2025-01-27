@@ -8,15 +8,15 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: macOS-14-xlarge
+    runs-on: macOS-15-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Use Xcode 15.0.1
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Use Xcode 16.2.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
 
       - name: Check for unreleased section in changelog
         run: grep "## unreleased" CHANGELOG.md || (echo "::error::No unreleased section found in CHANGELOG"; exit 1)
@@ -100,7 +100,6 @@ jobs:
 
           # run sourcekitten on each Swift module individually
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCore -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-core.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalNativeCheckout -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-pay-pal-native-checkout.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-sepa-direct-debit.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeAmericanExpress -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-american-express.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeDataCollector -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-data-collector.json
@@ -114,7 +113,7 @@ jobs:
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeShopperInsights -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-shopper-insights.json
 
           # merge sourcekitten output
-          jq -s '.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10] + .[11] + .[12]' braintree-core.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-local-payment.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json braintree-paypal-messaging.json braintree-shopper-insights.json > swiftDoc.json
+          jq -s '.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10] + .[11] + .[12]' braintree-core.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-local-payment.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json braintree-paypal-messaging.json braintree-shopper-insights.json > swiftDoc.json
 
           jazzy \
             --sourcekitten-sourcefile swiftDoc.json \

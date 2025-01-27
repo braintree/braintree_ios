@@ -441,8 +441,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
         let merchantAccountID = "alternate-merchant-account-id"
-        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
-        payPalClient.payPalRequest?.merchantAccountID = merchantAccountID
+        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34", merchantAccountID: merchantAccountID)
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { _, _ in }
@@ -493,8 +492,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_parametersAreConstructedAsExpected() {
         let merchantAccountID = "alternate-merchant-account-id"
-        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
-        payPalClient.payPalRequest?.merchantAccountID = merchantAccountID
+        payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34", merchantAccountID: merchantAccountID)
         payPalClient.clientMetadataID = "a-fake-cmid"
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!

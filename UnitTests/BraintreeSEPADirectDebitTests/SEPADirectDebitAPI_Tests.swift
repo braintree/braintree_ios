@@ -5,7 +5,7 @@ import XCTest
 
 class SEPADirectDebitAPI_Tests: XCTestCase {
     var billingAddress = BTPostalAddress()
-    var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
+    var sepaDirectDebitRequest: BTSEPADirectDebitRequest!
     var successApprovalURL: String = ""
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
     var mockCreateMandateResult = CreateMandateResult(json:
@@ -34,12 +34,14 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         billingAddress.postalCode = "09456"
         billingAddress.countryCodeAlpha2 = "FR"
         
-        sepaDirectDebitRequest.accountHolderName = "John Doe"
-        sepaDirectDebitRequest.iban = "FR891751244434203564412313"
-        sepaDirectDebitRequest.customerID = "A0E243A0A200491D929D"
-        sepaDirectDebitRequest.mandateType = .oneOff
-        sepaDirectDebitRequest.billingAddress = billingAddress
-        sepaDirectDebitRequest.merchantAccountID = "eur_pwpp_multi_account_merchant_account"
+        sepaDirectDebitRequest = BTSEPADirectDebitRequest(
+            accountHolderName: "John Doe",
+            iban: "FR891751244434203564412313",
+            customerID: "A0E243A0A200491D929D",
+            billingAddress: billingAddress,
+            mandateType: .oneOff,
+            merchantAccountID: "eur_pwpp_multi_account_merchant_account"
+        )
         
         successApprovalURL = """
         https://api.test19.stage.paypal.com/directdebit/mandate/authorize?cart_id=1JH42426EL748934W&auth_code=C21_A.AAdcUj4loKRxLtfw336KxbGY7dA7UsLJQTpZU3cE2h49eKkhN1OjFcLxxxzOGVzRiwOzGLlS_cS2BU4ZLKjMnR6lZSG2iQ
@@ -54,19 +56,21 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
 
     func testCreateMandate_properlyFormatsPOSTBody() {
-        let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         billingAddress.streetAddress = "fake-street-addres"
         billingAddress.extendedAddress = "fake-extended-address"
         billingAddress.locality = "fake-locality"
         billingAddress.region = "fake-region"
         billingAddress.postalCode = "fake-postal-code"
         billingAddress.countryCodeAlpha2 = "fake-country-code"
-        sepaDirectDebitRequest.accountHolderName = "fake-name"
-        sepaDirectDebitRequest.iban = "fake-iban"
-        sepaDirectDebitRequest.customerID = "fake-customer-id"
-        sepaDirectDebitRequest.billingAddress = billingAddress
-        sepaDirectDebitRequest.merchantAccountID = "fake-account-id"
-        sepaDirectDebitRequest.locale = "fr-FR"
+        
+        let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
+            accountHolderName: "fake-name",
+            iban: "fake-iban",
+            customerID: "fake-customer-id",
+            billingAddress: billingAddress,
+            merchantAccountID: "fake-account-id",
+            locale: "fr-FR"
+        )
         
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }

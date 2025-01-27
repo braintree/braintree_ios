@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Generic postal address
-@objcMembers public class BTPostalAddress: NSObject {
+@objcMembers public class BTPostalAddress: NSObject, Encodable {
 
     // Property names follow the `Braintree_Address` convention as documented at:
     // https://developer.paypal.com/braintree/docs/reference/request/address/create
@@ -27,4 +27,14 @@ import Foundation
 
     /// Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
     public var region: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case countryCodeAlpha2 = "country_code"
+        case extendedAddress = "line2"
+        case locality = "city"
+        case postalCode = "postal_code"
+        case region = "state"
+        case recipientName = "recipient_name"
+        case streetAddress = "line1"
+    }
 }

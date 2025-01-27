@@ -79,9 +79,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
     
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
+    
+    let contactInformationToggle = Toggle(title: "Add Contact Information")
 
     override func viewDidLoad() {
-        super.heightConstraint = 400
+        super.heightConstraint = 500
         super.viewDidLoad()
     }
 
@@ -93,6 +95,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
             newPayPalCheckoutToggle,
+            contactInformationToggle,
             payPalCheckoutButton
         ])
         oneTimeCheckoutStackView.spacing = 12
@@ -134,22 +137,29 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
-
-        let request = BTPayPalCheckoutRequest(amount: "5.00")
-        request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
-        )
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
 
-        request.lineItems = [lineItem]
-        request.offerPayLater = payLaterToggle.isOn
-        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
+        let contactInformation = BTContactInformation(
+            recipientEmail: "some@email.com",
+            recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+        )
+        
+        let request = BTPayPalCheckoutRequest(
+            amount: "5.00",
+            intent: newPayPalCheckoutToggle.isOn ? .sale : .authorize,
+            offerPayLater: payLaterToggle.isOn,
+            contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
+            lineItems: [lineItem],
+            userAuthenticationEmail: emailTextField.text,
+            userPhoneNumber: BTPayPalPhoneNumber(
+                countryCode: countryCodeTextField.text ?? "",
+                nationalNumber: nationalNumberTextField.text ?? ""
+            )
+        )
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
@@ -170,11 +180,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        var request = BTPayPalVaultRequest()
-        request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
+        var request = BTPayPalVaultRequest(
+            userAuthenticationEmail: emailTextField.text,
+            userPhoneNumber: BTPayPalPhoneNumber(
+                countryCode: countryCodeTextField.text ?? "",
+                nationalNumber: nationalNumberTextField.text ?? ""
+            )
         )
         
         if rbaDataToggle.isOn {
@@ -247,21 +258,5 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             
             self.completionBlock(nonce)
         }
-    }
-    
-    // MARK: - Helpers
-    
-    private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
-        let titleLabel = UILabel()
-        titleLabel.text = label
-        
-        let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
-        buttonsStackView.axis = .vertical
-        buttonsStackView.distribution = .fillProportionally
-        buttonsStackView.backgroundColor = .systemGray6
-        buttonsStackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        buttonsStackView.isLayoutMarginsRelativeArrangement = true
-        
-        return buttonsStackView
     }
 }

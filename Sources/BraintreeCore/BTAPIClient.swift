@@ -1,6 +1,5 @@
 import Foundation
 
-// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -108,59 +107,6 @@ import Foundation
     
     @MainActor func fetchConfiguration() async throws -> BTConfiguration {
         try await configurationLoader.getConfig()
-    }
-
-    /// Fetches a customer's vaulted payment method nonces.
-    /// Must be using client token with a customer ID specified.
-    ///  - Parameter completion: Callback that returns either an array of payment method nonces or an error
-    ///  - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
-    public func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        fetchPaymentMethodNonces(false, completion: completion)
-    }
-
-    // NEXT_MAJOR_VERSION: this should move into the Drop-in for parity with Android
-    // This will also allow us to return the types directly which we were doing in the +load method
-    // previously in Obj-C - this is not available in Swift
-    /// Fetches a customer's vaulted payment method nonces.
-    /// Must be using client token with a customer ID specified.
-    ///  - Parameters:
-    ///   - defaultFirst: Specifies whether to sort the fetched payment method nonces with the default payment method or the most recently used payment method first
-    ///   - completion: Callback that returns either an array of payment method nonces or an error
-    ///   - Note: Only the top level `BTPaymentMethodNonce` type is returned, fetching any additional details will need to be done on the server
-    public func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        if authorization.type != .clientToken {
-            completion(nil, BTAPIClientError.notAuthorized)
-            return
-        }
-
-        let defaultFirstValue: String = defaultFirst ? "true" : "false"
-        let parameters: [String: String] = [
-            "default_first": defaultFirstValue,
-            "session_id": metadata.sessionID
-        ]
-
-        get("v1/payment_methods", parameters: parameters) { body, _, error in
-            if let error {
-                completion(nil, error)
-                return
-            }
-
-            var paymentMethodNonces: [BTPaymentMethodNonce] = []
-
-            body?["paymentMethods"].asArray()?.forEach { paymentInfo in
-                let type: String? = paymentInfo["type"].asString()
-                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(
-                    paymentInfo,
-                    withParsingBlockForType: type
-                )
-
-                if let paymentMethodNonce {
-                    paymentMethodNonces.append(paymentMethodNonce)
-                }
-            }
-
-            completion(paymentMethodNonces, nil)
-        }
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.

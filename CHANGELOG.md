@@ -1,5 +1,47 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased (v7)
+* Require Xcode 16.2+ and Swift 5.10+
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
+  * `countryCodeAlpha2` now returns a 2 character country code instead of a 3 character country code 
+  * BraintreePayPalNativeCheckout
+    * Remove entire PayPal Native Checkout module
+  * BraintreeVenmo
+    * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+    * Remove `BTAppContextSwitcher.sharedInstance.returnURLScheme`
+    * `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
+  * BraintreeSEPADirectDebit
+    * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * BraintreeLocalPayment
+    * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * BraintreeCard
+    * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `BTCardRequest`, use `BTCard` directly instead
+  * BraintreePayPal
+    * Update `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+  * BraintreeThreeDSecure
+    * Update `BTThreeDSecureRequest` to make all properties accessible on the initializer only vs via the dot syntax.  
+    * Update `BTThreeDSecureRequest.amount` to be a `String`
+    * Remove `cardAddChallenge` - use `cardAddChallengeRequested` instead
+  * BraintreeCore
+    * Remove `fetchPaymentMethodNonces` methods and parser
+  * BraintreePayPal
+    * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
+
+## 6.27.0 (2025-01-23)
+* BraintreePayPal
+  * Add `BTContactInformation` request object
+  * Add `BTPayPalCheckoutRequest.contactInformation` optional property
+
+## 6.26.0 (2025-01-21)
+* BraintreePayPal
+  * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string
+  * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
+* BraintreeThreeDSecure
+  * Return error if no `dfReferenceId` is returned in the 3D Secure flow
+
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property

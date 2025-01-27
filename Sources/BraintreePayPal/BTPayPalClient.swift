@@ -62,7 +62,7 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
+    /// Used for indicating the type of URL link, universal link or deep link, that directs users to a specific URL to FPTI
     private var linkType: LinkType?
 
     // MARK: - Initializer
@@ -343,26 +343,29 @@ import BraintreeDataCollector
                 return
             }
 
-            guard let configuration, let json = configuration.json else {
+            guard let configuration else {
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
             
             self.isConfigFromCache = configuration.isFromCache
 
-            guard json["paypalEnabled"].isTrue else {
+            guard configuration.isPayPalEnabled else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
 
             self.payPalRequest = request
+            
+            let parameters = request.encodedPostBodyWith(
+                configuration: configuration,
+                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+                universalLink: self.universalLink
+            )
+            
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(
-                    with: configuration,
-                    universalLink: self.universalLink,
-                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
-                )
+                parameters: parameters
             ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
