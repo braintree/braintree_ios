@@ -18,11 +18,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let userPhoneNumber: BTPayPalPhoneNumber?
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
+    private var contactInformation: BTContactInformation?
     private var currencyCode: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
+    private var shippingCallbackURL: String?
     private var userAuthenticationEmail: String?
     
     // Address properties
@@ -100,6 +102,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case requestBillingAgreement = "request_billing_agreement"
         case returnURL = "return_url"
         case riskCorrelationID = "correlation_id"
+        case shippingCallbackURL = "shipping_callback_url"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "phone_number"
         
