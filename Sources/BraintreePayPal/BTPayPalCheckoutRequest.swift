@@ -68,6 +68,7 @@ import BraintreeCore
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
     var billingAgreementDescription: String?
+    var contactInformation: BTContactInformation?
     var currencyCode: String?
     var displayName: String?
     var isShippingAddressEditable: Bool = false
@@ -116,6 +117,7 @@ import BraintreeCore
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         billingAgreementDescription: String? = nil,
+        contactInformation: BTContactInformation? = nil,
         currencyCode: String? = nil,
         displayName: String? = nil,
         isShippingAddressEditable: Bool = false,
@@ -135,6 +137,7 @@ import BraintreeCore
         self.userAction = userAction
         self.offerPayLater = offerPayLater
         self.billingAgreementDescription = billingAgreementDescription
+        self.contactInformation = contactInformation
         self.currencyCode = currencyCode
         self.displayName = displayName
         self.isShippingAddressEditable = isShippingAddressEditable
