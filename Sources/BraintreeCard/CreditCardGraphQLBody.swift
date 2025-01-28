@@ -12,7 +12,7 @@ struct CreditCardGraphQLBody: Encodable {
          authenticationInsightRequested: Bool,
          merchantAccountID: String?
     ) {
-        var cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
+        let cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
             number: card.number,
             expirationMonth: card.expirationMonth,
             cvv: card.cvv,
@@ -20,24 +20,6 @@ struct CreditCardGraphQLBody: Encodable {
             cardHolderName: card.cardholderName
         )
         
-        if card.firstName != nil {
-            var billingAddress = Self.Variables.Input.CreditCard.BillingAddress(
-                firstName: card.firstName,
-                lastName: card.lastName,
-                company: card.company,
-                postalCode: card.postalCode,
-                streetAddress: card.streetAddress,
-                extendedAddress: card.extendedAddress,
-                locality: card.locality,
-                region: card.region,
-                countryName: card.countryName,
-                countryCodeAlpha2: card.countryCodeAlpha2,
-                countryCodeAlpha3: card.countryCodeAlpha3,
-                countryCodeNumeric: card.countryCodeNumeric
-            )
-        }
-
-
         let options = Self.Variables.Input.Options(validate: shouldValidate)
 
         var input = CreditCardGraphQLBody.Variables.Input(
@@ -46,7 +28,7 @@ struct CreditCardGraphQLBody: Encodable {
         )
 
         let variables = CreditCardGraphQLBody.Variables(input: input)
-
+        
         if authenticationInsightRequested {
             if let merchantAccountID {
                 let merchantAccountID = CreditCardGraphQLBody
@@ -68,6 +50,24 @@ struct CreditCardGraphQLBody: Encodable {
         }
 
         self.variables = variables
+       
+        if card.firstName != nil {
+            self.variables.input.creditCard.billingAddress = Self.Variables.Input.CreditCard.BillingAddress(
+                firstName: card.firstName,
+                lastName: card.lastName,
+                company: card.company,
+                postalCode: card.postalCode,
+                streetAddress: card.streetAddress,
+                extendedAddress: card.extendedAddress,
+                locality: card.locality,
+                region: card.region,
+                countryName: card.countryName,
+                countryCodeAlpha2: card.countryCodeAlpha2,
+                countryCodeAlpha3: card.countryCodeAlpha3,
+                countryCodeNumeric: card.countryCodeNumeric
+            )
+        }
+        
         self.query = Self.cardTokenizationGraphQLMutation(authenticationInsightRequested: authenticationInsightRequested)
         self.operationName = "TokenizeCreditCard"
     }
