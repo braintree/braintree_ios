@@ -120,7 +120,6 @@ import BraintreeCore
     
     // MARK: - Internal Methods
 
-
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
         var creditCardBody = CreditCardPOSTBody(card: self)
         
