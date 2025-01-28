@@ -661,8 +661,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         let expectation = expectation(description: "willCallCompletion")
 
-        threeDSecureRequest.nonce = "fake-card-nonce"
-
         client.prepareLookup(threeDSecureRequest) { _, error in
             XCTAssertEqual(error?.localizedDescription, "There was an error retrieving the dfReferenceId.")
             expectation.fulfill()
