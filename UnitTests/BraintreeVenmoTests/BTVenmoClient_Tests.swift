@@ -80,7 +80,7 @@ class BTVenmoClient_Tests: XCTestCase {
         
         let expectation = expectation(description: "authorization callback")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let error = error as NSError? else {return}
+            guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.invalidReturnURL("").errorCode)
             expectation.fulfill()
