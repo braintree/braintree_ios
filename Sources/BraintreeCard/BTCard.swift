@@ -8,7 +8,7 @@ import BraintreeCore
 /// Its main purpose is to serve as the input for tokenization.
 @objcMembers public class BTCard: NSObject {
 
-    // MARK: - Internal Properties
+    // MARK: - Public Properties
 
     let number: String
     let expirationMonth: String
