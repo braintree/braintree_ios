@@ -40,8 +40,7 @@ import Foundation
 ///    json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///    json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 /// ```
-@_documentation(visibility: private)
-@objcMembers public class BTJSON: NSObject {
+public class BTJSON: NSObject {
 
     var value: Any? = [:] as [AnyHashable?: Any]
 
