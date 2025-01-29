@@ -8,13 +8,18 @@
 import Foundation
 
 protocol AtomicEventLoggerProviding {
+    // Exposed in protocol for testing purposes
+    var http: BTHTTP? { get set }
+    
     func log(_ event: String, with properties: [[String: Any]])
     func setAPIClient(_ apiClient: BTAPIClient)
 }
 
 class AtomicEventLogger: AtomicEventLoggerProviding {
     private var baseURLString: String = AtomicCoreConstants.URL.baseUrl
-    private var http: BTHTTP?
+    
+    // Exposed for testing purposes
+    var http: BTHTTP?
     
     init(baseURLString: String? = nil) {
         if let baseURLString {

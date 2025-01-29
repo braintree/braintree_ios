@@ -151,6 +151,7 @@
 		80FF7DC025882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DBF25882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift */; };
 		80FF7DD4258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */; };
 		89CC2ACF2D439517003E8A3A /* AtomicCoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CC2ACE2D43950E003E8A3A /* AtomicCoreConstants.swift */; };
+		89F47FE22D4A044B003065BD /* AtomicEventLogger_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F47FE12D4A043F003065BD /* AtomicEventLogger_Tests.swift */; };
 		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		9C3F55EF275E80DA00C21C8A /* BTAmericanExpressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */; };
 		9C67362827E247270089BD99 /* CreateMandateResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */; };
@@ -908,6 +909,7 @@
 		844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDataCollector_Tests.swift; sourceTree = "<group>"; };
 		85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89CC2ACE2D43950E003E8A3A /* AtomicCoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCoreConstants.swift; sourceTree = "<group>"; };
+		89F47FE12D4A043F003065BD /* AtomicEventLogger_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicEventLogger_Tests.swift; sourceTree = "<group>"; };
 		9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_BraintreeCoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:XEZPTDFLAS:changching chi"; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/FatFrameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
@@ -1663,6 +1665,14 @@
 			path = ThreeDSecureV2Customization_Tests;
 			sourceTree = "<group>";
 		};
+		89F47FE02D4A026E003065BD /* AtomicEvents */ = {
+			isa = PBXGroup;
+			children = (
+				89F47FE12D4A043F003065BD /* AtomicEventLogger_Tests.swift */,
+			);
+			path = AtomicEvents;
+			sourceTree = "<group>";
+		};
 		9CE51786282D527E0013C740 /* BraintreePayPalNativeCheckout */ = {
 			isa = PBXGroup;
 			children = (
@@ -2038,6 +2048,7 @@
 		A9E5C22524FD6D0800EE691F /* BraintreeCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				89F47FE02D4A026E003065BD /* AtomicEvents */,
 				8053F05529FAB6FF0076F988 /* Analytics */,
 				800BB3EF2BFCAC1100F30CE8 /* Authorization */,
 				80482BD92C484D6F00C71D03 /* Configuration */,
@@ -3699,6 +3710,7 @@
 				80BA3C292B23892700900BBB /* FakeRequest.swift in Sources */,
 				A95229C524FD8F15006F7D25 /* BTVersion_Tests.swift in Sources */,
 				BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */,
+				89F47FE22D4A044B003065BD /* AtomicEventLogger_Tests.swift in Sources */,
 				A908437124FD8BB0004134CA /* BTPostalAddress_Tests.swift in Sources */,
 				BEBC6F3229380B82004E25A0 /* BTExceptionCatcher.m in Sources */,
 				8053F05429FAB6B00076F988 /* FPTIBatchData_Tests.swift in Sources */,

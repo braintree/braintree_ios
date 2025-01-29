@@ -10,6 +10,9 @@ import Foundation
 protocol AtomicPayloadConstructorProviding {
     func getCIStartEventPayload(model: AtomicLoggerEventModel) -> [[String: Any]]?
     func getCIEndEventPayload(model: AtomicLoggerEventModel, startTime: Int64?) -> [[String: Any]]?
+    
+    // Exposed in protocol for testing purposes.
+    func convertToJson(payloads: [AnalyticsPayload]) -> [[String: Any]]?
 }
 
 struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
@@ -66,7 +69,8 @@ struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
                         metricType: model.metricType.metricType))
     }
     
-    private func convertToJson(payloads: [AnalyticsPayload]) -> [[String: Any]]? {
+    // Exposed for testing purposes.
+    func convertToJson(payloads: [AnalyticsPayload]) -> [[String: Any]]? {
         do {
             let jsonData = try JSONEncoder().encode(payloads)
             if let jsonArray = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [[String: Any]] {
