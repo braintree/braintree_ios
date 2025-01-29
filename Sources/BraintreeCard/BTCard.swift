@@ -138,7 +138,6 @@ import BraintreeCore
     }
             
     func parameters() -> CreditCardGraphQLBody {
-        let params = CreditCardGraphQLBody(card: self)
-        return params
+        return CreditCardGraphQLBody(card: self)
     }
 }
