@@ -7,8 +7,6 @@ struct CreditCardPOSTBody: Encodable {
     var meta: Meta?
     let creditCard: CreditCard?
     
-    private var usesGraphQL: Bool
-
     enum CodingKeys: String, CodingKey {
         case authenticationInsight
         case meta = "_meta"
@@ -18,17 +16,19 @@ struct CreditCardPOSTBody: Encodable {
 
     init(
         card: BTCard,
-        authenticationInsight: Bool? = nil,
-        merchantAccountId: String?  = nil,
-        meta: Meta? = nil,
-        usesGraphQL: Bool = false
+        integration: String,
+        source: String,
+        sessionId: String
     ) {
         self.creditCard = CreditCard(card: card)
-        self.authenticationInsight = authenticationInsight
-        self.merchantAccountId = merchantAccountId
-        self.meta = meta
-        self.usesGraphQL = usesGraphQL
+        self.authenticationInsight = card.authenticationInsightRequested
+        self.merchantAccountId = card.merchantAccountID
         
+        self.meta = Meta(
+            integration: integration,
+            source: source,
+            sessionId: sessionId
+        )
     }
 
     struct Meta: Encodable {

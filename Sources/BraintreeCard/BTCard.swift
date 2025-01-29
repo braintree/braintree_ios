@@ -121,20 +121,12 @@ import BraintreeCore
     // MARK: - Internal Methods
 
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
-        var creditCardBody = CreditCardPOSTBody(card: self)
-        
-        let meta = CreditCardPOSTBody.Meta(
+        return CreditCardPOSTBody(
+            card: self,
             integration: apiClient.metadata.integration.stringValue,
             source: apiClient.metadata.source.stringValue,
             sessionId: apiClient.metadata.sessionID
         )
-        
-        if authenticationInsightRequested {
-            creditCardBody.authenticationInsight = true
-            creditCardBody.merchantAccountId = merchantAccountID
-        }
-        
-        return creditCardBody
     }
             
     func parameters() -> CreditCardGraphQLBody {
