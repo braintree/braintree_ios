@@ -146,6 +146,16 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - HTTP Method Helpers
 
+    func sendRequest(for request: URLRequest, completion: RequestCompletion?) {
+        self.session.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else {
+                completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                return
+            }
+            handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
+        }.resume()
+    }
+    
     func httpRequest(
         method: String,
         path: String,

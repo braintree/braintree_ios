@@ -40,4 +40,8 @@ final class AtomicCoreManager {
         }
         atomicEventLogger.log(interaction, with: parameters)
     }
+    
+    func setAPIClient(_ apiClient: BTAPIClient) {
+        atomicEventLogger.setAPIClient(apiClient)
+    }
 }

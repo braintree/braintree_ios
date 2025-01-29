@@ -9,15 +9,21 @@ import Foundation
 
 protocol AtomicEventLoggerProviding {
     func log(_ event: String, with properties: [[String: Any]])
+    func setAPIClient(_ apiClient: BTAPIClient)
 }
 
 class AtomicEventLogger: AtomicEventLoggerProviding {
     private var baseURLString: String = AtomicCoreConstants.URL.baseUrl
+    private var http: BTHTTP?
     
     init(baseURLString: String? = nil) {
         if let baseURLString {
             self.baseURLString = baseURLString
         }
+    }
+    
+    func setAPIClient(_ apiClient: BTAPIClient) {
+        http = BTHTTP(authorization: apiClient.authorization, customBaseURL: URL(string: baseURLString))
     }
     
     private lazy var session: URLSession = {
@@ -40,13 +46,14 @@ class AtomicEventLogger: AtomicEventLoggerProviding {
                 debugPrint("Payload: " + jsonString)
             }
             
-            session.dataTask(with: urlRequest) { data, response, error in
-                if let error = error {
+            http?.sendRequest(for: urlRequest, completion: { json, response, error in
+                if let error {
                     debugPrint("Analytics Error: \(error.localizedDescription)")
-                } else {
-                    debugPrint("Analytics Event Sent: \(event)")
+                    return
                 }
-            }.resume()
+                
+                debugPrint("Analytics Event Sent: \(event)")
+            })
         } catch {
             debugPrint(error)
         }

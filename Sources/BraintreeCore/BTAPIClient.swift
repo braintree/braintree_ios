@@ -60,6 +60,7 @@ import Foundation
         
         super.init()
         analyticsService.setAPIClient(self)
+        atomicEventService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
