@@ -27,9 +27,61 @@ import Foundation
     var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
+    
+    init(auth: String) {
+        self.metadata = BTClientMetadata()
+        
+        authorization = BTAPIClient.determineAuth(auth: auth)
+        
+        let btHttp = BTHTTP(authorization: self.authorization)
+        http = btHttp
+        configurationLoader = ConfigurationLoader(http: btHttp)
+        
+        super.init()
+        analyticsService.setAPIClient(self)
+        http?.networkTimingDelegate = self
+
+        // Kickoff the background request to fetch the config
+        fetchOrReturnRemoteConfiguration { _, _ in
+            // No-op
+        }
+    }
+    
+    static func determineAuth(auth: String) -> ClientAuthorization {
+        let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
+        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else {
+            let error = NSError(domain: "merchant-facing-error", code: 2) // TODO: - set useful error
+            return InvalidAuth(authorization: auth) // TODO: - is this error worth bubbling to merch?
+        }
+
+        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
+            in: auth,
+            options: [],
+            range: NSRange(location: 0, length: auth.count)
+        )
+        
+        if tokenizationKeyMatch != nil {
+            // attempt TokenizationKey creation
+            do {
+                return try TokenizationKey(auth)
+            } catch let error {
+                return InvalidAuth(authorization: auth)
+                // TODO: - bubble specific error into InvalidAuth init
+            }
+        } else {
+            // attempt ClientToken creation
+            do {
+                return try BTClientToken(clientToken: auth)
+            } catch let error {
+                return InvalidAuth(authorization: auth)
+                // TODO: - bubble specific error into InvalidAuth init
+            }
+        }
+    }
 
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
+    // TODO: - Remove this init, once all feature clients use non-optional init.
     @objc(initWithAuthorization:)
     public init?(authorization: String) {
         self.metadata = BTClientMetadata()
@@ -50,6 +102,8 @@ import Foundation
             } catch {
                 return nil
             }
+        case .invalid:
+            return nil
         }
         
         let btHttp = BTHTTP(authorization: self.authorization)
@@ -127,6 +181,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalid {
+            completion(nil, nil, authorization.error)
+            return
+        }
+        
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -162,6 +221,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalid {
+            completion(nil, nil, authorization.error)
+            return
+        }
+        
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -197,6 +261,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalid {
+            completion(nil, nil, authorization.error)
+            return
+        }
+        
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -307,6 +376,8 @@ import Foundation
     // MARK: - Internal Methods
 
     func http(for httpType: BTAPIClientHTTPService) -> BTHTTP? {
+        // Setting auth here would be too late, since needed for v1/config?
+        
         switch httpType {
         case .gateway:
             return http

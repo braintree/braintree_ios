@@ -1,5 +1,26 @@
 import Foundation
 
+class InvalidAuth: ClientAuthorization {
+    
+    var type: AuthorizationType
+    
+    var configURL: URL
+    
+    var bearer: String
+    
+    var originalValue: String
+    
+    var error: Error?
+    
+    init(authorization: String) {
+        originalValue = authorization
+        bearer = authorization
+        configURL = URL(string: "will never be used")!
+        type = .invalid
+        error = TokenizationKeyError.invalid // some error
+    }
+}
+
 class TokenizationKey: ClientAuthorization {
     
     // MARK: - Internal Properties
@@ -8,6 +29,8 @@ class TokenizationKey: ClientAuthorization {
     let bearer: String
     let configURL: URL
     let originalValue: String
+    
+    var error: Error? = nil
     
     // MARK: - Initializer
     

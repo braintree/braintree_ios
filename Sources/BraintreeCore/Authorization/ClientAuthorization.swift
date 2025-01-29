@@ -17,6 +17,8 @@ public protocol ClientAuthorization {
     /// :nodoc: The original, full string value of the authorization string provided by the merchant.
     /// The full client token or tokenization key.
     var originalValue: String { get }
+    
+    var error: Error? { get }
 }
 
 /// :nodoc:
@@ -24,4 +26,5 @@ public protocol ClientAuthorization {
 public enum AuthorizationType {
     case tokenizationKey
     case clientToken
+    case invalid
 }

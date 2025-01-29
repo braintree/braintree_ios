@@ -18,6 +18,8 @@ class BTClientToken: ClientAuthorization {
 
     /// The original string used to initialize this instance
     let originalValue: String
+    
+    var error: Error? = nil
 
     // MARK: - Initializers
 
