@@ -138,11 +138,7 @@ import BraintreeCore
     }
             
     func parameters() -> CreditCardGraphQLBody {
-        return CreditCardGraphQLBody(
-            card: self,
-            shouldValidate: shouldValidate,
-            authenticationInsightRequested: authenticationInsightRequested,
-            merchantAccountID: merchantAccountID
-        )
+        let params = CreditCardGraphQLBody(card: self)
+        return params
     }
 }

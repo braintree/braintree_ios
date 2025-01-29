@@ -7,77 +7,18 @@ struct CreditCardGraphQLBody: Encodable {
     var query: String
     var operationName: String
     
-    init(card: BTCard,
-         shouldValidate: Bool,
-         authenticationInsightRequested: Bool,
-         merchantAccountID: String?
-    ) {
-        let cardBody = CreditCardGraphQLBody.Variables.Input.CreditCard(
-            number: card.number,
-            expirationMonth: card.expirationMonth,
-            cvv: card.cvv,
-            expirationYear: card.expirationYear,
-            cardHolderName: card.cardholderName
-        )
-        
-        let options = Self.Variables.Input.Options(validate: shouldValidate)
-
-        var input = CreditCardGraphQLBody.Variables.Input(
-            creditCard: cardBody,
-            options: options
-        )
-
-        let variables = CreditCardGraphQLBody.Variables(input: input)
-        
-        if authenticationInsightRequested {
-            if let merchantAccountID {
-                let merchantAccountID = CreditCardGraphQLBody
-                    .Variables
-                    .Input
-                    .AuthenticationInsightInput(
-                        merchantAccountId: merchantAccountID
-                    )
-
-                input.authenticationInsightInput = merchantAccountID
-            } else {
-                let merchantAccountID = CreditCardGraphQLBody
-                    .Variables
-                    .Input
-                    .AuthenticationInsightInput()
-
-                input.authenticationInsightInput = merchantAccountID
-            }
-        }
-
-        self.variables = variables
-       
-        if card.firstName != nil {
-            self.variables.input.creditCard.billingAddress = Self.Variables.Input.CreditCard.BillingAddress(
-                firstName: card.firstName,
-                lastName: card.lastName,
-                company: card.company,
-                postalCode: card.postalCode,
-                streetAddress: card.streetAddress,
-                extendedAddress: card.extendedAddress,
-                locality: card.locality,
-                region: card.region,
-                countryName: card.countryName,
-                countryCodeAlpha2: card.countryCodeAlpha2,
-                countryCodeAlpha3: card.countryCodeAlpha3,
-                countryCodeNumeric: card.countryCodeNumeric
-            )
-        }
-        
-        self.query = Self.cardTokenizationGraphQLMutation(authenticationInsightRequested: authenticationInsightRequested)
+    init(card: BTCard) {
+        self.variables = Variables(card: card)
+        self.query = Self.cardTokenizationGraphQLMutation(authenticationInsightRequested: card.authenticationInsightRequested)
         self.operationName = "TokenizeCreditCard"
     }
 
     struct Variables: Encodable {
 
         var input: Input
-
-        init(input: Input) {
-            self.input = input
+        
+        init(card: BTCard) {
+            self.input = Input(card: card)
         }
         
         struct Input: Encodable {
@@ -86,10 +27,10 @@ struct CreditCardGraphQLBody: Encodable {
             var options: Options
             var authenticationInsightInput: AuthenticationInsightInput?
 
-            init(creditCard: CreditCard, options: Options, authenticationInsightInput: AuthenticationInsightInput? = nil) {
-                self.creditCard = creditCard
-                self.options = options
-                self.authenticationInsightInput = authenticationInsightInput
+            init(card: BTCard) {
+                self.creditCard = CreditCard(card: card)
+                self.options = Options(validate: card.shouldValidate)
+                self.authenticationInsightInput = AuthenticationInsightInput(card: card)
             }
             
             struct CreditCard: Encodable {
@@ -102,7 +43,8 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(
-                    billingAddress: BillingAddress? = nil,
+                    card: BTCard,
+                    //billingAddress: BillingAddress? = nil,
                     number: String? = nil,
                     expirationMonth: String? = nil,
                     cvv: String? = nil,
@@ -110,10 +52,10 @@ struct CreditCardGraphQLBody: Encodable {
                     expirationYear: String? = nil,
                     cardHolderName: String? = nil
                 ) {
-                    self.billingAddress = billingAddress
-                    self.number = number
-                    self.expirationMonth = expirationMonth
-                    self.cvv = cvv
+                    self.billingAddress = BillingAddress(card: card)
+                    self.number = card.number
+                    self.expirationMonth = card.expirationMonth
+                    self.cvv = card.cvv
                     self.options = options
                     self.expirationYear = expirationYear
                     self.cardholderName = cardHolderName
@@ -158,31 +100,20 @@ struct CreditCardGraphQLBody: Encodable {
                     var countryCodeNumeric: String?
 
                     init(
-                        firstName: String?,
-                        lastName: String?,
-                        company: String?,
-                        postalCode: String?,
-                        streetAddress: String?,
-                        extendedAddress: String?,
-                        locality: String?,
-                        region: String?,
-                        countryName: String?,
-                        countryCodeAlpha2: String?,
-                        countryCodeAlpha3: String?,
-                        countryCodeNumeric: String?
+                        card: BTCard
                     ) {
-                        self.firstName = firstName
-                        self.lastName = lastName
-                        self.company = company
-                        self.postalCode = postalCode
-                        self.streetAddress = streetAddress
-                        self.extendedAddress = extendedAddress
-                        self.locality = locality
-                        self.region = region
-                        self.countryName = countryName
-                        self.countryCodeAlpha2 = countryCodeAlpha2
-                        self.countryCodeAlpha3 = countryCodeAlpha3
-                        self.countryCodeNumeric = countryCodeNumeric
+                        self.firstName = card.firstName
+                        self.lastName = card.lastName
+                        self.company = card.company
+                        self.postalCode = card.postalCode
+                        self.streetAddress = card.streetAddress
+                        self.extendedAddress = card.extendedAddress
+                        self.locality = card.locality
+                        self.region = card.region
+                        self.countryName = card.countryName
+                        self.countryCodeAlpha2 = card.countryCodeAlpha2
+                        self.countryCodeAlpha3 = card.countryCodeAlpha3
+                        self.countryCodeNumeric = card.countryCodeNumeric
                     }
                 }
 
@@ -199,8 +130,14 @@ struct CreditCardGraphQLBody: Encodable {
             
                 var merchantAccountId: String?
                 
-                init() {
-                    self.merchantAccountId = nil
+                init(card: BTCard) {
+                    
+                    guard card.authenticationInsightRequested else {
+                        self.merchantAccountId = nil
+                        return
+                    }
+                    
+                    self.merchantAccountId = card.merchantAccountID
                 }
                 
                 init(merchantAccountId: String) {
