@@ -155,7 +155,6 @@ import Foundation
     ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
     ///   `nil` and `error` will contain the error that occurred.
     @_documentation(visibility: private)
-    @objc(POST:parameters:httpType:completion:)
     public func post(
         _ path: String,
         parameters: [String: Any]? = nil,
