@@ -49,11 +49,14 @@ struct BTPayPalApprovalURLParser {
         if let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {
             redirectType = .payPalApp(url: payPalAppRedirectURL)
             url = payPalAppRedirectURL
-        } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+        } else if var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
             body["agreementSetup"]["approvalUrl"].asURL() {
             let launchPayPalApp = body["launchPayPalApp"].asBool() ?? false
-            redirectType = launchPayPalApp ? .payPalApp(url: approvalURL) : .webBrowser(url: approvalURL)
+            let updatedApprovalURL = approvalURL.absoluteString.replacingOccurrences(of: "paypal.com/checkoutnow", with: "paypal.com/app-switch-checkout")
+            approvalURL = URL(string: updatedApprovalURL) ?? approvalURL
+            redirectType = true ? .payPalApp(url: approvalURL) : .webBrowser(url: approvalURL)
             url = approvalURL
+            print("url: \(approvalURL)")
         } else {
             return nil
         }

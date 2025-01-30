@@ -165,6 +165,7 @@ class ContainmentViewController: UIViewController {
             case .custom:
                 // swiftlint:disable:next force_unwrapping
                 tokenizationKey = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsCustomAuthorizationKey")!
+                tokenizationKey = "sandbox_jy4fvpfg_v7x2rb226dx4pr7b"
             }
 
             currentViewController = instantiateViewController(with: tokenizationKey)
