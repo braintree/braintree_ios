@@ -1,0 +1,86 @@
+//
+//  AtomicEventLogger_Tests.swift
+//  Braintree
+//
+//  Created by Nabushan B on 29/01/25.
+//
+
+import XCTest
+@testable import BraintreeTestShared
+@testable import BraintreeCore
+
+final class AtomicEventLogger_Tests: XCTestCase {
+    
+    var currentTime: Int64!
+    var oneSecondLater: Int64!
+    
+    override func setUp() {
+        super.setUp()
+        currentTime = Int64(Date().timeIntervalSince1970 * 1000)
+        oneSecondLater = Int64((Date().timeIntervalSince1970 * 1000) + 999)
+    }
+    
+    func testSendAtomicStartEvent_whenConfigCompletes() {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let sut = AtomicCoreManager.shared
+        sut.setAPIClient(stubAPIClient)
+        
+        sut.logCIStartEvent(AtomicLoggerEventModel.getPayWithPayPalCIStart(task: "select_vaulted_checkout_bt", flow: "modxo_vaulted_not_recurring"))
+        XCTAssertEqual(sut.atomicEventLogger.http?.customBaseURL?.absoluteString, AtomicCoreConstants.URL.baseUrl)
+    }
+    
+    func testSendAtomicStartEvent_SendAtomicAnalyticsEvent() {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = AtomicCoreManager.shared
+        sut.setAPIClient(stubAPIClient)
+        
+        sut.atomicEventLogger.http = mockAnalyticsHTTP
+        
+        let loggerEventModel = AtomicLoggerEventModel.getPayWithPayPalCIStart(task: "select_vaulted_checkout_bt", flow: "modxo_vaulted_not_recurring")
+        sut.logCIStartEvent(loggerEventModel)
+        
+        // MARK: Checking if the Endpoint hit is same.
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/xoplatform/logger/api/ae/")
+        
+        // MARK: Checking if the Payload hit is same.
+        let actualPayloadSent: [[String: Any]]? = sut.payloadConstructor.getCIStartEventPayload(model: loggerEventModel)
+        
+        var json: [[String: Any]]?
+        if let body = mockAnalyticsHTTP.lastRequestParametersAsData, let payloadObject = try? JSONDecoder().decode([AnalyticsPayload].self, from: body) {
+            json = sut.payloadConstructor.convertToJson(payloads: payloadObject)
+        }
+        
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 1) // asserts the only one call is made
+        XCTAssertNotNil(actualPayloadSent) // asserts the actual sent payload whether Nil or not.
+        XCTAssertNotNil(json) // asserts the sent payload whether Nil or not.
+        if let json, let actualPayloadSent {
+            XCTAssertEqual(json as NSObject, actualPayloadSent as NSObject)
+        }
+        
+        // MARK: Checking about the time in which the requet was made ensuring its under a second
+        let requestTimeLogged = sut.eventTimerManager.getStartTime(for: loggerEventModel.interaction)
+        XCTAssertNotNil(requestTimeLogged)
+        if let requestTimeLogged {
+            XCTAssertGreaterThanOrEqual(requestTimeLogged, currentTime)
+            XCTAssertLessThanOrEqual(requestTimeLogged, oneSecondLater)
+        }
+    }
+    
+    func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
+        let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+
+        if analyticsURL != nil {
+            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(
+                value: [
+                    "analytics": ["url": analyticsURL],
+                    "merchantId": "a-fake-merchantID"
+                ]
+            )
+        } else {
+            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
+        }
+
+        return stubAPIClient!
+    }
+}

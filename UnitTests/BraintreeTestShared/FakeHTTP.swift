@@ -8,6 +8,8 @@ import Foundation
     public var lastRequestMethod: String?
     public var lastPOSTRequestHeaders: [String: String]? = [:]
     @objc public var lastRequestParameters: [String: Any]?
+    // Below variable added to for testing the body of data sent as Data.
+    public var lastRequestParametersAsData: Data?
     var stubMethod: String?
     var stubEndpoint: String?
     public var cannedResponse: BTJSON?
@@ -71,6 +73,24 @@ import Foundation
                 completion?(self.cannedResponse, httpResponse, nil)
             }
         }
+    }
+    
+    // Below function has been added to pass request to the BTHTTP's session for firing the API.
+    public override func sendRequest(for request: URLRequest, completion: BTHTTP.RequestCompletion?) {
+        if (request.httpMethod == "POST") {
+            POSTRequestCount += 1
+        }
+        
+        if let url = request.url?.absoluteString {
+            lastRequestEndpoint = url.components(separatedBy: AtomicCoreConstants.URL.baseUrl).last
+        }
+        lastRequestParametersAsData = request.httpBody
+        lastRequestMethod = request.httpMethod
+        lastPOSTRequestHeaders = request.allHTTPHeaderFields
+        completion?(BTJSON(), HTTPURLResponse(url: request.url ?? URL(string: AtomicCoreConstants.URL.baseUrl)!,
+                                        statusCode: 204,
+                                        httpVersion: nil,
+                                        headerFields: request.allHTTPHeaderFields), nil)
     }
 }
 

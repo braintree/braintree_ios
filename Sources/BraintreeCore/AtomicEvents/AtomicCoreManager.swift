@@ -9,9 +9,11 @@ import Foundation
 
 final class AtomicCoreManager {
     public static let shared = AtomicCoreManager()
-    private let atomicEventLogger: AtomicEventLoggerProviding
-    private let eventTimerManager: AtomicEventTimerProviding
-    private let payloadConstructor: AtomicPayloadConstructorProviding
+    
+    // Exposed for testing purposes.
+    var atomicEventLogger: AtomicEventLoggerProviding
+    let eventTimerManager: AtomicEventTimerProviding
+    let payloadConstructor: AtomicPayloadConstructorProviding
         
     private init(atomicEventLogger: AtomicEventLoggerProviding = AtomicEventLogger(),
                  eventTimerManager: AtomicEventTimerProviding = AtomicEventTimerHandler(),
