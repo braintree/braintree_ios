@@ -43,7 +43,12 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(card: BTCard) {
-                    self.billingAddress = BillingAddress(card: card)
+                    
+                    if card.firstName != nil {
+                        self.billingAddress = BillingAddress(card: card)
+                    }
+                    
+                    
                     self.number = card.number
                     self.expirationMonth = card.expirationMonth
                     self.cvv = card.cvv
