@@ -11,6 +11,11 @@ protocol AtomicEventTimerProviding {
     func recordStartTime(for interaction: String)
     func getStartTime(for interaction: String) -> Int64?
     func removeStartTime(for interaction: String)
+    
+    // The below functions are used only for testing purposes.
+    func getCachedInteractionsCount() -> Int
+    func getCachedInteractions() -> [String]
+    func updateTimeIntervalInSeconds(to value: Int)
 }
 
 class AtomicEventTimerHandler: AtomicEventTimerProviding {
@@ -18,7 +23,7 @@ class AtomicEventTimerHandler: AtomicEventTimerProviding {
     
     // This clean up time interval needs to be decided upon.
     private var timeIntervalInSeconds = 30
-    private let timer: RepeatingTimer
+    private var timer: RepeatingTimer
     
     var allowedDurationInMilliseconds: Int64 {
         return Int64(timeIntervalInSeconds * 1000)
@@ -65,5 +70,25 @@ class AtomicEventTimerHandler: AtomicEventTimerProviding {
         interactionsToRemove.forEach {
             removeStartTime(for: $0)
         }
+    }
+    
+    // MARK: Testing Functions
+    func getCachedInteractionsCount() -> Int {
+        return startTimes.count
+    }
+    
+    func getCachedInteractions() -> [String] {
+        return Array(startTimes.keys)
+    }
+    
+    func updateTimeIntervalInSeconds(to value: Int) {
+        timer.suspend()
+        timeIntervalInSeconds = value
+        timer = RepeatingTimer(timeInterval: timeIntervalInSeconds)
+        timer.eventHandler = { [weak self] in
+            guard let self else { return }
+            self.removePastUnendedEvents()
+        }
+        timer.resume()
     }
 }

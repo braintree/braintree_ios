@@ -59,8 +59,15 @@ extension AtomicLoggerEventModel {
                      path: "/merchant_app/pay/")
     }
     
-    public static func getPayWithPayPalEnd(task: String, flow: String) -> AtomicLoggerEventModel {
-        return .init(metricType: .end, interaction: AtomicCoreConstants.payWithPaypal)
+    public static func getPayWithPayPalCIEnd(task: String, flow: String) -> AtomicLoggerEventModel {
+        return .init(metricType: .end,
+                     domain: .btSDK,
+                     interaction: AtomicCoreConstants.payWithPaypal,
+                     interactionType: "click",
+                     navType: "navigate",
+                     task: task,
+                     flow: flow,
+                     path: "/merchant_app/pay/")
     }
 }
 
@@ -106,7 +113,7 @@ public enum AtomicLoggerDomain: String {
 }
 
 extension Date {
-    var millisecondsSince1970: Int64 {
+    public var millisecondsSince1970: Int64 {
         Int64((timeIntervalSince1970 * 1000.0).rounded())
     }
 }
