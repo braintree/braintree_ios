@@ -42,23 +42,13 @@ struct CreditCardGraphQLBody: Encodable {
                 var expirationYear: String?
                 var cardholderName: String?
 
-                init(
-                    card: BTCard,
-                    //billingAddress: BillingAddress? = nil,
-                    number: String? = nil,
-                    expirationMonth: String? = nil,
-                    cvv: String? = nil,
-                    options: Options? = nil,
-                    expirationYear: String? = nil,
-                    cardHolderName: String? = nil
-                ) {
+                init(card: BTCard) {
                     self.billingAddress = BillingAddress(card: card)
                     self.number = card.number
                     self.expirationMonth = card.expirationMonth
                     self.cvv = card.cvv
-                    self.options = options
-                    self.expirationYear = expirationYear
-                    self.cardholderName = cardHolderName
+                    self.expirationYear = card.expirationYear
+                    self.cardholderName = card.cardholderName
                 }
                 
                 func encode(to encoder: any Encoder) throws {

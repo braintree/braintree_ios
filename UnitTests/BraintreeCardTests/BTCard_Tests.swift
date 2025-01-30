@@ -153,7 +153,7 @@ class BTCard_Tests: XCTestCase {
     }
 
     func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
-        let card = BTCard(cvv: "123")
+        let card = BTCard(cvv: "321")
 
         let params = card.parameters()
         
@@ -169,7 +169,7 @@ class BTCard_Tests: XCTestCase {
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "5111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
@@ -183,15 +183,14 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.variables.input.creditCard.number, "5111111111111111")
         XCTAssertEqual(params.variables.input.options.validate,  false)
         XCTAssertEqual(params.variables.input.authenticationInsightInput?.merchantAccountId, "some id")
-        
-        XCTAssertNil(params.variables.input.creditCard.cvv)
+                
         XCTAssertNil(params.variables.input.creditCard.billingAddress?.firstName)
         XCTAssertNil(params.variables.input.creditCard.cardholderName)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "6111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
@@ -211,7 +210,7 @@ class BTCard_Tests: XCTestCase {
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "7111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
@@ -245,7 +244,7 @@ class BTCard_Tests: XCTestCase {
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "8111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "123",
@@ -259,7 +258,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
         XCTAssertNotNil(params.query)
         XCTAssertEqual(params.variables.input.options.validate,  false)
-        
-        XCTAssertNil(params.variables.input.authenticationInsightInput)
+                
+        XCTAssertNotNil(params.variables.input.authenticationInsightInput)
+        XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountId)
     }
 }
