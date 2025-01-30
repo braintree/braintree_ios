@@ -59,7 +59,8 @@ struct AtomicPayloadConstructor: AtomicPayloadConstructorProviding {
                             startTask: model.startTask,
                             startPath: model.startPath,
                             path: model.path,
-                            atomicLibVersion: model.atomicLibVersion
+                            atomicLibVersion: model.atomicLibVersion,
+                            guid: model.guid
                         ),
                         metricEventName: model.metricType.metricEventName,
                         metricId: model.metricType.metricId,
@@ -107,6 +108,7 @@ struct AnalyticsPayload: Codable {
             var startPath: String?
             var path: String?
             var atomicLibVersion: String?
+            var guid: String?
             var component: String? = AtomicCoreConstants.component
             
             enum CodingKeys: String, CodingKey {
@@ -125,6 +127,7 @@ struct AnalyticsPayload: Codable {
                 case startTask = "start_task"
                 case startPath = "start_path"
                 case path
+                case guid
                 case atomicLibVersion = "atomic_lib_version"
                 case component
             }

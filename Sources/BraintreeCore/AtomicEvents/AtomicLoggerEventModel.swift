@@ -25,6 +25,7 @@ public struct AtomicLoggerEventModel {
     let startPath: String?
     let path: String?
     let atomicLibVersion: String? = AtomicCoreConstants.version
+    let guid: String = UUID().uuidString.replacingOccurrences(of: "-", with: "")
     
     init(metricType: AtomicLoggerMetricEventType, domain: AtomicLoggerDomain? = nil, startDomain: AtomicLoggerDomain? = nil, wasResumed: String? = nil, isCrossApp: String? = nil, interaction: String, status: String? = nil, interactionType: String? = nil, navType: String? = nil, task: String? = nil, flow: String? = nil, viewName: String? = nil, startViewName: String? = nil, startTask: String? = nil, startPath: String? = nil, path: String? = nil) {
         self.metricType = metricType
