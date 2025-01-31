@@ -93,7 +93,10 @@ import BraintreeCore
                 completion: completion
             )
             return
-        } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) && (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) {
+        } else if
+            let bundleIdentifier = bundle.bundleIdentifier,
+                !returnURLScheme.hasPrefix(bundleIdentifier)
+                && (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) {
             NSLog(
                 // swiftlint:disable:next line_length
                 "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
