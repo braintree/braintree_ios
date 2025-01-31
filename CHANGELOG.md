@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeVenmo
+  * Allow universal links to be set without a return URL scheme (fixes #1505)
 * BraintreePayPal
   * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
 * BraintreeShopperInsights (BETA)
@@ -12,7 +14,12 @@
     * `pageType`
     * `buttonOrder`
   * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
-  
+
+## 6.27.0 (2025-01-23)
+* BraintreePayPal
+  * Add `BTContactInformation` request object
+  * Add `BTPayPalCheckoutRequest.contactInformation` optional property
+
 ## 6.26.0 (2025-01-21)
 * BraintreePayPal
   * Fix bug to ensure that `BTPayPalVaultRequest.userAuthenticationEmail` is not sent as an empty string

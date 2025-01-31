@@ -84,6 +84,9 @@ import BraintreeCore
     
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
+    
+    /// Optional: Contact information of the recipient for the order
+    public var contactInformation: BTContactInformation?
 
     /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
     public var shippingCallbackURL: URL?
@@ -175,7 +178,15 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-
+        
+        if let recipientEmail = contactInformation?.recipientEmail {
+            checkoutParameters["recipient_email"] = recipientEmail
+        }
+        
+        if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
+            checkoutParameters["international_phone"] = recipientPhoneNumber
+        }
+        
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
