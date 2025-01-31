@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeVenmo
+  * Allow universal links to be set without a return URL scheme (fixes #1505)
 * BraintreeCore
   * Update to use `NSSecureCoding` protocol (fixes #1508)
 
