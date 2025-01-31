@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeVenmo
+  * Allow universal links to be set without a return URL scheme (fixes #1505)
+
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal
   * Add `BTContactInformation` request object
@@ -11,8 +15,6 @@
   * Add `shippingCallbackURL` to `BTPayPalCheckoutRequest`
 * BraintreeThreeDSecure
   * Return error if no `dfReferenceId` is returned in the 3D Secure flow
-* BraintreeVenmo
-  * Allow universal links to be set without a return URL scheme
 
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
