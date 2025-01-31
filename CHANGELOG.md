@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Update to use `NSSecureCoding` protocol (fixes #1508)
+
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal
   * Add `BTContactInformation` request object
