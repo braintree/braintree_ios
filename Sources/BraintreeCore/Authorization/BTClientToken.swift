@@ -86,7 +86,7 @@ import Foundation
         return BTJSON(value: clientTokenJSON)
     }
 
-    // MARK: - NSCoding conformance
+    // MARK: - NSSecureCoding conformance
     
     public static var supportsSecureCoding: Bool = true
 
