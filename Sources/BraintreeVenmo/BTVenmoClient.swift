@@ -83,7 +83,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
-        if universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil && returnURLScheme.isEmpty {
+        if (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) && returnURLScheme.isEmpty {
             NSLog(
                 "%@ Venmo requires a return URL scheme or universal link to be configured.",
                 BTLogLevelDescription.string(for: .critical)
@@ -93,7 +93,7 @@ import BraintreeCore
                 completion: completion
             )
             return
-        } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
+        } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) && (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) {
             NSLog(
                 // swiftlint:disable:next line_length
                 "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
