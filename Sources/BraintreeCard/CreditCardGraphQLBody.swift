@@ -30,7 +30,10 @@ struct CreditCardGraphQLBody: Encodable {
             init(card: BTCard) {
                 self.creditCard = CreditCard(card: card)
                 self.options = Options(validate: card.shouldValidate)
-                self.authenticationInsightInput = AuthenticationInsightInput(card: card)
+                
+                if card.authenticationInsightRequested {
+                    self.authenticationInsightInput = AuthenticationInsightInput(card: card)
+                }                
             }
             
             struct CreditCard: Encodable {
