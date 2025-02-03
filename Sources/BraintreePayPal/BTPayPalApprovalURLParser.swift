@@ -51,7 +51,7 @@ struct BTPayPalApprovalURLParser {
             url = payPalAppRedirectURL
         } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
             body["agreementSetup"]["approvalUrl"].asURL() {
-            let launchPayPalApp = body["launchPayPalApp"].asBool() ?? false
+            let launchPayPalApp = body["paymentResource"]["launchPayPalApp"].asBool() ?? false
             redirectType = launchPayPalApp ? .payPalApp(url: approvalURL) : .webBrowser(url: approvalURL)
             url = approvalURL
         } else {
