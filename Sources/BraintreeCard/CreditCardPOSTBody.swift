@@ -1,5 +1,6 @@
 // swiftlint:disable all
 import Foundation
+import BraintreeCore
 
 struct CreditCardPOSTBody: Encodable {
     var authenticationInsight: Bool?
@@ -16,9 +17,7 @@ struct CreditCardPOSTBody: Encodable {
 
     init(
         card: BTCard,
-        integration: String,
-        source: String,
-        sessionId: String
+        metaData: BTClientMetadata
     ) {
         self.creditCard = CreditCard(card: card)
         
@@ -27,11 +26,7 @@ struct CreditCardPOSTBody: Encodable {
             self.merchantAccountID = card.merchantAccountID
         }
         
-        self.meta = Meta(
-            integration: integration,
-            source: source,
-            sessionId: sessionId
-        )
+        self.meta = Meta(metaData: metaData)
     }
 
     struct Meta: Encodable {
@@ -39,10 +34,10 @@ struct CreditCardPOSTBody: Encodable {
         var source: String
         var sessionId: String
 
-        init(integration: String, source: String, sessionId: String) {
-            self.integration = integration
-            self.source = source
-            self.sessionId = sessionId
+        init(metaData: BTClientMetadata) {
+            self.integration = metaData.integration.stringValue
+            self.source = metaData.source.stringValue
+            self.sessionId = metaData.sessionID
         }
     }
 

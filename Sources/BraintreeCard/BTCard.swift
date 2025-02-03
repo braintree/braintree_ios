@@ -123,9 +123,7 @@ import BraintreeCore
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
         return CreditCardPOSTBody(
             card: self,
-            integration: apiClient.metadata.integration.stringValue,
-            source: apiClient.metadata.source.stringValue,
-            sessionId: apiClient.metadata.sessionID
+            metaData: apiClient.metadata
         )
     }
             
