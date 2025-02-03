@@ -81,7 +81,7 @@ class BTCardClient_Tests: XCTestCase {
             
             // Nil is correct
             XCTAssertNil(parameters.authenticationInsight)
-            XCTAssertNil(parameters.merchantAccountId)
+            XCTAssertNil(parameters.merchantAccountID)
             
             expectation.fulfill()
         }

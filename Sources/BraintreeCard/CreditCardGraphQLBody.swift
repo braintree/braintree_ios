@@ -3,6 +3,8 @@ import Foundation
 
 struct CreditCardGraphQLBody: Encodable {
 
+    // MARK: - Internal Properties
+    
     var variables: Variables
     var query: String
     var operationName: String

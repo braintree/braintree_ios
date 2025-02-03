@@ -3,14 +3,14 @@ import Foundation
 
 struct CreditCardPOSTBody: Encodable {
     var authenticationInsight: Bool?
-    var merchantAccountId: String?
+    var merchantAccountID: String?
     var meta: Meta?
     let creditCard: CreditCard?
     
     enum CodingKeys: String, CodingKey {
         case authenticationInsight
         case meta = "_meta"
-        case merchantAccountId
+        case merchantAccountID = "merchantAccountId"
         case creditCard = "credit_card"
     }
 
@@ -24,7 +24,7 @@ struct CreditCardPOSTBody: Encodable {
         
         if card.authenticationInsightRequested {
             self.authenticationInsight = card.authenticationInsightRequested
-            self.merchantAccountId = card.merchantAccountID
+            self.merchantAccountID = card.merchantAccountID
         }
         
         self.meta = Meta(
