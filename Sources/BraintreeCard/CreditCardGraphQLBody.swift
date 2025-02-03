@@ -140,20 +140,20 @@ struct CreditCardGraphQLBody: Encodable {
             
             struct AuthenticationInsightInput: Encodable {
             
-                var merchantAccountId: String?
+                var merchantAccountID: String?
                 
                 init(card: BTCard) {
                     
                     guard card.authenticationInsightRequested else {
-                        self.merchantAccountId = nil
+                        self.merchantAccountID = nil
                         return
                     }
                     
-                    self.merchantAccountId = card.merchantAccountID
+                    self.merchantAccountID = card.merchantAccountID
                 }
-                
-                init(merchantAccountId: String) {
-                    self.merchantAccountId = merchantAccountId
+
+                enum CodingKeys: String, CodingKey {
+                    case merchantAccountID = "merchantAccountId"
                 }
             }
 
