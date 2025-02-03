@@ -259,7 +259,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNotNil(params.query)
         XCTAssertEqual(params.variables.input.options.validate,  false)
                 
-        XCTAssertNotNil(params.variables.input.authenticationInsightInput)
+        XCTAssertNil(params.variables.input.authenticationInsightInput)
         XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountId)
     }
 }
