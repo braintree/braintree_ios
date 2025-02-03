@@ -79,6 +79,7 @@ class BTCardClient_Tests: XCTestCase {
             
             guard let parameters = params as? CreditCardPOSTBody else { return }
             
+            // Nil is correct
             XCTAssertNil(parameters.authenticationInsight)
             XCTAssertNil(parameters.merchantAccountId)
             

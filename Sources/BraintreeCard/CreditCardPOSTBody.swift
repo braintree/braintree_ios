@@ -21,8 +21,11 @@ struct CreditCardPOSTBody: Encodable {
         sessionId: String
     ) {
         self.creditCard = CreditCard(card: card)
-        self.authenticationInsight = card.authenticationInsightRequested
-        self.merchantAccountId = card.merchantAccountID
+        
+        if card.authenticationInsightRequested {
+            self.authenticationInsight = card.authenticationInsightRequested
+            self.merchantAccountId = card.merchantAccountID
+        }
         
         self.meta = Meta(
             integration: integration,
