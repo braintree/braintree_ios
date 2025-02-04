@@ -2,6 +2,7 @@ import Foundation
 
 // MARK: - BTThreeDSecurePostBody
 struct BTThreeDSecurePostBody: Encodable {
+    
     let accountType: String?
     let additionalInfo: AdditionalInfo
     let amount: String
@@ -51,6 +52,7 @@ struct BTThreeDSecurePostBody: Encodable {
 
 // MARK: - AdditionalInfo
 struct AdditionalInfo: Codable {
+    
     let billingCity: String?
     let billingCountryCode: String?
     let billingGivenName: String?
@@ -81,5 +83,4 @@ struct AdditionalInfo: Codable {
 }
 
 // MARK: - Customer
-struct Customer: Codable {
-}
+struct Customer: Codable {}
