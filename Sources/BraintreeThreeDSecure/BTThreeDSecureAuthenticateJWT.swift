@@ -23,12 +23,14 @@ enum BTThreeDSecureAuthenticateJWT {
             completion(nil, BTThreeDSecureError.failedAuthentication("Unable to percent encode nonce as a URL safe nonce."))
             return
         }
-    
-        let requestParameters = ["jwt": cardinalJWT, "paymentMethodNonce": nonce]
-
+        
+        let threeDSecureAuthenticateJWTRequest = BTThreeDSecureAuthenticateJWTPOSTBody(
+            jwt: cardinalJWT,
+            paymentMethodNonce: nonce
+        )
         apiClient.post(
             "v1/payment_methods/\(urlSafeNonce)/three_d_secure/authenticate_from_jwt",
-            parameters: requestParameters
+            parameters: threeDSecureAuthenticateJWTRequest
         ) { body, _, error in
             if let error {
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.jwtAuthFailed)
