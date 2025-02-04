@@ -7,7 +7,7 @@ struct BTThreeDSecurePostBody: Encodable {
     let dfReferenceID: String?
     let dataOnlyRequested, challengeRequested: Bool
     let amount: String
-    let customer: Customer
+//    let customer: Customer
     let exemptionRequested: Bool
     
 //    let customFields
@@ -43,33 +43,30 @@ struct BTThreeDSecurePostBody: Encodable {
 //            requestParameters["cardAdd"] = true
 //        }
 
-        var additionalInformation: [String: String?] = [
-            "mobilePhoneNumber": request.mobilePhoneNumber,
-            "email": request.email,
-            "shippingMethod": request.shippingMethod.stringValue
-        ]
+        self.additionalInfo = AdditionalInfo(request: request)
 
-        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
-        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
+//        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
+//        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
 
-        requestParameters["additionalInfo"] = additionalInformation
-        requestParameters = requestParameters.compactMapValues { $0 }
+//        requestParameters["additionalInfo"] = additionalInformation
+//        requestParameters = requestParameters.compactMapValues { $0 }
     }
 
     enum CodingKeys: String, CodingKey {
         case requestedExemptionType, requestedThreeDSecureVersion, accountType, additionalInfo
         case dfReferenceID = "dfReferenceId"
-        case dataOnlyRequested, challengeRequested, amount, customer, exemptionRequested
+        case dataOnlyRequested, challengeRequested, amount, exemptionRequested
+//        case customer
     }
 }
 
 // MARK: - AdditionalInfo
 struct AdditionalInfo: Codable {
-    let billingState: String
+    let billingState: String?
     let mobilePhoneNumber: String?
-    let billingLine1, billingLine2, billingCity, billingGivenName, email: String
-    let billingPostalCode, billingSurname, billingCountryCode, shippingMethod: String
-    let billingPhoneNumber: String
+    let billingLine1, billingLine2, billingCity, billingGivenName, email: String?
+    let billingPostalCode, billingSurname, billingCountryCode, shippingMethod: String?
+    let billingPhoneNumber: String?
     
     init(request: BTThreeDSecureRequest) {
         if let region = request.billingAddress?.region {
@@ -92,12 +89,31 @@ struct AdditionalInfo: Codable {
             self.email = email
         }
         
-//        self.billingGivenName = ""
-//        self.billingGivenName = "" 
-            
+        if let givenName = request.billingAddress?.givenName {
+            self.billingGivenName = givenName
+        }
+        
+        if let surname = request.billingAddress?.surname {
+            self.billingSurname = surname
+        }
+        
         self.mobilePhoneNumber = request.mobilePhoneNumber
         
+        if let postalCode = request.billingAddress?.postalCode {
+            self.billingPostalCode = postalCode
+        }
         
+        if let countryCodeAlpha2 = request.billingAddress?.countryCodeAlpha2 {
+            self.billingCountryCode = countryCodeAlpha2
+        }
+        
+        if let shippingMethod = request.shippingMethod.stringValue {
+            self.shippingMethod = shippingMethod
+        }
+        
+        if let billingPhoneNumber = request.billingAddress?.phoneNumber {
+            self.billingPhoneNumber = billingPhoneNumber
+        }
     }
 }
 
