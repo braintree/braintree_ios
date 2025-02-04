@@ -1,6 +1,9 @@
 // swiftlint:disable all
 import Foundation
+
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 struct CreditCardPOSTBody: Encodable {
     var authenticationInsight: Bool?
