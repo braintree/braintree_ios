@@ -91,6 +91,9 @@ struct AdditionalInfo: Codable {
         if let email = request.email {
             self.email = email
         }
+        
+//        self.billingGivenName = ""
+//        self.billingGivenName = "" 
             
         self.mobilePhoneNumber = request.mobilePhoneNumber
         
