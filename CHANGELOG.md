@@ -3,6 +3,17 @@
 ## unreleased
 * BraintreeVenmo
   * Allow universal links to be set without a return URL scheme (fixes #1505)
+* BraintreePayPal
+  * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
+* BraintreeShopperInsights (BETA)
+  * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
+  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+  * Replace `sendPayPalPresentedEvent()` and `sendPayPalPresentedEvent()` with `sendPresentedEvent(for:presentmentDetails:)`
+  * Add values to the following parameters to `presentmentDetails`:
+    * `experimentType`
+    * `pageType`
+    * `buttonOrder`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
 
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal

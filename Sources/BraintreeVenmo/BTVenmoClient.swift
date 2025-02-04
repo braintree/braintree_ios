@@ -412,20 +412,20 @@ import BraintreeCore
         if success {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                payPalContextID: payPalContextID
             )
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchFailed,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                payPalContextID: payPalContextID
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
