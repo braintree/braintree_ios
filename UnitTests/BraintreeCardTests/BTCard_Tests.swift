@@ -182,7 +182,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.query, graphQLQueryWithAuthInsightRequested)
         XCTAssertEqual(params.variables.input.creditCard.number, "5111111111111111")
         XCTAssertEqual(params.variables.input.options.validate,  false)
-        XCTAssertEqual(params.variables.input.authenticationInsightInput?.merchantAccountId, "some id")
+        XCTAssertEqual(params.variables.input.authenticationInsightInput?.merchantAccountID, "some id")
                 
         XCTAssertNil(params.variables.input.creditCard.billingAddress?.firstName)
         XCTAssertNil(params.variables.input.creditCard.cardholderName)
@@ -205,7 +205,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNotNil(params.query)
         XCTAssertEqual(params.variables.input.options.validate,  false)
         
-        XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountId, "some id")
+        XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountID, "some id")
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
@@ -260,6 +260,6 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.variables.input.options.validate,  false)
                 
         XCTAssertNil(params.variables.input.authenticationInsightInput)
-        XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountId)
+        XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountID)
     }
 }
