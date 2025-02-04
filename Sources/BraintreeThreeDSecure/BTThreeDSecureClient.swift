@@ -345,7 +345,7 @@ import BraintreeCore
                 return
             }
 
-            let requestParameters = self.buildRequestDictionary(with: request)
+            let requestParameters = self.parameters(with: request)
             guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
@@ -357,7 +357,7 @@ import BraintreeCore
 
             self.apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
-                parameters: requestParameters as [String: Any]
+                parameters: requestParameters
             ) { body, _, error in
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
@@ -405,6 +405,10 @@ import BraintreeCore
         }
     }
 
+    private func parameters(with request: BTThreeDSecureRequest) -> BTThreeDSecurePostBody {
+        return BTThreeDSecurePostBody(request: request)
+    }
+    
     private func buildRequestDictionary(with request: BTThreeDSecureRequest) -> [String: Any?] {
         let customer: [String: String] = [:]
 
