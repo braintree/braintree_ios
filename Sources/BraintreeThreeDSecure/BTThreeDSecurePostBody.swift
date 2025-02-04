@@ -62,58 +62,32 @@ struct BTThreeDSecurePostBody: Encodable {
 
 // MARK: - AdditionalInfo
 struct AdditionalInfo: Codable {
-    let billingState: String?
-    let mobilePhoneNumber: String?
-    let billingLine1, billingLine2, billingCity, billingGivenName, email: String?
-    let billingPostalCode, billingSurname, billingCountryCode, shippingMethod: String?
+    let billingCity: String?
+    let billingCountryCode: String?
+    let billingGivenName: String?
+    let billingLine1: String?
+    let billingLine2: String?
     let billingPhoneNumber: String?
+    let billingPostalCode: String?
+    let billingState: String?
+    let billingSurname: String?
+    let email: String?
+    let mobilePhoneNumber: String?
+    let shippingMethod: String?
     
     init(request: BTThreeDSecureRequest) {
-        if let region = request.billingAddress?.region {
-            self.billingState = region
-        }
-        
-        if let address1 = request.billingAddress?.streetAddress {
-            self.billingLine1 = address1
-        }
-        
-        if let address2 = request.billingAddress?.extendedAddress {
-            self.billingLine2 = address2
-        }
-        
-        if let locality = request.billingAddress?.locality {
-            self.billingCity = locality
-        }
-        
-        if let email = request.email {
-            self.email = email
-        }
-        
-        if let givenName = request.billingAddress?.givenName {
-            self.billingGivenName = givenName
-        }
-        
-        if let surname = request.billingAddress?.surname {
-            self.billingSurname = surname
-        }
-        
+        self.billingCity = request.billingAddress?.locality
+        self.billingCountryCode = request.billingAddress?.countryCodeAlpha2
+        self.billingGivenName = request.billingAddress?.givenName
+        self.billingLine1 = request.billingAddress?.streetAddress
+        self.billingLine2 = request.billingAddress?.extendedAddress
+        self.billingPhoneNumber = request.billingAddress?.phoneNumber
+        self.billingPostalCode = request.billingAddress?.postalCode
+        self.billingState = request.billingAddress?.region
+        self.billingSurname = request.billingAddress?.surname
+        self.email = request.email
         self.mobilePhoneNumber = request.mobilePhoneNumber
-        
-        if let postalCode = request.billingAddress?.postalCode {
-            self.billingPostalCode = postalCode
-        }
-        
-        if let countryCodeAlpha2 = request.billingAddress?.countryCodeAlpha2 {
-            self.billingCountryCode = countryCodeAlpha2
-        }
-        
-        if let shippingMethod = request.shippingMethod.stringValue {
-            self.shippingMethod = shippingMethod
-        }
-        
-        if let billingPhoneNumber = request.billingAddress?.phoneNumber {
-            self.billingPhoneNumber = billingPhoneNumber
-        }
+        self.shippingMethod = request.shippingMethod.stringValue
     }
 }
 
