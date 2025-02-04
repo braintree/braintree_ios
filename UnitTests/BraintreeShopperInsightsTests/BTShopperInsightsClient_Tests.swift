@@ -28,11 +28,11 @@ class BTShopperInsightsClient_Tests: XCTestCase {
               }
             ]
             """
-    
+
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTShopperInsightsClient(apiClient: mockAPIClient!)
+        sut = BTShopperInsightsClient(apiClient: mockAPIClient!, shopperSessionID: "fake-shopper-session-id")
     }
     
     // MARK: - getRecommendedPaymentMethods()
@@ -78,6 +78,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "fake-error-domain")
             
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:failed")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         }
     }
     
@@ -101,6 +102,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertFalse(result.isPayPalRecommended)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch let error as NSError {
             XCTFail("An error was not expected.")
         }
@@ -127,6 +129,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
             XCTAssertEqual(mockAPIClient.postedMerchantExperiment, sampleExperiment)
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -152,6 +155,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertTrue(result.isVenmoRecommended)
             XCTAssertTrue(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
@@ -181,13 +185,14 @@ class BTShopperInsightsClient_Tests: XCTestCase {
             XCTAssertFalse(result.isVenmoRecommended)
             XCTAssertFalse(result.isEligibleInPayPalNetwork)
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:get-recommended-payments:succeeded")
+            XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
         } catch {
             XCTFail("An error was not expected.")
         }
     }
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
-        var apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
+        let apiClient = BTAPIClient(authorization: "sandbox_merchant_1234567890abc")!
         let shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
 
         do {
@@ -201,30 +206,123 @@ class BTShopperInsightsClient_Tests: XCTestCase {
 
     // MARK: - Analytics
     
-    func testSendPayPalPresentedEvent_sendsAnalytic() {
-        sut.sendPayPalPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsControl_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
     }
-    
-    func testSendPayPalPresentedEvent_whenPaymentMethodsDisplayedNotNil_sendsAnalytic() {
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        sut.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods)
-        XCTAssertEqual(mockAPIClient.postedPaymentMethodsDisplayed, paymentMethods.joined(separator: ", "))
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-presented")
+
+    func testSendPayPalPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .payPal, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
-    
+
     func testSendPayPalSelectedEvent_sendsAnalytic() {
-        sut.sendPayPalSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:paypal-selected")
+        sut.sendSelectedEvent(for: .payPal)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
     }
-    
+
     func testSendVenmoPresentedEvent_sendsAnalytic() {
-        sut.sendVenmoPresentedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-presented")
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
+    }
+
+    func testSendVenmoPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+        sut.sendPresentedEvent(for: .venmo, presentmentDetails: presentmentDetails)
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
     }
     
     func testSendVenmoSelectedEvent_sendsAnalytic() {
-        sut.sendVenmoSelectedEvent()
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:venmo-selected")
+        sut.sendSelectedEvent(for: .venmo)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "Venmo")
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
+    }
+
+    // MARK: - App Installed Methods
+
+    func testIsPayPalAppInstalled_whenPayPalAppNotInstalled_returnsFalse() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertFalse(sut.isPayPalAppInstalled())
+    }
+
+    func testIsPayPalAppInstalled_whenPayPalAppIsInstalled_returnsTrue() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "paypal-app-switch-checkout://x-callback-url/path")!)
+        sut.application = fakeApplication
+
+        XCTAssertTrue(sut.isPayPalAppInstalled())
+    }
+
+    func testIsVenmoAppInstalled_whenVenmoAppNotInstalled_returnsFalse() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+
+        XCTAssertFalse(sut.isVenmoAppInstalled())
+    }
+
+    func testIsVenmoAppInstalled_whenVenmoAppIsInstalled_returnsTrue() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = true
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
+        sut.application = fakeApplication
+
+        XCTAssertTrue(sut.isVenmoAppInstalled())
     }
 }
