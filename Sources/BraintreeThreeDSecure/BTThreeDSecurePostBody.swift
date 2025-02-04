@@ -2,61 +2,50 @@ import Foundation
 
 // MARK: - BTThreeDSecurePostBody
 struct BTThreeDSecurePostBody: Encodable {
-    let requestedExemptionType, requestedThreeDSecureVersion, accountType: String?
+    let accountType: String?
     let additionalInfo: AdditionalInfo
-    let dfReferenceID: String?
-    let dataOnlyRequested, challengeRequested: Bool
     let amount: String
-//    let customer: Customer
+    let cardAdd: Bool?
+    let challengeRequested: Bool
+    let customFields: [String: String]?
+    let customer: Customer
+    let dataOnlyRequested: Bool
+    let dfReferenceID: String?
     let exemptionRequested: Bool
-    
-//    let customFields
-    
+    let requestedExemptionType: String?
+    let requestedThreeDSecureVersion: String?
+
     init(request: BTThreeDSecureRequest) {
         self.requestedExemptionType = request.requestedExemptionType.stringValue
         self.requestedThreeDSecureVersion = "2"
         self.accountType = request.accountType.stringValue
-//        self.additionalInfo = request.additionalInformation
         self.dfReferenceID = request.dfReferenceID
         self.dataOnlyRequested = request.dataOnlyRequested
         self.challengeRequested = request.challengeRequested
         self.amount = request.amount
         self.exemptionRequested = request.exemptionRequested
-        
-//        var requestParameters: [String: Any?] = [
-//            "amount": request.amount,
-//            "customer": customer,
-//            "requestedThreeDSecureVersion": "2",
-//            "dfReferenceId": request.dfReferenceID,
-//            "accountType": request.accountType.stringValue,
-//            "challengeRequested": request.challengeRequested,
-//            "exemptionRequested": request.exemptionRequested,
-//            "requestedExemptionType": request.requestedExemptionType.stringValue,
-//            "dataOnlyRequested": request.dataOnlyRequested
-//        ]
 
-//        if let customFields = request.customFields {
-//            requestParameters["customFields"] = customFields
-//        }
+        if let customFields = request.customFields {
+            self.customFields = customFields
+        } else {
+            self.customFields = nil
+        }
 
-//        if request.cardAddChallengeRequested {
-//            requestParameters["cardAdd"] = true
-//        }
+        if request.cardAddChallengeRequested {
+            cardAdd = true
+        } else {
+            cardAdd = nil
+        }
 
         self.additionalInfo = AdditionalInfo(request: request)
-
-//        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
-//        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
-
-//        requestParameters["additionalInfo"] = additionalInformation
-//        requestParameters = requestParameters.compactMapValues { $0 }
+        self.customer = Customer()
     }
 
     enum CodingKeys: String, CodingKey {
         case requestedExemptionType, requestedThreeDSecureVersion, accountType, additionalInfo
         case dfReferenceID = "dfReferenceId"
         case dataOnlyRequested, challengeRequested, amount, exemptionRequested
-//        case customer
+        case customer
     }
 }
 
