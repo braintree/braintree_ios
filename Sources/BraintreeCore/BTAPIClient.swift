@@ -26,6 +26,7 @@ import Foundation
     
     /// Exposed for testing analytics
     var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
+    var atomicEventService  = AtomicCoreManager.shared
 
     // MARK: - Initializers
 
@@ -59,6 +60,7 @@ import Foundation
         
         super.init()
         analyticsService.setAPIClient(self)
+        atomicEventService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
@@ -420,5 +422,15 @@ import Foundation
                 )
             )
         }
+    }
+
+    //MARK: - AtomicEvents Methods
+
+    public func sendAtomicStartEvent(_ event: AtomicLoggerEventModel) {
+        atomicEventService.logCIStartEvent(event)
+    }
+
+    public func sendAtomicEndEvent(_ event: AtomicLoggerEventModel, startTime: Int64? = nil) {
+        atomicEventService.logCIEndEvent(event, startTime: startTime)
     }
 }

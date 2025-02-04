@@ -369,6 +369,7 @@ import BraintreeDataCollector
                         self.notifyFailure(with: error, completion: completion)
                         return
                     }
+                    apiClient.sendAtomicStartEvent(AtomicLoggerEventModel.getPayWithPayPalCIStart(task: "select_vaulted_checkout_bt", flow: "modxo_vaulted_not_recurring"))
 
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
                     var dictionary = error.userInfo
