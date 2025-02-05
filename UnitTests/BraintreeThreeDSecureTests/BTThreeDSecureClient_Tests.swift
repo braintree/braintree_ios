@@ -10,7 +10,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     var threeDSecureRequest: BTThreeDSecureRequest!
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
-    
+
+    let mockCardinalSession = MockCardinalSession()
+
     let mockConfiguration = BTJSON(value: [
         "threeDSecure": ["cardinalAuthenticationJWT": "FAKE_JWT"],
         "assetsUrl": "http://assets.example.com"
@@ -20,7 +22,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         super.setUp()
         threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
         client = BTThreeDSecureClient(apiClient: mockAPIClient)
-        client.cardinalSession = MockCardinalSession()
+        client.cardinalSession = mockCardinalSession
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
 
@@ -647,6 +649,20 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         client.prepareLookup(threeDSecureRequest) { _, error in
             XCTAssertEqual(error?.localizedDescription, "A client token must be used for ThreeDSecure integrations.")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+    }
+
+    func testPrepareLookup_whenDfReferenceIDEmpty_throwsError() {
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
+        mockCardinalSession.dfReferenceID = ""
+
+        let expectation = expectation(description: "willCallCompletion")
+
+        client.prepareLookup(threeDSecureRequest) { _, error in
+            XCTAssertEqual(error?.localizedDescription, "There was an error retrieving the dfReferenceId.")
             expectation.fulfill()
         }
 

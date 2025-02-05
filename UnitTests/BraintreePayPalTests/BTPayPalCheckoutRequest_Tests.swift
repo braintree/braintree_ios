@@ -280,4 +280,55 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.landingPageType = .login
         XCTAssertEqual(request.landingPageType?.stringValue, "login")
     }
+    
+    func testParametersWithConfiguration__withContactInformation_setsRecipientEmailAndPhoneNumber() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.contactInformation = BTContactInformation(
+            recipientEmail: "some@mail.com",
+            recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
+        )
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["recipient_email"] as? String, "some@mail.com")
+        let internationalPhone = parameters["international_phone"] as? [String: String]
+        XCTAssertEqual(internationalPhone, ["country_code": "US", "national_number": "123456789"])
+    }
+    
+    func testParametersWithConfiguration_whenContactInformationNotSet_doesNotSetPayerEmailAndPhoneNumberInRequest() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertNil(parameters["recipient_email"])
+        XCTAssertNil(parameters["international_phone"])
+    }
+    
+    func testParameters_whenShippingCallbackURLNotSet_returnsParameters() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        
+        XCTAssertNil(request.shippingCallbackURL)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        XCTAssertNil(parameters["shipping_callback_url"])
+    }
+    
+    func testParameters_whitShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
+        let request = BTPayPalCheckoutRequest(amount: "1", shippingCallbackURL: URL(string: "www.some-url.com"))
+        
+        XCTAssertNotNil(request.shippingCallbackURL)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        XCTAssertNotNil(parameters["shipping_callback_url"])
+    }
 }

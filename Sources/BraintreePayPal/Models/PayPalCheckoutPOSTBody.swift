@@ -18,11 +18,15 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let userPhoneNumber: BTPayPalPhoneNumber?
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
+    private var contactInformation: BTContactInformation?
     private var currencyCode: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
+    private var recipientPhoneNumber: BTPayPalPhoneNumber?
+    private var recipientEmail: String?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
+    private var shippingCallbackURL: String?
     private var userAuthenticationEmail: String?
     
     // Address properties
@@ -81,6 +85,18 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.userAuthenticationEmail = userAuthenticationEmail
         }
         
+        if let recipientEmail = payPalRequest.contactInformation?.recipientEmail {
+            self.recipientEmail = recipientEmail
+        }
+        
+        if let recipientPhoneNumber = payPalRequest.contactInformation?.recipientPhoneNumber {
+            self.recipientPhoneNumber = recipientPhoneNumber
+        }
+        
+        if let shippingCallbackURL = payPalRequest.shippingCallbackURL {
+            self.shippingCallbackURL = shippingCallbackURL.absoluteString
+        }
+        
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
@@ -97,9 +113,12 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case lineItems = "line_items"
         case merchantAccountID = "merchant_account_id"
         case offerPayLater = "offer_pay_later"
+        case recipientPhoneNumber = "international_phone"
+        case recipientEmail = "recipient_email"
         case requestBillingAgreement = "request_billing_agreement"
         case returnURL = "return_url"
         case riskCorrelationID = "correlation_id"
+        case shippingCallbackURL = "shipping_callback_url"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "phone_number"
         
