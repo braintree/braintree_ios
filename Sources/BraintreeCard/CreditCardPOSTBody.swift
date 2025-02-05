@@ -20,7 +20,7 @@ struct CreditCardPOSTBody: Encodable {
 
     init(
         card: BTCard,
-        metaData: BTClientMetadata
+        metadata: BTClientMetadata
     ) {
         self.creditCard = CreditCard(card: card)
         
@@ -29,18 +29,24 @@ struct CreditCardPOSTBody: Encodable {
             self.merchantAccountID = card.merchantAccountID
         }
         
-        self.meta = Meta(metaData: metaData)
+        self.meta = Meta(metadata: metadata)
     }
 
     struct Meta: Encodable {
         var integration: String
         var source: String
-        var sessionId: String
+        var sessionID: String
 
-        init(metaData: BTClientMetadata) {
-            self.integration = metaData.integration.stringValue
-            self.source = metaData.source.stringValue
-            self.sessionId = metaData.sessionID
+        init(metadata: BTClientMetadata) {
+            self.integration = metadata.integration.stringValue
+            self.source = metadata.source.stringValue
+            self.sessionID = metadata.sessionID
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case integration
+            case source
+            case sessionID = "sessionId"
         }
     }
 
@@ -54,9 +60,7 @@ struct CreditCardPOSTBody: Encodable {
         let expirationYear: String?
         let cardHolderName: String?
 
-        init(
-            card: BTCard
-        ) {
+        init(card: BTCard) {
             self.billingAddress = BillingAddress(card: card)
             self.number = card.number
             self.cvv = card.cvv
@@ -90,9 +94,7 @@ struct CreditCardPOSTBody: Encodable {
             let countryCodeAlpha3: String?
             let countryCodeNumeric: String?
             
-            init(
-                card: BTCard
-            ) {
+            init(card: BTCard) {
                 self.firstName = card.firstName
                 self.lastName = card.lastName
                 self.company = card.company

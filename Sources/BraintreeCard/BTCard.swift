@@ -123,7 +123,7 @@ import BraintreeCore
     func graphQLParameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
         CreditCardPOSTBody(
             card: self,
-            metaData: apiClient.metadata
+            metadata: apiClient.metadata
         )
     }
             
