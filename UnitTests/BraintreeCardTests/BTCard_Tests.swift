@@ -43,7 +43,7 @@ class BTCard_Tests: XCTestCase {
         )
 
         
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.variables.input.creditCard.number,  "4111111111111111")
         XCTAssertEqual(params.variables.input.creditCard.expirationMonth,  "12")
@@ -146,7 +146,7 @@ class BTCard_Tests: XCTestCase {
             shouldValidate: false
         )
 
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.variables.input.options.validate,  false)
         XCTAssertNotNil(params.query)
@@ -155,7 +155,7 @@ class BTCard_Tests: XCTestCase {
     func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
         let card = BTCard(cvv: "321")
 
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.variables.input.creditCard.cvv, "321")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
@@ -177,7 +177,7 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: "some id"
         )
         
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.query, graphQLQueryWithAuthInsightRequested)
         XCTAssertEqual(params.variables.input.creditCard.number, "5111111111111111")
@@ -198,7 +198,7 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: "some id"
         )
          
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.variables.input.creditCard.number, "6111111111111111")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
@@ -218,7 +218,7 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: nil
         )
         
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         printEncodableObject(params)
         
         XCTAssertEqual(params.variables.input.creditCard.number, "7111111111111111")
@@ -252,7 +252,7 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: nil
         )
         
-        let params = card.parameters()
+        let params = card.graphQLParameters()
         
         XCTAssertEqual(params.variables.input.creditCard.number, "8111111111111111")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")

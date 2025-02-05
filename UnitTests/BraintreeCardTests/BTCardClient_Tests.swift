@@ -533,6 +533,11 @@ class BTCardClient_Tests: XCTestCase {
                 return
             }
             lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            
+            let dictionary = try! card.graphQLParameters().toDictionary()
+            
+            XCTAssertEqual(lastPostParameters as NSObject, dictionary as NSObject)
+
             expectation.fulfill()
         }
 
@@ -556,9 +561,19 @@ class BTCardClient_Tests: XCTestCase {
         
         cardClient.tokenize(card) { (tokenizedCard, error) -> Void in
             XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPService.gateway)
+            guard var lastPostParameters = mockApiClient.lastPOSTParameters else {
+                XCTFail()
+                return
+            }
+            lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            
+            let dictionary = try! card.parameters(apiClient: mockApiClient).toDictionary()
+            
+            XCTAssertEqual(lastPostParameters as NSObject, dictionary as NSObject)
+            
             expectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 10, handler: nil)
     }
 
