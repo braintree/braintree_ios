@@ -12,11 +12,6 @@ struct BTThreeDSecureAuthenticateJWTPOSTBody: Encodable {
     private let jwt: String
     private let paymentMethodNonce: String
     
-    enum CodingKeys: String, CodingKey {
-        case jwt
-        case paymentMethodNonce
-    }
-    
     init(
         jwt: String,
         paymentMethodNonce: String
