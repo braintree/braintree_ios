@@ -345,7 +345,7 @@ import BraintreeCore
                 return
             }
 
-            let requestParameters = self.parameters(with: request)
+            let requestParameters = BTThreeDSecurePostBody(request: request)
             guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
@@ -403,10 +403,6 @@ import BraintreeCore
                 return
             }
         }
-    }
-
-    private func parameters(with request: BTThreeDSecureRequest) -> BTThreeDSecurePostBody {
-        return BTThreeDSecurePostBody(request: request)
     }
     
     private func buildRequestDictionary(with request: BTThreeDSecureRequest) -> [String: Any?] {

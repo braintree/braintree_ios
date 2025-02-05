@@ -56,41 +56,41 @@ struct BTThreeDSecurePostBody: Encodable {
         case requestedExemptionType
         case requestedThreeDSecureVersion
     }
-}
-
-// MARK: - AdditionalInfo
-struct AdditionalInfo: Codable {
     
-    let billingCity: String?
-    let billingCountryCode: String?
-    let billingGivenName: String?
-    let billingLine1: String?
-    let billingLine2: String?
-    let billingLine3: String?
-    let billingPhoneNumber: String?
-    let billingPostalCode: String?
-    let billingState: String?
-    let billingSurname: String?
-    let email: String?
-    let mobilePhoneNumber: String?
-    let shippingMethod: String?
-    
-    init(request: BTThreeDSecureRequest) {
-        self.billingCity = request.billingAddress?.locality
-        self.billingCountryCode = request.billingAddress?.countryCodeAlpha2
-        self.billingGivenName = request.billingAddress?.givenName
-        self.billingLine1 = request.billingAddress?.streetAddress
-        self.billingLine2 = request.billingAddress?.extendedAddress
-        self.billingLine3 = request.billingAddress?.line3
-        self.billingPhoneNumber = request.billingAddress?.phoneNumber
-        self.billingPostalCode = request.billingAddress?.postalCode
-        self.billingState = request.billingAddress?.region
-        self.billingSurname = request.billingAddress?.surname
-        self.email = request.email
-        self.mobilePhoneNumber = request.mobilePhoneNumber
-        self.shippingMethod = request.shippingMethod.stringValue
+    // MARK: - AdditionalInfo
+    struct AdditionalInfo: Codable {
+        
+        let billingCity: String?
+        let billingCountryCode: String?
+        let billingGivenName: String?
+        let billingLine1: String?
+        let billingLine2: String?
+        let billingLine3: String?
+        let billingPhoneNumber: String?
+        let billingPostalCode: String?
+        let billingState: String?
+        let billingSurname: String?
+        let email: String?
+        let mobilePhoneNumber: String?
+        let shippingMethod: String?
+        
+        init(request: BTThreeDSecureRequest) {
+            self.billingCity = request.billingAddress?.locality
+            self.billingCountryCode = request.billingAddress?.countryCodeAlpha2
+            self.billingGivenName = request.billingAddress?.givenName
+            self.billingLine1 = request.billingAddress?.streetAddress
+            self.billingLine2 = request.billingAddress?.extendedAddress
+            self.billingLine3 = request.billingAddress?.line3
+            self.billingPhoneNumber = request.billingAddress?.phoneNumber
+            self.billingPostalCode = request.billingAddress?.postalCode
+            self.billingState = request.billingAddress?.region
+            self.billingSurname = request.billingAddress?.surname
+            self.email = request.email
+            self.mobilePhoneNumber = request.mobilePhoneNumber
+            self.shippingMethod = request.shippingMethod.stringValue
+        }
     }
-}
 
-// MARK: - Customer
-struct Customer: Codable {}
+    // MARK: - Customer
+    struct Customer: Codable {}
+}
