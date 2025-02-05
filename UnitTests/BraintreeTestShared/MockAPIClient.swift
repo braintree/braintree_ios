@@ -11,14 +11,17 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETParameters = [:] as [String: Any]?
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
-    public var postedAnalyticsEvents : [String] = []
-    public var postedPayPalContextID: String? = nil
-    public var postedLinkType: LinkType? = nil
-    public var postedIsVaultRequest = false
-    public var postedMerchantExperiment: String? = nil
-    public var postedPaymentMethodsDisplayed: String? = nil
+    public var postedAnalyticsEvents: [String] = []
     public var postedAppSwitchURL: [String: String?] = [:]
-
+    public var postedButtonOrder: String? = nil
+    public var postedButtonType: String? = nil
+    public var postedIsVaultRequest = false
+    public var postedLinkType: LinkType? = nil
+    public var postedMerchantExperiment: String? = nil
+    public var postedPageType: String? = nil
+    public var postedPayPalContextID: String? = nil
+    public var postedShopperSessionID: String? = nil
+    
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
 
@@ -92,24 +95,30 @@ public class MockAPIClient: BTAPIClient {
     }
 
     public override func sendAnalyticsEvent(
-        _ name: String,
+        _ eventName: String,
+        appSwitchURL: URL? = nil,
+        buttonOrder: String? = nil,
+        buttonType: String? = nil,
         correlationID: String? = nil,
         errorDescription: String? = nil,
         merchantExperiment experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        paymentMethodsDisplayed: String? = nil,
+        pageType: String? = nil,
         payPalContextID: String? = nil,
-        appSwitchURL: URL? = nil
+        shopperSessionID: String? = nil
     ) {
+        postedButtonType = buttonType
+        postedButtonOrder = buttonOrder
+        postedPageType = pageType
         postedPayPalContextID = payPalContextID
         postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false
         postedMerchantExperiment = experiment
-        postedPaymentMethodsDisplayed = paymentMethodsDisplayed
-        postedAppSwitchURL[name] = appSwitchURL?.absoluteString
-        postedAnalyticsEvents.append(name)
+        postedAppSwitchURL[eventName] = appSwitchURL?.absoluteString
+        postedAnalyticsEvents.append(eventName)
+        postedShopperSessionID = shopperSessionID
     }
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {

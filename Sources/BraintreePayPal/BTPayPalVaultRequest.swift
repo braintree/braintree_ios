@@ -68,7 +68,7 @@ import BraintreeCore
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration)
 
-        if let userAuthenticationEmail {
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             baseParameters["payer_email"] = userAuthenticationEmail
         }
 

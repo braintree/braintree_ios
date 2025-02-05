@@ -83,14 +83,20 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
         let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
 
-        if returnURLScheme.isEmpty {
+        if (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) && returnURLScheme.isEmpty {
             NSLog(
-                "%@ Venmo requires a return URL scheme to be configured via [BTAppContextSwitcher setReturnURLScheme:]",
+                "%@ Venmo requires a return URL scheme or universal link to be configured.",
                 BTLogLevelDescription.string(for: .critical)
             )
-            notifyFailure(with: BTVenmoError.appNotAvailable, completion: completion)
+            notifyFailure(
+                with: BTVenmoError.invalidReturnURL("Venmo requires a return URL scheme or universal link to be configured."),
+                completion: completion
+            )
             return
-        } else if let bundleIdentifier = bundle.bundleIdentifier, !returnURLScheme.hasPrefix(bundleIdentifier) {
+        } else if
+            let bundleIdentifier = bundle.bundleIdentifier,
+                !returnURLScheme.hasPrefix(bundleIdentifier)
+                && (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) {
             NSLog(
                 // swiftlint:disable:next line_length
                 "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
@@ -406,20 +412,20 @@ import BraintreeCore
         if success {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                payPalContextID: payPalContextID
             )
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchFailed,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                payPalContextID: payPalContextID
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
