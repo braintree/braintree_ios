@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.28.0 (2025-02-05)
 * BraintreeVenmo
   * Allow universal links to be set without a return URL scheme (fixes #1505)
 * BraintreeCore
