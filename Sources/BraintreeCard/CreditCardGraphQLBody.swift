@@ -111,9 +111,7 @@ struct CreditCardGraphQLBody: Encodable {
                     var countryCodeAlpha3: String?
                     var countryCodeNumeric: String?
 
-                    init(
-                        card: BTCard
-                    ) {
+                    init(card: BTCard) {
                         self.firstName = card.firstName
                         self.lastName = card.lastName
                         self.company = card.company

@@ -120,14 +120,14 @@ import BraintreeCore
     
     // MARK: - Internal Methods
 
-    func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
-        return CreditCardPOSTBody(
+    func graphQLParameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
+        CreditCardPOSTBody(
             card: self,
             metaData: apiClient.metadata
         )
     }
             
     func parameters() -> CreditCardGraphQLBody {
-        return CreditCardGraphQLBody(card: self)
+        CreditCardGraphQLBody(card: self)
     }
 }
