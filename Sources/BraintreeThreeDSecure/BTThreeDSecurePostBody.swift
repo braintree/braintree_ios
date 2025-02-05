@@ -33,9 +33,9 @@ struct BTThreeDSecurePostBody: Encodable {
         }
 
         if request.cardAddChallengeRequested {
-            cardAdd = true
+            self.cardAdd = true
         } else {
-            cardAdd = nil
+            self.cardAdd = nil
         }
 
         self.additionalInfo = AdditionalInfo(request: request)
@@ -43,10 +43,18 @@ struct BTThreeDSecurePostBody: Encodable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case requestedExemptionType, requestedThreeDSecureVersion, accountType, additionalInfo
-        case dfReferenceID = "dfReferenceId"
-        case dataOnlyRequested, challengeRequested, amount, exemptionRequested
+        case accountType
+        case additionalInfo
+        case amount
+        case cardAdd
+        case challengeRequested
+        case customFields
         case customer
+        case dataOnlyRequested
+        case dfReferenceID = "dfReferenceId"
+        case exemptionRequested
+        case requestedExemptionType
+        case requestedThreeDSecureVersion
     }
 }
 
@@ -58,6 +66,7 @@ struct AdditionalInfo: Codable {
     let billingGivenName: String?
     let billingLine1: String?
     let billingLine2: String?
+    let billingLine3: String?
     let billingPhoneNumber: String?
     let billingPostalCode: String?
     let billingState: String?
@@ -72,6 +81,7 @@ struct AdditionalInfo: Codable {
         self.billingGivenName = request.billingAddress?.givenName
         self.billingLine1 = request.billingAddress?.streetAddress
         self.billingLine2 = request.billingAddress?.extendedAddress
+        self.billingLine3 = request.billingAddress?.line3
         self.billingPhoneNumber = request.billingAddress?.phoneNumber
         self.billingPostalCode = request.billingAddress?.postalCode
         self.billingState = request.billingAddress?.region
