@@ -97,6 +97,7 @@ struct CreditCardGraphQLBody: Encodable {
                 }
 
                 struct BillingAddress: Encodable {
+
                     var firstName: String?
                     var lastName: String?
                     var company: String?
@@ -127,11 +128,8 @@ struct CreditCardGraphQLBody: Encodable {
                 }
 
                 struct Options: Encodable {
-                    var validate: Bool?
 
-                    init(validate: Bool? = nil) {
-                        self.validate = validate
-                    }
+                    var validate: Bool?
                 }
             }
             
