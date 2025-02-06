@@ -1,11 +1,14 @@
-// swiftlint:disable all
+// swiftlint:disable nesting
+
 import Foundation
 
 #if canImport(BraintreeCore)
 import BraintreeCore
 #endif
 
+// swiftlint:disable nesting
 struct CreditCardPOSTBody: Encodable {
+
     var authenticationInsight: Bool?
     var merchantAccountID: String?
     var meta: Meta?
@@ -33,6 +36,7 @@ struct CreditCardPOSTBody: Encodable {
     }
 
     struct Meta: Encodable {
+
         var integration: String
         var source: String
         var sessionID: String
@@ -42,7 +46,7 @@ struct CreditCardPOSTBody: Encodable {
             self.source = metadata.source.stringValue
             self.sessionID = metadata.sessionID
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case integration
             case source
@@ -52,6 +56,7 @@ struct CreditCardPOSTBody: Encodable {
 
     /// POST Body Model
     struct CreditCard: Encodable {
+
         let billingAddress: BillingAddress?
         let number: String?
         let expirationMonth: String?
@@ -69,7 +74,7 @@ struct CreditCardPOSTBody: Encodable {
             self.expirationYear = card.expirationYear
             self.cardHolderName = card.cardholderName
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case billingAddress = "billing_address"
             case number
@@ -81,6 +86,7 @@ struct CreditCardPOSTBody: Encodable {
         }
 
         struct BillingAddress: Encodable {
+            
             let firstName: String?
             let lastName: String?
             let company: String?
@@ -126,11 +132,8 @@ struct CreditCardPOSTBody: Encodable {
         }
 
         struct Options: Encodable {
-            let validate: Bool
 
-            init(validate: Bool) {
-                self.validate = validate
-            }
+            let validate: Bool
         }
     }
 }

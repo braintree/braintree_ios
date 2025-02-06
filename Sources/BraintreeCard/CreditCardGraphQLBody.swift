@@ -1,4 +1,3 @@
-// swiftlint:disable all
 import Foundation
 
 struct CreditCardGraphQLBody: Encodable {
@@ -35,10 +34,11 @@ struct CreditCardGraphQLBody: Encodable {
                 
                 if card.authenticationInsightRequested {
                     self.authenticationInsightInput = AuthenticationInsightInput(card: card)
-                }                
+                }
             }
             
             struct CreditCard: Encodable {
+
                 var billingAddress: BillingAddress?
                 var number: String?
                 var expirationMonth: String?
@@ -47,7 +47,7 @@ struct CreditCardGraphQLBody: Encodable {
                 var expirationYear: String?
                 var cardholderName: String?
 
-                init(card: BTCard) {                    
+                init(card: BTCard) {
                     if card.firstName != nil {
                         self.billingAddress = BillingAddress(card: card)
                     }
@@ -68,17 +68,14 @@ struct CreditCardGraphQLBody: Encodable {
                         self.expirationYear = card.expirationYear
                     }
                     
-                    if let cardName = card.cardholderName, !cardName.isEmpty{
+                    if let cardName = card.cardholderName, !cardName.isEmpty {
                         self.cardholderName = card.cardholderName
                     }
                 }
                 
                 func encode(to encoder: any Encoder) throws {
                     var container = encoder.container(keyedBy: CodingKeys.self)
-                    if let billingAddress {
-                        try container.encodeIfPresent(billingAddress, forKey: .billingAddress)
-                    }
-                    
+                    try container.encodeIfPresent(billingAddress, forKey: .billingAddress)
                     try container.encodeIfPresent(number, forKey: .number)
                     try container.encodeIfPresent(expirationMonth, forKey: .expirationMonth)
                     try container.encodeIfPresent(cvv, forKey: .cvv)
@@ -156,6 +153,7 @@ struct CreditCardGraphQLBody: Encodable {
             }
 
             struct Options: Encodable {
+
                 var validate: Bool
 
                 init(validate: Bool) {
