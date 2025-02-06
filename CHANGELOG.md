@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeApplePay
+  * Add `isDeviceToken` to POST `v1/payment_methods/apple_payment_tokens`
+
 ## 6.28.0 (2025-02-05)
 * BraintreeVenmo
   * Allow universal links to be set without a return URL scheme (fixes #1505)

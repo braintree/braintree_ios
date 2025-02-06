@@ -10,11 +10,18 @@ import BraintreeCore
     /// The BIN data for the card number associated with this nonce.
     public let binData: BTBinData
 
+    /// This Boolean indicates whether this tokenized card is a device-specific account number (DPAN) or merchant/cloud token (MPAN).
+    /// If `isDeviceToken` is `false`, then token type is MPAN
+    public var isDeviceToken: Bool
+
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
 
         let cardType = json["details"]["cardType"].asString() ?? "ApplePayCard"
         let isDefault = json["default"].isTrue
+        let isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? false
+
+        self.isDeviceToken = isDeviceToken
 
         binData = BTBinData(json: json["binData"])
         super.init(nonce: nonce, type: cardType, isDefault: isDefault)

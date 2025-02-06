@@ -12,7 +12,8 @@ class BTApplePayCardNonce_Tests: XCTestCase {
                     "commercial": "yes"
                 ],
                 "details": [
-                    "cardType": "fake-card-type"
+                    "cardType": "fake-card-type",
+                    "isDeviceToken": true
                 ],
                 "nonce": "a-nonce"
             ] as [String: Any]
@@ -22,6 +23,7 @@ class BTApplePayCardNonce_Tests: XCTestCase {
         XCTAssertEqual(applePayNonce?.nonce, "a-nonce")
         XCTAssertEqual(applePayNonce?.binData.commercial, "yes")
         XCTAssertEqual(applePayNonce?.type, "fake-card-type")
+        XCTAssertEqual(applePayNonce?.isDeviceToken, true)
     }
 
     func testInitWithJSON_setsDefaultProperties() {
