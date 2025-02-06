@@ -25,18 +25,9 @@ struct BTThreeDSecurePostBody: Encodable {
         self.challengeRequested = request.challengeRequested
         self.amount = request.amount
         self.exemptionRequested = request.exemptionRequested
-
-        if let customFields = request.customFields {
-            self.customFields = customFields
-        } else {
-            self.customFields = nil
-        }
-
-        if request.cardAddChallengeRequested {
-            self.cardAdd = true
-        } else {
-            self.cardAdd = nil
-        }
+        
+        self.customFields = request.customFields ?? nil
+        self.cardAdd = request.cardAddChallengeRequested ? true : nil
 
         self.additionalInfo = AdditionalInfo(request: request)
         self.customer = Customer()
@@ -92,5 +83,5 @@ struct BTThreeDSecurePostBody: Encodable {
     }
 
     // MARK: - Customer
-    struct Customer: Codable {}
+    struct Customer: Codable { }
 }
