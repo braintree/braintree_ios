@@ -50,10 +50,9 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(card: BTCard) {
-                    if card.firstName != nil {
-                        self.billingAddress = BillingAddress(card: card)
-                    }
                     
+                    self.billingAddress = BillingAddress(card: card)
+                                        
                     if !card.number.isEmpty {
                         self.number = card.number
                     }
@@ -76,7 +75,7 @@ struct CreditCardGraphQLBody: Encodable {
                 }
                 
                 func encode(to encoder: any Encoder) throws {
-                    var container = encoder.container(keyedBy: CodingKeys.self)
+                    var container = encoder.container(keyedBy: CodingKeys.self)                    
                     try container.encodeIfPresent(billingAddress, forKey: .billingAddress)
                     try container.encodeIfPresent(number, forKey: .number)
                     try container.encodeIfPresent(expirationMonth, forKey: .expirationMonth)
