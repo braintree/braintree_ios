@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-// The POST body for /three_d_secure/authenticate_from_jwt
+// The POST body for `/three_d_secure/authenticate_from_jwt`
 struct BTThreeDSecureAuthenticateJWTPOSTBody: Encodable {
     
     // MARK: - Private Properties
