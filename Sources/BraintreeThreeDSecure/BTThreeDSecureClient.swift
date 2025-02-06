@@ -411,44 +411,6 @@ import BraintreeCore
             }
         }
     }
-    
-    private func buildRequestDictionary(with request: BTThreeDSecureRequest) -> [String: Any?] {
-        let customer: [String: String] = [:]
-
-        var requestParameters: [String: Any?] = [
-            "amount": request.amount,
-            "customer": customer,
-            "requestedThreeDSecureVersion": "2",
-            "dfReferenceId": request.dfReferenceID,
-            "accountType": request.accountType.stringValue,
-            "challengeRequested": request.challengeRequested,
-            "exemptionRequested": request.exemptionRequested,
-            "requestedExemptionType": request.requestedExemptionType.stringValue,
-            "dataOnlyRequested": request.dataOnlyRequested
-        ]
-
-        if let customFields = request.customFields {
-            requestParameters["customFields"] = customFields
-        }
-
-        if request.cardAddChallengeRequested {
-            requestParameters["cardAdd"] = true
-        }
-
-        var additionalInformation: [String: String?] = [
-            "mobilePhoneNumber": request.mobilePhoneNumber,
-            "email": request.email,
-            "shippingMethod": request.shippingMethod.stringValue
-        ]
-
-        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
-        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
-
-        requestParameters["additionalInfo"] = additionalInformation
-        requestParameters = requestParameters.compactMapValues { $0 }
-
-        return requestParameters
-    }
 
     // MARK: - Analytics Helper Methods
 
