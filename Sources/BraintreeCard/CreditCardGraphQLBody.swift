@@ -138,12 +138,6 @@ struct CreditCardGraphQLBody: Encodable {
                 var merchantAccountID: String?
                 
                 init(card: BTCard) {
-                    
-                    guard card.authenticationInsightRequested else {
-                        self.merchantAccountID = nil
-                        return
-                    }
-                    
                     self.merchantAccountID = card.merchantAccountID
                 }
 
