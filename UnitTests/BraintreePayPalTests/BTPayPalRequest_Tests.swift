@@ -46,6 +46,7 @@ class BTPayPalRequest_Tests: XCTestCase {
         request.riskCorrelationID = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
+        request.shopperSessionID = "123456"
         
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)
         lineItem.imageURL = URL(string: "http://example/image.jpg")
@@ -73,6 +74,7 @@ class BTPayPalRequest_Tests: XCTestCase {
 
         XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+        XCTAssertEqual(parameters["shopper_session_id"] as? String, "123456")
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {

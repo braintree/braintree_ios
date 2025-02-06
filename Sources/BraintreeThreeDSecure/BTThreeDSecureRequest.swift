@@ -93,6 +93,10 @@ import BraintreeCore
     /// When using `BTThreeDSecureUIType.native`, all `BTThreeDSecureRenderType` options except `.html` must be set.
     public var renderTypes: [BTThreeDSecureRenderType]?
 
+    /// Optional. Three DS Requester APP URL Merchant app declaring their URL within the CReq message
+    /// so that the Authentication app can call the Merchant app after out of band authentication has occurred. 
+    public var requestorAppURL: String?
+
     /// A delegate for receiving information about the ThreeDSecure payment flow.
     public weak var threeDSecureRequestDelegate: BTThreeDSecureRequestDelegate?
     

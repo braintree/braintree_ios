@@ -110,6 +110,9 @@ import BraintreeCore
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool
     
+    /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    public var shopperSessionID: String?
+
     // MARK: - Static Properties
     
     static let callbackURLHostAndPath: String = "onetouch/v1/"
@@ -131,7 +134,8 @@ import BraintreeCore
         riskCorrelationId: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
         userAuthenticationEmail: String? = nil,
-        enablePayPalAppSwitch: Bool = false
+        enablePayPalAppSwitch: Bool = false,
+        shopperSessionID: String? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -148,6 +152,7 @@ import BraintreeCore
         self.userPhoneNumber = userPhoneNumber
         self.userAuthenticationEmail = userAuthenticationEmail
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
+        self.shopperSessionID = shopperSessionID
     }
     
     // MARK: Public Methods
@@ -197,6 +202,10 @@ import BraintreeCore
             parameters["payer_email"] = userAuthenticationEmail
         }
         
+        if let shopperSessionID {
+            parameters["shopper_session_id"] = shopperSessionID
+        }
+
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile

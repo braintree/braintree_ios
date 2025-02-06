@@ -61,7 +61,6 @@ import BraintreeCore
     // MARK: - Public Properties
 
     ///  Used for a one-time payment.
-    ///
     ///  Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
     public var amount: String
 
@@ -75,12 +74,17 @@ import BraintreeCore
     public var offerPayLater: Bool
 
     /// Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
-    ///
     /// - Note: See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     public var currencyCode: String?
 
     /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
     public var requestBillingAgreement: Bool
+    
+    /// Optional: Contact information of the recipient for the order
+    public var contactInformation: BTContactInformation?
+    
+    /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
+    public var shippingCallbackURL: URL?
 
     // MARK: - Initializers
     
@@ -131,6 +135,8 @@ import BraintreeCore
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
+    ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
+    ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
         amount: String,
@@ -139,6 +145,7 @@ import BraintreeCore
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
+        shippingCallbackURL: URL? = nil,
         userAuthenticationEmail: String? = nil
     ) {
         self.amount = amount
@@ -147,6 +154,7 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
+        self.shippingCallbackURL = shippingCallbackURL
         
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
@@ -190,6 +198,10 @@ import BraintreeCore
             }
         }
 
+        if let shippingCallbackURL {
+            baseParameters["shipping_callback_url"] = shippingCallbackURL.absoluteString
+        }
+
         if shippingAddressOverride != nil {
             checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
             checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
@@ -199,7 +211,15 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-
+        
+        if let recipientEmail = contactInformation?.recipientEmail {
+            checkoutParameters["recipient_email"] = recipientEmail
+        }
+        
+        if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
+            checkoutParameters["international_phone"] = recipientPhoneNumber
+        }
+        
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }

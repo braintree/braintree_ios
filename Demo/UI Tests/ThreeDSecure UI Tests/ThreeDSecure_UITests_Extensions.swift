@@ -22,14 +22,6 @@ internal extension XCUIApplication {
         return buttons["Tokenize and Verify New Card"]
     }
 
-    var webViewPasswordTextField: XCUIElement {
-        return webViews.element.otherElements.children(matching: .other).children(matching: .secureTextField).element
-    }
-
-    var webViewSubmitButton: XCUIElement {
-        return webViews.element.otherElements.children(matching: .other).children(matching: .other).buttons["Submit"]
-    }
-
     var cardinalSubmitButton: XCUIElement {
         return buttons["SUBMIT"]
     }
@@ -37,21 +29,9 @@ internal extension XCUIApplication {
     var liabilityShiftedMessage: XCUIElement {
         return buttons["Liability shift possible and liability shifted"]
     }
-
-    var authenticationFailedMessage: XCUIElement {
-        return buttons["Failed to authenticate, please try a different form of payment."]
-    }
-
+    
     var liabilityCouldNotBeShiftedMessage: XCUIElement {
         return buttons["3D Secure authentication was attempted but liability shift is not possible"]
-    }
-
-    var unexpectedErrorMessage: XCUIElement {
-        return buttons["An unexpected error occurred"]
-    }
-
-    var internalErrorMessage: XCUIElement {
-        return buttons["Internal Error."]
     }
 
     func enterCardDetailsWith(cardNumber: String, expirationDate: String = UITestDateGenerator.sharedInstance.futureDate()) {
