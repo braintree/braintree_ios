@@ -19,7 +19,7 @@ import BraintreeCore
 
         let cardType = json["details"]["cardType"].asString() ?? "ApplePayCard"
         let isDefault = json["default"].isTrue
-        let isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? false
+        let isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? true
 
         self.isDeviceToken = isDeviceToken
 
