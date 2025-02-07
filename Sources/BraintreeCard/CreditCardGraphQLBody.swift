@@ -50,49 +50,13 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(card: BTCard) {
-                    
                     self.billingAddress = BillingAddress(card: card)
-                                        
-                    if !card.number.isEmpty {
-                        self.number = card.number
-                    }
-                    
-                    if !card.expirationMonth.isEmpty {
-                        self.expirationMonth = card.expirationMonth
-                    }
-                    
-                    if !card.cvv.isEmpty {
-                        self.cvv = card.cvv
-                    }
-                    
-                    if !card.expirationYear.isEmpty {
-                        self.expirationYear = card.expirationYear
-                    }
-                    
-                    if let cardName = card.cardholderName, !cardName.isEmpty {
-                        self.cardholderName = card.cardholderName
-                    }
-                }
-                
-                func encode(to encoder: any Encoder) throws {
-                    var container = encoder.container(keyedBy: CodingKeys.self)                    
-                    try container.encodeIfPresent(billingAddress, forKey: .billingAddress)
-                    try container.encodeIfPresent(number, forKey: .number)
-                    try container.encodeIfPresent(expirationMonth, forKey: .expirationMonth)
-                    try container.encodeIfPresent(cvv, forKey: .cvv)
-                    try container.encodeIfPresent(options, forKey: .options)
-                    try container.encodeIfPresent(expirationYear, forKey: .expirationYear)
-                    try container.encodeIfPresent(cardholderName, forKey: .cardholderName)
-                }
-                
-                enum CodingKeys: String, CodingKey {
-                    case billingAddress
-                    case number
-                    case expirationMonth
-                    case cvv
-                    case options
-                    case expirationYear
-                    case cardholderName
+                    self.number = card.number
+                    self.expirationMonth = card.expirationMonth
+                    self.cvv = card.cvv
+                    self.options = Options(validate: card.shouldValidate)
+                    self.expirationYear = card.expirationYear
+                    self.cardholderName = card.cardholderName
                 }
 
                 struct BillingAddress: Encodable {
