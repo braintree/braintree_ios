@@ -40,6 +40,17 @@ class ApplePayViewController: PaymentButtonBaseViewController {
             let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)!
             paymentAuthorizationViewController.delegate = self
 
+            guard let managementURL = URL(string: "https://www.merchant.com/update-payment") else { return }
+
+            if #available(iOS 16, *) {
+                let recurringPaymentRequest = PKRecurringPaymentRequest(
+                    paymentDescription: "Payment description.",
+                    regularBilling: PKRecurringPaymentSummaryItem(label: "Payment label", amount: 10.99),
+                    managementURL: managementURL
+                )
+                paymentRequest.recurringPaymentRequest = recurringPaymentRequest
+            }
+
             self.progressBlock("Presenting Apple Pay Sheet")
             self.present(paymentAuthorizationViewController, animated: true)
         }
