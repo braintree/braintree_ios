@@ -19,9 +19,8 @@ import BraintreeCore
 
         let cardType = json["details"]["cardType"].asString() ?? "ApplePayCard"
         let isDefault = json["default"].isTrue
-        let isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? true
 
-        self.isDeviceToken = isDeviceToken
+        self.isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? true
 
         binData = BTBinData(json: json["binData"])
         super.init(nonce: nonce, type: cardType, isDefault: isDefault)

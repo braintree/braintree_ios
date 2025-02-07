@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeApplePay
-  * Add BTApplePayCardNonce.isDeviceToken for MPAN identification
+  * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
 
 ## 6.28.0 (2025-02-05)
 * BraintreeVenmo
