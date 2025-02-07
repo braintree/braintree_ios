@@ -162,7 +162,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNotNil(params.query)
         XCTAssertEqual(params.variables.input.options.validate,  false)
         
-        XCTAssertNil(params.variables.input.creditCard.number)
+        
+        XCTAssertEqual(params.variables.input.creditCard.number, "")
         XCTAssertNil(params.variables.input.creditCard.billingAddress?.firstName)
         XCTAssertNil(params.variables.input.creditCard.cardholderName)
     }
