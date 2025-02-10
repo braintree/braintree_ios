@@ -2,6 +2,7 @@
 
 import Foundation
 
+/// The POST body for graphQL CreditCard Post
 struct CreditCardGraphQLBody: Encodable {
 
     // MARK: - Internal Properties

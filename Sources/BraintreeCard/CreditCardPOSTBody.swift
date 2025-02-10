@@ -7,6 +7,7 @@ import BraintreeCore
 #endif
 
 // swiftlint:disable nesting
+/// The POST body for "v1/payment_methods/credit_cards"
 struct CreditCardPOSTBody: Encodable {
 
     var authenticationInsight: Bool?
