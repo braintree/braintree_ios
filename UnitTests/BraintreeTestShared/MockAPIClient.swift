@@ -4,7 +4,6 @@ import Foundation
 public class MockAPIClient: BTAPIClient {
     public var lastPOSTPath = ""
     public var lastPOSTParameters = [:] as [AnyHashable: Any]?
-    public var lastPOSTEncodableParameters: Encodable?
     public var lastPOSTAPIClientHTTPType: BTAPIClientHTTPService?
     public var lastPOSTAdditionalHeaders: [String: String]? = [:]
 
@@ -55,8 +54,7 @@ public class MockAPIClient: BTAPIClient {
     
     public override func post(_ path: String, parameters: Encodable, headers: [String: String]? = nil, httpType: BTAPIClientHTTPService = .gateway, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
-        lastPOSTParameters = try? parameters.toDictionary()
-        lastPOSTEncodableParameters = parameters
+        lastPOSTParameters = try? parameters.toDictionary()        
         lastPOSTAPIClientHTTPType = httpType
         lastPOSTAdditionalHeaders = headers
         

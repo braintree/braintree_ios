@@ -72,16 +72,13 @@ class BTCardClient_Tests: XCTestCase {
             XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
             XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .gateway)
 
-            guard let params = mockAPIClient.lastPOSTEncodableParameters else {
+            guard let params = mockAPIClient.lastPOSTParameters else {
                 XCTFail()
                 return
             }
             
-            guard let parameters = params as? CreditCardPOSTBody else { return }
-            
-            // Nil is correct
-            XCTAssertNil(parameters.authenticationInsight)
-            XCTAssertNil(parameters.merchantAccountID)
+            XCTAssertNil(params["authenticationInsight"])
+            XCTAssertNil(params["merchantAccountId"])
             
             expectation.fulfill()
         }
