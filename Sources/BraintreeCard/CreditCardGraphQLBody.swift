@@ -48,7 +48,7 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(card: BTCard) {
-                    if let firstName = card.firstName, !firstName.isEmpty {
+                    if hasNonEmptyBillingField(in: card) {
                         self.billingAddress = BillingAddress(card: card)
                     }
                     
@@ -57,6 +57,31 @@ struct CreditCardGraphQLBody: Encodable {
                     self.cvv = card.cvv
                     self.expirationYear = card.expirationYear
                     self.cardholderName = card.cardholderName
+                }
+                
+                /// Returns `true` if any property in the card has a non-nil and non-empty string.
+                func hasNonEmptyBillingField(in card: BTCard) -> Bool {
+                    let fields: [String?] = [
+                        card.firstName,
+                        card.lastName,
+                        card.company,
+                        card.postalCode,
+                        card.streetAddress,
+                        card.extendedAddress,
+                        card.locality,
+                        card.region,
+                        card.countryName,
+                        card.countryCodeAlpha2,
+                        card.countryCodeAlpha3,
+                        card.countryCodeNumeric
+                    ]
+                    
+                    for field in fields {
+                        if let value = field, !value.isEmpty {
+                            return true
+                        }
+                    }
+                    return false
                 }
 
                 struct BillingAddress: Encodable {
