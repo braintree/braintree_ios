@@ -51,7 +51,7 @@ struct CreditCardGraphQLBody: Encodable {
                     self.billingAddress = BillingAddress(card: card)
                     self.number = card.number
                     self.expirationMonth = card.expirationMonth
-                    self.cvv = card.cvv                    
+                    self.cvv = card.cvv
                     self.expirationYear = card.expirationYear
                     self.cardholderName = card.cardholderName
                 }
