@@ -200,7 +200,7 @@
 		A9E80A9C24FEF37C00196BD3 /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79395233A65EB001FDD89 /* MockDelegates.swift */; };
 		A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */; };
-		B87B26242D54176F0002225F /* BTThreeDSecurePostBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B26232D54176F0002225F /* BTThreeDSecurePostBody.swift */; };
+		B87B26242D54176F0002225F /* ThreeDSecurePostBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87B26232D54176F0002225F /* ThreeDSecurePostBody.swift */; };
 		B8BA342E2D4811560030423C /* BTContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BA342D2D4811560030423C /* BTContactInformation.swift */; };
 		BC17F9B428D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */; };
 		BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */; };
@@ -896,7 +896,7 @@
 		A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E5C22824FD6D0800EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
-		B87B26232D54176F0002225F /* BTThreeDSecurePostBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostBody.swift; sourceTree = "<group>"; };
+		B87B26232D54176F0002225F /* ThreeDSecurePostBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecurePostBody.swift; sourceTree = "<group>"; };
 		B8BA342D2D4811560030423C /* BTContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactInformation.swift; sourceTree = "<group>"; };
 		BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLMultiErrorNode.swift; sourceTree = "<group>"; };
 		BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLErrorTree.swift; sourceTree = "<group>"; };
@@ -1821,7 +1821,7 @@
 				3BEB03C429FD55CA001133D5 /* BTThreeDSecureAnalytics.swift */,
 				BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */,
 				80D1638529E75766001D880E /* BTThreeDSecureClient.swift */,
-				B87B26232D54176F0002225F /* BTThreeDSecurePostBody.swift */,
+				B87B26232D54176F0002225F /* ThreeDSecurePostBody.swift */,
 				BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */,
 				BE01A82C29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift */,
 				BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */,
@@ -3358,7 +3358,7 @@
 				BE80C00129C4BFD700793A6C /* BTThreeDSecureV2BaseCustomization.swift in Sources */,
 				80482F8429D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift in Sources */,
 				80482F8629D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift in Sources */,
-				B87B26242D54176F0002225F /* BTThreeDSecurePostBody.swift in Sources */,
+				B87B26242D54176F0002225F /* ThreeDSecurePostBody.swift in Sources */,
 				80482F8829D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift in Sources */,
 				BE01A84329D32EA9000DFA24 /* BTThreeDSecureError.swift in Sources */,
 				3BEB03C529FD55CA001133D5 /* BTThreeDSecureAnalytics.swift in Sources */,

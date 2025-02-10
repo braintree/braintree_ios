@@ -1,7 +1,7 @@
 import Foundation
 
 /// The POST body for `v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup`
-struct BTThreeDSecurePostBody: Encodable {
+struct ThreeDSecurePostBody: Encodable {
     
     let accountType: String?
     let additionalInfo: AdditionalInfo
