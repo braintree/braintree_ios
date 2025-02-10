@@ -86,11 +86,6 @@ struct CreditCardGraphQLBody: Encodable {
                         self.countryCodeNumeric = card.countryCodeNumeric
                     }
                 }
-
-                struct Options: Encodable {
-
-                    var validate: Bool?
-                }
             }
             
             struct AuthenticationInsightInput: Encodable {
@@ -109,10 +104,6 @@ struct CreditCardGraphQLBody: Encodable {
             struct Options: Encodable {
 
                 var validate: Bool
-
-                init(validate: Bool) {
-                    self.validate = validate
-                }
             }
         }
     }
