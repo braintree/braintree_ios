@@ -5,8 +5,6 @@ import Foundation
 /// The POST body for graphQL API Credit Card Tokenize Post
 struct CreditCardGraphQLBody: Encodable {
 
-    // MARK: - Internal Properties
-    
     var variables: Variables
     var query: String
     var operationName: String
@@ -46,7 +44,6 @@ struct CreditCardGraphQLBody: Encodable {
                 var number: String?
                 var expirationMonth: String?
                 var cvv: String?
-                var options: Options?
                 var expirationYear: String?
                 var cardholderName: String?
 
@@ -54,8 +51,7 @@ struct CreditCardGraphQLBody: Encodable {
                     self.billingAddress = BillingAddress(card: card)
                     self.number = card.number
                     self.expirationMonth = card.expirationMonth
-                    self.cvv = card.cvv
-                    self.options = Options(validate: card.shouldValidate)
+                    self.cvv = card.cvv                    
                     self.expirationYear = card.expirationYear
                     self.cardholderName = card.cardholderName
                 }

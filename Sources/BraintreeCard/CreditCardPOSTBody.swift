@@ -54,8 +54,7 @@ struct CreditCardPOSTBody: Encodable {
             case sessionID = "sessionId"
         }
     }
-
-    /// POST Body Model
+    
     struct CreditCard: Encodable {
 
         let billingAddress: BillingAddress?

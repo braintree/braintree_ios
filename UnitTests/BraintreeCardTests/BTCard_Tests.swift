@@ -148,7 +148,7 @@ class BTCard_Tests: XCTestCase {
 
         let params = card.graphQLParameters()
         
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
         XCTAssertNotNil(params.query)
     }
 
@@ -160,7 +160,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.variables.input.creditCard.cvv, "321")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
         XCTAssertNotNil(params.query)
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
         
         
         XCTAssertEqual(params.variables.input.creditCard.number, "")
@@ -182,7 +182,7 @@ class BTCard_Tests: XCTestCase {
         
         XCTAssertEqual(params.query, graphQLQueryWithAuthInsightRequested)
         XCTAssertEqual(params.variables.input.creditCard.number, "5111111111111111")
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
         XCTAssertEqual(params.variables.input.authenticationInsightInput?.merchantAccountID, "some id")
                 
         XCTAssertNil(params.variables.input.creditCard.billingAddress?.firstName)
@@ -204,7 +204,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.variables.input.creditCard.number, "6111111111111111")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
         XCTAssertNotNil(params.query)
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
         
         XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountID, "some id")
     }
@@ -220,12 +220,11 @@ class BTCard_Tests: XCTestCase {
         )
         
         let params = card.graphQLParameters()
-        printEncodableObject(params)
-        
+
         XCTAssertEqual(params.variables.input.creditCard.number, "7111111111111111")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
         XCTAssertNotNil(params.query)
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
         
         XCTAssertNotNil(params.variables.input.authenticationInsightInput)
     }
@@ -258,7 +257,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(params.variables.input.creditCard.number, "8111111111111111")
         XCTAssertEqual(params.operationName, "TokenizeCreditCard")
         XCTAssertNotNil(params.query)
-        XCTAssertEqual(params.variables.input.options.validate,  false)
+        XCTAssertEqual(params.variables.input.options.validate, false)
                 
         XCTAssertNil(params.variables.input.authenticationInsightInput)
         XCTAssertNil(params.variables.input.authenticationInsightInput?.merchantAccountID)
