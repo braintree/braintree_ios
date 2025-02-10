@@ -311,7 +311,7 @@ import BraintreeDataCollector
         request: BTPayPalRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        linkType = (request as? BTPayPalVaultRequest)?.enablePayPalAppSwitch == true ? .universal : .deeplink
+        linkType = request.enablePayPalAppSwitch == true ? .universal : .deeplink
 
         apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
