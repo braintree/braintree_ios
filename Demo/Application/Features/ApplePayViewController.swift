@@ -5,6 +5,7 @@ import PassKit
 class ApplePayViewController: PaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
+    let managementURL = URL(string: "https://www.merchant.com/update-payment")!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +52,6 @@ class ApplePayViewController: PaymentButtonBaseViewController {
 
     @available(iOS 16.0, *)
     private func recurringPaymentRequest() -> PKRecurringPaymentRequest {
-        let managementURL = URL(string: "https://www.merchant.com/update-payment")!
-
         let recurringPaymentRequest = PKRecurringPaymentRequest(
             paymentDescription: "Payment description.",
             regularBilling: PKRecurringPaymentSummaryItem(label: "Payment label", amount: 10.99),
