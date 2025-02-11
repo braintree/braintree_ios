@@ -209,47 +209,56 @@ import BraintreeDataCollector
             return
         }
 
-        let clientDictionary: [String: String] = [
-            "platform": "iOS",
-            "product_name": "PayPal",
-            "paypal_sdk_version": "version"
-        ]
+//        let clientDictionary: [String: String] = [
+//            "platform": "iOS",
+//            "product_name": "PayPal",
+//            "paypal_sdk_version": "version"
+//        ]
 
-        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
+//        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
 
-        var account: [String: Any] = [
-            "client": clientDictionary,
-            "response": responseDictionary,
-            "response_type": "web"
-        ]
+//        var account: [String: Any] = [
+//            "client": clientDictionary,
+//            "response": responseDictionary,
+//            "response_type": "web"
+//        ]
 
-        if paymentType == .checkout {
-            account["options"] = ["validate": false]
-            if let request = payPalRequest as? BTPayPalCheckoutRequest {
-                account["intent"] = request.intent.stringValue
-            }
-        }
+//        if paymentType == .checkout {
+//            account["options"] = ["validate": false]
+//            if let request = payPalRequest as? BTPayPalCheckoutRequest {
+//                account["intent"] = request.intent.stringValue
+//            }
+//        }
         
-        if let clientMetadataID {
-            account["correlation_id"] = clientMetadataID
-        }
+//        if let clientMetadataID {
+//            account["correlation_id"] = clientMetadataID
+//        }
 
-        var parameters: [String: Any] = ["paypal_account": account]
+//        var parameters: [String: Any] = ["paypal_account": account]
         
-        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-            parameters["merchant_account_id"] = merchantAccountID
-        }
+//        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
+//            parameters["merchant_account_id"] = merchantAccountID
+//        }
 
-        let metadata = apiClient.metadata
-        metadata.source = .payPalBrowser
+//        let metadata = apiClient.metadata
+//        metadata.source = .payPalBrowser
+//        
+//        parameters["_meta"] = [
+//            "source": metadata.source.stringValue,
+//            "integration": metadata.integration.stringValue,
+//            "sessionId": metadata.sessionID
+//        ]
         
-        parameters["_meta"] = [
-            "source": metadata.source.stringValue,
-            "integration": metadata.integration.stringValue,
-            "sessionId": metadata.sessionID
-        ]
+        let encodableParams =
+        PayPalAccountPostEncodable(
+            request: payPalRequest as! BTPayPalCheckoutRequest,
+            client: apiClient,
+            paymentType: paymentType,
+            url: url,
+            correlationID: clientMetadataID
+        )
         
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, _, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
