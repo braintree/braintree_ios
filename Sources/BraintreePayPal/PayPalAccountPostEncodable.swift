@@ -11,7 +11,7 @@ struct PayPalAccountPostEncodable: Encodable {
     let meta: Meta
     
     init(
-        request: BTPayPalCheckoutRequest,
+        request: BTPayPalRequest,
         client: BTAPIClient,
         paymentType: BTPayPalPaymentType,
         url: URL?,
@@ -37,13 +37,13 @@ struct PayPalAccountPostEncodable: Encodable {
 struct PayPalAccount: Encodable {
     
     let responseType: String
-    let intent: String
+    let intent: String?
     let correlationId: String?
     let options: Options
     let client: Client
     let response: PayPalResponse
 
-    init(request: BTPayPalCheckoutRequest, client: BTAPIClient, paymentType: BTPayPalPaymentType, url: URL?, correlationID: String?) {
+    init(request: BTPayPalRequest, client: BTAPIClient, paymentType: BTPayPalPaymentType, url: URL?, correlationID: String?) {
 
         self.responseType = "web"
         
@@ -54,8 +54,13 @@ struct PayPalAccount: Encodable {
         } else {
             self.options = Options(validate: true)
         }
-            
-        self.intent = request.intent.stringValue
+        
+        if let payPalRequest = request as? BTPayPalCheckoutRequest {
+            self.intent = payPalRequest.intent.stringValue
+        } else {
+            self.intent = nil
+        }
+                
         self.client = Client()
         
         self.response = PayPalResponse(webURL: url?.absoluteString ?? "")
