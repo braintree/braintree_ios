@@ -1221,7 +1221,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
     }
-
+    
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
@@ -1267,5 +1267,14 @@ class BTPayPalClient_Tests: XCTestCase {
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+    }
+    
+    func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        checkoutRequest.shopperSessionID = "fake-shopper-session-id"
+        
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
 }

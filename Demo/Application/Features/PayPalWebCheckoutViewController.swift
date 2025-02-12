@@ -80,6 +80,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
     
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
+    
+    let contactInformationToggle = Toggle(title: "Add Contact Information")
 
     lazy var payPalVaultIDLabel: UILabel = {
         let label = UILabel()
@@ -123,7 +125,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let errorHandlingToggle = UISwitch()
 
     override func viewDidLoad() {
-        super.heightConstraint = 600
+        super.heightConstraint = 700
         super.viewDidLoad()
 
         errorHandlingToggle.addTarget(self, action: #selector(toggleErrorHandling), for: .valueChanged)
@@ -138,6 +140,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
             newPayPalCheckoutToggle,
+            contactInformationToggle,
             payPalCheckoutButton
         ])
 
@@ -214,6 +217,13 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         request.lineItems = [lineItem]
         request.offerPayLater = payLaterToggle.isOn
         request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
+
+        if contactInformationToggle.isOn {
+            request.contactInformation = BTContactInformation(
+                recipientEmail: "some@email.com",
+                recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+            )
+        }
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true

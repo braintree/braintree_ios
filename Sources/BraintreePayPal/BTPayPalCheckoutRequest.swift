@@ -84,7 +84,13 @@ import BraintreeCore
     
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
+    
+    /// Optional: Contact information of the recipient for the order
+    public var contactInformation: BTContactInformation?
 
+    /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
+    public var shippingCallbackURL: URL?
+    
     // MARK: - Initializer
 
     /// Initializes a PayPal Native Checkout request
@@ -98,13 +104,16 @@ import BraintreeCore
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
+    ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
+    ///   A callback request will be sent to the merchant server at this URL.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false
+        requestBillingAgreement: Bool = false,
+        shippingCallbackURL: URL? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -112,6 +121,7 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
+        self.shippingCallbackURL = shippingCallbackURL
 
         super.init(hermesPath: "v1/paypal_hermes/create_payment_resource", paymentType: .checkout)
     }
@@ -155,6 +165,10 @@ import BraintreeCore
             }
         }
 
+        if let shippingCallbackURL {
+            baseParameters["shipping_callback_url"] = shippingCallbackURL.absoluteString
+        }
+
         if shippingAddressOverride != nil {
             checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
             checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
@@ -164,7 +178,15 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-
+        
+        if let recipientEmail = contactInformation?.recipientEmail {
+            checkoutParameters["recipient_email"] = recipientEmail
+        }
+        
+        if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
+            checkoutParameters["international_phone"] = recipientPhoneNumber
+        }
+        
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
