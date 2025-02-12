@@ -208,50 +208,14 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-
-//        let clientDictionary: [String: String] = [
-//            "platform": "iOS",
-//            "product_name": "PayPal",
-//            "paypal_sdk_version": "version"
-//        ]
-
-//        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
-
-//        var account: [String: Any] = [
-//            "client": clientDictionary,
-//            "response": responseDictionary,
-//            "response_type": "web"
-//        ]
-
-//        if paymentType == .checkout {
-//            account["options"] = ["validate": false]
-//            if let request = payPalRequest as? BTPayPalCheckoutRequest {
-//                account["intent"] = request.intent.stringValue
-//            }
-//        }
         
-//        if let clientMetadataID {
-//            account["correlation_id"] = clientMetadataID
-//        }
+        guard let request = payPalRequest else {
+            return
+        }
 
-//        var parameters: [String: Any] = ["paypal_account": account]
-        
-//        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-//            parameters["merchant_account_id"] = merchantAccountID
-//        }
-
-//        let metadata = apiClient.metadata
-//        metadata.source = .payPalBrowser
-//        
-//        parameters["_meta"] = [
-//            "source": metadata.source.stringValue,
-//            "integration": metadata.integration.stringValue,
-//            "sessionId": metadata.sessionID
-//        ]
-        
         let encodableParams =
         PayPalAccountPostEncodable(
-            request: payPalRequest as! BTPayPalCheckoutRequest,
+            request: request,
             client: apiClient,
             paymentType: paymentType,
             url: url,

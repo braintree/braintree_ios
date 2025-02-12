@@ -110,6 +110,8 @@ struct Meta: Encodable {
     let sessionId: String
     
     init(meta: BTClientMetadata) {
+        meta.source = .payPalBrowser
+        
         self.integration = meta.integration.stringValue
         self.source = meta.source.stringValue
         self.sessionId = meta.sessionID
