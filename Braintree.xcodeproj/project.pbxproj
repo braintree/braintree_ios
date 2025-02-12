@@ -193,7 +193,6 @@
 		A9E80A9324FEF37C00196BD3 /* BTThreeDSecureClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */; };
 		A9E80A9624FEF37C00196BD3 /* BTThreeDSecureAuthenticateJWT_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */; };
 		A9E80A9824FEF37C00196BD3 /* BTThreeDSecureLookup_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F75E5824D46DA2007DC5E7 /* BTThreeDSecureLookup_Tests.swift */; };
-		A9E80A9924FEF37C00196BD3 /* BTThreeDSecurePostalAddress_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */; };
 		A9E80A9A24FEF37C00196BD3 /* BTThreeDSecureRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */; };
 		A9E80A9B24FEF37C00196BD3 /* BTThreeDSecureResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423B921824D1E0BF0048B655 /* BTThreeDSecureResult_Tests.swift */; };
 		A9E80A9C24FEF37C00196BD3 /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79395233A65EB001FDD89 /* MockDelegates.swift */; };
@@ -680,7 +679,6 @@
 		0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressClient_Tests.swift; sourceTree = "<group>"; };
 		035A59D91EA5DE97002960C8 /* BTLocalPaymentClient_UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient_UnitTests.swift; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
-		03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress_Tests.swift; sourceTree = "<group>"; };
 		04ECD89F2CC9CB1A000329EC /* LinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkType.swift; sourceTree = "<group>"; };
 		09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem_Tests.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
@@ -1847,7 +1845,6 @@
 				42F75E5A24D48138007DC5E7 /* BTThreeDSecureClient_Tests.swift */,
 				800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */,
 				42F75E5824D46DA2007DC5E7 /* BTThreeDSecureLookup_Tests.swift */,
-				03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */,
 				42D79393233A62A7001FDD89 /* BTThreeDSecureRequest_Tests.swift */,
 				423B921824D1E0BF0048B655 /* BTThreeDSecureResult_Tests.swift */,
 				80CD33FD2A603892009545F5 /* MockCardinalSession.swift */,
@@ -3376,7 +3373,6 @@
 				A9E80A9624FEF37C00196BD3 /* BTThreeDSecureAuthenticateJWT_Tests.swift in Sources */,
 				80FF7D9825882669001C32EF /* BTThreeDSecureV2ToolbarCustomization_Tests.swift in Sources */,
 				A9E80A9824FEF37C00196BD3 /* BTThreeDSecureLookup_Tests.swift in Sources */,
-				A9E80A9924FEF37C00196BD3 /* BTThreeDSecurePostalAddress_Tests.swift in Sources */,
 				A9E80A9A24FEF37C00196BD3 /* BTThreeDSecureRequest_Tests.swift in Sources */,
 				80FF7DC025882795001C32EF /* BTThreeDSecureV2LabelCustomization_Tests.swift in Sources */,
 				80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */,
