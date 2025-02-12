@@ -982,6 +982,24 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNil(lastPostParameters["merchant_app_return_url"] as? String)
     }
 
+    func testInvokedOpenURLSuccessfully_whenSuccess_sendsAppSwitchSucceededWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.appSwitchSucceeded
+        let fakeURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLSuccessfully(true, url: fakeURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
+    }
+
+    func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailedWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.appSwitchFailed
+        let fakeURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLSuccessfully(false, url: fakeURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
+    }
+    
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
@@ -1027,5 +1045,14 @@ class BTPayPalClient_Tests: XCTestCase {
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+    }
+    
+    func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
+        checkoutRequest.shopperSessionID = "fake-shopper-session-id"
+        
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
 }

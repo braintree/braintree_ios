@@ -186,6 +186,7 @@ import BraintreeDataCollector
 
     // MARK: - Internal Methods
     
+    // swiftlint:disable function_body_length
     func handleReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType,
@@ -196,7 +197,8 @@ import BraintreeDataCollector
             correlationID: clientMetadataID,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
 
         guard let url, BTPayPalReturnURL.isValidURLAction(url: url, linkType: linkType) else {
@@ -284,6 +286,29 @@ import BraintreeDataCollector
         performSwitchRequest(appSwitchURL: url, paymentType: paymentType, completion: completion)
     }
 
+    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        if success {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchSucceeded,
+                appSwitchURL: url,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID
+            )
+            BTPayPalClient.payPalClient = self
+            appSwitchCompletion = completion
+        } else {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchFailed,
+                appSwitchURL: url,
+                isVaultRequest: isVaultRequest,
+                linkType: linkType,
+                payPalContextID: payPalContextID
+            )
+            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+        }
+    }
+
     // MARK: - App Switch Methods
 
     func handleReturnURL(_ url: URL) {
@@ -312,8 +337,14 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         linkType = request.enablePayPalAppSwitch == true ? .universal : .deeplink
+        self.payPalRequest = request
 
-        apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeStarted, isVaultRequest: isVaultRequest, linkType: linkType)
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.tokenizeStarted,
+            isVaultRequest: isVaultRequest,
+            linkType: linkType,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
@@ -332,7 +363,6 @@ import BraintreeDataCollector
                 return
             }
 
-            self.payPalRequest = request
             self.apiClient.post(
                 request.hermesPath,
                 parameters: request.parameters(
@@ -389,7 +419,8 @@ import BraintreeDataCollector
             BTPayPalAnalytics.appSwitchStarted,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
@@ -406,28 +437,7 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL) { success in
-            self.invokedOpenURLSuccessfully(success, completion: completion)
-        }
-    }
-
-    private func invokedOpenURLSuccessfully(_ success: Bool, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        if success {
-            apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchSucceeded,
-                isVaultRequest: isVaultRequest,
-                linkType: linkType,
-                payPalContextID: payPalContextID
-            )
-            BTPayPalClient.payPalClient = self
-            appSwitchCompletion = completion
-        } else {
-            apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchFailed,
-                isVaultRequest: isVaultRequest,
-                linkType: linkType,
-                payPalContextID: payPalContextID
-            )
-            notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
+            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
 
@@ -473,14 +483,16 @@ import BraintreeDataCollector
                     isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
                     linkType: linkType,
-                    payPalContextID: payPalContextID
+                    payPalContextID: payPalContextID,
+                    shopperSessionID: payPalRequest?.shopperSessionID
                 )
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
                     isVaultRequest: isVaultRequest,
                     linkType: linkType,
-                    payPalContextID: payPalContextID
+                    payPalContextID: payPalContextID,
+                    shopperSessionID: payPalRequest?.shopperSessionID
                 )
             }
         } sessionDidCancel: { [self] in
@@ -512,7 +524,8 @@ import BraintreeDataCollector
             correlationID: clientMetadataID,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(result, nil)
     }
@@ -524,7 +537,8 @@ import BraintreeDataCollector
             errorDescription: error.localizedDescription,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(nil, error)
     }
@@ -535,7 +549,8 @@ import BraintreeDataCollector
             correlationID: clientMetadataID,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(nil, BTPayPalError.canceled)
     }
