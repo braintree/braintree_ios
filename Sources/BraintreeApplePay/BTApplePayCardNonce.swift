@@ -23,8 +23,6 @@ import BraintreeCore
 
         self.isDeviceToken = isDeviceToken
 
-        self.isDeviceToken = json["details"]["isDeviceToken"].asBool() ?? true
-
         binData = BTBinData(json: json["binData"])
         super.init(nonce: nonce, type: cardType, isDefault: isDefault)
     }
