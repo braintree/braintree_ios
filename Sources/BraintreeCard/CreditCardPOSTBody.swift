@@ -1,5 +1,3 @@
-// swiftlint:disable nesting
-
 import Foundation
 
 #if canImport(BraintreeCore)
