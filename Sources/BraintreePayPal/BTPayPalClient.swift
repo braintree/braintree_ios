@@ -209,9 +209,7 @@ import BraintreeDataCollector
             return
         }
         
-        guard let request = payPalRequest else {
-            return
-        }
+        guard let request = payPalRequest else { return }
 
         let encodableParams =
         PayPalAccountPostEncodable(
