@@ -48,7 +48,7 @@ struct CreditCardGraphQLBody: Encodable {
                 var cardholderName: String?
 
                 init(card: BTCard) {
-                    self.billingAddress = BillingAddress(card: card)                    
+                    self.billingAddress = BillingAddress(card: card)
                     self.number = card.number
                     self.expirationMonth = card.expirationMonth
                     self.cvv = card.cvv
@@ -72,7 +72,8 @@ struct CreditCardGraphQLBody: Encodable {
                     var countryCodeNumeric: String?
 
                     init?(card: BTCard) {
-                        let properties = [
+                        let properties =
+                        [
                             card.firstName,
                             card.lastName,
                             card.company,
@@ -85,7 +86,7 @@ struct CreditCardGraphQLBody: Encodable {
                             card.countryCodeAlpha2,
                             card.countryCodeAlpha3,
                             card.countryCodeNumeric
-                       ]
+                        ]
 
                         if properties.allSatisfy({ $0?.isEmpty ?? true }) {
                             return nil
