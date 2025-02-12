@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 /// The card tokenization request represents raw credit or debit card data provided by the customer.
 /// Its main purpose is to serve as the input for tokenization.
 @objcMembers public class BTCard: NSObject {
@@ -116,181 +120,14 @@ import Foundation
     
     // MARK: - Internal Methods
 
-    func parameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: false)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: false)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billing_address"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        cardDictionary["options"] = options
-        return cardDictionary
-    }
-
-    func graphQLParameters() -> [String: Any] {
-        var cardDictionary: [String: Any] = buildCardDictionary(isGraphQL: true)
-        let billingAddressDictionary: [String: String] = buildBillingAddressDictionary(isGraphQL: true)
-
-        if !billingAddressDictionary.isEmpty {
-            cardDictionary["billingAddress"] = billingAddressDictionary
-        }
-
-        let options: [String: Bool] = ["validate": shouldValidate]
-        let inputDictionary: [String: Any] = ["creditCard": cardDictionary, "options": options]
-        var variables: [String: Any] = ["input": inputDictionary]
-
-        if authenticationInsightRequested {
-            if let merchantAccountID {
-                variables["authenticationInsightInput"] = ["merchantAccountId": merchantAccountID]
-            } else {
-                variables["authenticationInsightInput"] = [:]
-            }
-        }
-
-        return [
-            "operationName": "TokenizeCreditCard",
-            "query": cardTokenizationGraphQLMutation(),
-            "variables": variables
-        ]
-    }
-
-    // MARK: - Private Methods
-
-    private func buildCardDictionary(isGraphQL: Bool) -> [String: Any] {
-        var cardDictionary: [String: Any] = [:]
-        
-        if !number.isEmpty {
-            cardDictionary["number"] = number
-        }
-        
-        if !expirationMonth.isEmpty {
-            cardDictionary[isGraphQL ? "expirationMonth" : "expiration_month"] = expirationMonth
-        }
-        
-        if !expirationYear.isEmpty {
-            cardDictionary[isGraphQL ? "expirationYear" : "expiration_year"] = expirationYear
-        }
-        
-        cardDictionary["cvv"] = cvv
-
-        if let cardholderName {
-            cardDictionary[isGraphQL ? "cardholderName" : "cardholder_name"] = cardholderName
-        }
-
-        return cardDictionary
-    }
-
-    // swiftlint:disable cyclomatic_complexity
-    private func buildBillingAddressDictionary(isGraphQL: Bool) -> [String: String] {
-        var billingAddressDictionary: [String: String] = [:]
-
-        if let firstName {
-            billingAddressDictionary[isGraphQL ? "firstName" : "first_name"] = firstName
-        }
-
-        if let lastName {
-            billingAddressDictionary[isGraphQL ? "lastName" : "last_name"] = lastName
-        }
-
-        if let company {
-            billingAddressDictionary["company"] = company
-        }
-
-        if let postalCode {
-            billingAddressDictionary[isGraphQL ? "postalCode" : "postal_code"] = postalCode
-        }
-
-        if let streetAddress {
-            billingAddressDictionary[isGraphQL ? "streetAddress" : "street_address"] = streetAddress
-        }
-
-        if let extendedAddress {
-            billingAddressDictionary[isGraphQL ? "extendedAddress" : "extended_address"] = extendedAddress
-        }
-
-        if let locality {
-            billingAddressDictionary["locality"] = locality
-        }
-
-        if let region {
-            billingAddressDictionary["region"] = region
-        }
-
-        if let countryName {
-            billingAddressDictionary[isGraphQL ? "countryName" : "country_name"] = countryName
-        }
-
-        if let countryCodeAlpha2 {
-            billingAddressDictionary[isGraphQL ? "countryCodeAlpha2" : "country_code_alpha2"] = countryCodeAlpha2
-        }
-
-        if let countryCodeAlpha3 {
-            billingAddressDictionary[isGraphQL ? "countryCode" : "country_code_alpha3"] = countryCodeAlpha3
-        }
-
-        if let countryCodeNumeric {
-            billingAddressDictionary[isGraphQL ? "countryCodeNumeric" : "country_code_numeric"] = countryCodeNumeric
-        }
-
-        return billingAddressDictionary
-    }
-    // swiftlint:enable cyclomatic_complexity
-
-    private func cardTokenizationGraphQLMutation() -> String {
-        var mutation = "mutation TokenizeCreditCard($input: TokenizeCreditCardInput!"
-
-        if authenticationInsightRequested {
-            mutation.append(", $authenticationInsightInput: AuthenticationInsightInput!")
-        }
-
-        // swiftlint:disable indentation_width
-        mutation.append(
-            """
-            ) {
-              tokenizeCreditCard(input: $input) {
-                token
-                creditCard {
-                  brand
-                  expirationMonth
-                  expirationYear
-                  cardholderName
-                  last4
-                  bin
-                  binData {
-                    prepaid
-                    healthcare
-                    debit
-                    durbinRegulated
-                    commercial
-                    payroll
-                    issuingBank
-                    countryOfIssuance
-                    productId
-                  }
-                }
-            """
+    func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
+        CreditCardPOSTBody(
+            card: self,
+            metadata: apiClient.metadata
         )
-
-        if authenticationInsightRequested {
-            mutation.append(
-                """
-                    authenticationInsight(input: $authenticationInsightInput) {
-                      customerAuthenticationRegulationEnvironment
-                    }
-                """
-            )
-        }
-
-        mutation.append(
-            """
-              }
-            }
-            """
-        )
-        // swiftlint:enable indentation_width
-
-        return mutation.replacingOccurrences(of: "\n", with: "")
+    }
+            
+    func graphQLParameters() -> CreditCardGraphQLBody {
+        CreditCardGraphQLBody(card: self)
     }
 }
