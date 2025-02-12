@@ -352,7 +352,7 @@ import BraintreeCore
                 return
             }
 
-            let requestParameters = ThreeDSecurePostBody(request: request)
+            let requestParameters = ThreeDSecurePOSTBody(request: request)
             guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
