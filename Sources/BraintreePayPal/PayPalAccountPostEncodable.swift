@@ -9,6 +9,7 @@ struct PayPalAccountPostEncodable: Encodable {
     
     let paypalAccount: PayPalAccount
     let meta: Meta
+    let merchantAccountID: String?
     
     init(
         request: BTPayPalRequest,
@@ -26,11 +27,14 @@ struct PayPalAccountPostEncodable: Encodable {
         )
         
         self.meta = Meta(meta: client.metadata)
+        
+        self.merchantAccountID = request.merchantAccountID
     }
 
     enum CodingKeys: String, CodingKey {
         case paypalAccount = "paypal_account"
         case meta = "_meta"
+        case merchantAccountID = "merchant_account_id"
     }
 }
 
