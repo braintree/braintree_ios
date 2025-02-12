@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add PayPal App Switch checkout Flow (BETA)
+    * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction:offerPayLater:currencyCode:requestBillingAgreement:)`
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
+
 ## 6.28.0 (2025-02-05)
 * BraintreeVenmo
   * Allow universal links to be set without a return URL scheme (fixes #1505)
@@ -32,9 +38,6 @@
 ## 6.25.0 (2024-12-11)
 * BraintreePayPal
   * Add `BTPayPalRequest.userPhoneNumber` optional property
-  * Add PayPal App Switch checkout Flow (BETA)
-    * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction: offerPayLater:currencyCode:requestBillingAgreement:)`
-    * **Note:** This feature is currently in beta and may change or be removed in future releases.
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
 * BraintreeVenmo
   * Send `url` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
