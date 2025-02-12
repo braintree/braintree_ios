@@ -73,9 +73,18 @@ struct CreditCardGraphQLBody: Encodable {
 
                     init?(card: BTCard) {
                         let properties = [
-                             card.firstName, card.lastName, card.company, card.postalCode,
-                             card.streetAddress, card.extendedAddress, card.locality, card.region,
-                             card.countryName, card.countryCodeAlpha2, card.countryCodeAlpha3, card.countryCodeNumeric
+                            card.firstName,
+                            card.lastName,
+                            card.company,
+                            card.postalCode,
+                            card.streetAddress,
+                            card.extendedAddress,
+                            card.locality,
+                            card.region,
+                            card.countryName,
+                            card.countryCodeAlpha2,
+                            card.countryCodeAlpha3,
+                            card.countryCodeNumeric
                        ]
 
                         if properties.allSatisfy({ $0?.isEmpty ?? true }) {
