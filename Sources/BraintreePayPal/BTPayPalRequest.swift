@@ -104,14 +104,14 @@ import BraintreeCore
     /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public var userAuthenticationEmail: String?
     
+    /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    public var shopperSessionID: String?
+    
     // MARK: - Internal Properties
     
     /// Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
     /// - Warning: This property is currently in beta and may change or be removed in future releases.
     var enablePayPalAppSwitch: Bool
-    
-    /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
-    public var shopperSessionID: String?
 
     // MARK: - Static Properties
     
@@ -200,6 +200,10 @@ import BraintreeCore
         
         if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
             parameters["payer_email"] = userAuthenticationEmail
+        }
+        
+        if let shopperSessionID {
+            parameters["shopper_session_id"] = shopperSessionID
         }
         
         if let shopperSessionID {
