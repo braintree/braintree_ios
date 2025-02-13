@@ -5,6 +5,8 @@ import PassKit
 class ApplePayViewController: PaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
+    // swiftlint:disable:next force_unwrapping
+    let managementURL = URL(string: "https://www.merchant.com/update-payment")!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,13 +38,29 @@ class ApplePayViewController: PaymentButtonBaseViewController {
             }
 
             let paymentRequest = self.constructPaymentRequest(with: request)
-            // swiftlint:disable:next force_unwrapping
-            let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)!
+            guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
+                self.progressBlock("Could not create PKPaymentAuthorizationViewController")
+                return
+            }
             paymentAuthorizationViewController.delegate = self
+
+            if #available(iOS 16.0, *) {
+                paymentRequest.recurringPaymentRequest = self.recurringPaymentRequest()
+            }
 
             self.progressBlock("Presenting Apple Pay Sheet")
             self.present(paymentAuthorizationViewController, animated: true)
         }
+    }
+
+    @available(iOS 16.0, *)
+    private func recurringPaymentRequest() -> PKRecurringPaymentRequest {
+        let recurringPaymentRequest = PKRecurringPaymentRequest(
+            paymentDescription: "Payment description.",
+            regularBilling: PKRecurringPaymentSummaryItem(label: "Payment label", amount: 10.99),
+            managementURL: managementURL
+        )
+        return recurringPaymentRequest
     }
 
     private func constructPaymentRequest(with paymentRequest: PKPaymentRequest) -> PKPaymentRequest {
