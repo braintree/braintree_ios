@@ -89,11 +89,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     override func createPaymentButton() -> UIView {
         let payPalCheckoutButton = createButton(title: "PayPal Checkout", action: #selector(tappedPayPalCheckout))
+        
         let payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(tappedPayPalVault))
+        
         let payPalAppSwitchForCheckoutButton = createButton(
             title: "PayPal App Switch - Checkout",
             action: #selector(tappedPayPalAppSwitchForCheckout)
         )
+        
         let payPalAppSwitchForVaultButton = createButton(
             title: "PayPal App Switch - Vault",
             action: #selector(tappedPayPalAppSwitchForVault)
@@ -107,6 +110,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             payPalAppSwitchForCheckoutButton
         ])
         oneTimeCheckoutStackView.spacing = 12
+        
         let vaultStackView = buttonsStackView(label: "Vault", views: [
             rbaDataToggle,
             payPalVaultButton,
