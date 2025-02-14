@@ -45,6 +45,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 13. Missing PayPal Request
     case missingPayPalRequest
 
+    /// 14. Failed to openURL in external browser when app switch failed
+    case externalBrowserSwitchFailed
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -79,6 +82,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 12
         case .missingPayPalRequest:
             return 13
+        case .externalBrowserSwitchFailed:
+            return 14
         }
     }
 
@@ -114,6 +119,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Missing BA Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
+        case .externalBrowserSwitchFailed:
+            return "UIApplication failed to open url in external browser when app switch failed"
         }
     }
 
