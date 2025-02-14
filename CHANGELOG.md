@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeApplePay
+  * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
+
 ## 5.26.0 (2024-05-07)
 * Updated expiring pinned vendor SSL certificates
 
