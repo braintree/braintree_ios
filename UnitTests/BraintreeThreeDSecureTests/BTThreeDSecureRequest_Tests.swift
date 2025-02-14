@@ -143,4 +143,151 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
             ]
         )
     }
+    
+    func testAsParameters_parameterizesAllProperties() {
+        let billingAddress = BTThreeDSecurePostalAddress()
+     
+        billingAddress.givenName = "Given"
+        billingAddress.surname = "Surname"
+        billingAddress.streetAddress = "123 Street Address"
+        billingAddress.extendedAddress = "Suite Number"
+        billingAddress.line3 = "#2"
+        billingAddress.locality = "Locality"
+        billingAddress.region = "Region"
+        billingAddress.postalCode = "12345"
+        billingAddress.countryCodeAlpha2 = "US"
+        billingAddress.phoneNumber = "1234567"
+        
+        let info = BTThreeDSecureAdditionalInformation()
+        
+        let threeDSecureRequest = BTThreeDSecureRequest(
+            amount: "9.97",
+            nonce: "fake-card-nonce",
+            accountType: .credit,
+            additionalInformation: info,
+            billingAddress: billingAddress,
+            cardAddChallengeRequested: true,
+            challengeRequested: true,
+            dataOnlyRequested: true,
+            dfReferenceID: "df-reference-id",
+            email: "tester@example.com",
+            exemptionRequested: true,
+            mobilePhoneNumber: "5151234321",
+            shippingMethod: .priority
+        )
+
+        //Same as billingAddress
+        info.shippingAddress = billingAddress
+
+        info.shippingMethodIndicator = "01"
+        info.productCode = "GEN"
+        info.deliveryTimeframe = "03"
+        info.deliveryEmail = "email@test.com"
+        info.reorderIndicator = "01"
+        info.preorderIndicator = "02"
+        info.preorderDate = "20200101"
+        info.giftCardAmount = "10"
+        info.giftCardCurrencyCode = "USD"
+        info.giftCardCount = "5"
+        info.accountAgeIndicator = "05"
+        info.accountCreateDate = "20180203"
+        info.accountChangeIndicator = "02"
+        info.accountChangeDate = "20190304"
+        info.accountPwdChangeIndicator = "03"
+        info.accountPwdChangeDate = "20190101"
+        info.shippingAddressUsageIndicator = "01"
+        info.shippingAddressUsageDate = "20190405"
+        info.transactionCountDay = "1"
+        info.transactionCountYear = "2"
+        info.addCardAttempts = "3"
+        info.accountPurchases = "4"
+        info.fraudActivity = "01"
+        info.shippingNameIndicator = "02"
+        info.paymentAccountIndicator = "03"
+        info.paymentAccountAge = "20190101"
+        info.addressMatch = "N"
+        info.accountID = "ABC123"
+        info.ipAddress = "127.0.0.1"
+        info.orderDescription = "Description"
+        info.taxAmount = "1234"
+        info.userAgent = "User Agent"
+        info.authenticationIndicator = "03"
+        info.installment = "2"
+        info.purchaseDate = "20190401123456"
+        info.recurringEnd = "20201231"
+        info.recurringFrequency = "30"
+        info.sdkMaxTimeout = "10"
+        info.workPhoneNumber = "5551115555"
+        
+        let params = ThreeDSecurePOSTBody(request: threeDSecureRequest)
+
+        XCTAssertEqual(params.additionalInfo.shippingGivenName, "Given")
+        XCTAssertEqual(params.additionalInfo.shippingSurname, "Surname")
+        XCTAssertEqual(params.additionalInfo.shippingLine1, "123 Street Address")
+        XCTAssertEqual(params.additionalInfo.shippingLine2, "Suite Number")
+        XCTAssertEqual(params.additionalInfo.shippingLine3, "#2")
+        XCTAssertEqual(params.additionalInfo.shippingCity, "Locality")
+        XCTAssertEqual(params.additionalInfo.shippingState, "Region")
+        XCTAssertEqual(params.additionalInfo.shippingPostalCode, "12345")
+        XCTAssertEqual(params.additionalInfo.shippingCountryCode, "US")
+        XCTAssertEqual(params.additionalInfo.shippingPhone, "1234567")
+
+        XCTAssertEqual(params.additionalInfo.shippingMethodIndicator, "01")
+        XCTAssertEqual(params.additionalInfo.productCode, "GEN")
+        XCTAssertEqual(params.additionalInfo.deliveryTimeframe, "03")
+        XCTAssertEqual(params.additionalInfo.deliveryEmail, "email@test.com")
+        XCTAssertEqual(params.additionalInfo.reorderIndicator, "01")
+        XCTAssertEqual(params.additionalInfo.preorderIndicator, "02")
+        XCTAssertEqual(params.additionalInfo.preorderDate, "20200101")
+        XCTAssertEqual(params.additionalInfo.giftCardAmount, "10")
+        XCTAssertEqual(params.additionalInfo.giftCardCurrencyCode, "USD")
+        XCTAssertEqual(params.additionalInfo.giftCardCount, "5")
+        XCTAssertEqual(params.additionalInfo.accountAgeIndicator, "05")
+        XCTAssertEqual(params.additionalInfo.accountCreateDate, "20180203")
+        XCTAssertEqual(params.additionalInfo.accountChangeIndicator, "02")
+        XCTAssertEqual(params.additionalInfo.accountChangeDate, "20190304")
+        XCTAssertEqual(params.additionalInfo.accountPwdChangeIndicator, "03")
+        XCTAssertEqual(params.additionalInfo.accountPwdChangeDate, "20190101")
+        XCTAssertEqual(params.additionalInfo.shippingAddressUsageIndicator, "01")
+        XCTAssertEqual(params.additionalInfo.shippingAddressUsageDate, "20190405")
+        XCTAssertEqual(params.additionalInfo.transactionCountDay, "1")
+        XCTAssertEqual(params.additionalInfo.transactionCountYear, "2")
+        XCTAssertEqual(params.additionalInfo.addCardAttempts, "3")
+        XCTAssertEqual(params.additionalInfo.accountPurchases, "4")
+        XCTAssertEqual(params.additionalInfo.fraudActivity, "01")
+        XCTAssertEqual(params.additionalInfo.shippingNameIndicator, "02")
+        XCTAssertEqual(params.additionalInfo.paymentAccountIndicator, "03")
+        XCTAssertEqual(params.additionalInfo.paymentAccountAge, "20190101")
+        XCTAssertEqual(params.additionalInfo.addressMatch, "N")
+        XCTAssertEqual(params.additionalInfo.accountId, "ABC123")
+        XCTAssertEqual(params.additionalInfo.ipAddress, "127.0.0.1")
+        XCTAssertEqual(params.additionalInfo.orderDescription, "Description")
+        XCTAssertEqual(params.additionalInfo.taxAmount, "1234")
+        XCTAssertEqual(params.additionalInfo.userAgent, "User Agent")
+        XCTAssertEqual(params.additionalInfo.authenticationIndicator, "03")
+        XCTAssertEqual(params.additionalInfo.installment, "2")
+        XCTAssertEqual(params.additionalInfo.purchaseDate, "20190401123456")
+        XCTAssertEqual(params.additionalInfo.recurringEnd, "20201231")
+        XCTAssertEqual(params.additionalInfo.recurringFrequency, "30")
+        XCTAssertEqual(params.additionalInfo.sdkMaxTimeout, "10")
+        XCTAssertEqual(params.additionalInfo.workPhoneNumber, "5551115555")
+    }
+
+    func testAsParameters_parameterizesWithNilProperties() {
+        let info = BTThreeDSecureAdditionalInformation()
+        
+        info.productCode = "AIR"
+        
+        let threeDSecureRequest = BTThreeDSecureRequest(
+            amount: "9.97",
+            nonce: "fake-card-nonce",
+            additionalInformation: info
+        )
+
+        let params = ThreeDSecurePOSTBody(request: threeDSecureRequest)
+        
+        XCTAssertNil(params.additionalInfo.shippingMethodIndicator)
+        XCTAssertEqual(params.additionalInfo.productCode, "AIR")
+    }
+
 }
