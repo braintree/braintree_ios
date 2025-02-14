@@ -288,10 +288,10 @@ import BraintreeDataCollector
     func invokedOpenURLSuccessfully(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchSucceeded,
+            appSwitchURL: url,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            appSwitchURL: url
+            payPalContextID: payPalContextID
         )
         BTPayPalClient.payPalClient = self
         appSwitchCompletion = completion
@@ -300,10 +300,10 @@ import BraintreeDataCollector
     func openURLInExternalBrowserSuccessfully(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.externalBrowserSwitchSucceeded,
+            appSwitchURL: url,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            appSwitchURL: url
+            payPalContextID: payPalContextID
         )
         BTPayPalClient.payPalClient = self
         appSwitchCompletion = completion
@@ -312,10 +312,10 @@ import BraintreeDataCollector
     func failedToInvokeOpenURL(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchFailed,
+            appSwitchURL: url,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            appSwitchURL: url
+            payPalContextID: payPalContextID
         )
         notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
     }
@@ -323,10 +323,10 @@ import BraintreeDataCollector
     func failedToOpenURLInExternalBrowser(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.externalBrowserSwitchFailed,
+            appSwitchURL: url,
             isVaultRequest: isVaultRequest,
             linkType: linkType,
-            payPalContextID: payPalContextID,
-            appSwitchURL: url
+            payPalContextID: payPalContextID
         )
         notifyFailure(with: BTPayPalError.externalBrowserSwitchFailed, completion: completion)
     }
