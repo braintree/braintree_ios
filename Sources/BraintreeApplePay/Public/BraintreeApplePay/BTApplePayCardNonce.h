@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) BTBinData *binData;
 
 /**
- This Boolean (available on iOS 16+)  indicates whether this tokenized card is a device-specific account number (DPAN) or merchant/cloud token (MPAN). If `isDeviceToken` is `false`, then token type is MPAN.
+ This Boolean (available on iOS 16+) indicates whether this tokenized card is a device-specific account number (DPAN) or merchant/cloud token (MPAN). If `isDeviceToken` is `false`, then token type is MPAN.
  */
 @property (nonatomic, assign) BOOL isDeviceToken;
 
