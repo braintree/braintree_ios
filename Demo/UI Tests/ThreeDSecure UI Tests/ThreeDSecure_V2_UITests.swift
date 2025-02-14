@@ -44,7 +44,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
 
-        let textField = app.secureTextFields.element(boundBy: 0)
+        let textField = app.textFields.element(boundBy: 1)
 
         waitForElementToBeHittable(textField)
         textField.forceTapElement()
