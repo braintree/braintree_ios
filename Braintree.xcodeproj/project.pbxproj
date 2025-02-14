@@ -375,6 +375,7 @@
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
 		BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */; };
 		BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */; };
+		C53568872D5184A20013BA5B /* BTPayPalClientAppLaunchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53568862D5184A00013BA5B /* BTPayPalClientAppLaunchConfig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1106,6 +1107,7 @@
 		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient.swift; sourceTree = "<group>"; };
 		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
+		C53568862D5184A00013BA5B /* BTPayPalClientAppLaunchConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalClientAppLaunchConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1389,6 +1391,7 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
+				C53568862D5184A00013BA5B /* BTPayPalClientAppLaunchConfig.swift */,
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				57544F5B295254A500DEB7B0 /* BTJSON+PayPal.swift */,
 				57544F572952298900DEB7B0 /* BTPayPalAccountNonce.swift */,
@@ -3283,6 +3286,7 @@
 				57544F5E295258AC00DEB7B0 /* BTPayPalError.swift in Sources */,
 				BEF5D2E6294A18B300FFD56D /* BTPayPalLineItem.swift in Sources */,
 				BE349113294B798300D2CF68 /* BTPayPalRequest.swift in Sources */,
+				C53568872D5184A20013BA5B /* BTPayPalClientAppLaunchConfig.swift in Sources */,
 				BE549F112BF5445F00B6F441 /* BTPayPalReturnURL.swift in Sources */,
 				57544F5C295254A500DEB7B0 /* BTJSON+PayPal.swift in Sources */,
 				BE549F122BF5449E00B6F441 /* BTPayPalVaultBaseRequest.swift in Sources */,

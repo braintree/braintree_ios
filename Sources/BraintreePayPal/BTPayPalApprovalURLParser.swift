@@ -11,7 +11,7 @@ enum PayPalRedirectType: Equatable {
     case webBrowser(url: URL)
     
     /// The universal link flow, switching out of the merchant app into the native PayPal app
-    case payPalApp(url: URL)
+    case payPalApp(url: URL, fallbackUrl: URL?)
 }
 
 /// Parses response body from `/v1/paypal_hermes/*` POST requests to determine the `PayPalRedirectType`
@@ -46,11 +46,11 @@ struct BTPayPalApprovalURLParser {
     }
 
     init?(body: BTJSON) {
+        let fallbackUrl = body["agreementSetup"]["approvalUrl"].asURL()
         if let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {
-            redirectType = .payPalApp(url: payPalAppRedirectURL)
+            redirectType = .payPalApp(url: payPalAppRedirectURL, fallbackUrl: fallbackUrl)
             url = payPalAppRedirectURL
-        } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
-            body["agreementSetup"]["approvalUrl"].asURL() {
+        } else if let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ?? fallbackUrl {
             redirectType = .webBrowser(url: approvalURL)
             url = approvalURL
         } else {

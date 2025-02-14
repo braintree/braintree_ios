@@ -22,7 +22,7 @@ struct BTPayPalReturnURL {
     /// - Parameter url: an incoming app switch or ASWebAuthenticationSession url
     init?(_ redirectType: PayPalRedirectType) {
         switch redirectType {
-        case .payPalApp(let url), .webBrowser(let url):
+        case .payPalApp(let url, _), .webBrowser(let url):
             if url.path.contains("success") {
                 state = .succeeded
             } else if url.path.contains("cancel") {
