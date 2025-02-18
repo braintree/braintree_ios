@@ -16,7 +16,7 @@ import BraintreeCore
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
-    
+
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
     /// - Parameters:
     ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.

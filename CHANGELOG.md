@@ -2,9 +2,11 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add PayPal App Switch checkout Flow (BETA)
+  * Add PayPal App Switch checkout flow (BETA)
     * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction:offerPayLater:currencyCode:requestBillingAgreement:)`
     * **Note:** This feature is currently in beta and may change or be removed in future releases.
+* BraintreeApplePay
+  * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
 
 ## 6.28.0 (2025-02-05)
 * BraintreeVenmo

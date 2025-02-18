@@ -206,10 +206,6 @@ import BraintreeCore
             parameters["shopper_session_id"] = shopperSessionID
         }
         
-        if let shopperSessionID {
-            parameters["shopper_session_id"] = shopperSessionID
-        }
-
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
