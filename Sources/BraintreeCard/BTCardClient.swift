@@ -79,7 +79,7 @@ import BraintreeCore
                     return
                 }
             } else {
-                let parameters = self.clientAPIParameters(for: card)
+                let parameters = card.parameters(apiClient: self.apiClient)
 
                 self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
                     if let error = error as NSError? {
@@ -134,26 +134,6 @@ import BraintreeCore
         }
 
         return false
-    }
-
-    private func clientAPIParameters(for card: BTCard) -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        parameters["credit_card"] = card.parameters()
-
-        let metadata: [String: String] = [
-            "source": apiClient.metadata.source.stringValue,
-            "integration": apiClient.metadata.integration.stringValue,
-            "sessionId": apiClient.metadata.sessionID
-        ]
-
-        parameters["_meta"] = metadata
-
-        if card.authenticationInsightRequested {
-            parameters["authenticationInsight"] = true
-            parameters["merchantAccountId"] = card.merchantAccountID
-        }
-
-        return parameters
     }
 
     // MARK: - Error Construction Methods
