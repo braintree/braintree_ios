@@ -41,6 +41,9 @@ public enum BTHTTPError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 12. Deallocated HTTPClient
     case deallocated(String)
+    
+    /// 13. Invalid authorization
+    case invalidAuthorization(String)
 
     public static var errorDomain: String {
         BTCoreConstants.httpErrorDomain
@@ -74,6 +77,8 @@ public enum BTHTTPError: Error, CustomNSError, LocalizedError, Equatable {
             return 11
         case .deallocated:
             return 12
+        case .invalidAuthorization:
+            return 13
         }
     }
 
@@ -105,6 +110,8 @@ public enum BTHTTPError: Error, CustomNSError, LocalizedError, Equatable {
             return [NSLocalizedDescriptionKey: errorDescription]
         case .deallocated(let httpType):
             return [NSLocalizedDescriptionKey: "\(httpType) has been deallocated."]
+        case .invalidAuthorization(let authorization):
+            return [NSLocalizedDescriptionKey: "Invalid authorization provided: \(authorization)."]
         }
     }
 

@@ -10,10 +10,10 @@ import BraintreeCore
     private let apiClient: BTAPIClient
     
     ///  Creates an American Express client.
-    /// - Parameter apiClient: An instance of `BTAPIClient`
+    /// - Parameter authorization: A client token or tokenization key
     @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
     
     ///  Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.

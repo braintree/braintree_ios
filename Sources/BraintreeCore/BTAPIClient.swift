@@ -9,10 +9,10 @@ import Foundation
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
-
+    
     /// The TokenizationKey or ClientToken used to authorize the APIClient
     public var authorization: ClientAuthorization
-    
+
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
@@ -34,7 +34,7 @@ import Foundation
     public init?(authorization: String) {
         self.metadata = BTClientMetadata()
 
-        guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
+        let authorizationType = Self.authorizationType(for: authorization)
 
         switch authorizationType {
         case .tokenizationKey:
@@ -50,6 +50,8 @@ import Foundation
             } catch {
                 return nil
             }
+        case .invalidAuthorization:
+            return nil
         }
         
         let btHttp = BTHTTP(authorization: self.authorization)
@@ -65,6 +67,38 @@ import Foundation
             // No-op
         }
     }
+    
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// Initialize a new API client.
+    /// - Parameter authorization: Your tokenization key or client token.
+    // TODO: remove obj-c init once we can remove the old init
+    // TODO: remove default/optional nil, needed currently because otherwise there is and error that the signatures are the same
+    // TODO: rename param to authorization in final PR
+    @_documentation(visibility: private)
+    @objc(initWithAuthorizationNew:)
+    public convenience init(newAuthorization: String? = nil) {
+        
+        // TODO: this will not be force unwrapped once we remove the other init
+        self.init(authorization: newAuthorization ?? "")!
+
+        self.metadata = BTClientMetadata()
+
+        // TODO: remove default and enforce authorization above
+        self.authorization = self.authorization(from: newAuthorization ?? "")
+        
+        let btHttp = BTHTTP(authorization: self.authorization)
+        http = btHttp
+        configurationLoader = ConfigurationLoader(http: btHttp)
+        
+        analyticsService.setAPIClient(self)
+        http?.networkTimingDelegate = self
+
+        // Kickoff the background request to fetch the config
+        fetchOrReturnRemoteConfiguration { _, _ in
+            // No-op
+        }
+    }
+
 
     // MARK: - Deinit
 
@@ -291,11 +325,11 @@ import Foundation
 
     // MARK: - Internal Static Methods
 
-    static func authorizationType(for authorization: String) -> AuthorizationType? {
+    static func authorizationType(for authorization: String) -> AuthorizationType {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
+        let regularExpression = try? NSRegularExpression(pattern: pattern)
 
-        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
+        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression?.firstMatch(
             in: authorization,
             options: [],
             range: NSRange(location: 0, length: authorization.count)
@@ -335,13 +369,37 @@ import Foundation
         }
     }
     
-    func payPalAPIURL(forEnvironment environment: String) -> URL? {
+    private func payPalAPIURL(forEnvironment environment: String) -> URL? {
         if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
             environment.caseInsensitiveCompare("development") == .orderedSame {
             return BTCoreConstants.payPalSandboxURL
         } else {
             return BTCoreConstants.payPalProductionURL
         }
+    }
+    
+    private func authorization(from authorization: String) -> ClientAuthorization {
+        let authorizationType = Self.authorizationType(for: authorization)
+
+        switch authorizationType {
+        case .tokenizationKey:
+            do {
+                return try TokenizationKey(authorization)
+            } catch {
+                return InvalidAuthorization(authorization)
+            }
+        case .clientToken:
+            do {
+                let clientToken = try BTClientToken(clientToken: authorization)
+                self.authorization = clientToken
+            } catch {
+                return InvalidAuthorization(authorization)
+            }
+        case .invalidAuthorization:
+            return InvalidAuthorization(authorization)
+        }
+        
+        return InvalidAuthorization(authorization)
     }
 
     // MARK: BTAPITimingDelegate conformance
