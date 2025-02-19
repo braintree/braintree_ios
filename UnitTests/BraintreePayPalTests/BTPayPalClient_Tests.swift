@@ -781,7 +781,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
     }
-    
+
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
@@ -800,7 +800,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let expectation = expectation(description: "completion block called")
         payPalClient.tokenize(vaultRequest) { nonce, error in
             XCTAssertNil(nonce)
- 
+
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertEqual(error.code, 12)
             XCTAssertEqual(error.localizedDescription, "Missing BA Token for PayPal App Switch.")

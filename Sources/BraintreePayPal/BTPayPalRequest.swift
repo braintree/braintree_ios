@@ -7,7 +7,7 @@ import BraintreeCore
 @objc public enum BTPayPalPaymentType: Int {
     /// Checkout
     case checkout
-    
+
     /// Vault
     case vault
     
@@ -163,7 +163,7 @@ import BraintreeCore
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
- 
+
         experienceProfile["no_shipping"] = !isShippingAddressRequired
         experienceProfile["brand_name"] = displayName != nil ? displayName : configuration.json?["paypal"]["displayName"].asString()
 
@@ -203,7 +203,7 @@ import BraintreeCore
         if let shopperSessionID {
             parameters["shopper_session_id"] = shopperSessionID
         }
- 
+
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
