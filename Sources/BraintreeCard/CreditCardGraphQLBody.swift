@@ -1,7 +1,6 @@
-// swiftlint:disable nesting
-
 import Foundation
 
+// swiftlint:disable nesting
 /// The POST body for graphQL API Credit Card Tokenize Post
 struct CreditCardGraphQLBody: Encodable {
 

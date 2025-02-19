@@ -228,20 +228,7 @@ class BTCard_Tests: XCTestCase {
         
         XCTAssertNotNil(params.variables.input.authenticationInsightInput)
     }
-    
-    func printEncodableObject<T: Encodable>(_ object: T) {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted // Makes the JSON easier to read
-        do {
-            let jsonData = try encoder.encode(object)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("Encoded JSON:\n\(jsonString)")
-            }
-        } catch {
-            print("Failed to encode object: \(error)")
-        }
-    }
-    
+
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
             number: "8111111111111111",
