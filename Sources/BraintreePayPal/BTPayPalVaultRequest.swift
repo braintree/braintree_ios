@@ -35,7 +35,7 @@ import BraintreeCore
         )
         super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
-    
+
     /// Initializes a PayPal Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.

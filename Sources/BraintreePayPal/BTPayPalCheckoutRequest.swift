@@ -82,7 +82,7 @@ import BraintreeCore
     
     /// Optional: Contact information of the recipient for the order
     public var contactInformation: BTContactInformation?
-    
+
     /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
     public var shippingCallbackURL: URL?
 

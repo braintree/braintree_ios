@@ -38,10 +38,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 11. App Switch could not complete
     case appSwitchFailed
-    
+
     /// 12. Missing BA Token for App Switch
     case missingBAToken
-    
+
     /// 13. Missing PayPal Request
     case missingPayPalRequest
     

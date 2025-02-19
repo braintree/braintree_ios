@@ -13,7 +13,7 @@ import BraintreeCore
     public var offerCredit: Bool
 
     // MARK: - Initializer
-    
+
     /// Initializes a PayPal Native Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
