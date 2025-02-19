@@ -82,12 +82,44 @@
 
         PKPaymentAuthorizationViewController *viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
         viewController.delegate = self;
-        
+
+        if (@available(iOS 16.0, *)) {
+            PKRecurringPaymentSummaryItem *recurringItem = [self createRecurringPaymentSummaryItem];
+            NSURL *managementURL = [NSURL URLWithString:@"https://example.com/manage"];
+
+            PKRecurringPaymentRequest *recurringPaymentRequest = [
+                [PKRecurringPaymentRequest alloc] initWithPaymentDescription:@"Payment description."
+                regularBilling:recurringItem
+                managementURL:managementURL
+            ];
+        }
+
         self.progressBlock(@"Presenting Apple Pay Sheet");
         [self presentViewController:viewController animated:YES completion:nil];
     }];
 }
 
+- (PKRecurringPaymentSummaryItem *)createRecurringPaymentSummaryItem  API_AVAILABLE(ios(15.0)){
+    NSDecimalNumber *amount = [NSDecimalNumber decimalNumberWithString:@"10.99"];
+    NSDate *startDate = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitMonth
+                                                                 value:1
+                                                                toDate:[NSDate date]
+                                                               options:0];
+    NSDate *endDate = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitMonth
+                                                               value:12
+                                                              toDate:startDate
+                                                             options:0];
+
+    PKRecurringPaymentSummaryItem *recurringItem = [[PKRecurringPaymentSummaryItem alloc] init];
+    recurringItem.label = @"Subscription Payment";
+    recurringItem.amount = amount;
+    recurringItem.startDate = startDate;
+    recurringItem.intervalUnit = NSCalendarUnitMonth; // Monthly billing cycle
+    recurringItem.intervalCount = 1; // Every 1 month
+    recurringItem.endDate = endDate; // Optional end date
+
+    return recurringItem;
+}
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
