@@ -8,10 +8,10 @@
 
 - (instancetype)initWithJSON:(BTJSON *)json {
     NSString *cardType = [json[@"details"][@"cardType"] asString] ?: @"ApplePayCard";
-    _isDeviceToken = [json[@"details"][@"isDeviceToken"] isBool] ?: TRUE;
     self = [super initWithNonce:[json[@"nonce"] asString] type:cardType isDefault:[json[@"default"] isTrue]];
     
     if (self) {
+        _isDeviceToken = [json[@"details"][@"isDeviceToken"] isTrue];
         _binData = [[BTBinData alloc] initWithJSON:json[@"binData"]];
     }
     return self;
