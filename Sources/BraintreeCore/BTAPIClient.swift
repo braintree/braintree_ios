@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable type_body_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -9,7 +10,7 @@ import Foundation
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
-    
+
     /// The TokenizationKey or ClientToken used to authorize the APIClient
     public var authorization: ClientAuthorization
 
@@ -68,20 +69,18 @@ import Foundation
         }
     }
    
-    // TODO: remove obj-c init once we can remove the old init
-    // TODO: rename param to authorization in final PR
+    // TODO: rename param to authorization in final PR - set as newAuthorization currently since otherwise the two inits have the same signature
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token.
     @_documentation(visibility: private)
-    @objc(initWithAuthorizationNew:)
     public init(newAuthorization: String) {
         self.authorization = Self.authorization(from: newAuthorization)
         self.metadata = BTClientMetadata()
                 
-        let btHttp = BTHTTP(authorization: self.authorization)
-        http = btHttp
-        configurationLoader = ConfigurationLoader(http: btHttp)
+        let btHTTP = BTHTTP(authorization: self.authorization)
+        http = btHTTP
+        configurationLoader = ConfigurationLoader(http: btHTTP)
         
         super.init()
         
@@ -330,9 +329,11 @@ import Foundation
 
     static func authorizationType(for authorization: String) -> AuthorizationType {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        let regularExpression = try? NSRegularExpression(pattern: pattern)
+        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else {
+            return .invalidAuthorization
+        }
 
-        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression?.firstMatch(
+        let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
             in: authorization,
             options: [],
             range: NSRange(location: 0, length: authorization.count)

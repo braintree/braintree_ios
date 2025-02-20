@@ -3,6 +3,7 @@ import BraintreeCore
 
 class PaymentButtonBaseViewController: BaseViewController {
 
+    // TODO: remove API client in final PR
     let apiClient: BTAPIClient
     let authorization: String
 

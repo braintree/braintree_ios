@@ -11,7 +11,7 @@ import BraintreeCore
     var apiClient: BTAPIClient
     
     ///  Creates an American Express client.
-    /// - Parameter authorization: A client token or tokenization key
+    /// - Parameter authorization: Your client token or tokenization key
     @objc(initWithAPIClient:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(newAuthorization: authorization)
