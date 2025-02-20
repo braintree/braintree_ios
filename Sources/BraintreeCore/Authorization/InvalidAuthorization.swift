@@ -11,6 +11,8 @@ class InvalidAuthorization: ClientAuthorization {
     init(_ rawValue: String) {
         self.bearer = rawValue
         self.originalValue = rawValue
+        
+        // swiftlint:disable:next force_unwrapping
         self.configURL = URL(string: "https://example.com")!
     }
 }

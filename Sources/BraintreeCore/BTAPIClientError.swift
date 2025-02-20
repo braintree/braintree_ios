@@ -53,7 +53,6 @@ public enum BTAPIClientError: Error, CustomNSError, LocalizedError, Equatable {
             
         case .invalidAuthorization(let authorization):
             return "Invalid authorization provided: \(authorization)."
-
         }
     }
 }
