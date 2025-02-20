@@ -1,7 +1,7 @@
 import Foundation
 
 ///  Error codes associated with a API Client.
-public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatable {
+public enum BTAPIClientError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. Configuration fetch failed
     case configurationUnavailable
@@ -14,13 +14,27 @@ public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatab
     
     /// 3. Failed to base64 encode an authorizationFingerprint or tokenizationKey, when used as a cacheKey
     case failedBase64Encoding
+    
+    /// 4. Invalid authorization
+    case invalidAuthorization(String)
 
     public static var errorDomain: String {
         "com.braintreepayments.BTAPIClientErrorDomain"
     }
 
     public var errorCode: Int {
-        rawValue
+        switch self {
+        case .configurationUnavailable:
+            return 0
+        case .notAuthorized:
+            return 1
+        case .deallocated:
+            return 2
+        case .failedBase64Encoding:
+            return 3
+        case .invalidAuthorization:
+            return 4
+        }
     }
 
     public var errorDescription: String? {
@@ -36,6 +50,10 @@ public enum BTAPIClientError: Int, Error, CustomNSError, LocalizedError, Equatab
             
         case .failedBase64Encoding:
             return "Unable to base64 encode the authorization string."
+            
+        case .invalidAuthorization(let authorization):
+            return "Invalid authorization provided: \(authorization)."
+
         }
     }
 }
