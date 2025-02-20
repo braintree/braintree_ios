@@ -67,13 +67,13 @@ import Foundation
             // No-op
         }
     }
-    
-    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    /// Initialize a new API client.
-    /// - Parameter authorization: Your tokenization key or client token.
+   
     // TODO: remove obj-c init once we can remove the old init
     // TODO: remove default/optional nil, needed currently because otherwise there is and error that the signatures are the same
     // TODO: rename param to authorization in final PR
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// Initialize a new API client.
+    /// - Parameter authorization: Your tokenization key or client token.
     @_documentation(visibility: private)
     @objc(initWithAuthorizationNew:)
     public convenience init(newAuthorization: String? = nil) {
@@ -127,20 +127,28 @@ import Foundation
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // TODO: - Consider updating all feature clients to use async version of this method?
-
-        Task { @MainActor in
-            do {
-                let configuration = try await configurationLoader.getConfig()
-                setupHTTPCredentials(configuration)
-                completion(configuration, nil)
-            } catch {
-                completion(nil, error)
+        
+        if authorization.type == .invalidAuthorization {
+            completion(nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+        } else {
+            Task { @MainActor in
+                do {
+                    let configuration = try await configurationLoader.getConfig()
+                    setupHTTPCredentials(configuration)
+                    completion(configuration, nil)
+                } catch {
+                    completion(nil, error)
+                }
             }
         }
     }
     
     @MainActor func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig()
+        if authorization.type == .invalidAuthorization {
+            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
+        } else {
+            try await configurationLoader.getConfig()
+        }
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -390,16 +398,13 @@ import Foundation
             }
         case .clientToken:
             do {
-                let clientToken = try BTClientToken(clientToken: authorization)
-                self.authorization = clientToken
+                return try BTClientToken(clientToken: authorization)
             } catch {
                 return InvalidAuthorization(authorization)
             }
         case .invalidAuthorization:
             return InvalidAuthorization(authorization)
         }
-        
-        return InvalidAuthorization(authorization)
     }
 
     // MARK: BTAPITimingDelegate conformance
