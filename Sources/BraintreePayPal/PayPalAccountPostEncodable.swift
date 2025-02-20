@@ -1,0 +1,99 @@
+import Foundation
+
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+/// The POST body for /v1/payment_methods/paypal_accounts
+struct PayPalAccountPostEncodable: Encodable {
+
+    let paypalAccount: PayPalAccount
+    let merchantAccountID: String?
+
+    init(
+        request: BTPayPalRequest,
+        client: BTAPIClient,
+        paymentType: BTPayPalPaymentType,
+        url: URL?,
+        correlationID: String?
+    ) {
+        self.paypalAccount = PayPalAccount(
+            request: request,
+            client: client,
+            paymentType: paymentType,
+            url: url,
+            correlationID: correlationID
+        )
+
+        self.merchantAccountID = request.merchantAccountID
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case paypalAccount = "paypal_account"
+        case merchantAccountID = "merchant_account_id"
+    }
+}
+
+struct PayPalAccount: Encodable {
+
+    let responseType: String
+    let intent: String?
+    let correlationId: String?
+    let options: Options?
+    let client: Client
+    let response: PayPalResponse
+
+    init(
+        request: BTPayPalRequest,
+        client: BTAPIClient,
+        paymentType: BTPayPalPaymentType,
+        url: URL?,
+        correlationID: String?,
+        responseType: String = "web"
+    ) {
+        self.responseType = responseType
+        correlationId = correlationID
+
+        options = paymentType == .checkout ? Options(validate: false) : nil
+        intent  = paymentType == .checkout ? (request as? BTPayPalCheckoutRequest)?.intent.stringValue : nil
+        
+        self.client = Client()
+        self.response = PayPalResponse(webURL: url?.absoluteString ?? "")
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case responseType = "response_type"
+        case intent
+        case correlationId = "correlation_id"
+        case options
+        case client
+        case response
+    }
+}
+
+struct Options: Encodable {
+
+    let validate: Bool
+}
+
+struct Client: Encodable {
+
+    let platform = "iOS"
+    let productName = "PayPal"
+    let paypalSdkVersion = "version"
+
+    enum CodingKeys: String, CodingKey {
+        case platform
+        case productName = "product_name"
+        case paypalSdkVersion = "paypal_sdk_version"
+    }
+}
+
+struct PayPalResponse: Encodable {
+
+    let webURL: String
+
+    enum CodingKeys: String, CodingKey {
+        case webURL
+    }
+}
