@@ -17,10 +17,21 @@ import BraintreeCore
     /// Initializes a PayPal Native Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public init(offerCredit: Bool = false) {
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
+    public init(
+        offerCredit: Bool = false,
+        userAuthenticationEmail: String? = nil,
+        enablePayPalAppSwitch: Bool = false
+    ) {
         self.offerCredit = offerCredit
-
-        super.init(hermesPath: "v1/paypal_hermes/setup_billing_agreement", paymentType: .vault)
+        
+        super.init(
+            hermesPath: "v1/paypal_hermes/setup_billing_agreement",
+            paymentType: .vault,
+            userAuthenticationEmail: userAuthenticationEmail,
+            enablePayPalAppSwitch: enablePayPalAppSwitch
+        )
     }
 
     // MARK: Public Methods
@@ -32,7 +43,7 @@ import BraintreeCore
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        let baseParameters = super.parameters(with: configuration)
+        let baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
         if let billingAgreementDescription {

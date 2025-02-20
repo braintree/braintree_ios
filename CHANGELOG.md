@@ -1,6 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreePayPal
+  * Add PayPal App Switch checkout flow (BETA)
+    * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction:offerPayLater:currencyCode:requestBillingAgreement:)`
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
 * BraintreeApplePay
   * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
 

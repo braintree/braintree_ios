@@ -5,7 +5,6 @@ import BraintreeCore
 #endif
 
 @objc public enum BTPayPalPaymentType: Int {
-    
     /// Checkout
     case checkout
 
@@ -24,7 +23,6 @@ import BraintreeCore
 
 /// Use this option to specify the PayPal page to display when a user lands on the PayPal site to complete the payment.
 @objc public enum BTPayPalRequestLandingPageType: Int {
-
     /// Default
     case none // Obj-C enums cannot be nil; this default option is used to make `landingPageType` optional for merchants
 
@@ -96,13 +94,22 @@ import BraintreeCore
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This property is not covered by semantic versioning.
     @_documentation(visibility: private)
     public var paymentType: BTPayPalPaymentType
-    
+
     /// Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
     public var userPhoneNumber: BTPayPalPhoneNumber?
-    
+
+    /// Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    public var userAuthenticationEmail: String?
+
     /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
     public var shopperSessionID: String?
+
+    // MARK: - Internal Properties
+    
+    /// Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
+    /// - Warning: This property is currently in beta and may change or be removed in future releases.
+    var enablePayPalAppSwitch: Bool
 
     // MARK: - Static Properties
     
@@ -124,6 +131,8 @@ import BraintreeCore
         billingAgreementDescription: String? = nil,
         riskCorrelationId: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
+        userAuthenticationEmail: String? = nil,
+        enablePayPalAppSwitch: Bool = false,
         shopperSessionID: String? = nil
     ) {
         self.hermesPath = hermesPath
@@ -139,6 +148,8 @@ import BraintreeCore
         self.billingAgreementDescription = billingAgreementDescription
         self.riskCorrelationID = riskCorrelationId
         self.userPhoneNumber = userPhoneNumber
+        self.userAuthenticationEmail = userAuthenticationEmail
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.shopperSessionID = shopperSessionID
     }
 
@@ -180,11 +191,15 @@ import BraintreeCore
             let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
             parameters["line_items"] = lineItemsArray
         }
-        
-        if let userPhoneNumberDict = try? userPhoneNumber?.toDictionary() {
-            parameters["phone_number"] = userPhoneNumberDict
+
+        if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary() {
+            parameters["phone_number"] = userPhoneNumberDictionary
         }
-        
+
+        if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
+            parameters["payer_email"] = userAuthenticationEmail
+        }
+
         if let shopperSessionID {
             parameters["shopper_session_id"] = shopperSessionID
         }
@@ -192,7 +207,18 @@ import BraintreeCore
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
-
+ 
+        if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
+            let appSwitchParameters: [String: Any] = [
+                "launch_paypal_app": enablePayPalAppSwitch,
+                "os_version": UIDevice.current.systemVersion,
+                "os_type": UIDevice.current.systemName,
+                "merchant_app_return_url": universalLink.absoluteString
+            ]
+            
+            return parameters.merging(appSwitchParameters) { $1 }
+        }
+        
         return parameters
     }
 }
