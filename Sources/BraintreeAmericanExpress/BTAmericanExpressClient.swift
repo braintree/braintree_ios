@@ -7,7 +7,8 @@ import BraintreeCore
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
 @objc public class BTAmericanExpressClient: NSObject {
     
-    private let apiClient: BTAPIClient
+    /// exposed for testing
+    var apiClient: BTAPIClient
     
     ///  Creates an American Express client.
     /// - Parameter authorization: A client token or tokenization key

@@ -69,26 +69,21 @@ import Foundation
     }
    
     // TODO: remove obj-c init once we can remove the old init
-    // TODO: remove default/optional nil, needed currently because otherwise there is and error that the signatures are the same
     // TODO: rename param to authorization in final PR
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token.
     @_documentation(visibility: private)
     @objc(initWithAuthorizationNew:)
-    public convenience init(newAuthorization: String? = nil) {
-        
-        // TODO: this will not be force unwrapped once we remove the other init
-        self.init(authorization: newAuthorization ?? "")!
-
+    public init(newAuthorization: String) {
+        self.authorization = Self.authorization(from: newAuthorization)
         self.metadata = BTClientMetadata()
-
-        // TODO: remove default and enforce authorization above
-        self.authorization = self.authorization(from: newAuthorization ?? "")
-        
+                
         let btHttp = BTHTTP(authorization: self.authorization)
         http = btHttp
         configurationLoader = ConfigurationLoader(http: btHttp)
+        
+        super.init()
         
         analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
@@ -386,7 +381,7 @@ import Foundation
         }
     }
     
-    private func authorization(from authorization: String) -> ClientAuthorization {
+    private static func authorization(from authorization: String) -> ClientAuthorization {
         let authorizationType = Self.authorizationType(for: authorization)
 
         switch authorizationType {
