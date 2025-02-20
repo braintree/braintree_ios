@@ -71,7 +71,7 @@ The PayPal Native Checkout integration is no longer supported. Please remove it 
 use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
 
 ## American Express
-Update initazlier for `BTAmericanExpressClient`:
+Update initializer for `BTAmericanExpressClient`:
 ```diff
 -  var amexClient = BTAmericanExpressClient(apiClient: apiClient)
 +   var amexClient = BTAmericanExpressClient(authorization: authorization)

@@ -30,7 +30,7 @@
   * BraintreePayPal
     * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
   * BraintreeAmericanExpress
-    * Update initalizer to `BTAmericanExpressClient(authorization:)`
+    * Update initializer to `BTAmericanExpressClient(authorization:)`
 
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal
