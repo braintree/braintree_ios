@@ -43,16 +43,21 @@ struct PayPalAccount: Encodable {
     let client: Client
     let response: PayPalResponse
 
-    init(request: BTPayPalRequest, client: BTAPIClient, paymentType: BTPayPalPaymentType, url: URL?, correlationID: String?) {
-        responseType = "web"
+    init(
+        request: BTPayPalRequest,
+        client: BTAPIClient,
+        paymentType: BTPayPalPaymentType,
+        url: URL?,
+        correlationID: String?,
+        responseType: String = "web"
+    ) {
+        self.responseType = responseType
         correlationId = correlationID
 
         options = paymentType == .checkout ? Options(validate: false) : nil
-        intent  = paymentType == .checkout
-            ? (request as? BTPayPalCheckoutRequest)?.intent.stringValue
-            : nil
+        intent  = paymentType == .checkout ? (request as? BTPayPalCheckoutRequest)?.intent.stringValue : nil
         
-        self.client   = Client()
+        self.client = Client()
         self.response = PayPalResponse(webURL: url?.absoluteString ?? "")
     }
 
