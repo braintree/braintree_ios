@@ -121,28 +121,19 @@ import Foundation
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // TODO: - Consider updating all feature clients to use async version of this method?
-        
-        if authorization.type == .invalidAuthorization {
-            completion(nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
-        } else {
-            Task { @MainActor in
-                do {
-                    let configuration = try await configurationLoader.getConfig()
-                    setupHTTPCredentials(configuration)
-                    completion(configuration, nil)
-                } catch {
-                    completion(nil, error)
-                }
+        Task { @MainActor in
+            do {
+                let configuration = try await configurationLoader.getConfig()
+                setupHTTPCredentials(configuration)
+                completion(configuration, nil)
+            } catch {
+                completion(nil, error)
             }
         }
     }
     
     @MainActor func fetchConfiguration() async throws -> BTConfiguration {
-        if authorization.type == .invalidAuthorization {
-            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
-        } else {
-            try await configurationLoader.getConfig()
-        }
+        try await configurationLoader.getConfig()
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -163,6 +154,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -198,6 +194,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -233,6 +234,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
