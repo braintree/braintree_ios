@@ -13,6 +13,8 @@ class InvalidAuthorization: ClientAuthorization {
         self.originalValue = rawValue
         
         // swiftlint:disable:next force_unwrapping
-        self.configURL = URL(string: "https://example.com")!
+        /// This URL is never used in the SDK as we always return an error if the authorization type is `.invalidAuthorization`
+        /// before construting or using the `configURL` in any way
+        self.configURL = URL(string: "https://paypal.com")!
     }
 }
