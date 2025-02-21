@@ -33,4 +33,42 @@ class BTApplePayCardNonce_Tests: XCTestCase {
         XCTAssertEqual(applePayNonce?.type, "ApplePayCard")
     }
 
+    func testInitWithJSON_whenApplePayTokenIsMPAN() {
+        let applePayCard = BTJSON(
+            value: [
+                "consumed": false,
+                "binData": [
+                    "commercial": "yes"
+                ],
+                "details": [
+                    "cardType": "fake-card-type",
+                    "isDeviceToken": true
+                ],
+                "nonce": "a-nonce"
+            ] as [String: Any]
+        )
+        
+        let applePayNonce = BTApplePayCardNonce(json: applePayCard)
+        XCTAssertEqual(applePayNonce?.isDeviceToken, true)
+    }
+
+    func testInitWithJSON_whenApplePayTokenIsDPAN() {
+        let applePayCard = BTJSON(
+            value: [
+                "consumed": false,
+                "binData": [
+                    "commercial": "yes"
+                ],
+                "details": [
+                    "cardType": "fake-card-type",
+                    "isDeviceToken": false
+                ],
+                "nonce": "a-nonce"
+            ] as [String: Any]
+        )
+        
+        let applePayNonce = BTApplePayCardNonce(json: applePayCard)
+        XCTAssertEqual(applePayNonce?.isDeviceToken, false)
+    }
+
 }

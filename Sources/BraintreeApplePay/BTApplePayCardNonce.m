@@ -11,6 +11,7 @@
     self = [super initWithNonce:[json[@"nonce"] asString] type:cardType isDefault:[json[@"default"] isTrue]];
     
     if (self) {
+        _isDeviceToken = [json[@"details"][@"isDeviceToken"] isTrue];
         _binData = [[BTBinData alloc] initWithJSON:json[@"binData"]];
     }
     return self;
