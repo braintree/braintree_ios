@@ -74,5 +74,4 @@ use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal
 Update initializer for `BTAmericanExpressClient`:
 ```diff
 -  var amexClient = BTAmericanExpressClient(apiClient: apiClient)
-+   var amexClient = BTAmericanExpressClient(authorization: authorization)
-```
++   var amexClient = BTAmericanExpressClient(authorization: "<CLIENT_AUTHORIZATION>")
