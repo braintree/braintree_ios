@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
 
-        let amexClient = BTAmericanExpressClient(apiClient: apiClient)
+        let amexClient = BTAmericanExpressClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let applePayClient = BTApplePayClient(apiClient: apiClient)
         let cardClient = BTCardClient(apiClient: apiClient)
         let dataCollector = BTDataCollector(apiClient: apiClient)
