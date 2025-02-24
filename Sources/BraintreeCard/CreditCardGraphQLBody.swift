@@ -71,7 +71,7 @@ struct CreditCardGraphQLBody: Encodable {
                     var countryCodeNumeric: String?
 
                     init?(card: BTCard) {
-                        let properties =
+                        let billingAddressProperties =
                         [
                             card.firstName,
                             card.lastName,
@@ -87,7 +87,8 @@ struct CreditCardGraphQLBody: Encodable {
                             card.countryCodeNumeric
                         ]
 
-                        if properties.allSatisfy({ $0?.isEmpty ?? true }) {
+                        // if no billing address fields exist, we want to return an empty billing address object
+                        if billingAddressProperties.allSatisfy({ $0?.isEmpty ?? true }) {
                             return nil
                         }
 
