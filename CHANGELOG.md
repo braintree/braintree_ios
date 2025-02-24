@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.29.0 (2025-02-24)
 * BraintreePayPal
   * Add PayPal App Switch checkout flow (BETA)
     * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction:offerPayLater:currencyCode:requestBillingAgreement:)`
