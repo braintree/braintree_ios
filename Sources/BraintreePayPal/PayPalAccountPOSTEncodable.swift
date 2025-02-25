@@ -22,7 +22,7 @@ struct PayPalAccountPOSTEncodable: Encodable {
         self.meta = Meta(
             sessionId: metadata.sessionID,
             integration: metadata.integration.stringValue,
-            source: metadata.source.stringValue
+            source: BTClientMetadataSource.payPalBrowser.stringValue
         )
         
         self.paypalAccount = PayPalAccount(
