@@ -7,16 +7,24 @@ import BraintreeCore
 /// The POST body for `/v1/payment_methods/paypal_accounts`
 struct PayPalAccountPOSTEncodable: Encodable {
 
+    let meta: Meta
     let paypalAccount: PayPalAccount
     let merchantAccountID: String?
 
     init(
+        metadata: BTClientMetadata,
         request: BTPayPalRequest,
         client: BTAPIClient,
         paymentType: BTPayPalPaymentType,
         url: URL?,
         correlationID: String?
     ) {
+        self.meta = Meta(
+            sessionId: metadata.sessionID,
+            integration: metadata.integration.stringValue,
+            source: metadata.source.stringValue
+        )
+        
         self.paypalAccount = PayPalAccount(
             request: request,
             client: client,
@@ -29,10 +37,19 @@ struct PayPalAccountPOSTEncodable: Encodable {
     }
 
     enum CodingKeys: String, CodingKey {
+        case meta = "_meta"
         case paypalAccount = "paypal_account"
         case merchantAccountID = "merchant_account_id"
     }
 }
+
+struct Meta: Encodable {
+    
+    let sessionId: String
+    let integration: String
+    let source: String
+}
+
 
 struct PayPalAccount: Encodable {
 

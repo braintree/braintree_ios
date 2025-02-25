@@ -212,6 +212,7 @@ import BraintreeDataCollector
         guard let request = payPalRequest else { return }
 
         let encodableParams = PayPalAccountPOSTEncodable(
+            metadata: clientMetadataID,
             request: request,
             client: apiClient,
             paymentType: paymentType,
