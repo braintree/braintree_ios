@@ -4,8 +4,8 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The POST body for /v1/payment_methods/paypal_accounts
-struct PayPalAccountPostEncodable: Encodable {
+/// The POST body for `/v1/payment_methods/paypal_accounts`
+struct PayPalAccountPOSTEncodable: Encodable {
 
     let paypalAccount: PayPalAccount
     let merchantAccountID: String?
@@ -38,7 +38,7 @@ struct PayPalAccount: Encodable {
 
     let responseType: String
     let intent: String?
-    let correlationId: String?
+    let correlationID: String?
     let options: Options?
     let client: Client
     let response: PayPalResponse
@@ -52,7 +52,7 @@ struct PayPalAccount: Encodable {
         responseType: String = "web"
     ) {
         self.responseType = responseType
-        correlationId = correlationID
+        self.correlationID = correlationID
 
         options = paymentType == .checkout ? Options(validate: false) : nil
         intent  = paymentType == .checkout ? (request as? BTPayPalCheckoutRequest)?.intent.stringValue : nil
@@ -64,7 +64,7 @@ struct PayPalAccount: Encodable {
     enum CodingKeys: String, CodingKey {
         case responseType = "response_type"
         case intent
-        case correlationId = "correlation_id"
+        case correlationID = "correlation_id"
         case options
         case client
         case response
