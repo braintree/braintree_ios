@@ -14,11 +14,10 @@ struct ThreeDSecurePOSTBody: Encodable {
     let dfReferenceID: String?
     let exemptionRequested: Bool
     let requestedExemptionType: String?
-    let requestedThreeDSecureVersion: String?
+    let requestedThreeDSecureVersion: String = "2"
 
     init(request: BTThreeDSecureRequest) {
         self.requestedExemptionType = request.requestedExemptionType.stringValue
-        self.requestedThreeDSecureVersion = "2"
         self.accountType = request.accountType.stringValue
         self.dfReferenceID = request.dfReferenceID
         self.dataOnlyRequested = request.dataOnlyRequested
@@ -56,7 +55,7 @@ struct ThreeDSecurePOSTBody: Encodable {
         let accountChangeDate: String?
         let accountChangeIndicator: String?
         let accountCreateDate: String?
-        let accountId: String?
+        let accountID: String?
         let accountPwdChangeDate: String?
         let accountPwdChangeIndicator: String?
         let accountPurchases: String?
@@ -151,7 +150,7 @@ struct ThreeDSecurePOSTBody: Encodable {
             self.accountChangeDate = request.additionalInformation?.accountChangeDate
             self.accountChangeIndicator = request.additionalInformation?.accountChangeIndicator
             self.accountCreateDate = request.additionalInformation?.accountCreateDate
-            self.accountId = request.additionalInformation?.accountID
+            self.accountID = request.additionalInformation?.accountID
             self.accountPwdChangeDate = request.additionalInformation?.accountPwdChangeDate
             self.accountPwdChangeIndicator = request.additionalInformation?.accountPwdChangeIndicator
             self.accountPurchases = request.additionalInformation?.accountPurchases
@@ -186,6 +185,71 @@ struct ThreeDSecurePOSTBody: Encodable {
             self.transactionCountYear = request.additionalInformation?.transactionCountYear
             self.userAgent = request.additionalInformation?.userAgent
             self.workPhoneNumber = request.additionalInformation?.workPhoneNumber
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case accountAgeIndicator
+            case accountChangeDate
+            case accountChangeIndicator
+            case accountCreateDate
+            case accountID = "accountId"
+            case accountPwdChangeDate
+            case accountPwdChangeIndicator
+            case accountPurchases
+            case addCardAttempts
+            case addressMatch
+            case authenticationIndicator
+            case billingCity
+            case billingCountryCode
+            case billingGivenName
+            case billingLine1
+            case billingLine2
+            case billingLine3
+            case billingPhoneNumber
+            case billingPostalCode
+            case billingState
+            case billingSurname
+            case deliveryEmail
+            case deliveryTimeframe
+            case email
+            case fraudActivity
+            case giftCardAmount
+            case giftCardCount
+            case giftCardCurrencyCode
+            case installment
+            case ipAddress
+            case mobilePhoneNumber
+            case orderDescription
+            case paymentAccountAge
+            case paymentAccountIndicator
+            case preorderDate
+            case preorderIndicator
+            case productCode
+            case purchaseDate
+            case recurringEnd
+            case recurringFrequency
+            case reorderIndicator
+            case sdkMaxTimeout
+            case shippingAddressUsageDate
+            case shippingAddressUsageIndicator
+            case shippingCity
+            case shippingCountryCode
+            case shippingGivenName
+            case shippingLine1
+            case shippingLine2
+            case shippingLine3
+            case shippingMethod
+            case shippingMethodIndicator
+            case shippingNameIndicator
+            case shippingPhone
+            case shippingPostalCode
+            case shippingState
+            case shippingSurname
+            case taxAmount
+            case transactionCountDay
+            case transactionCountYear
+            case userAgent
+            case workPhoneNumber
         }
     }
 
