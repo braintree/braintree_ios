@@ -49,6 +49,7 @@ struct ThreeDSecurePOSTBody: Encodable {
     }
     
     // MARK: - AdditionalInfo
+    // swiftlint:disable nesting
     struct AdditionalInfo: Encodable {
 
         let accountAgeIndicator: String?
