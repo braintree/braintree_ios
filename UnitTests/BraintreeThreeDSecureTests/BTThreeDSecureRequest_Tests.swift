@@ -234,6 +234,17 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         XCTAssertEqual(additionalInfoDict["shippingCountryCode"] as? String, "US")
         XCTAssertEqual(additionalInfoDict["shippingPhone"] as? String, "1234567")
         
+        XCTAssertEqual(additionalInfoDict["billingGivenName"] as? String, "Given")
+        XCTAssertEqual(additionalInfoDict["billingSurname"] as? String, "Surname")
+        XCTAssertEqual(additionalInfoDict["billingLine1"] as? String, "123 Street Address")
+        XCTAssertEqual(additionalInfoDict["billingLine2"] as? String, "Suite Number")
+        XCTAssertEqual(additionalInfoDict["billingLine3"] as? String, "#2")
+        XCTAssertEqual(additionalInfoDict["billingCity"] as? String, "Locality")
+        XCTAssertEqual(additionalInfoDict["billingState"] as? String, "Region")
+        XCTAssertEqual(additionalInfoDict["billingPostalCode"] as? String, "12345")
+        XCTAssertEqual(additionalInfoDict["billingCountryCode"] as? String, "US")
+        XCTAssertEqual(additionalInfoDict["billingPhoneNumber"] as? String, "1234567")
+        
         XCTAssertEqual(additionalInfoDict["shippingMethodIndicator"] as? String, "01")
         XCTAssertEqual(additionalInfoDict["productCode"] as? String, "GEN")
         XCTAssertEqual(additionalInfoDict["deliveryTimeframe"] as? String, "03")
