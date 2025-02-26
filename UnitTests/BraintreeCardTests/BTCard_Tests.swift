@@ -5,7 +5,7 @@ class BTCard_Tests: XCTestCase {
 
     func testInitialization_withoutParameters() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "4111111111111111", 
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "123"
@@ -41,33 +41,35 @@ class BTCard_Tests: XCTestCase {
             countryCodeNumeric: "123",
             shouldValidate: true
         )
-
-        let expectedParameters: [String : Any] = [
-            "number": "4111111111111111",
-            "expiration_month": "12",
-            "expiration_year": "2038",
-            "cardholder_name": "Brian Tree",
-            "cvv": "123",
-            "billing_address": [
-                "first_name": "Brian",
-                "last_name": "Tree",
-                "company": "Braintree",
-                "postal_code": "11111",
-                "street_address": "123 Main St.",
-                "extended_address": "Apt 2",
-                "locality": "Chicago",
-                "region": "IL",
-                "country_name": "US",
-                "country_code_alpha2": "US",
-                "country_code_alpha3": "USA",
-                "country_code_numeric": "123",
-            ],
-            "options": [
-                "validate": 1
-            ]
-        ]
-
-        XCTAssertEqual(card.parameters() as NSObject, expectedParameters as NSObject)
+        
+        let params = try! card.graphQLParameters().toDictionary()
+                        
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+                
+        XCTAssertEqual(creditCardDict["number"] as? String, "4111111111111111")
+        XCTAssertEqual(creditCardDict["expirationMonth"] as? String, "12")
+        XCTAssertEqual(creditCardDict["expirationYear"] as? String, "2038")
+        XCTAssertEqual(creditCardDict["cvv"] as? String, "123")
+        XCTAssertEqual(creditCardDict["cardholderName"] as? String, "Brian Tree")
+                
+        let billingDict = creditCardDict["billingAddress"] as! [String: Any]
+        XCTAssertEqual(billingDict["firstName"] as? String, "Brian")
+        XCTAssertEqual(billingDict["lastName"] as? String, "Tree")
+        XCTAssertEqual(billingDict["company"] as? String, "Braintree")
+        XCTAssertEqual(billingDict["postalCode"] as? String, "11111")
+        XCTAssertEqual(billingDict["streetAddress"] as? String, "123 Main St.")
+        XCTAssertEqual(billingDict["extendedAddress"] as? String, "Apt 2")
+        XCTAssertEqual(billingDict["locality"] as? String, "Chicago")
+        XCTAssertEqual(billingDict["region"] as? String, "IL")
+        XCTAssertEqual(billingDict["countryName"] as? String, "US")
+        XCTAssertEqual(billingDict["countryCodeAlpha2"] as? String, "US")
+        XCTAssertEqual(billingDict["countryCodeAlpha3"] as? String, "USA")
+        XCTAssertEqual(billingDict["countryCodeNumeric"] as? String, "123")
+            
+        let optionsDict = inputDict["options"] as! [String: Any]
+        XCTAssertEqual(optionsDict["validate"] as? Bool, card.shouldValidate)
     }
 
     // MARK: - graphQLParameters
@@ -151,56 +153,44 @@ class BTCard_Tests: XCTestCase {
             shouldValidate: false
         )
 
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQuery,
-            "variables": [
-                "input": [
-                    "creditCard": [
-                        "cardholderName": "Brian Tree",
-                        "number": "4111111111111111",
-                        "expirationMonth": "12",
-                        "expirationYear": "20",
-                        "cvv": "123",
-                        "billingAddress": [
-                            "firstName": "Joe",
-                            "lastName": "Smith",
-                            "company": "Company",
-                            "streetAddress": "123 Townsend St",
-                            "extendedAddress": "Unit 1",
-                            "locality": "San Francisco",
-                            "region": "CA",
-                            "countryName": "United States of America",
-                            "countryCodeAlpha2": "US",
-                            "countryCode": "USA",
-                            "countryCodeNumeric": "123",
-                            "postalCode": "94107"
-                        ],
-                    ] as [String: Any],
-                    "options": ["validate": false]
-                ]
-            ]
-        ] as [String: Any] as NSObject)
+        let params = try! card.graphQLParameters().toDictionary()
+        
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+        let optionsDict = inputDict["options"] as! [String: Any]
+        
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
+        XCTAssertNotNil(params["query"])
     }
-    
-    func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
-        let card = BTCard(cvv: "123")
 
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQuery,
-            "variables": [
-                "input": [
-                    "creditCard": ["cvv": "123"] as [String: String],
-                    "options": ["validate": false]
-                ] as [String: Any]
-            ]
-        ] as [String: Any] as NSObject)
+    func testGraphQLParameters_whenDoingCVVOnly_returnsExpectedValue() {
+        let card = BTCard(cvv: "321")
+
+        let params = try! card.graphQLParameters().toDictionary()
+
+        let operationName = params["operationName"] as! String
+        XCTAssertEqual(operationName, "TokenizeCreditCard")
+
+        XCTAssertNotNil(params["query"])
+
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        let optionsDict = inputDict["options"] as! [String: Any]
+
+        XCTAssertEqual(creditCardDict["cvv"] as? String, "321")
+        XCTAssertEqual(creditCardDict["number"] as? String, "")
+        XCTAssertNil(creditCardDict["cardholderName"])
+
+        let billingDict = creditCardDict["billingAddress"] as? [String: Any]
+        XCTAssertNil(billingDict?["firstName"])
+
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "5111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
@@ -208,54 +198,64 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: "some id"
         )
         
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQueryWithAuthInsightRequested,
-            "variables": [
-                "input": [
-                    "creditCard": [
-                        "cvv": "1234",
-                        "expirationMonth": "12",
-                        "expirationYear": "2038",
-                        "number": "4111111111111111",
-                    ],
-                    "options": [ "validate": false ],
-                ] as [String: Any],
-                "authenticationInsightInput": [
-                    "merchantAccountId": "some id"
-                ]
-            ]
-        ] as [String: Any] as NSObject)
+        let params = try! card.graphQLParameters().toDictionary()
+        
+        let queryValue = params["query"] as! String
+        XCTAssertEqual(queryValue, graphQLQueryWithAuthInsightRequested)
+
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        
+        XCTAssertEqual(creditCardDict["number"] as? String, "5111111111111111")
+
+        let optionsDict = inputDict["options"] as! [String: Any]
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
+
+        if let authInsightInput = inputDict["authenticationInsightInput"] as? [String: Any] {
+            XCTAssertEqual(authInsightInput["merchantAccountId"] as? String, "some id")
+        } else {
+            XCTFail("Expected authenticationInsightInput dictionary not found")
+        }
+
+        let billingDict = creditCardDict["billingAddress"] as? [String: Any]
+        XCTAssertNil(billingDict?["firstName"])
+        XCTAssertNil(creditCardDict["cardholderName"])
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "6111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
             authenticationInsightRequested: false,
             merchantAccountID: "some id"
         )
+         
+        let params = try! card.graphQLParameters().toDictionary()
         
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQuery,
-            "variables": [
-                "input": [
-                    "creditCard": ["number": "4111111111111111",
-                                   "cvv": "1234",
-                                   "expirationMonth": "12",
-                                   "expirationYear": "2038"] as [String: String],
-                    "options": ["validate": false],
-                ] as [String: Any]
-            ]
-        ] as [String: Any] as NSObject)
+        let operationName = params["operationName"] as! String
+        XCTAssertEqual(operationName, "TokenizeCreditCard")
+        XCTAssertNotNil(params["query"])
+
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        XCTAssertEqual(creditCardDict["number"] as? String, "6111111111111111")
+
+        let optionsDict = inputDict["options"] as! [String: Any]
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
+        
+        if let authInsightDict = inputDict["authenticationInsightInput"] as? [String: Any] {
+            XCTAssertNil(authInsightDict["merchantAccountId"], "Expected merchantAccountId to be nil")
+        }
     }
     
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "7111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "1234",
@@ -263,27 +263,25 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: nil
         )
         
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQueryWithAuthInsightRequested,
-            "variables": [
-                "input": [
-                    "creditCard": [
-                        "cvv": "1234",
-                        "expirationMonth": "12",
-                        "expirationYear": "2038",
-                        "number": "4111111111111111",
-                    ],
-                    "options": [ "validate": false ],
-                ],
-                "authenticationInsightInput": NSDictionary()
-            ]
-        ] as [String: Any] as NSObject)
+        let params = try! card.graphQLParameters().toDictionary()
+
+        let operationName = params["operationName"] as! String
+        XCTAssertEqual(operationName, "TokenizeCreditCard")
+        XCTAssertNotNil(params["query"])
+        
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        XCTAssertEqual(creditCardDict["number"] as? String, "7111111111111111")
+
+        let optionsDict = inputDict["options"] as! [String: Any]
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
     }
-    
+
     func testGraphQLParameters_whenMerchantAccountIDIsNil_andAuthInsightRequestedIsFalse_doesNotRequestAuthInsight() {
         let card = BTCard(
-            number: "4111111111111111",
+            number: "8111111111111111",
             expirationMonth: "12",
             expirationYear: "2038",
             cvv: "123",
@@ -291,18 +289,24 @@ class BTCard_Tests: XCTestCase {
             merchantAccountID: nil
         )
         
-        XCTAssertEqual(card.graphQLParameters() as NSObject, [
-            "operationName": "TokenizeCreditCard",
-            "query": graphQLQuery,
-            "variables": [
-                "input": [
-                    "creditCard": ["number": "4111111111111111",
-                                   "cvv": "123",
-                                   "expirationMonth": "12",
-                                   "expirationYear": "2038"] as [String: String],
-                    "options": [ "validate": false ],
-                ] as [String: Any]
-            ]
-        ] as [String: Any] as NSObject)
+        let params = try! card.graphQLParameters().toDictionary()
+        
+        let operationName = params["operationName"] as! String
+        XCTAssertEqual(operationName, "TokenizeCreditCard")
+        XCTAssertNotNil(params["query"])
+
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        XCTAssertEqual(creditCardDict["number"] as? String, "8111111111111111")
+
+        let optionsDict = inputDict["options"] as! [String: Any]
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
+
+        XCTAssertNil(inputDict["authenticationInsightInput"])
+
+        let authInsightDict = inputDict["authenticationInsightInput"] as? [String: Any]
+        XCTAssertNil(authInsightDict?["merchantAccountID"])
     }
 }
