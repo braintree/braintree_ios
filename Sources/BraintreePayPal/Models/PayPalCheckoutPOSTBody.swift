@@ -39,7 +39,6 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var recipientName: String?
     
     // MARK: - Initializer
-
     // swiftlint:disable:next cyclomatic_complexity
     init(payPalRequest: BTPayPalCheckoutRequest, configuration: BTConfiguration) {
         self.amount = payPalRequest.amount
