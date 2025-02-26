@@ -274,6 +274,7 @@
 		BE80C00D29C8B4B900793A6C /* BTCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE80C00C29C8B4B900793A6C /* BTCard.swift */; };
 		BE82E73B29C49C050059FE97 /* BTThreeDSecureV2ButtonCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE82E73A29C49C050059FE97 /* BTThreeDSecureV2ButtonCustomization.swift */; };
 		BE82E73F29C4A06B0059FE97 /* BTThreeDSecureV2ToolbarCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE82E73E29C4A06B0059FE97 /* BTThreeDSecureV2ToolbarCustomization.swift */; };
+		BE849EED2D66908E005BD215 /* InvalidAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE849EEC2D669088005BD215 /* InvalidAuthorization.swift */; };
 		BE895C61299433FB008112AB /* BTApplePayCardNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE895C60299433FB008112AB /* BTApplePayCardNonce.swift */; };
 		BE895C6329944BD3008112AB /* BTApplePayError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE895C6229944BD3008112AB /* BTApplePayError.swift */; };
 		BE895C6529944BF5008112AB /* BTApplePayClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE895C6429944BF5008112AB /* BTApplePayClient.swift */; };
@@ -970,6 +971,7 @@
 		BE82E73C29C49ECE0059FE97 /* BTThreeDSecureV2LabelCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2LabelCustomization.swift; sourceTree = "<group>"; };
 		BE82E73E29C4A06B0059FE97 /* BTThreeDSecureV2ToolbarCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2ToolbarCustomization.swift; sourceTree = "<group>"; };
 		BE82E74029C4A1330059FE97 /* BTThreeDSecureV2TextBoxCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2TextBoxCustomization.swift; sourceTree = "<group>"; };
+		BE849EEC2D669088005BD215 /* InvalidAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvalidAuthorization.swift; sourceTree = "<group>"; };
 		BE895C60299433FB008112AB /* BTApplePayCardNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce.swift; sourceTree = "<group>"; };
 		BE895C6229944BD3008112AB /* BTApplePayError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayError.swift; sourceTree = "<group>"; };
 		BE895C6429944BF5008112AB /* BTApplePayClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayClient.swift; sourceTree = "<group>"; };
@@ -1587,6 +1589,7 @@
 		80B207342BF6D3B000787E37 /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
+				BE849EEC2D669088005BD215 /* InvalidAuthorization.swift */,
 				BED00CAF28A579D700D74AEC /* BTClientToken.swift */,
 				BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */,
 				BE24C67428E7491E0067B11A /* ClientAuthorization.swift */,
@@ -3213,6 +3216,7 @@
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
 				804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */,
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
+				BE849EED2D66908E005BD215 /* InvalidAuthorization.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
 				457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,

@@ -3,7 +3,9 @@ import BraintreeCore
 
 class PaymentButtonBaseViewController: BaseViewController {
 
+    // TODO: remove API client in final PR
     let apiClient: BTAPIClient
+    let authorization: String
 
     var heightConstraint: CGFloat?
 
@@ -12,6 +14,7 @@ class PaymentButtonBaseViewController: BaseViewController {
     override init(authorization: String) {
         // swiftlint:disable:next force_unwrapping
         apiClient = BTAPIClient(authorization: authorization)!
+        self.authorization = authorization
         super.init(authorization: authorization)
     }
     

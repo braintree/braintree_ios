@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -12,7 +13,7 @@ import Foundation
 
     /// The TokenizationKey or ClientToken used to authorize the APIClient
     public var authorization: ClientAuthorization
-    
+
     /// Client metadata that is used for tracking the client session
     public private(set) var metadata: BTClientMetadata
 
@@ -28,13 +29,14 @@ import Foundation
 
     // MARK: - Initializers
 
+    // TODO: remove in final PR
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
     @objc(initWithAuthorization:)
     public init?(authorization: String) {
         self.metadata = BTClientMetadata()
 
-        guard let authorizationType = Self.authorizationType(for: authorization) else { return nil }
+        let authorizationType = Self.authorizationType(for: authorization)
 
         switch authorizationType {
         case .tokenizationKey:
@@ -50,6 +52,8 @@ import Foundation
             } catch {
                 return nil
             }
+        case .invalidAuthorization:
+            return nil
         }
         
         let btHttp = BTHTTP(authorization: self.authorization)
@@ -65,6 +69,31 @@ import Foundation
             // No-op
         }
     }
+   
+    // TODO: rename param to authorization in final PR - set as newAuthorization currently since otherwise the two inits have the same signature
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// Initialize a new API client.
+    /// - Parameter authorization: Your tokenization key or client token.
+    @_documentation(visibility: private)
+    public init(newAuthorization: String) {
+        self.authorization = Self.authorization(from: newAuthorization)
+        self.metadata = BTClientMetadata()
+                
+        let btHTTP = BTHTTP(authorization: self.authorization)
+        http = btHTTP
+        configurationLoader = ConfigurationLoader(http: btHTTP)
+        
+        super.init()
+        
+        analyticsService.setAPIClient(self)
+        http?.networkTimingDelegate = self
+
+        // Kickoff the background request to fetch the config
+        fetchOrReturnRemoteConfiguration { _, _ in
+            // No-op
+        }
+    }
+
 
     // MARK: - Deinit
 
@@ -93,7 +122,6 @@ import Foundation
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // TODO: - Consider updating all feature clients to use async version of this method?
-
         Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
@@ -127,6 +155,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -162,6 +195,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -197,6 +235,11 @@ import Foundation
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
             guard let self else {
                 completion(nil, nil, BTAPIClientError.deallocated)
@@ -291,9 +334,11 @@ import Foundation
 
     // MARK: - Internal Static Methods
 
-    static func authorizationType(for authorization: String) -> AuthorizationType? {
+    static func authorizationType(for authorization: String) -> AuthorizationType {
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
-        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else { return nil }
+        guard let regularExpression = try? NSRegularExpression(pattern: pattern) else {
+            return .invalidAuthorization
+        }
 
         let tokenizationKeyMatch: NSTextCheckingResult? = regularExpression.firstMatch(
             in: authorization,
@@ -335,12 +380,33 @@ import Foundation
         }
     }
     
-    func payPalAPIURL(forEnvironment environment: String) -> URL? {
+    private func payPalAPIURL(forEnvironment environment: String) -> URL? {
         if environment.caseInsensitiveCompare("sandbox") == .orderedSame ||
             environment.caseInsensitiveCompare("development") == .orderedSame {
             return BTCoreConstants.payPalSandboxURL
         } else {
             return BTCoreConstants.payPalProductionURL
+        }
+    }
+    
+    private static func authorization(from authorization: String) -> ClientAuthorization {
+        let authorizationType = Self.authorizationType(for: authorization)
+
+        switch authorizationType {
+        case .tokenizationKey:
+            do {
+                return try TokenizationKey(authorization)
+            } catch {
+                return InvalidAuthorization(authorization)
+            }
+        case .clientToken:
+            do {
+                return try BTClientToken(clientToken: authorization)
+            } catch {
+                return InvalidAuthorization(authorization)
+            }
+        case .invalidAuthorization:
+            return InvalidAuthorization(authorization)
         }
     }
 

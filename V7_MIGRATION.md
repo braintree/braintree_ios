@@ -14,6 +14,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [3D Secure](#3d-secure)]
 1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
+1. [American Express](#american-express)
 
 ## Supported Versions
 
@@ -68,3 +69,9 @@ For the App Switch flow, you must update your `info.plist` with a simplified URL
 ## PayPal Native Checkout
 The PayPal Native Checkout integration is no longer supported. Please remove it from your app and 
 use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal/overview/ios/v6) integration.
+
+## American Express
+Update initializer for `BTAmericanExpressClient`:
+```diff
+-  var amexClient = BTAmericanExpressClient(apiClient: apiClient)
++   var amexClient = BTAmericanExpressClient(authorization: "<CLIENT_AUTHORIZATION>")

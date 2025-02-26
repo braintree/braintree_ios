@@ -75,7 +75,7 @@ class ConfigurationLoader_Tests: XCTestCase {
         } catch {
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
-            XCTAssertEqual(error.code, BTAPIClientError.configurationUnavailable.rawValue)
+            XCTAssertEqual(error.code, BTAPIClientError.configurationUnavailable.errorCode)
             XCTAssertEqual(error.localizedDescription, "The operation couldn’t be completed. Unable to fetch remote configuration from Braintree API at this time.")
         }
     }
