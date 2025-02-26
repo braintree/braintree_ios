@@ -46,10 +46,12 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
-        self.waitForElementToAppear(app.buttons["Cancel"])
-
-        app.buttons["Cancel"].forceTapElement()
-
-        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
+        let cancelButton = app.buttons["Cancel"]
+        XCTAssertTrue(cancelButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(cancelButton.isHittable)
+        cancelButton.tap()
+        
+        let canceledMessageButton = app.buttons["PayPal flow was canceled by the user."]
+        XCTAssertTrue(canceledMessageButton.waitForExistence(timeout: 10))
     }
 }
