@@ -297,10 +297,12 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
             additionalInformation: info
         )
 
-        let params = ThreeDSecurePOSTBody(request: threeDSecureRequest)
+        let params = try! ThreeDSecurePOSTBody(request: threeDSecureRequest).toDictionary()
         
-        XCTAssertNil(params.additionalInfo.shippingMethodIndicator)
-        XCTAssertEqual(params.additionalInfo.productCode, "AIR")
+        let additionalInfoDict = params["additionalInfo"] as! [String: Any]
+            
+        XCTAssertNil(additionalInfoDict["shippingMethodIndicator"])
+        XCTAssertEqual(additionalInfoDict["productCode"] as? String, "AIR")
     }
 
 }
