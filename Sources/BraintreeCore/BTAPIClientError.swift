@@ -52,7 +52,7 @@ public enum BTAPIClientError: Error, CustomNSError, LocalizedError, Equatable {
             return "Unable to base64 encode the authorization string."
             
         case .invalidAuthorization(let authorization):
-            return "Invalid authorization provided: \(authorization)."
+            return "Invalid authorization provided: \(authorization). See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info."
         }
     }
 }

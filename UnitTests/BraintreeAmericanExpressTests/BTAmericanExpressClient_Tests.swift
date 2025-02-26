@@ -105,7 +105,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             XCTAssertNil(rewardsBalance)
             if let error = error as NSError? {
                 XCTAssertEqual(error.code, BTAPIClientError.invalidAuthorization("").errorCode)
-                XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth.")
+                XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth. See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info.")
                 XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
             }
             
