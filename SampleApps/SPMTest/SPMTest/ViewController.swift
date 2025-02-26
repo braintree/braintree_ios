@@ -14,6 +14,7 @@ import BraintreeSEPADirectDebit
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
+        // TODO: remove in the final PR for making authorization internal
         let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
 
         let amexClient = BTAmericanExpressClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")

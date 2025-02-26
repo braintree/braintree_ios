@@ -29,6 +29,7 @@ import Foundation
 
     // MARK: - Initializers
 
+    // TODO: remove in final PR
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
     @objc(initWithAuthorization:)
