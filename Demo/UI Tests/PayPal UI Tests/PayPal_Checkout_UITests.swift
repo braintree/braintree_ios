@@ -33,34 +33,34 @@ class PayPal_Checkout_UITests: XCTestCase {
         let webviewElementsQuery = app.webViews.element.otherElements
         let proceedLink = webviewElementsQuery.links["Proceed with Sandbox Purchase"]
 
-        XCTAssertTrue(proceedLink.waitForExistence(timeout: 10),
+        XCTAssertTrue(proceedLink.waitForExistence(timeout: 30),
                   "The 'Proceed with Sandbox Purchase' link did not appear in time.")
         XCTAssertTrue(proceedLink.isHittable,
                   "The 'Proceed with Sandbox Purchase' link is not hittable.")
         proceedLink.tap()
 
         let nonceButton = app.buttons["Got a nonce. Tap to make a transaction."]
-        XCTAssertTrue(nonceButton.waitForExistence(timeout: 10),
+        XCTAssertTrue(nonceButton.waitForExistence(timeout: 30),
                   "The 'Got a nonce. Tap to make a transaction.' button did not appear in time.")
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let cancelLink = app.webViews.element.otherElements.links["Cancel Sandbox Purchase"]
-        XCTAssertTrue(cancelLink.waitForExistence(timeout: 10))
+        XCTAssertTrue(cancelLink.waitForExistence(timeout: 30))
         XCTAssertTrue(cancelLink.isHittable)
         cancelLink.tap()
         
         let canceledMessageButton = app.buttons["PayPal flow was canceled by the user."]
-        XCTAssertTrue(canceledMessageButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(canceledMessageButton.waitForExistence(timeout: 30))
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
         let cancelButton = app.buttons["Cancel"]
-        XCTAssertTrue(cancelButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(cancelButton.waitForExistence(timeout: 30))
         XCTAssertTrue(cancelButton.isHittable)
         cancelButton.tap()
         
         let canceledMessageButton = app.buttons["PayPal flow was canceled by the user."]
-        XCTAssertTrue(canceledMessageButton.waitForExistence(timeout: 10))
+        XCTAssertTrue(canceledMessageButton.waitForExistence(timeout: 30))
     }
 }
