@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 5.27.0 (2025-02-27)
 * BraintreeApplePay
   * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
 
