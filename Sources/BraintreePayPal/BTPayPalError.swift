@@ -44,8 +44,11 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
 
     /// 13. Missing PayPal Request
     case missingPayPalRequest
+    
+    /// 14. Missing EC Token for App Switch
+    case missingECToken
 
-    /// 14. Invalid Authorization Type
+    /// 15. Invalid Authorization Type
     case invalidAuthorization
 
     public static var errorDomain: String {
@@ -82,8 +85,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 12
         case .missingPayPalRequest:
             return 13
-        case .invalidAuthorization:
+        case .missingECToken:
             return 14
+        case .invalidAuthorization:
+            return 15
         }
     }
 
@@ -119,6 +124,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "Missing BA Token for PayPal App Switch."
         case .missingPayPalRequest:
             return "The PayPal Request was missing or invalid."
+        case .missingECToken:
+            return "Missing EC Token for PayPal App Switch."
         case .invalidAuthorization:
             return "Invalid authorization. This feature can only be used with a client token."
         }
