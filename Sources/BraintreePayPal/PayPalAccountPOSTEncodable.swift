@@ -20,7 +20,7 @@ struct PayPalAccountPOSTEncodable: Encodable {
         correlationID: String?
     ) {
         self.meta = Meta(
-            sessionId: metadata.sessionID,
+            sessionID: metadata.sessionID,
             integration: metadata.integration.stringValue,
             source: BTClientMetadataSource.payPalBrowser.stringValue
         )
@@ -45,9 +45,15 @@ struct PayPalAccountPOSTEncodable: Encodable {
 
 struct Meta: Encodable {
     
-    let sessionId: String
+    let sessionID: String
     let integration: String
     let source: String
+    
+    enum CodingKeys: String, CodingKey {
+        case sessionID = "sessionId"
+        case integration
+        case source
+    }
 }
 
 
@@ -109,8 +115,4 @@ struct Client: Encodable {
 struct PayPalResponse: Encodable {
 
     let webURL: String
-
-    enum CodingKeys: String, CodingKey {
-        case webURL
-    }
 }
