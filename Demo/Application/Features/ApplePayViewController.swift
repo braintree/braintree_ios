@@ -4,7 +4,7 @@ import PassKit
 
 class ApplePayViewController: PaymentButtonBaseViewController {
 
-    lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
+    lazy var applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
     override func viewDidLoad() {
         super.viewDidLoad()
