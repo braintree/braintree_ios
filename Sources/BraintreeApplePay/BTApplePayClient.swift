@@ -12,8 +12,6 @@ import BraintreeCore
 
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
-    
-    let authorization: String
 
     // MARK: - Initializer
 
@@ -21,8 +19,7 @@ import BraintreeCore
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
     public init(authorization: String) {
-        apiClient = BTAPIClient(authorization: authorization)!
-        self.authorization = authorization
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
 
     // MARK: - Public Methods

@@ -20,7 +20,7 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "off"
             ]
         ])
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         let expectation = self.expectation(description: "Callback invoked")
         applePayClient.makePaymentRequest { (paymentRequest, error) in
@@ -36,7 +36,7 @@ class BTApplePay_Tests: XCTestCase {
 
     func testPaymentRequest_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any?])
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         let expectation = self.expectation(description: "Callback invoked")
         applePayClient.makePaymentRequest { (paymentRequest, error) in
@@ -60,7 +60,7 @@ class BTApplePay_Tests: XCTestCase {
                 "supportedNetworks": ["visa", "mastercard", "amex"]
             ] as [String: Any]
         ])
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         let expectation = self.expectation(description: "Callback invoked")
         applePayClient.makePaymentRequest { (paymentRequest, error) in
@@ -86,7 +86,7 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "production"
             ]
         ])
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         let expectation = self.expectation(description: "Callback invoked")
         applePayClient.makePaymentRequest { (paymentRequest, error) in
@@ -116,7 +116,7 @@ class BTApplePay_Tests: XCTestCase {
         ])
         let expectation = self.expectation(description: "Unsuccessful tokenization")
 
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         client.tokenize(payment) { (tokenizedPayment, error) -> Void in
             guard let error = error as NSError? else {return}
@@ -133,7 +133,7 @@ class BTApplePay_Tests: XCTestCase {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [AnyHashable: Any])
         let expectation = self.expectation(description: "Unsuccessful tokenization")
 
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         client.tokenize(payment) { (tokenizedPayment, error) -> Void in
             guard let error = error as NSError? else {return}
@@ -148,7 +148,7 @@ class BTApplePay_Tests: XCTestCase {
 
     func testTokenization_whenConfigurationFetchErrorOccurs_callsBackWithError() {
         mockClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         let expectation = self.expectation(description: "tokenization error")
 
@@ -170,7 +170,7 @@ class BTApplePay_Tests: XCTestCase {
         ])
         mockClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
         mockClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         let expectation = self.expectation(description: "tokenization failure")
 
@@ -189,7 +189,7 @@ class BTApplePay_Tests: XCTestCase {
             ]
         ])
         mockClient.cannedResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         let expectation = self.expectation(description: "tokenization failure")
 
@@ -232,7 +232,7 @@ class BTApplePay_Tests: XCTestCase {
         )
         let expectation = self.expectation(description: "successful tokenization")
 
-        let client = BTApplePayClient(apiClient: mockClient)
+        let client = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         client.tokenize(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertNil(error)
@@ -259,7 +259,7 @@ class BTApplePay_Tests: XCTestCase {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
         mockClient.cannedResponseBody = nil
 
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         let expectation = expectation(description: "Callback invoked")
 
@@ -280,7 +280,7 @@ class BTApplePay_Tests: XCTestCase {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: ["applePay" : ["status" : "production"]])
         mockClient.cannedResponseBody = BTJSON(value: ["notApplePayCards": "badData"])
 
-        let applePayClient = BTApplePayClient(apiClient: mockClient)
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         let payment = MockPKPayment()
         let expectation = expectation(description: "Callback invoked")
 
@@ -306,7 +306,7 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "production"
             ]
         ])
-        let applePayClient = BTApplePayClient(apiClient: mockAPIClient)
+        let applePayClient = BTApplePayClient(authorization: "production_t2wns2y2_dfy45jdj3dxkmz5m")
         let payment = MockPKPayment()
 
         let expectation = self.expectation(description: "Tokenized card")
