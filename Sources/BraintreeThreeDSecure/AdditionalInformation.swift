@@ -1,7 +1,7 @@
 import Foundation
 
 /// Additional information for a 3DS lookup. Used in 3DS 2.0+ flows.
-@objcMembers public class BTThreeDSecureAdditionalInformation: NSObject {
+@objcMembers public class AdditionalInformation: NSObject {
 
     // MARK: - Public Properties
 
