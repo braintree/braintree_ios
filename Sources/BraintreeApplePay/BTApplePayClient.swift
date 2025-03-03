@@ -12,14 +12,17 @@ import BraintreeCore
 
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
+    
+    let authorization: String
 
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
     /// - Parameter apiClient: An API client
     @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    public init(authorization: String) {
+        apiClient = BTAPIClient(authorization: authorization)!
+        self.authorization = authorization
     }
 
     // MARK: - Public Methods
