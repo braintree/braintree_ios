@@ -16,8 +16,8 @@ import BraintreeCore
     // MARK: - Initializer
 
     /// Creates an Apple Pay client
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
+    /// - Parameter authorization: A client token or tokenization key
+    @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
