@@ -209,7 +209,10 @@ import BraintreeDataCollector
             return
         }
         
-        guard let request = payPalRequest else { return }
+        guard let request = payPalRequest else {
+            notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
+            return
+        }
 
         let encodableParams = PayPalAccountPOSTEncodable(
             metadata: apiClient.metadata,
