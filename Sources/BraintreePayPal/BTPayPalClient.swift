@@ -209,7 +209,7 @@ import BraintreeDataCollector
             return
         }
         
-        guard let request = payPalRequest else {
+        guard let payPalRequest else {
             notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
             return
         }
