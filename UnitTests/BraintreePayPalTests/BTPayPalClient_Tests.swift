@@ -605,6 +605,10 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: checkoutResponse as [String : AnyObject])
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        
+        let payPalRequest = BTPayPalVaultRequest()
+        payPalClient.payPalRequest = payPalRequest
+
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { (tokenizedPayPalAccount, error) in
             XCTAssertEqual(tokenizedPayPalAccount!.nonce, "a-nonce")
             XCTAssertEqual(tokenizedPayPalAccount!.firstName, "Some")
@@ -673,6 +677,10 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: checkoutResponse as [String : AnyObject])
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        
+        let payPalRequest = BTPayPalVaultRequest()
+        payPalClient.payPalRequest = payPalRequest
+        
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { (tokenizedPayPalAccount, error) in
 
             let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
@@ -701,6 +709,10 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: checkoutResponse as [String : AnyObject])
 
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        
+        let payPalRequest = BTPayPalVaultRequest()
+        payPalClient.payPalRequest = payPalRequest
+        
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
         }
