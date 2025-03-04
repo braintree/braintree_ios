@@ -19,7 +19,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
+        payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn", universalLink: URL(string: "https://www.paypal.com")!)
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
@@ -1002,7 +1002,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         XCTAssertEqual(payPalClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }
