@@ -78,7 +78,6 @@ jobs:
           rm -rf Carthage/Build/BraintreeTestShared.xcframework
           zip -r Braintree.xcframework.zip Carthage
           git checkout SampleApps/SPMTest
-
       - name: Upload Carthage pre-built xcframeworks to GitHub release
         uses: actions/upload-release-asset@v1
         env:
