@@ -56,7 +56,6 @@ struct Meta: Encodable {
     }
 }
 
-
 struct PayPalAccount: Encodable {
 
     let responseType: String
