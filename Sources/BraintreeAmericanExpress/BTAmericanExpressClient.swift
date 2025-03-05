@@ -12,7 +12,7 @@ import BraintreeCore
     
     ///  Creates an American Express client.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls
-    @objc(initWithAPIClient:)
+    @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
