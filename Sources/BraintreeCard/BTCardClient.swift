@@ -10,7 +10,7 @@ import BraintreeCore
     // MARK: - Internal Properties
 
     /// Exposed for testing to get the instance of BTAPIClient
-    let apiClient: BTAPIClient
+    var apiClient: BTAPIClient
 
     let graphQLTokenizeFeature: String = "tokenize_credit_cards"
 
@@ -18,9 +18,9 @@ import BraintreeCore
 
     /// Creates a card client
     /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
 
     // MARK: - Public Methods

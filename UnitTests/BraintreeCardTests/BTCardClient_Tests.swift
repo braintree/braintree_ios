@@ -10,10 +10,11 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_postsCardDataToClientAPI() {
         let expectation = self.expectation(description: "Tokenize Card")
 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
 
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -54,10 +55,11 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_whenAuthInsightIsNotRequested_postsCardDataWithoutAuthInsight() {
         let expectation = self.expectation(description: "Tokenize Card")
 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -100,11 +102,12 @@ class BTCardClient_Tests: XCTestCase {
             ]
         ]
 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         mockAPIClient.cannedResponseBody = BTJSON(value: mockTokenizeResponse)
 
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -133,11 +136,12 @@ class BTCardClient_Tests: XCTestCase {
 
         let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         mockAPIClient.cannedResponseError = mockError
 
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -156,7 +160,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
-        let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
+        var stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         let stubJSONResponse = BTJSON(
             value: [
@@ -182,7 +186,9 @@ class BTCardClient_Tests: XCTestCase {
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
-        let cardClient = BTCardClient(apiClient: stubAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = stubAPIClient
+        
 
         let card = BTCard(
             number: "4111111111111111",
@@ -213,7 +219,7 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenTokenizationEndpointReturns422AndCode81724_callCompletionWithValidationError() {
-        let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
+        var stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         let stubJSONResponse = BTJSON(
             value: [
@@ -239,7 +245,8 @@ class BTCardClient_Tests: XCTestCase {
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         stubAPIClient.cannedResponseError = stubError
-        let cardClient = BTCardClient(apiClient: stubAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = stubAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -271,7 +278,7 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenGraphQLTokenizationEndpointReturns422AndCode81724_callsCompletionWithValidationError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -317,7 +324,8 @@ class BTCardClient_Tests: XCTestCase {
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
         
         let card = BTCard(
             number: "4111111111111111",
@@ -346,10 +354,11 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
-        let stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
+        var stubAPIClient = MockAPIClient(authorization: TestClientTokenFactory.validClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: nil)
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
-        let cardClient = BTCardClient(apiClient: stubAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = stubAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -371,8 +380,10 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -401,10 +412,12 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
 
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -423,7 +436,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testAnalyticsEvent_whenTokenizationFails_isSent() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let stubJSONResponse = BTJSON(
             value: [
                 "error" : [
@@ -449,7 +462,8 @@ class BTCardClient_Tests: XCTestCase {
         ])
         mockAPIClient.cannedResponseError = stubError
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -471,7 +485,7 @@ class BTCardClient_Tests: XCTestCase {
     // MARK: - GraphQL API
 
     func testTokenization_whenAuthInsightRequestedIsTrue_andMerchantAccountIDIsNil_returnsError() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -479,7 +493,8 @@ class BTCardClient_Tests: XCTestCase {
             ] as [String: Any]
         ])
         
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -503,7 +518,7 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenGraphQLIsEnabled_postsCardDataToGraphQLAPI() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -511,7 +526,8 @@ class BTCardClient_Tests: XCTestCase {
             ] as [String: Any]
         ])
 
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -542,10 +558,12 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testTokenization_whenGraphQLIsDisabled_postsCardDataToGatewayAPI() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [] as [Any?])
         
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -575,7 +593,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testTokenization_whenGraphQLFeatureIsNotEnabled_postsCardDataToGatewayAPI() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -583,7 +601,9 @@ class BTCardClient_Tests: XCTestCase {
             ] as [String: Any]
         ])
         
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -604,7 +624,7 @@ class BTCardClient_Tests: XCTestCase {
     }
     
     func testTokenization_whenGraphQLIsEnabledAndTokenizationIsSuccessful_returnsACardNonce() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -637,7 +657,8 @@ class BTCardClient_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -675,7 +696,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testAnalyticsEvent_whenTokenizationSucceedsWithGraphQL_isSent() {
-        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -706,7 +727,8 @@ class BTCardClient_Tests: XCTestCase {
             "extensions": [] as [Any?]
         ] as [String: Any])
 
-        let cardClient = BTCardClient(apiClient: mockApiClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockApiClient
 
         let card = BTCard(
             number: "4111111111111111",
@@ -727,7 +749,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 
     func testAnalyticsEvent_whenTokenizationFailsWithGraphQL_isSent() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "graphQL": [
                 "url": "graphql://graphql",
@@ -756,7 +778,8 @@ class BTCardClient_Tests: XCTestCase {
             BTCoreConstants.jsonResponseBodyKey: stubJSONResponse
         ])
         mockAPIClient.cannedResponseError = stubError
-        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = mockAPIClient
 
         let card = BTCard(
             number: "4111111111111111",
