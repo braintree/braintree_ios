@@ -15,6 +15,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
 1. [American Express](#american-express)
+1. [Apple Pay](#apple-pay)
 
 ## Supported Versions
 
@@ -74,4 +75,12 @@ use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal
 Update initializer for `BTAmericanExpressClient`:
 ```diff
 -  var amexClient = BTAmericanExpressClient(apiClient: apiClient)
-+   var amexClient = BTAmericanExpressClient(authorization: "<CLIENT_AUTHORIZATION>")
++  var amexClient = BTAmericanExpressClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
+## Apple Pay
+Update initializer for `BTApplePayClient`:
+```diff
+-  var applePayClient = BTApplePayClient(apiClient: apiClient)
++  var applePayClient = BTApplePayClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
