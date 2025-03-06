@@ -15,6 +15,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         }
         
         let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+        
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -39,6 +41,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         }
         
         let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+        
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -56,6 +60,26 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
     
+    func testCheckoutFlow_withoutPayPalRequest_returnsError() {
+        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey) else {
+            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
+            return
+        }
+
+        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
+        let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
+        
+        payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error?.localizedDescription, "The PayPal Request was missing or invalid.")
+            tokenizationExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5)
+    }
+    
     // MARK: - Vault Flow Tests
     
     func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() {
@@ -65,6 +89,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         }
         
         let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+        
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -88,7 +114,11 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
+
         let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+        
+
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
