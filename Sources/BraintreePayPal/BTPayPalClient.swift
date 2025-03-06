@@ -222,7 +222,6 @@ import BraintreeDataCollector
             url: url,
             correlationID: clientMetadataID
         )
-        print("encodableParams: \(encodableParams)")
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)

@@ -78,8 +78,8 @@ use the [PayPal (web)](https://developer.paypal.com/braintree/docs/guides/paypal
 ## American Express
 Update initializer for `BTAmericanExpressClient`:
 ```diff
--  var amexClient = BTAmericanExpressClient(apiClient: apiClient)
-+  var amexClient = BTAmericanExpressClient(authorization: "<CLIENT_AUTHORIZATION>")
+-  var payPayClient = BTPayPalClient(apiClient: apiClient)
++  var payPayClient = BTPayPalClient(authorization: "<CLIENT_AUTHORIZATION>")
 ```
 
 ## Apple Pay
