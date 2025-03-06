@@ -208,48 +208,22 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-
-        let clientDictionary: [String: String] = [
-            "platform": "iOS",
-            "product_name": "PayPal",
-            "paypal_sdk_version": "version"
-        ]
-
-        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
-
-        var account: [String: Any] = [
-            "client": clientDictionary,
-            "response": responseDictionary,
-            "response_type": "web"
-        ]
-
-        if paymentType == .checkout {
-            account["options"] = ["validate": false]
-            if let request = payPalRequest as? BTPayPalCheckoutRequest {
-                account["intent"] = request.intent.stringValue
-            }
-        }
         
-        if let clientMetadataID {
-            account["correlation_id"] = clientMetadataID
+        guard let payPalRequest else {
+            notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
+            return
         }
 
-        var parameters: [String: Any] = ["paypal_account": account]
-        
-        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-            parameters["merchant_account_id"] = merchantAccountID
-        }
-
-        let metadata = apiClient.metadata
-        metadata.source = .payPalBrowser
-        
-        parameters["_meta"] = [
-            "source": metadata.source.stringValue,
-            "integration": metadata.integration.stringValue,
-            "sessionId": metadata.sessionID
-        ]
-        
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, _, error in
+        let encodableParams = PayPalAccountPOSTEncodable(
+            metadata: apiClient.metadata,
+            request: payPalRequest,
+            client: apiClient,
+            paymentType: paymentType,
+            url: url,
+            correlationID: clientMetadataID
+        )
+        print("encodableParams: \(encodableParams)")
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
