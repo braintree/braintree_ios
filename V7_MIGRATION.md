@@ -15,7 +15,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
 1. [American Express](#american-express)
-1. [Apple Pay](#american-express)
+1. [Apple Pay](#apple-pay)
 
 ## Supported Versions
 
