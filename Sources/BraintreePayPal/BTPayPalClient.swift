@@ -68,7 +68,7 @@ import BraintreeDataCollector
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
-    /// - Parameter apiClient: The API Client
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     @objc(initWithAuthorization:)
     public init(authorization: String) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
@@ -87,7 +87,7 @@ import BraintreeDataCollector
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A valid client token or tokenization key used to authorize API calls.
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     @objc(initWithAuthorization:universalLink:)
@@ -222,6 +222,7 @@ import BraintreeDataCollector
             url: url,
             correlationID: clientMetadataID
         )
+        
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
