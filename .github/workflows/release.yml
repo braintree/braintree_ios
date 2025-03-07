@@ -127,11 +127,6 @@ jobs:
           asset_name: Braintree_Static.xcframework.zip
           asset_content_type: application/zip
 
-      - name: Publish to CocoaPods
-        env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: pod trunk push Braintree.podspec
-
       - name: Publish reference docs
         run: |
           gem install jazzy
@@ -168,3 +163,8 @@ jobs:
           git add current ${{ github.event.inputs.version }}
           git commit -m "Publish ${{ github.event.inputs.version }} docs to github pages"
           git push
+
+      - name: Publish to CocoaPods
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: pod trunk push Braintree.podspec
