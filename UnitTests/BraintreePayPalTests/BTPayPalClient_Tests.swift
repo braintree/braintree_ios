@@ -7,6 +7,7 @@ class BTPayPalClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!
     var payPalClient: BTPayPalClient!
     var mockWebAuthenticationSession: MockWebAuthenticationSession!
+    let authorization: String = "development_testing_integration_merchant_id"
 
     override func setUp() {
         super.setUp()
@@ -19,7 +20,8 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
+        payPalClient = BTPayPalClient(authorization: authorization, universalLink: URL(string: "https://www.paypal.com")!)
+        payPalClient.apiClient = mockAPIClient
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
@@ -447,10 +449,6 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_merchantAccountIdIsSet() {
         let merchantAccountID = "alternate-merchant-account-id"
-        
-        let payPalRequest = BTPayPalVaultRequest()
-        payPalClient.payPalRequest = payPalRequest
-        
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34", merchantAccountID: merchantAccountID)
         
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
@@ -1031,8 +1029,8 @@ class BTPayPalClient_Tests: XCTestCase {
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let apiClient = BTAPIClient(authorization: authorization)!
+        let payPalClient = BTPayPalClient(authorization: authorization)
 
         XCTAssertEqual(payPalClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }

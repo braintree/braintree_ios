@@ -14,8 +14,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
-        
+
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
@@ -41,9 +41,10 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
+
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -67,7 +68,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
 
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
@@ -89,9 +90,10 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
+
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -115,7 +117,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
