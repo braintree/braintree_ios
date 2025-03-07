@@ -5,8 +5,10 @@ import XCTest
 class BTCardClient_IntegrationTests: XCTestCase {
 
     func testTokenizeCard_whenCardHasValidationDisabledAndCardIsInvalid_tokenizesSuccessfully() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let expectation = expectation(description: "Tokenize card")
         let card = BTCard(
             number: "123123",
@@ -31,8 +33,10 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let card = BTCard(
             number: "123",
             expirationMonth: "12",
@@ -61,8 +65,10 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenCardHasValidationDisabledAndCardIsValid_tokenizesSuccessfully() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let expectation = expectation(description: "Tokenize card")
         let card = BTCard(
             number: "123",
@@ -102,8 +108,10 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingTokenizationKeyAndCardHasValidationEnabled_failsWithAuthorizationError() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let card = BTCard(
             number: "123123",
             expirationMonth: "XX",
@@ -132,8 +140,10 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -161,8 +171,10 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
-        let cardClient = BTCardClient(apiClient: apiClient)
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
+        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        cardClient.apiClient = apiClient
+        
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
