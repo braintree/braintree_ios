@@ -12,6 +12,7 @@
     * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
     * Remove `BTAppContextSwitcher.sharedInstance.returnURLScheme`
     * `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
+    * Update initializer to `BTVenmoClient(authorization:)`
   * BraintreeSEPADirectDebit
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeLocalPayment

@@ -52,13 +52,13 @@ import BraintreeCore
 
     /// Initialize a new Venmo client instance.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A client token or tokenization key
     ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    @objc(initWithAPIClient:universalLink:)
-    public init(apiClient: BTAPIClient, universalLink: URL) {
+    @objc(initWithAuthorization:universalLink:)
+    public init(authorization: String, universalLink: URL) {
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
 
-        self.apiClient = apiClient
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
         self.universalLink = universalLink
     }
 
@@ -66,7 +66,7 @@ import BraintreeCore
 
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameters:
-    ///   - request: A Venmo request.
+    ///   - request: A Venmo reque	st.
     ///   - completion: This completion will be invoked when app switch is complete or an error occurs. On success, you will receive
     ///   an instance of `BTVenmoAccountNonce`; on failure or user cancelation you will receive an error.
     ///   If the user cancels out of the flow, the error code will be `.canceled`.
