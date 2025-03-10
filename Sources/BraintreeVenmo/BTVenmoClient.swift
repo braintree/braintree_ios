@@ -65,7 +65,7 @@ import BraintreeCore
     @objc(initWithAPIClient:universalLink:)
     public convenience init(apiClient: BTAPIClient, universalLink: URL) {
         self.init(apiClient: apiClient)
-        self.universalLink = universalLink
+        self.universalLink = universalLink.appendingPathComponent("venmo")
     }
 
     // MARK: - Public Methods
