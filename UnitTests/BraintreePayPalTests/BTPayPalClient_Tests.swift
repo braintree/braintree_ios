@@ -726,7 +726,7 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testCanHandleReturnURL_whenPathIsValidSuccess_returnsTrue() {
-        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success")!
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success?token=1234abc")!
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
     }
 
