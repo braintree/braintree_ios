@@ -5,6 +5,8 @@ import XCTest
 class BraintreePayPal_IntegrationTests: XCTestCase {
     
     let oneTouchCoreAppSwitchSuccessURLFixture = "com.braintreepayments.Demo.payments://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoyLCJhY2NvdW50X2NvdW50cnkiOiJVUyIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXhwaXJlc19pbiI6LTEsImRpc3BsYXlfbmFtZSI6Im1vY2tEaXNwbGF5TmFtZSIsInNjb3BlIjoiaHR0cHM6XC9cL3VyaS5wYXlwYWwuY29tXC9zZXJ2aWNlc1wvcGF5bWVudHNcL2Z1dHVyZXBheW1lbnRzIiwiZW1haWwiOiJtb2NrZW1haWxhZGRyZXNzQG1vY2suY29tIiwiYXV0aG9yaXphdGlvbl9jb2RlIjoibW9ja1RoaXJkUGFydHlBdXRob3JpemF0aW9uQ29kZSJ9&x-source=com.paypal.ppclient.touch.v1-or-v2"
+    
+    let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     // MARK: - Checkout Flow Tests
     
@@ -14,8 +16,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
-        
+
+        let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
@@ -41,9 +43,10 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
+
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -67,7 +70,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
 
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let payPalClient = BTPayPalClient(authorization: authorization)
 
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
@@ -89,9 +92,10 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
+
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -115,7 +119,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             return
         }
         
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+
+        let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")

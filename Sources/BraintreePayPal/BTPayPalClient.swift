@@ -68,12 +68,12 @@ import BraintreeDataCollector
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
-    /// - Parameter apiClient: The API Client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
 
-        self.apiClient = apiClient
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         super.init()
@@ -87,12 +87,12 @@ import BraintreeDataCollector
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A valid client token or tokenization key used to authorize API calls.
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
-    @objc(initWithAPIClient:universalLink:)
-    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
-        self.init(apiClient: apiClient)
+    @objc(initWithAuthorization:universalLink:)
+    public convenience init(authorization: String, universalLink: URL) {
+        self.init(authorization: authorization)
         self.universalLink = universalLink
     }
 
