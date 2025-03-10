@@ -12,7 +12,7 @@ class VenmoViewController: PaymentButtonBaseViewController {
         super.heightConstraint = 150
         super.viewDidLoad()
         venmoClient = BTVenmoClient(
-            apiClient: apiClient,
+            authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
             // swiftlint:disable:next force_unwrapping
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
