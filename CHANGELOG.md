@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Fix bug where instantiating multiple feature clients with  universal links in the same view causes `handleOpen` to return in the wrong feature client
+
 ## 6.29.0 (2025-02-24)
 * BraintreePayPal
   * Add PayPal App Switch checkout flow (BETA)
