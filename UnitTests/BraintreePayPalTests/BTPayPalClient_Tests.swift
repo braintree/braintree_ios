@@ -726,17 +726,17 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     func testCanHandleReturnURL_whenPathIsValidSuccess_returnsTrue() {
-        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success/payPal")!
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/braintreeAppSwitchPayPal/success")!
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
     }
 
     func testCanHandleReturnURL_whenPathIsValidCancel_returnsTrue() {
-        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/cancel/payPal")!
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/braintreeAppSwitchPayPal/cancel")!
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
     }
 
     func testCanHandleReturnURL_whenPathIsValidWithQueryParameters_returnsTrue() {
-        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/success/payPal?token=112233")!
+        let url = URL(string: "https://mycoolwebsite.com/braintree-payments/braintreeAppSwitchPayPal/success?token=112233")!
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
     }
 
@@ -1019,7 +1019,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((lastPostParameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((lastPostParameters["os_type"] as! String).matches("iOS|iPadOS"))
-        XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://www.paypal.com/payPal")
+        XCTAssertEqual(lastPostParameters["merchant_app_return_url"] as? String, "https://www.paypal.com/braintreeAppSwitchPayPal")
     }
 
     func testIsiOSAppSwitchAvailable_whenApplicationCantOpenPayPalInAppURL_returnsFalseAndSendsAnalytics() {
