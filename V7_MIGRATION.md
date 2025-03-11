@@ -69,6 +69,12 @@ All properties within `BTThreeDSecureRequest` can only be accessed on the initia
 
 v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
+Update initializer for `BTPayPalClient`:
+```diff
+-  var payPalClient = BTPayPalClient(apiClient: apiClient)
++  var payPalClient = BTPayPalClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
 ### App Switch
 For the App Switch flow, you must update your `info.plist` with a simplified URL query scheme name, `paypal`.
 

@@ -7,7 +7,7 @@ import BraintreeShopperInsights
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
+    lazy var payPalClient = BTPayPalClient(authorization: authorization)
     lazy var venmoClient = BTVenmoClient(
         authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
         // swiftlint:disable:next force_unwrapping
