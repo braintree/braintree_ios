@@ -39,7 +39,9 @@ struct BTPayPalReturnURL {
     /// - Parameter url: an app switch or ASWebAuthenticationSession return URL
     /// - Returns: `true` if the url represents a valid PayPal app switch return
     static func isValid(_ url: URL) -> Bool {
-        url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success")) && url.path.contains("payPal")
+        url.scheme == "https"
+        && (url.path.contains("cancel") || url.path.contains("success"))
+        && url.path.contains("braintreeAppSwitchPayPal")
     }
 
     static func isValidURLAction(url: URL, linkType: LinkType?) -> Bool {

@@ -69,7 +69,7 @@ struct BTVenmoAppSwitchReturnURL {
     /// - Returns: `true` if the url represents a Venmo Touch app switch return
     static func isValid(url: URL) -> Bool {
         (url.scheme == "https"
-            && url.path.contains("venmo")
+            && url.path.contains("braintreeAppSwitchVenmo")
             && (url.path.contains("cancel") || url.path.contains("success") || url.path.contains("error")))
         || (url.host == "x-callback-url" && url.path.hasPrefix("/vzero/auth/venmo/"))
     }

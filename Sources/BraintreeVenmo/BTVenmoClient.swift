@@ -65,7 +65,10 @@ import BraintreeCore
     @objc(initWithAPIClient:universalLink:)
     public convenience init(apiClient: BTAPIClient, universalLink: URL) {
         self.init(apiClient: apiClient)
-        self.universalLink = universalLink.appendingPathComponent("venmo")
+        
+        /// appending a PayPal app switch specific path to verify we are in the correct flow when
+        /// `canHandleReturnURL` is called
+        self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchVenmo")
     }
 
     // MARK: - Public Methods
