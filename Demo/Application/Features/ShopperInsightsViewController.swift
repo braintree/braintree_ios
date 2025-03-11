@@ -9,7 +9,7 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
     lazy var payPalClient = BTPayPalClient(authorization: authorization)
     lazy var venmoClient = BTVenmoClient(
-        authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
+        authorization: authorization,
         // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )

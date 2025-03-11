@@ -646,7 +646,7 @@ class BTVenmoClient_Tests: XCTestCase {
     
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
         let venmoClient = BTVenmoClient(
-            authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
+            authorization: "development_testing_integration_merchant_id",
             universalLink: URL(string: "https://mywebsite.com/braintree-payments")!
         )
 
