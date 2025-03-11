@@ -52,6 +52,12 @@ v7 updates `BTLocalPaymentRequest` to require setting all properties through the
 ## 3D Secure
 All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
 
+Update initializer for `BTPayPalClient`:
+```diff
+-  var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)    
++  var threeDSecureClient = BTThreeDSecureClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
 ## PayPal
 
 v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
