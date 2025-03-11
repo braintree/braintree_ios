@@ -12,17 +12,19 @@ import BraintreeVenmo
 import BraintreeSEPADirectDebit
 
 class ViewController: UIViewController {
+    
+    let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     override func viewDidLoad() {
         // TODO: remove in the final PR for making authorization internal
-        let apiClient = BTAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let apiClient = BTAPIClient(authorization: authorization)!
 
-        let amexClient = BTAmericanExpressClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
-        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
-        let cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        let amexClient = BTAmericanExpressClient(authorization: authorization)
+        let applePayClient = BTApplePayClient(authorization: authorization)
+        let cardClient = BTCardClient(authorization: authorization)
         let dataCollector = BTDataCollector(apiClient: apiClient)
         let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
-        let payPalClient = BTPayPalClient(apiClient: apiClient)
+        let payPalClient = BTPayPalClient(authorization: authorization)
         let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
         let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
         let venmoClient = BTVenmoClient(
