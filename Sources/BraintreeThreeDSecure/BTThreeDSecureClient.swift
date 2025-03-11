@@ -24,7 +24,7 @@ import BraintreeCore
     // MARK: - Initializer
     
     /// Initialize a new BTThreeDSecureClient instance.
-    /// - Parameter authorization: A client token or tokenization key
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(newAuthorization: authorization)
