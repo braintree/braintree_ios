@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+# unreleased
+* Attach zip file of static Braintree xcframework modules to each GitHub release
+
 ## 6.29.0 (2025-02-24)
 * BraintreePayPal
   * Add PayPal App Switch checkout flow (BETA)
