@@ -15,7 +15,8 @@ import BraintreeCore
     
     // MARK: - Private Properties
     
-    private let apiClient: BTAPIClient
+    /// exposed for testing
+    var apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
