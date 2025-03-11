@@ -6,7 +6,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
 
     func testTokenizeCard_whenCardHasValidationDisabledAndCardIsInvalid_tokenizesSuccessfully() {
         var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        var cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         cardClient.apiClient = apiClient
         
         let expectation = expectation(description: "Tokenize card")

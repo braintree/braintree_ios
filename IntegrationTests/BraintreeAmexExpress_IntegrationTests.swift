@@ -7,7 +7,7 @@ class BraintreeAmexExpress_IntegrationTests: XCTestCase {
     
     func testGetRewardsBalance_returnsResult() async {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
-        let cardClient = BTCardClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         let amexClient = BTAmericanExpressClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         
         let card = BTCard(
