@@ -5,7 +5,7 @@ import BraintreeSEPADirectDebit
 
 class SEPADirectDebitViewController: PaymentButtonBaseViewController {
 
-    lazy var sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+    lazy var sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
 
     override func viewDidLoad() {
         super.viewDidLoad()
