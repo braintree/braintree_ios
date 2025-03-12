@@ -6,8 +6,12 @@ import XCTest
 class BTCardClient_Tests: XCTestCase {
     let customerInputValidationErrorKey: String = "BTCustomerInputBraintreeValidationErrorsKey"
     let authorization: String = "development_tokenization_key"
+    var mockApiClient : MockAPIClient? = nil
     
-    // MARK: - ClientAPI
+    override func setUp() {
+        super.setUp()
+        mockApiClient = MockAPIClient(authorization: authorization)
+    }
     
     func testTokenization_postsCardDataToClientAPI() {
         let expectation = self.expectation(description: "Tokenize Card")
