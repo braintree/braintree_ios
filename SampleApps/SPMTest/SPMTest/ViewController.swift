@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         let amexClient = BTAmericanExpressClient(authorization: authorization)
         let applePayClient = BTApplePayClient(authorization: authorization)
         let cardClient = BTCardClient(apiClient: apiClient)
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
         let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
         let payPalClient = BTPayPalClient(authorization: authorization)
         let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)

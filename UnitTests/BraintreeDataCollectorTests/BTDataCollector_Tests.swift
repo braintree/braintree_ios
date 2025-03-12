@@ -133,7 +133,7 @@ class BTDataCollector_Tests: XCTestCase {
     func testCollectDeviceData_fetchConfigurationReturnsError_returnError() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let mockDataCollector = MockBTDataCollector(authorization: authorization)
-        dataCollector.apiClient = mockAPIClient
+        mockDataCollector.apiClient = mockAPIClient
 
         mockDataCollector.cannedDataCollectorError = NSError(domain: "FakeConfigError", code: 1, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
