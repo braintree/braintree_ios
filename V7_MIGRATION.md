@@ -43,6 +43,19 @@ let venmoClient = BTVenmoClient(
 )
 ```
 
+Update initializer for `BTVenmoClient`:
+```diff
+-  var venmoClient = BTVenmoClient(
+        apiClient: apiClient, 
+        universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
+    )
++  var venmoClient = BTVenmoClient(
+        authorization: "<CLIENT_AUTHORIZATION>"
+        universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
+    )
+```
+
+
 ## SEPA Direct Debit
 All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
 
