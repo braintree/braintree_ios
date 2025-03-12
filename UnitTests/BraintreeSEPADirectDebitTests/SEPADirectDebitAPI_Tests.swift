@@ -8,6 +8,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
     var successApprovalURL: String = ""
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
     var mockCreateMandateResult = CreateMandateResult(json:
         BTJSON(
             value: [
@@ -47,7 +48,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_properlyFormatsPOSTURL() {
-        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        let api = SEPADirectDebitAPI(authorization: authorization)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/sepa_debit")
@@ -68,7 +69,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         sepaDirectDebitRequest.merchantAccountID = "fake-account-id"
         sepaDirectDebitRequest.locale = "fr-FR"
         
-        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        let api = SEPADirectDebitAPI(authorization: authorization)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
         
         let lastPOSTParameters = mockAPIClient.lastPOSTParameters!
@@ -93,7 +94,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_onSuccessfulHttpResponse_returnsCreateMandateResult() {
-        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        let api = SEPADirectDebitAPI(authorization: authorization)
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "message": [
@@ -124,7 +125,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_onNoBodyReturned_returnsError() {
-        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        let api = SEPADirectDebitAPI(authorization: authorization)
         mockAPIClient.cannedResponseError = BTSEPADirectDebitError.noBodyReturned as NSError
         
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
@@ -139,7 +140,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testTokenize_onSuccessfulHttpResponse_returnsSEPADirectDebitNonce() {
-        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        let api = SEPADirectDebitAPI(authorization: authorization)
         
         let json = BTJSON(
             value: [
