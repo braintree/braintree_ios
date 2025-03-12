@@ -10,6 +10,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     var threeDSecureRequest: BTThreeDSecureRequest!
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
+    var authorization = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     let mockCardinalSession = MockCardinalSession()
 
@@ -21,7 +22,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
-        client = BTThreeDSecureClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        client = BTThreeDSecureClient(authorization: authorization)
 
         client.apiClient = mockAPIClient
 
@@ -653,8 +654,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPrepareLookup_withTokenizationKey_throwsError() {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
-        let client = BTThreeDSecureClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
-        client.apiClient = MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!
+        let client = BTThreeDSecureClient(authorization: authorization)
+        client.apiClient = MockAPIClient(authorization: authorization)!
         let expectation = expectation(description: "willCallCompletion")
 
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
