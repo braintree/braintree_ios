@@ -33,6 +33,8 @@
     * Update initializer to `BTAmericanExpressClient(authorization:)`
   * BraintreeApplePay
     * Update initializer to `BTApplePayClient(authorization:)`
+  * BraintreeDataCollector
+    * Update initializer to `BTDataCollector(authorization:)`
 
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal
