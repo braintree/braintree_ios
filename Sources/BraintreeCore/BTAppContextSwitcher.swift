@@ -3,7 +3,6 @@ import UIKit
 /// Handles return URLs when returning from app context switch and routes the return URL to the correct app context switch client class.
 /// - Note: `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle ID.
 /// When your app returns from app switch, the app delegate should call  `handleOpenURL` (or `handleOpen` if not using SceneDelegate)
-@_documentation(visibility: private)
 public class BTAppContextSwitcher: NSObject {
     
     // MARK: - Public Properties
