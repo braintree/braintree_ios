@@ -24,7 +24,7 @@ class CardTokenizationViewController: PaymentButtonBaseViewController {
             progressBlock("Fill in all the card fields.")
             return
         }
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let cardClient = BTCardClient(authorization: authorization)
 
         setFieldsEnabled(false)
         cardClient.tokenize(card) { nonce, error in

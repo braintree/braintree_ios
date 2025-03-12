@@ -5,7 +5,7 @@ import BraintreeCard
 class AmexViewController: PaymentButtonBaseViewController {
 
     lazy var amexClient = BTAmericanExpressClient(authorization: authorization)
-    lazy var cardClient = BTCardClient(apiClient: apiClient)
+    lazy var cardClient = BTCardClient(authorization: authorization)
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -20,6 +20,7 @@
   * BraintreeCard
     * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
     * Remove `BTCardRequest`, use `BTCard` directly instead
+    * Update initializer to `BTCardClient(authorization:)`
   * BraintreePayPal
     * Update `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
     * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
