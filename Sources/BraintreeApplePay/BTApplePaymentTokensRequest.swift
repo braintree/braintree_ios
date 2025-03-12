@@ -2,7 +2,7 @@ import Foundation
 import PassKit
 
 /// The POST body for `v1/payment_methods/apple_payment_tokens`
-struct BTApplePaymentTokensPOSTBody: Encodable {
+struct BTApplePaymentTokensRequest: Encodable {
     
     private let applePaymentToken: ApplePaymentToken
     

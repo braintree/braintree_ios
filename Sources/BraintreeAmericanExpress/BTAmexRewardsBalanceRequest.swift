@@ -1,7 +1,7 @@
 import Foundation
 
 /// The GET parameters for `v1/payment_methods/amex_rewards_balance`
-struct BTAmexRewardsBalanceGETBody: Encodable {
+struct BTAmexRewardsBalanceRequest: Encodable {
     
     private let currencyIsoCode: String
     private let paymentMethodNonce: String

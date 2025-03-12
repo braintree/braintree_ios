@@ -350,7 +350,7 @@ final class BTHTTP_Tests: XCTestCase {
                 let requestHeaders = httpRequest.allHTTPHeaderFields
                 let locale = Locale.current
                 let countryCode = (locale as NSLocale).object(forKey: .countryCode) as? String
-                let expectedLanguageString = "\(locale.language.languageCode?.identifier ?? "")-\(countryCode ?? "")"
+                let expectedLanguageString = "\(locale.languageCode ?? "")-\(countryCode ?? "")"
                 XCTAssertEqual(requestHeaders?["Accept-Language"], expectedLanguageString)
             }
         }

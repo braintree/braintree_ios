@@ -17,7 +17,7 @@ class SEPADirectDebitAPI {
         sepaDirectDebitRequest: BTSEPADirectDebitRequest,
         completion: @escaping (CreateMandateResult?, Error?) -> Void
     ) {
-        let sepaDebitRequest = SEPADebitPOSTBody(sepaDirectDebitRequest: sepaDirectDebitRequest)
+        let sepaDebitRequest = SEPADebitRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
         apiClient.post("v1/sepa_debit", parameters: sepaDebitRequest) { body, _, error in
             if let error = error {
                 completion(nil, error)
@@ -35,7 +35,7 @@ class SEPADirectDebitAPI {
     }
 
     func tokenize(createMandateResult: CreateMandateResult, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
-        let sepaDebitAccountsRequest = SEPADebitAccountsPOSTBody(createMandateResult: createMandateResult)
+        let sepaDebitAccountsRequest = SEPADebitAccountsRequest(createMandateResult: createMandateResult)
         apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: sepaDebitAccountsRequest) { body, _, error in
             if let error = error {
                 completion(nil, error)
