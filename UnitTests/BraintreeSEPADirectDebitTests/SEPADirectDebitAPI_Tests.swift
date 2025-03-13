@@ -5,7 +5,7 @@ import XCTest
 
 class SEPADirectDebitAPI_Tests: XCTestCase {
     var billingAddress = BTPostalAddress()
-    var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
+    var sepaDirectDebitRequest: BTSEPADirectDebitRequest!
     var successApprovalURL: String = ""
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
@@ -55,7 +55,6 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
 
     func testCreateMandate_properlyFormatsPOSTBody() {
-        let sepaDirectDebitRequest = BTSEPADirectDebitRequest()
         billingAddress.streetAddress = "fake-street-addres"
         billingAddress.extendedAddress = "fake-extended-address"
         billingAddress.locality = "fake-locality"
@@ -68,7 +67,16 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         sepaDirectDebitRequest.billingAddress = billingAddress
         sepaDirectDebitRequest.merchantAccountID = "fake-account-id"
         sepaDirectDebitRequest.locale = "fr-FR"
-        
+
+        let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
+            accountHolderName: "fake-name",
+            iban: "fake-iban",
+            customerID: "fake-customer-id",
+            billingAddress: billingAddress,
+            merchantAccountID: "fake-account-id",
+            locale: "fr-FR"
+        )
+
         let api = SEPADirectDebitAPI(authorization: authorization)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
         
