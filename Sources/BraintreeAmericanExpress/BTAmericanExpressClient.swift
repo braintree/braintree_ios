@@ -31,7 +31,7 @@ import BraintreeCore
         currencyISOCode: String,
         completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
     ) {
-        let parameters = BTAmexRewardsBalanceGETBody(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
+        let parameters = BTAmexRewardsBalanceRequest(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
         apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
 
         apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, _, error in

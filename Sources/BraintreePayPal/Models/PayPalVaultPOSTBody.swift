@@ -14,7 +14,7 @@ struct PayPalVaultPOSTBody: Encodable {
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
     private let userPhoneNumber: BTPayPalPhoneNumber?
-    
+
     private var billingAgreementDescription: String?
     private var enablePayPalAppSwitch: Bool?
     private var lineItems: [BTPayPalLineItem]?
@@ -26,6 +26,7 @@ struct PayPalVaultPOSTBody: Encodable {
     private var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     private var riskCorrelationID: String?
     private var shippingAddressOverride: BTPostalAddress?
+    private var shopperSessionID: String?
     private var universalLink: String?
     private var userAuthenticationEmail: String?
     
@@ -63,7 +64,6 @@ struct PayPalVaultPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
-            return
         }
         
         if let recurringBillingPlanType = payPalRequest.recurringBillingPlanType {
@@ -103,5 +103,6 @@ struct PayPalVaultPOSTBody: Encodable {
         case universalLink = "merchant_app_return_url"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "phone_number"
+        case shopperSessionID = "shopper_session_id"
     }
 }

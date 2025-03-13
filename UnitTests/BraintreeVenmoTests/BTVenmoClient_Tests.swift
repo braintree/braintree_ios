@@ -31,9 +31,11 @@ class BTVenmoClient_Tests: XCTestCase {
         ])
 
         venmoClient = BTVenmoClient(
-            apiClient: mockAPIClient,
+            authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
             universalLink: URL(string: "https://mywebsite.com/braintree-payments")!
         )
+        
+        venmoClient.apiClient = mockAPIClient
     }
 
     func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -643,13 +645,12 @@ class BTVenmoClient_Tests: XCTestCase {
     // MARK: - Analytics
     
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
-        // API client by default uses source = .Unknown and integration = .Custom
-        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let venmoClient = BTVenmoClient(
-            apiClient: apiClient,
+            authorization: "development_testing_integration_merchant_id",
             universalLink: URL(string: "https://mywebsite.com/braintree-payments")!
         )
 
+        // API client by default uses source = .Unknown and integration = .Custom
         XCTAssertEqual(venmoClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }
 

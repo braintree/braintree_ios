@@ -6,16 +6,18 @@ import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
-    lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient)
+    lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: "test-shopper-session-id")
     lazy var payPalClient = BTPayPalClient(authorization: authorization)
     lazy var venmoClient = BTVenmoClient(
-        apiClient: apiClient,
+        authorization: authorization,
         // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
 
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
+    
+    private var shopperSessionID = "test-shopper-session-id"
     
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
@@ -97,32 +99,60 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
                 let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request, experiment: sampleExperiment)
                 // swiftlint:disable:next line_length
                 progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
-                payPalVaultButton.isEnabled = result.isPayPalRecommended
-                venmoButton.isEnabled = result.isVenmoRecommended
+                
+                togglePayPalVaultButton(enabled: result.isPayPalRecommended)
+                toggleVenmoButton(enabled: result.isVenmoRecommended)
             } catch {
                 progressBlock("Error: \(error.localizedDescription)")
             }
         }
     }
     
+    private func togglePayPalVaultButton(enabled: Bool) {
+        payPalVaultButton.isEnabled = enabled
+        
+        guard enabled else { return }
+        
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+        
+        shopperInsightsClient.sendPresentedEvent(
+            for: .payPal,
+            presentmentDetails: presentmentDetails
+        )
+    }
+    
+    private func toggleVenmoButton(enabled: Bool) {
+        venmoButton.isEnabled = enabled
+        
+        guard enabled else { return }
+        
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .second,
+            experimentType: .control,
+            pageType: .about
+        )
+        
+        shopperInsightsClient.sendPresentedEvent(
+            for: .venmo,
+            presentmentDetails: presentmentDetails
+        )
+    }
+    
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
-        let sampleExperiment =
-            """
-            [
-                { "experimentName" : "payment ready conversion experiment" },
-                { "experimentID" : "a1b2c3" },
-                { "treatmentName" : "treatment group 1" }
-            ]
-            """
-        let paymentMethods = ["Apple Pay", "Card", "PayPal"]
-        shopperInsightsClient.sendPayPalPresentedEvent(paymentMethodsDisplayed: paymentMethods, experiment: sampleExperiment)
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendPayPalSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .payPal)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalVaultRequest(userAuthenticationEmail: emailView.textField.text)
+        let paypalRequest = BTPayPalVaultRequest(
+            shopperSessionID: shopperSessionID,
+            userAuthenticationEmail: emailView.textField.text
+        )
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
             button.isEnabled = true
@@ -131,9 +161,8 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     }
     
     @objc func venmoButtonTapped(_ button: UIButton) {
-        shopperInsightsClient.sendVenmoPresentedEvent()
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendVenmoSelectedEvent()
+        shopperInsightsClient.sendSelectedEvent(for: .venmo)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false

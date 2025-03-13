@@ -59,6 +59,7 @@
 		BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; };
 		BE35FCD92A1BD162008F0326 /* BraintreeLocalPayment.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */; };
+		BE6442D12B4DE2B00096E562 /* PayPalCheckout in Frameworks */ = {isa = PBXBuildFile; productRef = BE6442D02B4DE2B00096E562 /* PayPalCheckout */; };
 		BE67CDC02B29FF7B00BA4904 /* PayPalMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */; };
 		BE67CDC22B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */; };
 		BE67CDC32B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -214,6 +215,7 @@
 				9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */,
 				803D64F5256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Frameworks */,
 				BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */,
+				BE6442D12B4DE2B00096E562 /* PayPalCheckout in Frameworks */,
 				BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
@@ -488,6 +490,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
+				BE6442D02B4DE2B00096E562 /* PayPalCheckout */,
 				45DDDDA82C08FB0B00C262E5 /* PayPalMessages */,
 			);
 			productName = Demo;
@@ -565,6 +568,7 @@
 			);
 			mainGroup = A0988E4024DB43DC0095EEEE;
 			packageReferences = (
+				BE6442CF2B4DE2B00096E562 /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 				45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 			);
 			productRefGroup = A0988E4A24DB43DC0095EEEE /* Products */;
@@ -750,7 +754,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				INFOPLIST_FILE = MockVenmo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -772,7 +776,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				INFOPLIST_FILE = MockVenmo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -837,7 +841,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -892,7 +896,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -916,7 +920,7 @@
 					"$(PROJECT_DIR)/../Frameworks/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Application/Supporting Files/Braintree-Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -945,7 +949,7 @@
 					"$(PROJECT_DIR)/../Frameworks/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Application/Supporting Files/Braintree-Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -965,7 +969,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				INFOPLIST_FILE = "$(SRCROOT)/UI Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -989,7 +993,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 43253H4X22;
 				INFOPLIST_FILE = "$(SRCROOT)/UI Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1057,6 +1061,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		BE6442CF2B4DE2B00096E562 /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1064,6 +1076,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */;
 			productName = PayPalMessages;
+		};
+		BE6442D02B4DE2B00096E562 /* PayPalCheckout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE6442CF2B4DE2B00096E562 /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
+			productName = PayPalCheckout;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

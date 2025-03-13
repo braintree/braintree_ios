@@ -21,14 +21,14 @@ class ViewController: UIViewController {
 
         let amexClient = BTAmericanExpressClient(authorization: authorization)
         let applePayClient = BTApplePayClient(authorization: authorization)
-        let cardClient = BTCardClient(apiClient: apiClient)
+        let cardClient = BTCardClient(authorization: authorization)
         let dataCollector = BTDataCollector(authorization: authorization)
         let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
         let payPalClient = BTPayPalClient(authorization: authorization)
         let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
         let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
         let venmoClient = BTVenmoClient(
-            apiClient: apiClient,
+            authorization: authorization,
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
         let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)

@@ -6,7 +6,7 @@ import BraintreeCore
 
 // swiftlint:disable nesting
 /// The POST body for `v1/sepa_debit`
-struct SEPADebitPOSTBody: Encodable {
+struct SEPADebitRequest: Encodable {
 
     let merchantAccountID: String?
     let cancelURL: String?
@@ -65,12 +65,12 @@ struct SEPADebitPOSTBody: Encodable {
             self.accountHolderName = sepaDirectDebitRequest.accountHolderName
             self.iban = sepaDirectDebitRequest.iban
             self.billingAddress = BillingAddress(
-                streetAddress: sepaDirectDebitRequest.billingAddress.streetAddress,
-                extendedAddress: sepaDirectDebitRequest.billingAddress.extendedAddress,
-                locality: sepaDirectDebitRequest.billingAddress.locality,
-                region: sepaDirectDebitRequest.billingAddress.region,
-                postalCode: sepaDirectDebitRequest.billingAddress.postalCode,
-                countryCodeAlpha2: sepaDirectDebitRequest.billingAddress.countryCodeAlpha2
+                streetAddress: sepaDirectDebitRequest.billingAddress?.streetAddress,
+                extendedAddress: sepaDirectDebitRequest.billingAddress?.extendedAddress,
+                locality: sepaDirectDebitRequest.billingAddress?.locality,
+                region: sepaDirectDebitRequest.billingAddress?.region,
+                postalCode: sepaDirectDebitRequest.billingAddress?.postalCode,
+                countryCodeAlpha2: sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
             )
         }
     }
