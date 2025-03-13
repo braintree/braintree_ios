@@ -79,14 +79,6 @@ Pod::Spec.new do |s|
     s.resource_bundle = { "BraintreeShopperInsights_PrivacyInfo" => "Sources/BraintreeShopperInsights/PrivacyInfo.xcprivacy" }
   end
 
-  s.subspec "PayPalNativeCheckout" do |s|
-    s.source_files = "Sources/BraintreePayPalNativeCheckout/*.swift"
-    s.dependency "Braintree/Core"
-    s.dependency "Braintree/PayPal"
-    s.dependency "PayPalCheckout", '1.3.0'
-    s.resource_bundle = { "BraintreePayPalNativeCheckout_PrivacyInfo" => "Sources/BraintreePayPalNativeCheckout/PrivacyInfo.xcprivacy" }
-  end
-
   s.subspec "PayPalMessaging" do |s|
     s.source_files = "Sources/BraintreePayPalMessaging/*.swift"
     s.dependency "Braintree/Core"

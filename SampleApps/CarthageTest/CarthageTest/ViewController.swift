@@ -9,7 +9,6 @@ import BraintreePayPal
 import BraintreePayPalMessaging
 import BraintreeThreeDSecure
 import BraintreeVenmo
-import BraintreePayPalNativeCheckout
 import BraintreeSEPADirectDebit
 
 class ViewController: UIViewController {
