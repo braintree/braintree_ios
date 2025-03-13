@@ -24,6 +24,12 @@ v7 supports a minimum deployment target of iOS 16+. It requires the use of Xcode
 ## Card
 v7 updates `BTCard` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTCard`, pass the properties directly in the initializer.
 
+Update initializer for `BTCardClient`:
+```diff
+-  var cardClient = BTCardClient(apiClient: apiClient)
++  var cardClient = BTCardClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
 ## Venmo
 All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
 
@@ -42,6 +48,19 @@ let venmoClient = BTVenmoClient(
     universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
 )
 ```
+
+Update initializer for `BTVenmoClient`:
+```diff
+-  var venmoClient = BTVenmoClient(
+        apiClient: apiClient, 
+        universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
+    )
++  var venmoClient = BTVenmoClient(
+        authorization: "<CLIENT_AUTHORIZATION>"
+        universalLink: URL(string: "https://merchant-app.com/braintree-payments")! // merchant universal link
+    )
+```
+
 
 ## SEPA Direct Debit
 All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.

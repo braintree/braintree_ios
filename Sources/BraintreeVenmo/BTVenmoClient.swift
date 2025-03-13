@@ -52,13 +52,13 @@ import BraintreeCore
 
     /// Initialize a new Venmo client instance.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A valid client token or tokenization key used to authorize API calls.
     ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    @objc(initWithAPIClient:universalLink:)
-    public init(apiClient: BTAPIClient, universalLink: URL) {
+    @objc(initWithAuthorization:universalLink:)
+    public init(authorization: String, universalLink: URL) {
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
 
-        self.apiClient = apiClient
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
         self.universalLink = universalLink
     }
 
@@ -260,6 +260,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
@@ -361,19 +362,20 @@ import BraintreeCore
         if success {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                linkType: linkType,
+                payPalContextID: payPalContextID
             )
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
         } else {
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchFailed,
+                appSwitchURL: appSwitchURL,
                 isVaultRequest: shouldVault,
                 linkType: linkType,
-                payPalContextID: payPalContextID,
-                appSwitchURL: appSwitchURL
+                payPalContextID: payPalContextID
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
@@ -382,7 +384,8 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
+        let venmoAccount: [String: String] = ["nonce": nonce]
+        let parameters: [String: Any] = ["venmoAccount": venmoAccount]
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
@@ -431,6 +434,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(result, nil)
@@ -441,6 +445,7 @@ import BraintreeCore
             BTVenmoAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, error)
@@ -450,6 +455,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchCanceled,
             isVaultRequest: shouldVault,
+            linkType: linkType,
             payPalContextID: payPalContextID
         )
         completion(nil, BTVenmoError.canceled)

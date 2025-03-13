@@ -88,19 +88,19 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertNil(array[3].asString())
         XCTAssertFalse(array[3].isString)
 
-        XCTAssertNil((array["hello"] as AnyObject).asString())
+        XCTAssertNil(array["hello"].asString())
     }
 
     func testObjectAccess() {
         let JSON = "{ \"key\": \"value\" }".data(using: String.Encoding.utf8)!
         let obj = BTJSON(data: JSON)
         
-        XCTAssertEqual((obj["key"] as AnyObject).asString(), "value")
+        XCTAssertEqual(obj["key"].asString(), "value")
 
-        XCTAssertNil((obj["not present"] as AnyObject).asString())
+        XCTAssertNil(obj["not present"].asString())
         XCTAssertNil(obj[0].asString())
 
-        XCTAssertTrue((obj["not present"] as AnyObject).isError)
+        XCTAssertTrue(obj["not present"].isError)
 
         XCTAssertTrue(obj[0].isError)
     }
@@ -167,13 +167,13 @@ class BTJSON_Tests: XCTestCase {
     func testAsURL() {
         let JSON = "{ \"url\": \"http://example.com\" }".data(using: String.Encoding.utf8)!
         let url = BTJSON(data: JSON)
-        XCTAssertEqual((url["url"] as AnyObject).asURL(), URL(string: "http://example.com")!)
+        XCTAssertEqual(url["url"].asURL(), URL(string: "http://example.com")!)
     }
 
     func testAsURLForInvalidValue() {
         let JSON = "{ \"url\": 42 }".data(using: String.Encoding.utf8)!
         let url = BTJSON(data: JSON)
-        XCTAssertNil((url["url"] as AnyObject).asURL())
+        XCTAssertNil(url["url"].asURL())
     }
 
     func testAsStringArray() {
@@ -313,10 +313,10 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertFalse(foo["meaningful"] as! Bool)
         XCTAssertNil(obj["notADictionary"].asDictionary())
         XCTAssertNil(obj["aString"].asDictionary())
-        XCTAssertEqual((obj["aURL"] as AnyObject).asURL(), URL(string: "https://test.example.com:1234/path"))
-        XCTAssertNil((obj["notAURL"] as AnyObject).asURL())
-        XCTAssertNil((obj["aString"] as AnyObject).asURL())
-        XCTAssertNil((obj["anInvalidURL"] as AnyObject).asURL()) // nil for invalid URLs
+        XCTAssertEqual(obj["aURL"].asURL(), URL(string: "https://test.example.com:1234/path"))
+        XCTAssertNil(obj["notAURL"].asURL())
+        XCTAssertNil(obj["aString"].asURL())
+        XCTAssertNil(obj["anInvalidURL"].asURL()) // nil for invalid URLs
         // nested resources:
         let btJson = obj["aLookupDictionary"].asDictionary() as! [String: AnyObject]
         XCTAssertEqual((btJson["foo"] as! NSDictionary)["definition"] as! String, "A meaningless word")

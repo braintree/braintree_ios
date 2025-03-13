@@ -10,6 +10,7 @@ protocol BTPayPalRequest {
     var paymentType: BTPayPalPaymentType { get }
     var billingAgreementDescription: String? { get }
     var displayName: String? { get }
+    var enablePayPalAppSwitch: Bool { get }
     var isShippingAddressEditable: Bool { get }
     var isShippingAddressRequired: Bool { get }
     var landingPageType: BTPayPalRequestLandingPageType? { get }
@@ -18,6 +19,7 @@ protocol BTPayPalRequest {
     var merchantAccountID: String? { get }
     var riskCorrelationID: String? { get }
     var shippingAddressOverride: BTPostalAddress? { get }
+    var shopperSessionID: String? { get }
     var userAuthenticationEmail: String? { get }
     var userPhoneNumber: BTPayPalPhoneNumber? { get }
     

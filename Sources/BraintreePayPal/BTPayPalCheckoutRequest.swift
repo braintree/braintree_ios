@@ -71,6 +71,7 @@ import BraintreeCore
     var contactInformation: BTContactInformation?
     var currencyCode: String?
     var displayName: String?
+    var enablePayPalAppSwitch: Bool = false
     var isShippingAddressEditable: Bool = false
     var isShippingAddressRequired: Bool = false
     var landingPageType: BTPayPalRequestLandingPageType?
@@ -81,12 +82,13 @@ import BraintreeCore
     var riskCorrelationID: String?
     var shippingAddressOverride: BTPostalAddress?
     var shippingCallbackURL: URL?
+    var shopperSessionID: String?
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
     
     // MARK: - Initializer
 
-    /// Initializes a PayPal Native Checkout request
+    /// Initializes a PayPal Checkout request
     /// - Parameters:
     ///   - amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
     ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
@@ -97,6 +99,7 @@ import BraintreeCore
     ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
     ///   - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
     ///   - landingPageType: Optional: Landing page type. Defaults to `.none`.
@@ -111,6 +114,7 @@ import BraintreeCore
     ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
+    ///  - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     ///   identified with the same phone number.
@@ -123,6 +127,7 @@ import BraintreeCore
         contactInformation: BTContactInformation? = nil,
         currencyCode: String? = nil,
         displayName: String? = nil,
+        enablePayPalAppSwitch: Bool = false,
         isShippingAddressEditable: Bool = false,
         isShippingAddressRequired: Bool = false,
         landingPageType: BTPayPalRequestLandingPageType = .none,
@@ -133,6 +138,7 @@ import BraintreeCore
         riskCorrelationID: String? = nil,
         shippingAddressOverride: BTPostalAddress? = nil,
         shippingCallbackURL: URL? = nil,
+        shopperSessionID: String? = nil,
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
@@ -165,6 +171,11 @@ import BraintreeCore
         isPayPalAppInstalled: Bool = false,
         universalLink: URL? = nil
     ) -> Encodable {
-        PayPalCheckoutPOSTBody(payPalRequest: self, configuration: configuration)
+        PayPalCheckoutPOSTBody(
+            payPalRequest: self,
+            configuration: configuration,
+            isPayPalAppInstalled: isPayPalAppInstalled,
+            universalLink: universalLink
+        )
     }
 }
