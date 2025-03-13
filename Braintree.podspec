@@ -54,7 +54,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "LocalPayment" do |s|
-    s.source_files = "Sources/BraintreeLocalPayment/*.swift"
+    s.source_files = "Sources/BraintreeLocalPayment/**/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/DataCollector"
     s.resource_bundle = { "BraintreeLocalPayment_PrivacyInfo" => "Sources/BraintreeLocalPayment/PrivacyInfo.xcprivacy" }
