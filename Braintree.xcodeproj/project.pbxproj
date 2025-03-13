@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04ECD8A02CC9CB1E000329EC /* LinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ECD89F2CC9CB1A000329EC /* LinkType.swift */; };
+		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
+		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
+		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
+		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
+		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
@@ -83,12 +87,12 @@
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
-		800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsPOSTBody.swift */; };
+		800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
 		8014221C2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8014221B2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift */; };
 		802055222CDC29FE000BE30F /* BraintreeAmexExpress_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802055212CDC29FE000BE30F /* BraintreeAmexExpress_IntegrationTests.swift */; };
 		8037BFB02B2CCC130017072C /* BTShopperInsightsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */; };
-		804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensPOSTBody.swift */; };
+		804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */; };
 		804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */; };
 		804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */; };
 		804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */; };
@@ -99,14 +103,13 @@
 		80482F8629D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8529D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift */; };
 		80482F8829D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80482F8729D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift */; };
 		804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */; };
-		804DC45B2B2CF3DC00F17A15 /* BTAmexRewardsBalanceGETBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceGETBody.swift */; };
+		804DC45B2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */; };
 		804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804DC45C2B2D08FF00F17A15 /* BTConfigurationRequest.swift */; };
 		8053F05429FAB6B00076F988 /* FPTIBatchData_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */; };
 		8053F05729FAD4790076F988 /* Encodable+Dictionary_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */; };
 		8053F05929FB2F700076F988 /* URL+IsPayPal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8053F05829FB2F700076F988 /* URL+IsPayPal.swift */; };
 		80581A8C25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */; };
 		80581B1D2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */; };
-		805DC57B2CC9928800E6F43F /* VenmoAccountsPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805DC57A2CC9928500E6F43F /* VenmoAccountsPOSTBody.swift */; };
 		806C85632B90EBED00A2754C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */; };
 		8075CBEE2B1B735200CA6265 /* BTAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075CBED2B1B735200CA6265 /* BTAPIRequest.swift */; };
 		807D22EE2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807D22ED2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift */; };
@@ -322,6 +325,7 @@
 		BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAD28A5419900D74AEC /* BTBinData.swift */; };
 		BED00CB028A579D700D74AEC /* BTClientToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CAF28A579D700D74AEC /* BTClientToken.swift */; };
 		BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */; };
+		BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */; };
 		BED7493628579BAC0074C818 /* BTURLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7493528579BAC0074C818 /* BTURLUtils.swift */; };
 		BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */; };
 		BEDB820229B109EE00075AF3 /* BTApplePayAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDB820129B109EE00075AF3 /* BTApplePayAnalytics.swift */; };
@@ -340,8 +344,8 @@
 		BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93AF2853980C0041BAFE /* BTAPIClient.swift */; };
 		BEF137E02B33309A00B9B225 /* BTPayPalMessagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECC91962B20E01F00A2EE42 /* BTPayPalMessagingView.swift */; };
 		BEF137E22B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */; };
-		BEF177A62B51C7ED004F0F35 /* SEPADebitAccountsPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsPOSTBody.swift */; };
-		BEF177A82B51D6A7004F0F35 /* SEPADebitPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A72B51D6A7004F0F35 /* SEPADebitPOSTBody.swift */; };
+		BEF177A62B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */; };
+		BEF177A82B51D6A7004F0F35 /* SEPADebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */; };
 		BEF388C12BE52CD2000965C8 /* BTCoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */; };
 		BEF388C32BE9340C000965C8 /* BTAPITimingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF388C22BE9340C000965C8 /* BTAPITimingDelegate.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
@@ -684,7 +688,11 @@
 		0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressClient_Tests.swift; sourceTree = "<group>"; };
 		035A59D91EA5DE97002960C8 /* BTLocalPaymentClient_UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient_UnitTests.swift; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
-		04ECD89F2CC9CB1A000329EC /* LinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkType.swift; sourceTree = "<group>"; };
+		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
+		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
+		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
+		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
+		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
 		09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem_Tests.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -779,12 +787,12 @@
 		62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentMethods.swift; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
 		800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData.swift; sourceTree = "<group>"; };
-		800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentsPOSTBody.swift; sourceTree = "<group>"; };
+		800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentsRequest.swift; sourceTree = "<group>"; };
 		800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce_Tests.swift; sourceTree = "<group>"; };
 		8014221B2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalApprovalURLParser.swift; sourceTree = "<group>"; };
 		802055212CDC29FE000BE30F /* BraintreeAmexExpress_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeAmexExpress_IntegrationTests.swift; sourceTree = "<group>"; };
 		8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics.swift; sourceTree = "<group>"; };
-		804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePaymentTokensPOSTBody.swift; sourceTree = "<group>"; };
+		804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePaymentTokensRequest.swift; sourceTree = "<group>"; };
 		804698302B27C5340090878E /* BraintreeShopperInsights.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeShopperInsights.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeShopperInsightsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		804698482B27C71C0090878E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -794,14 +802,13 @@
 		80482F8529D3A498007E5F50 /* BTThreeDSecureShippingMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureShippingMethod.swift; sourceTree = "<group>"; };
 		80482F8729D3A571007E5F50 /* BTThreeDSecureRequestedExemptionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequestedExemptionType.swift; sourceTree = "<group>"; };
 		804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance.swift; sourceTree = "<group>"; };
-		804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceGETBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmexRewardsBalanceGETBody.swift; sourceTree = "<group>"; };
+		804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmexRewardsBalanceRequest.swift; sourceTree = "<group>"; };
 		804DC45C2B2D08FF00F17A15 /* BTConfigurationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTConfigurationRequest.swift; sourceTree = "<group>"; };
 		8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData_Tests.swift; sourceTree = "<group>"; };
 		8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary_Tests.swift"; sourceTree = "<group>"; };
 		8053F05829FB2F700076F988 /* URL+IsPayPal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+IsPayPal.swift"; sourceTree = "<group>"; };
 		80581A8B25531D0A00006F53 /* BTConfiguration+ThreeDSecure_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+ThreeDSecure_Tests.swift"; sourceTree = "<group>"; };
 		80581B1C2553319C00006F53 /* BTGraphQLHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
-		805DC57A2CC9928500E6F43F /* VenmoAccountsPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoAccountsPOSTBody.swift; sourceTree = "<group>"; };
 		805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPostalAddress_Tests.swift; sourceTree = "<group>"; };
 		8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClient.swift; sourceTree = "<group>"; };
 		8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsResult.swift; sourceTree = "<group>"; };
@@ -819,6 +826,7 @@
 		80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+URLOpener.swift"; sourceTree = "<group>"; };
 		80AD35F12BFBB1DD00BF890E /* TokenizationKeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationKeyError.swift; sourceTree = "<group>"; };
 		80B207322BF6C0F100787E37 /* TokenizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationKey.swift; sourceTree = "<group>"; };
+		80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		80BA3C282B23892700900BBB /* FakeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRequest.swift; sourceTree = "<group>"; };
 		80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentResult.swift; sourceTree = "<group>"; };
 		80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentRequest.swift; sourceTree = "<group>"; };
@@ -954,6 +962,7 @@
 		BE698EA328AD2C10001D9B10 /* BTCoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCoreConstants.swift; sourceTree = "<group>"; };
 		BE698EA528B3CDAD001D9B10 /* ConfigurationCache_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationCache_Tests.swift; sourceTree = "<group>"; };
 		BE698EAA28B50F41001D9B10 /* BTClientToken_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken_Tests.swift; sourceTree = "<group>"; };
+		BE6BC22B2BA9C67600C3E321 /* BTPayPalVaultBaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalVaultBaseRequest.swift; sourceTree = "<group>"; };
 		BE6BC22D2BA9CFFC00C3E321 /* BTPayPalReturnURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalReturnURL.swift; sourceTree = "<group>"; };
 		BE70A962284FA3F000F6D3F7 /* BTDataCollectorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTDataCollectorError.swift; sourceTree = "<group>"; };
 		BE70A964284FA9DE00F6D3F7 /* MockBTDataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTDataCollector.swift; sourceTree = "<group>"; };
@@ -1013,6 +1022,7 @@
 		BED00CAD28A5419900D74AEC /* BTBinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTBinData.swift; sourceTree = "<group>"; };
 		BED00CAF28A579D700D74AEC /* BTClientToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientToken.swift; sourceTree = "<group>"; };
 		BED00CB128A57AD400D74AEC /* BTClientTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTClientTokenError.swift; sourceTree = "<group>"; };
+		BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkType.swift; sourceTree = "<group>"; };
 		BED7493528579BAC0074C818 /* BTURLUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTURLUtils.swift; sourceTree = "<group>"; };
 		BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAnalyticsService.swift; sourceTree = "<group>"; };
 		BEDB820129B109EE00075AF3 /* BTApplePayAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayAnalytics.swift; sourceTree = "<group>"; };
@@ -1027,8 +1037,8 @@
 		BEEB56582AE9B2A30029F264 /* BTAPIClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClient_IntegrationTests.swift; sourceTree = "<group>"; };
 		BEEB565A2AE9B3030029F264 /* BTIntegrationTestsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTIntegrationTestsConstants.swift; sourceTree = "<group>"; };
 		BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTPayPalMessagingDelegate.swift; sourceTree = "<group>"; };
-		BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitAccountsPOSTBody.swift; sourceTree = "<group>"; };
-		BEF177A72B51D6A7004F0F35 /* SEPADebitPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitPOSTBody.swift; sourceTree = "<group>"; };
+		BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitAccountsRequest.swift; sourceTree = "<group>"; };
+		BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitRequest.swift; sourceTree = "<group>"; };
 		BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCoreAnalytics.swift; sourceTree = "<group>"; };
 		BEF388C22BE9340C000965C8 /* BTAPITimingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPITimingDelegate.swift; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
@@ -1278,7 +1288,7 @@
 				9CE8C7F9275ABDE700FB11F9 /* BTAmericanExpressClient.swift */,
 				9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */,
 				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */,
-				805DC57F2CC9974900E6F43F /* Models */,
+				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */,
 				80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeAmericanExpress;
@@ -1322,6 +1332,7 @@
 				BE349112294B798300D2CF68 /* BTPayPalRequest.swift */,
 				451508372D400C400071E385 /* BTPayPalRequestLandingPageType.swift */,
 				BE6BC22D2BA9CFFC00C3E321 /* BTPayPalReturnURL.swift */,
+				BE6BC22B2BA9C67600C3E321 /* BTPayPalVaultBaseRequest.swift */,
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
 				45E8CE4A2D1F291400D7A2DC /* Models */,
 				62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */,
@@ -1440,13 +1451,18 @@
 		804698292B27C4D70090878E /* BraintreeShopperInsights */ = {
 			isa = PBXGroup;
 			children = (
+				04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */,
+				04AA31172D0797460043ACAB /* BTButtonType.swift */,
 				62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */,
+				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
+				04B0010F2D0CF46900C0060D /* BTExperimentType.swift */,
+				04AA311D2D0798F70043ACAB /* BTPageType.swift */,
+				04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */,
 				8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */,
 				8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */,
 				624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
-				805DC5802CC9976300E6F43F /* Models */,
 				3B29C3942B90F12F0077741D /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeShopperInsights;
@@ -1494,47 +1510,6 @@
 				457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */,
 			);
 			path = Analytics;
-			sourceTree = "<group>";
-		};
-		805DC57C2CC996E900E6F43F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				805DC57A2CC9928500E6F43F /* VenmoAccountsPOSTBody.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		805DC57D2CC9971100E6F43F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensPOSTBody.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		805DC57E2CC9972000E6F43F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsPOSTBody.swift */,
-				BEF177A72B51D6A7004F0F35 /* SEPADebitPOSTBody.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		805DC57F2CC9974900E6F43F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceGETBody.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		805DC5802CC9976300E6F43F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsPOSTBody.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */ = {
@@ -1603,13 +1578,13 @@
 		80F4F4D529F8A628003EACB1 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				04ECD89F2CC9CB1A000329EC /* LinkType.swift */,
 				808E4A152C581CD40006A737 /* AnalyticsSendable.swift */,
 				BE549F132BF6576300B6F441 /* BTAnalyticsEventsStorage.swift */,
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
 				BEE2E4E5290080BD00C03FDD /* BTAnalyticsServiceError.swift */,
 				BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */,
 				800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */,
+				BED3A2C52C5D74AC0034D9A6 /* LinkType.swift */,
 				457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */,
 			);
 			path = Analytics;
@@ -1688,6 +1663,7 @@
 			isa = PBXGroup;
 			children = (
 				BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */,
+				80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */,
 				9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */,
 				162174E1192D9220008DC35D /* CoreGraphics.framework */,
 				A7A6DD261B431453008857E1 /* CoreLocation.framework */,
@@ -1747,8 +1723,8 @@
 				BE895C60299433FB008112AB /* BTApplePayCardNonce.swift */,
 				BE895C6429944BF5008112AB /* BTApplePayClient.swift */,
 				BE895C6229944BD3008112AB /* BTApplePayError.swift */,
+				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
 				BE7A9643299FC5DE009AB920 /* BTConfiguration+ApplePay.swift */,
-				805DC57D2CC9971100E6F43F /* Models */,
 				6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeApplePay;
@@ -1783,7 +1759,6 @@
 				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
 				096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */,
 				BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */,
-				805DC57C2CC996E900E6F43F /* Models */,
 				3BE7386E2BA171A300598F05 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeVenmo;
@@ -2047,9 +2022,10 @@
 				BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */,
 				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
-				805DC57E2CC9972000E6F43F /* Models */,
-				62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */,
+				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */,
+				BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */,
 				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
+				62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeSEPADirectDebit;
 			sourceTree = "<group>";
@@ -2772,6 +2748,7 @@
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
+				BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 				BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -3132,7 +3109,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				804DC45B2B2CF3DC00F17A15 /* BTAmexRewardsBalanceGETBody.swift in Sources */,
+				804DC45B2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift in Sources */,
 				804B5712275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift in Sources */,
 				9C3F55EF275E80DA00C21C8A /* BTAmericanExpressError.swift in Sources */,
 				3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */,
@@ -3179,7 +3156,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */,
-				04ECD8A02CC9CB1E000329EC /* LinkType.swift in Sources */,
 				BE549F142BF6576300B6F441 /* BTAnalyticsEventsStorage.swift in Sources */,
 				BC17F9BE28D25054004B18CC /* BTGraphQLErrorNode.swift in Sources */,
 				800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */,
@@ -3216,6 +3192,7 @@
 				BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */,
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
 				804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */,
+				BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */,
 				BED00CB228A57AD400D74AEC /* BTClientTokenError.swift in Sources */,
 				BE849EED2D66908E005BD215 /* InvalidAuthorization.swift in Sources */,
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
@@ -3238,11 +3215,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */,
 				804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */,
+				04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */,
+				04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */,
 				624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */,
 				804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */,
-				800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsPOSTBody.swift in Sources */,
+				800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */,
 				8037BFB02B2CCC130017072C /* BTShopperInsightsAnalytics.swift in Sources */,
+				04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */,
+				04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */,
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 			);
@@ -3276,7 +3258,6 @@
 				3B1C529429D5EB4E00B68A58 /* BTVenmoAnalytics.swift in Sources */,
 				BE0AF6BF29AFF13200245C2C /* BTVenmoRequest.swift in Sources */,
 				BEDB820A29B7A9E600075AF3 /* BTVenmoClient.swift in Sources */,
-				805DC57B2CC9928800E6F43F /* VenmoAccountsPOSTBody.swift in Sources */,
 				BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */,
 				BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */,
 				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift in Sources */,
@@ -3306,7 +3287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEDB820229B109EE00075AF3 /* BTApplePayAnalytics.swift in Sources */,
-				804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensPOSTBody.swift in Sources */,
+				804326BF2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift in Sources */,
 				BE895C6329944BD3008112AB /* BTApplePayError.swift in Sources */,
 				BE895C6529944BF5008112AB /* BTApplePayClient.swift in Sources */,
 				BE7A9644299FC5DE009AB920 /* BTConfiguration+ApplePay.swift in Sources */,
@@ -3568,12 +3549,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEF177A82B51D6A7004F0F35 /* SEPADebitPOSTBody.swift in Sources */,
+				BEF177A82B51D6A7004F0F35 /* SEPADebitRequest.swift in Sources */,
 				BE642D8827D0094600694A5B /* BTSEPADirectDebitNonce.swift in Sources */,
 				BE642D8A27D00F1300694A5B /* BTSEPADirectDebitMandateType.swift in Sources */,
 				3BC0E09229E4673C009217D6 /* BTSEPADirectAnalytics.swift in Sources */,
 				BE642D8627D0047800694A5B /* BTSEPADirectDebitRequest.swift in Sources */,
-				BEF177A62B51C7ED004F0F35 /* SEPADebitAccountsPOSTBody.swift in Sources */,
+				BEF177A62B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift in Sources */,
 				BE0B163D27E0CC7400868C77 /* CreateMandateResult.swift in Sources */,
 				BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */,
 				BE0B163F27E0CD7C00868C77 /* SEPADirectDebitAPI.swift in Sources */,
@@ -3865,7 +3846,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3921,7 +3902,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3977,7 +3958,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4027,7 +4008,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4094,7 +4075,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4157,7 +4138,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4225,7 +4206,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4286,7 +4267,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4343,7 +4324,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -4406,7 +4387,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -4464,7 +4445,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeShopperInsightsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4504,7 +4485,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeShopperInsightsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -4559,7 +4540,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4616,7 +4597,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4676,7 +4657,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4734,7 +4715,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4797,7 +4778,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4853,7 +4834,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4916,7 +4897,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4970,7 +4951,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5027,7 +5008,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5083,7 +5064,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5144,7 +5125,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5201,7 +5182,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5259,7 +5240,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeTestShared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5313,7 +5294,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeTestShared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5366,7 +5347,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeLocalPaymentTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5412,7 +5393,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeLocalPaymentTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5466,7 +5447,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Sources/BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5518,7 +5499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Sources/BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5571,7 +5552,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeThreeDSecureTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5617,7 +5598,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeThreeDSecureTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5663,7 +5644,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeAmericanExpressTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5704,7 +5685,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeAmericanExpressTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5749,7 +5730,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeApplePayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5792,7 +5773,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeApplePayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5838,7 +5819,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeVenmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5879,7 +5860,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeVenmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5925,7 +5906,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCardTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5967,7 +5948,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCardTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6013,7 +5994,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeDataCollectorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6054,7 +6035,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeDataCollectorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6187,7 +6168,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6229,7 +6210,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6256,7 +6237,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
 				SWIFT_VERSION = 5.0;
 			};
@@ -6271,7 +6252,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
 				SWIFT_VERSION = 5.0;
 			};
@@ -6324,7 +6305,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6385,7 +6366,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6433,7 +6414,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6475,7 +6456,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6540,7 +6521,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6605,7 +6586,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6881,6 +6862,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 1.0.0;
+			};
+		};
+		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 1.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

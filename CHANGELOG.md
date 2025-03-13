@@ -12,6 +12,7 @@
     * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
     * Remove `BTAppContextSwitcher.sharedInstance.returnURLScheme`
     * `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
+    * Update initializer to `BTVenmoClient(authorization:)`
   * BraintreeSEPADirectDebit
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeLocalPayment
@@ -19,6 +20,7 @@
   * BraintreeCard
     * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
     * Remove `BTCardRequest`, use `BTCard` directly instead
+    * Update initializer to `BTCardClient(authorization:)`
   * BraintreePayPal
     * Update `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
     * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
@@ -35,6 +37,31 @@
     * Update initializer to `BTApplePayClient(authorization:)`
   * BraintreeDataCollector
     * Update initializer to `BTDataCollector(authorization:)`
+
+## 6.29.0 (2025-02-24)
+* BraintreePayPal
+  * Add PayPal App Switch checkout flow (BETA)
+    * Add `BTPayPalCheckoutRequest(userAuthenticationEmail:enablePayPalAppSwitch:amount:intent:userAction:offerPayLater:currencyCode:requestBillingAgreement:)`
+    * **Note:** This feature is currently in beta and may change or be removed in future releases.
+* BraintreeApplePay
+  * Add `BTApplePayCardNonce.isDeviceToken` for MPAN identification
+
+## 6.28.0 (2025-02-05)
+* BraintreeVenmo
+  * Allow universal links to be set without a return URL scheme (fixes #1505)
+* BraintreeCore
+  * Update to use `NSSecureCoding` protocol (fixes #1508)
+* BraintreePayPal
+  * Add `shopperSessionID` to `BTPayPalCheckoutRequest` and `BTPayPalVaultRequest`
+* BraintreeShopperInsights (BETA)
+  * Add `shopperSessionID` to `BTShopperInsightsClient` initializer
+  * Add `isPayPalAppInstalled()` and/or `isVenmoAppInstalled()`
+  * Replace `sendPayPalPresentedEvent()` and `sendPayPalPresentedEvent()` with `sendPresentedEvent(for:presentmentDetails:)`
+  * Add values to the following parameters to `presentmentDetails`:
+    * `experimentType`
+    * `pageType`
+    * `buttonOrder`
+  * Replace `sendPayPalSelectedEvent()` and `sendPayPalSelectedEvent()` with `sendSelectedEvent(for:)`
 
 ## 6.27.0 (2025-01-23)
 * BraintreePayPal

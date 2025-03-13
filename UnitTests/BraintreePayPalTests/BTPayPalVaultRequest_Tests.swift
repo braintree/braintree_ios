@@ -84,8 +84,8 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     
     func testParameters_withEnablePayPalAppSwitchTrue_returnsAllParams() {
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: "sally@gmail.com",
-            enablePayPalAppSwitch: true
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: "sally@gmail.com"
         )
         
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, isPayPalAppInstalled: true, universalLink: URL(string: "some-url")!).toDictionary() else {
@@ -255,8 +255,8 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     
     func testEnablePayPalAppSwitch_whenInitialized_setsAllRequiredValues() {
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: "fake@gmail.com",
-            enablePayPalAppSwitch: true
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: "fake@gmail.com"
         )
 
         XCTAssertEqual(request.userAuthenticationEmail, "fake@gmail.com")

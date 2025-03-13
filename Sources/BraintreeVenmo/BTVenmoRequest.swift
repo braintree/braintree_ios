@@ -74,17 +74,5 @@ import Foundation
         lineItems: [BTVenmoLineItem]? = []
     ) {
         self.paymentMethodUsage = paymentMethodUsage
-        self.profileID = profileID
-        self.vault = vault
-        self.displayName = displayName
-        self.collectCustomerBillingAddress = collectCustomerBillingAddress
-        self.collectCustomerShippingAddress = collectCustomerShippingAddress
-        self.isFinalAmount = isFinalAmount
-        self.subTotalAmount = subTotalAmount
-        self.discountAmount = discountAmount
-        self.taxAmount = taxAmount
-        self.shippingAmount = shippingAmount
-        self.totalAmount = totalAmount
-        self.lineItems = lineItems
     }
 }

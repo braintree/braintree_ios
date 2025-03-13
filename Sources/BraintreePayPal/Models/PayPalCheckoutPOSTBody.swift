@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -18,15 +18,20 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let userPhoneNumber: BTPayPalPhoneNumber?
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
+    private var enablePayPalAppSwitch: Bool?
     private var contactInformation: BTContactInformation?
     private var currencyCode: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
+    private var osType: String?
+    private var osVersion: String?
     private var recipientPhoneNumber: BTPayPalPhoneNumber?
     private var recipientEmail: String?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
     private var shippingCallbackURL: String?
+    private var shopperSessionID: String?
+    private var universalLink: String?
     private var userAuthenticationEmail: String?
     
     // Address properties
@@ -41,7 +46,12 @@ struct PayPalCheckoutPOSTBody: Encodable {
     // MARK: - Initializer
 
     // swiftlint:disable:next cyclomatic_complexity
-    init(payPalRequest: BTPayPalCheckoutRequest, configuration: BTConfiguration) {
+    init(
+        payPalRequest: BTPayPalCheckoutRequest,
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool,
+        universalLink: URL?
+    ) {
         self.amount = payPalRequest.amount
         self.intent = payPalRequest.intent.stringValue
         self.offerPayLater = payPalRequest.offerPayLater
@@ -102,6 +112,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
         self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
+        
+        if let universalLink, payPalRequest.enablePayPalAppSwitch, isPayPalAppInstalled {
+            self.enablePayPalAppSwitch = payPalRequest.enablePayPalAppSwitch
+            self.osType = UIDevice.current.systemName
+            self.osVersion = UIDevice.current.systemVersion
+            self.universalLink = universalLink.absoluteString
+        }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -120,6 +137,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case returnURL = "return_url"
         case riskCorrelationID = "correlation_id"
         case shippingCallbackURL = "shipping_callback_url"
+        case shopperSessionID = "shopper_session_id"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "phone_number"
         
