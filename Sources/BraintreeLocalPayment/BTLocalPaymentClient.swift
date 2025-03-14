@@ -85,10 +85,6 @@ import BraintreeDataCollector
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
                 self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
                 return
-            } else if request.amount == nil || request.paymentType == nil {
-                NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
             }
 
             self.start(request: request, configuration: configuration)
