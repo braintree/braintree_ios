@@ -10,6 +10,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     var threeDSecureRequest: BTThreeDSecureRequest!
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
+    var authorization = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     let mockCardinalSession = MockCardinalSession()
 
@@ -21,7 +22,10 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
-        client = BTThreeDSecureClient(apiClient: mockAPIClient)
+        client = BTThreeDSecureClient(authorization: authorization)
+
+        client.apiClient = mockAPIClient
+
         client.cardinalSession = mockCardinalSession
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
@@ -57,6 +61,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             mobilePhoneNumber: "5151234321",
             shippingMethod: .priority
         )
+
+        client.apiClient = mockAPIClient
 
         client.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! String, "9.97")
@@ -94,6 +100,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         let expectation = expectation(description: "willCallCompletion")
 
         let threeDSecureRequest = BTThreeDSecureRequest(amount: "9.99", nonce: "fake-card-nonce")
+
+        client.apiClient = mockAPIClient
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! String, "9.99")
@@ -136,6 +144,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         )
 
         let expectation = expectation(description: "willCallCompletion")
+
+        client.apiClient = mockAPIClient
 
         client.performThreeDSecureLookup(threeDSecureRequest) { _, _ in
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
@@ -620,6 +630,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
 
+        client.apiClient = mockAPIClient
+
         client.prepareLookup(threeDSecureRequest) { clientData, error in
             XCTAssertNil(error)
             XCTAssertNotNil(clientData)
@@ -642,7 +654,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPrepareLookup_withTokenizationKey_throwsError() {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
-        let client = BTThreeDSecureClient(apiClient: MockAPIClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")!)
+        let client = BTThreeDSecureClient(authorization: authorization)
+        client.apiClient = MockAPIClient(authorization: authorization)!
         let expectation = expectation(description: "willCallCompletion")
 
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"

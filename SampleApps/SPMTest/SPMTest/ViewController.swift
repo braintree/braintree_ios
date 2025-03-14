@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         let localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
         let payPalClient = BTPayPalClient(authorization: authorization)
         let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
-        let threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+        let threeDSecureClient = BTThreeDSecureClient(authorization: authorization)
         let venmoClient = BTVenmoClient(
             authorization: authorization,
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!

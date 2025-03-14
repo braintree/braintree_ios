@@ -15,7 +15,8 @@ import BraintreeCore
     
     // MARK: - Private Properties
     
-    private let apiClient: BTAPIClient
+    /// exposed for testing
+    var apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
@@ -23,10 +24,10 @@ import BraintreeCore
     // MARK: - Initializer
     
     /// Initialize a new BTThreeDSecureClient instance.
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
     }
     
     // MARK: - Public Methods
