@@ -220,6 +220,7 @@
 		A9E80A9C24FEF37C00196BD3 /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D79395233A65EB001FDD89 /* MockDelegates.swift */; };
 		A9E80A9F24FEF40C00196BD3 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */; };
+		B8A330FF2D83747100BC18EC /* BTContactPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */; };
 		BC17F9B428D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */; };
 		BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */; };
 		BC17F9BE28D25054004B18CC /* BTGraphQLErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BD28D25054004B18CC /* BTGraphQLErrorNode.swift */; };
@@ -971,6 +972,7 @@
 		A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E5C22824FD6D0800EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
+		B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactPreference.swift; sourceTree = "<group>"; };
 		BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLMultiErrorNode.swift; sourceTree = "<group>"; };
 		BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLErrorTree.swift; sourceTree = "<group>"; };
 		BC17F9BD28D25054004B18CC /* BTGraphQLErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLErrorNode.swift; sourceTree = "<group>"; };
@@ -1419,6 +1421,7 @@
 				807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */,
 				62B811872CC002470024A688 /* BTPayPalPhoneNumber.swift */,
 				454722AB2CEFB291000DCF4E /* BTContactInformation.swift */,
+				B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
@@ -3314,6 +3317,7 @@
 				807D22F52C29ADE2009FFEA4 /* BTPayPalRecurringBillingPlanType.swift in Sources */,
 				57544820294A2EBE00DEB7B0 /* BTPayPalCreditFinancing.swift in Sources */,
 				807D22EE2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift in Sources */,
+				B8A330FF2D83747100BC18EC /* BTContactPreference.swift in Sources */,
 				57544F5A29524E4D00DEB7B0 /* BTPayPalClient.swift in Sources */,
 				807D22F22C29A972009FFEA4 /* BTPayPalBillingPricing.swift in Sources */,
 			);
