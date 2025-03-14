@@ -66,7 +66,7 @@ import BraintreeDataCollector
                 return
             }
 
-            let dataCollector = BTDataCollector(apiClient: self.apiClient)
+            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
             request.correlationID = dataCollector.clientMetadataID(nil)
 
             guard let configuration else {
