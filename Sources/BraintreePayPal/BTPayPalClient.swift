@@ -369,7 +369,7 @@ import BraintreeDataCollector
                 
                 self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
 
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
 
                 switch approvalURL.redirectType {
