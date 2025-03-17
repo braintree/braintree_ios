@@ -19,13 +19,13 @@ import BraintreeCore
 
     /// Initializes a PayPal Vault request for the PayPal App Switch flow
     /// - Parameters:
-    ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
-        userAuthenticationEmail: String,
+        userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool,
         offerCredit: Bool = false
     ) {
