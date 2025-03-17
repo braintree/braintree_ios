@@ -78,7 +78,7 @@ struct Address: Codable {
 
 **Not Preferred**:
 ```swift
-// Musician.swift //
+// Musician.swift file
 struct Musician: Codable {
     let name: String
     let recordLabel: RecordLabel
@@ -86,7 +86,7 @@ struct Musician: Codable {
 ```
 
 ```swift
-// RecordLabel.swift //
+// RecordLabel.swift file
 struct RecordLabel: Codable {
     let name: String
     let address: Address
@@ -94,7 +94,7 @@ struct RecordLabel: Codable {
 ```
 
 ```swift
-// Address.swift //
+// Address.swift file
 struct Address: Codable {
     ...
 }
@@ -148,7 +148,23 @@ class TestDatabase : Database {
 
 There should be one blank line between methods and up to one blank line between type declarations to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
 
-There should be no blank lines after an opening brace or before a closing brace.
+There should be no blank lines after an opening brace or before a closing brace. An exception is when defining a class/struct/etc per our linter rules.
+
+**Preferred**:
+```swift
+if isTrue {
+    // do something
+}
+```
+
+**Not Preferred**:
+```swift
+if isTrue {
+
+    // do something
+
+}
+```
 
 ### Parentheses
 
@@ -187,26 +203,6 @@ var faxNumber: Int?
 var deviceModels: Array<String>
 var employees: Dictionary<Int, String>
 var faxNumber: Optional<Int>
-```
-
-### Lazy Initialization
-
-Avoid the use of `lazy` variables.
-
-According to [Swift's language docs](https://docs.swift.org/swift-book/LanguageGuide/Properties.html#//apple_ref/doc/uid/TP40014097-CH14-ID264):
-
-> If a property marked with the `lazy` modifier is accessed by multiple threads simultaneously and the property hasn’t yet been initialized, there’s no guarantee that the property will be initialized only once.
-
-This means if two threads try to access a `lazy` property at the same time, the second thread could point to a halfway-initialized object, and crash the app.
-
-**Preferred**:
-```swift
-TODO
-```
-
-**Not Preferred**:
-```swift
-TODO
 ```
 
 ## Naming
