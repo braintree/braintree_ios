@@ -172,7 +172,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
             )
             
-            //TODO - currently hardcoded for testing
+            // TODO - currently hardcoded for testing
             request.contactPreference = .updateContactInformation
         }
 
