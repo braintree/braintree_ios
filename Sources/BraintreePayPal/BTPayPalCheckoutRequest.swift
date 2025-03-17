@@ -86,7 +86,7 @@ import BraintreeCore
     /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
     public var shippingCallbackURL: URL?
     
-    /// Optional: Preference for the contact information section within the payment flow
+    /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
     public var contactPreference: BTContactPreference?
 
     // MARK: - Initializers
