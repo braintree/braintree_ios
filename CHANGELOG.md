@@ -14,7 +14,7 @@
     * `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
   * BraintreeSEPADirectDebit
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
-    * Update initializer to `BTAmericanExpressClient(authorization:)`
+    * Update initializer to `BTSEPADirectDebitClient(authorization:)`
   * BraintreeLocalPayment
     * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeCard
