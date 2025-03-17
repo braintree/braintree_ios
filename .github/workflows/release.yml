@@ -88,6 +88,45 @@ jobs:
           asset_name: Braintree.xcframework.zip
           asset_content_type: application/zip
 
+      - name: Create static pre-built xcframeworks
+        run: |
+          # 1) Set Build Setting MACH_O type
+          sed -i '' '/buildSettings = {/a\
+            MACH_O_TYPE = staticlib;' Braintree.xcodeproj/project.pbxproj
+
+          # 2) Define all Schemes to build
+          SCHEMES=("BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreeLocalPayment" "BraintreePayPal" "BraintreePayPalMessaging" "BraintreePayPalNativeCheckout" "BraintreeSEPADirectDebit" "BraintreeShopperInsights" "BraintreeThreeDSecure" "BraintreeVenmo")
+
+          for scheme in "${SCHEMES[@]}"; do
+            # 3) Build device archive
+            xcodebuild archive -workspace Braintree.xcworkspace -scheme "$scheme" -destination "generic/platform=iOS" -archivePath "archives/${scheme}_Device" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
+
+            # 4) Build simulator archive
+            xcodebuild archive -workspace Braintree.xcworkspace -scheme "$scheme" -destination "generic/platform=iOS Simulator" -archivePath "archives/${scheme}_Simulator" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
+
+            # 5) Combine archives into xcframework
+            xcodebuild -create-xcframework \
+              -framework "archives/${scheme}_Device.xcarchive/Products/Library/Frameworks/${scheme}.framework" \
+              -framework "archives/${scheme}_Simulator.xcarchive/Products/Library/Frameworks/${scheme}.framework" \
+              -output "Braintree_Static/${scheme}.xcframework"
+          done
+
+          # 6) Zip static frameworks
+          zip -r Braintree_Static.xcframework.zip Braintree_Static
+
+          # 7) Reset build setting changes
+          git checkout Braintree.xcodeproj/project.pbxproj
+
+      - name: Upload static pre-built xcframeworks to GitHub release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Braintree_Static.xcframework.zip
+          asset_name: Braintree_Static.xcframework.zip
+          asset_content_type: application/zip
+
       - name: Publish reference docs
         run: |
           gem install jazzy
