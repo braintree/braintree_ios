@@ -20,10 +20,10 @@ import BraintreeCore
 
     ///  Creates a SEPA Direct Debit client.
     /// - Parameter apiClient: An instance of `BTAPIClient`
-       @objc(initWithAPIClient:)
-       public init(apiClient: BTAPIClient) {
-           self.apiClient = apiClient
-           self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
+    @objc(initWithAPIClient:)
+    public init(apiClient: BTAPIClient) {
+        self.apiClient = apiClient
+        self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         // We do not need to require the user authentication UIAlertViewController on SEPA since user log in is not required
