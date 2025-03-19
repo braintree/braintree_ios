@@ -48,7 +48,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_properlyFormatsPOSTURL() {
-        let api = SEPADirectDebitAPI(authorization: authorization)
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/sepa_debit")
@@ -77,7 +77,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
             locale: "fr-FR"
         )
 
-        let api = SEPADirectDebitAPI(authorization: authorization)
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
         
         let lastPOSTParameters = mockAPIClient.lastPOSTParameters!
@@ -102,7 +102,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_onSuccessfulHttpResponse_returnsCreateMandateResult() {
-        let api = SEPADirectDebitAPI(authorization: authorization)
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "message": [
@@ -133,7 +133,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testCreateMandate_onNoBodyReturned_returnsError() {
-        let api = SEPADirectDebitAPI(authorization: authorization)
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseError = BTSEPADirectDebitError.noBodyReturned as NSError
         
         api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
@@ -148,7 +148,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     }
     
     func testTokenize_onSuccessfulHttpResponse_returnsSEPADirectDebitNonce() {
-        let api = SEPADirectDebitAPI(authorization: authorization)
+        let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         
         let json = BTJSON(
             value: [
