@@ -7,10 +7,9 @@ import BraintreeCore
 class SEPADirectDebitAPI {
     
     private let apiClient: BTAPIClient
-    
-    @objc(initWithAuthorization:)
-    init(authorization: String) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+
+    init(apiClient: BTAPIClient) {
+        self.apiClient = apiClient
     }
 
     func createMandate(

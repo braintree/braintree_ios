@@ -19,11 +19,11 @@ import BraintreeCore
     // MARK: - Initializers
 
     ///  Creates a SEPA Direct Debit client.
-    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
-    @objc(initWithAuthorization:)
-    public init(authorization: String) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
-        self.sepaDirectDebitAPI = SEPADirectDebitAPI(authorization: authorization)
+    /// - Parameter apiClient: An instance of `BTAPIClient`
+       @objc(initWithAPIClient:)
+       public init(apiClient: BTAPIClient) {
+           self.apiClient = apiClient
+           self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         // We do not need to require the user authentication UIAlertViewController on SEPA since user log in is not required
