@@ -31,7 +31,7 @@ class DataCollectorViewController: PaymentButtonBaseViewController {
     }
 
     @objc func tappedCollect() {
-        let dataCollector = BTDataCollector(apiClient: apiClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
 
         progressBlock("Started collecting all data...")
         dataCollector.collectDeviceData { deviceData, error in

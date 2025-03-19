@@ -5,6 +5,8 @@ import PPRiskMagnes
 @testable import BraintreeDataCollector
 
 class BTDataCollector_Tests: XCTestCase {
+    
+    let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     func testCollectDeviceData_collectsAllData() {
         let config: [String: Any] = ["environment": "development"]
@@ -12,14 +14,18 @@ class BTDataCollector_Tests: XCTestCase {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
         
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+        
         let expectation = self.expectation(description: "Returns fraud data")
         dataCollector.collectDeviceData { deviceData, _ in
             if let deviceData = deviceData {
                 let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
                 XCTAssertNil(json["fraud_merchant_id"].asString())
                 XCTAssertNil(json["device_session_id"].asString())
-                XCTAssert((json["correlation_id"] as AnyObject).asString()!.count > 0)
+                if let correlationID = json["correlation_id"].asString() {
+                    XCTAssert(correlationID.count > 0)
+                }
                 expectation.fulfill()
             } else {
                 XCTFail("We should return the expected data")
@@ -37,7 +43,9 @@ class BTDataCollector_Tests: XCTestCase {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
 
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+        
         let expectation = self.expectation(description: "Returns fraud data")
 
         dataCollector.collectDeviceData { deviceData, _ in
@@ -59,7 +67,8 @@ class BTDataCollector_Tests: XCTestCase {
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let pairingID = "random pairing id"
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
 
         XCTAssertEqual(pairingID, dataCollector.clientMetadataID(pairingID))
         XCTAssertNotEqual(pairingID, dataCollector.generateClientMetadataID(with: configuration))
@@ -73,7 +82,8 @@ class BTDataCollector_Tests: XCTestCase {
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
 
         let clientMetaDataID = dataCollector.generateClientMetadataID(with: configuration)
         let clientMetaDataID2 = dataCollector.clientMetadataID("some pairing id")
@@ -87,7 +97,8 @@ class BTDataCollector_Tests: XCTestCase {
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
 
         XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
         XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.SANDBOX)
@@ -100,7 +111,8 @@ class BTDataCollector_Tests: XCTestCase {
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
 
         XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
         XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.LIVE)
@@ -113,7 +125,8 @@ class BTDataCollector_Tests: XCTestCase {
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let dataCollector = BTDataCollector(apiClient: mockAPIClient)
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
 
         XCTAssertNotNil(dataCollector.generateClientMetadataID(with: configuration))
         XCTAssertEqual(dataCollector.getMagnesEnvironment(from: dataCollector.config), MagnesSDK.Environment.LIVE)
@@ -121,7 +134,8 @@ class BTDataCollector_Tests: XCTestCase {
     
     func testCollectDeviceData_fetchConfigurationReturnsError_returnError() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.apiClient = mockAPIClient
 
         mockDataCollector.cannedDataCollectorError = NSError(domain: "FakeConfigError", code: 1, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
@@ -142,7 +156,8 @@ class BTDataCollector_Tests: XCTestCase {
     
     func testCollectDeviceData_invalidJSON_returnError() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.apiClient = mockAPIClient
         
         mockDataCollector.cannedDataCollectorError = BTDataCollectorError.jsonSerializationFailure
 
@@ -163,7 +178,8 @@ class BTDataCollector_Tests: XCTestCase {
     
     func testCollectDeviceData_encodingError_returnError() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let mockDataCollector = MockBTDataCollector(apiClient: mockAPIClient)
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.apiClient = mockAPIClient
         
         mockDataCollector.cannedDataCollectorError = BTDataCollectorError.encodingFailure
 

@@ -16,6 +16,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [PayPal Native Checkout](#paypal-native-checkout)
 1. [American Express](#american-express)
 1. [Apple Pay](#apple-pay)
+1. [Data Collector](#data-collector)
 
 ## Supported Versions
 
@@ -113,4 +114,11 @@ Update initializer for `BTApplePayClient`:
 ```diff
 -  var applePayClient = BTApplePayClient(apiClient: apiClient)
 +  var applePayClient = BTApplePayClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
+## Data Collector
+Update initializer for `BTDataCollector`:
+```diff
+- var dataCollector = BTDataCollector(apiClient: apiClient)
++ var dataCollector = BTDataCollector(authorization: "<CLIENT_AUTHORIZATION>")
 ```
