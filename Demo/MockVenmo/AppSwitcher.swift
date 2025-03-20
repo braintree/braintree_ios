@@ -5,12 +5,16 @@ enum AppSwitcher {
     static var openVenmoURL: URL?
 
     static var successURLWithPaymentContext: URL? {
-        let resourceID: String = "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
+        let resourceID = "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
+        
         return URL(string: "\(openVenmoURL?.absoluteString ?? "")/success?resource_id=\(resourceID)")
     }
 
     static var successURLWithoutPaymentContext: URL? {
-        URL(string: "\(openVenmoURL?.absoluteString ?? "")/success?username=@fake-venmo-username&paymentMethodNonce=fake-venmo-account-nonce")
+        let username = "@fake-venmo-username"
+        let nonce = "fake-venmo-account-nonce"
+        
+        return URL(string: "\(openVenmoURL?.absoluteString ?? "")/success?username=\(username)&paymentMethodNonce=\(nonce)")
     }
 
     static var errorURL: URL? {
