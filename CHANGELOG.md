@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeShopperInsights (BETA)
+  * Bug fix: remove internal code signing from framework
+
 ## 6.30.0 (2025-03-17)
 * Attach zip file of static Braintree xcframework modules to each GitHub release
 * BraintreeCore
