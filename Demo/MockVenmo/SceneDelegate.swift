@@ -9,7 +9,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        let urlContexts = connectionOptions.urlContexts
-        AppSwitcher.openVenmoURL = urlContexts.first?.url
+        AppSwitcher.openVenmoURL = URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments/braintreeAppSwitchVenmo")
     }
 }
