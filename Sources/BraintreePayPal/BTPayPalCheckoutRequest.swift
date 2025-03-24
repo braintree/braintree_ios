@@ -87,7 +87,7 @@ import BraintreeCore
     public var shippingCallbackURL: URL?
     
     /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
-    public var contactPreference: BTContactPreference?
+    public var contactPreference: BTContactPreference = .none
 
     // MARK: - Initializers
     
@@ -114,7 +114,7 @@ import BraintreeCore
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference? = nil
+        contactPreference: BTContactPreference = .none
     ) {
         self.init(
             amount: amount,
@@ -220,8 +220,8 @@ import BraintreeCore
             checkoutParameters["recipient_email"] = recipientEmail
         }
 
-        if let contactPreference = contactPreference {
-            checkoutParameters["contact_preference"] = contactPreference.rawValue
+        if contactPreference  != .none {
+            checkoutParameters["contact_preference"] = contactPreference.stringValue
         }
 
         if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
