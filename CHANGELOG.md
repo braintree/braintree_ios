@@ -1,6 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeShopperInsights (BETA)
+  * Bug fix: remove internal code signing from framework
+
+## 6.30.0 (2025-03-17)
 * Attach zip file of static Braintree xcframework modules to each GitHub release
 * BraintreeCore
   * Fix bug where instantiating multiple feature clients with  universal links in the same view causes `handleOpen` to return in the wrong feature client
