@@ -31,6 +31,6 @@ class ViewController: UIViewController {
             authorization: authorization,
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
-        let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
     }
 }
