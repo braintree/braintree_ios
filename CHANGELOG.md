@@ -29,6 +29,7 @@
     * Update `BTThreeDSecureRequest` to make all properties accessible on the initializer only vs via the dot syntax.  
     * Update `BTThreeDSecureRequest.amount` to be a `String`
     * Remove `cardAddChallenge` - use `cardAddChallengeRequested` instead
+    * Update initializer to `BTThreeDSecureClient(authorization:)`
   * BraintreeCore
     * Remove `fetchPaymentMethodNonces` methods and parser
   * BraintreeAmericanExpress

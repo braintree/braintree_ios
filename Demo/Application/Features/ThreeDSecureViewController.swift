@@ -10,7 +10,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
     var callbackCountLabel = UILabel()
     var callbackCount: Int = 0
     
-    lazy var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+    lazy var threeDSecureClient = BTThreeDSecureClient(authorization: authorization)
 
     override func viewDidLoad() {
         super.viewDidLoad()
