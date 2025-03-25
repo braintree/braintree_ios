@@ -28,7 +28,7 @@ public class BTShopperInsightsClient {
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
     @objc(initWithAuthorization:shopperSessionID:)
     public init(authorization: String, shopperSessionID: String? = nil) {
-        self.apiClient = BTAPIClient(authorization: authorization)
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
         self.authorization = authorization
         self.shopperSessionID = shopperSessionID
     }
