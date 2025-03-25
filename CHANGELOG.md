@@ -38,6 +38,8 @@
     * Update initializer to `BTApplePayClient(authorization:)`
   * BraintreeDataCollector
     * Update initializer to `BTDataCollector(authorization:)`
+  * BraintreeShopperInsights
+    * Update initializer to `BTShopperInsightsClient(authorization:shopperSessionID:)`
 
 ## 6.29.0 (2025-02-24)
 * BraintreePayPal
