@@ -208,11 +208,24 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["shipping_callback_url"])
     }
 
-    func testParameters_whitShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
+    func testParameters_withShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
         let request = BTPayPalCheckoutRequest(amount: "1", shippingCallbackURL: URL(string: "www.some-url.com"))
 
         XCTAssertNotNil(request.shippingCallbackURL)
         let parameters = request.parameters(with: configuration)
         XCTAssertNotNil(parameters["shipping_callback_url"])
+    }
+    
+    func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail(){
+        let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
+        request.userAuthenticationEmail = ""
+        
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        
+        XCTAssertNil(parameters["payer_email"])
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
+        XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
 }

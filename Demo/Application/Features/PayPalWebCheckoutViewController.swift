@@ -248,11 +248,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
-            self.progressBlock("Email cannot be nil for App Switch flow")
-            sender.isEnabled = true
-            return
-        }
+        let userEmail = emailTextField.text
 
         let request = BTPayPalCheckoutRequest(
             userAuthenticationEmail: userEmail,
@@ -276,11 +272,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
-            self.progressBlock("Email cannot be nil for App Switch flow")
-            sender.isEnabled = true
-            return
-        }
+        let userEmail = emailTextField.text
 
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: userEmail,
