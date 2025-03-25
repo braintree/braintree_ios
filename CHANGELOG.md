@@ -17,6 +17,7 @@
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
   * BraintreeLocalPayment
     * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Update initializer to `BTLocalPaymentClient(authorization:)`
   * BraintreeCard
     * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
     * Remove `BTCardRequest`, use `BTCard` directly instead
