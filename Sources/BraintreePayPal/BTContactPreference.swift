@@ -14,6 +14,7 @@
 }
 
 extension BTContactPreference {
+
     var stringValue: String {
         switch self {
         case .noContactInformation: return "NO_CONTACT_INFO"

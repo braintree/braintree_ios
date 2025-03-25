@@ -220,7 +220,7 @@ import BraintreeCore
             checkoutParameters["recipient_email"] = recipientEmail
         }
 
-        if contactPreference  != .none {
+        if contactPreference != .none {
             checkoutParameters["contact_preference"] = contactPreference.stringValue
         }
 
