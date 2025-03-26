@@ -38,6 +38,8 @@
     * Update initializer to `BTApplePayClient(authorization:)`
   * BraintreeDataCollector
     * Update initializer to `BTDataCollector(authorization:)`
+  * BraintreePayPalMessaging (BETA)
+    * Update initializer to `BTPayPalMessagingView(authorization:)`
 
 ## 6.29.0 (2025-02-24)
 * BraintreePayPal

@@ -17,6 +17,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [American Express](#american-express)
 1. [Apple Pay](#apple-pay)
 1. [Data Collector](#data-collector)
+1. [PayPal Messaging View](#paypal-messaging-view)
 
 ## Supported Versions
 
@@ -122,4 +123,11 @@ Update initializer for `BTDataCollector`:
 ```diff
 - var dataCollector = BTDataCollector(apiClient: apiClient)
 + var dataCollector = BTDataCollector(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
+## PayPal Messaging View
+Update initializer for `BTPayPalMessagingView`:
+```diff
+- var paypalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
++ var paypalMessagingView = BTPayPalMessagingView(authorization: "<CLIENT_AUTHORIZATION>")
 ```
