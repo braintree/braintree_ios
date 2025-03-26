@@ -16,7 +16,9 @@ public class BTShopperInsightsClient {
     
     // MARK: - Private Properties
 
+    /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
+
     private let authorization: String
     private let shopperSessionID: String?
 
