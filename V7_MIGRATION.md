@@ -123,3 +123,10 @@ Update initializer for `BTDataCollector`:
 - var dataCollector = BTDataCollector(apiClient: apiClient)
 + var dataCollector = BTDataCollector(authorization: "<CLIENT_AUTHORIZATION>")
 ```
+
+## Shopper Insights
+Update initializer for `BTDataCollector`:
+```diff
+- var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: shopperSessionID)
++ var shopperInsightsClient = BTShopperInsightsClient(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSIONS_ID>")
+```
