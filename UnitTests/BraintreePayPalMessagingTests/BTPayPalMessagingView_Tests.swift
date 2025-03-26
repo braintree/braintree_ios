@@ -13,6 +13,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "SomeError", code: 999)
 
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
+        payPalMessageView.apiClient = mockAPIClient
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
 
@@ -23,6 +24,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
     func testStart_withNilConfiguration_callsDelegateWithErrorAndSendsAnalytics() {
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
+        payPalMessageView.apiClient = mockAPIClient
         payPalMessageView.start()
 
         XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.fetchConfigurationFailed)
@@ -41,6 +43,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
 
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
+        payPalMessageView.apiClient = mockAPIClient
         payPalMessageView.start()
 
         XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.payPalClientIDNotFound)
@@ -58,6 +61,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
 
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
+        payPalMessageView.apiClient = mockAPIClient
         payPalMessageView.start()
 
         XCTAssertTrue(mockDelegate.willAppear)
@@ -73,6 +77,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
+        payPalMessageView.apiClient = mockAPIClient
         XCTAssertEqual(payPalMessageView.subviews.count, 0)
         
         payPalMessageView.start()
