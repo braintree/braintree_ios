@@ -7,11 +7,12 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
 
     var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var mockDelegate = MockBTPayPalMessagingDelegate()
+    let mockTokenizationKey = "development_tokenization_key"
 
     func testStart_withConfigurationError_callsDelegateWithError() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "SomeError", code: 999)
 
-        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
 
@@ -20,7 +21,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
     }
 
     func testStart_withNilConfiguration_callsDelegateWithErrorAndSendsAnalytics() {
-        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
 
@@ -38,7 +39,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
             ] as [String: Any?]
         )
 
-        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
 
@@ -55,7 +56,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
             ] as [String: Any?]
         )
 
-        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.start()
 
@@ -70,7 +71,7 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
             ] as [String: Any?]
         )
         
-        let payPalMessageView = BTPayPalMessagingView(apiClient: mockAPIClient)
+        let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         XCTAssertEqual(payPalMessageView.subviews.count, 0)
         

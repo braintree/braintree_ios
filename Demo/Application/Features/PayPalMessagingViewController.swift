@@ -3,7 +3,7 @@ import BraintreePayPalMessaging
 
 class PayPalMessagingViewController: PaymentButtonBaseViewController {
 
-    lazy var payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
+    lazy var payPalMessagingView = BTPayPalMessagingView(authorization: authorization)
 
     let request = BTPayPalMessagingRequest(
         amount: 2.00,
