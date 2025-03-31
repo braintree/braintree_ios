@@ -9,7 +9,6 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     var mockAPIClient: MockAPIClient!
     var sut: BTShopperInsightsClient!
-    private let sandboxToken = "sandbox_merchant_1234567890abc"
     
     let request = BTShopperInsightsRequest(
         email: "my-email",
@@ -194,7 +193,7 @@ class BTShopperInsightsClient_Tests: XCTestCase {
     }
 
     func testGetRecommendedPaymentMethods_withTokenizationKey_returnsError() async {
-        let shopperInsightsClient = BTShopperInsightsClient(authorization: sandboxToken)
+        let shopperInsightsClient = BTShopperInsightsClient(authorization: "sandbox_merchant_1234567890abc")
 
         do {
             let result = try await shopperInsightsClient.getRecommendedPaymentMethods(request: request)
