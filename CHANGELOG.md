@@ -40,6 +40,8 @@
     * Update initializer to `BTDataCollector(authorization:)`
   * BraintreeShopperInsights
     * Update initializer to `BTShopperInsightsClient(authorization:shopperSessionID:)`
+  * BraintreePayPalMessaging (BETA)
+    * Update initializer to `BTPayPalMessagingView(authorization:)`
 
 ## 6.29.0 (2025-02-24)
 * BraintreePayPal

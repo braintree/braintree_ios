@@ -18,6 +18,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [Apple Pay](#apple-pay)
 1. [Data Collector](#data-collector)
 1. [Shopper Insights](#shopper-insights)
+1. [PayPal Messaging View](#paypal-messaging-view)
 
 ## Supported Versions
 
@@ -130,4 +131,11 @@ Update initializer for `BTDataCollector`:
 ```diff
 - var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: shopperSessionID)
 + var shopperInsightsClient = BTShopperInsightsClient(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSIONS_ID>")
+```
+
+## PayPal Messaging View
+Update initializer for `BTPayPalMessagingView`:
+```diff
+- var paypalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
++ var paypalMessagingView = BTPayPalMessagingView(authorization: "<CLIENT_AUTHORIZATION>")
 ```
