@@ -23,6 +23,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         textField.textAlignment = .right
         textField.backgroundColor = .systemBackground
         textField.keyboardType = .emailAddress
+        textField.text = "some@email.com"
         return textField
     }()
     
@@ -248,10 +249,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        let userEmail = emailTextField.text
-
         let request = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: userEmail,
+            userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true,
             amount: "10.00"
         )
@@ -271,11 +270,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     @objc func tappedPayPalAppSwitchForVault(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
-        
-        let userEmail = emailTextField.text
 
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: userEmail,
+            userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true
         )
 

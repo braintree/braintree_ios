@@ -95,12 +95,12 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
     
     func testParametersWithConfiguration_setsAppSwitchParameters_withoutUserAuthenticationEmail() {
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: "",
             enablePayPalAppSwitch: true
         )
         
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-merchant-url")!, isPayPalAppInstalled: true)
         
+        XCTAssertNil(parameters["payer_email"])
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))

@@ -216,7 +216,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNotNil(parameters["shipping_callback_url"])
     }
     
-    func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail(){
+    func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail() {
         let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
         request.userAuthenticationEmail = ""
         
