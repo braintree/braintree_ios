@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreeShopperInsights (BETA)
   * Bug fix: remove internal code signing from framework
+* BraintreePayPal
+  * Add `contactPreference` property to `BTPayPalCheckoutRequest` - This property is required to enable the contact information section in the payment flow.
 
 ## 6.30.0 (2025-03-17)
 * Attach zip file of static Braintree xcframework modules to each GitHub release

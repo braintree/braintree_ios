@@ -85,6 +85,9 @@ import BraintreeCore
 
     /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
     public var shippingCallbackURL: URL?
+    
+    /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
+    public var contactPreference: BTContactPreference = .none
 
     // MARK: - Initializers
     
@@ -110,7 +113,8 @@ import BraintreeCore
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false
+        requestBillingAgreement: Bool = false,
+        contactPreference: BTContactPreference = .none
     ) {
         self.init(
             amount: amount,
@@ -211,11 +215,15 @@ import BraintreeCore
             checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
             checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
         }
-        
+
         if let recipientEmail = contactInformation?.recipientEmail {
             checkoutParameters["recipient_email"] = recipientEmail
         }
-        
+
+        if contactPreference != .none {
+            checkoutParameters["contact_preference"] = contactPreference.stringValue
+        }
+
         if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
             checkoutParameters["international_phone"] = recipientPhoneNumber
         }
