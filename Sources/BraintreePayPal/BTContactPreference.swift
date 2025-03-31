@@ -17,10 +17,14 @@ extension BTContactPreference {
 
     var stringValue: String {
         switch self {
-        case .noContactInformation: return "NO_CONTACT_INFO"
-        case .retainContactInformation: return "RETAIN_CONTACT_INFO"
-        case .updateContactInformation: return "UPDATE_CONTACT_INFO"
-        case .none: return ""
+        case .noContactInformation:
+            return "NO_CONTACT_INFO"
+        case .retainContactInformation:
+            return "RETAIN_CONTACT_INFO"
+        case .updateContactInformation:
+            return "UPDATE_CONTACT_INFO"
+        case .none:
+            return ""
         }
     }
 }
