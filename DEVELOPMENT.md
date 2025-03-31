@@ -16,6 +16,9 @@ brew install swiftlint
 ```
 Our Xcode workspace has a `Run Phase` which integrates in `SwiftLint` so the only prerequisite is installing via `Homebrew`.
 
+## Style Guide
+While we use SwiftLint in the SDK to adhere to a general style, there are some guidelines that are not able to be captured by our linter rules. Those guidelines are defined in our [style guide](STYLE_GUIDE.md). Please refer to these when developing for the SDK.
+
 ## Tests
 
 Each module has a corresponding unit test target. These can be run individually, or all at once via the `UnitTests` scheme.
