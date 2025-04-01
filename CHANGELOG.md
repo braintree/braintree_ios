@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Send `merchant_enabled_app_switch` and `attempted_app_switch` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
+  * Remove `link_type` for App Switch events to PayPal's analytics service (FPTI)
+  
 ## 6.30.0 (2025-03-17)
 * Attach zip file of static Braintree xcframework modules to each GitHub release
 * BraintreeCore
