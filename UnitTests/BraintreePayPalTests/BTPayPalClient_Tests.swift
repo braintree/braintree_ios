@@ -229,7 +229,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
     
-    func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDAndLinkTypeInAnalytics() {
+    func testTokenize_whenPayPalAppApprovalURLContainsPayPalContextID_sendsPayPalContextIDAndAppSwitchInAnalytics() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
         payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
@@ -251,7 +251,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.handleReturnURL(returnURL)
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
+        XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, true)
+        XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, true)
         XCTAssertNotNil(payPalClient.clientMetadataID)
     }
 
@@ -268,7 +269,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertNil(mockAPIClient.postedPayPalContextID)
     }
 
-    func testTokenize_whenApprovalURLContainsECAndBAToken_sendsBATokenAsPayPalContextIDInAnalytics() {
+    func testTokenize_whenApprovalURLContainsECAndBAToken_sendsBATokenAsPayPalContextIDAndAppSwitchInAnalytics() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
                 "redirectUrl": "https://www.paypal.com/checkout?token=EC-Random-Value&ba_token=BA-Random-Value"
@@ -281,11 +282,12 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
+        XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, false)
+        XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
-    func testTokenize_whenApprovalUrlContainsBAToken_sendsBATokenAsPayPalContextIDInAnalytics() {
+    func testTokenize_whenApprovalUrlContainsBAToken_sendsBATokenAsPayPalContextIDAndAppSwitchInAnalytics() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "approvalUrl": "https://www.paypal.com/agreements/approve?ba_token=A_FAKE_BA_TOKEN"
@@ -300,7 +302,8 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "A_FAKE_BA_TOKEN")
-        XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
+        XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, false)
+        XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
 
