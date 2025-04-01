@@ -70,6 +70,12 @@ All properties within `BTSEPADirectDebitRequest` can only be accessed on the ini
 ## Local Payments
 v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer.
 
+Update initializer for `BTLocalPaymentClient`:
+```diff
+- var localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
++ var localPaymentClient = BTLocalPaymentClient(authorization:"<CLIENT_AUTHORIZATION>")
+```
+
 ## 3D Secure
 All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
 

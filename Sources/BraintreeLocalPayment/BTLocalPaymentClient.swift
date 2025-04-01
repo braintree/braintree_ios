@@ -22,9 +22,11 @@ import BraintreeDataCollector
     /// exposed for testing
     var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void) = { _, _ in }
     
-    // MARK: - Private Properties
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
     
-    private let apiClient: BTAPIClient
+    // MARK: - Private Properties
+
     private var request: BTLocalPaymentRequest?
 
     /// Used for linking events from the client to server side request
@@ -34,10 +36,10 @@ import BraintreeDataCollector
     // MARK: - Initializer
 
     /// Initialize a new `BTLocalPaymentClient` instance.
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(

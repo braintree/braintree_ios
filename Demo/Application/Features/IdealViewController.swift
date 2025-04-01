@@ -47,9 +47,7 @@ class IdealViewController: PaymentButtonBaseViewController {
     }
 
     private func startPaymentWithBank() {
-        // swiftlint:disable:next force_unwrapping
-        let apiClient = BTAPIClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")!
-        localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
+        localPaymentClient = BTLocalPaymentClient(authorization: authorization)
 
         let postalAddress = BTPostalAddress()
         postalAddress.countryCodeAlpha2 = "NL"
