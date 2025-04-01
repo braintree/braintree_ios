@@ -10,7 +10,8 @@ import BraintreeCore
 
     // MARK: - Internal Properties
 
-    let apiClient: BTAPIClient
+    // Exposed for unit tests
+    var apiClient: BTAPIClient
     
     var webAuthenticationSession: BTWebAuthenticationSession
         
