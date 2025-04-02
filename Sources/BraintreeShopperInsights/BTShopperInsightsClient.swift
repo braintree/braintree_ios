@@ -15,20 +15,25 @@ public class BTShopperInsightsClient {
     var application: URLOpener = UIApplication.shared
     
     // MARK: - Private Properties
-    
-    private let apiClient: BTAPIClient
+
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
+
+    private let authorization: String
     private let shopperSessionID: String?
-    
+
     /// Creates a `BTShopperInsightsClient`
+    ///
     /// - Parameters:
-    ///     - apiClient: A `BTAPIClient` instance.
-    ///     - shopperSessionID: This value should be the shopper session ID returned from your server SDK request
+    ///     - authorization: A valid client token or tokenization key used to authorize API calls
+    ///     - shopperSessionID: Optional: This value should be the shopper session ID returned from your server SDK request
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
-    public init(apiClient: BTAPIClient, shopperSessionID: String? = nil) {
-        self.apiClient = apiClient
+    public init(authorization: String, shopperSessionID: String? = nil) {
+        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.authorization = authorization
         self.shopperSessionID = shopperSessionID
     }
-    
+
     // MARK: - Public Methods
 
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.

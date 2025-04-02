@@ -40,6 +40,8 @@
     * Update initializer to `BTApplePayClient(authorization:)`
   * BraintreeDataCollector
     * Update initializer to `BTDataCollector(authorization:)`
+  * BraintreeShopperInsights (BETA)
+    * Update initializer to `BTShopperInsightsClient(authorization:shopperSessionID:)`
   * BraintreePayPalMessaging (BETA)
     * Update initializer to `BTPayPalMessagingView(authorization:)`
 
