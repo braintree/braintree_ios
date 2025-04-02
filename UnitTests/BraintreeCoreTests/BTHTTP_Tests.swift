@@ -1071,6 +1071,22 @@ final class BTHTTP_Tests: XCTestCase {
         let copiedHTTP = http?.copy() as? BTHTTP
         XCTAssertEqual(http?.pinnedCertificates, copiedHTTP?.pinnedCertificates)
     }
+    
+    func testGet_returns_validResponse() {
+        let expectation = expectation(description: "GET callback")
+        http = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
+        http?.get("") { _, response, error in
+            if let error = error {
+                XCTFail()
+            } else {
+                XCTAssertNotNil(response)
+                XCTAssertNotNil((200...299).contains(response!.statusCode))
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
 
     // MARK: - Helper Methods
 

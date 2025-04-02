@@ -10,4 +10,9 @@ public protocol URLOpener {
     func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
 }
 
-extension UIApplication: URLOpener { }
+extension UIApplication: URLOpener {
+    
+    public func open(_ url: URL, options: [OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?) {
+        
+    }
+}

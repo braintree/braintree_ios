@@ -100,6 +100,8 @@ import Foundation
         fetchOrReturnRemoteConfiguration { configuration, error in
             // No-op
         }
+        
+        testBraintreePaymentsAPI()
     }
 
     // MARK: - Deinit
@@ -483,6 +485,17 @@ import Foundation
             return http
         case .graphQLAPI:
             return graphQLHTTP
+        }
+    }
+    
+    private func testBraintreePaymentsAPI() {
+        let customHTTP = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
+        customHTTP.get("") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
         }
     }
 }
