@@ -67,6 +67,12 @@ Update initializer for `BTVenmoClient`:
 ## SEPA Direct Debit
 All properties within `BTSEPADirectDebitRequest` can only be accessed on the initializer vs via the dot syntax.
 
+Update initializer for `BTSEPADirectDebit`:
+```diff
+-  var sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
++  var sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: "<CLIENT_AUTHORIZATION>")
+```
+
 ## Local Payments
 v7 updates `BTLocalPaymentRequest` to require setting all properties through the initializer, removing support for dot syntax. To construct a `BTLocalPaymentRequest`, pass the properties directly in the initializer.
 
@@ -86,7 +92,6 @@ Update initializer for `BTThreeDSecureClient`:
 ```
 
 ## PayPal
-
 v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
 
 Update initializer for `BTPayPalClient`:

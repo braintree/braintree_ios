@@ -15,6 +15,7 @@
     * Update initializer to `BTVenmoClient(authorization:)`
   * BraintreeSEPADirectDebit
     * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Update initializer to `BTSEPADirectDebitClient(authorization:)`
   * BraintreeLocalPayment
     * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
     * Update initializer to `BTLocalPaymentClient(authorization:)`
