@@ -62,7 +62,7 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
+    /// Used for determining if our API request returned an app switch URL
     private var didPayPalServerAttemptAppSwitch: Bool?
 
     // MARK: - Initializer
