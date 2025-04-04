@@ -850,6 +850,8 @@ class BTPayPalClient_Tests: XCTestCase {
         let expectation = expectation(description: "completion block called")
 
         payPalClient.payPalRequest = request
+        payPalClient.didPayPalServerAttemptAppSwitch = true
+        
         payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
             guard let error = error as NSError? else { XCTFail(); return }
             XCTAssertNil(nonce)
@@ -973,6 +975,8 @@ class BTPayPalClient_Tests: XCTestCase {
         let expectation = expectation(description: "completion block called")
 
         payPalClient.payPalRequest = request
+        payPalClient.didPayPalServerAttemptAppSwitch = true
+
         payPalClient.handleReturn(returnURL, paymentType: .vault) { nonce, error in
             XCTAssertNil(error)
             XCTAssertNotNil(nonce)

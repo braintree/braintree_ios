@@ -30,6 +30,10 @@ import BraintreeDataCollector
     
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest?
+    
+    /// Used for sending the type of flow, universal vs deeplink to FPTI
+    /// Exposed for testing app switch responses
+    var didPayPalServerAttemptAppSwitch: Bool?
 
     /// Exposed for testing, the ASWebAuthenticationSession instance used for the PayPal flow
     var webAuthenticationSession: BTWebAuthenticationSession
@@ -61,9 +65,6 @@ import BraintreeDataCollector
     
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
-
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var didPayPalServerAttemptAppSwitch: Bool?
 
     // MARK: - Initializer
 
@@ -209,7 +210,7 @@ import BraintreeDataCollector
             let url,
             BTPayPalReturnURL.isValidURLAction(
                 url: url,
-                enablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch ?? false
+                didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch ?? false
             ) else {
             notifyFailure(with: BTPayPalError.invalidURLAction, completion: completion)
             return

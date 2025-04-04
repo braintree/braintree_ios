@@ -47,7 +47,7 @@ struct BTPayPalReturnURL {
         return isValidAppSwitchURL
     }
 
-    static func isValidURLAction(url: URL, enablePayPalAppSwitch: Bool) -> Bool {
+    static func isValidURLAction(url: URL, didPayPalServerAttemptAppSwitch: Bool) -> Bool {
         guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
             return false
         }
@@ -63,8 +63,8 @@ struct BTPayPalReturnURL {
         }
 
         /// If we are using the deeplink/ASWeb based PayPal flow we want to check that the host and path matches
-        /// the static callbackURLHostAndPath. For the universal link flow we do not care about this check.
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && !enablePayPalAppSwitch {
+        /// the static callbackURLHostAndPath. For the app switch flow we do not care about this check.
+        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && !didPayPalServerAttemptAppSwitch {
             return false
         }
 
