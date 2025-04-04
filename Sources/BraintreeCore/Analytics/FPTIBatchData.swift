@@ -50,6 +50,11 @@ struct FPTIBatchData: Codable {
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
         let linkType: String?
+        /// The value passed by the merchant for `enablePayPalAppSwitch`
+        let didEnablePayPalAppSwitch: Bool?
+        /// Determined if `create_payment_resource` or `setup_billing_agreement` returned
+        /// an app switch URL in the response
+        let didPayPalServerAttemptAppSwitch: Bool?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
         /// The type of page where the payment button is displayed or where an event occured.
@@ -73,6 +78,8 @@ struct FPTIBatchData: Codable {
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
             correlationID: String? = nil,
+            didEnablePayPalAppSwitch: Bool? = nil,
+            didPayPalServerAttemptAppSwitch: Bool? = nil,
             endpoint: String? = nil,
             endTime: Int? = nil,
             errorDescription: String? = nil,
@@ -92,6 +99,8 @@ struct FPTIBatchData: Codable {
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
             self.correlationID = correlationID
+            self.didEnablePayPalAppSwitch = didEnablePayPalAppSwitch
+            self.didPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
             self.endpoint = endpoint
             self.endTime = endTime
             self.errorDescription = errorDescription
@@ -113,6 +122,8 @@ struct FPTIBatchData: Codable {
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case correlationID = "correlation_id"
+            case didEnablePayPalAppSwitch = "merchant_enabled_app_switch"
+            case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
             case isConfigFromCache = "config_cached"

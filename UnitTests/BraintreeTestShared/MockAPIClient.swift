@@ -21,6 +21,9 @@ public class MockAPIClient: BTAPIClient {
     public var postedPageType: String? = nil
     public var postedPayPalContextID: String? = nil
     public var postedShopperSessionID: String? = nil
+    public var postedIsPayPalAppInstalled: Bool? = nil
+    public var postedDidEnablePayPalAppSwitch: Bool? = nil
+    public var postedDidPayPalServerAttemptAppSwitch: Bool? = nil
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -100,6 +103,8 @@ public class MockAPIClient: BTAPIClient {
         buttonOrder: String? = nil,
         buttonType: String? = nil,
         correlationID: String? = nil,
+        didEnablePayPalAppSwitch: Bool? = nil,
+        didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
         merchantExperiment experiment: String? = nil,
         isConfigFromCache: Bool? = nil,
@@ -117,8 +122,11 @@ public class MockAPIClient: BTAPIClient {
         postedIsVaultRequest = isVaultRequest ?? false
         postedMerchantExperiment = experiment
         postedAppSwitchURL[eventName] = appSwitchURL?.absoluteString
-        postedAnalyticsEvents.append(eventName)
         postedShopperSessionID = shopperSessionID
+        postedDidEnablePayPalAppSwitch = didEnablePayPalAppSwitch
+        postedDidPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
+
+        postedAnalyticsEvents.append(eventName)
     }
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {
