@@ -5,7 +5,7 @@ import XCTest
 class BTCardClient_IntegrationTests: XCTestCase {
 
     func testTokenizeCard_whenCardHasValidationDisabledAndCardIsInvalid_tokenizesSuccessfully() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         cardClient.apiClient = apiClient
         
@@ -33,7 +33,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenCardIsInvalidAndValidationIsEnabled_failsWithExpectedValidationError() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         cardClient.apiClient = apiClient
         
@@ -65,7 +65,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenCardHasValidationDisabledAndCardIsValid_tokenizesSuccessfully() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         cardClient.apiClient = apiClient
         
@@ -108,7 +108,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingTokenizationKeyAndCardHasValidationEnabled_failsWithAuthorizationError() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         cardClient.apiClient = apiClient
         
@@ -140,7 +140,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         cardClient.apiClient = apiClient
         
@@ -171,7 +171,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
-        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
+        var apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         var cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         cardClient.apiClient = apiClient
         

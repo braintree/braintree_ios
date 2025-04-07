@@ -11,12 +11,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     // MARK: - Checkout Flow Tests
     
     func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey) else {
-            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
-            return
-        }
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         
-
         let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
@@ -38,11 +34,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken) else {
-            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
-            return
-        }
-        
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
 
         let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
@@ -65,10 +57,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testCheckoutFlow_withoutPayPalRequest_returnsError() {
-        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey) else {
-            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
-            return
-        }
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
 
         let payPalClient = BTPayPalClient(authorization: authorization)
 
@@ -87,11 +76,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     // MARK: - Vault Flow Tests
     
     func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey) else {
-            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
-            return
-        }
-        
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
 
         let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
@@ -114,11 +99,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testVaultFlow_withClientToken_tokenizedPayPalAccount() {
-        guard let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken) else {
-            XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
-            return
-        }
-        
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
 
         let payPalClient = BTPayPalClient(authorization: authorization)
         payPalClient.payPalRequest = BTPayPalVaultRequest()

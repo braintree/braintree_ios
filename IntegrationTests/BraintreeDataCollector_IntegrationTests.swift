@@ -9,7 +9,7 @@ class BraintreeDataCollector_IntegrationTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
+        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         dataCollector = BTDataCollector(authorization: authorization)
     }
 
