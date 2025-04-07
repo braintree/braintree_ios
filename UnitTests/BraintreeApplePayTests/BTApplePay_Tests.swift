@@ -5,11 +5,11 @@ import PassKit
 @testable import BraintreeApplePay
 
 class BTApplePay_Tests: XCTestCase {
-    var mockClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+    var mockClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
 
     override func setUp() {
         super.setUp()
-        mockClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockClient = MockAPIClient(authorization: "development_tokenization_key")
     }
 
     // MARK: - Payment Request
@@ -339,7 +339,7 @@ class BTApplePay_Tests: XCTestCase {
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
         let applePayClient = BTApplePayClient(authorization: "production_t2wns2y2_dfy45jdj3dxkmz5m")
                 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "applePay" : [
                 "status" : "production"

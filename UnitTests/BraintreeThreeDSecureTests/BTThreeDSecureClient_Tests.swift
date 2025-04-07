@@ -6,7 +6,7 @@ import XCTest
 
 class BTThreeDSecureClient_Tests: XCTestCase {
 
-    var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))!
+    var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))
     var threeDSecureRequest: BTThreeDSecureRequest!
     var client: BTThreeDSecureClient!
     var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
@@ -655,7 +655,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         
         let client = BTThreeDSecureClient(authorization: authorization)
-        client.apiClient = MockAPIClient(authorization: authorization)!
+        client.apiClient = MockAPIClient(authorization: authorization)
         let expectation = expectation(description: "willCallCompletion")
 
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"

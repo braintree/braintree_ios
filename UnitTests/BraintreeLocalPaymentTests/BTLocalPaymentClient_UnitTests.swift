@@ -19,7 +19,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             currencyCode: "EUR"
         )
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        mockAPIClient = MockAPIClient(authorization: tempClientToken)!
+        mockAPIClient = MockAPIClient(authorization: tempClientToken)
     }
     
     func testStartPayment_returnsErrorWhenConfigurationNil() {

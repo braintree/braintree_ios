@@ -23,7 +23,7 @@ import BraintreeCore
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls
     @objc(initWithAuthorization:)
     public init(authorization: String) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.sepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: apiClient)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
@@ -33,7 +33,7 @@ import BraintreeCore
     
     /// Internal for testing.
     init(authorization: String, webAuthenticationSession: BTWebAuthenticationSession, sepaDirectDebitAPI: SEPADirectDebitAPI) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = webAuthenticationSession
         self.sepaDirectDebitAPI = sepaDirectDebitAPI
     }

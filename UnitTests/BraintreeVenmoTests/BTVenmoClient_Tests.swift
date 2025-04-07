@@ -5,13 +5,13 @@ import UIKit
 @testable import BraintreeTestShared
 
 class BTVenmoClient_Tests: XCTestCase {
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
     var venmoRequest: BTVenmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
     var venmoClient: BTVenmoClient!
 
     override func setUp() {
         super.setUp()
-        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
                 "environment": "sandbox",

@@ -72,17 +72,17 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")
 
         if analyticsURL != nil {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(
+            stubAPIClient.cannedConfigurationResponseBody = BTJSON(
                 value: [
                     "analytics": ["url": analyticsURL],
                     "merchantId": "a-fake-merchantID"
                 ]
             )
         } else {
-            stubAPIClient?.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
+            stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String?: Any])
         }
 
-        return stubAPIClient!
+        return stubAPIClient
     }
 
     func validateMetadataParameters(_ postParameters: [String: Any]?) {

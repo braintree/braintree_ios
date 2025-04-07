@@ -5,7 +5,7 @@ import XCTest
 
 final class BTPayPalMessagingView_Tests: XCTestCase {
 
-    var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+    var mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
     var mockDelegate = MockBTPayPalMessagingDelegate()
     let mockTokenizationKey = "development_tokenization_key"
 

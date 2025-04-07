@@ -74,7 +74,7 @@ import BraintreeDataCollector
     public init(authorization: String) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
 
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         super.init()

@@ -19,7 +19,7 @@ import BraintreeCore
     /// - Parameter authorization: A client token or tokenization key
     @objc(initWithAuthorization:)
     public init(authorization: String) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     // MARK: - Public Methods

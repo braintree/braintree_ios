@@ -7,7 +7,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     var billingAddress = BTPostalAddress()
     var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
     var successApprovalURL: String = ""
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
     var mockCreateMandateResult = CreateMandateResult(json:
         BTJSON(
