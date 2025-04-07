@@ -39,10 +39,15 @@ struct BTPayPalReturnURL {
     /// - Parameter url: an app switch or ASWebAuthenticationSession return URL
     /// - Returns: `true` if the url represents a valid PayPal app switch return
     static func isValid(_ url: URL) -> Bool {
-        url.scheme == "https" && (url.path.contains("cancel") || url.path.contains("success"))
+        let isHTTPSScheme = url.scheme == "https"
+        let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal")
+        let containsExpectedPath = url.path.contains("cancel") || url.path.contains("success")
+        let isValidAppSwitchURL = isHTTPSScheme && containsAppSwitchPath && containsExpectedPath
+        
+        return isValidAppSwitchURL
     }
 
-    static func isValidURLAction(url: URL, linkType: LinkType?) -> Bool {
+    static func isValidURLAction(url: URL, didPayPalServerAttemptAppSwitch: Bool) -> Bool {
         guard let host = url.host, let scheme = url.scheme, !scheme.isEmpty else {
             return false
         }
@@ -58,8 +63,8 @@ struct BTPayPalReturnURL {
         }
 
         /// If we are using the deeplink/ASWeb based PayPal flow we want to check that the host and path matches
-        /// the static callbackURLHostAndPath. For the universal link flow we do not care about this check.
-        if hostAndPath != PayPalRequestConstants.callbackURLHostAndPath && linkType == .deeplink {
+        /// the static callbackURLHostAndPath. For the app switch flow we do not care about this check.
+        if hostAndPath != PayPalRequestConstants.callbackURLHostAndPath && !didPayPalServerAttemptAppSwitch {
             return false
         }
 

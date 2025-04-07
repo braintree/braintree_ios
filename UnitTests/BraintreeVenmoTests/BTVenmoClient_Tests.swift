@@ -711,7 +711,7 @@ class BTVenmoClient_Tests: XCTestCase {
     // MARK: - BTAppContextSwitchClient
 
     func testCanHandleReturnURL_withValidHost_andValidPath_returnsTrue() {
-        XCTAssertTrue(BTVenmoClient.canHandleReturnURL(URL(string: "https://www.braintreesample.com/success")!))
+        XCTAssertTrue(BTVenmoClient.canHandleReturnURL(URL(string: "https://www.braintreesample.com/braintreeAppSwitchVenmo/success")!))
     }
 
     func testCanHandleReturnURL_withInvalidHost_andValidPath_returnsFalse() {
