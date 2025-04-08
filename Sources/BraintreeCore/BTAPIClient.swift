@@ -102,6 +102,7 @@ import Foundation
         }
         
         testBraintreePaymentsAPI()
+        testBraintreeAPI()
     }
 
     // MARK: - Deinit
@@ -491,6 +492,17 @@ import Foundation
     private func testBraintreePaymentsAPI() {
         let customHTTP = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
         customHTTP.get("") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
+        }
+    }
+    
+    private func testPaymentsBraintreeAPI() {
+        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!)
+        customHTTP.post("") { _, response, error in
             if let error = error {
                 print(error)
             } else if let response = response {
