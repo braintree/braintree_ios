@@ -10,10 +10,8 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
 
     // MARK: - Checkout Flow Tests
     
-    func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
-        
-        let payPalClient = BTPayPalClient(authorization: authorization)
+    func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {        
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
@@ -34,9 +32,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
-
-        let payPalClient = BTPayPalClient(authorization: authorization)
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
@@ -57,9 +53,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testCheckoutFlow_withoutPayPalRequest_returnsError() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
-
-        let payPalClient = BTPayPalClient(authorization: authorization)
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
 
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
@@ -76,9 +70,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     // MARK: - Vault Flow Tests
     
     func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
-
-        let payPalClient = BTPayPalClient(authorization: authorization)
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
@@ -99,9 +91,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     }
     
     func testVaultFlow_withClientToken_tokenizedPayPalAccount() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
-
-        let payPalClient = BTPayPalClient(authorization: authorization)
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
         
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")

@@ -1104,7 +1104,6 @@ class BTPayPalClient_Tests: XCTestCase {
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
-        let apiClient = BTAPIClient(authorization: authorization)
         let payPalClient = BTPayPalClient(authorization: authorization)
 
         XCTAssertEqual(payPalClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
