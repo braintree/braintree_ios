@@ -1076,7 +1076,7 @@ final class BTHTTP_Tests: XCTestCase {
         let expectation = expectation(description: "GET callback")
         http = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
         http?.get("") { _, response, error in
-            if let error = error {
+            if let _ = error {
                 XCTFail()
             } else {
                 XCTAssertNotNil(response)
