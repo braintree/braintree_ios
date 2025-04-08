@@ -29,10 +29,10 @@ import Foundation
 
     // MARK: - Initializers
    
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token.
     @_documentation(visibility: private)
-    @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.authorization = Self.authorization(from: authorization)
         self.metadata = BTClientMetadata()

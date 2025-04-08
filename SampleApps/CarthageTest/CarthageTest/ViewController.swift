@@ -16,8 +16,6 @@ class ViewController: UIViewController {
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     override func viewDidLoad() {
-        let apiClient = BTAPIClient(authorization: authorization)
-
         let amexClient = BTAmericanExpressClient(authorization: authorization)
         let applePayClient = BTApplePayClient(authorization: authorization)
         let cardClient = BTCardClient(authorization: authorization)

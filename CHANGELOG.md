@@ -34,7 +34,6 @@
     * Update initializer to `BTThreeDSecureClient(authorization:)`
   * BraintreeCore
     * Remove `fetchPaymentMethodNonces` methods and parser
-    * Make `BTAPIClient` non-optional and update its initializer to require an `authorization` string
   * BraintreeAmericanExpress
     * Update initializer to `BTAmericanExpressClient(authorization:)`
   * BraintreeApplePay
