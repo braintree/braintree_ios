@@ -501,7 +501,7 @@ import Foundation
     }
     
     private func testPaymentsBraintreeAPI() {
-        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!)
+        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com/")!)
         customHTTP.post("") { _, response, error in
             if let error = error {
                 print(error)

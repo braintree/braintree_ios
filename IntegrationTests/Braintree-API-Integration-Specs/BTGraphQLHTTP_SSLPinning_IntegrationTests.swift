@@ -29,5 +29,17 @@ class BTGraphQLHTTP_SSLPinning_IntegrationTests : XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
+    
+    func testBTGraphQLHTTP_whenUsingQAEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
+        let graphqlHttp = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!, tokenizationKey: "")
 
+        let expectation = self.expectation(description: "Callback invoked")
+
+        graphqlHttp.post("/ping") { body, response, error in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 }
