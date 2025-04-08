@@ -4,6 +4,7 @@
 * BraintreeShopperInsights (BETA)
   * Bug fix: remove internal code signing from framework
 * BraintreePayPal
+  * Add `contactPreference` property to `BTPayPalCheckoutRequest` - This property is required to enable the contact information section in the payment flow.
   * Send `merchant_enabled_app_switch` and `attempted_app_switch` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
   * Remove `link_type` for App Switch events to PayPal's analytics service (FPTI)
 

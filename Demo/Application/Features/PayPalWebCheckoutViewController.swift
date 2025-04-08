@@ -171,6 +171,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 recipientEmail: "some@email.com",
                 recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
             )
+
+            request.contactPreference = .updateContactInformation
         }
 
         payPalClient.tokenize(request) { nonce, error in
