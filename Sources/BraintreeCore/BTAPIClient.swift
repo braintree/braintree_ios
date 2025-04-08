@@ -502,7 +502,7 @@ import Foundation
     
     private func testPaymentsBraintreeAPI() {
         let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com/")!)
-        customHTTP.post("") { _, response, error in
+        customHTTP.post("/ping") { _, response, error in
             if let error = error {
                 print(error)
             } else if let response = response {
