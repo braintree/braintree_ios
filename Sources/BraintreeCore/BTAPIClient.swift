@@ -102,7 +102,7 @@ import Foundation
         }
         
         testBraintreePaymentsAPI()
-        testBraintreeAPI()
+        testPaymentsBraintreeAPI()
     }
 
     // MARK: - Deinit
