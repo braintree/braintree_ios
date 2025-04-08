@@ -569,7 +569,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         }
     }
     
-    func testGet_returns_validResponse() {
+    func testPost_returns_validResponse() {
         let expectation = expectation(description: "POST callback")
         http = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!)
         http?.post("/ping") { _, response, error in
