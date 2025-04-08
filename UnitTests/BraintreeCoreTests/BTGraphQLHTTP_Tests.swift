@@ -568,4 +568,20 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             XCTAssertEqual(error?.code, BTHTTPError.httpResponseInvalid.errorCode)
         }
     }
+    
+    func testGet_returns_validResponse() {
+        let expectation = expectation(description: "POST callback")
+        http = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!)
+        http?.post("") { _, response, error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                XCTAssertNotNil(response)
+                XCTAssertNotNil((200...299).contains(response!.statusCode))
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
 }
