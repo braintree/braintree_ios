@@ -29,7 +29,7 @@ public class BTShopperInsightsClient {
     ///     - shopperSessionID: Optional: This value should be the shopper session ID returned from your server SDK request
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
     public init(authorization: String, shopperSessionID: String? = nil) {
-        self.apiClient = BTAPIClient(newAuthorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.authorization = authorization
         self.shopperSessionID = shopperSessionID
     }

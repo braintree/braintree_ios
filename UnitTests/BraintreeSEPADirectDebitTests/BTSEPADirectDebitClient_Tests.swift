@@ -8,11 +8,11 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     
     var billingAddress = BTPostalAddress()
     var sepaDirectDebitRequest = BTSEPADirectDebitRequest()
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     override func setUp() {
-        mockAPIClient = MockAPIClient(authorization: authorization)!
+        mockAPIClient = MockAPIClient(authorization: authorization)
 
         billingAddress.streetAddress = "Kantstraße 70"
         billingAddress.extendedAddress = "#170"

@@ -28,55 +28,13 @@ import Foundation
     var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
 
     // MARK: - Initializers
-
-    // TODO: remove in final PR
-    /// Initialize a new API client.
-    /// - Parameter authorization: Your tokenization key or client token. Passing an invalid value may return `nil`.
-    @objc(initWithAuthorization:)
-    public init?(authorization: String) {
-        self.metadata = BTClientMetadata()
-
-        let authorizationType = Self.authorizationType(for: authorization)
-
-        switch authorizationType {
-        case .tokenizationKey:
-            do {
-                self.authorization = try TokenizationKey(authorization)
-            } catch {
-                return nil
-            }
-        case .clientToken:
-            do {
-                let clientToken = try BTClientToken(clientToken: authorization)
-                self.authorization = clientToken
-            } catch {
-                return nil
-            }
-        case .invalidAuthorization:
-            return nil
-        }
-        
-        let btHttp = BTHTTP(authorization: self.authorization)
-        http = btHttp
-        configurationLoader = ConfigurationLoader(http: btHttp)
-        
-        super.init()
-        analyticsService.setAPIClient(self)
-        http?.networkTimingDelegate = self
-
-        // Kickoff the background request to fetch the config
-        fetchOrReturnRemoteConfiguration { _, _ in
-            // No-op
-        }
-    }
    
-    // TODO: rename param to authorization in final PR - set as newAuthorization currently since otherwise the two inits have the same signature
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token.
     @_documentation(visibility: private)
-    public init(newAuthorization: String) {
-        self.authorization = Self.authorization(from: newAuthorization)
+    public init(authorization: String) {
+        self.authorization = Self.authorization(from: authorization)
         self.metadata = BTClientMetadata()
                 
         let btHTTP = BTHTTP(authorization: self.authorization)

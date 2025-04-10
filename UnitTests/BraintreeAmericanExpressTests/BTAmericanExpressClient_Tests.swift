@@ -5,7 +5,7 @@ import BraintreeCore
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
     var amexClient : BTAmericanExpressClient? = nil
 
     override func setUp() {

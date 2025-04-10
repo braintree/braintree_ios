@@ -11,7 +11,7 @@ class BTDataCollector_Tests: XCTestCase {
     func testCollectDeviceData_collectsAllData() {
         let config: [String: Any] = ["environment": "development"]
         
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
         
         let dataCollector = BTDataCollector(authorization: authorization)
@@ -40,7 +40,7 @@ class BTDataCollector_Tests: XCTestCase {
             "environment":"sandbox"
         ]
 
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
 
         let dataCollector = BTDataCollector(authorization: authorization)
@@ -66,7 +66,7 @@ class BTDataCollector_Tests: XCTestCase {
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let pairingID = "random pairing id"
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
@@ -81,7 +81,7 @@ class BTDataCollector_Tests: XCTestCase {
         ]
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
@@ -96,7 +96,7 @@ class BTDataCollector_Tests: XCTestCase {
         ]
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
@@ -110,7 +110,7 @@ class BTDataCollector_Tests: XCTestCase {
         ]
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
@@ -124,7 +124,7 @@ class BTDataCollector_Tests: XCTestCase {
         ]
         
         let configuration = BTConfiguration(json: BTJSON(value: config))
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
@@ -133,7 +133,7 @@ class BTDataCollector_Tests: XCTestCase {
     }
     
     func testCollectDeviceData_fetchConfigurationReturnsError_returnError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let mockDataCollector = MockBTDataCollector(authorization: authorization)
         mockDataCollector.apiClient = mockAPIClient
 
@@ -155,7 +155,7 @@ class BTDataCollector_Tests: XCTestCase {
     }
     
     func testCollectDeviceData_invalidJSON_returnError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let mockDataCollector = MockBTDataCollector(authorization: authorization)
         mockDataCollector.apiClient = mockAPIClient
         
@@ -177,7 +177,7 @@ class BTDataCollector_Tests: XCTestCase {
     }
     
     func testCollectDeviceData_encodingError_returnError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let mockDataCollector = MockBTDataCollector(authorization: authorization)
         mockDataCollector.apiClient = mockAPIClient
         

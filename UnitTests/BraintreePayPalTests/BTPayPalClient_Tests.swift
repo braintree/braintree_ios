@@ -12,7 +12,7 @@ class BTPayPalClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": ["environment": "offline"]
@@ -1104,7 +1104,6 @@ class BTPayPalClient_Tests: XCTestCase {
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
-        let apiClient = BTAPIClient(authorization: authorization)!
         let payPalClient = BTPayPalClient(authorization: authorization)
 
         XCTAssertEqual(payPalClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)

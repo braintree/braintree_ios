@@ -5,12 +5,10 @@ import XCTest
 class BraintreeDataCollector_IntegrationTests: XCTestCase {
 
     var dataCollector: BTDataCollector?
-    let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
-
+    
     override func setUp() {
         super.setUp()
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector = BTDataCollector(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
     }
 
     override func tearDown() {

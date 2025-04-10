@@ -5,7 +5,7 @@ import XCTest
 @testable import BraintreeThreeDSecure
 
 class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
-    var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))!
+    var mockAPIClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))
     var threeDSecureLookupResult: BTThreeDSecureResult!
 
     override func setUp() {
