@@ -101,8 +101,12 @@ import Foundation
             // No-op
         }
         
-        testBraintreePaymentsAPI()
-        testPaymentsBraintreeAPI()
+        testBraintreePaymentsAPI_PRODUCTION()
+        testBraintreePaymentsAPI_SANDBOX()
+        testBraintreePaymentsAPI_QA()
+        testPaymentsBraintreeAPI_PRODUCTION()
+        testPaymentsBraintreeAPI_SANDBOX()
+        testPaymentsBraintreeAPI_QA()
     }
 
     // MARK: - Deinit
@@ -489,7 +493,29 @@ import Foundation
         }
     }
     
-    private func testBraintreePaymentsAPI() {
+    private func testBraintreePaymentsAPI_PRODUCTION() {
+        let customHTTP = BTHTTP(url: URL(string: "https://api.braintreegateway.com")!)
+        customHTTP.get("") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
+        }
+    }
+    
+    private func testBraintreePaymentsAPI_SANDBOX() {
+        let customHTTP = BTHTTP(url: URL(string: "https://api.sandbox.braintreegateway.com")!)
+        customHTTP.get("") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
+        }
+    }
+    
+    private func testBraintreePaymentsAPI_QA() {
         let customHTTP = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
         customHTTP.get("") { _, response, error in
             if let error = error {
@@ -500,8 +526,30 @@ import Foundation
         }
     }
     
-    private func testPaymentsBraintreeAPI() {
-        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com/")!)
+    private func testPaymentsBraintreeAPI_PRODUCTION() {
+        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments.braintree-api.com")!)
+        customHTTP.post("/ping") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
+        }
+    }
+    
+    private func testPaymentsBraintreeAPI_SANDBOX() {
+        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments.sandbox.braintree-api.com")!)
+        customHTTP.post("/ping") { _, response, error in
+            if let error = error {
+                print(error)
+            } else if let response = response {
+                print(response)
+            }
+        }
+    }
+        
+    private func testPaymentsBraintreeAPI_QA() {
+        let customHTTP = BTGraphQLHTTP(url: URL(string: "https://payments-qa.dev.braintree-api.com")!)
         customHTTP.post("/ping") { _, response, error in
             if let error = error {
                 print(error)
