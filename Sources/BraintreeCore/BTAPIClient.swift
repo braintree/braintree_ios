@@ -505,8 +505,8 @@ import Foundation
     }
     
     private func testBraintreePaymentsAPI_SANDBOX() {
-        let customHTTP = BTHTTP(url: URL(string: "https://api.sandbox.braintreegateway.com")!)
-        customHTTP.get("") { _, response, error in
+        let customHTTP = BTHTTP(url: URL(string: "https://api.sandbox.braintreegateway.com")!, tokenizationKey: "development_testing_integration_merchant_id")
+        customHTTP.get("/heartbeat.json") { _, response, error in
             if let error = error {
                 print(error)
             } else if let response = response {
@@ -516,8 +516,8 @@ import Foundation
     }
     
     private func testBraintreePaymentsAPI_QA() {
-        let customHTTP = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!)
-        customHTTP.get("") { _, response, error in
+        let customHTTP = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!, tokenizationKey: "development_testing_integration_merchant_id")
+        customHTTP.get("/heartbeat.json") { _, response, error in
             if let error = error {
                 print(error)
             } else if let response = response {
