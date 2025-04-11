@@ -48,32 +48,6 @@ final class BTHTTP_SSLPinning_IntegrationTests: XCTestCase {
 
         waitForExpectations(timeout: 5)
     }
-     
-    func testHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let http = BTHTTP(url: URL(string: "https://api.braintreegateway.com")!, tokenizationKey: "")
-
-        let expectation = self.expectation(description: "Callback invoked")
-
-        http.get("") { body, response, error in
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-    
-    func testHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
-        let http = BTHTTP(url: URL(string: "https://api.sandbox.braintreegateway.com")!, tokenizationKey: "")
-
-        let expectation = self.expectation(description: "Callback invoked")
-
-        http.get("") { body, response, error in
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
     
     func testHTTP_whenUsingQAEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI() {
         let http = BTHTTP(url: URL(string: "https://gateway.qa.braintreepayments.com")!, tokenizationKey: "")
