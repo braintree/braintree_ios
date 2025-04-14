@@ -272,7 +272,6 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     
     func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail() {
         let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
-        request.userAuthenticationEmail = ""
         
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
         
