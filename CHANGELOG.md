@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Bug fix: remove internal code signing from framework
+* BraintreeThreeDSecure
+  * Bug fix: remove internal code signing from framework
+
 ## 6.31.0 (2025-04-09)
 * BraintreeShopperInsights (BETA)
   * Bug fix: remove internal code signing from framework
