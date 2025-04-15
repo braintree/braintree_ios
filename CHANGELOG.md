@@ -2,7 +2,10 @@
 
 ## unreleased
 * BraintreePayPal
+  * Bug fix: remove internal code signing from framework
   * Make `userAuthenticationEmail` property optional for all App Switch flows
+* BraintreeThreeDSecure
+  * Bug fix: remove internal code signing from framework
 
 ## 6.31.0 (2025-04-09)
 * BraintreeShopperInsights (BETA)
