@@ -311,15 +311,16 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
     
     func testParametersWithConfiguration_withContactInformationToUpdate_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .updateContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .updateContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "UPDATE_CONTACT_INFO")
         
@@ -329,15 +330,16 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
     
     func testParametersWithConfiguration_withContactInformationToRetain_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .retainContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .retainContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "RETAIN_CONTACT_INFO")
         
@@ -347,15 +349,17 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
     
     func testParametersWithConfiguration_withContactInformationWithNoInfo_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .noContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .noContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "NO_CONTACT_INFO")
         

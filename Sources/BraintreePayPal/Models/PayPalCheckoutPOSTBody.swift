@@ -19,7 +19,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     
     private var billingAgreementDescription: BillingAgreemeentDescription?
     private var enablePayPalAppSwitch: Bool?
-    private var contactInformation: BTContactInformation?
+    private var contactPreference: String?
     private var currencyCode: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
@@ -57,6 +57,10 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.offerPayLater = payPalRequest.offerPayLater
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode
+        
+        if payPalRequest.contactPreference != .none {
+            self.contactPreference = payPalRequest.contactPreference.stringValue
+        }
         
         if let currencyIsoCode {
             self.currencyCode = currencyIsoCode
@@ -108,6 +112,10 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.shippingCallbackURL = shippingCallbackURL.absoluteString
         }
         
+        if let shopperSessionID = payPalRequest.shopperSessionID {
+            self.shopperSessionID = shopperSessionID
+        }
+        
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
@@ -125,12 +133,16 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case amount
         case billingAgreementDescription = "billing_agreement_details"
         case cancelURL = "cancel_url"
+        case contactPreference = "contact_preference"
         case currencyCode = "currency_iso_code"
+        case enablePayPalAppSwitch = "launch_paypal_app"
         case experienceProfile = "experience_profile"
         case intent
         case lineItems = "line_items"
         case merchantAccountID = "merchant_account_id"
         case offerPayLater = "offer_pay_later"
+        case osType = "os_type"
+        case osVersion = "os_version"
         case recipientPhoneNumber = "international_phone"
         case recipientEmail = "recipient_email"
         case requestBillingAgreement = "request_billing_agreement"
@@ -138,6 +150,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case riskCorrelationID = "correlation_id"
         case shippingCallbackURL = "shipping_callback_url"
         case shopperSessionID = "shopper_session_id"
+        case universalLink = "merchant_app_return_url"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "phone_number"
         

@@ -36,8 +36,6 @@ import BraintreeCore
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
-    ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
-    ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
     ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
@@ -53,7 +51,7 @@ import BraintreeCore
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
-    ///  - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    ///   - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     /// identified with the same phone number.
