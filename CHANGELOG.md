@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased (v7)
+## unreleased
 * Require Xcode 16.2+ and Swift 5.10+
 * Breaking Changes
   * Bump minimum supported deployment target to iOS 16+
