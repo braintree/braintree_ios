@@ -165,6 +165,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             intent: newPayPalCheckoutToggle.isOn ? .sale : .authorize,
             offerPayLater: payLaterToggle.isOn,
             contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
+            contactPreference: .updateContactInformation,
             lineItems: [lineItem],
             userAuthenticationEmail: emailTextField.text,
             userPhoneNumber: BTPayPalPhoneNumber(

@@ -46,9 +46,16 @@
     * Update initializer to `BTPayPalMessagingView(authorization:)`
 
 ## unreleased
+* BraintreePayPal
+  * Bug fix: remove internal code signing from framework
+* BraintreeThreeDSecure
+  * Bug fix: remove internal code signing from framework
+
+## 6.31.0 (2025-04-09)
 * BraintreeShopperInsights (BETA)
   * Bug fix: remove internal code signing from framework
 * BraintreePayPal
+  * Add `contactPreference` property to `BTPayPalCheckoutRequest` - This property is required to enable the contact information section in the payment flow.
   * Send `merchant_enabled_app_switch` and `attempted_app_switch` in `event_params` for App Switch events to PayPal's analytics service (FPTI)
   * Remove `link_type` for App Switch events to PayPal's analytics service (FPTI)
 
