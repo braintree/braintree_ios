@@ -83,6 +83,10 @@ struct PayPalVaultPOSTBody: Encodable {
         if let shippingAddressOverride = payPalRequest.shippingAddressOverride {
             self.shippingAddressOverride = shippingAddressOverride
         }
+        
+        if let shopperSessionID = payPalRequest.shopperSessionID {
+            self.shopperSessionID = shopperSessionID
+        }
     }
     
     enum CodingKeys: String, CodingKey {

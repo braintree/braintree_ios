@@ -69,6 +69,7 @@ import BraintreeCore
     var offerPayLater: Bool
     var billingAgreementDescription: String?
     var contactInformation: BTContactInformation?
+    var contactPreference: BTContactPreference = .none
     var currencyCode: String?
     var displayName: String?
     var enablePayPalAppSwitch: Bool = false
@@ -88,6 +89,45 @@ import BraintreeCore
     
     // MARK: - Initializer
 
+    /// Initializes a PayPal Checkout request for the PayPal App Switch flow
+    /// - Parameters:
+    ///   - userAuthenticationEmail: Required: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    ///   - amount: Required: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
+    ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
+    ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+    ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
+    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
+    ///   during checkout. Defaults to `false`.
+    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
+    /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+    /// - Note: The PayPal App Switch flow currently only supports the production environment.
+    public convenience init(
+        userAuthenticationEmail: String,
+        enablePayPalAppSwitch: Bool,
+        amount: String,
+        intent: BTPayPalRequestIntent = .authorize,
+        userAction: BTPayPalRequestUserAction = .none,
+        offerPayLater: Bool = false,
+        currencyCode: String? = nil,
+        requestBillingAgreement: Bool = false,
+        contactPreference: BTContactPreference = .none
+    ) {
+        self.init(
+            amount: amount,
+            intent: intent,
+            userAction: userAction,
+            offerPayLater: offerPayLater,
+            contactPreference: contactPreference,
+            currencyCode: currencyCode,
+            enablePayPalAppSwitch: enablePayPalAppSwitch,
+            requestBillingAgreement: requestBillingAgreement,
+            userAuthenticationEmail: userAuthenticationEmail
+        )
+    }
+
     /// Initializes a PayPal Checkout request
     /// - Parameters:
     ///   - amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
@@ -96,6 +136,7 @@ import BraintreeCore
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set
     ///   - contactInformation: Optional: Contact information of the recipient for the order
+    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set
     ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
@@ -114,7 +155,7 @@ import BraintreeCore
     ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
-    ///  - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    ///   - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     ///   identified with the same phone number.
@@ -125,6 +166,7 @@ import BraintreeCore
         offerPayLater: Bool = false,
         billingAgreementDescription: String? = nil,
         contactInformation: BTContactInformation? = nil,
+        contactPreference: BTContactPreference = .none,
         currencyCode: String? = nil,
         displayName: String? = nil,
         enablePayPalAppSwitch: Bool = false,
@@ -148,8 +190,10 @@ import BraintreeCore
         self.offerPayLater = offerPayLater
         self.billingAgreementDescription = billingAgreementDescription
         self.contactInformation = contactInformation
+        self.contactPreference = contactPreference
         self.currencyCode = currencyCode
         self.displayName = displayName
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.isShippingAddressEditable = isShippingAddressEditable
         self.isShippingAddressRequired = isShippingAddressRequired
         self.landingPageType = landingPageType
@@ -160,6 +204,7 @@ import BraintreeCore
         self.riskCorrelationID = riskCorrelationID
         self.shippingAddressOverride = shippingAddressOverride
         self.shippingCallbackURL = shippingCallbackURL
+        self.shopperSessionID = shopperSessionID
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }

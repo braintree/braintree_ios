@@ -310,6 +310,64 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["international_phone"])
     }
     
+    func testParametersWithConfiguration_withContactInformationToUpdate_setsRecipientEmailAndPhoneNumber() {
+        let contactInformation = BTContactInformation(
+            recipientEmail: "some@mail.com",
+            recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
+        )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .updateContactInformation)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["contact_preference"] as? String, "UPDATE_CONTACT_INFO")
+        
+        XCTAssertEqual(parameters["recipient_email"] as? String, "some@mail.com")
+        let internationalPhone = parameters["international_phone"] as? [String: String]
+        XCTAssertEqual(internationalPhone, ["country_code": "US", "national_number": "123456789"])
+    }
+    
+    func testParametersWithConfiguration_withContactInformationToRetain_setsRecipientEmailAndPhoneNumber() {
+        let contactInformation = BTContactInformation(
+            recipientEmail: "some@mail.com",
+            recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
+        )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .retainContactInformation)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["contact_preference"] as? String, "RETAIN_CONTACT_INFO")
+        
+        XCTAssertEqual(parameters["recipient_email"] as? String, "some@mail.com")
+        let internationalPhone = parameters["international_phone"] as? [String: String]
+        XCTAssertEqual(internationalPhone, ["country_code": "US", "national_number": "123456789"])
+    }
+    
+    func testParametersWithConfiguration_withContactInformationWithNoInfo_setsRecipientEmailAndPhoneNumber() {
+        let contactInformation = BTContactInformation(
+            recipientEmail: "some@mail.com",
+            recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
+        )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .noContactInformation)
+        
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["contact_preference"] as? String, "NO_CONTACT_INFO")
+        
+        XCTAssertEqual(parameters["recipient_email"] as? String, "some@mail.com")
+        let internationalPhone = parameters["international_phone"] as? [String: String]
+        XCTAssertEqual(internationalPhone, ["country_code": "US", "national_number": "123456789"])
+    }
+
     func testParameters_whenShippingCallbackURLNotSet_returnsParameters() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         
