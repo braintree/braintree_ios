@@ -6,7 +6,7 @@ import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
-    lazy var shopperInsightsClient = BTShopperInsightsClient(authorization: authorization, shopperSessionID: "test-shopper-session-id")
+    lazy var shopperInsightsClient = BTShopperInsightsClient(authorization: authorization, shopperSessionID: shopperSessionID)
     lazy var payPalClient = BTPayPalClient(authorization: authorization)
     lazy var venmoClient = BTVenmoClient(
         authorization: authorization,
@@ -17,7 +17,8 @@ class ShopperInsightsViewController: PaymentButtonBaseViewController {
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
-    private var shopperSessionID = "test-shopper-session-id"
+    /// Session ID should be between 32 and 100 characters long.
+    private var shopperSessionID = "test-shopper-session-id-test-shopper-session-id"
     
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()

@@ -16,11 +16,13 @@ public class BTShopperInsightsClient {
     
     // MARK: - Private Properties
 
+    /// With the new init, we wouldn’t need to expose this property — it should be injected as a dependency instead.
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
 
     private let authorization: String
     private let shopperSessionID: String?
+    private let findEligibleMethodService: BTFindEligibleMethodsServiceable
 
     /// Creates a `BTShopperInsightsClient`
     ///
@@ -28,12 +30,30 @@ public class BTShopperInsightsClient {
     ///     - authorization: A valid client token or tokenization key used to authorize API calls
     ///     - shopperSessionID: Optional: This value should be the shopper session ID returned from your server SDK request
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
-    public init(authorization: String, shopperSessionID: String? = nil) {
-        self.apiClient = BTAPIClient(authorization: authorization)
+    public convenience init(authorization: String, shopperSessionID: String? = nil) {
+        let apiClient = BTAPIClient(authorization: authorization)
+        let service = BTFindEligibleMethodsService(apiClient: apiClient)
+        self.init(
+            authorization: authorization,
+            shopperSessionID: shopperSessionID,
+            apiClient: apiClient,
+            findEligibleMethodService: service
+        )
+    }
+    
+    // Internal init for testability (inject BTFindEligibleMethodsServiceable mock)
+    init(
+        authorization: String,
+        shopperSessionID: String?,
+        apiClient: BTAPIClient,
+        findEligibleMethodService: BTFindEligibleMethodsServiceable
+    ) {
+        self.apiClient = apiClient
         self.authorization = authorization
         self.shopperSessionID = shopperSessionID
+        self.findEligibleMethodService = findEligibleMethodService
     }
-
+    
     // MARK: - Public Methods
 
     /// This method confirms if the customer is a user of PayPal services using their email and phone number.
@@ -58,39 +78,11 @@ public class BTShopperInsightsClient {
             throw notifyFailure(with: BTShopperInsightsError.invalidAuthorization, for: experiment)
         }
 
-        let postParameters = BTEligiblePaymentsRequest(
-            email: request.email,
-            phone: request.phone
-        )
-
         do {
-            let (json, _) = try await apiClient.post(
-                "/v2/payments/find-eligible-methods",
-                parameters: postParameters,
-                headers: ["PayPal-Client-Metadata-Id": apiClient.metadata.sessionID],
-                httpType: .payPalAPI
-            )
-
-            // swiftlint:disable empty_count
-            guard
-                let eligibleMethodsJSON = json?["eligible_methods"].asDictionary(),
-                eligibleMethodsJSON.count != 0
-            else {
-                throw self.notifyFailure(with: BTShopperInsightsError.emptyBodyReturned, for: experiment)
-            }
-            // swiftlint:enable empty_count
-
-            let eligiblePaymentMethods = BTEligiblePaymentMethods(json: json)
-            let payPal = eligiblePaymentMethods.payPal
-            let venmo = eligiblePaymentMethods.venmo
-            let result = BTShopperInsightsResult(
-                isPayPalRecommended: payPal?.recommended ?? false,
-                isVenmoRecommended: venmo?.recommended ?? false,
-                isEligibleInPayPalNetwork: payPal?.eligibleInPayPalNetwork ?? false || venmo?.eligibleInPayPalNetwork ?? false
-            )
-            return self.notifySuccess(with: result, for: experiment)
+            let response = try await findEligibleMethodService.execute(request)
+            return notifySuccess(with: response, for: experiment)
         } catch {
-            throw self.notifyFailure(with: error, for: experiment)
+            throw notifyFailure(with: error, for: experiment)
         }
     }
 

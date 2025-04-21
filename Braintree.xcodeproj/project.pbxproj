@@ -43,6 +43,8 @@
 		451508382D400C400071E385 /* BTPayPalRequestLandingPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451508372D400C400071E385 /* BTPayPalRequestLandingPageType.swift */; };
 		45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */; };
 		45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */; };
+		4543A0612DB6D56B00ACC523 /* BTFindEligibleMethodsServiceable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543A0602DB6D56800ACC523 /* BTFindEligibleMethodsServiceable.swift */; };
+		4543A0632DB6F8CA00ACC523 /* BTFindEligibleMethodsService_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543A0622DB6F8B500ACC523 /* BTFindEligibleMethodsService_Tests.swift */; };
 		454722B02CF0DA34000DCF4E /* LocalPaymentPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454722AF2CF0DA27000DCF4E /* LocalPaymentPOSTBody.swift */; };
 		457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */; };
 		457D7FCA2C2A250E00EF6523 /* RepeatingTimer_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */; };
@@ -738,6 +740,8 @@
 		451508372D400C400071E385 /* BTPayPalRequestLandingPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalRequestLandingPageType.swift; sourceTree = "<group>"; };
 		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
 		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
+		4543A0602DB6D56800ACC523 /* BTFindEligibleMethodsServiceable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTFindEligibleMethodsServiceable.swift; sourceTree = "<group>"; };
+		4543A0622DB6F8B500ACC523 /* BTFindEligibleMethodsService_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTFindEligibleMethodsService_Tests.swift; sourceTree = "<group>"; };
 		454722AF2CF0DA27000DCF4E /* LocalPaymentPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPaymentPOSTBody.swift; sourceTree = "<group>"; };
 		457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer_Tests.swift; sourceTree = "<group>"; };
@@ -1464,6 +1468,7 @@
 				624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
+				4543A0602DB6D56800ACC523 /* BTFindEligibleMethodsServiceable.swift */,
 				3B29C3942B90F12F0077741D /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeShopperInsights;
@@ -1474,6 +1479,7 @@
 			children = (
 				62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */,
 				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
+				4543A0622DB6F8B500ACC523 /* BTFindEligibleMethodsService_Tests.swift */,
 				804698482B27C71C0090878E /* Info.plist */,
 			);
 			path = BraintreeShopperInsightsTests;
@@ -3217,6 +3223,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4543A0612DB6D56B00ACC523 /* BTFindEligibleMethodsServiceable.swift in Sources */,
 				04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */,
 				804698382B27C53B0090878E /* BTShopperInsightsRequest.swift in Sources */,
 				04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */,
@@ -3236,6 +3243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4543A0632DB6F8CA00ACC523 /* BTFindEligibleMethodsService_Tests.swift in Sources */,
 				80B59A132B27C7FC004C2FA3 /* BTShopperInsightsClient_Tests.swift in Sources */,
 				62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */,
 			);
