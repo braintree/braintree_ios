@@ -1,10 +1,3 @@
-//
-//  BTCreateCustomerSessionApi.swift
-//  Braintree
-//
-//  Created by Herrera, Ricardo on 21/04/25.
-//
-
 import BraintreeCore
 
 /// This is the blueprint that would help us create the mock of `BTFindEligibleMethodsService`, and make it easier to write unit tests for the BTShopperInsightsClient.
