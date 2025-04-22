@@ -5,7 +5,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-/// The POST body for v1/paypal_hermes/setup_billing_agreement
+/// The POST body for `v1/paypal_hermes/setup_billing_agreement`
 struct PayPalVaultPOSTBody: Encodable {
     
     // MARK: - Private Properties
