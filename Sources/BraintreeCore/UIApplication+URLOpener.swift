@@ -11,7 +11,11 @@ public protocol URLOpener {
     func isVenmoAppInstalled() -> Bool
 
     @MainActor
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?)
+    func open(
+        _ url: URL,
+        options: [UIApplication.OpenExternalURLOptionsKey: Any],
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+    )
 }
 
 extension UIApplication: URLOpener {
