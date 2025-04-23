@@ -9,7 +9,11 @@ public class FakeApplication: URLOpener {
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
 
-    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
+    public func open(
+        _ url: URL,
+        options: [UIApplication.OpenExternalURLOptionsKey : Any],
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?)
+    {
         lastOpenURL = url
         openURLWasCalled = true
         completion?(cannedOpenURLSuccess)
