@@ -683,6 +683,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.handleReturnStarted)
     }
     
+    @MainActor
     func testStartVenmoFlow_sendsAppSwitchStartedEvent() {
         let appSwitchURL = URL(string: "some-url")!
         venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false) { _, _ in }
@@ -759,6 +760,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
     // MARK: - openVenmoAppPageInAppStore
 
+    @MainActor
     func testGotoVenmoInAppStore_opensVenmoAppStoreURL() {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
