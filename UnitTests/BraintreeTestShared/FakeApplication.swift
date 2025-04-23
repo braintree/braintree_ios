@@ -2,14 +2,14 @@ import UIKit
 import BraintreeCore
 
 public class FakeApplication: URLOpener {
-    
+        
     public var lastOpenURL: URL? = nil
     public var openURLWasCalled: Bool = false
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
 
-    public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         lastOpenURL = url
         openURLWasCalled = true
         completion?(cannedOpenURLSuccess)
