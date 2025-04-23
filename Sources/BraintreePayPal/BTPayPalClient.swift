@@ -427,9 +427,11 @@ import BraintreeDataCollector
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
             return
         }
-
-        application.open(redirectURL, options: [:]) { success in
-            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
+        
+        DispatchQueue.main.async {
+            self.application.open(redirectURL, options: [:]) { success in
+                self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
+            }
         }
     }
 
