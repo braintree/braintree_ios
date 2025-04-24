@@ -29,6 +29,8 @@ public class BTShopperInsightsClientV2 {
         self.apiClient = apiClient
     }
     
+    // MARK: - Public Methods
+    
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
