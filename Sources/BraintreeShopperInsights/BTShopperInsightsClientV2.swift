@@ -1,4 +1,6 @@
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 ///  Use `BTShopperInsightsClientV2` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///
@@ -7,6 +9,8 @@ import BraintreeCore
 ///  The use of this client is a completely separate integration path from the deprecated `BTShopperInsightsClient`
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public class BTShopperInsightsClientV2 {
+    
+    // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     
