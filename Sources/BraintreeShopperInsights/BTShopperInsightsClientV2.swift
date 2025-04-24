@@ -14,9 +14,11 @@ public class BTShopperInsightsClientV2 {
     
     private let apiClient: BTAPIClient
     
+    // MARK: - Initializers
+    
     /// Creates a `BTShopperInsightsClientV2`
     /// - Parameters:
-    ///     - apiClient: A `BTAPIClient` instance.
+    ///    - apiClient: A `BTAPIClient` instance.
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
