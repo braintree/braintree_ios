@@ -21,6 +21,8 @@ public class BTShopperInsightsClientV2 {
     
     private let apiClient: BTAPIClient
     
+    // MARK: - Initializers
+    
     /// Creates a `BTShopperInsightsClientV2`
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance.
