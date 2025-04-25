@@ -111,7 +111,7 @@ import BraintreeCore
             
             let graphQLParameters = self.buildGraphQLDictionary(with: request, merchantProfileID: merchantProfileID)
 
-            self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
+            self.apiClient.post("", parameters: graphQLParameters.mapValues({AnyEncodable($0)}), httpType: .graphQLAPI) { body, _, error in
                 if let error = error as? NSError {
                     let jsonResponse: BTJSON? = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
                     let errorMessage = jsonResponse?["error"]["message"].asString()
@@ -278,12 +278,7 @@ import BraintreeCore
 
         switch returnURL.state {
         case .succeededWithPaymentContext:
-            let variablesDictionary: [String: String?] = ["id": returnURL.paymentContextID]
-            let graphQLParameters: [String: Any] = [
-                // swiftlint:disable:next line_length
-                "query": "query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
-                "variables": variablesDictionary
-            ]
+            let graphQLParameters = BTVenmoGraphQLBody(returnURL: returnURL.paymentContextID)
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error {
@@ -387,8 +382,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let venmoAccount: [String: String] = ["nonce": nonce]
-        let parameters: [String: Any] = ["venmoAccount": venmoAccount]
+        let parameters = BTVenmoPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
@@ -480,5 +474,28 @@ extension BTVenmoClient: BTAppContextSwitchClient {
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
         BTVenmoAppSwitchReturnURL.isValid(url: url)
+    }
+}
+
+public struct AnyEncodable: Encodable {
+    private let value: Any
+
+    init(_ value: Any) {
+        self.value = value
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch value {
+        case let dict as Encodable:
+            try dict.encode(to: encoder)
+        default:
+            let context = EncodingError.Context(
+                codingPath: encoder.codingPath,
+                debugDescription: "Value cannot be encoded"
+            )
+            throw EncodingError.invalidValue(value, context)
+        }
     }
 }

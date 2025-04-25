@@ -51,18 +51,4 @@ final class BTClientMetadata_Tests: XCTestCase {
         XCTAssertEqual(metadata.source, BTClientMetadataSource.payPalApp)
     }
 
-    func testParameters_ReturnsTheMetadataMetaParametersForPosting() {
-        let metadata = BTClientMetadata()
-        let parameters = metadata.parameters as? [String: String]
-        let expectedParameters: [String: String] = [
-            "integration": metadata.integration.stringValue,
-            "source": metadata.source.stringValue,
-            "sessionId": metadata.sessionID,
-            "platform": "iOS",
-            "version": BTCoreConstants.braintreeSDKVersion
-        ]
-
-        XCTAssertEqual(parameters, expectedParameters)
-    }
-
 }

@@ -69,13 +69,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        do {
-            let dict = try parameters?.toDictionary()
-            
-            httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
-        } catch let error {
-            completion(nil, nil, error)
-        }
+        httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
     func get(
@@ -95,22 +89,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    func post(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = nil,
-        headers: [String: String]? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        httpRequest(
-            method: "POST",
-            path: path,
-            configuration: configuration,
-            parameters: parameters,
-            headers: headers,
-            completion: completion
-        )
-    }
     
     func post(
         _ path: String,
@@ -121,7 +99,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     ) {
         do {
             let dict = try parameters.toDictionary()
-            post(path, configuration: configuration, parameters: dict, headers: headers, completion: completion)
+            httpRequest(
+                method: "POST",
+                path: path,
+                configuration: configuration,
+                parameters: parameters,
+                headers: headers,
+                completion: completion
+            )
         } catch let error {
             completion(nil, nil, error)
         }
@@ -150,7 +135,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
@@ -181,7 +166,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         headers: [String: String]? = [:]
     ) throws -> URLRequest {
         var fullPathURL: URL
@@ -199,8 +184,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
             throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
-        
-        let mutableParameters = NSMutableDictionary(dictionary: parameters ?? [:])
+
+        var mutableParameters = try parameters?.toDictionary() ?? [:]
 
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
@@ -211,7 +196,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return try buildHTTPRequest(
             method: method,
             url: fullPathURL,
-            parameters: mutableParameters,
+            parameters: mutableParameters as? NSMutableDictionary,
             headers: headers
         )
     }

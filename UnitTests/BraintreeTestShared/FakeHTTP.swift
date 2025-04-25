@@ -55,7 +55,7 @@ import Foundation
         }
     }
 
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = parameters

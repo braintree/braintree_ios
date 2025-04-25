@@ -47,7 +47,7 @@ public class MockAPIClient: BTAPIClient {
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
-    public override func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = parameters
         lastPOSTAPIClientHTTPType = httpType
