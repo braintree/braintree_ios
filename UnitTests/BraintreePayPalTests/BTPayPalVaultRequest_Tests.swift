@@ -123,7 +123,17 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             startDate: "test-date",
             pricing: billingPricing
         )
-        
+
+        let billingAmountBreakdown = BTRecurringBillingAmountBreakdown(
+            itemTotal: "9",
+            shipping: "8",
+            handling: "7",
+            taxTotal: "6",
+            insurance: "5",
+            shippingDiscount: "4",
+            discount: "1"
+        )
+
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
@@ -134,7 +144,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             oneTimeFeeAmount: "test-fee",
             shippingAmount: "test-shipping",
             productAmount: "test-price",
-            taxAmount: "test-tax"
+            taxAmount: "test-tax",
+            unitAmount: "test-unit",
+            amountBreakdown: billingAmountBreakdown
         )
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
@@ -165,5 +177,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(pricingScheme["pricing_model"], "AUTO_RELOAD")
         XCTAssertEqual(pricingScheme["price"], "test-price")
         XCTAssertEqual(pricingScheme["reload_threshold_amount"], "test-threshold")
+        XCTAssertEqual(planMetadata["tax_amount"] as! String, "test-tax")
+        XCTAssertEqual(planMetadata["unit_amount"] as! String, "test-unit")
+
+        guard let amountBreakdown = planMetadata["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
     }
 }

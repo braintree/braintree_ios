@@ -89,6 +89,12 @@ import BraintreeCore
     /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
     public var contactPreference: BTContactPreference = .none
 
+    /// Optional: Display recurring billing details to buyers.
+    public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+
+    /// Optional: The recurring billing plan type or payment charge pattern.
+    public var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
+
     // MARK: - Initializers
     
     /// Initializes a PayPal Checkout request for the PayPal App Switch flow
@@ -150,7 +156,9 @@ import BraintreeCore
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         shippingCallbackURL: URL? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -159,6 +167,8 @@ import BraintreeCore
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
         
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
