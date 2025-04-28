@@ -126,12 +126,8 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
 
         let billingAmountBreakdown = BTRecurringBillingAmountBreakdown(
             itemTotal: "9",
-            shipping: "8",
-            handling: "7",
             taxTotal: "6",
-            insurance: "5",
-            shippingDiscount: "4",
-            discount: "1"
+            shipping: "8"
         )
 
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(

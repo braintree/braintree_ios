@@ -6,8 +6,8 @@ public struct BTRecurringBillingAmountBreakdown {
     // MARK: - Private Properties
 
     private let itemTotal: String
-    private let shipping: String
     private let taxTotal: String
+    private let shipping: String?
 
     // MARK: - Initializer
 
@@ -15,29 +15,28 @@ public struct BTRecurringBillingAmountBreakdown {
     /// - Parameters:
     ///   - itemTotal: Required: Total cost of item(s)
     ///   - shipping: Optional: Cost of shipping
-    ///   - handling: Optional: Cost of handling
-    ///   - taxTotal: Optional: Total cost of tax
-    ///   - insurance: Optional: Cost of insurance
-    ///   - shippingDiscount: Optional: Shipping discount amount
-    ///   - discount: Optional: Discount amount
+    ///   - taxTotal: Required: Total cost of tax
     public init(
         itemTotal: String,
-        shipping: String,
-        taxTotal: String
+        taxTotal: String,
+        shipping: String? = nil
     ) {
         self.itemTotal = itemTotal
-        self.shipping = shipping
         self.taxTotal = taxTotal
+        self.shipping = shipping
     }
 
-    //MARK: - Internal Methods
+    // MARK: - Internal Methods
 
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [
             "item_total": itemTotal,
-            "shipping": shipping,
             "taxTotal": taxTotal
         ]
+
+        if let shipping {
+            parameters["shipping"] = shipping
+        }
         
         return parameters
     }
