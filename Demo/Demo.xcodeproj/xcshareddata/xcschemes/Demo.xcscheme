@@ -81,13 +81,6 @@
          </BuildableReference>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9CE51766282D51DD0013C740"
-            BuildableName = "BraintreePayPalNativeCheckout.framework"
-            BlueprintName = "BraintreePayPalNativeCheckout"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
             BlueprintIdentifier = "BEF3F17227CE9EC600072467"
             BuildableName = "BraintreeSEPADirectDebit.framework"
             BlueprintName = "BraintreeSEPADirectDebit"

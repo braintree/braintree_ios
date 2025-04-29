@@ -99,6 +99,24 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
     
+    func testParametersWithConfiguration_setsAppSwitchParameters_withoutUserAuthenticationEmail() {
+        let request = BTPayPalVaultRequest(
+            enablePayPalAppSwitch: true
+        )
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, isPayPalAppInstalled: true, universalLink:  URL(string: "some-merchant-url")!)
+            .toDictionary() else {
+                XCTFail()
+                return
+            }
+        
+        XCTAssertNil(parameters["payer_email"])
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
+        XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-merchant-url")
+    }
+    
     func testParameters_withRecurringBillingDetails_returnsAllParams() {
         let billingPricing = BTPayPalBillingPricing(
             pricingModel: .autoReload,

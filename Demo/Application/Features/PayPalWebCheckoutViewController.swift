@@ -250,16 +250,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
-            self.progressBlock("Email cannot be nil for App Switch flow")
-            sender.isEnabled = true
-            return
-        }
-
         let request = BTPayPalCheckoutRequest(
-            amount: "10.00",
+            userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true,
-            userAuthenticationEmail: userEmail
+            amount: "10.00"
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -277,16 +271,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     @objc func tappedPayPalAppSwitchForVault(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
-        
-        guard let userEmail = emailTextField.text, !userEmail.isEmpty else {
-            self.progressBlock("Email cannot be nil for App Switch flow")
-            sender.isEnabled = true
-            return
-        }
 
         let request = BTPayPalVaultRequest(
-            enablePayPalAppSwitch: true,
-            userAuthenticationEmail: userEmail
+            userAuthenticationEmail: emailTextField.text,
+            enablePayPalAppSwitch: true
         )
 
         payPalClient.tokenize(request) { nonce, error in
