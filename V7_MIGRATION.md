@@ -11,7 +11,7 @@ _Documentation for v7 will be published to https://developer.paypal.com/braintre
 1. [Venmo](#venmo)
 1. [SEPA Direct Debit](#sepa-direct-debit)
 1. [Local Payments](#local-payments)
-1. [3D Secure](#3d-secure)]
+1. [3D Secure](#3d-secure)
 1. [PayPal](#paypal)
 1. [PayPal Native Checkout](#paypal-native-checkout)
 1. [American Express](#american-express)
