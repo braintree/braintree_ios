@@ -1,12 +1,12 @@
 import Foundation
 
 /// The POST body for `v1/payment_methods/venmo_accounts`
-struct BTVenmoPOSTBody: Encodable {
+struct VenmoPOSTBody: Encodable {
 
-    var venmoAccountNonce: Nonce
+    var venmoAccount: Nonce
 
     init(nonce: String) {
-        self.venmoAccountNonce = Nonce(nonce: nonce)
+        self.venmoAccount = Nonce(nonce: nonce)
     }
 
     struct Nonce: Encodable {

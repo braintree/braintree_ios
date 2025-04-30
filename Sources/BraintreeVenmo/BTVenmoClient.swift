@@ -278,7 +278,7 @@ import BraintreeCore
 
         switch returnURL.state {
         case .succeededWithPaymentContext:
-            let graphQLParameters = BTVenmoGraphQLBody(returnURL: returnURL.paymentContextID)
+            let graphQLParameters = VenmoGraphQLBody(returnURL: returnURL.paymentContextID)
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error {
@@ -382,7 +382,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let parameters = BTVenmoPOSTBody(nonce: nonce)
+        let parameters = VenmoPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {

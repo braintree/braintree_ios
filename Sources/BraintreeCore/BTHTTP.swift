@@ -88,8 +88,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
     }
 
-    // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    
     func post(
         _ path: String,
         configuration: BTConfiguration? = nil,

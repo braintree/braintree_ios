@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0426CADB2DB9A41300210697 /* BTVenmoGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADA2DB9A40900210697 /* BTVenmoGraphQLBody.swift */; };
-		0426CADD2DBB216F00210697 /* BTVenmoPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADC2DBB216300210697 /* BTVenmoPOSTBody.swift */; };
+		0426CADB2DB9A41300210697 /* VenmoGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADA2DB9A40900210697 /* VenmoGraphQLBody.swift */; };
+		0426CADD2DBB216F00210697 /* VenmoPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADC2DBB216300210697 /* VenmoPOSTBody.swift */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -691,8 +691,8 @@
 		0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressClient_Tests.swift; sourceTree = "<group>"; };
 		035A59D91EA5DE97002960C8 /* BTLocalPaymentClient_UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient_UnitTests.swift; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
-		0426CADA2DB9A40900210697 /* BTVenmoGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoGraphQLBody.swift; sourceTree = "<group>"; };
-		0426CADC2DBB216300210697 /* BTVenmoPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoPOSTBody.swift; sourceTree = "<group>"; };
+		0426CADA2DB9A40900210697 /* VenmoGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoGraphQLBody.swift; sourceTree = "<group>"; };
+		0426CADC2DBB216300210697 /* VenmoPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoPOSTBody.swift; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
@@ -1755,8 +1755,8 @@
 		A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */ = {
 			isa = PBXGroup;
 			children = (
-				0426CADC2DBB216300210697 /* BTVenmoPOSTBody.swift */,
-				0426CADA2DB9A40900210697 /* BTVenmoGraphQLBody.swift */,
+				0426CADC2DBB216300210697 /* VenmoPOSTBody.swift */,
+				0426CADA2DB9A40900210697 /* VenmoGraphQLBody.swift */,
 				BE98349D2A041AA600B6C3CC /* BTConfiguration+Venmo.swift */,
 				BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */,
 				3B1C529329D5EB4E00B68A58 /* BTVenmoAnalytics.swift */,
@@ -3262,14 +3262,14 @@
 				0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */,
 				BE98349E2A041AA600B6C3CC /* BTConfiguration+Venmo.swift in Sources */,
 				BEDB820829B675DC00075AF3 /* BTVenmoAccountNonce.swift in Sources */,
-				0426CADB2DB9A41300210697 /* BTVenmoGraphQLBody.swift in Sources */,
+				0426CADB2DB9A41300210697 /* VenmoGraphQLBody.swift in Sources */,
 				3B1C529429D5EB4E00B68A58 /* BTVenmoAnalytics.swift in Sources */,
 				BE0AF6BF29AFF13200245C2C /* BTVenmoRequest.swift in Sources */,
 				BEDB820A29B7A9E600075AF3 /* BTVenmoClient.swift in Sources */,
 				BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */,
 				BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */,
 				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift in Sources */,
-				0426CADD2DBB216F00210697 /* BTVenmoPOSTBody.swift in Sources */,
+				0426CADD2DBB216F00210697 /* VenmoPOSTBody.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
