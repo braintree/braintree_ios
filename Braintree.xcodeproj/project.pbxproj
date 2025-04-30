@@ -1318,7 +1318,6 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
-				B8F483CE2D6F8A5F00214627 /* PayPalAccountPOSTEncodable.swift */,
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				B8BA342D2D4811560030423C /* BTContactInformation.swift */,
 				57544F5B295254A500DEB7B0 /* BTJSON+PayPal.swift */,
@@ -1358,6 +1357,7 @@
 		45E8CE4A2D1F291400D7A2DC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B8F483CE2D6F8A5F00214627 /* PayPalAccountPOSTEncodable.swift */,
 				45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */,
 				45E8CE4F2D2C772000D7A2DC /* PayPalExperienceProfilePOSTBody.swift */,
 				45E8CE4D2D28611700D7A2DC /* PayPalVaultPOSTBody.swift */,
@@ -2755,7 +2755,6 @@
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
-				BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
 				BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -6882,14 +6881,6 @@
 			requirement = {
 				kind = exactVersion;
 				version = 1.0.0;
-			};
-		};
-		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
-			requirement = {
-				kind = exactVersion;
-				version = 1.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
