@@ -147,7 +147,7 @@ jobs:
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeShopperInsights -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-shopper-insights.json
 
           # merge sourcekitten output
-          jq -s '.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10] + .[11] + .[12]' braintree-core.json braintree-pay-pal-native-checkout.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-local-payment.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json braintree-paypal-messaging.json braintree-shopper-insights.json > swiftDoc.json
+          jq -s '.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10] + .[11]' braintree-core.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-local-payment.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json braintree-paypal-messaging.json braintree-shopper-insights.json > swiftDoc.json
 
           jazzy \
             --sourcekitten-sourcefile swiftDoc.json \
