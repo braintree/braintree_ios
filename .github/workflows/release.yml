@@ -95,7 +95,7 @@ jobs:
             MACH_O_TYPE = staticlib;' Braintree.xcodeproj/project.pbxproj
 
           # 2) Define all Schemes to build
-          SCHEMES=("BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreeLocalPayment" "BraintreePayPal" "BraintreePayPalMessaging" "BraintreePayPalNativeCheckout" "BraintreeSEPADirectDebit" "BraintreeShopperInsights" "BraintreeThreeDSecure" "BraintreeVenmo")
+          SCHEMES=("BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreeLocalPayment" "BraintreePayPal" "BraintreePayPalMessaging" "BraintreeSEPADirectDebit" "BraintreeShopperInsights" "BraintreeThreeDSecure" "BraintreeVenmo")
 
           for scheme in "${SCHEMES[@]}"; do
             # 3) Build device archive
@@ -134,7 +134,6 @@ jobs:
 
           # run sourcekitten on each Swift module individually
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCore -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-core.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalNativeCheckout -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-pay-pal-native-checkout.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-sepa-direct-debit.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeAmericanExpress -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-american-express.json
           sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeDataCollector -destination 'name=iPhone 14,platform=iOS Simulator' > braintree-data-collector.json
