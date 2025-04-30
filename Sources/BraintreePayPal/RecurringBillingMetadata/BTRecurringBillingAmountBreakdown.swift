@@ -31,7 +31,7 @@ public struct BTRecurringBillingAmountBreakdown {
     func parameters() -> [String: Any] {
         var parameters: [String: Any] = [
             "item_total": itemTotal,
-            "taxTotal": taxTotal
+            "tax_total": taxTotal
         ]
 
         if let shipping {

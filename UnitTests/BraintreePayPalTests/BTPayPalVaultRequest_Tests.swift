@@ -149,6 +149,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
+
+        let amountBreakdown = billingAmountBreakdown
+        let amountBreakdownParameters = amountBreakdown.parameters()
         
         guard let planMetadata = parameters["plan_metadata"] as? [String: Any] else { XCTFail(); return }
         XCTAssertEqual(planMetadata["currency_iso_code"] as! String, "test-currency")
@@ -176,6 +179,9 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(planMetadata["tax_amount"] as! String, "test-tax")
         XCTAssertEqual(planMetadata["unit_amount"] as! String, "test-unit")
 
-        guard let amountBreakdown = planMetadata["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
+        guard let amountBreakdown = parameters["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
+        XCTAssertEqual(amountBreakdownParameters["item_total"] as! String, "9")
+        XCTAssertEqual(amountBreakdownParameters["tax_total"] as! String, "6")
+        XCTAssertEqual(amountBreakdownParameters["shipping"] as! String, "8")
     }
 }
