@@ -53,9 +53,15 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
-    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
-            await performEventRequest(with: event)
+            if sendImmediately {
+                print("12345 ⏫ \(event.eventName)")
+                await performEventRequestImmediatly(with: event)
+            } else {
+                print("1234 🚀 \(event.eventName)")
+                await performEventRequest(with: event)
+            }
         }
     }
     
@@ -67,6 +73,25 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         if shouldBypassTimerQueue {
             await self.sendQueuedAnalyticsEvents()
+        }
+    }
+    
+    func performEventRequestImmediatly(with event: FPTIBatchData.Event) async {
+        guard let apiClient else { return }
+        
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            
+            let postParameters = createAnalyticsEvent(
+                config: configuration,
+                sessionID: apiClient.metadata.sessionID,
+                events: [event]
+            )
+            
+            _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
+            print("12345 🫶🏻 \(event.eventName)")
+        } catch {
+            return
         }
     }
 
@@ -85,7 +110,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    
+                    print("1234 😲 \(eventsPerSessionID.compactMap { $0.eventName } )")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
