@@ -134,10 +134,9 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         guard let experienceProfile = parameters["experience_profile"] as? [String: Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["user_action"] as? String, "commit")
 
-        guard let amountBreakdown = parameters["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
-        let amountBreakdownParameters = request.amountBreakdown?.parameters()
-        XCTAssertEqual(amountBreakdownParameters?["item_total"] as! String, "9")
-        XCTAssertEqual(amountBreakdownParameters?["tax_total"] as! String, "6")
+        guard let amountBreakdown = parameters["amount_breakdown"] as? [String:Any] else { XCTFail(); return }
+        XCTAssertEqual(amountBreakdown["item_total"] as! String, "9")
+        XCTAssertEqual(amountBreakdown["tax_total"] as! String, "1")
     }
 
     func testParametersWithConfiguration_returnsMinimumParams() {

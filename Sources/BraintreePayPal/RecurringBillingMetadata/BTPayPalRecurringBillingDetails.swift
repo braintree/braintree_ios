@@ -15,7 +15,6 @@ public struct BTPayPalRecurringBillingDetails {
     private let shippingAmount: String?
     private let productAmount: String?
     private let taxAmount: String?
-    private let unitAmount: String?
     
     // MARK: - Initializer
     
@@ -31,8 +30,6 @@ public struct BTPayPalRecurringBillingDetails {
     ///   - shippingAmount: Optional: The shipping amount for the billing cycle at the time of checkout.
     ///   - productAmount: Optional: The item price for the product associated with the billing cycle at the time of checkout.
     ///   - taxAmount: Optional: The taxes for the billing cycle at the time of checkout.
-    ///   - unitAmount: Optional: Number of product units.
-    ///   - amountBreakdown: Optional: Used for Checkout with Vault requests only.
     public init(
         billingCycles: [BTPayPalBillingCycle],
         currencyISOCode: String,
@@ -43,8 +40,7 @@ public struct BTPayPalRecurringBillingDetails {
         oneTimeFeeAmount: String? = nil,
         shippingAmount: String? = nil,
         productAmount: String? = nil,
-        taxAmount: String? = nil,
-        unitAmount: String? = nil
+        taxAmount: String? = nil
     ) {
         self.billingCycles = billingCycles
         self.currencyISOCode = currencyISOCode
@@ -56,7 +52,6 @@ public struct BTPayPalRecurringBillingDetails {
         self.shippingAmount = shippingAmount
         self.productAmount = productAmount
         self.taxAmount = taxAmount
-        self.unitAmount = unitAmount
     }
     
     // MARK: - Internal Methods

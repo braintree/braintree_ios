@@ -153,6 +153,7 @@ import BraintreeCore
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - recurringBillingDetails: Optional: Recurring billing details, such as product name, total amount, and billing cycles.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan types, such as recurring, installment, unscheduled, and subscription.
+    ///   - amountBreakdown: Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
 
     public init(
         amount: String,
@@ -247,7 +248,7 @@ import BraintreeCore
         }
 
         if let amountBreakdown {
-            baseParameters["amount_breakdown"] = amountBreakdown
+            baseParameters["amount_breakdown"] = amountBreakdown.parameters()
         }
         
         return baseParameters.merging(checkoutParameters) { $1 }
