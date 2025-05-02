@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BTThreeDSecureRequest Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/BTThreeDSecureRequest" class="dashAnchor"></a>
+
+    <a title="BTThreeDSecureRequest Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          Braintree 7.0.0-beta1 Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/braintree/braintree_ios">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">Braintree</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      <a class="breadcrumb" href="../Classes.html">Classes</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      BraintreeThreeDSecure.BTThreeDSecureRequest Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AdditionalInformation.html">AdditionalInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAuthenticationInsight.html">BTAuthenticationInsight</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCard.html">BTCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardClient.html">BTCardClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardNonce.html">BTCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalAccountNonce.html">BTPayPalAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCheckoutRequest.html">BTPayPalCheckoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalClient.html">BTPayPalClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancing.html">BTPayPalCreditFinancing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancingAmount.html">BTPayPalCreditFinancingAmount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalLineItem.html">BTPayPalLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalMessagingView.html">BTPayPalMessagingView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalMessagingView/Representable.html">– Representable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalVaultRequest.html">BTPayPalVaultRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPresentmentDetails.html">BTPresentmentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTShopperInsightsClient.html">BTShopperInsightsClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureClient.html">BTThreeDSecureClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureInfo.html">BTThreeDSecureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureLookup.html">BTThreeDSecureLookup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecurePostalAddress.html">BTThreeDSecurePostalAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureRenderType.html">BTThreeDSecureRenderType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureRequest.html">BTThreeDSecureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureResult.html">BTThreeDSecureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2BaseCustomization.html">BTThreeDSecureV2BaseCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2ButtonCustomization.html">BTThreeDSecureV2ButtonCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2LabelCustomization.html">BTThreeDSecureV2LabelCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2TextBoxCustomization.html">BTThreeDSecureV2TextBoxCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2ToolbarCustomization.html">BTThreeDSecureV2ToolbarCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2UICustomization.html">BTThreeDSecureV2UICustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoAccountNonce.html">BTVenmoAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoClient.html">BTVenmoClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoLineItem.html">BTVenmoLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoRequest.html">BTVenmoRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTButtonOrder.html">BTButtonOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTButtonType.html">BTButtonType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTCardError.html">BTCardError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTContactPreference.html">BTContactPreference</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTExperimentType.html">BTExperimentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPageType.html">BTPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalError.html">BTPayPalError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLineItemKind.html">BTPayPalLineItemKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLineItemUPCType.html">BTPayPalLineItemUPCType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLocaleCode.html">BTPayPalLocaleCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingColor.html">BTPayPalMessagingColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingError.html">BTPayPalMessagingError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingLogoType.html">BTPayPalMessagingLogoType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingOfferType.html">BTPayPalMessagingOfferType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingPageType.html">BTPayPalMessagingPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingTextAlignment.html">BTPayPalMessagingTextAlignment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalPaymentType.html">BTPayPalPaymentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRecurringBillingPlanType.html">BTPayPalRecurringBillingPlanType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestIntent.html">BTPayPalRequestIntent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestLandingPageType.html">BTPayPalRequestLandingPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestUserAction.html">BTPayPalRequestUserAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTShopperInsightsError.html">BTShopperInsightsError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureAccountType.html">BTThreeDSecureAccountType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureError.html">BTThreeDSecureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureRequestedExemptionType.html">BTThreeDSecureRequestedExemptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureShippingMethod.html">BTThreeDSecureShippingMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureUIType.html">BTThreeDSecureUIType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureV2ButtonType.html">BTThreeDSecureV2ButtonType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoAppSwitchError.html">BTVenmoAppSwitchError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoError.html">BTVenmoError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoLineItemKind.html">BTVenmoLineItemKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoPaymentMethodUsage.html">BTVenmoPaymentMethodUsage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/BTThreeDSecureV2Provider.html">BTThreeDSecureV2Provider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPayPalMessagingDelegate.html">BTPayPalMessagingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTThreeDSecureRequestDelegate.html">BTThreeDSecureRequestDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTContactInformation.html">BTContactInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingCycle.html">BTPayPalBillingCycle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingCycle/BillingInterval.html">– BillingInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingPricing.html">BTPayPalBillingPricing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingPricing/PricingModel.html">– PricingModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalMessagingRequest.html">BTPayPalMessagingRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalPhoneNumber.html">BTPayPalPhoneNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalRecurringBillingDetails.html">BTPayPalRecurringBillingDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTShopperInsightsRequest.html">BTShopperInsightsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTShopperInsightsResult.html">BTShopperInsightsResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Phone.html">Phone</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>BTThreeDSecureRequest</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">@objcMembers</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">BTThreeDSecureRequest</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Used to initialize a 3D Secure payment flow</p>
+
+              <div class="slightly-smaller">
+                <a href="https://github.com/braintree/braintree_ios/tree/7.0.0-beta1/Sources/BraintreeThreeDSecure/BTThreeDSecureRequest.swift#L8-L101">Show on GitHub</a>
+              </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@BraintreeThreeDSecure@objc(cs)BTThreeDSecureRequest(py)threeDSecureRequestDelegate"></a>
+                    <a name="//apple_ref/swift/Property/threeDSecureRequestDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@BraintreeThreeDSecure@objc(cs)BTThreeDSecureRequest(py)threeDSecureRequestDelegate">threeDSecureRequestDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A delegate for receiving information about the ThreeDSecure payment flow.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">threeDSecureRequestDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/BTThreeDSecureRequestDelegate.html">BTThreeDSecureRequestDelegate</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/7.0.0-beta1/Sources/BraintreeThreeDSecure/BTThreeDSecureRequest.swift#L11">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializer"></a>
+                <a name="//apple_ref/swift/Section/Initializer" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Initializer"></a>
+                  <h3 class="section-name"><span>Initializer</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@BraintreeThreeDSecure@objc(cs)BTThreeDSecureRequest(im)initWithAmount:nonce:accountType:additionalInformation:billingAddress:cardAddChallengeRequested:challengeRequested:customFields:dataOnlyRequested:dfReferenceID:email:exemptionRequested:mobilePhoneNumber:renderTypes:requestedExemptionType:shippingMethod:uiType:v2UICustomization:requestorAppURL:"></a>
+                    <a name="//apple_ref/swift/Method/init(amount:nonce:accountType:additionalInformation:billingAddress:cardAddChallengeRequested:challengeRequested:customFields:dataOnlyRequested:dfReferenceID:email:exemptionRequested:mobilePhoneNumber:renderTypes:requestedExemptionType:shippingMethod:uiType:v2UICustomization:requestorAppURL:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@BraintreeThreeDSecure@objc(cs)BTThreeDSecureRequest(im)initWithAmount:nonce:accountType:additionalInformation:billingAddress:cardAddChallengeRequested:challengeRequested:customFields:dataOnlyRequested:dfReferenceID:email:exemptionRequested:mobilePhoneNumber:renderTypes:requestedExemptionType:shippingMethod:uiType:v2UICustomization:requestorAppURL:">init(amount:<wbr>nonce:<wbr>accountType:<wbr>additionalInformation:<wbr>billingAddress:<wbr>cardAddChallengeRequested:<wbr>challengeRequested:<wbr>customFields:<wbr>dataOnlyRequested:<wbr>dfReferenceID:<wbr>email:<wbr>exemptionRequested:<wbr>mobilePhoneNumber:<wbr>renderTypes:<wbr>requestedExemptionType:<wbr>shippingMethod:<wbr>uiType:<wbr>v2UICustomization:<wbr>requestorAppURL:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a <code>BTThreeDSecureRequest</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+    <span class="nv">amount</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+    <span class="nv">nonce</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+    <span class="nv">accountType</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTThreeDSecureAccountType.html">BTThreeDSecureAccountType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span>
+    <span class="nv">additionalInformation</span><span class="p">:</span> <span class="kt"><a href="../Classes/AdditionalInformation.html">AdditionalInformation</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">billingAddress</span><span class="p">:</span> <span class="kt"><a href="../Classes/BTThreeDSecurePostalAddress.html">BTThreeDSecurePostalAddress</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">cardAddChallengeRequested</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">challengeRequested</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">customFields</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">dataOnlyRequested</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">dfReferenceID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">exemptionRequested</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">mobilePhoneNumber</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">renderTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/BTThreeDSecureRenderType.html">BTThreeDSecureRenderType</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">requestedExemptionType</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTThreeDSecureRequestedExemptionType.html">BTThreeDSecureRequestedExemptionType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span>
+    <span class="nv">shippingMethod</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTThreeDSecureShippingMethod.html">BTThreeDSecureShippingMethod</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">unspecified</span><span class="p">,</span>
+    <span class="nv">uiType</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTThreeDSecureUIType.html">BTThreeDSecureUIType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">both</span><span class="p">,</span>
+    <span class="nv">v2UICustomization</span><span class="p">:</span> <span class="kt"><a href="../Classes/BTThreeDSecureV2UICustomization.html">BTThreeDSecureV2UICustomization</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">requestorAppURL</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
+<span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>amount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Required. The amount for the transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nonce</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Required. A nonce to be verified by ThreeDSecure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>accountType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The account type selected by the cardholder. Some cards can be processed using either a credit or debit account and cardholders have the option to choose which account to use.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>additionalInformation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The additional information used for verification.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>billingAddress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The billing address used for verification</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cardAddChallengeRequested</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional.  An authentication created using this flag should only be used for vaulting operations (creation of customers&rsquo; credit cards or payment methods) and not for creating transactions. If set to <code>true</code>, a card-add challenge will be requested from the issuer. If set to <code>false</code>, a card-add challenge will not be requested. If the parameter is missing, a card-add challenge will only be requested for $0 amount.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>challengeRequested</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. If set to true, an authentication challenge will be forced if possible.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>customFields</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. Object where each key is the name of a custom field which has been configured in the Control Panel. In the Control Panel you can configure 3D Secure Rules which trigger on certain values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dataOnlyRequested</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. Indicates whether to use the data only flow. In this flow, frictionless 3DS is ensured for Mastercard cardholders as the card scheme provides a risk score for the issuer to determine whether to approve. If data only is not supported by the processor, a validation error will be raised. Non-Mastercard cardholders will fallback to a normal 3DS flow.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>dfReferenceID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The dfReferenceID for the session, particularly useful for merchants performing 3DS lookup.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>email</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The email used for verification.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>exemptionRequested</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. If set to true, an exemption to the authentication challenge will be requested.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>mobilePhoneNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The mobile phone number used for verification. Only numbers. Remove dashes, parentheses and other characters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>renderTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: List of all the render types that the device supports for displaying specific challenge user interfaces within the 3D Secure challenge. When using <code><a href="../Enums/BTThreeDSecureUIType.html#/c:@M@BraintreeThreeDSecure@E@BTThreeDSecureUIType@BTThreeDSecureUITypeBoth">BTThreeDSecureUIType.both</a></code> or <code><a href="../Enums/BTThreeDSecureUIType.html#/c:@M@BraintreeThreeDSecure@E@BTThreeDSecureUIType@BTThreeDSecureUITypeHtml">BTThreeDSecureUIType.html</a></code>, all <code><a href="../Classes/BTThreeDSecureRenderType.html">BTThreeDSecureRenderType</a></code> options must be set. When using <code><a href="../Enums/BTThreeDSecureUIType.html#/c:@M@BraintreeThreeDSecure@E@BTThreeDSecureUIType@BTThreeDSecureUITypeNative">BTThreeDSecureUIType.native</a></code>, all <code><a href="../Classes/BTThreeDSecureRenderType.html">BTThreeDSecureRenderType</a></code> options except <code>.html</code> must be set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>requestedExemptionType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The exemption type to be requested. If an exemption is requested and the exemption&rsquo;s conditions are satisfied, then it will be applied.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>shippingMethod</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. The shipping method chosen for the transaction</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>uiType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Sets all UI types that the device supports for displaying specific challenge user interfaces in the 3D Secure challenge. Defaults to <code>.both</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>v2UICustomization</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. UI Customization for 3DS2 challenge views.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>requestorAppURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. Three DS Requester APP URL Merchant app declaring their URL within the CReq message
+so that the Authentication app can call the Merchant app after out of band authentication has occurred.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/7.0.0-beta1/Sources/BraintreeThreeDSecure/BTThreeDSecureRequest.swift#L60-L100">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2025 <a class="link" href="http://braintreepayments.com" target="_blank" rel="external noopener">Braintree</a>. All rights reserved. (Last updated: 2025-05-02)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>
