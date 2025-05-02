@@ -44,7 +44,7 @@ public struct BTPayPalRecurringBillingDetails {
         shippingAmount: String? = nil,
         productAmount: String? = nil,
         taxAmount: String? = nil,
-        unitAmount: String? = nil,
+        unitAmount: String? = nil
     ) {
         self.billingCycles = billingCycles
         self.currencyISOCode = currencyISOCode
