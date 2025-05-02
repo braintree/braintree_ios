@@ -42,4 +42,10 @@ public enum BTPageType: String {
 
     /// Any other page available on a merchant’s site.
     case other = "other"
+    
+    /// The payment method the custoer has selected.
+    case paymentMethodSelection = "payment_method_selection"
+    
+    /// The payment method that has been added.
+    case paymentMethodAddition = "payment_method_addition"
 }
