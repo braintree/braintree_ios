@@ -124,12 +124,6 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             pricing: billingPricing
         )
 
-        let billingAmountBreakdown = BTRecurringBillingAmountBreakdown(
-            itemTotal: "9",
-            taxTotal: "6",
-            shipping: "8"
-        )
-
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
@@ -141,17 +135,13 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             shippingAmount: "test-shipping",
             productAmount: "test-price",
             taxAmount: "test-tax",
-            unitAmount: "test-unit",
-            amountBreakdown: billingAmountBreakdown
+            unitAmount: "test-unit"
         )
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
-
-        let amountBreakdown = billingAmountBreakdown
-        let amountBreakdownParameters = amountBreakdown.parameters()
         
         guard let planMetadata = parameters["plan_metadata"] as? [String: Any] else { XCTFail(); return }
         XCTAssertEqual(planMetadata["currency_iso_code"] as! String, "test-currency")
@@ -178,10 +168,5 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(pricingScheme["reload_threshold_amount"], "test-threshold")
         XCTAssertEqual(planMetadata["tax_amount"] as! String, "test-tax")
         XCTAssertEqual(planMetadata["unit_amount"] as! String, "test-unit")
-
-        guard let amountBreakdown = parameters["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
-        XCTAssertEqual(amountBreakdownParameters["item_total"] as! String, "9")
-        XCTAssertEqual(amountBreakdownParameters["tax_total"] as! String, "6")
-        XCTAssertEqual(amountBreakdownParameters["shipping"] as! String, "8")
     }
 }

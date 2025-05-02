@@ -16,7 +16,6 @@ public struct BTPayPalRecurringBillingDetails {
     private let productAmount: String?
     private let taxAmount: String?
     private let unitAmount: String?
-    private var amountBreakdown: BTRecurringBillingAmountBreakdown?
     
     // MARK: - Initializer
     
@@ -46,7 +45,6 @@ public struct BTPayPalRecurringBillingDetails {
         productAmount: String? = nil,
         taxAmount: String? = nil,
         unitAmount: String? = nil,
-        amountBreakdown: BTRecurringBillingAmountBreakdown? = nil
     ) {
         self.billingCycles = billingCycles
         self.currencyISOCode = currencyISOCode
@@ -59,7 +57,6 @@ public struct BTPayPalRecurringBillingDetails {
         self.productAmount = productAmount
         self.taxAmount = taxAmount
         self.unitAmount = unitAmount
-        self.amountBreakdown = amountBreakdown
     }
     
     // MARK: - Internal Methods
@@ -97,10 +94,6 @@ public struct BTPayPalRecurringBillingDetails {
         
         if let taxAmount {
             parameters["tax_amount"] = taxAmount
-        }
-
-        if let amountBreakdown {
-            parameters["amount_breakdown"] = amountBreakdown
         }
         
         return parameters

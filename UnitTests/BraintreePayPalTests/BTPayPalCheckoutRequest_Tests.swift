@@ -88,6 +88,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.userAction = .payNow
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
+        request.amountBreakdown = BTAmountBreakdown(itemTotal: "9", taxTotal: "1")
 
         let shippingAddress = BTPostalAddress()
         shippingAddress.streetAddress = "123 Main"
@@ -132,6 +133,11 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
         guard let experienceProfile = parameters["experience_profile"] as? [String: Any] else { XCTFail(); return }
         XCTAssertEqual(experienceProfile["user_action"] as? String, "commit")
+
+        guard let amountBreakdown = parameters["amount_breakdown"] as? [[String:Any]] else { XCTFail(); return }
+        let amountBreakdownParameters = request.amountBreakdown?.parameters()
+        XCTAssertEqual(amountBreakdownParameters?["item_total"] as! String, "9")
+        XCTAssertEqual(amountBreakdownParameters?["tax_total"] as! String, "6")
     }
 
     func testParametersWithConfiguration_returnsMinimumParams() {

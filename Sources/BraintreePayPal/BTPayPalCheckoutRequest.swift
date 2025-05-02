@@ -95,6 +95,9 @@ import BraintreeCore
     /// Optional: The recurring billing plan type or payment charge pattern.
     public var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
 
+    /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
+    public var amountBreakdown: BTAmountBreakdown?
+
     // MARK: - Initializers
     
     /// Initializes a PayPal Checkout request for the PayPal App Switch flow
@@ -161,7 +164,8 @@ import BraintreeCore
         shippingCallbackURL: URL? = nil,
         userAuthenticationEmail: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
-        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
+        amountBreakdown: BTAmountBreakdown? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -172,6 +176,7 @@ import BraintreeCore
         self.shippingCallbackURL = shippingCallbackURL
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
+        self.amountBreakdown = amountBreakdown
         
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
@@ -239,6 +244,10 @@ import BraintreeCore
 
         if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
             checkoutParameters["international_phone"] = recipientPhoneNumber
+        }
+
+        if let amountBreakdown {
+            baseParameters["amount_breakdown"] = amountBreakdown
         }
         
         return baseParameters.merging(checkoutParameters) { $1 }
