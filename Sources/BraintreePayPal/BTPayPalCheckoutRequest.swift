@@ -145,7 +145,7 @@ import BraintreeCore
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
     ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - amountBreakdown: Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
+    ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
 
     public init(
         amount: String,
@@ -237,10 +237,6 @@ import BraintreeCore
 
         if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
             checkoutParameters["international_phone"] = recipientPhoneNumber
-        }
-
-        if let amountBreakdown {
-            baseParameters["amount_breakdown"] = amountBreakdown.parameters()
         }
 
         if let recurringBillingDetails {
