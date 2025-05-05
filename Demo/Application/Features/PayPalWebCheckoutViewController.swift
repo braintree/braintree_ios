@@ -150,7 +150,51 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalCheckoutRequest(amount: "5.00")
+        let amountBreakdown = BTAmountBreakdown(
+            itemTotal: "9.99",
+            taxTotal: "0.99",
+            shipping: "1.99",
+            handling: "0.99",
+            insurance: "5.00",
+            shippingDiscount: "1.00",
+            discount: "2.00"
+        )
+
+        let billingPricing = BTPayPalBillingPricing(
+            pricingModel: .fixed,
+            amount: "9.99",
+            reloadThresholdAmount: "99.99"
+        )
+
+        let billingCycle = BTPayPalBillingCycle(
+            isTrial: true,
+            numberOfExecutions: 1,
+            interval: .month,
+            intervalCount: 1,
+            sequence: 1,
+            startDate: "2024-08-01",
+            pricing: billingPricing
+        )
+
+        let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+            billingCycles: [billingCycle],
+            currencyISOCode: "USD",
+            totalAmount: "32.56",
+            productName: "Vogue Magazine",
+            productDescription: "Home delivery to Chicago, IL",
+            productQuantity: 1,
+            oneTimeFeeAmount: "9.99",
+            shippingAmount: "1.99",
+            productAmount: "19.99",
+            taxAmount: "0.59"
+        )
+
+        let request = BTPayPalCheckoutRequest(
+            amount: "5.00",
+            recurringBillingDetails: recurringBillingDetails,
+            recurringBillingPlanType: .subscription,
+            amountBreakdown: amountBreakdown
+        )
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",
