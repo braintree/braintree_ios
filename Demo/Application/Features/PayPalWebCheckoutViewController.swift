@@ -82,6 +82,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let contactInformationToggle = Toggle(title: "Add Contact Information")
 
+    let rbaAmountBreakdownToggle = Toggle(title: "Amount Breakdown")
+
     override func viewDidLoad() {
         super.heightConstraint = 500
         super.viewDidLoad()
@@ -106,6 +108,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             payLaterToggle,
             newPayPalCheckoutToggle,
             contactInformationToggle,
+            rbaAmountBreakdownToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton
         ])
@@ -192,15 +195,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalCheckoutRequest(
             amount: "5.00",
             recurringBillingDetails: recurringBillingDetails,
-            recurringBillingPlanType: .subscription,
-            amountBreakdown: amountBreakdown
+            recurringBillingPlanType: .subscription
         )
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",
             nationalNumber: nationalNumberTextField.text ?? ""
         )
-        
+
+        let requestAmountBreakdown = BTPayPalCheckoutRequest(amount: "10.00", amountBreakdown: amountBreakdown)
+
         let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
@@ -217,6 +221,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             )
 
             request.contactPreference = .updateContactInformation
+        }
+
+        if rbaAmountBreakdownToggle.isOn {
+            requestAmountBreakdown.lineItems = [lineItem]
         }
 
         payPalClient.tokenize(request) { nonce, error in
