@@ -181,7 +181,6 @@ import BraintreeCore
     // MARK: Public Methods
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
-
     // swiftlint:disable cyclomatic_complexity
     @_documentation(visibility: private)
     public override func parameters(
