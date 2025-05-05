@@ -89,12 +89,6 @@ import BraintreeCore
     /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
     public var contactPreference: BTContactPreference = .none
 
-    /// Optional: Display recurring billing details to buyers.
-    public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
-
-    /// Optional: The recurring billing plan type or payment charge pattern.
-    public var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
-
     /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
     public var amountBreakdown: BTAmountBreakdown?
 
@@ -151,8 +145,6 @@ import BraintreeCore
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
     ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - recurringBillingDetails: Optional: Recurring billing details, such as product name, total amount, and billing cycles.
-    ///   - recurringBillingPlanType: Optional: Recurring billing plan types, such as recurring, installment, unscheduled, and subscription.
     ///   - amountBreakdown: Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
 
     public init(
@@ -175,14 +167,14 @@ import BraintreeCore
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
-        self.recurringBillingDetails = recurringBillingDetails
-        self.recurringBillingPlanType = recurringBillingPlanType
         self.amountBreakdown = amountBreakdown
         
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
             paymentType: .checkout,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            recurringBillingDetails: recurringBillingDetails,
+            recurringBillingPlanType: recurringBillingPlanType
         )
     }
 
@@ -250,7 +242,15 @@ import BraintreeCore
         if let amountBreakdown {
             baseParameters["amount_breakdown"] = amountBreakdown.parameters()
         }
-        
+
+        if let recurringBillingDetails {
+            baseParameters["recurring_billing_details"] = recurringBillingDetails
+        }
+
+        if let recurringBillingPlanType {
+            baseParameters["recurring_billing_plan_type"] = recurringBillingPlanType
+        }
+
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }

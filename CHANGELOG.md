@@ -4,7 +4,7 @@
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
   * Make `userAuthenticationEmail` property optional for all App Switch flows
-  * Add `unitAmount` and `amountBreakdown(discount:handling:insurance:itemTotal:shipping:shippingDicount:taxTotal)` properties to `BTPayPalRecurringBillingDetails`
+  * Add `amountBreakdown(itemTotal:taxTotal:)` properties to `BTPayPalCheckoutRequest`
 * BraintreeThreeDSecure
   * Bug fix: remove internal code signing from framework
 

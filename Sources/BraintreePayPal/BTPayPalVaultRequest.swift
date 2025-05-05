@@ -6,14 +6,6 @@ import BraintreeCore
 
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
-    
-    // MARK: - Internal Properties
-    
-    /// Optional: Recurring billing plan type, or charge pattern.
-    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
-    
-    /// Optional: Recurring billing product details.
-    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
 
@@ -39,8 +31,6 @@ import BraintreeCore
     /// Initializes a PayPal Vault request
     /// - Parameters:
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    ///   - recurringBillingDetails: Optional: Recurring billing product details.
-    ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     public init(
         offerCredit: Bool = false,
@@ -48,12 +38,12 @@ import BraintreeCore
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAuthenticationEmail: String? = nil
     ) {
-        self.recurringBillingDetails = recurringBillingDetails
-        self.recurringBillingPlanType = recurringBillingPlanType
         super.init(
             offerCredit: offerCredit,
             userAuthenticationEmail: userAuthenticationEmail
         )
+        super.recurringBillingDetails = recurringBillingDetails
+        super.recurringBillingPlanType = recurringBillingPlanType
     }
 
     public override func parameters(
