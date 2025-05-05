@@ -6,6 +6,8 @@
   * Make `userAuthenticationEmail` property optional for all App Switch flows
 * BraintreeThreeDSecure
   * Bug fix: remove internal code signing from framework
+* BraintreeShopperInsights (BETA)
+  * Add `BTPageType.paymentMethodSelection` and `BTPageType.paymentMethodAddition`
 
 ## 6.31.0 (2025-04-09)
 * BraintreeShopperInsights (BETA)
