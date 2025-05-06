@@ -59,7 +59,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                 print("12345 ⏫ \(event.eventName)")
                 await performEventRequestImmediatly(with: event)
             } else {
-                print("1234 🚀 \(event.eventName)")
+                print("1234 🥶 \(event.eventName)")
                 await performEventRequest(with: event)
             }
         }
@@ -77,7 +77,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
     
     func performEventRequestImmediatly(with event: FPTIBatchData.Event) async {
-        guard let apiClient else { return }
+        guard let apiClient else {
+            print("1234 🫀 APIClient doesnt exist")
+            return
+        }
         
         do {
             let configuration = try await apiClient.fetchConfiguration()
@@ -116,6 +119,8 @@ final class BTAnalyticsService: AnalyticsSendable {
             } catch {
                 return
             }
+        } else {
+            print("1234 🐛 APIClient doesnt exist")
         }
     }
 
