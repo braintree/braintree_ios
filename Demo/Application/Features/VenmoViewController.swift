@@ -1,8 +1,11 @@
 import UIKit
 import BraintreeVenmo
+import BraintreeCore
 
 class VenmoViewController: PaymentButtonBaseViewController {
 
+    let apiClient = BTAPIClient(authorization: aauthorization)!
+    
     // swiftlint:disable:next implicitly_unwrapped_optional
     var venmoClient: BTVenmoClient!
 

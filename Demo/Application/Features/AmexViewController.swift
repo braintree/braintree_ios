@@ -1,9 +1,10 @@
 import UIKit
 import BraintreeAmericanExpress
 import BraintreeCard
+import BraintreeCore
 
 class AmexViewController: PaymentButtonBaseViewController {
-
+    lazy var apiClient = BTAPIClient(authorization: aauthorization)!
     lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
     lazy var cardClient = BTCardClient(apiClient: apiClient)
 

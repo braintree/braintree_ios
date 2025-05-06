@@ -1,6 +1,7 @@
 import UIKit
 import BraintreeCard
 import BraintreeThreeDSecure
+import BraintreeCore
 
 class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
@@ -10,6 +11,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
     var callbackCountLabel = UILabel()
     var callbackCount: Int = 0
     
+    lazy var apiClient = BTAPIClient(authorization: aauthorization)!
     lazy var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
 
     override func viewDidLoad() {

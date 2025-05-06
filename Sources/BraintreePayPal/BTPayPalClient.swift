@@ -85,6 +85,10 @@ import BraintreeDataCollector
             object: nil
         )
     }
+    
+    deinit {
+        print("12345 👻 BTPayPalClient Deinit")
+    }
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:

@@ -1,8 +1,10 @@
 import UIKit
 import BraintreeCard
+import BraintreeCore
 
 class CardTokenizationViewController: PaymentButtonBaseViewController {
 
+    let apiClient = BTAPIClient(authorization: aauthorization)!
     private let cardFormView = BTCardFormView()
     private var autofillButton = UIButton(type: .system)
 

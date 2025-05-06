@@ -6,6 +6,7 @@ import BraintreeShopperInsights
 
 class ShopperInsightsViewController: PaymentButtonBaseViewController {
     
+    lazy var apiClient = BTAPIClient(authorization: aauthorization)!
     lazy var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: "test-shopper-session-id")
     lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
     lazy var venmoClient = BTVenmoClient(apiClient: apiClient)

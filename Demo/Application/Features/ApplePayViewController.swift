@@ -1,9 +1,11 @@
 import Foundation
 import BraintreeApplePay
 import PassKit
+import BraintreeCore
 
 class ApplePayViewController: PaymentButtonBaseViewController {
 
+    lazy var apiClient = BTAPIClient(authorization: aauthorization)!
     lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
     // swiftlint:disable:next force_unwrapping
     let managementURL = URL(string: "https://www.merchant.com/update-payment")!

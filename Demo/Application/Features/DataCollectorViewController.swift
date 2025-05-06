@@ -4,6 +4,8 @@ import BraintreeCore
 
 class DataCollectorViewController: PaymentButtonBaseViewController {
 
+    let apiClient = BTAPIClient(authorization: aauthorization)!
+    
     var dataLabel = UILabel()
 
     override func viewDidLoad() {
