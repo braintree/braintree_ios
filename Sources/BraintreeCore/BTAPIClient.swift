@@ -43,6 +43,9 @@ import Foundation
         
         super.init()
         
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🌶️ 12345 API Client init \(instance)")
+        
         analyticsService.setAPIClient(self)
         http?.networkTimingDelegate = self
 
@@ -56,6 +59,8 @@ import Foundation
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("👻 12345 APIClient deinit \(instance)")
         if http != nil && http?.session != nil {
             http?.session.finishTasksAndInvalidate()
         }
@@ -396,8 +401,11 @@ import Foundation
                     eventName: BTCoreAnalytics.apiRequestLatency,
                     requestStartTime: requestStartTime,
                     startTime: startTime
-                )
+                ),
+                sendImmediately: false
             )
+        } else {
+            print("🔮 12345 Event log")
         }
     }
 }

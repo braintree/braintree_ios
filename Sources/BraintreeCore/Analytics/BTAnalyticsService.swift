@@ -30,6 +30,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
     func setAPIClient(_ apiClient: BTAPIClient) {
+        let instance = Unmanaged.passUnretained(apiClient).toOpaque()
+        print("👀 12345 Analytics set APIClient \(instance)")
+        
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
@@ -53,9 +56,14 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
-    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
-            await performEventRequest(with: event)
+            print("😲 12345 event \(event.eventName)")
+            if sendImmediately {
+                await sendImmediatelyEvent(event: event)
+            } else {
+                await performEventRequest(with: event)
+            }
         }
     }
     
@@ -70,6 +78,28 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
 
+    func sendImmediatelyEvent(event: FPTIBatchData.Event) async {
+        guard let apiClient else {
+            print("🫀 12345 APIClient doesnt exist")
+            return
+        }
+        
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            
+            let postParameters = createAnalyticsEvent(
+                config: configuration,
+                sessionID: apiClient.metadata.sessionID,
+                events: [event]
+            )
+            
+            _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
+            print("🚀 12345 evento sended \(event.eventName)")
+        } catch {
+            return
+        }
+    }
+    
     // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
@@ -85,7 +115,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    
+                    print("🥳 12345 evento sended \(eventsPerSessionID.compactMap { $0.eventName } )")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {

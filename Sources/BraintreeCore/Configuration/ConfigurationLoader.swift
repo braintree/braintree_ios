@@ -23,6 +23,7 @@ class ConfigurationLoader {
     }
     
     deinit {
+        print("🥸 12345 Configuration deinit")
         http.session.finishTasksAndInvalidate()
     }
     

@@ -77,6 +77,9 @@ import BraintreeDataCollector
         self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
+        let instance = Unmanaged.passUnretained(Self.apiClient).toOpaque()
+        print("⭐️ 12345 \(instance)")
+        
         super.init()
         NotificationCenter.default.addObserver(
             self,
@@ -470,7 +473,7 @@ import BraintreeDataCollector
             }
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                apiClient.sendAnalyticsEvent(
+                self.apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -480,7 +483,7 @@ import BraintreeDataCollector
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             } else {
-                apiClient.sendAnalyticsEvent(
+                self.apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -492,7 +495,7 @@ import BraintreeDataCollector
         } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                apiClient.sendAnalyticsEvent(
+                self.apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -541,7 +544,7 @@ import BraintreeDataCollector
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(
+        apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
             correlationID: clientMetadataID,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
