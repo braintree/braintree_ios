@@ -58,10 +58,11 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
-            print("😲 12345 event \(event.eventName)")
             if sendImmediately {
+                print("🆕 12345 event \(event.eventName)")
                 await sendImmediatelyEvent(event: event)
             } else {
+                print("🥶 12345 event \(event.eventName)")
                 await performEventRequest(with: event)
             }
         }
@@ -121,6 +122,8 @@ final class BTAnalyticsService: AnalyticsSendable {
             } catch {
                 return
             }
+        } else {
+            print("💀 12345 APIClient doesnt exist")
         }
     }
 
