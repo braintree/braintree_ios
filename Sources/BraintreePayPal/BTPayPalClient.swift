@@ -383,8 +383,8 @@ import BraintreeDataCollector
                 
                 self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
 
-                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
+//                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID // ?? dataCollector.clientMetadataID(self.payPalContextID)
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
@@ -563,7 +563,7 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
         payPalClient?.handleReturnURL(url)
-        BTPayPalClient.payPalClient = nil
+//        BTPayPalClient.payPalClient = nil
     }
 
     /// :nodoc:

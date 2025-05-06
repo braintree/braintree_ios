@@ -59,10 +59,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
             if sendImmediately {
-                print("🆕 12345 event \(event.eventName)")
+                print("🆕 12345 event \(event.eventName) to be send")
                 await sendImmediatelyEvent(event: event)
             } else {
-                print("🥶 12345 event \(event.eventName)")
+                print("🥶 12345 event \(event.eventName) to be send")
                 await performEventRequest(with: event)
             }
         }
@@ -95,7 +95,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             )
             
             _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-            print("🚀 12345 event sended \(event.eventName)")
+            print("🚀 12345 event \(event.eventName) sent")
         } catch {
             return
         }
@@ -116,14 +116,16 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    print("🥳 12345 event sended \(eventsPerSessionID.compactMap { $0.eventName })")
+                    print("🥳 12345 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
                 return
             }
         } else {
-            print("💀 12345 APIClient doesnt exist")
+            if apiClient == nil {
+                print("💀 12345 APIClient doesnt exist (Queue)")
+            }
         }
     }
 
