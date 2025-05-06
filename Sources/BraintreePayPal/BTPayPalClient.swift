@@ -368,7 +368,7 @@ import BraintreeDataCollector
                         self.notifyFailure(with: error, completion: completion)
                         return
                     }
-
+                    
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
@@ -382,9 +382,13 @@ import BraintreeDataCollector
                 }
                 
                 self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
-
-//                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID // ?? dataCollector.clientMetadataID(self.payPalContextID)
+                
+                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+                // Replace apiClient with a direct reference, since BTAnalyticsService was using dataCollector.apiClient,
+                // and dataCollector is a weak reference. This could cause analytics events to fail to send if dataCollector gets deallocated.
+                self.apiClient = dataCollector.apiClient
+                
+                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
 
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
