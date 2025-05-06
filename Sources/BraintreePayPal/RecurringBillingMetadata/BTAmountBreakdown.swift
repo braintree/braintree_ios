@@ -15,15 +15,15 @@ public struct BTAmountBreakdown {
 
     // MARK: - Initializer
 
-    /// Initialize a `BTPayPalRecurringAmountBreakdown` object.
+    /// Initialize a `BTAmountBreakdown` object.
     /// - Parameters:
     ///   - itemTotal: Required: Total amount of the items before any taxes or discounts.
     ///   - taxTotal: Optional: Total tax amount applied to the transaction. Required if `lineItems.taxAmount` is provided. Should match the sum of tax amounts from all line items.
-    ///   - shipping: Optional: Cost of shipping.
-    ///   - handling: Optional: Cost associated with handling the items (e.g., packaging or processing). Not accepted if `PayPalRecurringBillingDetails` are included.
+    ///   - shippingTotal: Optional: Cost of shipping.
+    ///   - handlingTotal: Optional: Cost associated with handling the items (e.g., packaging or processing). Not accepted if `PayPalRecurringBillingDetails` are included.
     ///   - insurance: Optional: Cost of insurance applied to the shipment or items. Not accepted if `PayPalRecurringBillingDetails` are included.
     ///   - shippingDiscount: Optional: Discount amount applied specifically to shipping. Not accepted if `PayPalRecurringBillingDetails` are included.
-    ///   - discount: Optional: General discount applied to the total transaction. Not accepted if `PayPalRecurringBillingDetails` are included.
+    ///   - discountTotal: Optional: General discount applied to the total transaction. Not accepted if `PayPalRecurringBillingDetails` are included.
     public init(
         itemTotal: String,
         taxTotal: String? = nil,
