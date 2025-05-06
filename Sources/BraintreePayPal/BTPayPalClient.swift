@@ -77,7 +77,7 @@ import BraintreeDataCollector
         self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
-        let instance = Unmanaged.passUnretained(Self.apiClient).toOpaque()
+        let instance = Unmanaged.passUnretained(self.apiClient).toOpaque()
         print("⭐️ 12345 \(instance)")
         
         super.init()
