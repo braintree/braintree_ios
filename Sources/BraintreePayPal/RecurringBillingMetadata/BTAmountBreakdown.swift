@@ -53,24 +53,24 @@ public struct BTAmountBreakdown {
             parameters["tax_total"] = taxTotal
         }
 
-        if let shipping {
-            parameters["shipping"] = shipping
+        if let shippingTotal {
+            parameters["shipping"] = shippingTotal
         }
 
-        if let handling {
-            parameters["handling"] = handling
+        if let handlingTotal {
+            parameters["handling"] = handlingTotal
         }
 
-        if let insurance {
-            parameters["insurance"] = insurance
+        if let insuranceTotal {
+            parameters["insurance"] = insuranceTotal
         }
 
         if let shippingDiscount {
             parameters["shipping_discount"] = shippingDiscount
         }
 
-        if let discount {
-            parameters["discount"] = discount
+        if let discountTotal {
+            parameters["discount"] = discountTotal
         }
 
         return parameters
