@@ -3,15 +3,15 @@ import Foundation
 /// This object can only used for the `PayPalCheckoutRequest` to customize how the transaction amount is broken down. If `AmountBreakdown` is provided, `itemTotal` is required. Some fields are conditionally required or not accepted depending on the checkout flow (e.g., one-time vs subscription).
 public struct BTAmountBreakdown {
 
-    // MARK: - Properties
+    // MARK: - Private Properties
 
-    let itemTotal: String
-    let taxTotal: String?
-    let shipping: String?
-    let handling: String?
-    let insurance: String?
-    let shippingDiscount: String?
-    let discount: String?
+    private let itemTotal: String
+    private let taxTotal: String?
+    private let shippingTotal: String?
+    private let handlingTotal: String?
+    private let insuranceTotal: String?
+    private let shippingDiscount: String?
+    private let discountTotal: String?
 
     // MARK: - Initializer
 
@@ -27,18 +27,18 @@ public struct BTAmountBreakdown {
     public init(
         itemTotal: String,
         taxTotal: String? = nil,
-        shipping: String? = nil,
-        handling: String? = nil,
-        insurance: String? = nil,
+        shippingTotal: String? = nil,
+        handlingTotal: String? = nil,
+        insuranceTotal: String? = nil,
         shippingDiscount: String? = nil,
-        discount: String? = nil
+        discountTotal: String? = nil
     ) {
         self.itemTotal = itemTotal
         self.taxTotal = taxTotal
-        self.shipping = shipping
-        self.handling = handling
-        self.insurance = insurance
+        self.shippingTotal = shippingTotal
+        self.handlingTotal = handlingTotal
+        self.insuranceTotal = insuranceTotal
         self.shippingDiscount = shippingDiscount
-        self.discount = discount
+        self.discountTotal = discountTotal
     }
 }

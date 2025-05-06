@@ -145,6 +145,8 @@ import BraintreeCore
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
     ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - recurringBillingDetails: Optional: Recurring billing product details.
+    ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
 
     public init(
