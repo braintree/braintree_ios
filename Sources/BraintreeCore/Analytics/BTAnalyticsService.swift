@@ -62,7 +62,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                 print("🆕 12345 event \(event.eventName) to be send")
                 await sendImmediatelyEvent(event: event)
             } else {
-                print("🥶 12345 event \(event.eventName) to be send")
+                print("🥶 1234 event \(event.eventName) to be send")
                 await performEventRequest(with: event)
             }
         }
@@ -116,7 +116,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    print("🥳 12345 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
+                    print("🥳 1234 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
@@ -124,7 +124,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             }
         } else {
             if apiClient == nil {
-                print("💀 12345 APIClient doesnt exist (Queue)")
+                print("💀 1234 APIClient doesnt exist (Queue)")
             }
         }
     }
