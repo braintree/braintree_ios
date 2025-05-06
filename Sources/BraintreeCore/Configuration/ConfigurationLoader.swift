@@ -20,9 +20,13 @@ class ConfigurationLoader {
     
     init(http: BTHTTP) {
         self.http = http
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🌮 12345 Configuration init \(instance)")
     }
     
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🍟 12345 Configuration deinit \(instance)")
         http.session.finishTasksAndInvalidate()
     }
     

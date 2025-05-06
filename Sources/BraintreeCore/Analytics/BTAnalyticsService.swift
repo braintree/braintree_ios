@@ -30,6 +30,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
     func setAPIClient(_ apiClient: BTAPIClient) {
+        let instance = Unmanaged.passUnretained(apiClient).toOpaque()
+        print("👀 12345 Analytics set APIClient \(instance)")
+        
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
@@ -46,6 +49,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🚨 12345 Analytics deinit \(instance)")
         timer.suspend()
     }
 
@@ -56,10 +61,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
             if sendImmediately {
-                print("12345 ⏫ \(event.eventName)")
+                print("🆕 12345 event \(event.eventName) to be send")
                 await performEventRequestImmediatly(with: event)
             } else {
-                print("1234 🥶 \(event.eventName)")
+                print("🥶 1234 event \(event.eventName) to be send")
                 await performEventRequest(with: event)
             }
         }
@@ -78,7 +83,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     func performEventRequestImmediatly(with event: FPTIBatchData.Event) async {
         guard let apiClient else {
-            print("1234 🫀 APIClient doesnt exist")
+            print("🫀 12345 APIClient doesnt exist")
             return
         }
         
@@ -92,7 +97,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             )
             
             _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-            print("12345 🫶🏻 \(event.eventName)")
+            print("🚀 12345 event \(event.eventName) sent")
         } catch {
             return
         }
@@ -113,14 +118,16 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    print("1234 😲 \(eventsPerSessionID.compactMap { $0.eventName } )")
+                    print("🥳 1234 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
                 return
             }
         } else {
-            print("1234 🐛 APIClient doesnt exist")
+            if apiClient == nil {
+                print("💀 1234 APIClient doesnt exist (Queue)")
+            }
         }
     }
 
