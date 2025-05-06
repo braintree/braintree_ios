@@ -12,7 +12,7 @@ import BraintreeCore
     
     var config: BTConfiguration?
 
-    var apiClient: BTAPIClient
+    public var apiClient: BTAPIClient
 
     ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
     /// - Parameter  authorization: A valid client token or tokenization key used to authorize API calls.
