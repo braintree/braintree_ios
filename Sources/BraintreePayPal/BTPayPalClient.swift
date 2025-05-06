@@ -368,7 +368,7 @@ import BraintreeDataCollector
                         self.notifyFailure(with: error, completion: completion)
                         return
                     }
-                    
+
                     let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
@@ -477,7 +477,7 @@ import BraintreeDataCollector
             }
         } sessionDidAppear: { [self] didAppear in
             if didAppear {
-                self.apiClient.sendAnalyticsEvent(
+                apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -487,7 +487,7 @@ import BraintreeDataCollector
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             } else {
-                self.apiClient.sendAnalyticsEvent(
+                apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -499,7 +499,7 @@ import BraintreeDataCollector
         } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(
+                apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -567,7 +567,7 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
         payPalClient?.handleReturnURL(url)
-//        BTPayPalClient.payPalClient = nil
+        BTPayPalClient.payPalClient = nil
     }
 
     /// :nodoc:
