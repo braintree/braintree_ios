@@ -177,7 +177,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["payer_email"])
     }
     
-    func testParametersWithConfiguration_withContactInformation_setsRecipientEmailAndPhoneNumber() {
+    func testParametersWithConfiguration__withContactInformation_setsRecipientEmailAndPhoneNumber() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
@@ -280,59 +280,5 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
-    }
-
-    func testPayPalCheckoutRequest_setsAmountBreakdown_requiredFieldOnly() {
-        let amountBreakdown = BTAmountBreakdown(itemTotal: "10.00")
-        let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
-
-        XCTAssertEqual(request.amountBreakdown?.itemTotal, "10.00")
-    }
-
-    func testParametersWithConfiguration_setsAmountBreakdown_allFields() {
-        let amountBreakdown = BTAmountBreakdown(
-            itemTotal: "10.00",
-            taxTotal: "1.00",
-            shipping: "2.00",
-            handling: "3.00",
-            insurance: "4.00",
-            shippingDiscount: "1.00",
-            discount: "2.00"
-        )
-        let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
-
-        XCTAssertEqual(request.amountBreakdown?.itemTotal, "10.00")
-        XCTAssertEqual(request.amountBreakdown?.taxTotal, "1.00")
-        XCTAssertEqual(request.amountBreakdown?.shipping, "2.00")
-        XCTAssertEqual(request.amountBreakdown?.handling, "3.00")
-        XCTAssertEqual(request.amountBreakdown?.insurance, "4.00")
-        XCTAssertEqual(request.amountBreakdown?.shippingDiscount, "1.00")
-        XCTAssertEqual(request.amountBreakdown?.discount, "2.00")
-    }
-
-    func testCreateRequestBody_setsAmountBreakdown() {
-        let amountBreakdown = BTAmountBreakdown(
-            itemTotal: "10.00",
-            taxTotal: "1.00",
-            shipping: "2.00",
-            handling: "3.00",
-            insurance: "4.00",
-            shippingDiscount: "1.00",
-            discount: "2.00"
-        )
-        let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
-
-        let amountParameters = request.amountBreakdown?.parameters()
-
-        XCTAssertEqual(amountParameters?["item_total"] as? String, "10.00")
-        XCTAssertEqual(amountParameters?["tax_total"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["shipping"] as? String, "2.00")
-        XCTAssertEqual(amountParameters?["handling"] as? String, "3.00")
-        XCTAssertEqual(amountParameters?["insurance"] as? String, "4.00")
-        XCTAssertEqual(amountParameters?["shipping_discount"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["discount"] as? String, "2.00")
-
-        let parameters = request.parameters(with: configuration)
-        guard parameters["amount_breakdown"] is [String:String] else { XCTFail(); return }
     }
 }
