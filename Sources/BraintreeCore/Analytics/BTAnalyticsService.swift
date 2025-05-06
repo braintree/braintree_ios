@@ -99,6 +99,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
             print("🚀 12345 event \(event.eventName) sent")
         } catch {
+            print("🛰️ 12345 get config failed")
             return
         }
     }
@@ -122,6 +123,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
+                print("🛰️ 12345 get config failed (Queue)")
                 return
             }
         } else {
