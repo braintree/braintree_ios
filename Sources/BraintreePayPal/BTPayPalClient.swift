@@ -78,7 +78,7 @@ import BraintreeDataCollector
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         let instance = Unmanaged.passUnretained(self.apiClient).toOpaque()
-        print("⭐️ 12345 \(instance)")
+        print("⭐️ 12345 PayPalClient init, APIClient instance \(instance)")
         
         super.init()
         NotificationCenter.default.addObserver(
