@@ -103,6 +103,11 @@ import BraintreeDataCollector
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchPayPal")
     }
 
+    deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🚧 12345 PayPalClient deinit \(instance)")
+    }
+    
     // MARK: - Public Methods
 
     /// Tokenize a PayPal request to be used with the PayPal Vault flow.

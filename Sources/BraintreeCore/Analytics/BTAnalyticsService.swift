@@ -49,6 +49,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🚨 12345 Analytics deinit \(instance)")
         timer.suspend()
     }
 
