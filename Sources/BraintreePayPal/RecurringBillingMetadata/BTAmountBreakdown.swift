@@ -41,4 +41,38 @@ public struct BTAmountBreakdown {
         self.shippingDiscount = shippingDiscount
         self.discountTotal = discountTotal
     }
+
+    // MARK: - Internal Methods
+
+    func parameters() -> [String: Any] {
+        var parameters: [String: Any] = [
+            "item_total": itemTotal
+        ]
+
+        if let taxTotal {
+            parameters["tax_total"] = taxTotal
+        }
+
+        if let shippingTotal {
+            parameters["shipping"] = shippingTotal
+        }
+
+        if let handlingTotal {
+            parameters["handling"] = handlingTotal
+        }
+
+        if let insuranceTotal {
+            parameters["insurance"] = insuranceTotal
+        }
+
+        if let shippingDiscount {
+            parameters["shipping_discount"] = shippingDiscount
+        }
+
+        if let discountTotal {
+            parameters["discount"] = discountTotal
+        }
+
+        return parameters
+    }
 }

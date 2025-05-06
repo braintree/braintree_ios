@@ -281,4 +281,30 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
+
+    func testCreateRequestBody_setsAmountBreakdown() {
+        let amountBreakdown = BTAmountBreakdown(
+            itemTotal: "10.00",
+            taxTotal: "1.00",
+            shippingTotal: "2.00",
+            handlingTotal: "3.00",
+            insuranceTotal: "4.00",
+            shippingDiscount: "1.00",
+            discountTotal: "2.00"
+        )
+
+        let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
+        let parameters = request.parameters(with: configuration)
+        let amountParameters = request.amountBreakdown?.parameters()
+
+        guard parameters["amount_breakdown"] is [String:String] else { XCTFail(); return }
+        XCTAssertEqual(amountParameters?["item_total"] as? String, "10.00")
+        XCTAssertEqual(amountParameters?["tax_total"] as? String, "1.00")
+        XCTAssertEqual(amountParameters?["shipping"] as? String, "2.00")
+        XCTAssertEqual(amountParameters?["handling"] as? String, "3.00")
+        XCTAssertEqual(amountParameters?["insurance"] as? String, "4.00")
+        XCTAssertEqual(amountParameters?["shipping_discount"] as? String, "1.00")
+        XCTAssertEqual(amountParameters?["discount"] as? String, "2.00")
+    }
+
 }
