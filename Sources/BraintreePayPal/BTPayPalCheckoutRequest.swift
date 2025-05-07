@@ -146,7 +146,6 @@ import BraintreeCore
     ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
-
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,

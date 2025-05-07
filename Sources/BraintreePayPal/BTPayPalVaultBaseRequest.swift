@@ -22,7 +22,9 @@ import BraintreeCore
     public init(
         offerCredit: Bool = false,
         userAuthenticationEmail: String? = nil,
-        enablePayPalAppSwitch: Bool = false
+        enablePayPalAppSwitch: Bool = false,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil
     ) {
         self.offerCredit = offerCredit
         
