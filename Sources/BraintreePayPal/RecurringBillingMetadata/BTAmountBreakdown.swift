@@ -1,6 +1,9 @@
 import Foundation
 
-/// This object can only used for the `PayPalCheckoutRequest` to customize how the transaction amount is broken down. If `AmountBreakdown` is provided, `itemTotal` is required. Some fields are conditionally required or not accepted depending on the checkout flow (e.g., one-time vs subscription).
+/// A recurring billing amount breakdown.
+/// This object can only used for the `BTPayPalCheckoutRequest` to customize how the transaction amount is
+/// broken down. If `BTAmountBreakdown` is provided, `itemTotal` is required. Some fields are conditionally 
+/// required or not accepted depending on the checkout flow (e.g., one-time vs subscription).
 public struct BTAmountBreakdown {
 
     // MARK: - Private Properties
