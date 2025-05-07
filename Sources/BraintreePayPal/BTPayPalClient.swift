@@ -571,7 +571,7 @@ import BraintreeDataCollector
     }
 
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(
+        apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
             correlationID: clientMetadataID,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,

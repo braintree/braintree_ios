@@ -83,7 +83,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     func performEventRequestImmediatly(with event: FPTIBatchData.Event) async {
         guard let apiClient else {
-            print("🫀 12345 APIClient doesnt exist")
+            print("🫀 12345 APIClient doesnt exist \(event.eventName)")
             return
         }
         
