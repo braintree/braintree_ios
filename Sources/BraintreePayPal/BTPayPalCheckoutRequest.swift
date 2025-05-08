@@ -148,7 +148,6 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
-
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
