@@ -54,7 +54,7 @@ import UIKit
             appContextSwitchClient.handleReturnURL(url)
             return true
         }
-        return true
+        return false
     }
     
     /// Registers a class `Type` that can handle a return from app context switch with a static method.
