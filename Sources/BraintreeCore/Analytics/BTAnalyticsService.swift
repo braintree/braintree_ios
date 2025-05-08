@@ -119,7 +119,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    print("🥳 ** 1234 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
+                    print("🥳 ** 1234 event \(eventsPerSessionID.compactMap { $0.endpoint }) sent")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
