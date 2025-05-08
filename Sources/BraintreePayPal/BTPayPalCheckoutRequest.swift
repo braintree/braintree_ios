@@ -244,6 +244,14 @@ import BraintreeCore
             baseParameters["amount_breakdown"] = amountBreakdown.parameters()
         }
 
+        if let recurringBillingPlanType {
+            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
+        }
+
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
