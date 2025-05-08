@@ -72,6 +72,7 @@ class ConfigurationLoader {
                     return configuration
                 }
             } catch {
+                print("⭕️ 12345 GetConfig error \(error)")
                 throw error
             }
         }

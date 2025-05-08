@@ -74,6 +74,9 @@ import Foundation
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🥕 12345 API Client deinit \(instance)")
+        
         if http != nil && http?.session != nil {
             http?.session.finishTasksAndInvalidate()
         }
