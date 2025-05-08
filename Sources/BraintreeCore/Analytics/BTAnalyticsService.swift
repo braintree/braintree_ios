@@ -22,7 +22,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private weak var apiClient: BTAPIClient?
+    private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
     
@@ -61,7 +61,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         Task(priority: .background) {
             if sendImmediately {
-                print("🆕 12345 event \(event.eventName) to be send")
+                print("🆕 * 12345 event \(event.eventName) to be send")
                 await performEventRequestImmediatly(with: event)
             } else {
                 print("🥶 1234 event \(event.eventName) to be send")
@@ -97,7 +97,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             )
             
             _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-            print("🚀 12345 event \(event.eventName) sent")
+            print("🚀 * 12345 event \(event.eventName) sent")
         } catch {
             print("🛰️ 12345 get config failed")
             return
@@ -119,7 +119,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     )
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    print("🥳 1234 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
+                    print("🥳 ** 1234 event \(eventsPerSessionID.compactMap { $0.eventName }) sent")
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {

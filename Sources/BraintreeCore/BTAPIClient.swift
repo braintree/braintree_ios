@@ -25,7 +25,7 @@ import Foundation
     var configurationLoader: ConfigurationLoader
     
     /// Exposed for testing analytics
-    var analyticsService: AnalyticsSendable = BTAnalyticsService.shared
+    weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -62,7 +62,7 @@ import Foundation
         let instance = Unmanaged.passUnretained(self).toOpaque()
         print("🌶️ 12345 API Client init \(instance)")
         
-        analyticsService.setAPIClient(self)
+        analyticsService?.setAPIClient(self)
         http?.networkTimingDelegate = self
 
         // Kickoff the background request to fetch the config
@@ -325,7 +325,7 @@ import Foundation
         payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
-        analyticsService.sendAnalyticsEvent(
+        analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
@@ -426,7 +426,8 @@ import Foundation
         )
         
         if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService.sendAnalyticsEvent(
+            print("🐙 ** 12345 Latency event \(cleanedPath)")
+            analyticsService?.sendAnalyticsEvent(
                 FPTIBatchData.Event(
                     connectionStartTime: connectionStartTime,
                     endpoint: cleanedPath,
