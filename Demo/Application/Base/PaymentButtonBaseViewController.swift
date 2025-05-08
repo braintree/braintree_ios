@@ -13,6 +13,7 @@ class PaymentButtonBaseViewController: BaseViewController {
 
     override init(authorization: String) {
         aauthorization = authorization
+        print(aauthorization)
         super.init(authorization: authorization)
     }
     
