@@ -590,7 +590,7 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
         payPalClient?.handleReturnURL(url)
-        BTPayPalClient.payPalClient = nil
+//        BTPayPalClient.payPalClient = nil
     }
 
     /// :nodoc:
