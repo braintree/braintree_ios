@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1051,6 +1051,10 @@
 		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		BECEF7982DCD20E800181C83 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		03502C801E9C0A1700F15EE6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -1760,6 +1764,7 @@
 				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
 				096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */,
 				BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */,
+				BECEF7982DCD20E800181C83 /* Models */,
 				3BE7386E2BA171A300598F05 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeVenmo;
@@ -2277,6 +2282,9 @@
 			);
 			dependencies = (
 				BE10B8D5287DC1F700F7B3B2 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				BECEF7982DCD20E800181C83 /* Models */,
 			);
 			name = BraintreeVenmo;
 			productName = BraintreeVenmo;
