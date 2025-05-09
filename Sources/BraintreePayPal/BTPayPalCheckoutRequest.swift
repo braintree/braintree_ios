@@ -182,6 +182,7 @@ import BraintreeCore
     // MARK: Public Methods
 
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
+    // swiftlint:disable:next cyclomatic_complexity
     @_documentation(visibility: private)
     public override func parameters(
         with configuration: BTConfiguration,
@@ -242,6 +243,14 @@ import BraintreeCore
 
         if let amountBreakdown {
             baseParameters["amount_breakdown"] = amountBreakdown.parameters()
+        }
+
+        if let recurringBillingPlanType {
+            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
 
         return baseParameters.merging(checkoutParameters) { $1 }
