@@ -82,6 +82,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let contactInformationToggle = Toggle(title: "Add Contact Information")
 
+    let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
+
     override func viewDidLoad() {
         super.heightConstraint = 500
         super.viewDidLoad()
@@ -106,6 +108,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             payLaterToggle,
             newPayPalCheckoutToggle,
             contactInformationToggle,
+            amountBreakdownToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton
         ])
@@ -151,28 +154,80 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalCheckoutRequest(amount: "5.00")
-        request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
-        )
-        
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
-        lineItem.upcCode = "123456789"
-        lineItem.upcType = .UPC_A
-        lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
+//        request.userAuthenticationEmail = emailTextField.text
+//        request.userPhoneNumber = BTPayPalPhoneNumber(
+//            countryCode: countryCodeTextField.text ?? "",
+//            nationalNumber: nationalNumberTextField.text ?? ""
+//        )
+//        
+//        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
+//        lineItem.upcCode = "123456789"
+//        lineItem.upcType = .UPC_A
+//        lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
+//
+//        request.lineItems = [lineItem]
+//        request.offerPayLater = payLaterToggle.isOn
+//        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
+//
+//        if contactInformationToggle.isOn {
+//            request.contactInformation = BTContactInformation(
+//                recipientEmail: "some@email.com",
+//                recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+//            )
+//
+//            request.contactPreference = .updateContactInformation
+//        }
 
-        request.lineItems = [lineItem]
-        request.offerPayLater = payLaterToggle.isOn
-        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
-
-        if contactInformationToggle.isOn {
-            request.contactInformation = BTContactInformation(
-                recipientEmail: "some@email.com",
-                recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+        if amountBreakdownToggle.isOn {
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .fixed,
+                amount: "9.99",
+                reloadThresholdAmount: "99.99"
+            )
+                        
+            let billingCycle = BTPayPalBillingCycle(
+                isTrial: true,
+                numberOfExecutions: 1,
+                interval: .month,
+                intervalCount: 1,
+                sequence: 1,
+                startDate: "2024-08-01",
+                pricing: billingPricing
             )
 
-            request.contactPreference = .updateContactInformation
+            let amountBreakdown = BTAmountBreakdown(
+                itemTotal: "9.99", // required
+                taxTotal: "0.99", // required when lineItems.taxAmount exists
+                shippingTotal: "1.99", // optional
+                handlingTotal: "0.99", // optional - not accepted if passing BTPayPalRecurringBillingDetails
+                insuranceTotal: "5.00", // optional - not accepted if passing BTPayPalRecurringBillingDetails
+                shippingDiscount: "1.00", // optional - not accepted if passing BTPayPalRecurringBillingDetails
+                discountTotal: "2.00" // optional - not accepted if passing BTPayPalRecurringBillingDetails
+            )
+                        
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                totalAmount: "32.56",
+                productName: "Vogue Magazine",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "9.99",
+                shippingAmount: "1.99",
+                productAmount: "19.99",
+                taxAmount: "0.59"
+            )
+
+            let request = BTPayPalCheckoutRequest(
+                amount: "9.00",
+                recurringBillingDetails: recurringBillingDetails,
+                recurringBillingPlanType: .subscription,
+                amountBreakdown: amountBreakdown
+            )
+
+            let lineItems = BTPayPalLineItem(quantity: "1", unitAmount: "18", name: "Subscription Setup + First Cycle", kind: .debit)
+            request.lineItems = [lineItems]
+            request.requestBillingAgreement = true
         }
 
         payPalClient.tokenize(request) { nonce, error in
