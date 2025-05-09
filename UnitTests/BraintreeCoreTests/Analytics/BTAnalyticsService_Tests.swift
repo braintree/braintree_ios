@@ -65,6 +65,27 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
     }
+
+    func testSendAnalyticsEvents_whenMultipleEventsSent_tracksLatestEventName_andNumberOfPOSTRequests() async {
+        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.http = mockAnalyticsHTTP
+
+        let event1 = FPTIBatchData.Event(eventName: "event1")
+        let event2 = FPTIBatchData.Event(eventName: "event2")
+        let event3 = FPTIBatchData.Event(eventName: "event3")
+        await sut.sendAnalyticsEvents(with: event1)
+        await sut.sendAnalyticsEvents(with: event2)
+        await sut.sendAnalyticsEvents(with: event3)
+
+        let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
+        
+        XCTAssertEqual(eventName!, "event3")
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 3)
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+    }
     
     // MARK: - Helper Functions
 
