@@ -55,7 +55,11 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
-            await performEventRequest(with: event)
+            if sendImmediately {
+                await sendAnalyticsEvents(with: event)
+            } else {
+                await performEventRequest(with: event)
+            }
         }
     }
     
@@ -69,12 +73,52 @@ final class BTAnalyticsService: AnalyticsSendable {
             await self.sendQueuedAnalyticsEvents()
         }
     }
-
+    
+    /// Exposed for testing only
+    func sendAnalyticsEvents(with event: FPTIBatchData.Event) async {
+        guard let apiClient else { return }
+     
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            try await postAnalyticsEvents(
+                configuration: configuration,
+                sessionID: apiClient.metadata.sessionID,
+                events: [event]
+            )
+        } catch {
+            NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
+        }
+    }
+    
     // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
+        guard await !events.isEmpty, let apiClient else { return }
+        
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            
+            for (sessionID, eventsPerSessionID) in await events.allValues {
+                try await postAnalyticsEvents(
+                    configuration: configuration,
+                    sessionID: sessionID,
+                    events: eventsPerSessionID)
+                await events.removeFor(sessionID: sessionID)
             }
+        } catch {
+            NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
         }
+    }
+    
+    /// Posts analytics events to the endpoint.
+    private func postAnalyticsEvents(configuration: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) async throws {
+        let payload = createAnalyticsEvent(
+            config: configuration,
+            sessionID: sessionID,
+            events: events
+        )
+
+        _ = try await http?.post("v1/tracking/batch/events", parameters: payload)
     }
 
     /// Constructs POST params to be sent to FPTI
