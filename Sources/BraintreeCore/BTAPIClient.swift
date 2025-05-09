@@ -426,7 +426,7 @@ import Foundation
         )
         
         if cleanedPath != "/v1/tracking/batch/events" {
-            print("🐙 ** 1234 Latency event \(cleanedPath)")
+            print("🐙 _ 1234 Latency event \(cleanedPath)")
             analyticsService?.sendAnalyticsEvent(
                 FPTIBatchData.Event(
                     connectionStartTime: connectionStartTime,
