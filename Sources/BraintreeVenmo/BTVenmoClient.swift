@@ -213,7 +213,7 @@ import BraintreeCore
 
         switch returnURL.state {
         case .succeededWithPaymentContext:
-            let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID:   returnURL.paymentContextID)
+            let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error {

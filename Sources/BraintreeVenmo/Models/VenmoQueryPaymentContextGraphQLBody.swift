@@ -1,3 +1,4 @@
+// swiftlint:disable nesting
 /// The POST body for graph QL `query PaymentContext`
 struct VenmoQueryPaymentContextGraphQLBody: Encodable {
 
@@ -13,5 +14,9 @@ struct VenmoQueryPaymentContextGraphQLBody: Encodable {
     struct Variables: Encodable {
 
         var paymentContextID: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case paymentContextID = "id"
+        }
     }
 }
