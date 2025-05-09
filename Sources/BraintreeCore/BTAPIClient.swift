@@ -40,11 +40,7 @@ import Foundation
         switch authorizationType {
         case .tokenizationKey:
             do {
-                let tokenizationKey = try TokenizationKey(authorization)
-                self.authorization = tokenizationKey
-                let btHttp = BTHTTP(authorization: tokenizationKey)
-                http = btHttp
-                configurationLoader = ConfigurationLoader(http: btHttp)
+                self.authorization = try TokenizationKey(authorization)
             } catch {
                 return nil
             }
@@ -52,13 +48,14 @@ import Foundation
             do {
                 let clientToken = try BTClientToken(clientToken: authorization)
                 self.authorization = clientToken
-                let btHttp = BTHTTP(authorization: clientToken)
-                http = btHttp
-                configurationLoader = ConfigurationLoader(http: btHttp)
             } catch {
                 return nil
             }
         }
+        
+        let btHttp = BTHTTP(authorization: self.authorization)
+        http = btHttp
+        configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
         
