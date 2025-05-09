@@ -53,7 +53,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
-    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
             await performEventRequest(with: event)
         }
@@ -73,23 +73,6 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
-        if await !events.isEmpty, let apiClient {
-            do {
-                let configuration = try await apiClient.fetchConfiguration()
-                
-                for (sessionID, eventsPerSessionID) in await events.allValues {
-                    let postParameters = createAnalyticsEvent(
-                        config: configuration,
-                        sessionID: sessionID,
-                        events: eventsPerSessionID
-                    )
-                    
-                    _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
-                    
-                    await events.removeFor(sessionID: sessionID)
-                }
-            } catch {
-                return
             }
         }
     }

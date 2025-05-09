@@ -427,7 +427,8 @@ import Foundation
                     eventName: BTCoreAnalytics.apiRequestLatency,
                     requestStartTime: requestStartTime,
                     startTime: startTime
-                )
+                ),
+                sendImmediately: false
             )
         }
     }
