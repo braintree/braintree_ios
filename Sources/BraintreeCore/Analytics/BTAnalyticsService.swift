@@ -55,11 +55,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
-            if sendImmediately {
-                await sendAnalyticsEvents(with: event)
-            } else {
-                await performEventRequest(with: event)
-            }
+            sendImmediately ? await sendAnalyticsEvents(with: event) : await performEventRequest(with: event)
         }
     }
     
@@ -102,7 +98,8 @@ final class BTAnalyticsService: AnalyticsSendable {
                 try await postAnalyticsEvents(
                     configuration: configuration,
                     sessionID: sessionID,
-                    events: eventsPerSessionID)
+                    events: eventsPerSessionID
+                )
                 await events.removeFor(sessionID: sessionID)
             }
         } catch {
