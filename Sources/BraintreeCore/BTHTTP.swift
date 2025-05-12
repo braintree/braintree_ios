@@ -69,13 +69,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        do {
-            let dict = try parameters?.toDictionary()
-            
-            httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
-        } catch let error {
-            completion(nil, nil, error)
-        }
+            httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
     func get(
@@ -93,15 +87,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             }
         }
     }
-
-    // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
+    
     func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = nil,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
+        if authorization.type == .invalidAuthorization {
+            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
+            return
+        }
+        
         httpRequest(
             method: "POST",
             path: path,
@@ -115,22 +113,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
-        parameters: Encodable,
-        headers: [String: String]? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        do {
-            let dict = try parameters.toDictionary()
-            post(path, configuration: configuration, parameters: dict, headers: headers, completion: completion)
-        } catch let error {
-            completion(nil, nil, error)
-        }
-    }
-    
-    func post(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await withCheckedThrowingContinuation { continuation in
@@ -150,7 +133,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
@@ -181,7 +164,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         method: String,
         path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         headers: [String: String]? = [:]
     ) throws -> URLRequest {
         var fullPathURL: URL
@@ -200,8 +183,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
         
-        let mutableParameters = NSMutableDictionary(dictionary: parameters ?? [:])
-
+        var mutableParameters = NSMutableDictionary()
+        if let parameters {
+            let encodedData = try JSONEncoder().encode(parameters)
+            if let jsonObject = try JSONSerialization.jsonObject(with: encodedData) as? [String: Any] {
+                mutableParameters = NSMutableDictionary(dictionary: jsonObject)
+            }
+        }
+        
         // TODO: - Investigate for parity on JS and Android
         // JIRA - DTBTSDK-2682
         if authorization.type == .clientToken, !fullPathURL.isPayPalURL {

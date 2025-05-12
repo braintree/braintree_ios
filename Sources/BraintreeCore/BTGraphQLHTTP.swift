@@ -22,7 +22,7 @@ class BTGraphQLHTTP: BTHTTP {
     override func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = nil,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
@@ -34,7 +34,7 @@ class BTGraphQLHTTP: BTHTTP {
     func httpRequest(
         method: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         completion: @escaping RequestCompletion
     ) {
         var errorUserInfo: [String: Any] = [:]
@@ -67,7 +67,12 @@ class BTGraphQLHTTP: BTHTTP {
         var request: URLRequest
     
         do {
-            let bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
+            // swiftlint:disable:next redundant_optional_initialization
+            var bodyData: Data? = nil
+            if let parameters {
+                bodyData = try? JSONEncoder().encode(parameters)
+            }
+
             request = URLRequest(url: urlFromComponents)
             request.httpBody = bodyData
             request.allHTTPHeaderFields = headers

@@ -132,46 +132,6 @@ import Foundation
             http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
     }
-
-    // TODO: - Remove when all POST bodies use Codable, instead of BTJSON/raw dictionaries
-    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    ///
-    /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
-    /// - Parameters:
-    ///   - path: The endpoint URI path.
-    ///   - parameters: Optional set of query parameters to be encoded with the request.
-    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
-    ///   - completion:  A block object to be executed when the request finishes.
-    ///   On success, `body` and `response` will contain the JSON body response and the
-    ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
-    ///   `nil` and `error` will contain the error that occurred.
-    @_documentation(visibility: private)
-    public func post(
-        _ path: String,
-        parameters: [String: Any]? = nil,
-        httpType: BTAPIClientHTTPService = .gateway,
-        completion: @escaping RequestCompletion
-    ) {
-        if authorization.type == .invalidAuthorization {
-            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
-            return
-        }
-
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            let postParameters = metadataParametersWith(parameters, for: httpType)
-            http(for: httpType)?.post(path, configuration: configuration, parameters: postParameters, completion: completion)
-        }
-    }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
@@ -187,7 +147,7 @@ import Foundation
     @_documentation(visibility: private)
     public func post(
         _ path: String,
-        parameters: Encodable,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway,
         completion: @escaping RequestCompletion
@@ -283,20 +243,6 @@ import Foundation
                 shopperSessionID: shopperSessionID
             )
         )
-    }
-
-    // MARK: Analytics Internal Methods
-
-    // TODO: - Remove once all POSTs moved to Encodable
-    func metadataParametersWith(_ parameters: [String: Any]? = [:], for httpType: BTAPIClientHTTPService) -> [String: Any]? {
-        switch httpType {
-        case .gateway:
-            return parameters?.merging(["_meta": metadata.parameters]) { $1 }
-        case .graphQLAPI:
-            return parameters?.merging(["clientSdkMetadata": metadata.parameters]) { $1 }
-        case .payPalAPI:
-            return parameters
-        }
     }
 
     // MARK: - Internal Static Methods
