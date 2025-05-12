@@ -58,6 +58,10 @@ import Foundation
         configurationLoader = ConfigurationLoader(http: btHttp)
         
         super.init()
+        
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🌶️ 12345 API Client init \(instance)")
+        
         analyticsService?.setAPIClient(self)
         http?.networkTimingDelegate = self
 
@@ -70,6 +74,9 @@ import Foundation
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🥕 12345 API Client deinit \(instance)")
+        
         if http != nil && http?.session != nil {
             http?.session.finishTasksAndInvalidate()
         }
@@ -419,6 +426,7 @@ import Foundation
         )
         
         if cleanedPath != "/v1/tracking/batch/events" {
+            print("🐙 _ 1234 Latency event \(cleanedPath)")
             analyticsService?.sendAnalyticsEvent(
                 FPTIBatchData.Event(
                     connectionStartTime: connectionStartTime,
@@ -430,6 +438,8 @@ import Foundation
                 ),
                 sendImmediately: false
             )
+        } else {
+            print("🔮 12345 Event log")
         }
     }
 }

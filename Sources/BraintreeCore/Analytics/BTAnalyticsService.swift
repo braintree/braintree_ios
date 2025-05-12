@@ -30,6 +30,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Used to inject `BTAPIClient` dependency into `BTAnalyticsService` singleton
     func setAPIClient(_ apiClient: BTAPIClient) {
+        let instance = Unmanaged.passUnretained(apiClient).toOpaque()
+        print("👀 12345 Analytics set APIClient \(instance)")
+        
         self.apiClient = apiClient
         self.http = BTHTTP(authorization: apiClient.authorization, customBaseURL: Self.url)
         
@@ -46,6 +49,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Deinit
 
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🚨 12345 Analytics deinit \(instance)")
         timer.suspend()
     }
 
@@ -55,6 +60,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
+            sendImmediately ? print("🆕 * 12345 event \(event.eventName) to be send") : print("🥶 1234 event \(event.eventName) to be send")
             sendImmediately ? await sendAnalyticsEvents(with: event) : await performEventRequest(with: event)
         }
     }
@@ -72,7 +78,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     /// Exposed for testing only
     func sendAnalyticsEvents(with event: FPTIBatchData.Event) async {
-        guard let apiClient else { return }
+        guard let apiClient else {
+            print("🫀 12345 APIClient doesnt exist \(event.eventName)")
+            return
+        }
      
         do {
             let configuration = try await apiClient.fetchConfiguration()
@@ -81,7 +90,9 @@ final class BTAnalyticsService: AnalyticsSendable {
                 sessionID: apiClient.metadata.sessionID,
                 events: [event]
             )
+            print("🚀 * 12345 event \(event.eventName) sent")
         } catch {
+            print("🛰️ 12345 get config failed")
             NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
         }
     }
@@ -89,7 +100,12 @@ final class BTAnalyticsService: AnalyticsSendable {
     // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
-        guard await !events.isEmpty, let apiClient else { return }
+        guard await !events.isEmpty, let apiClient else {
+            if apiClient == nil {
+                print("💀 1234 APIClient doesnt exist (Queue)")
+            }
+            return
+        }
         
         do {
             let configuration = try await apiClient.fetchConfiguration()
@@ -100,9 +116,11 @@ final class BTAnalyticsService: AnalyticsSendable {
                     sessionID: sessionID,
                     events: eventsPerSessionID
                 )
+                print("🥳 _ 1234 event \(eventsPerSessionID.compactMap { $0.endpoint }) sent")
                 await events.removeFor(sessionID: sessionID)
             }
         } catch {
+            print("🛰️ 12345 get config failed (Queue)")
             NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
         }
     }

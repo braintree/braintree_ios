@@ -471,6 +471,16 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                     startTime: startDate.utcTimestampMilliseconds,
                     endTime: endDate.utcTimestampMilliseconds
                 )
+                
+                let isNetworkTimingDelegateNil = networkTimingDelegate == nil
+
+                if isNetworkTimingDelegateNil {
+                    if path != "/v1/tracking/batch/events" {
+                        print("🌸 1234 no networktiming \(path)")
+                    }
+                } else {
+                    print("🌼 1234 networktiming \(path)")
+                }
             }
         }
     }
