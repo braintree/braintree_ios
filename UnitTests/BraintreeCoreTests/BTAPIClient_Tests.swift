@@ -171,7 +171,7 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
 
         let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: [:], httpType: .gateway) { _, _, _ in
+        apiClient.post("/", parameters: nil, httpType: .gateway) { _, _, _ in
             let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
             XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
             XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
@@ -195,7 +195,7 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
 
         let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: [:], httpType: .graphQLAPI) { _, _, _ in
+        apiClient.post("/", parameters: nil, httpType: .graphQLAPI) { _, _, _ in
             let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
             XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata.integration.stringValue)
             XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata.source.stringValue)
