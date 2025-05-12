@@ -52,7 +52,7 @@ struct VenmoCreatePaymentContextGraphQLBody: Encodable {
             var paymentMethodUsage: String?
             var merchantProfileID: String?
             var customerClient: String = "MOBILE_APP"
-            var intent: String = "intent"
+            var intent: String = "CONTINUE"
             var isFinalAmount: String?
             var displayName: String?
             var paysheetDetails: PaysheetDetails?
