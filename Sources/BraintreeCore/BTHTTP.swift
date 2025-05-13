@@ -69,7 +69,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-            httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
+        httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
     func get(
