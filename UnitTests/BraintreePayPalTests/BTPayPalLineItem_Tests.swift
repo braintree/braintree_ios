@@ -5,7 +5,7 @@ import XCTest
 class BTPayPalLineItem_Tests: XCTestCase {
     
     func testUPCTypeStringReturnsCorrectValue() {
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
+        var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
 
         lineItem.upcType = .UPC_A 
         var requestParams = lineItem.requestParameters()
