@@ -1,10 +1,9 @@
 import Foundation
 
-/// A recurring billing amount breakdown.
-///
-/// This object can only used for the `BTPayPalCheckoutRequest` to customize how the transaction amount is
-/// broken down. If `BTAmountBreakdown` is provided, `itemTotal` is required. Some fields are conditionally 
-/// required or not accepted depending on the checkout flow (e.g., one-time vs subscription).
+/// A recurring billing amount breakdown. This object can only used for the `BTPayPalCheckoutRequest` to
+/// customize how the transaction amount is broken down. If `BTAmountBreakdown` is provided, `itemTotal`
+/// is required. Some fields are conditionally required or not accepted depending on the checkout flow (e.g., one-time
+/// vs subscription).
 public struct BTAmountBreakdown {
 
     // MARK: - Private Properties
@@ -44,39 +43,5 @@ public struct BTAmountBreakdown {
         self.insuranceTotal = insuranceTotal
         self.shippingDiscount = shippingDiscount
         self.discountTotal = discountTotal
-    }
-
-    // MARK: - Internal Methods
-
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "item_total": itemTotal
-        ]
-
-        if let taxTotal {
-            parameters["tax_total"] = taxTotal
-        }
-
-        if let shippingTotal {
-            parameters["shipping"] = shippingTotal
-        }
-
-        if let handlingTotal {
-            parameters["handling"] = handlingTotal
-        }
-
-        if let insuranceTotal {
-            parameters["insurance"] = insuranceTotal
-        }
-
-        if let shippingDiscount {
-            parameters["shipping_discount"] = shippingDiscount
-        }
-
-        if let discountTotal {
-            parameters["discount"] = discountTotal
-        }
-
-        return parameters
     }
 }
