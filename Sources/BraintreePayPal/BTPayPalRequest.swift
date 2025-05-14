@@ -228,6 +228,14 @@ import BraintreeCore
             
             return parameters.merging(appSwitchParameters) { $1 }
         }
+
+        if let recurringBillingPlanType {
+            parameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            parameters["plan_metadata"] = recurringBillingDetails.parameters()
+        }
         
         return parameters
     }

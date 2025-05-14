@@ -47,8 +47,8 @@ public struct BTAmountBreakdown {
 
     // MARK: - Internal Methods
 
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
+    func parameters() -> [String: String] {
+        var parameters: [String: String] = [
             "item_total": itemTotal
         ]
 
