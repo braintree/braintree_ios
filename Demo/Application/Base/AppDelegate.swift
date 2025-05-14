@@ -99,4 +99,16 @@ import BraintreeCore
         // Use this method to select a configuration to create the new scene with.
         UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("☄️ * 12345 Did Enter Background")
+    }
+        
+    func applicationWillResignActive(_ application: UIApplication) {
+        print("☄️ * 12345 Will Resign Active")
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("☄️ * 12345 Will Enter Foreground")
+    }
 }
