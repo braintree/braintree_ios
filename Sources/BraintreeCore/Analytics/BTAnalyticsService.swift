@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 final class BTAnalyticsService: AnalyticsSendable {
 
@@ -22,6 +23,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
@@ -55,7 +57,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
-            sendImmediately ? await sendAnalyticsEvents(with: event) : await performEventRequest(with: event)
+            sendImmediately ? await sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
         }
     }
     
@@ -70,10 +72,31 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
     
-    /// Exposed for testing only
-    func sendAnalyticsEvents(with event: FPTIBatchData.Event) async {
+    /// Exposed to be able to execute this function synchronously in unit tests
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else { return }
      
+        beginBackgroundTaskIfNeeded()
+        
+        await sendEventToServer(with: event, apiClient: apiClient)
+        endBackgroundTask()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func beginBackgroundTaskIfNeeded() {
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "SendAnalyticsEvent") {
+            self.endBackgroundTask()
+        }
+    }
+    
+    private func endBackgroundTask() {
+        guard backgroundTaskID != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
+    }
+    
+    private func sendEventToServer(with event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {
             let configuration = try await apiClient.fetchConfiguration()
             try await postAnalyticsEvents(
@@ -85,8 +108,6 @@ final class BTAnalyticsService: AnalyticsSendable {
             NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
         }
     }
-    
-    // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
         guard await !events.isEmpty, let apiClient else { return }
