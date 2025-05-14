@@ -42,7 +42,7 @@ class BTCreateCustomerSessionApi {
             
             self.apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
                 if let error = error as? NSError {
-                    completion(nil, BTHTTPError.httpResponseInvalid)
+                    completion(nil, error)
                     return
                 }
                 
@@ -91,7 +91,14 @@ class BTCreateCustomerSessionApi {
         let inputDictionary: [String: Any] = ["input": inputParameters]
         
         let graphQLParameters: [String: Any] = [
-            "query": "mutation CreateCustomerSession($input: CreateCustomerSessionInput!) { createCustomerSession(input: $input) { sessionId } }",
+            "query":
+                """
+                mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
+                    createCustomerSession(input: $input) {
+                        sessionId
+                    }
+                }
+                """,
             "variables": inputDictionary
         ]
         return graphQLParameters
