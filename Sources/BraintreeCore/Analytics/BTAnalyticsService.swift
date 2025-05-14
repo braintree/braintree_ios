@@ -78,7 +78,7 @@ final class BTAnalyticsService: AnalyticsSendable {
      
         beginBackgroundTaskIfNeeded()
         
-        await sendEventToServer(with: event, apiClient: apiClient)
+        await sendAnalyticEvent(event, apiClient: apiClient)
         endBackgroundTask()
     }
     
@@ -96,7 +96,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         backgroundTaskID = .invalid
     }
     
-    private func sendEventToServer(with event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
+    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {
             let configuration = try await apiClient.fetchConfiguration()
             try await postAnalyticsEvents(
