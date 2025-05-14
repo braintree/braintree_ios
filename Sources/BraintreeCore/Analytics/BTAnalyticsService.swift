@@ -59,6 +59,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
+        if sendImmediately {
+            print("🥇 12345 Start Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
+        }
+        
         Task(priority: .background) {
             sendImmediately ? print("🆕 * 12345 event \(event.eventName) to be send") : print("🥶 1234 event \(event.eventName) to be send")
             sendImmediately ? await sendAnalyticsEvents(with: event) : await performEventRequest(with: event)
@@ -91,6 +95,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                 events: [event]
             )
             print("🚀 * 12345 event \(event.eventName) sent")
+            print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
         } catch {
             print("🛰️ 12345 get config failed")
             NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
