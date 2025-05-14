@@ -23,6 +23,8 @@ class ConfigurationLoader {
     }
     
     deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🌮 12345 Configuration init \(instance)")
         http.session.finishTasksAndInvalidate()
     }
     
@@ -68,6 +70,7 @@ class ConfigurationLoader {
                     return configuration
                 }
             } catch {
+                print("⭕️ 12345 GetConfig error \(error)")
                 throw error
             }
         }

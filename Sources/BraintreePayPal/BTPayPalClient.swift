@@ -77,13 +77,26 @@ import BraintreeDataCollector
         self.apiClient = apiClient
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
+        let instance = Unmanaged.passUnretained(self.apiClient).toOpaque()
+        print("⭐️ 12345 PayPalClient init, APIClient instance \(instance)")
+        
         super.init()
+        
+        let ppInstance = Unmanaged.passUnretained(self).toOpaque()
+        print("🦖 12345 PayPalClient init \(ppInstance)")
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationDidBecomeActive),
             name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
+    }
+    
+    
+    deinit {
+        let instance = Unmanaged.passUnretained(self).toOpaque()
+        print("🚧 12345 PayPalClient deinit \(instance)")
     }
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
