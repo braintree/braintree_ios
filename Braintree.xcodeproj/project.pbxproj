@@ -347,6 +347,9 @@
 		BEF137E22B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */; };
 		BEF177A62B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */; };
 		BEF177A82B51D6A7004F0F35 /* SEPADebitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */; };
+		BEF2F50F2DCE7AF000FF0E90 /* VenmoAccountsPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF2F50C2DCE7AF000FF0E90 /* VenmoAccountsPOSTBody.swift */; };
+		BEF2F5102DCE7AF000FF0E90 /* VenmoCreatePaymentContextGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF2F50D2DCE7AF000FF0E90 /* VenmoCreatePaymentContextGraphQLBody.swift */; };
+		BEF2F5112DCE7AF000FF0E90 /* VenmoQueryPaymentContextGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF2F50E2DCE7AF000FF0E90 /* VenmoQueryPaymentContextGraphQLBody.swift */; };
 		BEF388C12BE52CD2000965C8 /* BTCoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */; };
 		BEF388C32BE9340C000965C8 /* BTAPITimingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF388C22BE9340C000965C8 /* BTAPITimingDelegate.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
@@ -1040,6 +1043,9 @@
 		BEF137E12B3359B000B9B225 /* MockBTPayPalMessagingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTPayPalMessagingDelegate.swift; sourceTree = "<group>"; };
 		BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitAccountsRequest.swift; sourceTree = "<group>"; };
 		BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADebitRequest.swift; sourceTree = "<group>"; };
+		BEF2F50C2DCE7AF000FF0E90 /* VenmoAccountsPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoAccountsPOSTBody.swift; sourceTree = "<group>"; };
+		BEF2F50D2DCE7AF000FF0E90 /* VenmoCreatePaymentContextGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoCreatePaymentContextGraphQLBody.swift; sourceTree = "<group>"; };
+		BEF2F50E2DCE7AF000FF0E90 /* VenmoQueryPaymentContextGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoQueryPaymentContextGraphQLBody.swift; sourceTree = "<group>"; };
 		BEF388C02BE52CD2000965C8 /* BTCoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCoreAnalytics.swift; sourceTree = "<group>"; };
 		BEF388C22BE9340C000965C8 /* BTAPITimingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPITimingDelegate.swift; sourceTree = "<group>"; };
 		BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient.swift; sourceTree = "<group>"; };
@@ -1760,6 +1766,7 @@
 				BE0AF6BA29AFD53300245C2C /* BTVenmoError.swift */,
 				096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */,
 				BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */,
+				BEF2F5122DCE7FD900FF0E90 /* Models */,
 				3BE7386E2BA171A300598F05 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeVenmo;
@@ -2011,6 +2018,16 @@
 				BE24C66528D906090067B11A /* CardinalMobile.xcframework */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		BEF2F5122DCE7FD900FF0E90 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEF2F50C2DCE7AF000FF0E90 /* VenmoAccountsPOSTBody.swift */,
+				BEF2F50D2DCE7AF000FF0E90 /* VenmoCreatePaymentContextGraphQLBody.swift */,
+				BEF2F50E2DCE7AF000FF0E90 /* VenmoQueryPaymentContextGraphQLBody.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */ = {
@@ -3259,6 +3276,9 @@
 				3B1C529429D5EB4E00B68A58 /* BTVenmoAnalytics.swift in Sources */,
 				BE0AF6BF29AFF13200245C2C /* BTVenmoRequest.swift in Sources */,
 				BEDB820A29B7A9E600075AF3 /* BTVenmoClient.swift in Sources */,
+				BEF2F50F2DCE7AF000FF0E90 /* VenmoAccountsPOSTBody.swift in Sources */,
+				BEF2F5102DCE7AF000FF0E90 /* VenmoCreatePaymentContextGraphQLBody.swift in Sources */,
+				BEF2F5112DCE7AF000FF0E90 /* VenmoQueryPaymentContextGraphQLBody.swift in Sources */,
 				BE0AF6B929AFD50500245C2C /* BTVenmoAppSwitchReturnURL.swift in Sources */,
 				BE0AF6BB29AFD53300245C2C /* BTVenmoError.swift in Sources */,
 				BE0AF6BD29AFDCD100245C2C /* BTVenmoAppSwitchRedirectURL.swift in Sources */,

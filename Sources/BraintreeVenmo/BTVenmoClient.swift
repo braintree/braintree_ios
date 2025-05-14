@@ -109,7 +109,10 @@ import BraintreeCore
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
             
-            let graphQLParameters = self.buildGraphQLDictionary(with: request, merchantProfileID: merchantProfileID)
+            let graphQLParameters = VenmoCreatePaymentContextGraphQLBody(
+                request: request,
+                merchantProfileID: merchantProfileID
+            )
 
             self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error = error as? NSError {
@@ -188,74 +191,6 @@ import BraintreeCore
         application.open(appStoreURL, completionHandler: nil)
     }
 
-    // MARK: - Internal Methods
-
-    func buildGraphQLDictionary(with request: BTVenmoRequest, merchantProfileID: String?) -> [String: Any] {
-        var inputParameters: [String: Any?] = [
-            "paymentMethodUsage": request.paymentMethodUsage.stringValue,
-            "merchantProfileId": merchantProfileID,
-            "customerClient": "MOBILE_APP",
-            "intent": "CONTINUE",
-            "isFinalAmount": "\(request.isFinalAmount)"
-        ]
-
-        if let displayName = request.displayName {
-            inputParameters["displayName"] = displayName
-        }
-
-        var paysheetDetails: [String: Any] = [
-            "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
-            "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
-        ]
-
-        var transactionDetails: [String: Any] = [:]
-        if let subTotalAmount = request.subTotalAmount {
-            transactionDetails["subTotalAmount"] = subTotalAmount
-        }
-
-        if let discountAmount = request.discountAmount {
-            transactionDetails["discountAmount"] = discountAmount
-        }
-
-        if let taxAmount = request.taxAmount {
-            transactionDetails["taxAmount"] = taxAmount
-        }
-
-        if let shippingAmount = request.shippingAmount {
-            transactionDetails["shippingAmount"] = shippingAmount
-        }
-
-        if let totalAmount = request.totalAmount {
-            transactionDetails["totalAmount"] = totalAmount
-        }
-
-        if let lineItems = request.lineItems, !lineItems.isEmpty {
-            for item in lineItems {
-                if item.unitTaxAmount == nil || item.unitTaxAmount?.isEmpty == true {
-                    item.unitTaxAmount = "0"
-                }
-            }
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            transactionDetails["lineItems"] = lineItemsArray
-        }
-
-        if !transactionDetails.isEmpty {
-            paysheetDetails["transactionDetails"] = transactionDetails
-        }
-
-        inputParameters["paysheetDetails"] = paysheetDetails
-
-        let inputDictionary: [String: Any] = ["input": inputParameters]
-
-        let graphQLParameters: [String: Any] = [
-            // swiftlint:disable:next line_length
-            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-            "variables": inputDictionary
-        ]
-
-        return graphQLParameters
-    }
-
     // MARK: - App Switch Methods
 
     // swiftlint:disable:next function_body_length
@@ -278,12 +213,7 @@ import BraintreeCore
 
         switch returnURL.state {
         case .succeededWithPaymentContext:
-            let variablesDictionary: [String: String?] = ["id": returnURL.paymentContextID]
-            let graphQLParameters: [String: Any] = [
-                // swiftlint:disable:next line_length
-                "query": "query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
-                "variables": variablesDictionary
-            ]
+            let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error {
@@ -387,8 +317,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let venmoAccount: [String: String] = ["nonce": nonce]
-        let parameters: [String: Any] = ["venmoAccount": venmoAccount]
+        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
