@@ -95,6 +95,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     private func beginBackgroundTaskIfNeeded() {
         backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "SendAnalyticsEvent") {
+            print("👟 12345 BackgroundTaskID If Needed")
+            print("👟 12345 BackgroundTaskID If Needed RawValue \(self.backgroundTaskID.rawValue)")
+            print("👟 12345 BackgroundTaskID If Needed HashValue \(self.backgroundTaskID.hashValue)")
             self.endBackgroundTask()
         }
     }
@@ -102,6 +105,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     private func endBackgroundTask() {
         guard backgroundTaskID != .invalid else { return }
         UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        print("👟 12345 Background Task ID RawValue \(backgroundTaskID.rawValue)")
+        print("👟 12345 Background Task ID HashValue \(backgroundTaskID.hashValue)")
         backgroundTaskID = .invalid
     }
     
