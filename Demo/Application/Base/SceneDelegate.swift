@@ -32,4 +32,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             BTAppContextSwitcher.sharedInstance.handleOpen(returnURL)
         }
     }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        print("☄️ * 12345 Did Enter Background")
+    }
+    
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        print("☄️ * 12345 Will Enter Foreground")
+    }
 }
