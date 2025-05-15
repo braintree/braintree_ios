@@ -26,8 +26,6 @@ class BTCreateCustomerSessionApi {
         self.apiClient = apiClient
     }
     
-    // MARK: - Public Methods
-    
     /// This method will call the `CreateCustomerSession` GQL mutation, which returns a sessionId if successful.
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
@@ -47,7 +45,7 @@ class BTCreateCustomerSessionApi {
                 }
                 
                 guard let body else {
-                    completion(nil, BTHTTPError.dataNotFound)
+                    completion(nil, BTShopperInsightsError.emptyBodyReturned)
                     return
                 }
                 
@@ -65,28 +63,9 @@ class BTCreateCustomerSessionApi {
     // MARK: - Helper Methods
     
     func buildGraphQLDictionary(with request: BTCustomerSessionRequest) throws -> [String: Any] {
-        let customerDetails: [String: Any?] = [
-            "hashedEmail": request.hashedEmail,
-            "hashedPhoneNumber": request.hashedPhoneNumber,
-            "paypalAppInstalled": request.paypalAppInstalled,
-            "venmoAppInstalled": request.venmoAppInstalled
-        ]
-        
-        var purchaseUnitDetails: [[String: Any]] = []
-        if let purchaseUnits = request.purchaseUnits, !purchaseUnits.isEmpty {
-            purchaseUnitDetails = purchaseUnits.map { purchaseUnit in
-                return [
-                    "amount": [
-                        "value": purchaseUnit.amount,
-                        "currencyCode": purchaseUnit.currencyCode
-                    ]
-                ]
-            }
-        }
-        
         let inputParameters: [String: Any?] = [
-            "customer": customerDetails,
-            "purchaseUnits": purchaseUnitDetails
+            "customer": request.customer,
+            "purchaseUnits": request.purchaseUnits
         ]
         let inputDictionary: [String: Any] = ["input": inputParameters]
         

@@ -5,16 +5,19 @@ import XCTest
 
 class BTCreateCustomerSessionApi_Tests: XCTestCase {
     
-    var mockApiClient: MockAPIClient!
+    var mockAPIClient: MockAPIClient!
     var sut: BTCreateCustomerSessionApi!
     
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     
     let createCustomerSessionRequest = BTCustomerSessionRequest(
-        hashedEmail: "test-hashed-email.com",
-        hashedPhoneNumber: "test-hashed-phone-number",
-        paypalAppInstalled: true,
-        venmoAppInstalled: false,
+        customer: BTCustomerSessionRequest.Customer(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: "test-hashed-phone-number",
+            paypalAppInstalled: true,
+            venmoAppInstalled: false
+        )
+        ,
         purchaseUnits: [
             BTCustomerSessionRequest.BTPurchaseUnit(amount: "4.50", currencyCode: "USD"),
             BTCustomerSessionRequest.BTPurchaseUnit(amount: "12.00", currencyCode: "USD")
@@ -23,11 +26,11 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        mockApiClient = MockAPIClient(authorization: clientToken)
-        sut = BTCreateCustomerSessionApi(apiClient: mockApiClient)
+        mockAPIClient = MockAPIClient(authorization: clientToken)
+        sut = BTCreateCustomerSessionApi(apiClient: mockAPIClient)
     }
     
-    func testExecute_whenCreateCustomerSessionResponseIsValid_returnsSessionId() {
+    func testExecute_whenCreateCustomerSessionResponseIsValid_callsBackWithSessionId() {
         let expectedSessionID = "session-id"
         let mockCreateCustomerSessionResponse = BTJSON(
             value: [
@@ -38,7 +41,7 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
                 ]
             ]
         )
-        mockApiClient.cannedResponseBody = mockCreateCustomerSessionResponse
+        mockAPIClient.cannedResponseBody = mockCreateCustomerSessionResponse
         
         sut.execute(createCustomerSessionRequest) { sessionId, error in
             if error != nil {
@@ -49,7 +52,7 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
         }
     }
     
-    func testExecute_whenCannotParseSessionId_returnsError() {
+    func testExecute_whenInvalidResponseAndCannotParseSessionId_callsBackWithError() {
         let mockCreateCustomerSessionResponse = BTJSON(
             value: [
                 "data": [
@@ -59,12 +62,42 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
                 ]
             ]
         )
-        mockApiClient.cannedResponseBody = mockCreateCustomerSessionResponse
+        mockAPIClient.cannedResponseBody = mockCreateCustomerSessionResponse
         
         let expectation = expectation(description: "error callback invoked")
         sut.execute(createCustomerSessionRequest) { sessionId, error in
             XCTAssertNil(sessionId)
             guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.code, BTHTTPError.httpResponseInvalid.errorCode)
+            XCTAssertEqual(error.localizedDescription, "Unable to create HTTPURLResponse from response data.")
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testExecute_whenEmptyResponseBodyReturned_callsBackWithError() {
+        mockAPIClient.cannedResponseBody = nil
+        
+        let expectation = expectation(description: "error callback invoked")
+        sut.execute(createCustomerSessionRequest) { sessionId, error in
+            XCTAssertNil(sessionId)
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error.domain, BTShopperInsightsError.errorDomain)
+            XCTAssertEqual(error.code, BTShopperInsightsError.emptyBodyReturned.errorCode)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testExceute_whenCreateCustomerSessionAPIFails_callsBackWithError() {
+        let mockError = NSError(domain: "create-customer-sessionerror", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+        
+        let expectation = expectation(description: "error callback invoked")
+        sut.execute(createCustomerSessionRequest) { sessionId, error in
+            XCTAssertNil(sessionId)
+            guard let error = error as NSError? else { return }
+            XCTAssertEqual(error, mockError)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
