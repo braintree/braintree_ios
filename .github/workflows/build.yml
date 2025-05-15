@@ -6,7 +6,8 @@ concurrency:
 jobs:
   cocoapods:
     name: CocoaPods (Xcode 15.0.1)
-    runs-on: macOS-14-xlarge
+    runs-on: -self-hosted
+             -macOS
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
