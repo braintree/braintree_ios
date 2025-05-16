@@ -53,7 +53,7 @@ import BraintreeCore
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
+        let baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
 
         return baseParameters
     }
