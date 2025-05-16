@@ -6,7 +6,7 @@ import BraintreeCore
 
 /// The API used to create a customer session using the `CreateCustomerSession` GraphQL mutation.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
-class BTCreateCustomerSessionApi {
+class BTCreateCustomerSessionAPI {
     
     // MARK: - Properties
     
@@ -16,12 +16,11 @@ class BTCreateCustomerSessionApi {
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     typealias CreateCustomerSessionResult = (String?, Error?) -> Void
     
-    // MARK: - Init
+    // MARK: - Initializer
     
-    /// Creates a `BTCreateCustomerSessionApi`
+    /// Creates a `BTCreateCustomerSessionAPI`
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance
-    /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
@@ -30,7 +29,6 @@ class BTCreateCustomerSessionApi {
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
     ///    - completion: This completion will be invoked when the attempt to create a customer session is complete or an error occurs. On success, you will receive a sessionId; on failure you will receive an error.
-    /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     func execute(
         _ request: BTCustomerSessionRequest,
         completion: @escaping CreateCustomerSessionResult

@@ -3,10 +3,10 @@ import XCTest
 @testable import BraintreeCore
 @testable import BraintreeShopperInsights
 
-class BTCreateCustomerSessionApi_Tests: XCTestCase {
+class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     
     var mockAPIClient: MockAPIClient!
-    var sut: BTCreateCustomerSessionApi!
+    var sut: BTCreateCustomerSessionAPI!
     
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     
@@ -27,10 +27,10 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTCreateCustomerSessionApi(apiClient: mockAPIClient)
+        sut = BTCreateCustomerSessionAPI(apiClient: mockAPIClient)
     }
     
-    func testExecute_whenCreateCustomerSessionResponseIsValid_callsBackWithSessionId() {
+    func testExecute_whenCreateCustomerSessionResponseIsValid_callsBackWithsessionID() {
         let expectedSessionID = "session-id"
         let mockCreateCustomerSessionResponse = BTJSON(
             value: [
@@ -43,11 +43,11 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
         )
         mockAPIClient.cannedResponseBody = mockCreateCustomerSessionResponse
         
-        sut.execute(createCustomerSessionRequest) { sessionId, error in
+        sut.execute(createCustomerSessionRequest) { sessionID, error in
             if error != nil {
                 XCTFail("Unexpected error: \(String(describing: error))")
-            } else if sessionId != nil {
-                XCTAssertEqual(sessionId, expectedSessionID)
+            } else if sessionID != nil {
+                XCTAssertEqual(sessionID, expectedSessionID)
             }
         }
     }
@@ -65,8 +65,8 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = mockCreateCustomerSessionResponse
         
         let expectation = expectation(description: "error callback invoked")
-        sut.execute(createCustomerSessionRequest) { sessionId, error in
-            XCTAssertNil(sessionId)
+        sut.execute(createCustomerSessionRequest) { sessionID, error in
+            XCTAssertNil(sessionID)
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.code, BTHTTPError.httpResponseInvalid.errorCode)
             XCTAssertEqual(error.localizedDescription, "Unable to create HTTPURLResponse from response data.")
@@ -79,8 +79,8 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
         
         let expectation = expectation(description: "error callback invoked")
-        sut.execute(createCustomerSessionRequest) { sessionId, error in
-            XCTAssertNil(sessionId)
+        sut.execute(createCustomerSessionRequest) { sessionID, error in
+            XCTAssertNil(sessionID)
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTShopperInsightsError.errorDomain)
             XCTAssertEqual(error.code, BTShopperInsightsError.emptyBodyReturned.errorCode)
@@ -94,8 +94,8 @@ class BTCreateCustomerSessionApi_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = mockError
         
         let expectation = expectation(description: "error callback invoked")
-        sut.execute(createCustomerSessionRequest) { sessionId, error in
-            XCTAssertNil(sessionId)
+        sut.execute(createCustomerSessionRequest) { sessionID, error in
+            XCTAssertNil(sessionID)
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error, mockError)
             expectation.fulfill()
