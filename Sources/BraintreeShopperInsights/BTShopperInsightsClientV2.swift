@@ -20,6 +20,7 @@ public class BTShopperInsightsClientV2 {
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
+    private let customerSessionAPI: BTCreateCustomerSessionApi
     
     // MARK: - Initializers
     
@@ -29,6 +30,26 @@ public class BTShopperInsightsClientV2 {
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
     public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
+        self.customerSessionAPI = BTCreateCustomerSessionApi(apiClient: apiClient)
+    }
+    
+    public func callCreateCustomerSessionApi() {
+        customerSessionAPI.execute(
+            .init(
+                hashedEmail: nil,
+                hashedPhoneNumber: nil,
+                paypalAppInstalled: nil,
+                venmoAppInstalled: nil,
+                purchaseUnits: []
+            )) { sessionID, error in
+                if let error {
+                    print(error)
+                }
+                
+                if let sessionID {
+                    print(sessionID)
+                }
+            }
     }
     
     // MARK: - Public Methods
