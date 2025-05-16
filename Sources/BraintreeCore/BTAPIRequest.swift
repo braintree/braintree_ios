@@ -3,7 +3,7 @@ import Foundation
 /// An `Encodable` type containing POST body details & metadata params formatted for the BT Gateway & BT GraphQL API
 struct BTAPIRequest: Encodable {
     
-    private let requestBody: AnyEncodable?
+    private let requestBody: Encodable?
     private let metadata: BTClientMetadata
     private let httpType: BTAPIClientHTTPService
     
@@ -18,7 +18,7 @@ struct BTAPIRequest: Encodable {
     ///   - metadata: The metadata details to append into the POST body.
     ///   - httpType: The Braintree API type for this request.
     init(requestBody: Encodable? = nil, metadata: BTClientMetadata, httpType: BTAPIClientHTTPService) {
-        self.requestBody = requestBody.map { AnyEncodable($0) }
+        self.requestBody = requestBody
         self.metadata = metadata
         self.httpType = httpType
     }
