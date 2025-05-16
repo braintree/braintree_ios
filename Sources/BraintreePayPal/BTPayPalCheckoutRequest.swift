@@ -240,6 +240,10 @@ import BraintreeCore
             checkoutParameters["international_phone"] = recipientPhoneNumber
         }
 
+        if let amountBreakdown {
+            baseParameters["amount_breakdown"] = amountBreakdown.parameters()
+        }
+
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
