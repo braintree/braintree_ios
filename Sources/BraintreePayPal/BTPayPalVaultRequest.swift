@@ -54,14 +54,6 @@ import BraintreeCore
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
-        
-        if let recurringBillingPlanType {
-            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
-        }
-        
-        if let recurringBillingDetails {
-            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
-        }
 
         return baseParameters
     }
