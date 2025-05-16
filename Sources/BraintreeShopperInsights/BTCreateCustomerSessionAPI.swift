@@ -13,9 +13,6 @@ class BTCreateCustomerSessionAPI {
     /// Exposed for testing to get the instance of `BTAPIClient`
     var apiClient: BTAPIClient
     
-    /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    typealias CreateCustomerSessionResult = (String?, Error?) -> Void
-    
     // MARK: - Initializer
     
     /// Creates a `BTCreateCustomerSessionAPI`
@@ -31,7 +28,7 @@ class BTCreateCustomerSessionAPI {
     ///    - completion: This completion will be invoked when the attempt to create a customer session is complete or an error occurs. On success, you will receive a sessionId; on failure you will receive an error.
     func execute(
         _ request: BTCustomerSessionRequest,
-        completion: @escaping CreateCustomerSessionResult
+        completion: @escaping (String?, Error?) -> Void
     ) {
         do {
             let graphQLParams = try self.buildGraphQLDictionary(with: request)
