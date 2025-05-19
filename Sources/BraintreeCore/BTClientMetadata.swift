@@ -30,18 +30,6 @@ public class BTClientMetadata: Encodable {
     
     public var version = BTCoreConstants.braintreeSDKVersion
     
-    // TODO: - Remove once all POSTs moved to Codable
-    /// Additional metadata parameters
-    var parameters: [String: Any] {
-        [
-            "integration": integration.stringValue,
-            "source": source.stringValue,
-            "sessionId": sessionID,
-            "platform": "iOS",
-            "version": BTCoreConstants.braintreeSDKVersion
-        ]
-    }
-    
     private enum CodingKeys: String, CodingKey {
         case integration = "integration"
         case sessionID = "sessionId"
