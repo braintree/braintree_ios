@@ -6,19 +6,19 @@ import BraintreeCore
 
 /// The API used to create a customer session using the `CreateCustomerSession` GraphQL mutation.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
-class BTCreateCustomerSessionAPI {
+final class BTCreateCustomerSessionAPI {
     
     // MARK: - Properties
     
     /// Exposed for testing to get the instance of `BTAPIClient`
-    var apiClient: BTAPIClient
+    private var apiClient: BTAPIClient
     
     // MARK: - Initializer
     
     /// Creates a `BTCreateCustomerSessionAPI`
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance
-    public init(apiClient: BTAPIClient) {
+    init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
     
