@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 final class BTAnalyticsService: AnalyticsSendable {
@@ -88,36 +87,20 @@ final class BTAnalyticsService: AnalyticsSendable {
             return
         }
         
-        let backgroundTaskID = beginBackgroundTaskIfNeeded()
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        
+        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [backgroundTaskID] in
+            print("👟 12345 BackgroundTaskID If Needed RawValue \(backgroundTaskID.rawValue)")
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        }
         
         await sendAnalyticEvent(event, apiClient: apiClient)
         
-        endBackgroundTask(identifier: backgroundTaskID)
+        await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        print("👟 12345 Background Task ID RawValue \(identifier.rawValue)")
     }
     
     // MARK: - Private Methods
-    
-    private func beginBackgroundTaskIfNeeded() -> UIBackgroundTaskIdentifier {
-        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-        
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-            DispatchQueue.main.async {
-                print("👟 12345 BackgroundTaskID If Needed")
-                print("👟 12345 BackgroundTaskID If Needed RawValue \(backgroundTaskID.rawValue)")
-                print("👟 12345 BackgroundTaskID If Needed HashValue \(backgroundTaskID.hashValue)")
-                self.endBackgroundTask(identifier: backgroundTaskID)
-            }
-        }
-        
-        return backgroundTaskID
-    }
-    
-    private func endBackgroundTask(identifier: UIBackgroundTaskIdentifier) {
-        guard identifier != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(identifier)
-        print("👟 12345 Background Task ID RawValue \(identifier.rawValue)")
-        print("👟 12345 Background Task ID HashValue \(identifier.hashValue)")
-    }
     
     private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {

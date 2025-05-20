@@ -76,9 +76,9 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let event1 = FPTIBatchData.Event(eventName: "event1")
         let event2 = FPTIBatchData.Event(eventName: "event2")
         let event3 = FPTIBatchData.Event(eventName: "event3")
-        await sut.sendAnalyticsEvents(with: event1)
-        await sut.sendAnalyticsEvents(with: event2)
-        await sut.sendAnalyticsEvents(with: event3)
+        await sut.sendAnalyticsEventsImmediately(event: event1)
+        await sut.sendAnalyticsEventsImmediately(event: event2)
+        await sut.sendAnalyticsEventsImmediately(event: event3)
 
         let eventName = parseEventName(mockAnalyticsHTTP.lastRequestParameters)
         
