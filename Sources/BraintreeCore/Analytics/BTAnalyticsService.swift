@@ -23,7 +23,6 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
@@ -89,32 +88,38 @@ final class BTAnalyticsService: AnalyticsSendable {
             return
         }
         
-        beginBackgroundTaskIfNeeded()
+        let backgroundTaskID = beginBackgroundTaskIfNeeded()
         
-        await sendEventToServer(with: event, apiClient: apiClient)
-        endBackgroundTask()
+        await sendAnalyticEvent(event, apiClient: apiClient)
+        
+        endBackgroundTask(identifier: backgroundTaskID)
     }
     
     // MARK: - Private Methods
     
-    private func beginBackgroundTaskIfNeeded() {
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "SendAnalyticsEvent") {
-            print("👟 12345 BackgroundTaskID If Needed")
-            print("👟 12345 BackgroundTaskID If Needed RawValue \(self.backgroundTaskID.rawValue)")
-            print("👟 12345 BackgroundTaskID If Needed HashValue \(self.backgroundTaskID.hashValue)")
-            self.endBackgroundTask()
+    private func beginBackgroundTaskIfNeeded() -> UIBackgroundTaskIdentifier {
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+            DispatchQueue.main.async {
+                print("👟 12345 BackgroundTaskID If Needed")
+                print("👟 12345 BackgroundTaskID If Needed RawValue \(backgroundTaskID.rawValue)")
+                print("👟 12345 BackgroundTaskID If Needed HashValue \(backgroundTaskID.hashValue)")
+                self.endBackgroundTask(identifier: backgroundTaskID)
+            }
         }
+        
+        return backgroundTaskID
     }
     
-    private func endBackgroundTask() {
-        guard backgroundTaskID != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        print("👟 12345 Background Task ID RawValue \(backgroundTaskID.rawValue)")
-        print("👟 12345 Background Task ID HashValue \(backgroundTaskID.hashValue)")
-        backgroundTaskID = .invalid
+    private func endBackgroundTask(identifier: UIBackgroundTaskIdentifier) {
+        guard identifier != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(identifier)
+        print("👟 12345 Background Task ID RawValue \(identifier.rawValue)")
+        print("👟 12345 Background Task ID HashValue \(identifier.hashValue)")
     }
     
-    private func sendEventToServer(with event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
+    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {
             let configuration = try await apiClient.fetchConfiguration()
             try await postAnalyticsEvents(
