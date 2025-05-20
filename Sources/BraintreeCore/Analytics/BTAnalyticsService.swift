@@ -23,7 +23,6 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let events = BTAnalyticsEventsStorage()
     private let timer = RepeatingTimer()
 
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
     private var apiClient: BTAPIClient?
             
     // MARK: - Initializer
