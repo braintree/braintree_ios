@@ -75,25 +75,31 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else { return }
-     
-        beginBackgroundTaskIfNeeded()
+        
+        let backgroundTaskID = beginBackgroundTaskIfNeeded()
         
         await sendAnalyticEvent(event, apiClient: apiClient)
-        endBackgroundTask()
+        
+        endBackgroundTask(identifier: backgroundTaskID)
     }
     
     // MARK: - Private Methods
     
-    private func beginBackgroundTaskIfNeeded() {
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "SendAnalyticsEvent") {
-            self.endBackgroundTask()
+    private func beginBackgroundTaskIfNeeded() -> UIBackgroundTaskIdentifier {
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+            DispatchQueue.main.async {
+                self.endBackgroundTask(identifier: backgroundTaskID)
+            }
         }
+        
+        return backgroundTaskID
     }
     
-    private func endBackgroundTask() {
-        guard backgroundTaskID != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        backgroundTaskID = .invalid
+    private func endBackgroundTask(identifier: UIBackgroundTaskIdentifier) {
+        guard identifier != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(identifier)
     }
     
     private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
