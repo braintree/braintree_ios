@@ -86,9 +86,9 @@ final class BTAnalyticsService: AnalyticsSendable {
     private func beginBackgroundTaskIfNeeded() -> UIBackgroundTaskIdentifier {
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [weak self] in
             DispatchQueue.main.async {
-                self.endBackgroundTask(identifier: backgroundTaskID)
+                self?.endBackgroundTask(identifier: backgroundTaskID)
             }
         }
         
