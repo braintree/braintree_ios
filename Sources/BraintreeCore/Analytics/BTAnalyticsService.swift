@@ -97,7 +97,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         await sendAnalyticEvent(event, apiClient: apiClient)
         
         await UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        print("👟 12345 Background Task ID RawValue \(identifier.rawValue)")
+        print("👟 12345 Background Task ID RawValue \(backgroundTaskID.rawValue)")
     }
     
     // MARK: - Private Methods
