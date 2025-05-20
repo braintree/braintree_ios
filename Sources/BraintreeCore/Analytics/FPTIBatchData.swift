@@ -157,7 +157,7 @@ struct FPTIBatchData: Codable {
 
         let clientOS: String = UIDevice.current.systemName + " " + UIDevice.current.systemVersion
 
-        let component = "rich_0520_03_braintreeclientsdk"
+        let component = "rich_0520_04_braintreeclientsdk"
 
         let deviceManufacturer = "Apple"
 
