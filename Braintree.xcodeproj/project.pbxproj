@@ -92,6 +92,7 @@
 		57D94370296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9436F296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift */; };
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
 		620C3C652BA21E5700C40A03 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */; };
+		621964B62DDCF3FD00684434 /* BTGraphQLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621964B52DDCF3F600684434 /* BTGraphQLRequest.swift */; };
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
 		62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */; };
@@ -845,6 +846,7 @@
 		57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NonceValidation.swift"; sourceTree = "<group>"; };
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		621964B52DDCF3F600684434 /* BTGraphQLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLRequest.swift; sourceTree = "<group>"; };
 		62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
 		62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics_Tests.swift; sourceTree = "<group>"; };
@@ -1484,6 +1486,14 @@
 			path = BraintreeCore;
 			sourceTree = "<group>";
 		};
+		621964B82DDCF82300684434 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				621964B52DDCF3F600684434 /* BTGraphQLRequest.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		6A50887E9E10BEB122A9F45D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1613,6 +1623,7 @@
 				804698292B27C4D70090878E /* BraintreeShopperInsights */,
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
+				621964B82DDCF82300684434 /* Helpers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -3417,6 +3428,7 @@
 				04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */,
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
+				621964B62DDCF3FD00684434 /* BTGraphQLRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
