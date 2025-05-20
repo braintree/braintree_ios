@@ -54,8 +54,12 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
-        Task(priority: .background) {
-            sendImmediately ? await sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
+        if sendImmediately {
+            sendAnalyticsEventsImmediately(event: event)
+        } else {
+            Task(priority: .background) {
+                await performEventRequest(with: event)
+            }
         }
     }
     
@@ -71,34 +75,23 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
     
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) {
         guard let apiClient else { return }
         
-        let backgroundTaskID = beginBackgroundTaskIfNeeded()
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
-        await sendAnalyticEvent(event, apiClient: apiClient)
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [backgroundTaskID] in
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        }
         
-        endBackgroundTask(identifier: backgroundTaskID)
+        Task {
+            await sendAnalyticEvent(event, apiClient: apiClient)
+        }
+        
+        UIApplication.shared.endBackgroundTask(backgroundTaskID)
     }
     
     // MARK: - Private Methods
-    
-    private func beginBackgroundTaskIfNeeded() -> UIBackgroundTaskIdentifier {
-        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-        
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [weak self] in
-            DispatchQueue.main.async {
-                self?.endBackgroundTask(identifier: backgroundTaskID)
-            }
-        }
-        
-        return backgroundTaskID
-    }
-    
-    private func endBackgroundTask(identifier: UIBackgroundTaskIdentifier) {
-        guard identifier != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(identifier)
-    }
     
     private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {
