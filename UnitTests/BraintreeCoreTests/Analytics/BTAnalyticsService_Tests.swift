@@ -80,13 +80,13 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let event2 = FPTIBatchData.Event(eventName: "event2")
         let event3 = FPTIBatchData.Event(eventName: "event3")
             
-        sut.sendAnalyticEvent(event1, apiClient: stubAPIClient) {
+        sut.sendAnalyticEvent(event1, apiClient: stubAPIClient, identifier: UIBackgroundTaskIdentifier(rawValue: 1)) {
             expectation1.fulfill()
         }
-        sut.sendAnalyticEvent(event2, apiClient: stubAPIClient) {
+        sut.sendAnalyticEvent(event2, apiClient: stubAPIClient, identifier: UIBackgroundTaskIdentifier(rawValue: 3)) {
             expectation2.fulfill()
         }
-        sut.sendAnalyticEvent(event3, apiClient: stubAPIClient) {
+        sut.sendAnalyticEvent(event3, apiClient: stubAPIClient, identifier: UIBackgroundTaskIdentifier(rawValue: 2)) {
             expectation3.fulfill()
         }
         
