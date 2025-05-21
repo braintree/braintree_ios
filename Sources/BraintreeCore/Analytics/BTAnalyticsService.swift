@@ -102,7 +102,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             await sendAnalyticEvent(event, apiClient: apiClient)
             
             // Explicitly end the background task after the work is completed
-            await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
         }
     }
