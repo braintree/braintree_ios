@@ -80,8 +80,12 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
     
-    var isSecond = false
-    
+    /// Sends a single analytics event immediately, even if the app is transitioning to the background.
+    ///
+    /// This method initiates a background task using `UIApplication.shared.beginBackgroundTask` to
+    /// ensure that the event has enough time to be sent before the OS suspends the app.
+    /// The background task is safely ended both in the expiration handler and after the event is sent.
+    ///
     /// Exposed to be able to execute this function synchronously in unit tests
     func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else {
@@ -91,18 +95,25 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
+        // Begin a background task to give the app extra time to complete the network request,
+        // even if it moves to the background. The closure passed here is the expirationHandler.
+        //
+        // The expirationHandler is called if the system’s maximum background execution time
+        // (typically around 30 seconds) is reached before the task completes.
+        // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
         backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-            print("👟 12345 BackgroundTaskID If Needed RawValue \(backgroundTaskID.rawValue)")
-            MainActor.assumeIsolated {
-                UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            }
+            // We end the task here to avoid the app being terminated.
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
         }
         print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
         await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
         
+        // Explicitly end the background task after the work is completed
         await UIApplication.shared.endBackgroundTask(backgroundTaskID)
         print("👟 12345 Background Task ID RawValue \(backgroundTaskID.rawValue)")
+        backgroundTaskID = .invalid
     }
     
     // MARK: - Private Methods
@@ -112,10 +123,6 @@ final class BTAnalyticsService: AnalyticsSendable {
             let configuration = try await apiClient.fetchConfiguration()
             if event.eventName == "paypal:tokenize:app-switch:succeeded" {
                 print("❄️ 12345 \(identifier.rawValue) with identifier \(identifier)")
-                if !isSecond {
-                    isSecond = true
-                    await sendAnalyticsEventsImmediately(event: event)
-                }
                 try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
             } else {
                 try await postAnalyticsEvents(
