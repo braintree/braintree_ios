@@ -117,17 +117,17 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Exposed to be able to execute this function synchronously in unit tests
     private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier) async {
         do {
-            if event.eventName == "paypal:tokenize:app-switch:succeeded" {
-                print("❄️ 12345 app switch identifier \(identifier.rawValue)")
-                try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
-            } else {
+//            if event.eventName == "paypal:tokenize:app-switch:succeeded" {
+//                print("❄️ 12345 app switch identifier \(identifier.rawValue)")
+//                try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
+//            } else {
                 let configuration = try await apiClient.fetchConfiguration()
                 try await postAnalyticsEvents(
                     configuration: configuration,
                     sessionID: apiClient.metadata.sessionID,
                     events: [event]
                 )
-            }
+//            }
             print("🚀 * 12345 event \(event.eventName) sent")
             print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
         } catch {
