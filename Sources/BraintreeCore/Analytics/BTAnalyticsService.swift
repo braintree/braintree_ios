@@ -76,8 +76,10 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
-        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [backgroundTaskID] in
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+            MainActor.assumeIsolated {
+                UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            }
         }
         
         await sendAnalyticEvent(event, apiClient: apiClient)
