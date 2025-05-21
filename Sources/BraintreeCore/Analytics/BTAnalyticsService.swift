@@ -109,23 +109,22 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
         print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
-        Task(priority: .background) {
-            await sendAnalyticEvent(event, apiClient: apiClient)
+        Task {
+            await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
+            print("👟 12345 Background Task Finish RawValue \(backgroundTaskID.rawValue)")
+            await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
         }
-
-        // Explicitly end the background task after the work is completed
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        backgroundTaskID = .invalid
     }
 
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
+    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier) async {
         do {
-            let configuration = try await apiClient.fetchConfiguration()
             if event.eventName == "paypal:tokenize:app-switch:succeeded" {
-                print("❄️ 12345 app switch")
-                try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
+                print("❄️ 12345 app switch identifier \(identifier.rawValue)")
+                try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
             } else {
+                let configuration = try await apiClient.fetchConfiguration()
                 try await postAnalyticsEvents(
                     configuration: configuration,
                     sessionID: apiClient.metadata.sessionID,
