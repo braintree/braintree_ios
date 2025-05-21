@@ -101,10 +101,9 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
 
-    // MARK: - Private Methods
-
-    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, completion: @escaping () -> Void) {
-        Task(priority: .background) {
+    /// Exposed to be able to execute this function synchronously in unit tests
+    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, completion: @escaping () -> Void) {
+        Task {
             do {
                 let configuration = try await apiClient.fetchConfiguration()
                 try await postAnalyticsEvents(
@@ -119,6 +118,8 @@ final class BTAnalyticsService: AnalyticsSendable {
             }
         }
     }
+
+    // MARK: - Private Methods
 
     private func sendQueuedAnalyticsEvents() async {
         guard await !events.isEmpty, let apiClient else { return }
