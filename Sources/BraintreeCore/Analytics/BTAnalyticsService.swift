@@ -70,13 +70,26 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
     
+    /// Sends a single analytics event immediately, even if the app is transitioning to the background.
+    ///
+    /// This method initiates a background task using `UIApplication.shared.beginBackgroundTask` to
+    /// ensure that the event has enough time to be sent before the OS suspends the app.
+    /// The background task is safely ended both in the expiration handler and after the event is sent.
+    ///
     /// Exposed to be able to execute this function synchronously in unit tests
     func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else { return }
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
+        // Begin a background task to give the app extra time to complete the network request,
+        // even if it moves to the background. The closure passed here is the expirationHandler.
+        //
+        // The expirationHandler is called if the system’s maximum background execution time
+        // (typically around 30 seconds) is reached before the task completes.
+        // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
         backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+            // We end the task here to avoid the app being terminated.
             MainActor.assumeIsolated {
                 UIApplication.shared.endBackgroundTask(backgroundTaskID)
             }
@@ -84,6 +97,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         await sendAnalyticEvent(event, apiClient: apiClient)
         
+        // Explicitly end the background task after the work is completed
         await UIApplication.shared.endBackgroundTask(backgroundTaskID)
     }
     
