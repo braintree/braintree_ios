@@ -31,14 +31,7 @@ final class BTCreateCustomerSessionAPI {
         completion: @escaping (String?, Error?) -> Void
     ) {
         do {
-            let mutation = """
-            mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
-                createCustomerSession(input: $input) {
-                    sessionId
-                }
-            }
-            """
-            let graphQLParams = try BTGraphQLRequest(query: mutation, variables: request)
+            let graphQLParams = try CreateCustomerSessionMutationGraphQLBody(request: request)
             
             self.apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
                 if let error {

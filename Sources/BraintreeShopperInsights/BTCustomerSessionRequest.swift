@@ -1,5 +1,6 @@
 import Foundation
 
+// swiftlint:disable nesting
 /// The POST body for the `createCustomerSession` GraphQL API.
 struct BTCustomerSessionRequest: Encodable {
     
@@ -16,7 +17,12 @@ struct BTCustomerSessionRequest: Encodable {
     
     struct BTPurchaseUnit: Encodable {
         
-        let amount: String
-        let currencyCode: String
+        let amount: Amount
+        
+        struct Amount: Encodable {
+            
+            let value: String?
+            let currencyCode: String?
+        }
     }
 }

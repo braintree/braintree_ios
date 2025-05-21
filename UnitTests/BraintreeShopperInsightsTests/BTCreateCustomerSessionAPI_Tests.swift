@@ -19,8 +19,12 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
         )
         ,
         purchaseUnits: [
-            BTCustomerSessionRequest.BTPurchaseUnit(amount: "4.50", currencyCode: "USD"),
-            BTCustomerSessionRequest.BTPurchaseUnit(amount: "12.00", currencyCode: "USD")
+            BTCustomerSessionRequest.BTPurchaseUnit(
+                amount: .init(value: "4.50", currencyCode: "USD")
+            ),
+            BTCustomerSessionRequest.BTPurchaseUnit(
+                amount: .init(value: "12.00", currencyCode: "USD")
+            )
         ]
     )
     
