@@ -116,17 +116,12 @@ final class BTAnalyticsService: AnalyticsSendable {
     func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier, completion: @escaping () -> Void) {
         Task {
             do {
-                if event.eventName == "paypal:tokenize:app-switch:succeeded" {
-                    print("❄️ 12345 app switch identifier \(identifier.rawValue)")
-                    try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
-                } else {
-                    let configuration = try await apiClient.fetchConfiguration()
-                    try await postAnalyticsEvents(
-                        configuration: configuration,
-                        sessionID: apiClient.metadata.sessionID,
-                        events: [event]
-                    )
-                }
+                let configuration = try await apiClient.fetchConfiguration()
+                try await postAnalyticsEvents(
+                    configuration: configuration,
+                    sessionID: apiClient.metadata.sessionID,
+                    events: [event]
+                )
                 print("🚀 * 12345 event \(event.eventName) sent")
                 print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
                 completion()
