@@ -100,11 +100,11 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         Task(priority: .background) {
             await sendAnalyticEvent(event, apiClient: apiClient)
+            
+            // Explicitly end the background task after the work is completed
+            await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
         }
-
-        // Explicitly end the background task after the work is completed
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        backgroundTaskID = .invalid
     }
 
     /// Exposed to be able to execute this function synchronously in unit tests
