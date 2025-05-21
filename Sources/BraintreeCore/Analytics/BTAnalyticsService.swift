@@ -59,13 +59,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Sends analytics event to https://api.paypal.com/v1/tracking/batch/events/ via a background task.
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
-        if sendImmediately {
-            print("🆕 * 12345 event \(event.eventName) to be send")
-            sendAnalyticsEventsImmediately(event: event)
-        } else {
-            Task(priority: .background) {
-                await performEventRequest(with: event)
-            }
+        Task(priority: .background) {
+            sendImmediately ? await sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
         }
     }
     
@@ -87,29 +82,28 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// The background task is safely ended both in the expiration handler and after the event is sent.
     ///
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) {
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else {
             print("🫀 12345 APIClient doesnt exist \(event.eventName)")
             return
         }
+        do {
+            var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
-        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+            // Begin a background task to give the app extra time to complete the network request,
+            // even if it moves to the background. The closure passed here is the expirationHandler.
+            //
+            // The expirationHandler is called if the system’s maximum background execution time
+            // (typically around 30 seconds) is reached before the task completes.
+            // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
+            backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+                // We end the task here to avoid the app being terminated.
+                print("👟 12345 Background Task ID Deinit RawValue \(backgroundTaskID.rawValue)")
+                UIApplication.shared.endBackgroundTask(backgroundTaskID)
+                backgroundTaskID = .invalid
+            }
+            print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
-        // Begin a background task to give the app extra time to complete the network request,
-        // even if it moves to the background. The closure passed here is the expirationHandler.
-        //
-        // The expirationHandler is called if the system’s maximum background execution time
-        // (typically around 30 seconds) is reached before the task completes.
-        // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-            // We end the task here to avoid the app being terminated.
-            print("👟 12345 Background Task ID Deinit RawValue \(backgroundTaskID.rawValue)")
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
-        }
-        print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
-        
-        Task(priority: .background) {
             await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
             print("👟 12345 Background Task Finish RawValue \(backgroundTaskID.rawValue)")
             
