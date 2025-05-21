@@ -123,7 +123,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         do {
             let configuration = try await apiClient.fetchConfiguration()
             if event.eventName == "paypal:tokenize:app-switch:succeeded" {
-                print("❄️ 12345 \(identifier.rawValue) with identifier \(identifier)")
+                print("❄️ 12345 app switch")
                 try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
             } else {
                 try await postAnalyticsEvents(
