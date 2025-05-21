@@ -90,15 +90,15 @@ final class BTAnalyticsService: AnalyticsSendable {
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
         backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
             // We end the task here to avoid the app being terminated.
-            MainActor.assumeIsolated {
-                UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            }
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
         }
         
         await sendAnalyticEvent(event, apiClient: apiClient)
         
         // Explicitly end the background task after the work is completed
         await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
     }
     
     // MARK: - Private Methods
