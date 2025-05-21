@@ -1,7 +1,7 @@
 import Foundation
 
 // swiftlint:disable nesting
-/// The POST body for the `createCustomerSession` GraphQL API.
+/// A `BTCustomerSessionRequest` that specifies options for the Payment Ready v2 flow.
 struct BTCustomerSessionRequest: Encodable {
     
     let customer: Customer
