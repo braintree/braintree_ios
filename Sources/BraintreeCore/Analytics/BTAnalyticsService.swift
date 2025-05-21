@@ -109,10 +109,12 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
         print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
-        Task {
+        Task(priority: .background) {
             await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
             print("👟 12345 Background Task Finish RawValue \(backgroundTaskID.rawValue)")
-            await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            
+            // Explicitly end the background task after the work is completed
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
         }
     }
