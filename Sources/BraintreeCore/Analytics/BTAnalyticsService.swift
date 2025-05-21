@@ -60,7 +60,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
-            sendImmediately ? await sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
+            sendImmediately ? sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
         }
     }
     
@@ -82,7 +82,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// The background task is safely ended both in the expiration handler and after the event is sent.
     ///
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) {
         guard let apiClient else {
             print("🫀 12345 APIClient doesnt exist \(event.eventName)")
             return
@@ -104,37 +104,42 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
         print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
-        await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
-        print("👟 12345 Background Task Finish RawValue \(backgroundTaskID.rawValue)")
-        
-        // Explicitly end the background task after the work is completed
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
-        backgroundTaskID = .invalid
+        sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID) {
+            // Explicitly end the background task after the work is completed
+            print("👟 12345 Background Task Finish RawValue \(backgroundTaskID.rawValue)")
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+    }
+
+    /// Exposed to be able to execute this function synchronously in unit tests
+    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier, completion: @escaping () -> Void) {
+        Task {
+            do {
+                if event.eventName == "paypal:tokenize:app-switch:succeeded" {
+                    print("❄️ 12345 app switch identifier \(identifier.rawValue)")
+                    try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
+                } else {
+                    let configuration = try await apiClient.fetchConfiguration()
+                    try await postAnalyticsEvents(
+                        configuration: configuration,
+                        sessionID: apiClient.metadata.sessionID,
+                        events: [event]
+                    )
+                }
+                print("🚀 * 12345 event \(event.eventName) sent")
+                print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
+                completion()
+            } catch {
+                print("🛰️ 12345 get config failed")
+                NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
+                NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
+                completion()
+            }
+        }
     }
 
     // MARK: - Private Methods
-    
-    /// Exposed to be able to execute this function synchronously in unit tests
-    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier) async {
-        do {
-//            if event.eventName == "paypal:tokenize:app-switch:succeeded" {
-//                print("❄️ 12345 app switch identifier \(identifier.rawValue)")
-//                try? await Task.sleep(nanoseconds: 40 * 1_000_000_000)
-//            } else {
-                let configuration = try await apiClient.fetchConfiguration()
-                try await postAnalyticsEvents(
-                    configuration: configuration,
-                    sessionID: apiClient.metadata.sessionID,
-                    events: [event]
-                )
-//            }
-            print("🚀 * 12345 event \(event.eventName) sent")
-            print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
-        } catch {
-            print("🛰️ 12345 get config failed")
-            NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
-        }
-    }
 
     private func sendQueuedAnalyticsEvents() async {
         guard await !events.isEmpty, let apiClient else {
