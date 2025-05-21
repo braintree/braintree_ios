@@ -88,33 +88,35 @@ final class BTAnalyticsService: AnalyticsSendable {
         // The expirationHandler is called if the system’s maximum background execution time
         // (typically around 30 seconds) is reached before the task completes.
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        Task {
-            backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-                // We end the task here to avoid the app being terminated.
-                UIApplication.shared.endBackgroundTask(backgroundTaskID)
-                backgroundTaskID = .invalid
-            }
-            
-            await sendAnalyticEvent(event, apiClient: apiClient)
-            
+        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+            // We end the task here to avoid the app being terminated.
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+        
+        sendAnalyticEvent(event, apiClient: apiClient) {
             // Explicitly end the background task after the work is completed
-            await UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            UIApplication.shared.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
         }
     }
 
     // MARK: - Private Methods
 
-    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
-        do {
-            let configuration = try await apiClient.fetchConfiguration()
-            try await postAnalyticsEvents(
-                configuration: configuration,
-                sessionID: apiClient.metadata.sessionID,
-                events: [event]
-            )
-        } catch {
-            NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
+    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, completion: @escaping () -> Void) {
+        Task(priority: .background) {
+            do {
+                let configuration = try await apiClient.fetchConfiguration()
+                try await postAnalyticsEvents(
+                    configuration: configuration,
+                    sessionID: apiClient.metadata.sessionID,
+                    events: [event]
+                )
+                completion()
+            } catch {
+                NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
+                completion()
+            }
         }
     }
 
