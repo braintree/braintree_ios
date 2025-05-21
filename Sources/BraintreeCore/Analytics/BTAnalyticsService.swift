@@ -88,7 +88,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         // The expirationHandler is called if the system’s maximum background execution time
         // (typically around 30 seconds) is reached before the task completes.
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
             // We end the task here to avoid the app being terminated.
             UIApplication.shared.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
@@ -97,7 +97,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         await sendAnalyticEvent(event, apiClient: apiClient)
         
         // Explicitly end the background task after the work is completed
-        UIApplication.shared.endBackgroundTask(backgroundTaskID)
+        await UIApplication.shared.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
     }
 
