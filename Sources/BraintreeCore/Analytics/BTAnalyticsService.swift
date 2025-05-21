@@ -89,18 +89,6 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-        
-        // Begin a background task to give the app extra time to complete the network request,
-        // even if it moves to the background. The closure passed here is the expirationHandler.
-        //
-        // The expirationHandler is called if the system’s maximum background execution time
-        // (typically around 30 seconds) is reached before the task completes.
-        // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-            // We end the task here to avoid the app being terminated.
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
-        }
 
         // Begin a background task to give the app extra time to complete the network request,
         // even if it moves to the background. The closure passed here is the expirationHandler.
