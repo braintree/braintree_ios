@@ -80,6 +80,8 @@ final class BTAnalyticsService: AnalyticsSendable {
         }
     }
     
+    var isSecond = false
+    
     /// Exposed to be able to execute this function synchronously in unit tests
     func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else {
@@ -89,12 +91,15 @@ final class BTAnalyticsService: AnalyticsSendable {
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         
-        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [backgroundTaskID] in
+        backgroundTaskID = await UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
             print("👟 12345 BackgroundTaskID If Needed RawValue \(backgroundTaskID.rawValue)")
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            MainActor.assumeIsolated {
+                UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            }
         }
+        print("👟 12345 Background Task ID Init RawValue \(backgroundTaskID.rawValue)")
         
-        await sendAnalyticEvent(event, apiClient: apiClient)
+        await sendAnalyticEvent(event, apiClient: apiClient, identifier: backgroundTaskID)
         
         await UIApplication.shared.endBackgroundTask(backgroundTaskID)
         print("👟 12345 Background Task ID RawValue \(backgroundTaskID.rawValue)")
@@ -102,14 +107,23 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     // MARK: - Private Methods
     
-    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
+    private func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, identifier: UIBackgroundTaskIdentifier) async {
         do {
             let configuration = try await apiClient.fetchConfiguration()
-            try await postAnalyticsEvents(
-                configuration: configuration,
-                sessionID: apiClient.metadata.sessionID,
-                events: [event]
-            )
+            if event.eventName == "paypal:tokenize:app-switch:succeeded" {
+                print("❄️ 12345 \(identifier.rawValue) with identifier \(identifier)")
+                if !isSecond {
+                    isSecond = true
+                    await sendAnalyticsEventsImmediately(event: event)
+                }
+                try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
+            } else {
+                try await postAnalyticsEvents(
+                    configuration: configuration,
+                    sessionID: apiClient.metadata.sessionID,
+                    events: [event]
+                )
+            }
             print("🚀 * 12345 event \(event.eventName) sent")
             print("🥈 12345 End Time \(Date().utcTimestampMilliseconds) \(event.eventName)")
         } catch {

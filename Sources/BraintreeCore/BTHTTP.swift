@@ -26,8 +26,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = defaultHeaders
-        configuration.timeoutIntervalForRequest = 30
-        configuration.timeoutIntervalForResource = 30
+        configuration.timeoutIntervalForRequest = 60
+        configuration.timeoutIntervalForResource = 60
         
         let delegateQueue = OperationQueue()
         delegateQueue.name = "com.braintreepayments.BTHTTP"
@@ -436,8 +436,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             // swiftlint:enable force_unwrapping
 
             let policies: [SecPolicy] = [SecPolicyCreateSSL(true, domain as CFString)]
-            SecTrustSetPolicies(serverTrust, policies as CFArray)
-            SecTrustSetAnchorCertificates(serverTrust, pinnedCertificateData() as CFArray)
+//            SecTrustSetPolicies(serverTrust, policies as CFArray)
+//            SecTrustSetAnchorCertificates(serverTrust, pinnedCertificateData() as CFArray)
 
             var error: CFError?
             let trusted: Bool = SecTrustEvaluateWithError(serverTrust, &error)
