@@ -151,7 +151,7 @@ let package = Package(
         .binaryTarget(
             name: "PPRiskMagnes",
             path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
-        )
+        ),
         .target(
             name: "BraintreeVisa",
             dependencies: ["BraintreeCore"],
