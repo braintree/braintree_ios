@@ -52,22 +52,6 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
                 var hashedPhoneNumber: String?
                 var paypalAppInstalled: Bool?
                 var venmoAppInstalled: Bool?
-                
-                func encode(to encoder: any Encoder) throws {
-                    var container = encoder.container(keyedBy: CodingKeys.self)
-                    
-                    try container.encodeIfPresent(hashedEmail, forKey: .hashedEmail)
-                    try container.encodeIfPresent(hashedPhoneNumber, forKey: .hashedPhoneNumber)
-                    try container.encodeIfPresent(paypalAppInstalled, forKey: .paypalAppInstalled)
-                    try container.encodeIfPresent(venmoAppInstalled, forKey: .venmoAppInstalled)
-                }
-                
-                enum CodingKeys: String, CodingKey {
-                    case hashedEmail
-                    case hashedPhoneNumber
-                    case paypalAppInstalled
-                    case venmoAppInstalled
-                }
             }
             
             struct PurchaseUnit: Encodable {
@@ -78,18 +62,6 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
                     
                     var value: String?
                     var currencyCode: String?
-                    
-                    func encode(to encoder: any Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
-                        
-                        try container.encodeIfPresent(value, forKey: .value)
-                        try container.encodeIfPresent(currencyCode, forKey: .currencyCode)
-                    }
-                    
-                    enum CodingKeys: String, CodingKey {
-                        case value
-                        case currencyCode
-                    }
                 }
             }
         }
