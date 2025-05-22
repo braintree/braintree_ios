@@ -4,6 +4,28 @@ import UIKit
 import BraintreeCore
 #endif
 
+///  The call-to-action in the PayPal Vault flow.
+///
+///  - Note: By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
+///  Setting the `BTPayPalVaultRequest.userAction` to `.setupNow` changes the button text to "Setup Now", conveying to
+///  the user that the funding insturment will be set up for future payments.
+@objc public enum BTPayPalVaultRequestUserAction: Int {
+    /// Default
+    case none
+
+    /// Set Up Now
+    case setupNow
+
+    var stringValue: String {
+        switch self {
+        case .setupNow:
+            return "setup_now"
+        default:
+            return ""
+        }
+    }
+}
+
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
     
@@ -14,6 +36,9 @@ import BraintreeCore
     
     /// Optional: Recurring billing product details.
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+    
+    /// Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
+    public var userAction: BTPayPalVaultRequestUserAction
 
     // MARK: - Initializers
 
@@ -27,7 +52,7 @@ import BraintreeCore
     public convenience init(
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool,
-        offerCredit: Bool = false
+        offerCredit: Bool = false,
     ) {
         self.init(
             offerCredit: offerCredit,
@@ -42,14 +67,18 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
     public init(
         offerCredit: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        userAction: BTPayPalVaultRequestUserAction = .none
     ) {
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
+        self.userAction = userAction
+
         super.init(
             offerCredit: offerCredit,
             userAuthenticationEmail: userAuthenticationEmail
