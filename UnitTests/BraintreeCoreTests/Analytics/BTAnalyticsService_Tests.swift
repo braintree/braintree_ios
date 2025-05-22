@@ -65,6 +65,36 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
     }
+
+    func testSendAnalyticsEvents_whenMultipleEventsSent_tracksLatestEventName_andNumberOfPOSTRequests() {
+        let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.http = mockAnalyticsHTTP
+        
+        let expectation1 = expectation(description: "event 1 sent")
+        let expectation2 = expectation(description: "event 2 sent")
+        let expectation3 = expectation(description: "event 3 sent")
+        let event1 = FPTIBatchData.Event(eventName: "event1")
+        let event2 = FPTIBatchData.Event(eventName: "event2")
+        let event3 = FPTIBatchData.Event(eventName: "event3")
+            
+        sut.sendAnalyticEvent(event1, apiClient: stubAPIClient) {
+            expectation1.fulfill()
+        }
+        sut.sendAnalyticEvent(event2, apiClient: stubAPIClient) {
+            expectation2.fulfill()
+        }
+        sut.sendAnalyticEvent(event3, apiClient: stubAPIClient) {
+            expectation3.fulfill()
+        }
+        
+        wait(for: [expectation1, expectation2, expectation3], timeout: 3)
+        
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 3)
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+    }
     
     // MARK: - Helper Functions
 
