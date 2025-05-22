@@ -59,6 +59,10 @@ let package = Package(
             name: "BraintreeVenmo",
             targets: ["BraintreeVenmo"]
         ),
+        .library(
+            name: "BraintreeVisa",
+            targets: ["BraintreeVisa"]
+        ),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -147,6 +151,11 @@ let package = Package(
         .binaryTarget(
             name: "PPRiskMagnes",
             path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
-        )
+        ),
+        .target(
+            name: "BraintreeVisa",
+            dependencies: ["BraintreeCore"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
     ]
 )
