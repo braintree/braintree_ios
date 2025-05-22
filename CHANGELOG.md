@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Update batching for conversion events to send immediately using `beginBackgroundTask`
+
 ## 6.32.0 (2025-04-29)
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
