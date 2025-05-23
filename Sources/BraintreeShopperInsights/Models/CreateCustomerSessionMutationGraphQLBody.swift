@@ -30,7 +30,7 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
                     paypalAppInstalled: request.customer.paypalAppInstalled,
                     venmoAppInstalled: request.customer.venmoAppInstalled
                 ),
-                purchaseUnits: request.purchaseUnits?.map { purchaseUnit in
+                purchaseUnits: request.purchaseUnits?.compactMap { purchaseUnit in
                     Variables.InputParameters.PurchaseUnit(
                         amount: Variables.InputParameters.PurchaseUnit.Amount(
                             value: purchaseUnit.amount.value,
