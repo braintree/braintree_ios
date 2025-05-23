@@ -2,7 +2,7 @@ import Foundation
 
 // swiftlint:disable nesting
 /// A `BTCustomerSessionRequest` that specifies options for the Payment Ready v2 flow.
-struct BTCustomerSessionRequest: Encodable {
+struct BTCustomerSessionRequest {
     
     let customer: Customer
     let purchaseUnits: [BTPurchaseUnit]?

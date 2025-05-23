@@ -115,11 +115,12 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     
     func testEncodingCreateCustomerSessionGraphQLBodyWithFullData() throws {
         let body = try CreateCustomerSessionMutationGraphQLBody(request: createCustomerSessionRequest)
-        let jsonData = try JSONEncoder().encode(body)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
         
-        let jsonObject = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
-
-        let variables = jsonObject?["variables"] as? [String: Any]
+        let variables = jsonObject["variables"] as? [String: Any]
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
@@ -141,10 +142,12 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
             purchaseUnits: nil
         )
         let body = try CreateCustomerSessionMutationGraphQLBody(request: request)
-        let jsonData = try JSONEncoder().encode(body)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
         
-        let jsonObject = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
-        let variables = jsonObject?["variables"] as? [String: Any]
+        let variables = jsonObject["variables"] as? [String: Any]
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
