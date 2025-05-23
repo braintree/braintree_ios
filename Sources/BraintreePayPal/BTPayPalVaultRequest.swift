@@ -99,6 +99,11 @@ import BraintreeCore
         if let recurringBillingDetails {
             baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
+        
+        if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
+            experienceProfile["user_action"] = userAction.stringValue
+            baseParameters["experience_profile"] = experienceProfile
+        }
 
         return baseParameters
     }
