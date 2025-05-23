@@ -11,7 +11,7 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     
     let createCustomerSessionRequest = BTCustomerSessionRequest(
-        customer: BTCustomerSessionRequest.Customer(
+        customer: Customer(
             hashedEmail: "test-hashed-email.com",
             hashedPhoneNumber: "test-hashed-phone-number",
             paypalAppInstalled: true,
@@ -19,8 +19,18 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
         )
         ,
         purchaseUnits: [
-            BTCustomerSessionRequest.BTPurchaseUnit(amount: "4.50", currencyCode: "USD"),
-            BTCustomerSessionRequest.BTPurchaseUnit(amount: "12.00", currencyCode: "USD")
+            BTPurchaseUnit(
+                amount: Amount(
+                    value: "10.00",
+                    currencyCode: "USD"
+                )
+            ),
+            BTPurchaseUnit(
+                amount: Amount(
+                    value: "20.00",
+                    currencyCode: "USD"
+                )
+            )
         ]
     )
     
@@ -101,6 +111,74 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2)
+    }
+    
+    func testEncodingCreateCustomerSessionGraphQLBodyWithFullData() throws {
+        let body = try CreateCustomerSessionMutationGraphQLBody(request: createCustomerSessionRequest)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let customer = input?["customer"] as? [String: Any]
+        let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        let amount = purchaseUnits?.first?["amount"] as? [String: Any]
+        
+        XCTAssertEqual(customer?["hashedEmail"] as? String, "test-hashed-email.com")
+        XCTAssertEqual(customer?["paypalAppInstalled"] as? Bool, true)
+        XCTAssertEqual(amount?["value"] as? String, "10.00")
+    }
+    
+    func testEncodingCreateCustomerSessionGraphQLBodyWithNilData() throws {
+        let request = BTCustomerSessionRequest(
+            customer: Customer(
+                hashedEmail: nil,
+                hashedPhoneNumber: nil,
+                paypalAppInstalled: nil,
+                venmoAppInstalled: nil
+            ),
+            purchaseUnits: nil
+        )
+        let body = try CreateCustomerSessionMutationGraphQLBody(request: request)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let customer = input?["customer"] as? [String: Any]
+        let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        
+        XCTAssertNotNil(customer)
+        XCTAssertNil(purchaseUnits)
+    }
+    
+    func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyData() throws {
+        let request = BTCustomerSessionRequest(
+            customer: Customer(
+                hashedEmail: nil,
+                hashedPhoneNumber: nil,
+                paypalAppInstalled: nil,
+                venmoAppInstalled: nil
+            ),
+            purchaseUnits: []
+        )
+        let body = try CreateCustomerSessionMutationGraphQLBody(request: request)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let customer = input?["customer"] as? [String: Any]
+        let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        
+        XCTAssertNotNil(customer)
+        XCTAssertEqual(purchaseUnits?.count, 0)
     }
 }
 
