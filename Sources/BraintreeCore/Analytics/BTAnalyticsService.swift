@@ -16,6 +16,9 @@ final class BTAnalyticsService: AnalyticsSendable {
 
     /// Exposed for testing only
     var shouldBypassTimerQueue = false
+    
+    /// Exposed for testing only
+    var application: BackgroundTaskManaging = UIApplication.shared
 
     // MARK: - Private Properties
     
@@ -88,16 +91,14 @@ final class BTAnalyticsService: AnalyticsSendable {
         // The expirationHandler is called if the system’s maximum background execution time
         // (typically around 30 seconds) is reached before the task completes.
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
-            // We end the task here to avoid the app being terminated.
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
+        backgroundTaskID = application.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [weak self, backgroundTaskID] in
+            guard let self else { return }
+            self.application.endBackgroundTask(backgroundTaskID)
         }
-        
-        sendAnalyticEvent(event, apiClient: apiClient) {
-            // Explicitly end the background task after the work is completed
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
+    
+        sendAnalyticEvent(event, apiClient: apiClient) { [weak self] in
+            guard let self else { return }
+            self.application.endBackgroundTask(backgroundTaskID)
         }
     }
 
