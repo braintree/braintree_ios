@@ -6,9 +6,9 @@ import BraintreeCore
 
 ///  The call-to-action in the PayPal Vault flow.
 ///
-///  - Note: By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
+///  - Note: By default the final button will show the localized word for "Save and Continue" and implies that the final amount billed is not yet known.
 ///  Setting the `BTPayPalVaultRequest.userAction` to `.setupNow` changes the button text to "Setup Now", conveying to
-///  the user that the funding insturment will be set up for future payments.
+///  the user that the funding instrument will be set up for future payments.
 @objc public enum BTPayPalVaultRequestUserAction: Int {
     /// Default
     case none
