@@ -3,7 +3,7 @@ import UIKit
 import BraintreePayPal
 import BraintreeCore
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
@@ -149,7 +149,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     // MARK: - 1-Time Checkout Flows
 
-    // swiftlint:function_body_length
+    // swiftlint:disable function_body_length
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
