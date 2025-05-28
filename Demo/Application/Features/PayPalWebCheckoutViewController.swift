@@ -201,6 +201,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             nationalNumber: nationalNumberTextField.text ?? ""
         )
         
+        request.userAction = .setupNow
+        
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
                 pricingModel: .fixed,

@@ -4,28 +4,6 @@ import UIKit
 import BraintreeCore
 #endif
 
-///  The call-to-action in the PayPal Vault flow.
-///
-///  - Note: By default the final button will show the localized word for "Save and Continue" and implies that the final amount billed is not yet known.
-///  Setting the `BTPayPalVaultRequest.userAction` to `.setupNow` changes the button text to "Setup Now", conveying to
-///  the user that the funding instrument will be set up for future payments.
-@objc public enum BTPayPalVaultRequestUserAction: Int {
-    /// Default
-    case none
-
-    /// Set Up Now
-    case setupNow
-
-    var stringValue: String {
-        switch self {
-        case .setupNow:
-            return "setup_now"
-        default:
-            return ""
-        }
-    }
-}
-
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
     
@@ -36,9 +14,6 @@ import BraintreeCore
     
     /// Optional: Recurring billing product details.
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
-    
-    /// Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
-    public var userAction: BTPayPalVaultRequestUserAction
 
     // MARK: - Initializers
 
@@ -73,15 +48,15 @@ import BraintreeCore
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAuthenticationEmail: String? = nil,
-        userAction: BTPayPalVaultRequestUserAction = .none
+        userAction: BTPayPalRequestUserAction = .none
     ) {
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
-        self.userAction = userAction
 
         super.init(
             offerCredit: offerCredit,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            userAction: userAction
         )
     }
 
@@ -98,11 +73,6 @@ import BraintreeCore
         
         if let recurringBillingDetails {
             baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
-        }
-        
-        if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
-            experienceProfile["user_action"] = userAction.stringValue
-            baseParameters["experience_profile"] = experienceProfile
         }
 
         return baseParameters
