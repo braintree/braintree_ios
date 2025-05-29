@@ -92,7 +92,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let mockBackgroundTaskManager = MockBackgroundTaskManager()
         let expectedTaskID = UIBackgroundTaskIdentifier(rawValue: 123)
         mockBackgroundTaskManager.lastTaskID = expectedTaskID
-        let event = FPTIBatchData.Event(eventName: "test.event")
+        let event = FPTIBatchData.Event(eventName: "event")
         let sut = BTAnalyticsService.shared
         sut.setAPIClient(stubAPIClient)
         sut.application = mockBackgroundTaskManager
@@ -102,6 +102,38 @@ final class BTAnalyticsService_Tests: XCTestCase {
 
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
         XCTAssertEqual(mockBackgroundTaskManager.lastTaskName, "BTSendAnalyticEvent")
+        XCTAssertTrue(mockBackgroundTaskManager.didBeginBackgroundTask)
+        XCTAssertTrue(mockBackgroundTaskManager.didEndBackgroundTask)
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
+    }
+    
+    func testSendAnalyticsEventsImmediately_callsExpirationHandler() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let expectedTaskID = UIBackgroundTaskIdentifier(rawValue: 123)
+        mockBackgroundTaskManager.lastTaskID = expectedTaskID
+        let event = FPTIBatchData.Event(eventName: "event")
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+
+        // Start the async task but do not await it
+        let task = Task {
+            await sut.sendAnalyticsEventsImmediately(event: event)
+        }
+
+        // Wait for the background task to be started and expirationHandler to be set
+        while mockBackgroundTaskManager.expirationHandler == nil {
+            await Task.yield()
+        }
+
+        // Simulate expiration
+        await mockBackgroundTaskManager.expirationHandler?()
+        
+        await task.value
+        
         XCTAssertTrue(mockBackgroundTaskManager.didBeginBackgroundTask)
         XCTAssertTrue(mockBackgroundTaskManager.didEndBackgroundTask)
         XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)

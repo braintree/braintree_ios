@@ -92,7 +92,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         // (typically around 30 seconds) is reached before the task completes.
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
         backgroundTaskID = application.beginBackgroundTask(withName: "BTSendAnalyticEvent") { [weak self] in
-            guard let self else { return }
+            guard let self, backgroundTaskID != .invalid else { return }
             // We end the task here to avoid the app being terminated.
             self.application.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
@@ -100,6 +100,7 @@ final class BTAnalyticsService: AnalyticsSendable {
 
         await sendAnalyticEvent(event, apiClient: apiClient)
 
+        guard backgroundTaskID != .invalid else { return }
         application.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
     }
