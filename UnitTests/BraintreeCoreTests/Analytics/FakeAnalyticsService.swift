@@ -10,7 +10,7 @@ class FakeAnalyticsService: AnalyticsSendable {
         // No-Op
     }
 
-    func sendAnalyticsEvent(_ event: FPTIBatchData.Event) {
+    func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool = true) {
         self.lastEvent = event.eventName
         self.endpoint = event.endpoint
     }

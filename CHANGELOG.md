@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 6.33.0 (2025-05-22)
+* BraintreeCore
+  * Update batching for conversion events to send immediately using `beginBackgroundTask`
+
 ## 7.0.0-beta1 (2025-04-30)
 * Require Xcode 16.2+ and Swift 5.10+
 * Breaking Changes
