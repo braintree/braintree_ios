@@ -185,7 +185,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 pricingModel: .fixed,
                 amount: "9.99"
             )
-                        
+
             let billingCycle = BTPayPalBillingCycle(
                 isTrial: false,
                 numberOfExecutions: 1,
@@ -201,7 +201,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 taxTotal: "0.50",
                 shippingTotal: "0.50"
             )
-                        
+
             let recurringBillingDetails = BTPayPalRecurringBillingDetails(
                 billingCycles: [billingCycle],
                 currencyISOCode: "USD",
@@ -222,6 +222,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             )
             request.lineItems = [lineItem]
             request.requestBillingAgreement = true
+            request.merchantAccountID = "quantumleapsandboxtesting-1"
         }
 
         payPalClient.tokenize(request) { nonce, error in
