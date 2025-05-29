@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "046547B52DDE8B040054B80A"
-               BuildableName = "BraintreeVisa.framework"
-               BlueprintName = "BraintreeVisa"
+               BuildableName = "BraintreeVisaCheckout.framework"
+               BlueprintName = "BraintreeVisaCheckout"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "046547B52DDE8B040054B80A"
-            BuildableName = "BraintreeVisa.framework"
-            BlueprintName = "BraintreeVisa"
+            BuildableName = "BraintreeVisaCheckout.framework"
+            BlueprintName = "BraintreeVisaCheckout"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		046547AB2DDE871D0054B80A /* BTVisaCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */; };
 		046547B02DDE874F0054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
-		046547C02DDE8B050054B80A /* BraintreeVisa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046547B62DDE8B040054B80A /* BraintreeVisa.framework */; };
+		046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */; };
 		046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
 		046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
 		046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */; };
@@ -767,8 +767,8 @@
 		03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress_Tests.swift; sourceTree = "<group>"; };
 		046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutClient.swift; sourceTree = "<group>"; };
 		046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutClient_Tests.swift; sourceTree = "<group>"; };
-		046547B62DDE8B040054B80A /* BraintreeVisa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVisa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		046547BF2DDE8B050054B80A /* BraintreeVisaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeVisaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeVisaCheckoutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
@@ -1186,7 +1186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */,
-				046547C02DDE8B050054B80A /* BraintreeVisa.framework in Frameworks */,
+				046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1829,8 +1829,8 @@
 				8046983E2B27C5530090878E /* BraintreeShopperInsightsTests.xctest */,
 				BECC91762B20DDFF00A2EE42 /* BraintreePayPalMessaging.framework */,
 				BECC918D2B20DE7C00A2EE42 /* BraintreePayPalMessagingTests.xctest */,
-				046547B62DDE8B040054B80A /* BraintreeVisa.framework */,
-				046547BF2DDE8B050054B80A /* BraintreeVisaTests.xctest */,
+				046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */,
+				046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2359,9 +2359,9 @@
 			productReference = 0357C47C1F96869600E63851 /* BraintreeAmericanExpress.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		046547B52DDE8B040054B80A /* BraintreeVisa */ = {
+		046547B52DDE8B040054B80A /* BraintreeVisaCheckout */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 046547C82DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisa" */;
+			buildConfigurationList = 046547C82DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaCheckout" */;
 			buildPhases = (
 				046547B12DDE8B040054B80A /* Headers */,
 				046547B22DDE8B040054B80A /* Sources */,
@@ -2373,16 +2373,16 @@
 			dependencies = (
 				046547D12DDE8B200054B80A /* PBXTargetDependency */,
 			);
-			name = BraintreeVisa;
+			name = BraintreeVisaCheckout;
 			packageProductDependencies = (
 			);
 			productName = BraintreeVisa;
-			productReference = 046547B62DDE8B040054B80A /* BraintreeVisa.framework */;
+			productReference = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		046547BE2DDE8B050054B80A /* BraintreeVisaTests */ = {
+		046547BE2DDE8B050054B80A /* BraintreeVisaCheckoutTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 046547CB2DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaTests" */;
+			buildConfigurationList = 046547CB2DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaCheckoutTests" */;
 			buildPhases = (
 				046547BB2DDE8B050054B80A /* Sources */,
 				046547BC2DDE8B050054B80A /* Frameworks */,
@@ -2394,11 +2394,11 @@
 				046547C22DDE8B050054B80A /* PBXTargetDependency */,
 				046547F92DDE956D0054B80A /* PBXTargetDependency */,
 			);
-			name = BraintreeVisaTests;
+			name = BraintreeVisaCheckoutTests;
 			packageProductDependencies = (
 			);
 			productName = BraintreeVisaTests;
-			productReference = 046547BF2DDE8B050054B80A /* BraintreeVisaTests.xctest */;
+			productReference = 046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		2D941D371B59C76A0016EFB4 /* BraintreePayPal */ = {
@@ -3073,8 +3073,8 @@
 				A77AA29B1B618C7700217B73 /* BraintreeVenmo */,
 				A948D6EF24FAC8F900F4F178 /* BraintreeVenmoTests */,
 				A7ABD6521B702FD800A1223C /* IntegrationTests */,
-				046547B52DDE8B040054B80A /* BraintreeVisa */,
-				046547BE2DDE8B050054B80A /* BraintreeVisaTests */,
+				046547B52DDE8B040054B80A /* BraintreeVisaCheckout */,
+				046547BE2DDE8B050054B80A /* BraintreeVisaCheckoutTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3943,7 +3943,7 @@
 /* Begin PBXTargetDependency section */
 		046547C22DDE8B050054B80A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 046547B52DDE8B040054B80A /* BraintreeVisa */;
+			target = 046547B52DDE8B040054B80A /* BraintreeVisaCheckout */;
 			targetProxy = 046547C12DDE8B050054B80A /* PBXContainerItemProxy */;
 		};
 		046547D12DDE8B200054B80A /* PBXTargetDependency */ = {
@@ -7482,7 +7482,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		046547C82DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisa" */ = {
+		046547C82DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaCheckout" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046547C92DDE8B050054B80A /* Debug */,
@@ -7491,7 +7491,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		046547CB2DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaTests" */ = {
+		046547CB2DDE8B050054B80A /* Build configuration list for PBXNativeTarget "BraintreeVisaCheckoutTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046547CC2DDE8B050054B80A /* Debug */,
