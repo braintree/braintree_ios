@@ -220,6 +220,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 recurringBillingPlanType: .subscription,
                 amountBreakdown: amountBreakdown
             )
+
             request.lineItems = [lineItem]
             request.requestBillingAgreement = true
             request.merchantAccountID = "quantumleapsandboxtesting-1"
