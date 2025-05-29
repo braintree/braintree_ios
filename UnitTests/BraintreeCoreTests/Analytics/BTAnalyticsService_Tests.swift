@@ -85,6 +85,28 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
     }
     
+    
+    func testSendAnalyticsEventsImmediately_beginsAndEndsBackgroundTask() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let expectedTaskID = UIBackgroundTaskIdentifier(rawValue: 123)
+        mockBackgroundTaskManager.lastTaskID = expectedTaskID
+        let event = FPTIBatchData.Event(eventName: "test.event")
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+
+        await sut.sendAnalyticsEventsImmediately(event: event)
+
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+        XCTAssertEqual(mockBackgroundTaskManager.lastTaskName, "BTSendAnalyticEvent")
+        XCTAssertTrue(mockBackgroundTaskManager.didBeginBackgroundTask)
+        XCTAssertTrue(mockBackgroundTaskManager.didEndBackgroundTask)
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
+    }
+    
     // MARK: - Helper Functions
 
     func stubbedAPIClientWithAnalyticsURL(_ analyticsURL: String? = nil) -> MockAPIClient {
