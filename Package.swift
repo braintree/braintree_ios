@@ -153,7 +153,7 @@ let package = Package(
             path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
         ),
         .target(
-            name: "BraintreeVisa",
+            name: "BraintreeVisaCheckout",
             dependencies: ["BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
