@@ -1,5 +1,5 @@
 import XCTest
 
-final class BraintreeVisaTests: XCTestCase {
+final class BTVisaCheckoutClient_Tests: XCTestCase {
     // TODO: - Add implementation
 }
