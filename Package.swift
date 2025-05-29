@@ -60,8 +60,8 @@ let package = Package(
             targets: ["BraintreeVenmo"]
         ),
         .library(
-            name: "BraintreeVisa",
-            targets: ["BraintreeVisa"]
+            name: "BraintreeVisaCheckout",
+            targets: ["BraintreeVisaCheckout"]
         ),
     ],
     targets: [

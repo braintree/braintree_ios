@@ -1450,22 +1450,22 @@
 			path = BraintreeLocalPayment;
 			sourceTree = "<group>";
 		};
-		046547A92DDE86FD0054B80A /* BraintreeVisa */ = {
+		046547A92DDE86FD0054B80A /* BraintreeVisaCheckout */ = {
 			isa = PBXGroup;
 			children = (
 				046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */,
 				046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */,
 			);
-			path = BraintreeVisa;
+			path = BraintreeVisaCheckout;
 			sourceTree = "<group>";
 		};
-		046547AE2DDE87340054B80A /* BraintreeVisaTests */ = {
+		046547AE2DDE87340054B80A /* BraintreeVisaCheckoutTests */ = {
 			isa = PBXGroup;
 			children = (
 				046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */,
 				04E6D6AF2DDFE7B100729D7B /* Info.plist */,
 			);
-			path = BraintreeVisaTests;
+			path = BraintreeVisaCheckoutTests;
 			sourceTree = "<group>";
 		};
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
@@ -1668,7 +1668,7 @@
 				804698292B27C4D70090878E /* BraintreeShopperInsights */,
 				A91E1EAC24FEEF21007540E5 /* BraintreeThreeDSecure */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
-				046547A92DDE86FD0054B80A /* BraintreeVisa */,
+				046547A92DDE86FD0054B80A /* BraintreeVisaCheckout */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1690,7 +1690,7 @@
 				A903E1A724F9D34000C314E1 /* BraintreeTestShared */,
 				A91E1EF324FEF2E4007540E5 /* BraintreeThreeDSecureTests */,
 				A948D6F124FAC8F900F4F178 /* BraintreeVenmoTests */,
-				046547AE2DDE87340054B80A /* BraintreeVisaTests */,
+				046547AE2DDE87340054B80A /* BraintreeVisaCheckoutTests */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";

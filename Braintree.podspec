@@ -107,7 +107,7 @@ Pod::Spec.new do |s|
     s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
   end
 
-  s.subspec "Visa" do |s|
+  s.subspec "VisaCheckout" do |s|
     s.source_files = "Sources/BraintreeVisa/*.swift"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeVisa_PrivacyInfo" => "Sources/BraintreeVisa/PrivacyInfo.xcprivacy" }
