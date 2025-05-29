@@ -27,7 +27,7 @@ import BraintreeCore
     public convenience init(
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool,
-        offerCredit: Bool = false,
+        offerCredit: Bool = false
     ) {
         self.init(
             offerCredit: offerCredit,
