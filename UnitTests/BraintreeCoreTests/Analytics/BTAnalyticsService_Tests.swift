@@ -86,7 +86,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
     }
     
     
-    func testSendAnalyticsEventsImmediately_beginsAndEndsBackgroundTask() async {
+    func testSendAnalyticsEventsImmediately_callsBeginsAndEndsBackgroundTask() async {
         let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let mockBackgroundTaskManager = MockBackgroundTaskManager()
@@ -107,7 +107,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
     }
     
-    func testSendAnalyticsEventsImmediately_concurrent_calls_begin_and_end_same_taskIDs_without_expirationHandler() async {
+    func testSendAnalyticsEventsImmediately_withConcurrentCalls_beginAndEnd_returnSameTaskIDs() async {
         let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let mockBackgroundTaskManager = MockBackgroundTaskManager()
@@ -130,7 +130,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         var tasks: [Task<Void, Never>] = []
 
-        for (index, event) in events.enumerated() {
+        for event in events {
             
             let task = Task {
                 await sut.sendAnalyticsEventsImmediately(event: event)
@@ -159,7 +159,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         sut.application = mockBackgroundTaskManager
         sut.http = mockAnalyticsHTTP
         
-        // Start the async task but do not await it
+        // Start the async task but do not await
         let task = Task {
             await sut.sendAnalyticsEventsImmediately(event: event)
         }
@@ -179,7 +179,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
     }
     
-    func testSendAnalyticsEventsImmediately_concurrent_calls_begin_and_end_same_taskIDs_callsExpirationHandler() async {
+    func testSendAnalyticsEventsImmediately_withConcurrentCalls_beginAndEnd_returnSameTaskIDs_callsExpirationHandler() async {
         let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let mockBackgroundTaskManager = MockBackgroundTaskManager()
@@ -203,7 +203,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         
         var tasks: [Task<Void, Never>] = []
 
-        for (index, event) in events.enumerated() {
+        for event in events {
             let task = Task {
                 await sut.sendAnalyticsEventsImmediately(event: event)
             }
