@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-* Add `userAction` property to `BTPayPalVaultRequest`
+  * Add `userAction` property to `BTPayPalVaultRequest`
 
 ## 6.33.0 (2025-05-22)
 * BraintreeCore
