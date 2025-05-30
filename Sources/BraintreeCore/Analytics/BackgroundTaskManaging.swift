@@ -1,6 +1,6 @@
 import UIKit
 
-@MainActor protocol BackgroundTaskManaging {
+protocol BackgroundTaskManaging {
     func beginBackgroundTask(
         withName taskName: String?,
         expirationHandler handler: (@MainActor @Sendable () -> Void)?
