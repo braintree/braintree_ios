@@ -101,6 +101,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         await sendAnalyticEvent(event, apiClient: apiClient)
 
         guard backgroundTaskID != .invalid else { return }
+        // Explicitly end the background task after the work is completed
         application.endBackgroundTask(backgroundTaskID)
         backgroundTaskID = .invalid
     }
