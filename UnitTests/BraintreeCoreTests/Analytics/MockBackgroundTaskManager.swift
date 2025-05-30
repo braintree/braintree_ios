@@ -5,15 +5,15 @@ class MockBackgroundTaskManager: BackgroundTaskManaging {
     var didBeginBackgroundTask = false
     var didEndBackgroundTask = false
     var lastTaskName: String?
-    var expirationHandler: (@MainActor @Sendable () -> Void)?
+    var expirationHandler: (() -> Void)?
     var endedTaskID: UIBackgroundTaskIdentifier?
     var endedTaskIDs: Set<UIBackgroundTaskIdentifier> = []
     var begunTaskIDs: Set<UIBackgroundTaskIdentifier> = []
     var taskIDsToReturn: Set<UIBackgroundTaskIdentifier> = []
     
-    func beginBackgroundTask(withName taskName: String?, expirationHandler handler: (@MainActor @Sendable () -> Void)?) -> UIBackgroundTaskIdentifier {
+    func beginBackgroundTask(named: String?, expirationHandler handler: (() -> Void)?) -> UIBackgroundTaskIdentifier {
         didBeginBackgroundTask = true
-        lastTaskName = taskName
+        lastTaskName = named
         
         // Simulate expiration handler call
         self.expirationHandler = handler

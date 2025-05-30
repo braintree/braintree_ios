@@ -170,7 +170,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         }
 
         // Simulate expiration
-        await mockBackgroundTaskManager.expirationHandler?()
+        mockBackgroundTaskManager.expirationHandler?()
         
         await task.value
         
@@ -213,7 +213,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
                 await Task.yield()
             }
             
-            await mockBackgroundTaskManager.expirationHandler?()
+            mockBackgroundTaskManager.expirationHandler?()
             tasks.append(task)
             
             // Reset the handler for the next iteration

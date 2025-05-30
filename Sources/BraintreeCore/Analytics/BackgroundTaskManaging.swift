@@ -2,10 +2,14 @@ import UIKit
 
 protocol BackgroundTaskManaging {
     func beginBackgroundTask(
-        withName taskName: String?,
-        expirationHandler handler: (@MainActor @Sendable () -> Void)?
+        named: String?,
+        expirationHandler handler: (() -> Void)?
     ) -> UIBackgroundTaskIdentifier
     func endBackgroundTask(_ identifier: UIBackgroundTaskIdentifier)
 }
 
-extension UIApplication: BackgroundTaskManaging { }
+extension UIApplication: BackgroundTaskManaging {
+    func beginBackgroundTask(named: String?, expirationHandler handler: (() -> Void)?) -> UIBackgroundTaskIdentifier {
+        beginBackgroundTask(withName: named, expirationHandler: handler)
+    }
+}
