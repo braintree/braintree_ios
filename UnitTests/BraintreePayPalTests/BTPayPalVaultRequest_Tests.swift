@@ -30,6 +30,25 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         XCTAssertEqual(request.paymentType, .vault)
     }
+    
+    // MARK: - userActionAsString
+
+    func testUserActionAsString_whenUserActionNotSpecified_returnsEmptyString() {
+        let request = BTPayPalVaultRequest()
+        XCTAssertEqual(request.userAction.stringValue, "")
+    }
+
+    func testUserActionAsString_whenUserActionIsDefault_returnsEmptyString() {
+        let request = BTPayPalVaultRequest()
+        request.userAction = .none
+        XCTAssertEqual(request.userAction.stringValue, "")
+    }
+
+    func testUserActionAsString_whenUserActionIsSetupNow_returnsCommit() {
+        let request = BTPayPalVaultRequest()
+        request.userAction = .setupNow
+        XCTAssertEqual(request.userAction.stringValue, "setup_now")
+    }
 
     // MARK: - parametersWithConfiguration
 

@@ -104,6 +104,9 @@ import BraintreeCore
 
     /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
     public var shopperSessionID: String?
+    
+    /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.none`.
+    public var userAction: BTPayPalRequestUserAction
 
     // MARK: - Internal Properties
     
@@ -133,7 +136,8 @@ import BraintreeCore
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool = false,
-        shopperSessionID: String? = nil
+        shopperSessionID: String? = nil,
+        userAction: BTPayPalRequestUserAction = .none
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -151,6 +155,7 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.shopperSessionID = shopperSessionID
+        self.userAction = userAction
     }
 
     // MARK: Public Methods
@@ -176,6 +181,10 @@ import BraintreeCore
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
+        
+        if userAction != .none {
+            experienceProfile["user_action"] = userAction.stringValue
+        }
 
         var parameters: [String: Any] = [:]
 
