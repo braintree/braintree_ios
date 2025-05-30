@@ -76,13 +76,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let payLaterToggle = Toggle(title: "Offer Pay Later")
-    
     let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
-    
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
-    
     let contactInformationToggle = Toggle(title: "Add Contact Information")
-
     let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
 
     override func viewDidLoad() {
