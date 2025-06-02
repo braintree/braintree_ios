@@ -44,7 +44,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(request.userAction.stringValue, "")
     }
 
-    func testUserActionAsString_whenUserActionIsSetupNow_returnsCommit() {
+    func testUserActionAsString_whenUserActionIsSetupNow_returnsSetupNow() {
         let request = BTPayPalVaultRequest()
         request.userAction = .setupNow
         XCTAssertEqual(request.userAction.stringValue, "setup_now")
