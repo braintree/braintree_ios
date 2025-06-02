@@ -18,7 +18,7 @@ final class BTUpdateCustomerSessionApi {
     /// Creates a `BTUpdateCustomerSessionApi`
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance
-    public init(apiClient: BTAPIClient) {
+    init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
     
@@ -28,31 +28,24 @@ final class BTUpdateCustomerSessionApi {
     ///    - completion: This completion will be invoked when the attempt to create a customer session is complete or an error occurs. On success, you will receive a sessionId; on failure you will receive an error.
     func execute(
         _ request: BTCustomerSessionRequest,
-        sessionId: String,
-        completion: @escaping (String?, Error?) -> Void
-    ) {
+        sessionId: String
+    ) async throws -> String {
         do {
             let graphQLParams = try UpdateCustomerSessionMutationGraphQLBody(request: request)
             
-            self.apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
-                if let error = error as? NSError {
-                    completion(nil, error)
-                    return
-                }
-                
-                guard let body else {
-                    completion(nil, BTHTTPError.dataNotFound)
-                    return
-                }
-                
-                guard let sessionId = body["data"]["updateCustomerSession"]["sessionId"].asString() else {
-                    completion(nil, BTHTTPError.httpResponseInvalid)
-                    return
-                }
-                completion(sessionId, nil)
+            let (body, _) = try await apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI)
+            
+            guard let body else {
+                throw BTHTTPError.dataNotFound
             }
+            
+            guard let customerSessionID = body["data"]["updateCustomerSession"]["sessionId"].asString() else {
+                throw BTHTTPError.httpResponseInvalid
+            }
+            
+            return customerSessionID
         } catch {
-            completion(nil, error)
+            throw error
         }
     }
 }
