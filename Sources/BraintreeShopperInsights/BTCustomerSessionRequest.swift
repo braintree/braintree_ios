@@ -3,10 +3,10 @@ import Foundation
 /// The POST body for the `createCustomerSession` GraphQL API.
 struct BTCustomerSessionRequest: Encodable {
     
-    let customer: Customer
+    let customer: BTCustomer
     let purchaseUnits: [BTPurchaseUnit]?
     
-    struct Customer: Encodable {
+    struct BTCustomer: Encodable {
         
         let hashedEmail: String?
         let hashedPhoneNumber: String?
