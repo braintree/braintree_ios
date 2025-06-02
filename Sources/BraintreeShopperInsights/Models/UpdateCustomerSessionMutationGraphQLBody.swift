@@ -4,18 +4,18 @@ import Foundation
 /// The POST body for the GraphQL mutation `CreateCustomerSession`
 struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
     
-    var mutation: String
-    var variables: Variables
+    let mutation: String
+    let variables: Variables
     
-    init(request: BTCustomerSessionRequest) throws {
-        self.mutation = """
+    init(request: BTCustomerSessionRequest) {
+        mutation = """
             mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
                 updateCustomerSession(input: $input) {
                     sessionId
                 }
             }
             """
-        self.variables = Variables(request: request)
+        variables = Variables(request: request)
     }
     
     struct Variables: Encodable {
@@ -23,73 +23,49 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
         let input: InputParameters
         
         init(request: BTCustomerSessionRequest) {
-            self.input = InputParameters(
-                customer: Variables.InputParameters.Customer(
-                    hashedEmail: request.customer.hashedEmail,
-                    hashedPhoneNumber: request.customer.hashedPhoneNumber,
-                    paypalAppInstalled: request.customer.paypalAppInstalled,
-                    venmoAppInstalled: request.customer.venmoAppInstalled
-                ),
-                purchaseUnits: request.purchaseUnits?.map { purchaseUnit in
-                    Variables.InputParameters.PurchaseUnit(
-                        amount: Variables.InputParameters.PurchaseUnit.Amount(
-                            value: purchaseUnit.amount.value,
-                            currencyCode: purchaseUnit.amount.currencyCode
-                        )
-                    )
-                }
-            )
+            self.input = InputParameters(request: request)
         }
         
         struct InputParameters: Encodable {
             
-            var customer: Customer?
-            var purchaseUnits: [PurchaseUnit]?
+            let customer: Customer?
+            let purchaseUnits: [PurchaseUnit]?
+            
+            init(request: BTCustomerSessionRequest) {
+                self.customer = Customer(customer: request.customer)
+                self.purchaseUnits = request.purchaseUnits?.map { PurchaseUnit(purchaseUnit: $0) }
+            }
             
             struct Customer: Encodable {
                 
-                var hashedEmail: String?
-                var hashedPhoneNumber: String?
-                var paypalAppInstalled: Bool?
-                var venmoAppInstalled: Bool?
+                let hashedEmail: String?
+                let hashedPhoneNumber: String?
+                let paypalAppInstalled: Bool?
+                let venmoAppInstalled: Bool?
                 
-//                func encode(to encoder: any Encoder) throws {
-//                    var container = encoder.container(keyedBy: CodingKeys.self)
-//                    
-//                    try container.encodeIfPresent(hashedEmail, forKey: .hashedEmail)
-//                    try container.encodeIfPresent(hashedPhoneNumber, forKey: .hashedPhoneNumber)
-//                    try container.encodeIfPresent(paypalAppInstalled, forKey: .paypalAppInstalled)
-//                    try container.encodeIfPresent(venmoAppInstalled, forKey: .venmoAppInstalled)
-//                }
-//                
-//                enum CodingKeys: String, CodingKey {
-//                    case hashedEmail
-//                    case hashedPhoneNumber
-//                    case paypalAppInstalled
-//                    case venmoAppInstalled
-//                }
+                init(customer: BTCustomerSessionRequest.BTCustomer) {
+                    self.hashedEmail = customer.hashedEmail
+                    self.hashedPhoneNumber = customer.hashedPhoneNumber
+                    self.paypalAppInstalled = customer.paypalAppInstalled
+                    self.venmoAppInstalled = customer.venmoAppInstalled
+                }
             }
             
             struct PurchaseUnit: Encodable {
                 
-                var amount: Amount?
+                let amount: Amount?
+                
+                init(purchaseUnit: BTCustomerSessionRequest.BTPurchaseUnit) {
+                    self.amount = Amount(
+                        value: purchaseUnit.amount,
+                        currencyCode: purchaseUnit.currencyCode
+                    )
+                }
                 
                 struct Amount: Encodable {
                     
-                    var value: String?
-                    var currencyCode: String?
-                    
-//                    func encode(to encoder: any Encoder) throws {
-//                        var container = encoder.container(keyedBy: CodingKeys.self)
-//                        
-//                        try container.encodeIfPresent(value, forKey: .value)
-//                        try container.encodeIfPresent(currencyCode, forKey: .currencyCode)
-//                    }
-//                    
-//                    enum CodingKeys: String, CodingKey {
-//                        case value
-//                        case currencyCode
-//                    }
+                    let value: String?
+                    let currencyCode: String?
                 }
             }
         }
