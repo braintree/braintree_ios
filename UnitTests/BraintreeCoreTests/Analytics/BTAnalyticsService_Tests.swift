@@ -85,7 +85,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
     }
     
-    
     func testSendAnalyticsEventsImmediately_callsBeginsAndEndsBackgroundTask() async {
         let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
@@ -131,7 +130,6 @@ final class BTAnalyticsService_Tests: XCTestCase {
         var tasks: [Task<Void, Never>] = []
 
         for event in events {
-            
             let task = Task {
                 await sut.sendAnalyticsEventsImmediately(event: event)
             }
