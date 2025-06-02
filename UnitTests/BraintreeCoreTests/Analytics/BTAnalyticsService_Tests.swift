@@ -121,9 +121,9 @@ final class BTAnalyticsService_Tests: XCTestCase {
             FPTIBatchData.Event(eventName: "event3")
         ]
         let taskIDs: [UIBackgroundTaskIdentifier] = [
-            UIBackgroundTaskIdentifier(rawValue: 401),
-            UIBackgroundTaskIdentifier(rawValue: 402),
-            UIBackgroundTaskIdentifier(rawValue: 403)
+            UIBackgroundTaskIdentifier(rawValue: 101),
+            UIBackgroundTaskIdentifier(rawValue: 102),
+            UIBackgroundTaskIdentifier(rawValue: 103)
         ]
         mockBackgroundTaskManager.taskIDsToReturn = Set(taskIDs)
         
