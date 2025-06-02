@@ -1,7 +1,15 @@
-//
-//  BTCustomerRecommendationsResult.swift
-//  Braintree
-//
-//  Created by Herrera, Ricardo on 02/06/25.
-//
+import Foundation
 
+/// Customer recommendations for what payment options to show.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
+public struct BTCustomerRecommendationsResult {
+    
+    /// The session ID for the customer session.
+    public let sessionId: String?
+    
+    /// Whether the customer is in the PayPal network.
+    public let isInPayPalNetwork: Bool?
+    
+    /// The payment recommendations for the shopper.
+    public let paymentRecommendations: [BTPaymentOptions]
+}
