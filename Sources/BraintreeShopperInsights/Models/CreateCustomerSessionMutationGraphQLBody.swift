@@ -4,11 +4,11 @@ import Foundation
 /// The POST body for the GraphQL mutation `CreateCustomerSession`
 struct CreateCustomerSessionMutationGraphQLBody: Encodable {
     
-    var mutation: String
-    var variables: Variables
+    let query: String
+    let variables: Variables
     
     init(request: BTCustomerSessionRequest) throws {
-        self.mutation = """
+        self.query = """
             mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
                 createCustomerSession(input: $input) {
                     sessionId
@@ -23,45 +23,46 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
         let input: InputParameters
         
         init(request: BTCustomerSessionRequest) {
-            self.input = InputParameters(
-                customer: Variables.InputParameters.Customer(
-                    hashedEmail: request.customer.hashedEmail,
-                    hashedPhoneNumber: request.customer.hashedPhoneNumber,
-                    paypalAppInstalled: request.customer.paypalAppInstalled,
-                    venmoAppInstalled: request.customer.venmoAppInstalled
-                ),
-                purchaseUnits: request.purchaseUnits?.compactMap { purchaseUnit in
-                    Variables.InputParameters.PurchaseUnit(
-                        amount: Variables.InputParameters.PurchaseUnit.Amount(
-                            value: purchaseUnit.amount.value,
-                            currencyCode: purchaseUnit.amount.currencyCode
-                        )
-                    )
-                }
-            )
+            self.input = InputParameters(request: request)
         }
         
         struct InputParameters: Encodable {
             
-            var customer: Customer?
-            var purchaseUnits: [PurchaseUnit]?
+            let customer: Customer?
+            let purchaseUnits: [PurchaseUnit]?
+            
+            init(request: BTCustomerSessionRequest) {
+                self.customer = Customer(request: request)
+                self.purchaseUnits = request.purchaseUnits?.compactMap {
+                    PurchaseUnit(
+                        amount: PurchaseUnit.Amount(value: $0.amount, currencyCode: $0.currencyCode)
+                    )
+                }
+            }
             
             struct Customer: Encodable {
                 
-                var hashedEmail: String?
-                var hashedPhoneNumber: String?
-                var paypalAppInstalled: Bool?
-                var venmoAppInstalled: Bool?
+                let hashedEmail: String?
+                let hashedPhoneNumber: String?
+                let paypalAppInstalled: Bool?
+                let venmoAppInstalled: Bool?
+                
+                init(request: BTCustomerSessionRequest) {
+                    hashedEmail = request.hashedEmail
+                    hashedPhoneNumber = request.hashedPhoneNumber
+                    paypalAppInstalled = request.paypalAppInstalled
+                    venmoAppInstalled = request.venmoAppInstalled
+                }
             }
             
             struct PurchaseUnit: Encodable {
                 
-                var amount: Amount?
+                let amount: Amount?
                 
                 struct Amount: Encodable {
                     
-                    var value: String?
-                    var currencyCode: String?
+                    let value: String?
+                    let currencyCode: String?
                 }
             }
         }
