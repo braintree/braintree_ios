@@ -80,7 +80,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// The background task is safely ended both in the expiration handler and after the event is sent.
     ///
     /// Exposed to be able to execute this function synchronously in unit tests
-    @MainActor func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else { return }
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
