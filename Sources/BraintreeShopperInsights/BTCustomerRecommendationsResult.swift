@@ -5,7 +5,7 @@ import Foundation
 public struct BTCustomerRecommendationsResult {
     
     /// The session ID for the customer session.
-    public let sessionId: String?
+    public let sessionID: String?
     
     /// Whether the customer is in the PayPal network.
     public let isInPayPalNetwork: Bool?
