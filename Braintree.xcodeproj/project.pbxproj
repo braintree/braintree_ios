@@ -1530,11 +1530,10 @@
 		804698292B27C4D70090878E /* BraintreeShopperInsights */ = {
 			isa = PBXGroup;
 			children = (
-				624454DA2DDE37CA00A3383B /* Models */,
-				62C458D42DD292CF00B4F9B3 /* BTCustomerSessionRequest.swift */,
-				62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */,
 				04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */,
 				04AA31172D0797460043ACAB /* BTButtonType.swift */,
+				62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */,
+				62C458D42DD292CF00B4F9B3 /* BTCustomerSessionRequest.swift */,
 				62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */,
 				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
 				04B0010F2D0CF46900C0060D /* BTExperimentType.swift */,
@@ -1546,6 +1545,7 @@
 				624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */,
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
+				624454DA2DDE37CA00A3383B /* Models */,
 				3B29C3942B90F12F0077741D /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeShopperInsights;
