@@ -11,25 +11,18 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     
     let createCustomerSessionRequest = BTCustomerSessionRequest(
-        customer: Customer(
-            hashedEmail: "test-hashed-email.com",
-            hashedPhoneNumber: "test-hashed-phone-number",
-            paypalAppInstalled: true,
-            venmoAppInstalled: false
-        )
-        ,
+        hashedEmail: "test-hashed-email.com",
+        hashedPhoneNumber: "test-hashed-phone-number",
+        paypalAppInstalled: true,
+        venmoAppInstalled: false,
         purchaseUnits: [
             BTPurchaseUnit(
-                amount: Amount(
-                    value: "10.00",
-                    currencyCode: "USD"
-                )
+                amount: "10.00",
+                currencyCode: "USD"
             ),
             BTPurchaseUnit(
-                amount: Amount(
-                    value: "20.00",
-                    currencyCode: "USD"
-                )
+                amount: "20.00",
+                currencyCode: "USD"
             )
         ]
     )
@@ -133,12 +126,10 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     
     func testEncodingCreateCustomerSessionGraphQLBodyWithNilData() throws {
         let request = BTCustomerSessionRequest(
-            customer: Customer(
-                hashedEmail: nil,
-                hashedPhoneNumber: nil,
-                paypalAppInstalled: nil,
-                venmoAppInstalled: nil
-            ),
+            hashedEmail: nil,
+            hashedPhoneNumber: nil,
+            paypalAppInstalled: nil,
+            venmoAppInstalled: nil,
             purchaseUnits: nil
         )
         let body = try CreateCustomerSessionMutationGraphQLBody(request: request)
@@ -158,12 +149,10 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
     
     func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyData() throws {
         let request = BTCustomerSessionRequest(
-            customer: Customer(
-                hashedEmail: nil,
-                hashedPhoneNumber: nil,
-                paypalAppInstalled: nil,
-                venmoAppInstalled: nil
-            ),
+            hashedEmail: nil,
+            hashedPhoneNumber: nil,
+            paypalAppInstalled: nil,
+            venmoAppInstalled: nil,
             purchaseUnits: []
         )
         let body = try CreateCustomerSessionMutationGraphQLBody(request: request)
@@ -181,4 +170,3 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
         XCTAssertEqual(purchaseUnits?.count, 0)
     }
 }
-
