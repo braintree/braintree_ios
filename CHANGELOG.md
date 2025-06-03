@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeVisaCheckout
-    * Add `BTVisaCheckoutClient` and `BTVisaCheckoutRequest` for to use Visa Checkout
+    * Add Visa Checkout to the SDK as a payment option
 
 ## 6.32.0 (2025-04-29)
 * BraintreePayPal
