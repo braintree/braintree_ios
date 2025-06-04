@@ -23,7 +23,7 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
         let input: InputParameters
         
         init(request: BTCustomerSessionRequest) {
-            self.input = InputParameters(request: request)
+            input = InputParameters(request: request)
         }
         
         struct InputParameters: Encodable {
@@ -32,8 +32,10 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
             let purchaseUnits: [PurchaseUnit]?
             
             init(request: BTCustomerSessionRequest) {
-                self.customer = Customer(request: request)
-                self.purchaseUnits = request.purchaseUnits?.compactMap { PurchaseUnit(purchaseUnit: $0) }
+                customer = Customer(request: request)
+                purchaseUnits = request.purchaseUnits?.compactMap {
+                    PurchaseUnit(purchaseUnit: $0)
+                }
             }
             
             struct Customer: Encodable {
@@ -44,10 +46,10 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 let venmoAppInstalled: Bool?
                 
                 init(request: BTCustomerSessionRequest) {
-                    self.hashedEmail = request.hashedEmail
-                    self.hashedPhoneNumber = request.hashedPhoneNumber
-                    self.paypalAppInstalled = request.paypalAppInstalled
-                    self.venmoAppInstalled = request.venmoAppInstalled
+                    hashedEmail = request.hashedEmail
+                    hashedPhoneNumber = request.hashedPhoneNumber
+                    paypalAppInstalled = request.paypalAppInstalled
+                    venmoAppInstalled = request.venmoAppInstalled
                 }
             }
             
@@ -56,7 +58,7 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 let amount: Amount?
                 
                 init(purchaseUnit: BTPurchaseUnit) {
-                    self.amount = Amount(
+                    amount = Amount(
                         value: purchaseUnit.amount,
                         currencyCode: purchaseUnit.currencyCode
                     )
