@@ -6,25 +6,24 @@ import XCTest
 class BTUpdateCustomerSessionApi_Test: XCTestCase {
     
     var mockAPIClient: MockAPIClient!
-    var sut: BTUpdateCustomerSessionApi!
+    var sut: BTUpdateCustomerSessionAPI!
     
     let clientToken = TestClientTokenFactory.token(withVersion: 2)
-    let sessionId = "shopper-session-id"
+    let sessionID = "shopper-session-id"
     
     let customerSessionRequest = BTCustomerSessionRequest(
-        customer: BTCustomerSessionRequest.Customer(
-            hashedEmail: "test-hashed-email.com",
-            hashedPhoneNumber: "test-hashed-phone-number",
-            paypalAppInstalled: true,
-            venmoAppInstalled: false
-        )
-        ,
+        hashedEmail: "test-hashed-email.com",
+        hashedPhoneNumber: "test-hashed-phone-number",
+        paypalAppInstalled: true,
+        venmoAppInstalled: false,
         purchaseUnits: [
-            BTCustomerSessionRequest.BTPurchaseUnit(
-                amount: .init(value: "4.50", currencyCode: "USD")
+            BTPurchaseUnit(
+                amount: "4.50",
+                currencyCode: "USD"
             ),
-            BTCustomerSessionRequest.BTPurchaseUnit(
-                amount: .init(value: "12.00", currencyCode: "USD")
+            BTPurchaseUnit(
+                amount: "12.00",
+                currencyCode: "USD"
             )
         ]
     )
@@ -32,10 +31,16 @@ class BTUpdateCustomerSessionApi_Test: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTUpdateCustomerSessionApi(apiClient: mockAPIClient)
+        sut = BTUpdateCustomerSessionAPI(apiClient: mockAPIClient)
     }
     
-    func testExecute_whenUpdateCustomerSessionResponseIsValid_returnsSessionId() {
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+        mockAPIClient = nil
+    }
+    
+    func testExecute_whenUpdateCustomerSessionResponseIsValid_returnsSessionId() async {
         let expectedSessionID = "session-id"
         let mockUpdateCustomerSessionResponse = BTJSON(
             value: [
@@ -48,16 +53,15 @@ class BTUpdateCustomerSessionApi_Test: XCTestCase {
         )
         mockAPIClient.cannedResponseBody = mockUpdateCustomerSessionResponse
         
-        sut.execute(customerSessionRequest, sessionId: sessionId) { sessionId, error in
-            if error != nil {
-                XCTFail("Unexpected error: \(String(describing: error))")
-            } else if sessionId != nil {
-                XCTAssertEqual(sessionId, expectedSessionID)
-            }
+        do {
+            let sessionID = try await sut.execute(customerSessionRequest, sessionID: sessionID)
+            XCTAssertEqual(sessionID, expectedSessionID)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
     
-    func testExecute_whenUpdateCustomerSessionResponseIsInValid_returnsError() {
+    func testExecute_whenUpdateCustomerSessionResponseIsInValid_returnsError() async {
         let mockUpdateCustomerSessionResponse = BTJSON(
             value: [
                 "data": [
@@ -69,18 +73,14 @@ class BTUpdateCustomerSessionApi_Test: XCTestCase {
         )
         mockAPIClient.cannedResponseBody = mockUpdateCustomerSessionResponse
         
-        let expectation = expectation(description: "error callback invoked")
-        sut.execute(customerSessionRequest, sessionId: sessionId) { sessionId, error in
-           XCTAssertNil(sessionId)
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.code, BTHTTPError.httpResponseInvalid.errorCode)
+        do {
+            let _ = try await sut.execute(customerSessionRequest, sessionID: sessionID)
+            XCTFail("Expected error was not thrown")
+        } catch let error as BTHTTPError {
+            XCTAssertEqual(error.errorCode, BTHTTPError.httpResponseInvalid.errorCode)
             XCTAssertEqual(error.localizedDescription, "Unable to create HTTPURLResponse from response data.")
-            expectation.fulfill()
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
-        waitForExpectations(timeout: 2)
     }
-    
-    
 }
-
-

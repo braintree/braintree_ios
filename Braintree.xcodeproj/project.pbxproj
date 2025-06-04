@@ -66,6 +66,7 @@
 		455AA27B2DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */; };
 		455AA27C2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */; };
 		455AA27F2DEF8E4C008D99AB /* BTPurchaseUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA27E2DEF8E4C008D99AB /* BTPurchaseUnit.swift */; };
+		455AA2822DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2812DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift */; };
 		456B950E2DB963FA009A374D /* BTShopperInsightsClientV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456B950D2DB963F7009A374D /* BTShopperInsightsClientV2.swift */; };
 		456B95102DBAA951009A374D /* BTShopperInsightsClientV2_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */; };
 		457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */; };
@@ -819,6 +820,7 @@
 		455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTUpdateCustomerSessionAPI.swift; sourceTree = "<group>"; };
 		455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		455AA27E2DEF8E4C008D99AB /* BTPurchaseUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPurchaseUnit.swift; sourceTree = "<group>"; };
+		455AA2812DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTUpdateCustomerSessionAPI_Tests.swift; sourceTree = "<group>"; };
 		456B950D2DB963F7009A374D /* BTShopperInsightsClientV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClientV2.swift; sourceTree = "<group>"; };
 		456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClientV2_Tests.swift; sourceTree = "<group>"; };
 		457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
@@ -1573,6 +1575,7 @@
 				62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */,
 				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
 				456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */,
+				455AA2812DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift */,
 				804698482B27C71C0090878E /* Info.plist */,
 			);
 			path = BraintreeShopperInsightsTests;
@@ -3460,6 +3463,7 @@
 				62BF860E2DD2BF0300A05064 /* BTCreateCustomerSessionAPI_Tests.swift in Sources */,
 				80B59A132B27C7FC004C2FA3 /* BTShopperInsightsClient_Tests.swift in Sources */,
 				62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */,
+				455AA2822DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
