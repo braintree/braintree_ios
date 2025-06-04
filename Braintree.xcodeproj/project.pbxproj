@@ -61,10 +61,10 @@
 		45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */; };
 		45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */; };
 		454722AC2CEFB291000DCF4E /* BTContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454722AB2CEFB291000DCF4E /* BTContactInformation.swift */; };
-		455AA27B2DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */; };
-		455AA27C2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */; };
 		455AA2762DEE0577008D99AB /* BTCustomerRecommendationsResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2752DEE0574008D99AB /* BTCustomerRecommendationsResult.swift */; };
 		455AA2782DEE0681008D99AB /* BTPaymentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2772DEE067A008D99AB /* BTPaymentOptions.swift */; };
+		455AA27B2DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */; };
+		455AA27C2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */; };
 		455AA27F2DEF8E4C008D99AB /* BTPurchaseUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455AA27E2DEF8E4C008D99AB /* BTPurchaseUnit.swift */; };
 		456B950E2DB963FA009A374D /* BTShopperInsightsClientV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456B950D2DB963F7009A374D /* BTShopperInsightsClientV2.swift */; };
 		456B95102DBAA951009A374D /* BTShopperInsightsClientV2_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */; };
@@ -814,10 +814,10 @@
 		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
 		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
 		454722AB2CEFB291000DCF4E /* BTContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactInformation.swift; sourceTree = "<group>"; };
-		455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTUpdateCustomerSessionAPI.swift; sourceTree = "<group>"; };
-		455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		455AA2752DEE0574008D99AB /* BTCustomerRecommendationsResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCustomerRecommendationsResult.swift; sourceTree = "<group>"; };
 		455AA2772DEE067A008D99AB /* BTPaymentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentOptions.swift; sourceTree = "<group>"; };
+		455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTUpdateCustomerSessionAPI.swift; sourceTree = "<group>"; };
+		455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		455AA27E2DEF8E4C008D99AB /* BTPurchaseUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPurchaseUnit.swift; sourceTree = "<group>"; };
 		456B950D2DB963F7009A374D /* BTShopperInsightsClientV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClientV2.swift; sourceTree = "<group>"; };
 		456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsClientV2_Tests.swift; sourceTree = "<group>"; };
@@ -1448,14 +1448,6 @@
 			path = BraintreePayPal;
 			sourceTree = "<group>";
 		};
-		455AA27D2DEE3925008D99AB /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		570B93AE285397D20041BAFE /* BraintreeCore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1508,6 +1500,7 @@
 			isa = PBXGroup;
 			children = (
 				624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */,
+				455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1567,7 +1560,6 @@
 				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
 				455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */,
-				455AA27D2DEE3925008D99AB /* Models */,
 				624454DA2DDE37CA00A3383B /* Models */,
 				3B29C3942B90F12F0077741D /* PrivacyInfo.xcprivacy */,
 			);
