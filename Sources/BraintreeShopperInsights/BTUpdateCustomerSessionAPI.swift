@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The API used to update a customer session using the `UpdateCustomerSession` GraphQL mutation.
-final class BTUpdateCustomerSessionApi {
+final class BTUpdateCustomerSessionAPI {
     
     // MARK: - Properties
     
