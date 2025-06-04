@@ -8,14 +8,14 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
     let variables: Variables
     
     init(request: BTCustomerSessionRequest) throws {
-        self.query = """
+        query = """
             mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
                 createCustomerSession(input: $input) {
                     sessionId
                 }
             }
             """
-        self.variables = Variables(request: request)
+        variables = Variables(request: request)
     }
     
     struct Variables: Encodable {
@@ -23,7 +23,7 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
         let input: InputParameters
         
         init(request: BTCustomerSessionRequest) {
-            self.input = InputParameters(request: request)
+            input = InputParameters(request: request)
         }
         
         struct InputParameters: Encodable {
@@ -32,11 +32,9 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
             let purchaseUnits: [PurchaseUnit]?
             
             init(request: BTCustomerSessionRequest) {
-                self.customer = Customer(request: request)
-                self.purchaseUnits = request.purchaseUnits?.compactMap {
-                    PurchaseUnit(
-                        amount: PurchaseUnit.Amount(value: $0.amount, currencyCode: $0.currencyCode)
-                    )
+                customer = Customer(request: request)
+                purchaseUnits = request.purchaseUnits?.compactMap {
+                    PurchaseUnit(request: $0)
                 }
             }
             
@@ -58,6 +56,13 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
             struct PurchaseUnit: Encodable {
                 
                 let amount: Amount?
+                
+                init(request: BTPurchaseUnit) {
+                    amount = Amount(
+                        value: request.amount,
+                        currencyCode: request.currencyCode
+                    )
+                }
                 
                 struct Amount: Encodable {
                     
