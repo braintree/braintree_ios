@@ -7,7 +7,7 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
     let query: String
     let variables: Variables
     
-    init(request: BTCustomerSessionRequest) {
+    init(request: BTCustomerSessionRequest, sessionID: String) throws {
         query = """
             mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
                 updateCustomerSession(input: $input) {
@@ -15,27 +15,35 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 }
             }
             """
-        variables = Variables(request: request)
+        variables = Variables(request: request, sessionID: sessionID)
     }
     
     struct Variables: Encodable {
         
         let input: InputParameters
         
-        init(request: BTCustomerSessionRequest) {
-            input = InputParameters(request: request)
+        init(request: BTCustomerSessionRequest, sessionID: String) {
+            input = InputParameters(request: request, sessionID: sessionID)
         }
         
         struct InputParameters: Encodable {
             
+            let sessionID: String
             let customer: Customer?
             let purchaseUnits: [PurchaseUnit]?
             
-            init(request: BTCustomerSessionRequest) {
+            init(request: BTCustomerSessionRequest, sessionID: String) {
+                self.sessionID = sessionID
                 customer = Customer(request: request)
                 purchaseUnits = request.purchaseUnits?.compactMap {
                     PurchaseUnit(purchaseUnit: $0)
                 }
+            }
+            
+            enum CodingKeys: String, CodingKey {
+                case sessionID = "sessionId"
+                case customer
+                case purchaseUnits
             }
             
             struct Customer: Encodable {
