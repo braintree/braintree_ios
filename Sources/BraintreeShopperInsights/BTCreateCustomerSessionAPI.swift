@@ -31,7 +31,7 @@ final class BTCreateCustomerSessionAPI {
         do {
             let graphQLParams = try CreateCustomerSessionMutationGraphQLBody(request: request)
             
-            self.apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
+            apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
                 if let error {
                     completion(nil, error)
                     return
