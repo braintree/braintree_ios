@@ -23,7 +23,8 @@ final class BTUpdateCustomerSessionApi {
     /// This method will call the `UpdateCustomerSession` GQL mutation, which returns a session ID if successful.
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
-    ///    - completion: This completion will be invoked when the attempt to create a customer session is complete or an error occurs. On success, you will receive a sessionId; on failure you will receive an error.
+    ///    - sessionID: The session ID to update.
+    ///    - Returns: A `String` containing the customer session ID if successful.
     func execute(
         _ request: BTCustomerSessionRequest,
         sessionID: String
