@@ -1,14 +1,14 @@
 import Foundation
 
 // swiftlint:disable nesting
-/// The POST body for the GraphQL mutation `CreateCustomerSession`
+/// The POST body for the GraphQL mutation `UpdateCustomerSession`
 struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
     
-    let mutation: String
+    let query: String
     let variables: Variables
     
     init(request: BTCustomerSessionRequest) {
-        mutation = """
+        query = """
             mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
                 updateCustomerSession(input: $input) {
                     sessionId
@@ -32,8 +32,8 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
             let purchaseUnits: [PurchaseUnit]?
             
             init(request: BTCustomerSessionRequest) {
-                self.customer = Customer(customer: request.customer)
-                self.purchaseUnits = request.purchaseUnits?.map { PurchaseUnit(purchaseUnit: $0) }
+                self.customer = Customer(request: request)
+                self.purchaseUnits = request.purchaseUnits?.compactMap { PurchaseUnit(purchaseUnit: $0) }
             }
             
             struct Customer: Encodable {
@@ -43,11 +43,11 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 let paypalAppInstalled: Bool?
                 let venmoAppInstalled: Bool?
                 
-                init(customer: BTCustomerSessionRequest.BTCustomer) {
-                    self.hashedEmail = customer.hashedEmail
-                    self.hashedPhoneNumber = customer.hashedPhoneNumber
-                    self.paypalAppInstalled = customer.paypalAppInstalled
-                    self.venmoAppInstalled = customer.venmoAppInstalled
+                init(request: BTCustomerSessionRequest) {
+                    self.hashedEmail = request.hashedEmail
+                    self.hashedPhoneNumber = request.hashedPhoneNumber
+                    self.paypalAppInstalled = request.paypalAppInstalled
+                    self.venmoAppInstalled = request.venmoAppInstalled
                 }
             }
             
@@ -55,7 +55,7 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 
                 let amount: Amount?
                 
-                init(purchaseUnit: BTCustomerSessionRequest.BTPurchaseUnit) {
+                init(purchaseUnit: BTPurchaseUnit) {
                     self.amount = Amount(
                         value: purchaseUnit.amount,
                         currencyCode: purchaseUnit.currencyCode
