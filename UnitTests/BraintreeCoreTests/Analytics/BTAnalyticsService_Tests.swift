@@ -66,34 +66,165 @@ final class BTAnalyticsService_Tests: XCTestCase {
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
     }
 
-    func testSendAnalyticsEvents_whenMultipleEventsSent_tracksLatestEventName_andNumberOfPOSTRequests() {
+    func testSendAnalyticsEvents_whenMultipleEventsSent_tracksLatestEventName_andNumberOfPOSTRequests() async {
         let stubAPIClient: MockAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
         let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
         let sut = BTAnalyticsService.shared
         sut.setAPIClient(stubAPIClient)
         sut.http = mockAnalyticsHTTP
         
-        let expectation1 = expectation(description: "event 1 sent")
-        let expectation2 = expectation(description: "event 2 sent")
-        let expectation3 = expectation(description: "event 3 sent")
         let event1 = FPTIBatchData.Event(eventName: "event1")
         let event2 = FPTIBatchData.Event(eventName: "event2")
         let event3 = FPTIBatchData.Event(eventName: "event3")
             
-        sut.sendAnalyticEvent(event1, apiClient: stubAPIClient) {
-            expectation1.fulfill()
-        }
-        sut.sendAnalyticEvent(event2, apiClient: stubAPIClient) {
-            expectation2.fulfill()
-        }
-        sut.sendAnalyticEvent(event3, apiClient: stubAPIClient) {
-            expectation3.fulfill()
-        }
-        
-        wait(for: [expectation1, expectation2, expectation3], timeout: 3)
+        await sut.sendAnalyticEvent(event1, apiClient: stubAPIClient)
+        await sut.sendAnalyticEvent(event2, apiClient: stubAPIClient)
+        await sut.sendAnalyticEvent(event3, apiClient: stubAPIClient)
         
         XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 3)
         XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+    }
+    
+    func testSendAnalyticsEventsImmediately_callsBeginsAndEndsBackgroundTask() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let expectedTaskID = UIBackgroundTaskIdentifier(rawValue: 123)
+        mockBackgroundTaskManager.taskIDsToReturn.insert(expectedTaskID)
+        let event = FPTIBatchData.Event(eventName: "event")
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+        
+        await sut.sendAnalyticsEventsImmediately(event: event)
+
+        XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "v1/tracking/batch/events")
+        XCTAssertEqual(mockBackgroundTaskManager.lastTaskName, "BTSendAnalyticEvent")
+        XCTAssertTrue(mockBackgroundTaskManager.didBeginBackgroundTask)
+        XCTAssertTrue(mockBackgroundTaskManager.didEndBackgroundTask)
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
+    }
+    
+    func testSendAnalyticsEventsImmediately_withConcurrentCalls_beginAndEnd_returnSameTaskIDs() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+
+        let events = [
+            FPTIBatchData.Event(eventName: "event1"),
+            FPTIBatchData.Event(eventName: "event2"),
+            FPTIBatchData.Event(eventName: "event3")
+        ]
+        let taskIDs: [UIBackgroundTaskIdentifier] = [
+            UIBackgroundTaskIdentifier(rawValue: 101),
+            UIBackgroundTaskIdentifier(rawValue: 102),
+            UIBackgroundTaskIdentifier(rawValue: 103)
+        ]
+        mockBackgroundTaskManager.taskIDsToReturn = Set(taskIDs)
+        
+        var tasks: [Task<Void, Never>] = []
+
+        for event in events {
+            let task = Task {
+                await sut.sendAnalyticsEventsImmediately(event: event)
+            }
+            
+            tasks.append(task)
+        }
+
+        for task in tasks {
+            await task.value
+        }
+
+        XCTAssertEqual(mockBackgroundTaskManager.begunTaskIDs, Set(taskIDs))
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskIDs, Set(taskIDs))
+    }
+    
+    func testSendAnalyticsEventsImmediately_callsExpirationHandler() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let expectedTaskID = UIBackgroundTaskIdentifier(rawValue: 123)
+        mockBackgroundTaskManager.taskIDsToReturn.insert(expectedTaskID)
+        let event = FPTIBatchData.Event(eventName: "event")
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+        
+        // Start the async task but do not await
+        let task = Task {
+            await sut.sendAnalyticsEventsImmediately(event: event)
+        }
+
+        // Wait for the background task to be started and expirationHandler to be set
+        while mockBackgroundTaskManager.expirationHandler == nil {
+            await Task.yield()
+        }
+
+        // Simulate expiration
+        mockBackgroundTaskManager.expirationHandler?()
+        
+        await task.value
+        
+        XCTAssertTrue(mockBackgroundTaskManager.didBeginBackgroundTask)
+        XCTAssertTrue(mockBackgroundTaskManager.didEndBackgroundTask)
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskID, expectedTaskID)
+    }
+    
+    func testSendAnalyticsEventsImmediately_withConcurrentCalls_beginAndEnd_returnSameTaskIDs_callsExpirationHandler() async {
+        let stubAPIClient = stubbedAPIClientWithAnalyticsURL("test://do-not-send.url")
+        let mockAnalyticsHTTP = FakeHTTP.fakeHTTP()
+        let mockBackgroundTaskManager = MockBackgroundTaskManager()
+        let sut = BTAnalyticsService.shared
+        sut.setAPIClient(stubAPIClient)
+        sut.application = mockBackgroundTaskManager
+        sut.http = mockAnalyticsHTTP
+
+        let events = [
+            FPTIBatchData.Event(eventName: "event1"),
+            FPTIBatchData.Event(eventName: "event2"),
+            FPTIBatchData.Event(eventName: "event3")
+        ]
+        let taskIDs: [UIBackgroundTaskIdentifier] = [
+            UIBackgroundTaskIdentifier(rawValue: 301),
+            UIBackgroundTaskIdentifier(rawValue: 302),
+            UIBackgroundTaskIdentifier(rawValue: 303)
+        ]
+
+        mockBackgroundTaskManager.taskIDsToReturn = Set(taskIDs)
+        
+        var tasks: [Task<Void, Never>] = []
+
+        for event in events {
+            let task = Task {
+                await sut.sendAnalyticsEventsImmediately(event: event)
+            }
+            
+            // Wait for the expiration handler to be set for each task
+            while mockBackgroundTaskManager.expirationHandler == nil {
+                await Task.yield()
+            }
+            
+            mockBackgroundTaskManager.expirationHandler?()
+            tasks.append(task)
+            
+            // Reset the handler for the next iteration
+            mockBackgroundTaskManager.expirationHandler = nil
+        }
+
+        for task in tasks {
+            await task.value
+        }
+
+        // Assert that the begun and ended task IDs match and are as expected
+        XCTAssertEqual(mockBackgroundTaskManager.begunTaskIDs, Set(taskIDs))
+        XCTAssertEqual(mockBackgroundTaskManager.endedTaskIDs, Set(taskIDs))
     }
     
     // MARK: - Helper Functions
