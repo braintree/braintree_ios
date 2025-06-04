@@ -25,6 +25,7 @@ final class BTUpdateCustomerSessionApi {
     ///    - request: A `BTCustomerSessionRequest`
     ///    - sessionID: The session ID to update.
     ///    - Returns: A `String` containing the customer session ID if successful.
+    ///    - Throws: An error if the request fails or if the response is invalid.
     func execute(
         _ request: BTCustomerSessionRequest,
         sessionID: String
