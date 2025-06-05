@@ -1584,9 +1584,9 @@
 				8064F3942B1E4FEB0059C4CB /* BTShopperInsightsClient_Tests.swift */,
 				456B950F2DBAA936009A374D /* BTShopperInsightsClientV2_Tests.swift */,
 				455AA2812DF0E5DC008D99AB /* BTUpdateCustomerSessionAPI_Tests.swift */,
-				45F58CAD2DF22DB2004973F5 /* UpdateCustomerSessionMutationGraphQLBody_Tests.swift */,
 				45F58CAF2DF231F5004973F5 /* CreateCustomerSessionMutationGraphQLBody_Tests.swift */,
 				804698482B27C71C0090878E /* Info.plist */,
+				45F58CAD2DF22DB2004973F5 /* UpdateCustomerSessionMutationGraphQLBody_Tests.swift */,
 			);
 			path = BraintreeShopperInsightsTests;
 			sourceTree = "<group>";
