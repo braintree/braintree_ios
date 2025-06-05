@@ -777,7 +777,13 @@ class BTPayPalClient_Tests: XCTestCase {
     // MARK: - App Switch - Tokenize
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+        let expectation = expectation(description: "Wait for PayPal app switch")
+
         let fakeApplication = FakeApplication()
+        fakeApplication.onOpenURL = {
+            expectation.fulfill()
+        }
+
         payPalClient.application = fakeApplication
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -785,7 +791,7 @@ class BTPayPalClient_Tests: XCTestCase {
                 "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
             ]
         ])
-        
+
         let vaultRequest = BTPayPalVaultRequest(
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: "fake@gmail.com"
@@ -793,19 +799,27 @@ class BTPayPalClient_Tests: XCTestCase {
 
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
+        await fulfillment(of: [expectation], timeout: 2.0)
+
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        
+
         let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
         XCTAssertEqual(urlComponents?.host, "www.some-url.com")
         XCTAssertEqual(urlComponents?.path, "/some-path")
 
-        XCTAssertEqual(urlComponents?.queryItems?[0].name, "ba_token")
-        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
-        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
-        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
-        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
-        if let urlTimestamp = urlComponents?.queryItems?[2].value {
-            XCTAssertNotNil(Int(urlTimestamp))
+        guard let queryItems = urlComponents?.queryItems else {
+            return XCTFail("Query items unexpectedly nil")
+        }
+
+        let tokenItem = queryItems.first { $0.name == "ba_token" }
+        let sourceItem = queryItems.first { $0.name == "source" }
+        let timeItem = queryItems.first { $0.name == "switch_initiated_time" }
+
+        XCTAssertEqual(tokenItem?.value, "value1")
+        XCTAssertEqual(sourceItem?.value, "braintree_sdk")
+
+        if let timeValue = timeItem?.value, Int(timeValue) != nil {
+            XCTAssertNotNil(timeValue)
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
@@ -891,7 +905,13 @@ class BTPayPalClient_Tests: XCTestCase {
     }
     
     func testTokenizeCheckoutAccount_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+        let expectation = self.expectation(description: "Wait for openURL to be called")
+
         let fakeApplication = FakeApplication()
+        fakeApplication.onOpenURL = {
+            expectation.fulfill()
+        }
+
         payPalClient.application = fakeApplication
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -900,32 +920,42 @@ class BTPayPalClient_Tests: XCTestCase {
                 "launchPayPalApp": true
             ]
         ])
-        
+
         let checkoutRequest = BTPayPalCheckoutRequest(
             amount: "10.00",
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: "fake-pp@gmail.com"
         )
-        
+
         payPalClient.tokenize(checkoutRequest) { _, _ in }
 
+        // Wait for main-thread app switch to complete
+        await fulfillment(of: [expectation], timeout: 2.0)
+
         XCTAssertTrue(fakeApplication.openURLWasCalled)
-        
+
         let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
         XCTAssertEqual(urlComponents?.host, "www.some-url.com")
         XCTAssertEqual(urlComponents?.path, "/some-path")
-        
-        XCTAssertEqual(urlComponents?.queryItems?[0].name, "token")
-        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
-        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
-        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
-        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
-        if let urlTimestamp = urlComponents?.queryItems?[2].value {
-            XCTAssertNotNil(urlTimestamp)
+
+        guard let queryItems = urlComponents?.queryItems else {
+            return XCTFail("Query items were unexpectedly nil")
+        }
+
+        let tokenItem = queryItems.first { $0.name == "token" }
+        let sourceItem = queryItems.first { $0.name == "source" }
+        let timeItem = queryItems.first { $0.name == "switch_initiated_time" }
+
+        XCTAssertEqual(tokenItem?.value, "value1")
+        XCTAssertEqual(sourceItem?.value, "braintree_sdk")
+
+        if let timestampString = timeItem?.value, Int(timestampString) != nil {
+            XCTAssertNotNil(timestampString)
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
     }
+
     
     func testTokenizeCheckoutAccount_whenPayPalAppApprovalURLMissingECToken_returnsError() {
         let fakeApplication = FakeApplication()

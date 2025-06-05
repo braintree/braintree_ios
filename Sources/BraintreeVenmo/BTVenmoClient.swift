@@ -160,7 +160,7 @@ import BraintreeCore
                         )
                         return
                     }
-
+                    
                     self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
                 } catch {
                     self.notifyFailure(with: error, completion: completion)
@@ -187,8 +187,11 @@ import BraintreeCore
     }
 
     /// Switches to the App Store to download the Venmo application.
-    @objc public func openVenmoAppPageInAppStore() {
-        application.open(appStoreURL, completionHandler: nil)
+    @objc
+    public func openVenmoAppPageInAppStore() {
+        DispatchQueue.main.async {
+            self.application.open(self.appStoreURL, options: [:], completionHandler: nil)
+        }
     }
 
     // MARK: - App Switch Methods
@@ -271,7 +274,7 @@ import BraintreeCore
             break
         }
     }
-
+    
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchStarted,
@@ -279,8 +282,11 @@ import BraintreeCore
             linkType: linkType,
             payPalContextID: payPalContextID
         )
-        application.open(appSwitchURL) { success in
-            self.invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL, completion: completion)
+        
+        DispatchQueue.main.async {
+            self.application.open(appSwitchURL, options: [:]) { success in
+                self.invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL, completion: completion)
+            }
         }
     }
 
