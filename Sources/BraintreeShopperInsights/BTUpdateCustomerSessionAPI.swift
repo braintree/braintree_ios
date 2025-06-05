@@ -9,7 +9,7 @@ final class BTUpdateCustomerSessionAPI {
     
     // MARK: - Properties
     
-    private var apiClient: BTAPIClient
+    private let apiClient: BTAPIClient
     
     // MARK: - Initializer
     
@@ -24,26 +24,26 @@ final class BTUpdateCustomerSessionAPI {
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
     ///    - sessionID: The session ID to update.
-    ///    - Returns: A `String` containing the customer session ID if successful.
+    ///    - Returns: A `String` containing the session ID
     ///    - Throws: An error if the request fails or if the response is invalid.
     func execute(
         _ request: BTCustomerSessionRequest,
         sessionID: String
     ) async throws -> String {
         do {
-            let graphQLParams = try UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
+            let graphQLParams = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
             
             let (body, _) = try await apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI)
             
             guard let body else {
-                throw BTHTTPError.dataNotFound
+                throw BTShopperInsightsError.emptyBodyReturned
             }
             
-            guard let customerSessionID = body["data"]["updateCustomerSession"]["sessionId"].asString() else {
+            guard let sessionID = body["data"]["updateCustomerSession"]["sessionId"].asString() else {
                 throw BTHTTPError.httpResponseInvalid
             }
             
-            return customerSessionID
+            return sessionID
         } catch {
             throw error
         }
