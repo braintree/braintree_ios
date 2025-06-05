@@ -26,6 +26,7 @@ final class BTCreateCustomerSessionAPI {
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
     ///    - Returns: A `String` representing the session ID
+    ///    - Throws: An error if the request fails or if the response is invalid.
     func execute(_ request: BTCustomerSessionRequest) async throws -> String {
         do {
             let graphQLParams = CreateCustomerSessionMutationGraphQLBody(request: request)
