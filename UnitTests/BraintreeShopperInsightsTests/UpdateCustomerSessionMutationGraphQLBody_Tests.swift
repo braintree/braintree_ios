@@ -21,6 +21,13 @@ class UpdateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
             )
         ]
     )
+    let expectedQuery = """
+            mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
+                updateCustomerSession(input: $input) {
+                    sessionId
+                }
+            }
+            """
     
     func testEncodingUpdateCustomerSessionGraphQLBodyWithFullData() {
         let body = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
@@ -36,6 +43,7 @@ class UpdateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
         let amount = purchaseUnits?.first?["amount"] as? [String: Any]
         
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
         XCTAssertEqual(customer?["hashedEmail"] as? String, "test-hashed-email.com")
         XCTAssertEqual(customer?["paypalAppInstalled"] as? Bool, true)
@@ -65,6 +73,7 @@ class UpdateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         XCTAssertNotNil(customer)
         XCTAssertNil(purchaseUnits)
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
     }
     
     func testEncodingUpdateCustomerSessionGraphQLBodyWithEmptyData() {
@@ -90,5 +99,6 @@ class UpdateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         XCTAssertNotNil(customer)
         XCTAssertEqual(purchaseUnits?.count, 0)
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
     }
 }
