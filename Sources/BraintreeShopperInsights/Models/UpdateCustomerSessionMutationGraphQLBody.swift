@@ -7,7 +7,7 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
     let query: String
     let variables: Variables
     
-    init(request: BTCustomerSessionRequest, sessionID: String) throws {
+    init(request: BTCustomerSessionRequest, sessionID: String) {
         query = """
             mutation UpdateCustomerSession($input: UpdateCustomerSessionInput!) {
                 updateCustomerSession(input: $input) {
@@ -50,14 +50,21 @@ struct UpdateCustomerSessionMutationGraphQLBody: Encodable {
                 
                 let hashedEmail: String?
                 let hashedPhoneNumber: String?
-                let paypalAppInstalled: Bool?
+                let payPalAppInstalled: Bool?
                 let venmoAppInstalled: Bool?
                 
                 init(request: BTCustomerSessionRequest) {
                     hashedEmail = request.hashedEmail
                     hashedPhoneNumber = request.hashedPhoneNumber
-                    paypalAppInstalled = request.paypalAppInstalled
+                    payPalAppInstalled = request.payPalAppInstalled
                     venmoAppInstalled = request.venmoAppInstalled
+                }
+                
+                enum CodingKeys: String, CodingKey {
+                    case hashedEmail
+                    case hashedPhoneNumber
+                    case payPalAppInstalled = "paypalAppInstalled"
+                    case venmoAppInstalled
                 }
             }
             
