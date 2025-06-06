@@ -5,13 +5,11 @@ import BraintreeCore
 #endif
 
 /// The API used to create a customer session using the `CreateCustomerSession` GraphQL mutation.
-/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 final class BTCreateCustomerSessionAPI {
     
-    // MARK: - Properties
+    // MARK: - Private Properties
     
-    /// Exposed for testing to get the instance of `BTAPIClient`
-    private var apiClient: BTAPIClient
+    private let apiClient: BTAPIClient
     
     // MARK: - Initializer
     
@@ -22,59 +20,30 @@ final class BTCreateCustomerSessionAPI {
         self.apiClient = apiClient
     }
     
-    /// This method will call the `CreateCustomerSession` GQL mutation, which returns a sessionId if successful.
+    // MARK: - Internal Methods
+    
+    /// This method will call the `CreateCustomerSession` GQL mutation, which returns a session ID if successful.
     /// - Parameters:
     ///    - request: A `BTCustomerSessionRequest`
-    ///    - completion: This completion will be invoked when the attempt to create a customer session is complete or an error occurs. On success, you will receive a sessionId; on failure you will receive an error.
-    func execute(
-        _ request: BTCustomerSessionRequest,
-        completion: @escaping (String?, Error?) -> Void
-    ) {
+    ///    - Returns: A `String` representing the session ID
+    ///    - Throws: An error if the request fails or if the response is invalid.
+    func execute(_ request: BTCustomerSessionRequest) async throws -> String {
         do {
-            let graphQLParams = try self.buildGraphQLDictionary(with: request)
+            let graphQLParams = CreateCustomerSessionMutationGraphQLBody(request: request)
             
-            self.apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI) { body, _, error in
-                if let error = error as? NSError {
-                    completion(nil, error)
-                    return
-                }
-                
-                guard let body else {
-                    completion(nil, BTShopperInsightsError.emptyBodyReturned)
-                    return
-                }
-                
-                guard let sessionId = body["data"]["createCustomerSession"]["sessionId"].asString() else {
-                    completion(nil, BTHTTPError.httpResponseInvalid)
-                    return
-                }
-                completion(sessionId, nil)
+            let (body, _) = try await apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI)
+
+            guard let body else {
+                throw BTShopperInsightsError.emptyBodyReturned
             }
+            
+            guard let sessionID = body["data"]["createCustomerSession"]["sessionId"].asString() else {
+                throw BTHTTPError.httpResponseInvalid
+            }
+            
+            return sessionID
         } catch {
-            completion(nil, error)
+            throw error
         }
-    }
-    
-    // MARK: - Helper Methods
-    
-    func buildGraphQLDictionary(with request: BTCustomerSessionRequest) throws -> [String: Any] {
-        let inputParameters: [String: Any?] = [
-            "customer": request.customer,
-            "purchaseUnits": request.purchaseUnits
-        ]
-        let inputDictionary: [String: Any] = ["input": inputParameters]
-        
-        let graphQLParameters: [String: Any] = [
-            "query":
-                """
-                mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
-                    createCustomerSession(input: $input) {
-                        sessionId
-                    }
-                }
-                """,
-            "variables": inputDictionary
-        ]
-        return graphQLParameters
     }
 }
