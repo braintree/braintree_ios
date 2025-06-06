@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeVisaCheckout
+    * Add Visa Checkout to the SDK as a payment option
+
 ## 6.32.0 (2025-04-29)
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
