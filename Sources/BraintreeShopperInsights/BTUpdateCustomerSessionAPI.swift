@@ -13,7 +13,7 @@ final class BTUpdateCustomerSessionAPI {
     
     // MARK: - Initializer
     
-    /// Creates a `BTUpdateCustomerSessionApi`
+    /// Creates a `BTUpdateCustomerSessionAPI`
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance
     init(apiClient: BTAPIClient) {
