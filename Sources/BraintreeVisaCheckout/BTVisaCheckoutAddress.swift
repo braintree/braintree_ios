@@ -57,4 +57,3 @@ import BraintreeCore
         return BTVisaCheckoutAddress(json: json)
     }
 }
-
