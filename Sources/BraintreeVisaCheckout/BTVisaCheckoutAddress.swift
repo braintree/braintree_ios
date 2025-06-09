@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 @objc public class BTVisaCheckoutAddress: NSObject {
 
     @objc public let firstName: String?
