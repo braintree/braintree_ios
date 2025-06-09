@@ -1,6 +1,7 @@
 import Foundation
 
 @objc public class BTVisaCheckoutAddress: NSObject {
+
     @objc public let firstName: String?
     @objc public let lastName: String?
     @objc public let streetAddress: String?
