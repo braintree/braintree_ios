@@ -9,6 +9,7 @@ open class BTWebAuthenticationSessionClient: NSObject, ASWebAuthenticationPresen
         if #available(iOS 15, *) {
             let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             let window = firstScene?.windows.first { $0.isKeyWindow }
+            window?.windowLevel = UIWindow.Level.normal
             return window ?? ASPresentationAnchor()
         } else {
             let window = UIApplication.shared.windows.first { $0.isKeyWindow }
