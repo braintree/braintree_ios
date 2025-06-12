@@ -76,7 +76,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     let payLaterToggle = Toggle(title: "Offer Pay Later")
     
-    let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
+    let newPayPalCheckoutToggle = Toggle(title: "ModXO (New PayPal Checkout Experience)")
     
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
     
@@ -196,10 +196,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
-        )
+        request.userAction = .setupNow
         
         if rbaDataToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
