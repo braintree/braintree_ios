@@ -84,6 +84,13 @@ import BraintreeDataCollector
             name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidEnterBackground),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
     }
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
@@ -281,6 +288,23 @@ import BraintreeDataCollector
     
     @objc func applicationDidBecomeActive(notification: Notification) {
         webSessionReturned = true
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.appSwitchMerchantReturned,
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            isVaultRequest: isVaultRequest,
+            payPalContextID: payPalContextID
+        )
+    }
+    
+    @objc func applicationDidEnterBackground(notification: Notification) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.appSwitchMerchantBackgrounded,
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            isVaultRequest: isVaultRequest,
+            payPalContextID: payPalContextID
+        )
     }
     
     func handlePayPalRequest(
