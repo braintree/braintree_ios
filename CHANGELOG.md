@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Set the `prefersEphemeralWebBrowserSession` flag based on query parameter `experiment` to enable/disable the WAS popup.
+
 ## 6.33.0 (2025-05-22)
 * BraintreeCore
   * Update batching for conversion events to send immediately using `beginBackgroundTask`

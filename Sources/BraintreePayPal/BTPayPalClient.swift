@@ -463,6 +463,11 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
+        let urlComponents = URLComponents(url: appSwitchURL, resolvingAgainstBaseURL: true)
+        if let experiment = urlComponents?.queryItems?.first(where: { $0.name == "experiment" })?.value, !experiment.isEmpty {
+            webAuthenticationSession.prefersEphemeralWebBrowserSession = true
+        }
+        
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)
