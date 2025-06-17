@@ -18,7 +18,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         ])
 
         let address = BTVisaCheckoutAddress(json: json)
-        
 
         XCTAssertEqual(address.firstName, "John")
         XCTAssertEqual(address.lastName, "Doe")
