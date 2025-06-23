@@ -318,6 +318,10 @@ import Foundation
         payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
+        if eventName == "paypal:tokenize:app-switch:started" {
+            print(eventName)
+        }
+        
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 appSwitchURL: appSwitchURL,
