@@ -8,8 +8,8 @@ struct GenerateCustomerRecommendationsGraphQLBody: Encodable {
     
     init(request: BTCustomerSessionRequest, sessionID: String) {
         query = """
-            mutation GenerateCustomerRecommendations(${'$'}input: GenerateCustomerRecommendationsInput!) {
-                generateCustomerRecommendations(input: ${'$'}input) {
+            mutation GenerateCustomerRecommendations($input: GenerateCustomerRecommendationsInput!) {
+                generateCustomerRecommendations(input: $input) {
                     sessionId
                     isInPayPalNetwork
                     paymentRecommendations {

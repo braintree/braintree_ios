@@ -39,17 +39,21 @@ final class BTCustomerRecommendationsAPI {
             
             let sessionID = body["data"]["generateCustomerRecommendations"]["sessionId"].asString()
             let isInPayPalNetwork = body["data"]["generateCustomerRecommendations"]["isInPayPalNetwork"].asBool()
-            var paymentOptions: [BTPaymentOptions] = []
+            var paymentOptions: [BTPaymentOptions]? = []
             if let paymentRecommendations = body["data"]["generateCustomerRecommendations"]["paymentRecommendations"].asArray() {
                 for recommendation in paymentRecommendations {
-                    print("paymentRecommendation: \(recommendation)")
-                    paymentOptions.append(
+                    paymentOptions?.append(
                         BTPaymentOptions(
                             paymentOption: recommendation["paymentOption"].asString() ?? "",
                             recommendedPriority: recommendation["recommendedPriority"].asIntegerOrZero()
                         )
                     )
                 }
+            }
+            
+            guard let sessionID = sessionID, let isInPayPalNetwork = isInPayPalNetwork,
+                  let paymentOptions = paymentOptions else {
+                throw BTHTTPError.httpResponseInvalid
             }
             
             return BTCustomerRecommendationsResult(

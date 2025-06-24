@@ -95,7 +95,7 @@ class BTUpdateCustomerSessionApi_Test: XCTestCase {
     }
     
     func testExceute_whenCreateCustomerSessionAPIFails_throwsNSError() async {
-        let mockError = NSError(domain: "create-customer-sessionerror", code: 1, userInfo: nil)
+        let mockError = NSError(domain: "update-customer-session-error", code: 1, userInfo: nil)
         mockAPIClient.cannedResponseError = mockError
         
         do {
