@@ -16,6 +16,9 @@ final class BTAnalyticsService: AnalyticsSendable {
 
     /// Exposed for testing only
     var shouldBypassTimerQueue = false
+    
+    /// Exposed for testing only
+    var application: BackgroundTaskManaging = UIApplication.shared
 
     // MARK: - Private Properties
     
@@ -55,7 +58,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// - Parameter event: A single `FPTIBatchData.Event`
     func sendAnalyticsEvent(_ event: FPTIBatchData.Event, sendImmediately: Bool) {
         Task(priority: .background) {
-            sendImmediately ? sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
+            sendImmediately ? await sendAnalyticsEventsImmediately(event: event) : await performEventRequest(with: event)
         }
     }
     
@@ -77,7 +80,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// The background task is safely ended both in the expiration handler and after the event is sent.
     ///
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) {
+    func sendAnalyticsEventsImmediately(event: FPTIBatchData.Event) async {
         guard let apiClient else { return }
         
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
@@ -88,34 +91,32 @@ final class BTAnalyticsService: AnalyticsSendable {
         // The expirationHandler is called if the system’s maximum background execution time
         // (typically around 30 seconds) is reached before the task completes.
         // If we don't explicitly end the task here, the app may be forcefully terminated by the system.
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTSendAnalyticEvent") {
+        backgroundTaskID = application.beginBackgroundTask(named: "BTSendAnalyticEvent") { [weak self] in
+            guard let self, backgroundTaskID != .invalid else { return }
             // We end the task here to avoid the app being terminated.
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
+            self.application.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
         }
-        
-        sendAnalyticEvent(event, apiClient: apiClient) {
-            // Explicitly end the background task after the work is completed
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
-        }
-    }
 
+        await sendAnalyticEvent(event, apiClient: apiClient)
+
+        guard backgroundTaskID != .invalid else { return }
+        // Explicitly end the background task after the work is completed
+        application.endBackgroundTask(backgroundTaskID)
+        backgroundTaskID = .invalid
+    }
+    
     /// Exposed to be able to execute this function synchronously in unit tests
-    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient, completion: @escaping () -> Void) {
-        Task {
-            do {
-                let configuration = try await apiClient.fetchConfiguration()
-                try await postAnalyticsEvents(
-                    configuration: configuration,
-                    sessionID: apiClient.metadata.sessionID,
-                    events: [event]
-                )
-                completion()
-            } catch {
-                NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
-                completion()
-            }
+    func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
+        do {
+            let configuration = try await apiClient.fetchConfiguration()
+            try await postAnalyticsEvents(
+                configuration: configuration,
+                sessionID: apiClient.metadata.sessionID,
+                events: [event]
+            )
+        } catch {
+            NSLog("[BT SDK] Failed to send analytics: %@", error.localizedDescription)
         }
     }
 
