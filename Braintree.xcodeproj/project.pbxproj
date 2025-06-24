@@ -103,6 +103,9 @@
 		57D94370296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9436F296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift */; };
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
 		620C3C652BA21E5700C40A03 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */; };
+		621149DA2E01E9A5006D7687 /* BTCustomerRecommendationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */; };
+		621149DC2E01EC7F006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */; };
+		621149DE2E0201C7006D7687 /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621149DD2E0201C3006D7687 /* Variables.swift */; };
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
 		624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
@@ -868,6 +871,9 @@
 		57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NonceValidation.swift"; sourceTree = "<group>"; };
 		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCustomerRecommendationsAPI.swift; sourceTree = "<group>"; };
+		621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCustomerRecommendationsGraphQLBody.swift; sourceTree = "<group>"; };
+		621149DD2E0201C3006D7687 /* Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
@@ -1511,6 +1517,8 @@
 		624454DA2DDE37CA00A3383B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				621149DD2E0201C3006D7687 /* Variables.swift */,
+				621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */,
 				624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */,
 				455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */,
 			);
@@ -1553,6 +1561,7 @@
 		804698292B27C4D70090878E /* BraintreeShopperInsights */ = {
 			isa = PBXGroup;
 			children = (
+				621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */,
 				04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */,
 				04AA31172D0797460043ACAB /* BTButtonType.swift */,
 				62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */,
@@ -3457,12 +3466,15 @@
 				624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */,
 				804698372B27C5390090878E /* BTShopperInsightsClient.swift in Sources */,
 				455AA27B2DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift in Sources */,
+				621149DA2E01E9A5006D7687 /* BTCustomerRecommendationsAPI.swift in Sources */,
 				455AA27C2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift in Sources */,
+				621149DC2E01EC7F006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift in Sources */,
 				456B950E2DB963FA009A374D /* BTShopperInsightsClientV2.swift in Sources */,
 				800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */,
 				8037BFB02B2CCC130017072C /* BTShopperInsightsAnalytics.swift in Sources */,
 				04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */,
 				04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */,
+				621149DE2E0201C7006D7687 /* Variables.swift in Sources */,
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 				624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */,
