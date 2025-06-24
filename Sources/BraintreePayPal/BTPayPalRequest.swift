@@ -192,7 +192,7 @@ import BraintreeCore
             parameters["line_items"] = lineItemsArray
         }
 
-        if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary() {
+        if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary(), !userPhoneNumberDictionary.isEmpty {
             parameters["phone_number"] = userPhoneNumberDictionary
         }
 
