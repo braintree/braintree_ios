@@ -51,8 +51,7 @@ final class BTCustomerRecommendationsAPI {
                 }
             }
             
-            guard let sessionID = sessionID, let isInPayPalNetwork = isInPayPalNetwork,
-                  let paymentOptions = paymentOptions else {
+            guard let sessionID = sessionID, let isInPayPalNetwork = isInPayPalNetwork, let paymentOptions = paymentOptions else {
                 throw BTHTTPError.httpResponseInvalid
             }
             
