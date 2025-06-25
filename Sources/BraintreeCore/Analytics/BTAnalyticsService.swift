@@ -63,6 +63,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     func performEventRequest(with event: FPTIBatchData.Event) async {
         if let apiClient {
             await events.append(event, sessionID: apiClient.metadata.sessionID)
+            print("1234 🐶 Event: \(event.eventName), timestamp: \(event.timestamp), sessionID: \(apiClient.metadata.sessionID)")
         }
         
         if shouldBypassTimerQueue {
@@ -86,11 +87,27 @@ final class BTAnalyticsService: AnalyticsSendable {
                     
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
                     
+                    for event in eventsPerSessionID {
+                        print("1234 🐛 Event: \(event), timestamp: \(event.timestamp), sessionID: \(sessionID)")
+                    }
+                    
                     await events.removeFor(sessionID: sessionID)
                 }
             } catch {
+                print("1234 ❄️ some fail)")
                 return
             }
+        } else {
+            if await events.isEmpty {
+                print("1234 🦖 Events is empty")
+            } else {
+                print("1234 🦖 Events is not empty")
+            }
+            
+            if apiClient == nil {
+                print("1234 🐙 apiClient is nil")
+            }
+            
         }
     }
 
