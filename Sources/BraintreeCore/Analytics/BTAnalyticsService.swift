@@ -88,7 +88,7 @@ final class BTAnalyticsService: AnalyticsSendable {
                     _ = try? await http?.post("v1/tracking/batch/events", parameters: postParameters)
                     
                     for event in eventsPerSessionID {
-                        print("1234 🐛 Event: \(event), timestamp: \(event.timestamp), sessionID: \(sessionID)")
+                        print("1234 🐛 Event: \(event.eventName), timestamp: \(event.timestamp), sessionID: \(sessionID)")
                     }
                     
                     await events.removeFor(sessionID: sessionID)
