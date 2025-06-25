@@ -11,5 +11,5 @@ public struct BTCustomerRecommendationsResult {
     public let isInPayPalNetwork: Bool?
     
     /// The payment recommendations for the shopper.
-    public let paymentRecommendations: [BTPaymentOptions]
+    public let paymentRecommendations: [BTPaymentOptions]?
 }

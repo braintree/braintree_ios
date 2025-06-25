@@ -5,7 +5,7 @@ struct Variables: Encodable {
     
     let input: InputParameters
     
-    init(request: BTCustomerSessionRequest, sessionID: String?) {
+    init(request: BTCustomerSessionRequest, sessionID: String? = nil) {
         input = InputParameters(request: request, sessionID: sessionID)
     }
     

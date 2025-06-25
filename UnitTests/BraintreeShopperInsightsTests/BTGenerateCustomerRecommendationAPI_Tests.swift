@@ -3,7 +3,7 @@ import XCTest
 @testable import BraintreeCore
 @testable import BraintreeShopperInsights
 
-class BTGenerateCustomerRecommendationApi_Tests: XCTestCase {
+class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
     
     var mockAPIClient: MockAPIClient!
     var sut: BTCustomerRecommendationsAPI!
@@ -64,33 +64,8 @@ class BTGenerateCustomerRecommendationApi_Tests: XCTestCase {
         
         XCTAssertEqual(expectedResult?.sessionID, expectedSessionID)
         XCTAssertEqual(expectedResult?.isInPayPalNetwork, true)
-        XCTAssertEqual(expectedResult?.paymentRecommendations.first?.paymentOption, "PAYPAL")
-        XCTAssertEqual(expectedResult?.paymentRecommendations.first?.recommendedPriority, 1)
-    }
-    
-    func testExecute_whenGenerateCustomerRecommendationsRequestIsInvalid_throwsBTHTTPError() async {
-        let mockGenerateCustomerRecommendationsResponse = BTJSON(
-            value: [
-                "data": [
-                    "generateCustomerRecommendations": [
-                        "random-session-id": "invalid-session-id",
-                        "isInPayPalNetwork": nil,
-                        "paymentRecommendations": nil
-                    ]
-                ]
-            ]
-        )
-        mockAPIClient.cannedResponseBody = mockGenerateCustomerRecommendationsResponse
-        
-        do {
-            let _ = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
-            XCTFail("Expected BTHTTPError to be thrown")
-        } catch let error as BTHTTPError {
-            XCTAssertEqual(error.errorCode, BTHTTPError.httpResponseInvalid.errorCode)
-            XCTAssertEqual(error.localizedDescription, "Unable to create HTTPURLResponse from response data.")
-        } catch {
-            XCTFail("Unexpected error: \(error)")
-        }
+        XCTAssertEqual(expectedResult?.paymentRecommendations?.first?.paymentOption, "PAYPAL")
+        XCTAssertEqual(expectedResult?.paymentRecommendations?.first?.recommendedPriority, 1)
     }
     
     func testExecute_whenEmptyResponseBodyReturned_throwsBTShopperInsightsError() async {

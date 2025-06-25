@@ -14,6 +14,6 @@ struct CreateCustomerSessionMutationGraphQLBody: Encodable {
                 }
             }
             """
-        variables = Variables(request: request, sessionID: nil)
+        variables = Variables(request: request)
     }
 }
