@@ -69,6 +69,8 @@ import BraintreeDataCollector
     
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
+    
+    private var hasOpenedAppSwitchURL = false
 
     // MARK: - Initializer
 
@@ -434,6 +436,9 @@ import BraintreeDataCollector
         with payPalAppRedirectURL: URL,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        guard !hasOpenedAppSwitchURL else { return } // Prevent multiple calls
+        hasOpenedAppSwitchURL = true
+
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -453,10 +458,12 @@ import BraintreeDataCollector
         
         guard let redirectURL = urlComponents?.url else {
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
+            hasOpenedAppSwitchURL = false
             return
         }
 
         application.open(redirectURL) { success in
+            self.hasOpenedAppSwitchURL = false
             self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
