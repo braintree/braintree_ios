@@ -3,7 +3,7 @@
 ## unreleased
 * BraintreeVisaCheckout
     * Add Visa Checkout to the SDK as a payment option
-    * Add `BTVisaCheckoutAddress`
+    * Add `BTVisaCheckoutAddress`, `BTVisaCheckoutUserData`, `BTVisaCheckoutCardNonce`
 
 ## 6.32.0 (2025-04-29)
 * BraintreePayPal
