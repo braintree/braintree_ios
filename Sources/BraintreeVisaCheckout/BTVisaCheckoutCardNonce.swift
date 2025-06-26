@@ -8,16 +8,13 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
-public class BTVisaCheckoutCardNonce {
+public class BTVisaCheckoutCardNonce: BTCardNonce {
 
-    public let lastTwo: String
-    public let cardNetwork: BTCardNetwork
     public let shippingAddress: BTVisaCheckoutAddress?
     public let billingAddress: BTVisaCheckoutAddress?
     public let userData: BTVisaCheckoutUserData?
-    public let nonce: BTCardNonce?
 
-    @objc public init(
+    @objc public convenience init(
         nonce: String,
         type: String,
         lastTwo: String,
@@ -27,11 +24,17 @@ public class BTVisaCheckoutCardNonce {
         billingAddress: BTVisaCheckoutAddress?,
         userData: BTVisaCheckoutUserData?
     ) {
-        self.lastTwo = lastTwo
-        self.cardNetwork = cardNetwork
-        self.shippingAddress = shippingAddress
-        self.billingAddress = billingAddress
-        self.userData = userData
+
+        self.init(
+            nonce: nonce,
+            type: type,
+            lastTwo: lastTwo,
+            cardNetwork: cardNetwork,
+            isDefault: isDefault,
+            shippingAddress: shippingAddress,
+            billingAddress: billingAddress,
+            userData: userData
+        )
     }
 
     public static func cardNetwork(from json: BTJSON) -> BTCardNetwork {
@@ -86,4 +89,3 @@ public class BTVisaCheckoutCardNonce {
         )
     }
 }
-
