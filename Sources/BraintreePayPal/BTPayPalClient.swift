@@ -471,7 +471,9 @@ import BraintreeDataCollector
         
         webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
 
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error, baToken in
+            self?.payPalContextID = baToken
+            
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)
                 return
@@ -535,13 +537,13 @@ import BraintreeDataCollector
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             notifyCancel(completion: completion)
             return
-        } sessionDidDuplicate: { [self] in
+        } sessionDidDuplicate: { [self] baToken in
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
-                payPalContextID: payPalContextID,
+                payPalContextID: baToken,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
         }
