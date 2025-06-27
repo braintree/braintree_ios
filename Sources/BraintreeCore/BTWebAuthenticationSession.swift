@@ -16,7 +16,7 @@ public class BTWebAuthenticationSession: NSObject {
     public func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
-        sessionDidComplete: @escaping (URL?, Error?, BAToken?) -> Void,
+        sessionDidComplete: @escaping (URL?, Error?) -> Void,
         sessionDidAppear: @escaping (Bool) -> Void,
         sessionDidCancel: @escaping () -> Void,
         sessionDidDuplicate: @escaping (BAToken?) -> Void = { _ in }
@@ -36,7 +36,7 @@ public class BTWebAuthenticationSession: NSObject {
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
                 sessionDidCancel()
             } else {
-                sessionDidComplete(url, error, baToken)
+                sessionDidComplete(url, error)
             }
         }
 

@@ -285,7 +285,7 @@ import BraintreeDataCollector
         }
 
         webSessionReturned = false
-        webAuthenticationSession.start(url: url, context: self) { [weak self] url, error, _ in
+        webAuthenticationSession.start(url: url, context: self) { [weak self] url, error in
             guard let self else {
                 NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                 return

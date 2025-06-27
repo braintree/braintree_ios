@@ -471,8 +471,10 @@ import BraintreeDataCollector
         
         webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
 
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error, baToken in
-            self?.payPalContextID = baToken
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
+            if let url {
+                self?.payPalContextID = BTURLUtils.queryParameters(for: url)["ba_token"]
+            }
             
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)
