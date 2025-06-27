@@ -8,6 +8,8 @@ public class BTWebAuthenticationSession: NSObject {
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public var prefersEphemeralWebBrowserSession: Bool?
 
+    private var currentSession: ASWebAuthenticationSession?
+
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func start(
         url: URL,
@@ -16,10 +18,12 @@ public class BTWebAuthenticationSession: NSObject {
         sessionDidAppear: @escaping (Bool) -> Void,
         sessionDidCancel: @escaping () -> Void
     ) {
+        guard currentSession == nil else { return }
         let authenticationSession = ASWebAuthenticationSession(
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { url, error in
+            self.currentSession = nil
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
                 sessionDidCancel()
             } else {
@@ -27,9 +31,9 @@ public class BTWebAuthenticationSession: NSObject {
             }
         }
 
-        authenticationSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
-
-        authenticationSession.presentationContextProvider = context
+        currentSession?.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
+        currentSession?.presentationContextProvider = context
+        currentSession = authenticationSession
         DispatchQueue.main.async {
             sessionDidAppear(authenticationSession.start())
         }
