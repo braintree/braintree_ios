@@ -535,6 +535,15 @@ import BraintreeDataCollector
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             notifyCancel(completion: completion)
             return
+        } sessionDidDuplicate: { [self] in
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.tokenizeDuplicateRequest,
+                didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+                didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                isVaultRequest: isVaultRequest,
+                payPalContextID: payPalContextID,
+                shopperSessionID: payPalRequest?.shopperSessionID
+            )
         }
     }
 

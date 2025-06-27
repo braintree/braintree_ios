@@ -16,10 +16,15 @@ public class BTWebAuthenticationSession: NSObject {
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
         sessionDidAppear: @escaping (Bool) -> Void,
-        sessionDidCancel: @escaping () -> Void
+        sessionDidCancel: @escaping () -> Void,
+        sessionDidDuplicate: @escaping () -> Void = { }
     ) {
-        guard currentSession == nil else { return }
-        let authenticationSession = ASWebAuthenticationSession(
+        guard currentSession == nil else {
+            sessionDidDuplicate()
+            return
+        }
+        
+        currentSession = ASWebAuthenticationSession(
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { url, error in
@@ -33,9 +38,9 @@ public class BTWebAuthenticationSession: NSObject {
 
         currentSession?.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
         currentSession?.presentationContextProvider = context
-        currentSession = authenticationSession
+        
         DispatchQueue.main.async {
-            sessionDidAppear(authenticationSession.start())
+            sessionDidAppear(self.currentSession?.start() ?? false)
         }
     }
 }

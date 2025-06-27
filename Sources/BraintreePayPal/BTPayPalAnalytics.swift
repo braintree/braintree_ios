@@ -9,6 +9,7 @@ enum BTPayPalAnalytics {
     static let tokenizeStarted = "paypal:tokenize:started"
     static let tokenizeFailed = "paypal:tokenize:failed"
     static let tokenizeSucceeded = "paypal:tokenize:succeeded"
+    static let tokenizeDuplicateRequest = "paypal:tokenize:duplicate-request"
    
     // MARK: - Browser Presentation Events
   
