@@ -449,7 +449,20 @@ import BraintreeDataCollector
         with payPalAppRedirectURL: URL,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        guard !hasOpenedAppSwitchURL else { return } // Prevent multiple calls
+        /// Prevent multiple calls to open the app
+        guard !hasOpenedAppSwitchURL else {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchDuplicateRequest,
+                didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+                didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                isVaultRequest: isVaultRequest,
+                payPalContextID: payPalContextID,
+                shopperSessionID: payPalRequest?.shopperSessionID
+            )
+
+            return
+        }
+        
         hasOpenedAppSwitchURL = true
 
         apiClient.sendAnalyticsEvent(
