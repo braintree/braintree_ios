@@ -70,7 +70,7 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
     
-    private var hasOpenedAppSwitchURL = false
+    private var hasOpenedURL = false
 
     // MARK: - Initializer
 
@@ -288,10 +288,10 @@ import BraintreeDataCollector
     @objc func applicationDidBecomeActive(notification: Notification) {
         webSessionReturned = true
         
-        /// reset the `hasOpenedAppSwitchURL` flag to allow for future app switch attempts
+        /// reset the `hasOpenedURL` flag to allow for future app switch attempts
         /// in cases where the customer abandons the flow without a return URL or failure
         /// returned to the SDK then reopens the merchant app and attempts the PayPal flow again
-        hasOpenedAppSwitchURL = false
+        hasOpenedURL = false
     }
     
     func handlePayPalRequest(
@@ -320,9 +320,9 @@ import BraintreeDataCollector
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
         } else {
-            /// reset the `hasOpenedAppSwitchURL` flag to allow for
+            /// reset the `hasOpenedURL` flag to allow for
             /// future app switch attempts in case of failure to open the initial switch
-            hasOpenedAppSwitchURL = false
+            hasOpenedURL = false
 
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
@@ -339,9 +339,9 @@ import BraintreeDataCollector
     // MARK: - App Switch Methods
 
     func handleReturnURL(_ url: URL) {
-        /// reset the `hasOpenedAppSwitchURL` flag to allow for future app switch
+        /// reset the `hasOpenedURL` flag to allow for future app switch
         /// attempts after we have returned successfully
-        hasOpenedAppSwitchURL = false
+        hasOpenedURL = false
 
         guard let returnURL = BTPayPalReturnURL(.payPalApp(url: url)) else {
             notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
@@ -450,9 +450,9 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         /// Prevent multiple calls to open the app
-        guard !hasOpenedAppSwitchURL else {
+        guard !hasOpenedURL else {
             apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchDuplicateRequest,
+                BTPayPalAnalytics.tokenizeDuplicateRequest,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
@@ -463,7 +463,7 @@ import BraintreeDataCollector
             return
         }
         
-        hasOpenedAppSwitchURL = true
+        hasOpenedURL = true
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
@@ -484,7 +484,7 @@ import BraintreeDataCollector
         
         guard let redirectURL = urlComponents?.url else {
             self.notifyFailure(with: BTPayPalError.invalidURL("Unable to construct PayPal app redirect URL."), completion: completion)
-            hasOpenedAppSwitchURL = false
+            hasOpenedURL = false
             return
         }
 

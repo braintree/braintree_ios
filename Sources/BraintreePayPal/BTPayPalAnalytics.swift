@@ -9,6 +9,7 @@ enum BTPayPalAnalytics {
     static let tokenizeStarted = "paypal:tokenize:started"
     static let tokenizeFailed = "paypal:tokenize:failed"
     static let tokenizeSucceeded = "paypal:tokenize:succeeded"
+    static let tokenizeDuplicateRequest = "paypal:tokenize:duplicate-request"
    
     // MARK: - Browser Presentation Events
   
@@ -31,5 +32,4 @@ enum BTPayPalAnalytics {
     static let appSwitchStarted = "paypal:tokenize:app-switch:started"
     static let appSwitchSucceeded = "paypal:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "paypal:tokenize:app-switch:failed"
-    static let appSwitchDuplicateRequest = "paypal:tokenize:app-switch:duplicate-request"
 }
