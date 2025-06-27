@@ -62,10 +62,10 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         
         let expectedResult = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
         
-        XCTAssertEqual(expectedResult?.sessionID, expectedSessionID)
-        XCTAssertEqual(expectedResult?.isInPayPalNetwork, true)
-        XCTAssertEqual(expectedResult?.paymentRecommendations?.first?.paymentOption, "PAYPAL")
-        XCTAssertEqual(expectedResult?.paymentRecommendations?.first?.recommendedPriority, 1)
+        XCTAssertEqual(expectedResult.sessionID, expectedSessionID)
+        XCTAssertEqual(expectedResult.isInPayPalNetwork, true)
+        XCTAssertEqual(expectedResult.paymentRecommendations?.first?.paymentOption, "PAYPAL")
+        XCTAssertEqual(expectedResult.paymentRecommendations?.first?.recommendedPriority, 1)
     }
     
     func testExecute_whenEmptyResponseBodyReturned_throwsBTShopperInsightsError() async {

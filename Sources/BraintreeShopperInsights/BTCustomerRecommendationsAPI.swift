@@ -28,7 +28,7 @@ final class BTCustomerRecommendationsAPI {
     func execute(
         _ request: BTCustomerSessionRequest,
         sessionID: String
-    ) async throws -> BTCustomerRecommendationsResult? {
+    ) async throws -> BTCustomerRecommendationsResult {
         do {
             let graphQLParameters = GenerateCustomerRecommendationsGraphQLBody(request: request, sessionID: sessionID)
             let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
