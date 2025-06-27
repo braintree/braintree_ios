@@ -8,11 +8,22 @@ public class FakeApplication: URLOpener {
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
+    var openURLOverride: (
+        (
+            _ url: URL,
+            _ options: [UIApplication.OpenExternalURLOptionsKey: Any],
+            _ completion: (@MainActor @Sendable (Bool) -> Void)?
+        ) -> Void
+    )?
 
-    public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+    public func open(
+        _ url: URL,
+        options: [UIApplication.OpenExternalURLOptionsKey: Any],
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+) {
         lastOpenURL = url
         openURLWasCalled = true
-        completion?(cannedOpenURLSuccess)
+        openURLOverride?(url, options, completion)
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
