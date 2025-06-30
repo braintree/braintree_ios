@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Fix bug where `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
+  * Bug fix: only attempt to call `UIApplication.shared.open` on one URL at a time blocking other `open` calls until the current one is finished
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal
