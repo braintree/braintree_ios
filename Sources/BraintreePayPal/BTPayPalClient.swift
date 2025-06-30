@@ -343,6 +343,9 @@ import BraintreeDataCollector
         /// reset the `hasOpenedURL` flag to allow for future app switch
         /// attempts after we have returned successfully
         hasOpenedURL = false
+        
+        /// extract BA or EC token from the URL to set `payPalContextID` correctly
+        payPalContextID = BTURLUtils.queryParameters(for: url)["ba_token"] ?? BTURLUtils.queryParameters(for: url)["token"]
 
         guard let returnURL = BTPayPalReturnURL(.payPalApp(url: url)) else {
             notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
