@@ -17,6 +17,8 @@ public class BTShopperInsightsClientV2 {
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
     var application: URLOpener = UIApplication.shared
     
+    lazy var createCustomerSessionAPI = BTCreateCustomerSessionAPI(apiClient: apiClient)
+
     // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
@@ -32,6 +34,15 @@ public class BTShopperInsightsClientV2 {
     }
     
     // MARK: - Public Methods
+    
+    /// This method creates a new customer session.
+    /// - Parameters:
+    ///    - request: A `BTCustomerSessionRequest`
+    /// - Returns: A `String` representing a session ID if successful
+    /// - Throws: An error if the request fails for some reason or if the response is invalid.
+    public func createCustomerSession(request: BTCustomerSessionRequest) async throws -> String {
+        try await createCustomerSessionAPI.execute(request)
+    }
     
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.

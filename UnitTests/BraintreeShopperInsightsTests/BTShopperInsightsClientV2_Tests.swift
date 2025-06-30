@@ -7,6 +7,22 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
     
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
     let sessionID = "some-session-id"
+    let customerSessionRequest = BTCustomerSessionRequest(
+        hashedEmail: "test-hashed-email.com",
+        hashedPhoneNumber: "test-hashed-phone-number",
+        payPalAppInstalled: true,
+        venmoAppInstalled: false,
+        purchaseUnits: [
+            BTPurchaseUnit(
+                amount: "10.00",
+                currencyCode: "USD"
+            ),
+            BTPurchaseUnit(
+                amount: "20.00",
+                currencyCode: "USD"
+            )
+        ]
+    )
     
     var mockAPIClient: MockAPIClient!
     var sut: BTShopperInsightsClientV2!
@@ -153,5 +169,35 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         sut.application = fakeApplication
 
         XCTAssertTrue(sut.isVenmoAppInstalled())
+    }
+    
+    func testCreateCustomerSession_whenSuccessful_returnsSessionID() async throws {
+        let expectedSessionID = "expected-session-id"
+        let mockCreateCustomerSessionResponse = BTJSON(
+            value: [
+                "data": [
+                    "createCustomerSession": [
+                        "sessionId": "expected-session-id"
+                    ]
+                ]
+            ]
+        )
+        mockAPIClient.cannedResponseBody = mockCreateCustomerSessionResponse
+        
+        let sessionID = try await sut.createCustomerSession(request: customerSessionRequest)
+        
+        XCTAssertEqual(expectedSessionID, sessionID)
+    }
+    
+    func testCreateCustomerSession_whenFails_throwsAnError() async throws {
+        let mockError = NSError(domain: "test-error-domain", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+                
+        do {
+            _ = try await sut.createCustomerSession(request: customerSessionRequest)
+            XCTFail("Expected error to be thrown.")
+        } catch let error as NSError {
+            XCTAssertEqual(error, mockError)
+        }
     }
 }
