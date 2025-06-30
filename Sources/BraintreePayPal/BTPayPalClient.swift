@@ -44,7 +44,10 @@ import BraintreeDataCollector
 
     /// True if `tokenize()` was called with a Vault request object type
     var isVaultRequest: Bool = false
-
+    
+    /// Tracks if we have already called `UIApplication.shared.open` and have an active session in progress
+    var hasOpenedURL = false
+    
     // MARK: - Static Properties
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
@@ -67,10 +70,8 @@ import BraintreeDataCollector
     /// If the experiement is enabled, set the `prefersEphemeralWebBrowserSession` flag to true.
     private var experiment: String?
     
-    /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
+    /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
-    
-    private var hasOpenedURL = false
 
     // MARK: - Initializer
 

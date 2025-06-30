@@ -1097,6 +1097,31 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
     }
     
+    func testTokenize_calledMultipleTimes_onlyCallsOpenOnce() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+                
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
+        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=A_FAKE_BA_TOKEN&switch_initiated_time=1234567890")!
+    
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        
+        XCTAssertTrue(self.payPalClient.hasOpenedURL)
+        
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        
+        payPalClient.handleReturnURL(returnURL)
+                
+        XCTAssertFalse(self.payPalClient.hasOpenedURL)
+        XCTAssertEqual(fakeApplication.openCallCount, 1)
+    }
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
