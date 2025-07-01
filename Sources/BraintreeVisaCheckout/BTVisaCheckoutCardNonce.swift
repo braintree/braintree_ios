@@ -8,12 +8,18 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
-public class BTVisaCheckoutCardNonce: BTCardNonce {
+// Representing a Visa Checkout card.
+public class BTVisaCheckoutCardNonce: BTPaymentMethodNonce {
 
-    public let shippingAddress: BTVisaCheckoutAddress?
-    public let billingAddress: BTVisaCheckoutAddress?
-    public let userData: BTVisaCheckoutUserData?
-
+    // The user's shipping address.
+    public let shippingAddress: BTVisaCheckoutAddress? = nil
+    
+    // The user's billing address.
+    public let billingAddress: BTVisaCheckoutAddress? = nil
+    
+    // The user's data.
+    public let userData: BTVisaCheckoutUserData? = nil
+    
     @objc public convenience init(
         nonce: String,
         type: String,
