@@ -9,7 +9,7 @@ import BraintreeCard
 #endif
 
 // Representing a Visa Checkout card.
-public class BTVisaCheckoutCardNonce: BTPaymentMethodNonce {
+public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
     // The user's shipping address.
     public let shippingAddress: BTVisaCheckoutAddress? = nil
@@ -64,7 +64,7 @@ public class BTVisaCheckoutCardNonce: BTPaymentMethodNonce {
         return BTCardNetwork(rawValue: rawValue) ?? .unknown
     }
 
-    public static func visaCheckoutCardNonce(with json: BTJSON) -> BTVisaCheckoutCardNonce? {
+    public static func visaCheckoutCardNonce(with json: BTJSON) -> BTVisaCheckoutNonce? {
         guard
             let nonce = json["nonce"].asString(),
             let type = json["type"].asString(),
@@ -83,7 +83,7 @@ public class BTVisaCheckoutCardNonce: BTPaymentMethodNonce {
         let userData = BTVisaCheckoutUserData.userData(with: json["userData"])
         let isDefault = json["default"].isTrue
 
-        return BTVisaCheckoutCardNonce(
+        return BTVisaCheckoutNonce(
             nonce: nonce,
             type: type,
             lastTwo: lastTwo,

@@ -233,7 +233,7 @@
 		B8F733542E0DC11A007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F733522E0DC106007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift */; };
 		B8F733562E0DC330007D06C0 /* BTVisaCheckoutUserData_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F733552E0DC316007D06C0 /* BTVisaCheckoutUserData_Tests.swift */; };
 		B8F733572E0DC330007D06C0 /* BTVisaCheckoutUserData_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F733552E0DC316007D06C0 /* BTVisaCheckoutUserData_Tests.swift */; };
-		B8FD52832E01E93900E221D3 /* BTVisaCheckoutCardNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FD52812E01E92D00E221D3 /* BTVisaCheckoutCardNonce.swift */; };
+		B8FD52832E01E93900E221D3 /* BTVisaCheckoutNonce.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FD52812E01E92D00E221D3 /* BTVisaCheckoutNonce.swift */; };
 		B8FD52862E01EB1900E221D3 /* BTVisaCheckoutUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FD52842E01EB1500E221D3 /* BTVisaCheckoutUserData.swift */; };
 		BC17F9B428D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */; };
 		BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */; };
@@ -1024,7 +1024,7 @@
 		B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactPreference.swift; sourceTree = "<group>"; };
 		B8F733522E0DC106007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutCardNonce_Tests.swift; sourceTree = "<group>"; };
 		B8F733552E0DC316007D06C0 /* BTVisaCheckoutUserData_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutUserData_Tests.swift; sourceTree = "<group>"; };
-		B8FD52812E01E92D00E221D3 /* BTVisaCheckoutCardNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutCardNonce.swift; sourceTree = "<group>"; };
+		B8FD52812E01E92D00E221D3 /* BTVisaCheckoutNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutNonce.swift; sourceTree = "<group>"; };
 		B8FD52842E01EB1500E221D3 /* BTVisaCheckoutUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutUserData.swift; sourceTree = "<group>"; };
 		BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLMultiErrorNode.swift; sourceTree = "<group>"; };
 		BC17F9BB28D24C9E004B18CC /* BTGraphQLErrorTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLErrorTree.swift; sourceTree = "<group>"; };
@@ -1473,7 +1473,7 @@
 			children = (
 				046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */,
 				B84871F72DF3842D00618606 /* BTVisaCheckoutAddress.swift */,
-				B8FD52812E01E92D00E221D3 /* BTVisaCheckoutCardNonce.swift */,
+				B8FD52812E01E92D00E221D3 /* BTVisaCheckoutNonce.swift */,
 				B8FD52842E01EB1500E221D3 /* BTVisaCheckoutUserData.swift */,
 				046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */,
 			);
@@ -3468,7 +3468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */,
-				B8FD52832E01E93900E221D3 /* BTVisaCheckoutCardNonce.swift in Sources */,
+				B8FD52832E01E93900E221D3 /* BTVisaCheckoutNonce.swift in Sources */,
 				B84871F92DF3843300618606 /* BTVisaCheckoutAddress.swift in Sources */,
 				B8FD52862E01EB1900E221D3 /* BTVisaCheckoutUserData.swift in Sources */,
 			);
