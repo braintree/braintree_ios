@@ -549,7 +549,7 @@ import BraintreeDataCollector
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
-                payPalContextID: baToken,
+                payPalContextID: payPalContextID,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
         }
