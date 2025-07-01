@@ -8,7 +8,7 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
-@objc public class BTVisaCheckoutUserData: NSObject {
+@objcMembers public class BTVisaCheckoutUserData: NSObject {
 
     @objc public let userFirstName: String?
     @objc public let userLastName: String?
