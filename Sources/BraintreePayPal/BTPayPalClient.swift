@@ -203,6 +203,7 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        payPalContextID = extractToken(from: url ?? URL(string: "")!)
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
             correlationID: clientMetadataID,
@@ -343,9 +344,6 @@ import BraintreeDataCollector
         /// reset the `hasOpenedURL` flag to allow for future app switch
         /// attempts after we have returned successfully
         hasOpenedURL = false
-        
-        /// extract BA or EC token from the URL to set `payPalContextID` correctly
-        payPalContextID = BTURLUtils.queryParameters(for: url)["ba_token"] ?? BTURLUtils.queryParameters(for: url)["token"]
 
         guard let returnURL = BTPayPalReturnURL(.payPalApp(url: url)) else {
             notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"), completion: appSwitchCompletion)
@@ -468,6 +466,7 @@ import BraintreeDataCollector
         }
         
         hasOpenedURL = true
+        payPalContextID = extractToken(from: payPalAppRedirectURL)
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
@@ -572,6 +571,13 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
+    }
+    
+    /// extract BA or EC token from the URL to set `payPalContextID` correctly
+    private func extractToken(from url: URL) -> String? {
+        let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
+        let ecToken = BTURLUtils.queryParameters(for: url)["token"]
+        return baToken ?? ecToken
     }
 
     // MARK: - Analytics Helper Methods
