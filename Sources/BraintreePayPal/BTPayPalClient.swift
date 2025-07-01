@@ -502,7 +502,9 @@ import BraintreeDataCollector
             case .unknownPath:
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
-        } sessionDidAppear: { [self] didAppear in
+        } sessionDidAppear: { [self] didAppear, baToken in
+            payPalContextID = baToken
+            
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
@@ -523,7 +525,8 @@ import BraintreeDataCollector
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             }
-        } sessionDidCancel: { [self] in
+        } sessionDidCancel: { [self] baToken in
+            payPalContextID = baToken
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
@@ -540,6 +543,7 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         } sessionDidDuplicate: { [self] baToken in
+            payPalContextID = baToken
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,

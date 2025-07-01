@@ -5,20 +5,20 @@ import AuthenticationServices
 @_documentation(visibility: private)
 public class BTWebAuthenticationSession: NSObject {
 
+    public typealias BAToken = String
+    
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public var prefersEphemeralWebBrowserSession: Bool?
 
     private var currentSession: ASWebAuthenticationSession?
-    
-    public typealias BAToken = String
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
-        sessionDidAppear: @escaping (Bool) -> Void,
-        sessionDidCancel: @escaping () -> Void,
+        sessionDidAppear: @escaping (Bool, BAToken?) -> Void,
+        sessionDidCancel: @escaping (BAToken?) -> Void,
         sessionDidDuplicate: @escaping (BAToken?) -> Void = { _ in }
     ) {
         let baToken = getBAToken(from: url)
@@ -34,7 +34,7 @@ public class BTWebAuthenticationSession: NSObject {
         ) { url, error in
             self.currentSession = nil
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                sessionDidCancel()
+                sessionDidCancel(baToken)
             } else {
                 sessionDidComplete(url, error)
             }
@@ -44,7 +44,7 @@ public class BTWebAuthenticationSession: NSObject {
         currentSession?.presentationContextProvider = context
         
         DispatchQueue.main.async {
-            sessionDidAppear(self.currentSession?.start() ?? false)
+            sessionDidAppear(self.currentSession?.start() ?? false, baToken)
         }
     }
     
