@@ -8,7 +8,7 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
-// Representing a Visa Checkout card.
+//// Representing a Visa Checkout card.
 public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
     // The user's shipping address.
