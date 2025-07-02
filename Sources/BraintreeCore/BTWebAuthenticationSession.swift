@@ -5,33 +5,58 @@ import AuthenticationServices
 @_documentation(visibility: private)
 public class BTWebAuthenticationSession: NSObject {
 
+    public typealias BAToken = String
+    
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public var prefersEphemeralWebBrowserSession: Bool?
+
+    private var currentSession: ASWebAuthenticationSession?
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func start(
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
-        sessionDidAppear: @escaping (Bool) -> Void,
-        sessionDidCancel: @escaping () -> Void
+        sessionDidAppear: @escaping (Bool, BAToken?) -> Void,
+        sessionDidCancel: @escaping (BAToken?) -> Void,
+        sessionDidDuplicate: @escaping (BAToken?) -> Void = { _ in }
     ) {
-        let authenticationSession = ASWebAuthenticationSession(
+        let baToken = getBAToken(from: url)
+        
+        guard currentSession == nil else {
+            sessionDidDuplicate(baToken)
+            return
+        }
+        
+        currentSession = ASWebAuthenticationSession(
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { url, error in
+            self.currentSession = nil
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                sessionDidCancel()
+                sessionDidCancel(baToken)
             } else {
                 sessionDidComplete(url, error)
             }
         }
 
-        authenticationSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
-
-        authenticationSession.presentationContextProvider = context
+        currentSession?.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
+        currentSession?.presentationContextProvider = context
+        
         DispatchQueue.main.async {
-            sessionDidAppear(authenticationSession.start())
+            sessionDidAppear(self.currentSession?.start() ?? false, baToken)
         }
+    }
+    
+    private func getBAToken(from url: URL) -> String? {
+        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
+            .queryItems?
+            .compactMap { $0 }
+        
+        guard let baToken = queryItems?.first(where: { $0.name == "ba_token" })?.value, !baToken.isEmpty else {
+            return nil
+        }
+        
+        return baToken
     }
 }
