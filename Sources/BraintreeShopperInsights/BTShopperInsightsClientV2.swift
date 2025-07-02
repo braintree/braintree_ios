@@ -43,6 +43,17 @@ public class BTShopperInsightsClientV2 {
         return try await createCustomerSessionAPI.execute(request)
     }
     
+    /// This method updates an existing customer session.
+    /// - Parameters:
+    ///    - request: A `BTCustomerSessionRequest`
+    ///    - sessionID: the ID of the session to update
+    /// - Returns: A `String` representing a session ID if successful
+    /// - Throws: An error if the request fails for some reason or if the response is invalid.
+    public func updateCustomerSession(request: BTCustomerSessionRequest, sessionID: String) async throws -> String {
+        let updateCustomerSessionAPI = BTUpdateCustomerSessionAPI(apiClient: apiClient)
+        return try await updateCustomerSessionAPI.execute(request, sessionID: sessionID)
+    }
+    
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
