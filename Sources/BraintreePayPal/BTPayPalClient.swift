@@ -26,7 +26,7 @@ import BraintreeDataCollector
 
     /// Exposed for testing the clientMetadataID associated with this request.
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
-    var clientMetadataID: String?
+    var clientMetadataIDs: [String: String] = [:]
     
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest?
@@ -202,7 +202,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
-            correlationID: clientMetadataID,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -246,7 +246,7 @@ import BraintreeDataCollector
             }
         }
         
-        if let clientMetadataID {
+        if let clientMetadataID = payPalContextID.flatMap({ clientMetadataIDs[$0] }) {
             account["correlation_id"] = clientMetadataID
         }
 
@@ -409,8 +409,12 @@ import BraintreeDataCollector
                 self.experiment = approvalURL.experiment
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
-
+                let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
+                
+                if let contextID = self.payPalContextID {
+                    self.clientMetadataIDs[contextID] = correlationID
+                }
+                
                 switch approvalURL.redirectType {
                 case .payPalApp(let url):
                     self.didPayPalServerAttemptAppSwitch = true
@@ -473,7 +477,7 @@ import BraintreeDataCollector
 
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             if let url {
-                self?.payPalContextID = BTURLUtils.queryParameters(for: url)["ba_token"]
+                self?.payPalContextID = self?.extractToken(from: url)
             }
             
             guard let self else {
@@ -554,6 +558,13 @@ import BraintreeDataCollector
             )
         }
     }
+    
+    /// extract BA or EC token from the URL to set `payPalContextID` correctly
+    private func extractToken(from url: URL) -> String? {
+        let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
+        let ecToken = BTURLUtils.queryParameters(for: url)["token"]
+        return baToken ?? ecToken
+    }
 
     // MARK: - Analytics Helper Methods
 
@@ -563,7 +574,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
-            correlationID: clientMetadataID,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -576,7 +587,7 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            correlationID: clientMetadataID,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
@@ -590,7 +601,7 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
-            correlationID: clientMetadataID,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
