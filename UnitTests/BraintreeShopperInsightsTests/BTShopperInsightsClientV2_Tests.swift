@@ -200,4 +200,33 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTAssertEqual(error, mockError)
         }
     }
+    
+    func testUpdateCustomerSession_whenSuccessful_returnsSessionID() async throws {
+        let expectedSessionID = "expected-session-id"
+        let mockUpdateCustomerSessionResponse = BTJSON(
+            value: [
+                "data": [
+                    "updateCustomerSession": [
+                        "sessionId": "expected-session-id"
+                    ]
+                ]
+            ]
+        )
+        mockAPIClient.cannedResponseBody = mockUpdateCustomerSessionResponse
+        
+        let sessionID = try await sut.updateCustomerSession(request: customerSessionRequest, sessionID: sessionID)
+        XCTAssertEqual(expectedSessionID, sessionID)
+    }
+    
+    func testUpdateCustomerSession_whenFails_throwsAnError() async throws {
+        let mockError = NSError(domain: "update-customer-session-test-error", code: 2, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+        
+        do {
+            _ = try await sut.updateCustomerSession(request: customerSessionRequest, sessionID: sessionID)
+            XCTFail("Expected error to be thrown.")
+        } catch let error as NSError {
+            XCTAssertEqual(error, mockError)
+        }
+    }
 }
