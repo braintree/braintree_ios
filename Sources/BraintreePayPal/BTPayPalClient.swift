@@ -200,6 +200,8 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        payPalContextID = extractToken(from: url)
+        
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
             correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
@@ -476,9 +478,7 @@ import BraintreeDataCollector
         webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
 
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
-            if let url {
-                self?.payPalContextID = self?.extractToken(from: url)
-            }
+            self?.payPalContextID = self?.extractToken(from: url)
             
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)
@@ -560,7 +560,8 @@ import BraintreeDataCollector
     }
     
     /// extract BA or EC token from the URL to set `payPalContextID` correctly
-    private func extractToken(from url: URL) -> String? {
+    private func extractToken(from url: URL?) -> String? {
+        guard let url = url else { return nil }
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
         return baToken ?? ecToken
