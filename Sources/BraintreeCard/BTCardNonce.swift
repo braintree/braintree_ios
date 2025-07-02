@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// Contains information about a tokenized card.
-@objcMembers class BTCardNonce: BTPaymentMethodNonce {
+@objcMembers public class BTCardNonce: BTPaymentMethodNonce {
 
     // MARK: - Public Properties
 
