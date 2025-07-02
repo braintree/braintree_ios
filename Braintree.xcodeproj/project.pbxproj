@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046268692E14A3D80034DE48 /* BTVisaCheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046268682E14A3CD0034DE48 /* BTVisaCheckoutError.swift */; };
+		0462686B2E14B4110034DE48 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0462686A2E14B4110034DE48 /* VisaCheckoutSDK.xcframework */; };
+		0462686F2E14BB150034DE48 /* BTVisaCheckoutAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462686E2E14BB0E0034DE48 /* BTVisaCheckoutAnalytics.swift */; };
+		046268712E14C5D40034DE48 /* BTVisaCheckoutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046268702E14C5C40034DE48 /* BTVisaCheckoutConfiguration.swift */; };
 		046547B02DDE874F0054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
 		046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */; };
 		046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
@@ -778,6 +782,10 @@
 		035A59D91EA5DE97002960C8 /* BTLocalPaymentClient_UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient_UnitTests.swift; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
 		03F921C1200EBB200076CD80 /* BTThreeDSecurePostalAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress_Tests.swift; sourceTree = "<group>"; };
+		046268682E14A3CD0034DE48 /* BTVisaCheckoutError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutError.swift; sourceTree = "<group>"; };
+		0462686A2E14B4110034DE48 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = "Pods/VisaCheckoutSDK/DigitalTerminal-iOS-SDK-7.3.1/VisaCheckoutSDK.xcframework"; sourceTree = "<group>"; };
+		0462686E2E14BB0E0034DE48 /* BTVisaCheckoutAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAnalytics.swift; sourceTree = "<group>"; };
+		046268702E14C5C40034DE48 /* BTVisaCheckoutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutConfiguration.swift; sourceTree = "<group>"; };
 		046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutClient.swift; sourceTree = "<group>"; };
 		046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutClient_Tests.swift; sourceTree = "<group>"; };
 		046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1196,6 +1204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */,
+				0462686B2E14B4110034DE48 /* VisaCheckoutSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1471,6 +1480,9 @@
 		046547A92DDE86FD0054B80A /* BraintreeVisaCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				046268702E14C5C40034DE48 /* BTVisaCheckoutConfiguration.swift */,
+				0462686E2E14BB0E0034DE48 /* BTVisaCheckoutAnalytics.swift */,
+				046268682E14A3CD0034DE48 /* BTVisaCheckoutError.swift */,
 				046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */,
 				B84871F72DF3842D00618606 /* BTVisaCheckoutAddress.swift */,
 				B8FD52812E01E92D00E221D3 /* BTVisaCheckoutCardNonce.swift */,
@@ -1861,6 +1873,7 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0462686A2E14B4110034DE48 /* VisaCheckoutSDK.xcframework */,
 				BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */,
 				80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */,
 				9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */,
@@ -3467,10 +3480,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046268712E14C5D40034DE48 /* BTVisaCheckoutConfiguration.swift in Sources */,
 				046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */,
 				B8FD52832E01E93900E221D3 /* BTVisaCheckoutCardNonce.swift in Sources */,
 				B84871F92DF3843300618606 /* BTVisaCheckoutAddress.swift in Sources */,
+				0462686F2E14BB150034DE48 /* BTVisaCheckoutAnalytics.swift in Sources */,
 				B8FD52862E01EB1900E221D3 /* BTVisaCheckoutUserData.swift in Sources */,
+				046268692E14A3D80034DE48 /* BTVisaCheckoutError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

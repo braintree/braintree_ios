@@ -8,6 +8,7 @@ inhibit_all_warnings!
 target 'Demo' do
   project 'Demo/Demo'
   pod 'InAppSettingsKit'
+  pod 'VisaCheckoutSDK'
 end
 
 abstract_target 'Tests' do
