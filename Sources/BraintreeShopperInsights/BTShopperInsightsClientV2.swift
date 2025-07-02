@@ -33,6 +33,16 @@ public class BTShopperInsightsClientV2 {
     
     // MARK: - Public Methods
     
+    /// This method creates a new customer session.
+    /// - Parameters:
+    ///    - request: A `BTCustomerSessionRequest`
+    /// - Returns: A `String` representing a session ID if successful
+    /// - Throws: An error if the request fails for some reason or if the response is invalid.
+    public func createCustomerSession(request: BTCustomerSessionRequest) async throws -> String {
+        let createCustomerSessionAPI = BTCreateCustomerSessionAPI(apiClient: apiClient)
+        return try await createCustomerSessionAPI.execute(request)
+    }
+    
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
