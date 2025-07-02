@@ -39,7 +39,8 @@ public class BTShopperInsightsClientV2 {
     /// - Returns: A `String` representing a session ID if successful
     /// - Throws: An error if the request fails for some reason or if the response is invalid.
     public func createCustomerSession(request: BTCustomerSessionRequest) async throws -> String {
-        try await BTCreateCustomerSessionAPI(apiClient: apiClient).execute(request)
+        let createCustomerSessionAPI = BTCreateCustomerSessionAPI(apiClient: apiClient)
+        return try await createCustomerSessionAPI.execute(request)
     }
     
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
