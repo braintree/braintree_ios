@@ -8,90 +8,36 @@ import BraintreeCore
 import BraintreeCard
 #endif
 
-//// Representing a Visa Checkout card.
-public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
+@objc public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
-    // The user's shipping address.
-    public let shippingAddress: BTVisaCheckoutAddress? = nil
-    
-    // The user's billing address.
-    public let billingAddress: BTVisaCheckoutAddress? = nil
-    
-    // The user's data.
-    public let userData: BTVisaCheckoutUserData? = nil
-    
-    @objc public convenience init(
+    @objc public let lastTwo: String
+    @objc public let cardType: String
+    @objc public let billingAddress: BTVisaCheckoutAddress
+    @objc public let shippingAddress: BTVisaCheckoutAddress
+    @objc public let userData: BTVisaCheckoutUserData
+    @objc public let callId: String
+    @objc public let binData: BTBinData
+
+    @objc public init(
         nonce: String,
         type: String,
         lastTwo: String,
-        cardNetwork: BTCardNetwork,
-        isDefault: Bool,
-        shippingAddress: BTVisaCheckoutAddress?,
-        billingAddress: BTVisaCheckoutAddress?,
-        userData: BTVisaCheckoutUserData?
+        cardType: String,
+        billingAddress: BTVisaCheckoutAddress,
+        shippingAddress: BTVisaCheckoutAddress,
+        userData: BTVisaCheckoutUserData,
+        callId: String,
+        binData: BTBinData,
+        isDefault: Bool
     ) {
-
-        self.init(
-            nonce: nonce,
-            type: type,
-            lastTwo: lastTwo,
-            cardNetwork: cardNetwork,
-            isDefault: isDefault,
-            shippingAddress: shippingAddress,
-            billingAddress: billingAddress,
-            userData: userData
-        )
-    }
-
-    public static func cardNetwork(from json: BTJSON) -> BTCardNetwork {
-        let map: [String: Int] = [
-            "american express": BTCardNetwork.AMEX.rawValue,
-            "diners club": BTCardNetwork.dinersClub.rawValue,
-            "unionpay": BTCardNetwork.unionPay.rawValue,
-            "discover": BTCardNetwork.discover.rawValue,
-            "maestro": BTCardNetwork.maestro.rawValue,
-            "mastercard": BTCardNetwork.masterCard.rawValue,
-            "jcb": BTCardNetwork.JCB.rawValue,
-            "laser": BTCardNetwork.laser.rawValue,
-            "solo": BTCardNetwork.solo.rawValue,
-            "switch": BTCardNetwork.switch.rawValue,
-            "uk maestro": BTCardNetwork.ukMaestro.rawValue,
-            "visa": BTCardNetwork.visa.rawValue
-        ]
+        self.lastTwo = lastTwo
+        self.cardType = cardType
+        self.billingAddress = billingAddress
+        self.shippingAddress = shippingAddress
+        self.userData = userData
+        self.callId = callId
+        self.binData = binData
         
-        let value = json.asString()?.lowercased() ?? ""
-        let rawValue = map[value] ?? BTCardNetwork.unknown.rawValue
-        return BTCardNetwork(rawValue: rawValue) ?? .unknown
-    }
-
-    public static func visaCheckoutCardNonce(with json: BTJSON) -> BTVisaCheckoutNonce? {
-        guard
-            let nonce = json["nonce"].asString(),
-            let type = json["type"].asString(),
-            let details = json["details"].asDictionary(),
-            let lastTwo = details["lastTwo"] as? String
-        else {
-            return nil
-        }
-
-        let cardTypeString = json["details"]["cardType"].asString()?.lowercased() ?? ""
-        let cardTypeJSON = BTJSON(value: cardTypeString)
-        let cardNetwork = cardNetwork(from: cardTypeJSON)
-
-        let shippingAddress = BTVisaCheckoutAddress.address(with: json["shippingAddress"])
-        let billingAddress = BTVisaCheckoutAddress.address(with: json["billingAddress"])
-        let userData = BTVisaCheckoutUserData.userData(with: json["userData"])
-        let isDefault = json["default"].isTrue
-
-        return BTVisaCheckoutNonce(
-            nonce: nonce,
-            type: type,
-            lastTwo: lastTwo,
-            cardNetwork: cardNetwork,
-            isDefault: isDefault,
-            shippingAddress: shippingAddress,
-            billingAddress: billingAddress,
-            userData: userData
-        )
+        super.init(nonce: nonce, type: type, isDefault: isDefault)
     }
 }
