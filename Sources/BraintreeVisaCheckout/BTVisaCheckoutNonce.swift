@@ -18,7 +18,7 @@ public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
     public let billingAddress: BTVisaCheckoutAddress? = nil
     
     // The user's data.
-    public let userData: BTVisaCheckoutUserData? = nil
+    public let userData: BTVisaCheckoutUserData? = nil    
     
     @objc public convenience init(
         nonce: String,
