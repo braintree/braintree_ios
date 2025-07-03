@@ -20,7 +20,7 @@ public class FakeApplication: URLOpener {
         _ url: URL,
         options: [UIApplication.OpenExternalURLOptionsKey: Any],
         completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
-) {
+    ) {
         lastOpenURL = url
         openURLWasCalled = true
         openURLOverride?(url, options, completion)
