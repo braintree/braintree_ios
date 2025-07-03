@@ -203,9 +203,7 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        if let url {
-            payPalContextID = extractToken(from: url)
-        }
+        payPalContextID = extractToken(from: url)
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
@@ -577,7 +575,9 @@ import BraintreeDataCollector
     }
     
     /// extract BA or EC token from the URL to set `payPalContextID` correctly
-    private func extractToken(from url: URL) -> String? {
+    private func extractToken(from url: URL?) -> String? {
+        guard let url else { return nil }
+
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
         return baToken ?? ecToken
