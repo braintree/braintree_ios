@@ -203,7 +203,10 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        payPalContextID = extractToken(from: url ?? URL(string: "")!)
+        if let url {
+            payPalContextID = extractToken(from: url)
+        }
+
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
             correlationID: clientMetadataID,
