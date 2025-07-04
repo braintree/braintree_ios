@@ -16,8 +16,8 @@
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
   * Make `userAuthenticationEmail` property optional for all App Switch flows
-  * Bug fix: Fixed `unitTaxAmount` update issue during `requestParameters` generation in `BTPayPalLineItem`
-  * Made `BTPayPalLineItem` parameters configurable
+  * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
+  * Make `BTPayPalLineItem` parameters settable
 * BraintreeThreeDSecure
   * Bug fix: remove internal code signing from framework
 
