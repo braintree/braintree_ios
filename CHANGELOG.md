@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Fix bug where `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
+  * Bug fix: Ensure that ASWebAuthenticationSession.start is only called with one URL at a time by blocking additional start calls until the current one completes.
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal
