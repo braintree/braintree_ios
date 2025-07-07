@@ -48,7 +48,7 @@ import BraintreeCore
         }
     }
 
-    @objc public func tokenizeVisaCheckoutResult(_ checkoutResult: CheckoutResult, completion: @escaping (BTVisaCheckoutNonce, Error?) -> Void) {
+    @objc public func tokenizeVisaCheckoutResult(_ checkoutResult: CheckoutResult, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
         let statusCode = checkoutResult.statusCode
         let callId = checkoutResult.callId
         let encryptedKey = checkoutResult.encryptedKey
@@ -102,9 +102,7 @@ import BraintreeCore
                 return
             }
 
-            guard
-                let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first,
-                let tokenizedVisaCheckoutCard = BTVisaCheckoutNonce.visaCheckoutCardNonce(with: visaCheckoutCards)
+            guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first
             else {
                 self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
                 return
