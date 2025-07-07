@@ -10,6 +10,7 @@ import BraintreeCore
     private let apiClient: BTAPIClient
 
     /// Creates a Visa Checkout client.
+    ///
     /// - Parameters:
     ///   - apiClient: An API client used to make network requests.
     @objc public init(apiClient: BTAPIClient) {
@@ -63,7 +64,10 @@ import BraintreeCore
     ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds,
     ///   `tokenizedVisaCheckoutCard` will contain a nonce and `error` will be `nil`; if it fails
     ///   `tokenizedVisaCheckoutCard` will be `nil` and `error` will describe the failure.
-    @objc public func tokenizeVisaCheckoutResult(_ checkoutResult: CheckoutResult, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
+    @objc public func tokenizeVisaCheckoutResult(
+        _ checkoutResult: CheckoutResult,
+        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
+    ) {
         let statusCode = checkoutResult.statusCode
         let callId = checkoutResult.callId
         let encryptedKey = checkoutResult.encryptedKey
@@ -100,7 +104,11 @@ import BraintreeCore
         guard statusCode == .statusSuccess else {
             let analyticEvent = analyticsEvent(for: statusCode)
             let error = "Visa Checkout failed with status code \(statusCode.rawValue)"
-            sendAnalyticsAndComplete(BTVisaCheckoutAnalytics.tokenizeFailed + ".\(analyticEvent)", result: nil, error: error as? Error, completion: completion)
+            sendAnalyticsAndComplete(
+                BTVisaCheckoutAnalytics.tokenizeFailed + ".\(analyticEvent)",
+                result: nil, error: error as? Error,
+                completion: completion
+            )
             return
         }
 
