@@ -36,6 +36,7 @@ class BTVenmoClient_Tests: XCTestCase {
         )
         
         venmoClient.apiClient = mockAPIClient
+        BTVenmoClient.venmoClient = venmoClient
     }
 
     func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
