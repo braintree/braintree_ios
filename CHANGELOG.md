@@ -3,6 +3,8 @@
 ## unreleased
 * BraintreePayPal
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
+  * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
+  * Make `BTPayPalLineItem` parameters settable
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal
@@ -16,8 +18,6 @@
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
   * Make `userAuthenticationEmail` property optional for all App Switch flows
-  * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
-  * Make `BTPayPalLineItem` parameters settable
 * BraintreeThreeDSecure
   * Bug fix: remove internal code signing from framework
 
