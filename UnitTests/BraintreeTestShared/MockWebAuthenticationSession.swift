@@ -14,14 +14,13 @@ class MockWebAuthenticationSession: BTWebAuthenticationSession {
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
         sessionDidAppear: @escaping (Bool) -> Void,
         sessionDidCancel: @escaping () -> Void,
-        sessionDidDuplicate: @escaping (Bool) -> Void = { _ in }
+        sessionDidDuplicate: @escaping () -> Void = { }
     ) {
         guard !cannedSessionDidDuplicate else {
-            sessionDidDuplicate(cannedSessionDidDuplicate)
+            sessionDidDuplicate()
             return
         }
         
-        sessionDidDuplicate(cannedSessionDidDuplicate)
         sessionDidAppear(cannedSessionDidDisplay)
 
         if let error = cannedErrorResponse as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {

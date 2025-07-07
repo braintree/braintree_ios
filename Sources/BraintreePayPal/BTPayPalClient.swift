@@ -26,6 +26,7 @@ import BraintreeDataCollector
 
     /// Exposed for testing the clientMetadataID associated with this request.
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
+    /// The key is the PayPal context ID (e.g., BA or EC token), and the value is the corresponding client metadata ID.
     var clientMetadataIDs: [String: String] = [:]
     
     /// Exposed for testing the intent associated with this request
@@ -547,7 +548,7 @@ import BraintreeDataCollector
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             notifyCancel(completion: completion)
             return
-        } sessionDidDuplicate: { [self] _ in
+        } sessionDidDuplicate: { [self] in
             payPalContextID = extractToken(from: appSwitchURL)
             
             apiClient.sendAnalyticsEvent(
