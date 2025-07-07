@@ -29,7 +29,7 @@ import BraintreeCore
     ///   - completion: A completion block that is invoked when the profile is created.
     ///   `profile` will be an instance of VisaProfile when successful, otherwise `nil`.
     ///   `error` will be the related error if VisaProfile could not be created, otherwise `nil`.
-    @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
+    @objc public func createProfile(completion: @escaping (VisaProfile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error = error {
                 completion(nil, error)
@@ -106,7 +106,7 @@ import BraintreeCore
             let analyticEvent = analyticsEvent(for: statusCode)
             let error = "Visa Checkout failed with status code \(statusCode.rawValue)"
             sendAnalyticsAndComplete(
-                BTVisaCheckoutAnalytics.tokenizeFailed+": \(analyticEvent)",
+                BTVisaCheckoutAnalytics.tokenizeFailed + ": \(analyticEvent)",
                 result: nil,
                 error: error as? Error,
                 completion: completion

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -968,7 +968,7 @@
 		844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDataCollector_Tests.swift; sourceTree = "<group>"; };
 		85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_BraintreeCoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:XEZPTDFLAS:changching chi"; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
+		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
 		9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/FatFrameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
 		9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
 		9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressError.swift; sourceTree = "<group>"; };
@@ -1052,9 +1052,9 @@
 		BE0AF6BE29AFF13200245C2C /* BTVenmoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoRequest.swift; sourceTree = "<group>"; };
 		BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult.swift; sourceTree = "<group>"; };
 		BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitAPI.swift; sourceTree = "<group>"; };
-		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:H7M4G5NDNU:CardinalCommerce Corp"; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
+		BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE1ACEF62938F0B800707330 /* BTHTTP_SSLPinning_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTP_SSLPinning_IntegrationTests.swift; sourceTree = "<group>"; };
-		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:H7M4G5NDNU:CardinalCommerce Corp"; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
+		BE24C66528D906090067B11A /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = Frameworks/XCFrameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		BE24C66D28E49A730067B11A /* BTAPIClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientError.swift; sourceTree = "<group>"; };
 		BE24C67228E73E810067B11A /* BTAPIClientHTTPType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAPIClientHTTPType.swift; sourceTree = "<group>"; };
 		BE24C67428E7491E0067B11A /* ClientAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAuthorization.swift; sourceTree = "<group>"; };
@@ -2410,8 +2410,6 @@
 				046547D12DDE8B200054B80A /* PBXTargetDependency */,
 			);
 			name = BraintreeVisaCheckout;
-			packageProductDependencies = (
-			);
 			productName = BraintreeVisa;
 			productReference = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2431,8 +2429,6 @@
 				046547F92DDE956D0054B80A /* PBXTargetDependency */,
 			);
 			name = BraintreeVisaCheckoutTests;
-			packageProductDependencies = (
-			);
 			productName = BraintreeVisaTests;
 			productReference = 046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3374,11 +3370,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/VisaCheckoutSDK/VisaCheckoutSDK.framework/VisaCheckoutSDK",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VisaCheckoutSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3436,11 +3434,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/VisaCheckoutSDK/VisaCheckoutSDK.framework/VisaCheckoutSDK",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VisaCheckoutSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
