@@ -377,6 +377,17 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
     }
+    
+    func testTokenize_whenSessionIsDuplicated_sendsDuplicateRequestAnalyticsEvent() {
+        let request = BTPayPalVaultRequest()
+        mockWebAuthenticationSession.cannedSessionDidDuplicate = true
+        
+        payPalClient.tokenize(request) { _, _ in }
+        
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
+
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeDuplicateRequest))
+    }
 
     // MARK: - handleBrowserSwitchReturn
 
