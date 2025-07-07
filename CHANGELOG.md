@@ -5,6 +5,7 @@
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
   * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
   * Make `BTPayPalLineItem` parameters settable
+  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal
