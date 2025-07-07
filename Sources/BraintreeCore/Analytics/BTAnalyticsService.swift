@@ -112,6 +112,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             let configuration = try await apiClient.fetchConfiguration()
             try await postAnalyticsEvents(
                 configuration: configuration,
+                applicationState: UIApplication.shared.applicationState,
                 sessionID: apiClient.metadata.sessionID,
                 events: [event]
             )
@@ -131,6 +132,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             for (sessionID, eventsPerSessionID) in await events.allValues {
                 try await postAnalyticsEvents(
                     configuration: configuration,
+                    applicationState: UIApplication.shared.applicationState,
                     sessionID: sessionID,
                     events: eventsPerSessionID
                 )
@@ -142,9 +144,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
     
     /// Posts analytics events to the endpoint.
-    private func postAnalyticsEvents(configuration: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) async throws {
+    private func postAnalyticsEvents(configuration: BTConfiguration, applicationState: UIApplication.State, sessionID: String, events: [FPTIBatchData.Event]) async throws {
         let payload = createAnalyticsEvent(
             config: configuration,
+            applicationState: applicationState,
             sessionID: sessionID,
             events: events
         )
@@ -153,16 +156,28 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
 
     /// Constructs POST params to be sent to FPTI
-    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    private func createAnalyticsEvent(config: BTConfiguration, applicationState: UIApplication.State, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
             environment: config.fptiEnvironment,
             integrationType: apiClient?.metadata.integration.stringValue ?? BTClientMetadataIntegration.custom.stringValue,
             merchantID: config.merchantID,
+            applicationState: applicationState.asString,
             sessionID: sessionID,
             tokenizationKey: apiClient?.authorization.type == .tokenizationKey ? apiClient?.authorization.originalValue : nil
         )
         
         return FPTIBatchData(metadata: batchMetadata, events: events)
+    }
+}
+
+extension UIApplication.State {
+    var asString: String {
+        switch self {
+        case .active: "active"
+        case .inactive: "inactive"
+        case .background: "background"
+        @unknown default: "unknown"
+        }
     }
 }

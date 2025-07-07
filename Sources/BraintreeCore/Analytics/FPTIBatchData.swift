@@ -203,6 +203,8 @@ struct FPTIBatchData: Codable {
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
 
         let platform = "iOS"
+        
+        let applicationState: String
 
         /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
@@ -230,6 +232,7 @@ struct FPTIBatchData: Codable {
             case merchantID = "merchant_id"
             case platform = "platform"
             case sessionID = "session_id"
+            case applicationState = "application_state"
             case tokenizationKey = "tokenization_key"
             case venmoInstalled = "venmo_installed"
         }
