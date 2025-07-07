@@ -48,7 +48,7 @@ import BraintreeCore
         }
     }
 
-    @objc public func tokenizeVisaCheckoutResult(_ checkoutResult: CheckoutResult, completion: @escaping (BTVisaCheckoutCardNonce?, Error?) -> Void) {
+    @objc public func tokenizeVisaCheckoutResult(_ checkoutResult: CheckoutResult, completion: @escaping (BTVisaCheckoutNonce, Error?) -> Void) {
         let statusCode = checkoutResult.statusCode
         let callId = checkoutResult.callId
         let encryptedKey = checkoutResult.encryptedKey
@@ -68,7 +68,7 @@ import BraintreeCore
         callId: String?,
         encryptedKey: String?,
         encryptedPaymentData: String?,
-        completion: @escaping (BTVisaCheckoutCardNonce?, Error?) -> Void
+        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         if statusCode == .statusUserCancelled {
             sendAnalyticsAndComplete("ios.visacheckout.result.cancelled", result: nil, error: nil, completion: completion)
@@ -104,7 +104,7 @@ import BraintreeCore
 
             guard
                 let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first,
-                let tokenizedVisaCheckoutCard = BTVisaCheckoutCardNonce.visaCheckoutCardNonce(with: visaCheckoutCards)
+                let tokenizedVisaCheckoutCard = BTVisaCheckoutNonce.visaCheckoutCardNonce(with: visaCheckoutCards)
             else {
                 self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
                 return
@@ -115,7 +115,7 @@ import BraintreeCore
 
     // MARK: - Analytics Helper Methods
 
-    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutCardNonce?, Error?) -> Void) {
+    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVisaCheckoutAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription
@@ -125,9 +125,9 @@ import BraintreeCore
 
     private func sendAnalyticsAndComplete(
         _ event: String,
-        result: BTVisaCheckoutCardNonce?,
+        result: BTVisaCheckoutNonce?,
         error: Error?,
-        completion: @escaping (BTVisaCheckoutCardNonce?, Error?) -> Void
+        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         apiClient.sendAnalyticsEvent(event)
         completion(result, error)
