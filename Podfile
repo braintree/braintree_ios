@@ -15,6 +15,7 @@ abstract_target 'Tests' do
   pod 'OCMock'
   pod 'OHHTTPStubs/Swift'
   pod 'xcbeautify'
+  pod 'VisaCheckoutSDK'
 
   target 'IntegrationTests'
   target 'BraintreeCoreTests'
