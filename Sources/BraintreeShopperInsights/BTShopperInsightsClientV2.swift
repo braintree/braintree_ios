@@ -38,6 +38,7 @@ public class BTShopperInsightsClientV2 {
     ///    - request: A `BTCustomerSessionRequest`
     /// - Returns: A `String` representing a session ID if successful
     /// - Throws: An error if the request fails for some reason or if the response is invalid.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
     public func createCustomerSession(request: BTCustomerSessionRequest) async throws -> String {
         let createCustomerSessionAPI = BTCreateCustomerSessionAPI(apiClient: apiClient)
         return try await createCustomerSessionAPI.execute(request)
@@ -49,6 +50,7 @@ public class BTShopperInsightsClientV2 {
     ///    - sessionID: the ID of the session to update
     /// - Returns: A `String` representing a session ID if successful
     /// - Throws: An error if the request fails for some reason or if the response is invalid.
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
     public func updateCustomerSession(request: BTCustomerSessionRequest, sessionID: String) async throws -> String {
         let updateCustomerSessionAPI = BTUpdateCustomerSessionAPI(apiClient: apiClient)
         return try await updateCustomerSessionAPI.execute(request, sessionID: sessionID)
