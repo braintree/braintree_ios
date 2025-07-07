@@ -6,15 +6,22 @@ import BraintreeCore
 
 /// Error details associated with Visa Checkout.
 public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equatable {
+
+    /// 0. Unknown error
     case unknown
+
+    /// 1. Visa Checkout is disabled in the Braintree Control Panel.
     case unsupported
+
+    /// 2. Braintree SDK is integrated incorrectly.
     case integration
+
+    /// 3. Visa Checkout SDK responded with an unsuccessful status code.
     case checkoutUnsuccessful
+
+    /// 4. Visa Checkout was cancelled by the user.
     case cancelled
 
-    public static var errorDomain: String {
-        BTCoreConstants.visaCheckoutErrorDomain
-    }
     public var errorCode: String {
         switch self {
         case .unknown:
