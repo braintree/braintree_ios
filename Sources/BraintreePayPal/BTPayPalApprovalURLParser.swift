@@ -44,6 +44,18 @@ struct BTPayPalApprovalURLParser {
 
         return nil
     }
+    
+    var experiment: String? {
+        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
+            .queryItems?
+            .compactMap { $0 }
+        
+        if let experiment = queryItems?.first(where: { $0.name == "experiment" })?.value, !experiment.isEmpty {
+            return experiment
+        }
+        
+        return nil
+    }
 
     init?(body: BTJSON) {
         if let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {

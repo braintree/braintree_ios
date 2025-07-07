@@ -63,6 +63,10 @@ import BraintreeDataCollector
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
     private var payPalContextID: String?
     
+    /// Used to determine whether or not to render the WAS popup.
+    /// If the experiement is enabled, set the `prefersEphemeralWebBrowserSession` flag to true.
+    private var experiment: String?
+    
     /// Used for analytics purposes, to determine if brower-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
 
@@ -401,6 +405,8 @@ import BraintreeDataCollector
                 }
                 
                 self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
+                
+                self.experiment = approvalURL.experiment
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
                 self.clientMetadataID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
@@ -463,6 +469,8 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
+        webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
+
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)

@@ -45,4 +45,25 @@ class BTPayPalLineItem_Tests: XCTestCase {
         requestParams = lineItem.requestParameters()
         XCTAssertEqual(requestParams["kind"], "credit")
     }
+    
+    func testRequestParameters() {
+        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit)
+        lineItem.unitTaxAmount = "8"
+        lineItem.itemDescription = "item description"
+        lineItem.imageURL = URL(string: "https://example.com/image.jpg")
+        lineItem.url = URL(string: "https://example.com")
+        lineItem.productCode = "product-code"
+        lineItem.upcCode = "upc-code"
+        let requestParams = lineItem.requestParameters()
+        XCTAssertEqual(requestParams["name"], "item-name")
+        XCTAssertEqual(requestParams["kind"], "debit")
+        XCTAssertEqual(requestParams["unit_amount"], "10")
+        XCTAssertEqual(requestParams["quantity"], "1")
+        XCTAssertEqual(requestParams["unit_tax_amount"], "8")
+        XCTAssertEqual(requestParams["description"], "item description")
+        XCTAssertEqual(requestParams["image_url"], "https://example.com/image.jpg")
+        XCTAssertEqual(requestParams["url"], "https://example.com")
+        XCTAssertEqual(requestParams["product_code"], "product-code")
+        XCTAssertEqual(requestParams["upc_code"], "upc-code")
+    }
 }
