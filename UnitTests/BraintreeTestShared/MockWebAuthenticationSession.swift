@@ -21,6 +21,7 @@ class MockWebAuthenticationSession: BTWebAuthenticationSession {
             return
         }
         
+        sessionDidDuplicate(cannedSessionDidDuplicate)
         sessionDidAppear(cannedSessionDidDisplay)
 
         if let error = cannedErrorResponse as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {

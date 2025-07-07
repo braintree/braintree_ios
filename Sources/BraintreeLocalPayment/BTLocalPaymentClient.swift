@@ -304,7 +304,7 @@ import BraintreeDataCollector
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
-        } sessionDidAppear: { [self] didAppear  in
+        } sessionDidAppear: { [self] didAppear in
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
             } else {
