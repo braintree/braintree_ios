@@ -2,12 +2,12 @@
 
 ## unreleased
 * BraintreePayPal
-  * Fix bug where `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
+  * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
   * Bug fix: Ensure that ASWebAuthenticationSession.start is only called with one URL at a time by blocking additional start calls until the current one completes.
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal
-  * Set the `prefersEphemeralWebBrowserSession` flag based on query parameter `experiment` to enable/disable the WAS popup.
+  * Set the `prefersEphemeralWebBrowserSession` flag based on query parameter `experiment` to enable/disable the `ASWebAutheniticationSession` popup. Please note this experiment may change or be removed in a future release.
 
 ## 6.33.0 (2025-05-22)
 * BraintreeCore
