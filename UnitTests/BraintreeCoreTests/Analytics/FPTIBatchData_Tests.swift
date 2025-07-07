@@ -11,6 +11,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         environment: "fake-env",
         integrationType: "fake-integration-type",
         merchantID: "fake-merchant-id",
+        applicationState: "active",
         sessionID: "fake-session",
         tokenizationKey: "fake-auth"
     )

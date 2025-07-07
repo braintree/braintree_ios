@@ -142,7 +142,11 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
     
     /// Posts analytics events to the endpoint.
-    private func postAnalyticsEvents(configuration: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) async throws {
+    private func postAnalyticsEvents(
+        configuration: BTConfiguration,
+        sessionID: String,
+        events: [FPTIBatchData.Event]
+    ) async throws {
         let payload = createAnalyticsEvent(
             config: configuration,
             sessionID: sessionID,
@@ -153,7 +157,11 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
 
     /// Constructs POST params to be sent to FPTI
-    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    private func createAnalyticsEvent(
+        config: BTConfiguration,
+        sessionID: String,
+        events: [FPTIBatchData.Event]
+    ) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
             environment: config.fptiEnvironment,
