@@ -304,13 +304,13 @@ import BraintreeDataCollector
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
                 onPayment(with: nil, error: BTLocalPaymentError.missingReturnURL)
             }
-        } sessionDidAppear: { [self] didAppear, _  in
+        } sessionDidAppear: { [self] didAppear  in
             if didAppear {
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationSucceeded)
             } else {
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserPresentationFailed)
             }
-        } sessionDidCancel: { [self] _ in
+        } sessionDidCancel: { [self] in
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)

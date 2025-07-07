@@ -17,16 +17,16 @@ public class BTWebAuthenticationSession: NSObject {
         url: URL,
         context: ASWebAuthenticationPresentationContextProviding,
         sessionDidComplete: @escaping (URL?, Error?) -> Void,
-        sessionDidAppear: @escaping (Bool, BAToken?) -> Void,
-        sessionDidCancel: @escaping (BAToken?) -> Void,
-        sessionDidDuplicate: @escaping (BAToken?) -> Void = { _ in }
+        sessionDidAppear: @escaping (Bool) -> Void,
+        sessionDidCancel: @escaping () -> Void,
+        sessionDidDuplicate: @escaping (Bool) -> Void = { _ in }
     ) {
-        let baToken = getBAToken(from: url)
-        
         guard currentSession == nil else {
-            sessionDidDuplicate(baToken)
+            sessionDidDuplicate(true)
             return
         }
+        
+        sessionDidDuplicate(false)
         
         currentSession = ASWebAuthenticationSession(
             url: url,
@@ -34,7 +34,7 @@ public class BTWebAuthenticationSession: NSObject {
         ) { url, error in
             self.currentSession = nil
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
-                sessionDidCancel(baToken)
+                sessionDidCancel()
             } else {
                 sessionDidComplete(url, error)
             }
@@ -44,19 +44,7 @@ public class BTWebAuthenticationSession: NSObject {
         currentSession?.presentationContextProvider = context
         
         DispatchQueue.main.async {
-            sessionDidAppear(self.currentSession?.start() ?? false, baToken)
+            sessionDidAppear(self.currentSession?.start() ?? false)
         }
-    }
-    
-    private func getBAToken(from url: URL) -> String? {
-        let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: true)?
-            .queryItems?
-            .compactMap { $0 }
-        
-        guard let baToken = queryItems?.first(where: { $0.name == "ba_token" })?.value, !baToken.isEmpty else {
-            return nil
-        }
-        
-        return baToken
     }
 }

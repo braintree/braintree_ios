@@ -506,8 +506,8 @@ import BraintreeDataCollector
             case .unknownPath:
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
-        } sessionDidAppear: { [self] didAppear, baToken in
-            payPalContextID = baToken
+        } sessionDidAppear: { [self] didAppear in
+            payPalContextID = extractToken(from: appSwitchURL)
             
             if didAppear {
                 apiClient.sendAnalyticsEvent(
@@ -529,8 +529,9 @@ import BraintreeDataCollector
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             }
-        } sessionDidCancel: { [self] baToken in
-            payPalContextID = baToken
+        } sessionDidCancel: { [self] in
+            payPalContextID = extractToken(from: appSwitchURL)
+            
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
@@ -546,8 +547,9 @@ import BraintreeDataCollector
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
             notifyCancel(completion: completion)
             return
-        } sessionDidDuplicate: { [self] baToken in
-            payPalContextID = baToken
+        } sessionDidDuplicate: { [self] _ in
+            payPalContextID = extractToken(from: appSwitchURL)
+            
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -561,7 +563,7 @@ import BraintreeDataCollector
     
     /// extract BA or EC token from the URL to set `payPalContextID` correctly
     private func extractToken(from url: URL?) -> String? {
-        guard let url = url else { return nil }
+        guard let url else { return nil }
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
         return baToken ?? ecToken
