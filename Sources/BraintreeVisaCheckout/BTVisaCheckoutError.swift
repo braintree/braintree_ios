@@ -7,7 +7,7 @@ import BraintreeCore
 /// Error details associated with Visa Checkout.
 public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
-    /// 0. Unknown error
+    /// 0. Unknown error.
     case unknown
 
     /// 1. Visa Checkout is disabled in the Braintree Control Panel.
@@ -27,7 +27,7 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
         case .unknown:
             return "Failed to parse Visa Checkout card nonce."
         case .unsupported:
-            return "Visa Checkout is not enabled for this merchant. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
+            return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
         case .integration:
             return "A valid VisaCheckoutResult is required."
         case .checkoutUnsuccessful:
@@ -37,4 +37,3 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
         }
     }
 }
-

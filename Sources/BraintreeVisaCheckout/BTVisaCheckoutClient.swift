@@ -7,12 +7,13 @@ import BraintreeCore
 
 // Creates a Visa Checkout client for processing Visa Checkout payments.
 @objc public class BTVisaCheckoutClient: NSObject {
+
     private let apiClient: BTAPIClient
 
     /// Creates a Visa Checkout client.
     ///
     /// - Parameters:
-    ///   - apiClient: An API client used to make network requests.
+    ///   - apiClient: An API client.
     @objc public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
         super.init()
@@ -105,8 +106,9 @@ import BraintreeCore
             let analyticEvent = analyticsEvent(for: statusCode)
             let error = "Visa Checkout failed with status code \(statusCode.rawValue)"
             sendAnalyticsAndComplete(
-                BTVisaCheckoutAnalytics.tokenizeFailed + ".\(analyticEvent)",
-                result: nil, error: error as? Error,
+                BTVisaCheckoutAnalytics.tokenizeFailed+": \(analyticEvent)",
+                result: nil,
+                error: error as? Error,
                 completion: completion
             )
             return
