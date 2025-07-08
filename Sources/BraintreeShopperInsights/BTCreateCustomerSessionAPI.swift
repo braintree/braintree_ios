@@ -29,6 +29,8 @@ final class BTCreateCustomerSessionAPI {
     ///    - Throws: An error if the request fails or if the response is invalid.
     func execute(_ request: BTCustomerSessionRequest) async throws -> String {
         do {
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.createCustomerSessionStarted)
+            
             let graphQLParams = CreateCustomerSessionMutationGraphQLBody(request: request)
             
             let (body, _) = try await apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI)
@@ -40,9 +42,11 @@ final class BTCreateCustomerSessionAPI {
             guard let sessionID = body["data"]["createCustomerSession"]["sessionId"].asString() else {
                 throw BTHTTPError.httpResponseInvalid
             }
-            
+           
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.createCustomerSessionSucceeded)
             return sessionID
         } catch {
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.createCustomerSessionFailed)
             throw error
         }
     }
