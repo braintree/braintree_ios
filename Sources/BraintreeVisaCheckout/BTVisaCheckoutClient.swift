@@ -1,5 +1,5 @@
-import Foundation
 import VisaCheckoutSDK
+import Foundation
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -29,7 +29,7 @@ import BraintreeCore
     ///   - completion: A completion block that is invoked when the profile is created.
     ///   `profile` will be an instance of VisaProfile when successful, otherwise `nil`.
     ///   `error` will be the related error if VisaProfile could not be created, otherwise `nil`.
-    @objc public func createProfile(completion: @escaping (VisaProfile?, Error?) -> Void) {
+    @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error = error {
                 completion(nil, error)
