@@ -15,8 +15,8 @@
 		046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */; };
 		046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
 		046548042DDE9B3A0054B80A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */; };
-		04A9F94E2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F94D2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework */; };
-		04A9F9512E1DB03400FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F94D2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework */; };
+		04A9F9612E1DB24000FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */; };
+		04A9F9642E1DB24F00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -1188,7 +1188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */,
-				04A9F9512E1DB03400FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
+				04A9F9612E1DB24000FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1196,7 +1196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A9F94E2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
+				04A9F9642E1DB24F00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 				046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */,
 				046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */,
 			);
@@ -2401,8 +2401,6 @@
 				046547D12DDE8B200054B80A /* PBXTargetDependency */,
 			);
 			name = BraintreeVisaCheckout;
-			packageProductDependencies = (
-			);
 			productName = BraintreeVisa;
 			productReference = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2422,8 +2420,6 @@
 				046547F92DDE956D0054B80A /* PBXTargetDependency */,
 			);
 			name = BraintreeVisaCheckoutTests;
-			packageProductDependencies = (
-			);
 			productName = BraintreeVisaTests;
 			productReference = 046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3364,11 +3360,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/VisaCheckoutSDK/VisaCheckoutSDK.framework/VisaCheckoutSDK",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VisaCheckoutSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3426,11 +3424,13 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/VisaCheckoutSDK/VisaCheckoutSDK.framework/VisaCheckoutSDK",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VisaCheckoutSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
