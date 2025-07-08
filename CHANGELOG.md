@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
+  * Bug fix: Ensure that `ASWebAuthenticationSession.start` is only called with one URL at a time by blocking additional start calls until the current one completes.
   * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
   * Make `BTPayPalLineItem` parameters settable
 
