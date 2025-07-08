@@ -30,7 +30,7 @@ final class BTCustomerRecommendationsAPI {
         sessionID: String
     ) async throws -> BTCustomerRecommendationsResult {
         do {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.getCustomerRecommendationsStarted)
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsStarted)
             let graphQLParameters = GenerateCustomerRecommendationsGraphQLBody(request: request, sessionID: sessionID)
             let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
             
@@ -52,14 +52,14 @@ final class BTCustomerRecommendationsAPI {
                 }
             }
             
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.getCustomerRecommendationsSucceeded)
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsSucceeded)
             return BTCustomerRecommendationsResult(
                 sessionID: sessionID,
                 isInPayPalNetwork: isInPayPalNetwork,
                 paymentRecommendations: paymentOptions
             )
         } catch {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.getCustomerRecommendationsFailed)
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed)
             throw error
         }
     }

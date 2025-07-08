@@ -23,11 +23,7 @@ enum BTShopperInsightsAnalytics {
     static let updateCustomerSessionSucceeded = "shopper-insights:update-customer-session:succeeded"
     static let updateCustomerSessionFailed = "shopper-insights:update-customer-session:failed"
     
-    static let getCustomerRecommendationsStarted = "shopper-insights:get-customer-recommendations:started"
-    static let getCustomerRecommendationsSucceeded = "shopper-insights:get-customer-recommendations:succeeded"
-    static let getCustomerRecommendationsFailed = "shopper-insights:get-customer-recommendations:failed"
-    
-    static let manageCustomerSessionWithRecommendationsStarted = "shopper-insights:manage-customer-session-with-recommendations:started"
-    static let manageCustomerSessionWithRecommendationsSucceeded = "shopper-insights:manage-customer-session-with-recommendations:succeeded"
-    static let manageCustomerSessionWithRecommendationsFailed = "shopper-insights:manage-customer-session-with-recommendations:failed"
+    static let generateCustomerRecommendationsStarted = "shopper-insights:generate-customer-recommendations:started"
+    static let generateCustomerRecommendationsSucceeded = "shopper-insights:generate-customer-recommendations:succeeded"
+    static let generateCustomerRecommendationsFailed = "shopper-insights:generate-customer-recommendations:failed"
 }
