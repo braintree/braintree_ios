@@ -2,8 +2,8 @@ import Foundation
 
 public struct BTPayPalPhoneNumber: Encodable {
     
-    private let countryCode: String
-    private let nationalNumber: String
+    let countryCode: String
+    let nationalNumber: String
     
     private enum CodingKeys: String, CodingKey {
         case countryCode = "country_code"
@@ -17,5 +17,14 @@ public struct BTPayPalPhoneNumber: Encodable {
     public init(countryCode: String, nationalNumber: String) {
         self.countryCode = countryCode
         self.nationalNumber = nationalNumber
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        if !countryCode.isEmpty && !nationalNumber.isEmpty {
+            try container.encode(countryCode, forKey: .countryCode)
+            try container.encode(nationalNumber, forKey: .nationalNumber)
+        }
     }
 }

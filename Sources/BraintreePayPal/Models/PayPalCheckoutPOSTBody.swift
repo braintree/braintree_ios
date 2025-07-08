@@ -15,9 +15,9 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let returnURL: String
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
-    private let userPhoneNumber: BTPayPalPhoneNumber?
     
-    private var billingAgreementDescription: BillingAgreemeentDescription?
+    private var userPhoneNumber: BTPayPalPhoneNumber?
+    private var billingAgreementDescription: BillingAgreementDescription?
     private var enablePayPalAppSwitch: Bool?
     private var contactPreference: String?
     private var currencyCode: String?
@@ -45,7 +45,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     
     // MARK: - Initializer
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     init(
         payPalRequest: BTPayPalCheckoutRequest,
         configuration: BTConfiguration,
@@ -70,7 +70,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.requestBillingAgreement = payPalRequest.requestBillingAgreement
             
             if let billingAgreementDescription = payPalRequest.billingAgreementDescription {
-                self.billingAgreementDescription = BillingAgreemeentDescription(description: billingAgreementDescription)
+                self.billingAgreementDescription = BillingAgreementDescription(description: billingAgreementDescription)
             }
         }
         
@@ -116,7 +116,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.shopperSessionID = shopperSessionID
         }
         
-        self.userPhoneNumber = payPalRequest.userPhoneNumber
+        if
+            let userPhoneNumber = payPalRequest.userPhoneNumber,
+            !userPhoneNumber.countryCode.isEmpty,
+            !userPhoneNumber.nationalNumber.isEmpty {
+            self.userPhoneNumber = userPhoneNumber
+        }
+
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
         self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
@@ -167,7 +173,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
 
 extension PayPalCheckoutPOSTBody {
     
-    struct BillingAgreemeentDescription: Encodable {
+    struct BillingAgreementDescription: Encodable {
         
         // MARK: - Private Properties
         
