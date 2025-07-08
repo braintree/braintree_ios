@@ -233,7 +233,8 @@ class BTPayPalClient_Tests: XCTestCase {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
         payPalClient.webAuthenticationSession = MockWebAuthenticationSession()
-
+        let token = "BA-Random-Value"
+        
         let vaultRequest = BTPayPalVaultRequest(
             userAuthenticationEmail: "fake@gmail.com",
             enablePayPalAppSwitch: true
@@ -241,19 +242,19 @@ class BTPayPalClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
-                "paypalAppApprovalUrl": "https://www.paypal.com?ba_token=BA-Random-Value"
+                "paypalAppApprovalUrl": "https://www.paypal.com?ba_token=\(token)"
             ]
         ])
 
         payPalClient.tokenize(vaultRequest) { _, _ in }
 
-        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=BA-Random-Value&switch_initiated_time=1234567890")!
+        let returnURL = URL(string: "https://www.merchant-app.com/merchant-path/success?ba_token=\(token)&switch_initiated_time=1234567890")!
         payPalClient.handleReturnURL(returnURL)
 
         XCTAssertEqual(mockAPIClient.postedPayPalContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, true)
         XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, true)
-        XCTAssertNotNil(payPalClient.clientMetadataID)
+        XCTAssertEqual(payPalClient.clientMetadataIDs["BA-Random-Value"], "BA-Random-Value")
     }
 
     func testTokenize_whenApprovalURLDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
@@ -376,13 +377,16 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
     }
-
-    func testTokenizePayPalAccount_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
+    
+    func testTokenize_whenSessionIsDuplicated_sendsDuplicateRequestAnalyticsEvent() {
+        let request = BTPayPalVaultRequest()
+        mockWebAuthenticationSession.cannedSessionDidDuplicate = true
+        
         payPalClient.tokenize(request) { _, _ in }
+        
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
 
-        XCTAssertNotNil(payPalClient.webAuthenticationSession)
-        XCTAssertNotNil(payPalClient.clientMetadataID)
+        XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeDuplicateRequest))
     }
 
     // MARK: - handleBrowserSwitchReturn
@@ -437,10 +441,11 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleBrowserSwitchReturn_whenBrowserSwitchSucceeds_intentShouldExistAsPayPalAccountParameter() {
         let payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
         payPalRequest.intent = .sale
-        payPalClient.clientMetadataID = "fake-client-metadata-id"
+        let token = "hermes_token"
+        payPalClient.clientMetadataIDs = [token: "fake-client-metadata-id"]
         payPalClient.payPalRequest = payPalRequest
 
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=\(token)")!
         payPalClient.handleReturn(returnURL, paymentType: payPalRequest.paymentType) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -521,9 +526,10 @@ class BTPayPalClient_Tests: XCTestCase {
         let merchantAccountID = "alternate-merchant-account-id"
         payPalClient.payPalRequest = BTPayPalCheckoutRequest(amount: "1.34")
         payPalClient.payPalRequest?.merchantAccountID = merchantAccountID
-        payPalClient.clientMetadataID = "a-fake-cmid"
+        let token = "hermes_token"
+        payPalClient.clientMetadataIDs = [token: "a-fake-cmid"]
 
-        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=\(token)")!
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { _, _ in }
 
         let lastPostParameters = mockAPIClient.lastPOSTParameters!
