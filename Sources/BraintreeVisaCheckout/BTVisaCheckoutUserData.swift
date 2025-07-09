@@ -24,8 +24,4 @@ import BraintreeCard
         self.userEmail = json["userEmail"].asString()
         super.init()
     }
-
-    public static func userData(with json: BTJSON) -> BTVisaCheckoutUserData {
-        return BTVisaCheckoutUserData(json: json)
-    }
 }

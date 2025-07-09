@@ -37,7 +37,7 @@ import BraintreeCore
 
     /// Initializes a `BTVisaCheckoutAddress` from a BTJSON object.
     /// - Parameter json: A BTJSON object containing the address fields.
-    @objc public init(json: BTJSON) {
+    public init(json: BTJSON) {
         self.firstName = json["firstName"].asString()
         self.lastName = json["lastName"].asString()
         self.streetAddress = json["streetAddress"].asString()
