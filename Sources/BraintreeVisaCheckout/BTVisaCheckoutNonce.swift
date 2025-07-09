@@ -11,25 +11,25 @@ import BraintreeCard
 @objcMembers public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
     // Last two digits of the user's underlying card, intended for display purposes.
-    @objc public let lastTwo: String
+    public let lastTwo: String
     
     // Type of this card (e.g. Visa, MasterCard, American Express)
-    @objc public let cardType: String
+    public let cardType: String
     
     // The user's billing address.
-    @objc public let billingAddress: BTVisaCheckoutAddress
+    public let billingAddress: BTVisaCheckoutAddress
     
     // The user's shipping address.
-    @objc public let shippingAddress: BTVisaCheckoutAddress
+    public let shippingAddress: BTVisaCheckoutAddress
     
     // The user's data.
-    @objc public let userData: BTVisaCheckoutUserData
+    public let userData: BTVisaCheckoutUserData
     
     // The Call ID from the VisaPaymentSummary.
-    @objc public let callID: String
+    public let callID: String
     
     // The BIN data for the card number associated with [VisaCheckoutNonce]
-    @objc public let binData: BTBinData
+    public let binData: BTBinData
 
     init?(json: BTJSON) {
 
