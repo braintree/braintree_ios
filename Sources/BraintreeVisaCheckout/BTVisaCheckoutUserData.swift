@@ -4,10 +4,6 @@ import Foundation
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCard)
-import BraintreeCard
-#endif
-
 @objcMembers public class BTVisaCheckoutUserData: NSObject {
 
     public let userFirstName: String?

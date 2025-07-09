@@ -4,10 +4,6 @@ import Foundation
 import BraintreeCore
 #endif
 
-#if canImport(BraintreeCard)
-import BraintreeCard
-#endif
-
 @objcMembers public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
     // Last two digits of the user's underlying card, intended for display purposes.
