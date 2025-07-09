@@ -51,9 +51,9 @@ final class BTVisaCheckoutCardNonce_Tests: XCTestCase {
         XCTAssertEqual(nonce.cardType, "Visa")
         XCTAssertEqual(nonce.callId, "fake-call-id")
         XCTAssertEqual(nonce.isDefault, true)
-        XCTAssertEqual(nonce.billingAddress.firstName, "Bill")
-        XCTAssertEqual(nonce.shippingAddress.firstName, "Ship")
+        XCTAssertEqual(nonce.billingAddress.firstName, "Alice")
+        XCTAssertEqual(nonce.shippingAddress.firstName, "Smith")
         XCTAssertEqual(nonce.userData.userEmail, "alice@example.com")
-        XCTAssertEqual(nonce.binData.issuingBank, "Big Bank")
+        XCTAssertEqual(nonce.binData.issuingBank, "Test Bank")
     }
 }
