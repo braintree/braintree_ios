@@ -16,7 +16,7 @@ import BraintreeCard
     public let username: String?
     public let userEmail: String?
 
-    @objc public init(json: BTJSON) {
+    init(json: BTJSON) {
         self.userFirstName = json["userFirstName"].asString()
         self.userLastName = json["userLastName"].asString()
         self.userFullName = json["userFullName"].asString()
