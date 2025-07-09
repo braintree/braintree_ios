@@ -15,8 +15,7 @@
 		046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */; };
 		046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
 		046548042DDE9B3A0054B80A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */; };
-		04A9F9612E1DB24000FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */; };
-		04A9F9642E1DB24F00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */; };
+		04A9F96B2E1DF47A00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A9F96A2E1DF47A00FB14C0 /* VisaCheckoutSDK.xcframework */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -778,11 +777,7 @@
 		046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeVisaCheckoutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = "Pods/VisaCheckoutSDK/DigitalTerminal-iOS-SDK-7.3.1/VisaCheckoutSDK.xcframework"; sourceTree = "<group>"; };
-		04A9F93D2E1DAC1400FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Pods/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
-		04A9F9442E1DAE8000FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Pods/VisaCheckoutSDK/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
-		04A9F9482E1DAE8C00FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
-		04A9F94D2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
+		04A9F96A2E1DF47A00FB14C0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = "Pods/VisaCheckoutSDK/DigitalTerminal-iOS-SDK-7.3.1/VisaCheckoutSDK.xcframework"; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
@@ -1196,7 +1191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */,
-				04A9F9612E1DB24000FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
+				04A9F96B2E1DF47A00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1204,7 +1199,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A9F9642E1DB24F00FB14C0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 				046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */,
 				046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */,
 			);
@@ -1487,15 +1481,6 @@
 				04E6D6AF2DDFE7B100729D7B /* Info.plist */,
 			);
 			path = BraintreeVisaCheckoutTests;
-			sourceTree = "<group>";
-		};
-		04A9F9492E1DAE8C00FB14C0 /* VisaCheckoutSDK */ = {
-			isa = PBXGroup;
-			children = (
-				04A9F9482E1DAE8C00FB14C0 /* VisaCheckoutSDK.xcframework */,
-			);
-			name = VisaCheckoutSDK;
-			path = Pods/VisaCheckoutSDK;
 			sourceTree = "<group>";
 		};
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
@@ -1870,11 +1855,7 @@
 		A75DA3531921394200D997A2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				04A9F94D2E1DB02300FB14C0 /* VisaCheckoutSDK.xcframework */,
-				04A9F9492E1DAE8C00FB14C0 /* VisaCheckoutSDK */,
-				04A9F9332E1DAA5500FB14C0 /* VisaCheckoutSDK.xcframework */,
-				04A9F93D2E1DAC1400FB14C0 /* VisaCheckoutSDK.xcframework */,
-				04A9F9442E1DAE8000FB14C0 /* VisaCheckoutSDK.xcframework */,
+				04A9F96A2E1DF47A00FB14C0 /* VisaCheckoutSDK.xcframework */,
 				BE139DB828EF12CF0044CD8C /* CardinalMobile.xcframework */,
 				80B6190C28C9535F00FB5022 /* PayPalCheckout.xcframework */,
 				9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */,
