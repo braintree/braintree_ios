@@ -34,8 +34,7 @@ import BraintreeCard
     init?(json: BTJSON) {
 
         let json = json["visaCheckoutCards"].isArray ? json["visaCheckoutCards"][0] : json
-
-        // Extract card details
+        
         guard
             let lastTwo = json["details"]["lastTwo"].asString(),
             let cardType = json["details"]["cardType"].asString(),
