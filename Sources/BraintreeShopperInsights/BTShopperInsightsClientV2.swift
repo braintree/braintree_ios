@@ -101,4 +101,21 @@ public class BTShopperInsightsClientV2 {
     public func isVenmoAppInstalled() -> Bool {
         application.isVenmoAppInstalled()
     }
+    
+    public func generateCustomerRecommendations(
+        request: BTCustomerSessionRequest,
+        sessionID: String,
+        completion: @escaping (_ result: BTCustomerRecommendationsResult?, _ error: Error?) -> Void
+    ) {
+        let api = BTCustomerRecommendationsAPI(apiClient: apiClient)
+
+        Task {
+            do {
+                let result = try await api.execute(request, sessionID: sessionID)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
 }
