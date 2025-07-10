@@ -110,6 +110,7 @@ Pod::Spec.new do |s|
   s.subspec "VisaCheckout" do |s|
     s.source_files = "Sources/BraintreeVisaCheckout/*.swift"
     s.dependency "Braintree/Core"
+    s.dependency "VisaCheckoutSDK", "6.6.0"
     s.resource_bundle = { "BraintreeVisaCheckout_PrivacyInfo" => "Sources/BraintreeVisaCheckout/PrivacyInfo.xcprivacy" }
   end
 

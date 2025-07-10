@@ -1,0 +1,6 @@
+framework module VisaCheckoutSDK {
+  umbrella header "VisaCheckout.h"
+
+  export *
+  module * { export * }
+}
