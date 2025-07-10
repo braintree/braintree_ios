@@ -4,22 +4,9 @@ import Foundation
 import BraintreeCore
 #endif
 
-/**
- A class containing Visa Checkout information about the user's address.
- 
- Parses and stores address values from a `BTJSON` object.
 
- - Properties:
-   - firstName: The user's first name.
-   - lastName: The user's last name.
-   - streetAddress: The user's street address.
-   - extendedAddress: The user's extended address.
-   - locality: The user's locality.
-   - region: The user's region.
-   - postalCode: The user's postal code.
-   - countryCode: The user's country code.
-   - phoneNumber: The user's phone number.
- */
+// A class containing Visa Checkout information about the user's address.
+// Parses and stores address values from a `BTJSON` object.
 @objcMembers public class BTVisaCheckoutAddress: NSObject {
 
     /// The user's first name

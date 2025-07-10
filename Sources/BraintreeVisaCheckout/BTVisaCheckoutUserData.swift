@@ -4,22 +4,22 @@ import Foundation
 import BraintreeCore
 #endif
 
-/**
- A class containing Visa Checkout information about the user.
-
- - Properties:
-   - userFirstName: The user's first name.
-   - userLastName: The user's last name.
-   - userFullName: The user's full name.
-   - username: The user's username.
-   - userEmail: The user's email.
- */
+// A class containing Visa Checkout information about the user.
 @objcMembers public class BTVisaCheckoutUserData: NSObject {
 
+    // The user's first name.
     public let userFirstName: String?
+    
+    // The user's last name.
     public let userLastName: String?
+    
+    // The user's full name.
     public let userFullName: String?
+    
+    // The user's username.
     public let username: String?
+    
+    // The user's email.
     public let userEmail: String?
 
     init(json: BTJSON) {
