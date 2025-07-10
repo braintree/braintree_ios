@@ -102,6 +102,8 @@ public class BTShopperInsightsClientV2 {
         application.isVenmoAppInstalled()
     }
     
+    /// Generates customer recommendations
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
     public func generateCustomerRecommendations(
         request: BTCustomerSessionRequest,
         sessionID: String,
