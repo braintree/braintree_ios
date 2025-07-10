@@ -22,4 +22,10 @@ final class BTShopperInsightsAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTShopperInsightsAnalytics.updateCustomerSessionSucceeded, "shopper-insights:update-customer-session:succeeded")
         XCTAssertEqual(BTShopperInsightsAnalytics.updateCustomerSessionFailed, "shopper-insights:update-customer-session:failed")
     }
+    
+    func test_generateCustomerRecommendations_sendsExpectedEventNames() {
+        XCTAssertEqual(BTShopperInsightsAnalytics.generateCustomerRecommendationsStarted, "shopper-insights:generate-customer-recommendations:started")
+        XCTAssertEqual(BTShopperInsightsAnalytics.generateCustomerRecommendationsSucceeded, "shopper-insights:generate-customer-recommendations:succeeded")
+        XCTAssertEqual(BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed, "shopper-insights:generate-customer-recommendations:failed")
+    }
 }
