@@ -229,4 +229,90 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTAssertEqual(error, mockError)
         }
     }
+    
+    func testCustomerRecommendationsGenerate_withResult() {
+        let expectation = self.expectation(description: "Completion called with result")
+        
+        let generateCustomerRecommendationResponse = BTJSON(
+            value: [
+                "data": [
+                    "generateCustomerRecommendations": [
+                        "sessionId": "test-session-id-123",
+                        "isInPayPalNetwork": true,
+                        "paymentRecommendations": [
+                            [
+                                "paymentOption": "PayPal",
+                                "recommendedPriority": 1
+                            ],
+                            [
+                                "paymentOption": "Venmo",
+                                "recommendedPriority": 2
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        )
+
+        mockAPIClient.cannedResponseBody = generateCustomerRecommendationResponse
+        mockAPIClient.cannedResponseError = nil
+
+        sut.generateCustomerRecommendations(
+            request: customerSessionRequest,
+            sessionID: sessionID
+        ) { result, error in
+            XCTAssertNotNil(result, "Expected a valid result")
+            XCTAssertNil(error, "Expected no error")
+
+            guard let result = result else {
+                XCTFail("Result should not be nil")
+                expectation.fulfill()
+                return
+            }
+
+            XCTAssertEqual(result.sessionID, "test-session-id-123", "Session ID should match expected value")
+
+            XCTAssertTrue((result.isInPayPalNetwork != nil), "Expected isInPayPalNetwork to be true")
+            
+            XCTAssertEqual(result.paymentRecommendations?.count, 2, "Expected two payment recommendations")
+
+            if let recommendations = result.paymentRecommendations {
+                XCTAssertEqual(recommendations[0].paymentOption, "PayPal")
+                XCTAssertEqual(recommendations[0].recommendedPriority, 1)
+
+                XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
+                XCTAssertEqual(recommendations[1].recommendedPriority, 2)
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
+
+    func testGenerateCustomerRecommendations_withError() {        
+        let expectation = self.expectation(description: "Completion called with error")
+        let expectedError = NSError(domain: "test-domain", code: 42, userInfo: nil)
+        
+        mockAPIClient.cannedResponseError = expectedError
+        
+        sut.generateCustomerRecommendations(
+            request: BTCustomerSessionRequest(),
+            sessionID: "test-session-id"
+        ) { result, error in
+            XCTAssertNil(result)
+            XCTAssertNotNil(error)
+
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, expectedError.domain)
+                XCTAssertEqual(error.code, expectedError.code)
+            } else {
+                XCTFail("Expected an NSError but got nil or wrong type.")
+            }
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1.0)
+    }
 }
