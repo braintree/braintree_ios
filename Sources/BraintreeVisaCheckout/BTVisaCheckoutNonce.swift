@@ -4,6 +4,19 @@ import Foundation
 import BraintreeCore
 #endif
 
+/**
+ A `BTPaymentMethodNonce` representing a Visa Checkout card.
+
+ - Properties:
+   - lastTwo: Last two digits of the user's underlying card, intended for display purposes.
+   - cardType: Type of this card (e.g. Visa, MasterCard, American Express).
+   - billingAddress: The user's billing address.
+   - shippingAddress: The user's shipping address.
+   - userData: The user's data.
+   - callId: The Call ID from the VisaPaymentSummary.
+   - binData: The BIN data for the card number associated with `BTVisaCheckoutNonce`.
+ */
+
 @objcMembers public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
     // Last two digits of the user's underlying card, intended for display purposes.
@@ -28,27 +41,26 @@ import BraintreeCore
     public let binData: BTBinData
 
     init?(json: BTJSON) {
-
-        let json = json["visaCheckoutCards"].isArray ? json["visaCheckoutCards"][0] : json
+        let visaCheckoutCards = json["visaCheckoutCards"].isArray ? json["visaCheckoutCards"][0] : json
         
         guard
-            let lastTwo = json["details"]["lastTwo"].asString(),
-            let cardType = json["details"]["cardType"].asString(),
-            let nonce = json["nonce"].asString(),
-            let type = json["type"].asString(),
-            let callID = json["callId"].asString()
+            let lastTwo = visaCheckoutCards["details"]["lastTwo"].asString(),
+            let cardType = visaCheckoutCards["details"]["cardType"].asString(),
+            let nonce = visaCheckoutCards["nonce"].asString(),
+            let type = visaCheckoutCards["type"].asString(),
+            let callID = visaCheckoutCards["callId"].asString(),
+            let isDefault = visaCheckoutCards["default"].asBool()
         else {
             return nil
         }
         
         self.lastTwo = lastTwo
-        self.billingAddress = BTVisaCheckoutAddress(json: json["billingAddress"])
-        self.shippingAddress = BTVisaCheckoutAddress(json: json["shippingAddress"])
-        self.userData = BTVisaCheckoutUserData(json: json["userData"])
-        self.binData = BTBinData(json: json["binData"])
+        self.billingAddress = BTVisaCheckoutAddress(json: visaCheckoutCards["billingAddress"])
+        self.shippingAddress = BTVisaCheckoutAddress(json: visaCheckoutCards["shippingAddress"])
+        self.userData = BTVisaCheckoutUserData(json: visaCheckoutCards["userData"])
+        self.binData = BTBinData(json: visaCheckoutCards["binData"])
         self.cardType = cardType
         self.callID = callID
-        let isDefault = json["default"].isTrue
         
         super.init(nonce: nonce, type: cardType, isDefault: isDefault)
     }
