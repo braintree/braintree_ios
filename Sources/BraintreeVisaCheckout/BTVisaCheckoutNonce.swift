@@ -42,18 +42,17 @@ import BraintreeCore
 
     init?(json: BTJSON) {
         let visaCheckoutCards = json["visaCheckoutCards"].isArray ? json["visaCheckoutCards"][0] : json
-        
-        guard
-            let lastTwo = visaCheckoutCards["details"]["lastTwo"].asString(),
-            let cardType = visaCheckoutCards["details"]["cardType"].asString(),
-            let nonce = visaCheckoutCards["nonce"].asString(),
-            let type = visaCheckoutCards["type"].asString(),
-            let callID = visaCheckoutCards["callId"].asString(),
-            let isDefault = visaCheckoutCards["default"].asBool()
-        else {
+
+        guard let nonce = visaCheckoutCards["nonce"].asString() else {
             return nil
         }
-        
+
+        let lastTwo = visaCheckoutCards["details"]["lastTwo"].asString() ?? ""
+        let cardType = visaCheckoutCards["details"]["cardType"].asString() ?? "Unknown"
+        let type = visaCheckoutCards["type"].asString() ?? "VisaCheckout"
+        let callID = visaCheckoutCards["callId"].asString() ?? ""
+        let isDefault = visaCheckoutCards["default"].isTrue
+
         self.lastTwo = lastTwo
         self.billingAddress = BTVisaCheckoutAddress(json: visaCheckoutCards["billingAddress"])
         self.shippingAddress = BTVisaCheckoutAddress(json: visaCheckoutCards["shippingAddress"])
@@ -61,7 +60,7 @@ import BraintreeCore
         self.binData = BTBinData(json: visaCheckoutCards["binData"])
         self.cardType = cardType
         self.callID = callID
-        
+
         super.init(nonce: nonce, type: cardType, isDefault: isDefault)
     }
 }

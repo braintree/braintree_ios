@@ -7,37 +7,54 @@ final class BTVisaCheckoutCardNonce_Tests: XCTestCase {
     func testInitFromJSON_parsesAllFieldsCorrectly() {
         let json = BTJSON(value: [
             "visaCheckoutCards": [[
-                "nonce": "abc123",
-                "type": "VisaCheckout",
-                "default": true,
+                "type": "VisaCheckoutCard",
+                "nonce": "123456-12345-12345-a-adfa",
+                "description": "ending in ••11",
+                "default": false,
                 "details": [
-                    "lastTwo": "11",
-                    "cardType": "Visa"
+                    "cardType": "Visa",
+                    "lastTwo": "11"
                 ],
                 "billingAddress": [
-                    "firstName": "Bill"
+                    "firstName": "billingFirstName",
+                    "lastName": "billingLastName",
+                    "streetAddress": "billingStreetAddress",
+                    "extendedAddress": "billingExtendedAddress",
+                    "locality": "billingLocality",
+                    "region": "billingRegion",
+                    "postalCode": "billingPostalCode",
+                    "countryCode": "billingCountryCode",
+                    "phoneNumber": "phoneNumber"
                 ],
                 "shippingAddress": [
-                    "firstName": "Ship"
+                    "firstName": "shippingFirstName",
+                    "lastName": "shippingLastName",
+                    "streetAddress": "shippingStreetAddress",
+                    "extendedAddress": "shippingExtendedAddress",
+                    "locality": "shippingLocality",
+                    "region": "shippingRegion",
+                    "postalCode": "shippingPostalCode",
+                    "countryCode": "shippingCountryCode",
+                    "phoneNumber": "phoneNumber"
                 ],
                 "userData": [
-                    "userFirstName": "Alice",
-                    "userLastName": "Smith",
-                    "userFullName": "Alice Smith",
-                    "userName": "asmith",
-                    "userEmail": "alice@example.com"
+                    "userFirstName": "userFirstName",
+                    "userLastName": "userLastName",
+                    "userFullName": "userFullName",
+                    "userName": "userUserName",
+                    "userEmail": "userEmail"
                 ],
-                "callId": "call-id-123",
+                "callId": "callId",
                 "binData": [
-                    "prepaid": "Yes",
-                    "healthcare": "No",
-                    "debit": "Yes",
-                    "durbinRegulated": "No",
-                    "commercial": "Yes",
-                    "payroll": "No",
-                    "issuingBank": "BankName",
-                    "countryOfIssuance": "US",
-                    "productId": "G"
+                    "prepaid": "Unknown",
+                    "healthcare": "Yes",
+                    "debit": "No",
+                    "durbinRegulated": "Unknown",
+                    "commercial": "Unknown",
+                    "payroll": "Unknown",
+                    "issuingBank": "Unknown",
+                    "countryOfIssuance": "Something",
+                    "productId": "123"
                 ]
             ]]
         ])
@@ -46,17 +63,77 @@ final class BTVisaCheckoutCardNonce_Tests: XCTestCase {
             return XCTFail("Expected BTVisaCheckoutNonce to be created")
         }
 
-        XCTAssertEqual(nonce.nonce, "abc123")
+        XCTAssertEqual(nonce.nonce, "123456-12345-12345-a-adfa")
         XCTAssertEqual(nonce.type, "Visa")
         XCTAssertEqual(nonce.lastTwo, "11")
-        XCTAssertEqual(nonce.callID, "call-id-123")
+        XCTAssertEqual(nonce.callID, "callId")
         XCTAssertEqual(nonce.cardType, "Visa")
-        XCTAssertEqual(nonce.isDefault, true)
+        XCTAssertEqual(nonce.isDefault, false)
 
-        XCTAssertEqual(nonce.billingAddress.firstName, "Bill")
-        XCTAssertEqual(nonce.shippingAddress.firstName, "Ship")
-        XCTAssertEqual(nonce.userData.userEmail, "alice@example.com")
-        XCTAssertEqual(nonce.binData.issuingBank, "BankName")
-        XCTAssertEqual(nonce.binData.productID, "G")
+        XCTAssertEqual(nonce.billingAddress.firstName, "billingFirstName")
+        XCTAssertEqual(nonce.shippingAddress.firstName, "shippingFirstName")
+        XCTAssertEqual(nonce.userData.userEmail, "userEmail")
+        XCTAssertEqual(nonce.binData.issuingBank, "Unknown")
+        XCTAssertEqual(nonce.binData.productID, "123")
+    }
+    
+    func testFromJSON_whenNoCallId_createsVisaCheckoutNonceWithEmptyCallId() {
+
+        let visaCheckoutJSON = BTJSON(value: [
+            "visaCheckoutCards": [[
+                "type": "VisaCheckoutCard",
+                "nonce": "123456-12345-12345-a-adfa",
+                "description": "ending in ••11",
+                "default": false,
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "11"
+                ],
+                "billingAddress": [
+                    "firstName": "billingFirstName",
+                    "lastName": "billingLastName",
+                    "streetAddress": "billingStreetAddress",
+                    "extendedAddress": "billingExtendedAddress",
+                    "locality": "billingLocality",
+                    "region": "billingRegion",
+                    "postalCode": "billingPostalCode",
+                    "countryCode": "billingCountryCode",
+                    "phoneNumber": "phoneNumber"
+                ],
+                "shippingAddress": [
+                    "firstName": "shippingFirstName",
+                    "lastName": "shippingLastName",
+                    "streetAddress": "shippingStreetAddress",
+                    "extendedAddress": "shippingExtendedAddress",
+                    "locality": "shippingLocality",
+                    "region": "shippingRegion",
+                    "postalCode": "shippingPostalCode",
+                    "countryCode": "shippingCountryCode",
+                    "phoneNumber": "phoneNumber"
+                ],
+                "userData": [
+                    "userFirstName": "userFirstName",
+                    "userLastName": "userLastName",
+                    "userFullName": "userFullName",
+                    "userName": "userUserName",
+                    "userEmail": "userEmail"
+                ],
+                "binData": [
+                    "prepaid": "Unknown",
+                    "healthcare": "Yes",
+                    "debit": "No",
+                    "durbinRegulated": "Unknown",
+                    "commercial": "Unknown",
+                    "payroll": "Unknown",
+                    "issuingBank": "Unknown",
+                    "countryOfIssuance": "Something",
+                    "productId": "123"
+                ]
+            ]]
+        ])
+
+        let visaCheckoutNonce = BTVisaCheckoutNonce(json: visaCheckoutJSON)
+
+        XCTAssertEqual(visaCheckoutNonce?.callID, "")
     }
 }
