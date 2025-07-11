@@ -187,6 +187,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         let sessionID = try await sut.createCustomerSession(request: customerSessionRequest)
         
         XCTAssertEqual(expectedSessionID, sessionID)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:create-customer-session:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:create-customer-session:succeeded")
     }
     
     func testCreateCustomerSession_whenFails_throwsAnError() async throws {
@@ -198,6 +200,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTFail("Expected error to be thrown.")
         } catch let error as NSError {
             XCTAssertEqual(error, mockError)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:create-customer-session:started")
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:create-customer-session:failed")
         }
     }
     
@@ -216,6 +220,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         
         let sessionID = try await sut.updateCustomerSession(request: customerSessionRequest, sessionID: sessionID)
         XCTAssertEqual(expectedSessionID, sessionID)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:update-customer-session:started")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:update-customer-session:succeeded")
     }
     
     func testUpdateCustomerSession_whenFails_throwsAnError() async throws {
@@ -227,6 +233,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTFail("Expected error to be thrown.")
         } catch let error as NSError {
             XCTAssertEqual(error, mockError)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:update-customer-session:started")
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:update-customer-session:failed")
         }
     }
 }

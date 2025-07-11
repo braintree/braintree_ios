@@ -31,6 +31,8 @@ final class BTUpdateCustomerSessionAPI {
         sessionID: String
     ) async throws -> String {
         do {
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.updateCustomerSessionStarted)
+            
             let graphQLParams = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
             
             let (body, _) = try await apiClient.post("", parameters: graphQLParams, httpType: .graphQLAPI)
@@ -43,8 +45,10 @@ final class BTUpdateCustomerSessionAPI {
                 throw BTHTTPError.httpResponseInvalid
             }
             
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.updateCustomerSessionSucceeded)
             return sessionID
         } catch {
+            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.updateCustomerSessionFailed)
             throw error
         }
     }
