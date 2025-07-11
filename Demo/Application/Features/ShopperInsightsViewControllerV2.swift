@@ -41,10 +41,20 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
-    lazy var createCustomerSessionButton = createButton(title: "Create Customer Session Button", action: #selector(shopperInsightsButtonTapped))
-    lazy var updateCustomerSessionButton = createButton(title: "Update Customer Session Button", action: #selector(shopperInsightsButtonTapped))
-    lazy var getCustomerRecommendationsButton = createButton(title: "Get Customer Recommendations Button", action: #selector(shopperInsightsButtonTapped))
+    lazy var createCustomerSessionButton = createButton(
+        title: "Create Customer Session Button",
+        action: #selector(shopperInsightsButtonTapped)
+    )
     
+    lazy var updateCustomerSessionButton = createButton(
+        title: "Update Customer Session Button",
+        action: #selector(shopperInsightsButtonTapped)
+    )
+    
+    lazy var getCustomerRecommendationsButton = createButton(
+        title: "Get Customer Recommendations Button",
+        action: #selector(shopperInsightsButtonTapped)
+    )
     
     lazy var shopperInsightsInputView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
@@ -155,7 +165,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         shopperInsightsClient.sendPresentedEvent(
             for: .payPal,
-            presentmentDetails: presentmentDetails, sessionID: shopperSessionID
+            presentmentDetails: presentmentDetails,
+            sessionID: shopperSessionID
         )
     }
     
@@ -172,7 +183,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         shopperInsightsClient.sendPresentedEvent(
             for: .venmo,
-            presentmentDetails: presentmentDetails, sessionID: shopperSessionID
+            presentmentDetails: presentmentDetails,
+            sessionID: shopperSessionID
         )
     }
     
