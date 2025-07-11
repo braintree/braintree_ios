@@ -41,6 +41,11 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
     
+    lazy var createCustomerSessionButton = createButton(title: "Create Customer Session Button", action: #selector(shopperInsightsButtonTapped))
+    lazy var updateCustomerSessionButton = createButton(title: "Update Customer Session Button", action: #selector(shopperInsightsButtonTapped))
+    lazy var getCustomerRecommendationsButton = createButton(title: "Get Customer Recommendations Button", action: #selector(shopperInsightsButtonTapped))
+    
+    
     lazy var shopperInsightsInputView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
         stackView.axis = .vertical
@@ -58,7 +63,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [shopperInsightsButton, payPalVaultButton, venmoButton]
+        let buttons = [createCustomerSessionButton, updateCustomerSessionButton, getCustomerRecommendationsButton, shopperInsightsButton, payPalVaultButton, venmoButton]
         shopperInsightsButton.isEnabled = true
         payPalVaultButton.isEnabled = false
         venmoButton.isEnabled = false
@@ -101,6 +106,21 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 //                progressBlock("Error: \(error.localizedDescription)")
 //            }
 //        }
+    }
+    
+    @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
+        self.progressBlock("Create Customer Session...")
+
+    }
+    
+    @objc func updateCustomerSessionButtonTapped(_ button: UIButton) {
+        self.progressBlock("Update Customer Session...")
+
+    }
+    
+    @objc func getCustomerRecommendationsButtonTapped(_ button: UIButton) {
+        self.progressBlock("Get Customer Recommendations...")
+
     }
     
     private func togglePayPalVaultButton(enabled: Bool) {
