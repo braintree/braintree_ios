@@ -510,8 +510,8 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
-        webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
-
+        configureSessionIfNeeded(for: experiment)
+        
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             self?.payPalContextID = self?.extractToken(from: url)
             
@@ -603,6 +603,13 @@ import BraintreeDataCollector
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
         return baToken ?? ecToken
+    }
+    
+    private func configureSessionIfNeeded(for experiment: String? = nil) {
+        if experiment == "InAppBrowserNoPopup" {
+            webSessionReturned = true
+            webAuthenticationSession.prefersEphemeralWebBrowserSession = true
+        }
     }
 
     // MARK: - Analytics Helper Methods
