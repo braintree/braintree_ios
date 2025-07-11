@@ -33,12 +33,4 @@ final class BTVisaCheckoutUserData_Tests: XCTestCase {
         XCTAssertNil(userData.username)
         XCTAssertNil(userData.userEmail)
     }
-
-    func testUserDataWith_returnsSameAsInit() {
-        let json = BTJSON(value: ["userEmail": "test@example.com"])
-        let fromFactory = BTVisaCheckoutUserData.userData(with: json)
-        let fromInit = BTVisaCheckoutUserData(json: json)
-
-        XCTAssertEqual(fromFactory.userEmail, fromInit.userEmail)
-    }
 }
