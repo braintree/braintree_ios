@@ -3,6 +3,7 @@ import BraintreeCore
 import BraintreePayPal
 import BraintreeVenmo
 import BraintreeShopperInsights
+import CryptoKit
 
 class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
@@ -43,17 +44,17 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var createCustomerSessionButton = createButton(
         title: "Create Customer Session Button",
-        action: #selector(shopperInsightsButtonTapped)
+        action: #selector(createCustomerSessionButtonTapped)
     )
     
     lazy var updateCustomerSessionButton = createButton(
         title: "Update Customer Session Button",
-        action: #selector(shopperInsightsButtonTapped)
+        action: #selector(updateCustomerSessionButtonTapped)
     )
     
     lazy var getCustomerRecommendationsButton = createButton(
         title: "Get Customer Recommendations Button",
-        action: #selector(shopperInsightsButtonTapped)
+        action: #selector(getCustomerRecommendationsButtonTapped)
     )
     
     lazy var shopperInsightsInputView: UIStackView = {
@@ -122,7 +123,15 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         Task {
             self.progressBlock("Create Customer Session...")
 
-            let request = BTCustomerSessionRequest()
+            let request = BTCustomerSessionRequest(
+                hashedEmail: sha256Hash("test@example.com"),
+                hashedPhoneNumber: sha256Hash("5551234567"),
+                payPalAppInstalled: true,
+                venmoAppInstalled: false,
+                purchaseUnits: [
+                    BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
+                ]
+            )
 
             do {
                 let result = try await shopperInsightsClient.createCustomerSession(request: request)
@@ -133,23 +142,38 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         }
     }
     
-    @objc func updateCustomerSessionButtonTapped(_ button: UIButton) async {
+    @objc func updateCustomerSessionButtonTapped(_ button: UIButton) {
         self.progressBlock("Update Customer Session...")
 
-        let request = BTCustomerSessionRequest()
+        let request = BTCustomerSessionRequest(
+            hashedEmail: sha256Hash("test@example.com"),
+            hashedPhoneNumber: sha256Hash("5551234567"),
+            payPalAppInstalled: true,
+            venmoAppInstalled: false,
+            purchaseUnits: [
+                BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
+            ]
+        )
 
-        do {
-            let result = try await shopperInsightsClient.updateCustomerSession(request: request, sessionID: shopperSessionID)
-            print("Customer session created: \(result)")
-        } catch {
-            print("Failed to create customer session: \(error.localizedDescription)")
+        Task {
+            do {
+                let result = try await shopperInsightsClient.updateCustomerSession(request: request, sessionID: shopperSessionID)
+                print("Customer session created: \(result)")
+            } catch {
+                print("Failed to create customer session: \(error.localizedDescription)")
+            }
         }
-        
     }
     
     @objc func getCustomerRecommendationsButtonTapped(_ button: UIButton) {
         self.progressBlock("Get Customer Recommendations...")
 
+    }
+    
+    private func sha256Hash(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        return hashed.map { String(format: "%02x", $0) }.joined()
     }
     
     private func togglePayPalVaultButton(enabled: Bool) {
