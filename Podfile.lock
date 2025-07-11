@@ -14,14 +14,14 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.1.0)
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
-  - VisaCheckoutSDK (7.3.1)
+  - VisaCheckoutSDK (7.0.0)
   - xcbeautify (0.17.0)
 
 DEPENDENCIES:
   - InAppSettingsKit
   - OCMock
   - OHHTTPStubs/Swift
-  - VisaCheckoutSDK
+  - VisaCheckoutSDK (= 7.0.0)
   - xcbeautify
 
 SPEC REPOS:
@@ -36,9 +36,9 @@ SPEC CHECKSUMS:
   InAppSettingsKit: 185d81410e6352aef3c328c3ba12e60c8283f91e
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
-  VisaCheckoutSDK: 08138af5a06577c45e34cba6469d81f893f3db00
+  VisaCheckoutSDK: 963b6f46d64f6ddf3f35a7d626098e669d8c31b6
   xcbeautify: 6e2f57af5c3a86d490376d5758030a8dcc201c1b
 
-PODFILE CHECKSUM: d3ff3c5853bfb8a248579f53b6640f4c565fb6bc
+PODFILE CHECKSUM: 9a137c735ffccbea7061f6872776dc6754c8291d
 
 COCOAPODS: 1.16.2
