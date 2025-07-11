@@ -4,6 +4,7 @@
 * BraintreeShopperInsights (BETA)
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
   * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
+  * Add `generateCustomerRecommendations(request:sessionID:)` to `BTShopperInsightsClientV2`
 
 ## 6.33.0 (2025-05-22)
 * BraintreeCore
