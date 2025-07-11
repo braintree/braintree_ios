@@ -230,9 +230,7 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         }
     }
     
-    func testCustomerRecommendationsGenerate_withResult() {
-        let expectation = self.expectation(description: "Completion called with result")
-        
+    func testCustomerRecommendationsGenerate_withResult() async {
         let generateCustomerRecommendationResponse = BTJSON(
             value: [
                 "data": [
@@ -257,62 +255,48 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = generateCustomerRecommendationResponse
         mockAPIClient.cannedResponseError = nil
 
-        sut.generateCustomerRecommendations(
-            request: customerSessionRequest,
-            sessionID: sessionID
-        ) { result, error in
-            XCTAssertNotNil(result, "Expected a valid result")
-            XCTAssertNil(error, "Expected no error")
+        do {
+            let result = try await sut.generateCustomerRecommendations(
+                request: customerSessionRequest,
+                sessionID: sessionID
+            )
 
-            guard let result = result else {
-                XCTFail("Result should not be nil")
-                expectation.fulfill()
+            XCTAssertEqual(result.sessionID, "test-session-id-123")
+            XCTAssertTrue((result.isInPayPalNetwork != nil))
+
+            guard let recommendations = result.paymentRecommendations else {
+                XCTFail("Expected paymentRecommendations to be non-nil")
                 return
             }
 
-            XCTAssertEqual(result.sessionID, "test-session-id-123", "Session ID should match expected value")
+            XCTAssertEqual(recommendations.count, 2)
 
-            XCTAssertTrue((result.isInPayPalNetwork != nil), "Expected isInPayPalNetwork to be true")
-            
-            XCTAssertEqual(result.paymentRecommendations?.count, 2, "Expected two payment recommendations")
+            XCTAssertEqual(recommendations[0].paymentOption, "PayPal")
+            XCTAssertEqual(recommendations[0].recommendedPriority, 1)
 
-            if let recommendations = result.paymentRecommendations {
-                XCTAssertEqual(recommendations[0].paymentOption, "PayPal")
-                XCTAssertEqual(recommendations[0].recommendedPriority, 1)
+            XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
+            XCTAssertEqual(recommendations[1].recommendedPriority, 2)
 
-                XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
-                XCTAssertEqual(recommendations[1].recommendedPriority, 2)
-            }
-
-            expectation.fulfill()
+        } catch {
+            XCTFail("Expected no error, but got: \(error)")
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 
-    func testGenerateCustomerRecommendations_withError() {        
-        let expectation = self.expectation(description: "Completion called with error")
+    func testGenerateCustomerRecommendations_withError() async {
         let expectedError = NSError(domain: "test-domain", code: 42, userInfo: nil)
-        
         mockAPIClient.cannedResponseError = expectedError
-        
-        sut.generateCustomerRecommendations(
-            request: BTCustomerSessionRequest(),
-            sessionID: "test-session-id"
-        ) { result, error in
-            XCTAssertNil(result)
-            XCTAssertNotNil(error)
 
-            if let error = error as NSError? {
-                XCTAssertEqual(error.domain, expectedError.domain)
-                XCTAssertEqual(error.code, expectedError.code)
-            } else {
-                XCTFail("Expected an NSError but got nil or wrong type.")
-            }
-
-            expectation.fulfill()
+        do {
+            _ = try await sut.generateCustomerRecommendations(
+                request: BTCustomerSessionRequest(),
+                sessionID: "test-session-id"
+            )
+            XCTFail("Expected error to be thrown, but got success")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, expectedError.domain)
+            XCTAssertEqual(error.code, expectedError.code)
+        } catch {
+            XCTFail("Expected NSError but got a different error: \(error)")
         }
-
-        waitForExpectations(timeout: 1.0)
     }
 }
