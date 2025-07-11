@@ -59,7 +59,7 @@ import BraintreeCore
     }
 
     /// Tokenizes a Visa checkout result.
-    /// - Note: The `checkoutResult` parameter is declared as `callId` type, but you must pass a `VisaCheckoutResult` instance.
+    /// - Note: The `checkoutResult` parameter is declared as `callID` type, but you must pass a `VisaCheckoutResult` instance.
     /// - Parameters:
     ///   - checkoutResult: A Visa `CheckoutResult` instance.
     ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds,
@@ -70,13 +70,13 @@ import BraintreeCore
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         let statusCode = checkoutResult.statusCode
-        let callId = checkoutResult.callId
+        let callID = checkoutResult.callId
         let encryptedKey = checkoutResult.encryptedKey
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
         tokenizeVisaCheckoutResult(
             statusCode: statusCode,
-            callId: callId,
+            callID: callID,
             encryptedKey: encryptedKey,
             encryptedPaymentData: encryptedPaymentData,
             completion: completion
@@ -92,7 +92,7 @@ import BraintreeCore
     ///   - completion: A completion block that is invoked when tokenization has completed.
     @objc public func tokenizeVisaCheckoutResult(
         statusCode: CheckoutResultStatus,
-        callId: String?,
+        callID: String?,
         encryptedKey: String?,
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
