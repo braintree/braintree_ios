@@ -85,22 +85,22 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 //                nationalNumber: nationalNumberView.textField.text ?? ""
 //            )
 //        )
-        Task {
-            do {
-                let result = try await shopperInsightsClient.generateCustomerRecommendations(
-                    request: request,
-                    sessionID: "94f0b2db-5323-4d86-add3-paypal000000"
-                )
-
-                // swiftlint:disable:next line_length
-                progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
-                
-                togglePayPalVaultButton(enabled: result.isPayPalRecommended)
-                toggleVenmoButton(enabled: result.isVenmoRecommended)
-            } catch {
-                progressBlock("Error: \(error.localizedDescription)")
-            }
-        }
+//        Task {
+//            do {
+//                let result = try await shopperInsightsClient.generateCustomerRecommendations(
+//                    request: request,
+//                    sessionID: "94f0b2db-5323-4d86-add3-paypal000000"
+//                )
+//
+//                // swiftlint:disable:next line_length
+//                progressBlock("PayPal Recommended: \(result.isPayPalRecommended)\nVenmo Recommended: \(result.isVenmoRecommended)\nEligible in PayPal Network: \(result.isEligibleInPayPalNetwork)")
+//                
+//                togglePayPalVaultButton(enabled: result.isPayPalRecommended)
+//                toggleVenmoButton(enabled: result.isVenmoRecommended)
+//            } catch {
+//                progressBlock("Error: \(error.localizedDescription)")
+//            }
+//        }
     }
     
     private func togglePayPalVaultButton(enabled: Bool) {
@@ -116,7 +116,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         shopperInsightsClient.sendPresentedEvent(
             for: .payPal,
-            presentmentDetails: presentmentDetails
+            presentmentDetails: presentmentDetails, sessionID: shopperSessionID
         )
     }
     
@@ -133,13 +133,13 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         shopperInsightsClient.sendPresentedEvent(
             for: .venmo,
-            presentmentDetails: presentmentDetails
+            presentmentDetails: presentmentDetails, sessionID: shopperSessionID
         )
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendSelectedEvent(for: .payPal)
+        shopperInsightsClient.sendSelectedEvent(for: .payPal, sessionID: shopperSessionID)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
@@ -156,7 +156,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     @objc func venmoButtonTapped(_ button: UIButton) {
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendSelectedEvent(for: .venmo)
+        shopperInsightsClient.sendSelectedEvent(for: .venmo, sessionID: shopperSessionID)
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
