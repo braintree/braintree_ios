@@ -109,13 +109,32 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
-        self.progressBlock("Create Customer Session...")
+        Task {
+            self.progressBlock("Create Customer Session...")
 
+            let request = BTCustomerSessionRequest()
+
+            do {
+                let result = try await shopperInsightsClient.createCustomerSession(request: request)
+                print("Customer session created: \(result)")
+            } catch {
+                print("Failed to create customer session: \(error.localizedDescription)")
+            }
+        }
     }
     
-    @objc func updateCustomerSessionButtonTapped(_ button: UIButton) {
+    @objc func updateCustomerSessionButtonTapped(_ button: UIButton) async {
         self.progressBlock("Update Customer Session...")
 
+        let request = BTCustomerSessionRequest()
+
+        do {
+            let result = try await shopperInsightsClient.updateCustomerSession(request: request, sessionID: shopperSessionID)
+            print("Customer session created: \(result)")
+        } catch {
+            print("Failed to create customer session: \(error.localizedDescription)")
+        }
+        
     }
     
     @objc func getCustomerRecommendationsButtonTapped(_ button: UIButton) {
