@@ -1,6 +1,6 @@
 import XCTest
-import BraintreeCore
-
+@testable import BraintreeCore
+@testable import BraintreeVisaCheckout
 
 final class BTVisaCheckoutClient_Tests: XCTestCase {
 
