@@ -54,16 +54,16 @@ class BTPayPalLineItem_Tests: XCTestCase {
         lineItem.url = URL(string: "https://example.com")
         lineItem.productCode = "product-code"
         lineItem.upcCode = "upc-code"
-        let requestParams = lineItem.requestParameters()
-        XCTAssertEqual(requestParams["name"], "item-name")
-        XCTAssertEqual(requestParams["kind"], "debit")
-        XCTAssertEqual(requestParams["unit_amount"], "10")
-        XCTAssertEqual(requestParams["quantity"], "1")
-        XCTAssertEqual(requestParams["unit_tax_amount"], "8")
-        XCTAssertEqual(requestParams["description"], "item description")
-        XCTAssertEqual(requestParams["image_url"], "https://example.com/image.jpg")
-        XCTAssertEqual(requestParams["url"], "https://example.com")
-        XCTAssertEqual(requestParams["product_code"], "product-code")
-        XCTAssertEqual(requestParams["upc_code"], "upc-code")
+        let requestParams = try? lineItem.toDictionary()
+        XCTAssertEqual(requestParams?["name"] as? String, "item-name")
+        XCTAssertEqual(requestParams?["kind"] as? String, "debit")
+        XCTAssertEqual(requestParams?["unit_amount"] as? String, "10")
+        XCTAssertEqual(requestParams?["quantity"] as? String, "1")
+        XCTAssertEqual(requestParams?["unit_tax_amount"] as? String, "8")
+        XCTAssertEqual(requestParams?["description"] as? String, "item description")
+        XCTAssertEqual(requestParams?["image_url"] as? String, "https://example.com/image.jpg")
+        XCTAssertEqual(requestParams?["url"] as? String, "https://example.com")
+        XCTAssertEqual(requestParams?["product_code"] as? String, "product-code")
+        XCTAssertEqual(requestParams?["upc_code"] as? String, "upc-code")
     }
 }
