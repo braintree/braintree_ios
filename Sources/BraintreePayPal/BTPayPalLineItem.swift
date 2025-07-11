@@ -78,16 +78,16 @@ import Foundation
     public let kind: BTPayPalLineItemKind
 
     /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public let unitTaxAmount: String? = nil
+    public var unitTaxAmount: String?
 
     /// Optional: Item description. Maximum 127 characters.
-    public let itemDescription: String? = nil
+    public var itemDescription: String?
     
     /// Optional: The URL to product information.
-    public let url: URL? = nil
+    public var url: URL?
 
     /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public let productCode: String? = nil
+    public var productCode: String?
     
     /// Optional: The URL to product image information.
     public var imageURL: URL?
@@ -127,7 +127,7 @@ import Foundation
         ]
 
         if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            requestParameters["unit_tax_amount"] = unitAmount
+            requestParameters["unit_tax_amount"] = unitTaxAmount
         }
 
         if let itemDescription, !itemDescription.isEmpty {

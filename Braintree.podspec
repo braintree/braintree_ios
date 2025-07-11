@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "6.32.0"
+  s.version          = "6.34.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -110,7 +110,7 @@ Pod::Spec.new do |s|
   s.subspec "VisaCheckout" do |s|
     s.source_files = "Sources/BraintreeVisaCheckout/*.swift"
     s.dependency "Braintree/Core"
-    s.dependency "Braintree/VisaCheckoutSDK"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework"
     s.resource_bundle = { "BraintreeVisaCheckout_PrivacyInfo" => "Sources/BraintreeVisaCheckout/PrivacyInfo.xcprivacy" }
   end
 
