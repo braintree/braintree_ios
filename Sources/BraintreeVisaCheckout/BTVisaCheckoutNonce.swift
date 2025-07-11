@@ -4,28 +4,28 @@ import Foundation
 import BraintreeCore
 #endif
 
-// A `nonce` representing a Visa Checkout card.
+/// A `nonce` representing a Visa Checkout card.
 @objcMembers public class BTVisaCheckoutNonce: BTPaymentMethodNonce {
 
-    // Last two digits of the user's underlying card, intended for display purposes.
+    /// Last two digits of the user's underlying card, intended for display purposes.
     public let lastTwo: String
     
-    // Type of this card (e.g. Visa, MasterCard, American Express)
+    /// Type of this card (e.g. Visa, MasterCard, American Express)
     public let cardType: String
     
-    // The user's billing address.
+    /// The user's billing address.
     public let billingAddress: BTVisaCheckoutAddress
     
-    // The user's shipping address.
+    /// The user's shipping address.
     public let shippingAddress: BTVisaCheckoutAddress
     
-    // The user's data.
+    /// The user's data.
     public let userData: BTVisaCheckoutUserData
     
-    // The Call ID from the VisaPaymentSummary.
+    /// The Call ID from the VisaPaymentSummary.
     public let callID: String
     
-    // The BIN data for the card number associated with [VisaCheckoutNonce]
+    /// The BIN data for the card number associated with [VisaCheckoutNonce]
     public let binData: BTBinData
 
     init?(json: BTJSON) {
@@ -37,7 +37,6 @@ import BraintreeCore
 
         let lastTwo = visaCheckoutCards["details"]["lastTwo"].asString() ?? ""
         let cardType = visaCheckoutCards["details"]["cardType"].asString() ?? "Unknown"
-        let type = visaCheckoutCards["type"].asString() ?? "VisaCheckout"
         let callID = visaCheckoutCards["callId"].asString() ?? ""
         let isDefault = visaCheckoutCards["default"].isTrue
 
