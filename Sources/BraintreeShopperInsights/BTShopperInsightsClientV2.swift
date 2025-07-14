@@ -62,9 +62,11 @@ public class BTShopperInsightsClientV2 {
     ///    - sessionID: The shopper session ID
     /// - Warning: This method is currently in beta and may change or be removed in future releases.
     public func generateCustomerRecommendations(
-        request: BTCustomerSessionRequest,
-        sessionID: String
-    ) async throws -> BTCustomerRecommendationsResult {
+        request: BTCustomerSessionRequest?,
+        sessionID: String?
+    ) async throws -> BTCustomerRecommendationsResult? {
+        guard let request = request, let sessionID = sessionID else { return nil }
+
         let customerRecommendationsAPI = BTCustomerRecommendationsAPI(apiClient: apiClient)
         return try await customerRecommendationsAPI.execute(request, sessionID: sessionID)
     }
