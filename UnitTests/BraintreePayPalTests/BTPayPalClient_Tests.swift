@@ -329,6 +329,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, false)
         XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-login:alert-canceled"))
     }
 
     // MARK: - Browser switch
