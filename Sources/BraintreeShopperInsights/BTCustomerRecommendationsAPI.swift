@@ -52,14 +52,20 @@ final class BTCustomerRecommendationsAPI {
                 }
             }
             
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsSucceeded)
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.generateCustomerRecommendationsSucceeded,
+                shopperSessionID: sessionID
+            )
             return BTCustomerRecommendationsResult(
                 sessionID: sessionID,
                 isInPayPalNetwork: isInPayPalNetwork,
                 paymentRecommendations: paymentOptions
             )
-        } catch {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed)
+        } catch let error as NSError {
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed,
+                errorDescription: error.localizedDescription
+            )
             throw error
         }
     }

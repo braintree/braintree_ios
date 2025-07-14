@@ -43,10 +43,16 @@ final class BTCreateCustomerSessionAPI {
                 throw BTHTTPError.httpResponseInvalid
             }
            
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.createCustomerSessionSucceeded)
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.createCustomerSessionSucceeded,
+                shopperSessionID: sessionID
+            )
             return sessionID
-        } catch {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.createCustomerSessionFailed)
+        } catch let error as NSError {
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.createCustomerSessionFailed,
+                errorDescription: error.localizedDescription
+            )
             throw error
         }
     }
