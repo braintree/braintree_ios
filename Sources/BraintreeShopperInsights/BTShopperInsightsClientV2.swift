@@ -65,8 +65,8 @@ public class BTShopperInsightsClientV2 {
         request: BTCustomerSessionRequest,
         sessionID: String
     ) async throws -> BTCustomerRecommendationsResult {
-        let api = BTCustomerRecommendationsAPI(apiClient: apiClient)
-        return try await api.execute(request, sessionID: sessionID)
+        let customerRecommendationsAPI = BTCustomerRecommendationsAPI(apiClient: apiClient)
+        return try await customerRecommendationsAPI.execute(request, sessionID: sessionID)
     }
     
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
