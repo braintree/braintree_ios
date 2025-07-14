@@ -330,6 +330,23 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
     }
+    
+    func testTokenize_whenApprovalURLIsWebBrowserRedirectType_sendsBrowserPresentationStartedEvent() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "approvalUrl": "https://www.paypal.com/agreements/approve?ba_token=A_FAKE_BA_TOKEN"
+            ]
+        ])
+        
+        let request = BTPayPalCheckoutRequest(amount: "10.00")
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "sdk.ios.braintree://onetouch/v1/success?ba_token=A_FAKE_BA_TOKEN")
+        payPalClient.tokenize(request) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "A_FAKE_BA_TOKEN")
+        XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, false)
+        XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-presentation:started"))
+    }
 
     // MARK: - Browser switch
 
