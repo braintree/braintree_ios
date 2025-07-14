@@ -511,7 +511,7 @@ import BraintreeDataCollector
         webSessionReturned = false
         
         configureSessionIfNeeded(for: experiment)
-        
+ 
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             self?.payPalContextID = self?.extractToken(from: url)
             
