@@ -331,6 +331,27 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:handle-return:started"))
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-login:alert-canceled"))
     }
+    
+    func testTokenize_whenApprovalURLContainsWASExperimentANDUserCancelsOutOfFlow_sendsCorrectAnalyticEvents() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.paypal.com/checkout?token=ec-random-value&experiment=InAppBrowserNoPopup"
+            ]
+        ])
+        
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedResponseURL = URL(string: "sdk.ios.braintree://onetouch/v1/cancel?token=ec-random-value")
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
+        
+        let request = BTPayPalCheckoutRequest(amount: "10.00")
+        payPalClient.tokenize(request) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, BTPayPalAnalytics.tokenizeStarted)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.handleReturnStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.browserLoginCanceled))
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.browserLoginAlertCanceled))
+    }
 
     // MARK: - Browser switch
 
