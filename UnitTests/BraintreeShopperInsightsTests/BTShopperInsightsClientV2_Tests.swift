@@ -261,10 +261,10 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
                 sessionID: sessionID
             )
 
-            XCTAssertEqual(result.sessionID, "test-session-id-123")
-            XCTAssertTrue((result.isInPayPalNetwork != nil))
+            XCTAssertEqual(result?.sessionID, "test-session-id-123")
+            XCTAssertTrue((result?.isInPayPalNetwork != nil))
 
-            guard let recommendations = result.paymentRecommendations else {
+            guard let recommendations = result?.paymentRecommendations else {
                 XCTFail("Expected paymentRecommendations to be non-nil")
                 return
             }
