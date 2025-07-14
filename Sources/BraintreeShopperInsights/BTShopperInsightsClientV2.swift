@@ -58,8 +58,8 @@ public class BTShopperInsightsClientV2 {
     
     /// Generates customer recommendations
     /// - Parameters:
-    ///    - request: request type `BTCustomerSessionRequest`
-    ///    - sessionID: The shopper session ID
+    ///    - request: Optional. request type `BTCustomerSessionRequest`
+    ///    - sessionID: Optional. The shopper session ID
     /// - Warning: This method is currently in beta and may change or be removed in future releases.
     public func generateCustomerRecommendations(
         request: BTCustomerSessionRequest?,

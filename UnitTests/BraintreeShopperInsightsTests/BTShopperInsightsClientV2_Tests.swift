@@ -299,4 +299,13 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTFail("Expected NSError but got a different error: \(error)")
         }
     }
+    
+    func testGenerateCustomerRecommendations_withNilProperties_returnsNil() async {
+        let result = try? await sut.generateCustomerRecommendations(
+            request: nil,
+            sessionID: nil
+        )
+
+        XCTAssertNil(result, "Expected result to be nil when request and sessionID are nil")
+    }
 }
