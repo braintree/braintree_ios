@@ -64,9 +64,7 @@ public class BTShopperInsightsClientV2 {
     public func generateCustomerRecommendations(
         request: BTCustomerSessionRequest?,
         sessionID: String?
-    ) async throws -> BTCustomerRecommendationsResult? {
-        guard let request = request, let sessionID = sessionID else { return nil }
-
+    ) async throws -> BTCustomerRecommendationsResult {
         let customerRecommendationsAPI = BTCustomerRecommendationsAPI(apiClient: apiClient)
         return try await customerRecommendationsAPI.execute(request, sessionID: sessionID)
     }

@@ -5,7 +5,7 @@ struct Variables: Encodable {
     
     let input: InputParameters
     
-    init(request: BTCustomerSessionRequest, sessionID: String? = nil) {
+    init(request: BTCustomerSessionRequest?, sessionID: String? = nil) {
         input = InputParameters(request: request, sessionID: sessionID)
     }
     
@@ -15,10 +15,10 @@ struct Variables: Encodable {
         let customer: Customer?
         let purchaseUnits: [PurchaseUnit]?
         
-        init(request: BTCustomerSessionRequest, sessionID: String?) {
+        init(request: BTCustomerSessionRequest?, sessionID: String?) {
             self.sessionID = sessionID
             customer = Customer(request: request)
-            purchaseUnits = request.purchaseUnits?.compactMap {
+            purchaseUnits = request?.purchaseUnits?.compactMap {
                 PurchaseUnit(purchaseUnit: $0)
             }
         }
@@ -36,11 +36,11 @@ struct Variables: Encodable {
             let payPalAppInstalled: Bool?
             let venmoAppInstalled: Bool?
             
-            init(request: BTCustomerSessionRequest) {
-                hashedEmail = request.hashedEmail
-                hashedPhoneNumber = request.hashedPhoneNumber
-                payPalAppInstalled = request.payPalAppInstalled
-                venmoAppInstalled = request.venmoAppInstalled
+            init(request: BTCustomerSessionRequest?) {
+                hashedEmail = request?.hashedEmail
+                hashedPhoneNumber = request?.hashedPhoneNumber
+                payPalAppInstalled = request?.payPalAppInstalled
+                venmoAppInstalled = request?.venmoAppInstalled
             }
             
             enum CodingKeys: String, CodingKey {
