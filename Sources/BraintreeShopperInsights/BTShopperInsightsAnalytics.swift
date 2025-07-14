@@ -6,7 +6,7 @@ enum BTShopperInsightsAnalytics {
     
     static let buttonPresented = "shopper-insights:button-presented"
     static let buttonSelected = "shopper-insights:button-selected"
-    
+
     // MARK: - SDK Triggered Events
     
     static let recommendedPaymentsStarted = "shopper-insights:get-recommended-payments:started"
