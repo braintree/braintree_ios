@@ -56,6 +56,19 @@ public class BTShopperInsightsClientV2 {
         return try await updateCustomerSessionAPI.execute(request, sessionID: sessionID)
     }
     
+    /// Generates customer recommendations
+    /// - Parameters:
+    ///    - request: Optional. request type `BTCustomerSessionRequest`
+    ///    - sessionID: Optional. The shopper session ID
+    /// - Warning: This method is currently in beta and may change or be removed in future releases.
+    public func generateCustomerRecommendations(
+        request: BTCustomerSessionRequest?,
+        sessionID: String?
+    ) async throws -> BTCustomerRecommendationsResult {
+        let customerRecommendationsAPI = BTCustomerRecommendationsAPI(apiClient: apiClient)
+        return try await customerRecommendationsAPI.execute(request, sessionID: sessionID)
+    }
+    
     /// Call this method when the PayPal or Venmo button has been successfully displayed to the buyer.
     /// This method sends analytics to help improve the Shopper Insights feature experience.
     /// - Parameters:
