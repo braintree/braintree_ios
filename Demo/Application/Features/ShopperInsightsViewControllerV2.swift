@@ -14,7 +14,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
     
-    private var sessionID: String? = nil
+    private var sessionID: String?
     
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
@@ -100,8 +100,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             self.progressBlock("Create Customer Session...")
 
             let request = BTCustomerSessionRequest(
-                hashedEmail: sha256Hash("test@example.com"),
-                hashedPhoneNumber: sha256Hash("5551234567"),
+                hashedEmail: sha256Hash(emailView.textField.text ?? ""),
+                hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
                 payPalAppInstalled: true,
                 venmoAppInstalled: false,
                 purchaseUnits: [
@@ -123,8 +123,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         self.progressBlock("Update Customer Session...")
 
         let request = BTCustomerSessionRequest(
-            hashedEmail: sha256Hash("test@example.com"),
-            hashedPhoneNumber: sha256Hash("5551234567"),
+            hashedEmail: sha256Hash(emailView.textField.text ?? ""),
+            hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
             payPalAppInstalled: true,
             venmoAppInstalled: false,
             purchaseUnits: [
@@ -147,8 +147,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         self.progressBlock("Get Customer Recommendations...")
         
         let request = BTCustomerSessionRequest(
-            hashedEmail: sha256Hash("test@example.com"),
-            hashedPhoneNumber: sha256Hash("5551234567"),
+            hashedEmail: sha256Hash(emailView.textField.text ?? ""),
+            hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
             payPalAppInstalled: true,
             venmoAppInstalled: false,
             purchaseUnits: [
@@ -158,7 +158,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
         Task {
             do {
-                let result = try await shopperInsightsClient.generateCustomerRecommendations(request: request, sessionID: sessionID ?? "")
+                let result = try await shopperInsightsClient.generateCustomerRecommendations(request: request, sessionID: sessionID)
                 
                 togglePayPalVaultButton(enabled: result.isInPayPalNetwork ?? false)
                 self.progressBlock(
