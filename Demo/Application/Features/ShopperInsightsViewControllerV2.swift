@@ -160,12 +160,15 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             do {
                 let result = try await shopperInsightsClient.generateCustomerRecommendations(request: request, sessionID: sessionID ?? "")
                 
+                togglePayPalVaultButton(enabled: result.isInPayPalNetwork ?? false)
                 self.progressBlock(
                     """
                     SessionID: \(result.sessionID ?? "nil")
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
                     PaymentRecommendations:
-                    \(result.paymentRecommendations?.map { "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)" }.joined(separator: "\n") ?? "nil")
+                    \(result.paymentRecommendations?.map {
+                        "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)"
+                    }.joined(separator: "\n") ?? "nil")
                     """
                 )
             } catch {
