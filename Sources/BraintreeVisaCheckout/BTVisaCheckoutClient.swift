@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 // Creates a Visa Checkout client for processing Visa Checkout payments.
-@objc public class BTVisaCheckoutClient: NSObject {
+public class BTVisaCheckoutClient {
 
     private let apiClient: BTAPIClient
 
@@ -16,12 +16,6 @@ import BraintreeCore
     ///   - apiClient: An API client.
     @objc public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
-        super.init()
-    }
-
-    @available(*, unavailable, message: "Please use init(apiClient:)")
-    override public init() {
-        fatalError("Please use init(apiClient:)")
     }
 
     /// Creates a Visa Checkout profile.
@@ -42,7 +36,7 @@ import BraintreeCore
                 return
             }
 
-            let environmentString = configuration.json?["environment"].asString()
+            let environmentString = configuration.visaCheckoutEnvironment
             let environment: Environment = (environmentString == "sandbox") ? .sandbox : .production
 
             let profile = Profile(
@@ -51,7 +45,7 @@ import BraintreeCore
                 profileName: nil
             )
             profile.datalevel = .full
-            profile.clientId = configuration.visaCheckoutExternalClientId
+            profile.clientId = configuration.visaCheckoutExternalClientID
             profile.acceptedCardBrands = configuration.visaCheckoutSupportedNetworks
 
             completion(profile, nil)
@@ -114,7 +108,7 @@ import BraintreeCore
             return
         }
 
-        guard let callId = callId, let encryptedKey = encryptedKey, let encryptedPaymentData = encryptedPaymentData else {
+        guard let callId = callID, let encryptedKey = encryptedKey, let encryptedPaymentData = encryptedPaymentData else {
             let error = BTVisaCheckoutError.integration
             sendAnalyticsAndComplete("ios.visacheckout.result.failed.invalid-payment", result: nil, error: error, completion: completion)
             return
