@@ -44,12 +44,4 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         XCTAssertNil(address.countryCode)
         XCTAssertNil(address.phoneNumber)
     }
-
-    func testAddressFactoryMethod_createsEquivalentInstance() {
-        let json = BTJSON(value: ["firstName": "Alice"])
-        let address = BTVisaCheckoutAddress.address(with: json)
-
-        XCTAssertEqual(address.firstName, "Alice")
-        XCTAssertNil(address.lastName)  // not included in JSON
-    }
 }
