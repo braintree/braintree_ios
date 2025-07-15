@@ -279,7 +279,7 @@ import BraintreeCore
             linkType: linkType,
             payPalContextID: payPalContextID
         )
-        application.open(appSwitchURL, options: [:], ) { success in
+        application.open(appSwitchURL, options: [:]) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL, completion: completion)
         }
     }
