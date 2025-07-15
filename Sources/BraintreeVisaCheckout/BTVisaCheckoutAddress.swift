@@ -6,7 +6,6 @@ import BraintreeCore
 
 
 /// A class containing Visa Checkout information about the user's address.
-/// Parses and stores address values from a `BTJSON` object.
 @objcMembers public class BTVisaCheckoutAddress: NSObject {
 
     /// The user's first name
@@ -49,12 +48,5 @@ import BraintreeCore
         self.countryCode = json["countryCode"].asString()
         self.phoneNumber = json["phoneNumber"].asString()
         super.init()
-    }
-
-    /// Convenience method for creating an address object from JSON.
-    /// - Parameter json: A BTJSON object containing the address fields.
-    /// - Returns: An initialized `BTVisaCheckoutAddress` instance.
-    public static func address(with json: BTJSON) -> BTVisaCheckoutAddress {
-        return BTVisaCheckoutAddress(json: json)
     }
 }
