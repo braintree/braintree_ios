@@ -21,13 +21,13 @@ final class BTCustomerRecommendationsAPI {
     
     /// This method will call the `GenerateCustomerRecommendations` GQL query, which returns a `BTCustomerRecommendationsResult` if successful.
     /// - Parameters:
-    ///    - request: A `BTCustomerSessionRequest`
-    ///    - sessionID: The session ID to update.
+    ///    - request: Optional. A `BTCustomerSessionRequest`
+    ///    - sessionID: Optional. The session ID to update.
     ///    - Returns: A `BTCustomerRecommendationsResult` which determines what payment options to render.
     ///    - Throws: An error if the request fails or if the response is invalid.
     func execute(
-        _ request: BTCustomerSessionRequest,
-        sessionID: String
+        _ request: BTCustomerSessionRequest?,
+        sessionID: String?
     ) async throws -> BTCustomerRecommendationsResult {
         do {
             apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsStarted)

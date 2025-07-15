@@ -6,7 +6,7 @@ struct GenerateCustomerRecommendationsGraphQLBody: Encodable {
     let query: String
     let variables: Variables
     
-    init(request: BTCustomerSessionRequest, sessionID: String) {
+    init(request: BTCustomerSessionRequest?, sessionID: String?) {
         query = """
             mutation GenerateCustomerRecommendations($input: GenerateCustomerRecommendationsInput!) {
                 generateCustomerRecommendations(input: $input) {

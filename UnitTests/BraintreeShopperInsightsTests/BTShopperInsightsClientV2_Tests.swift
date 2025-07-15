@@ -237,4 +237,83 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:update-customer-session:failed")
         }
     }
+    
+    func testCustomerRecommendationsGenerate_withResult() async {
+        let generateCustomerRecommendationResponse = BTJSON(
+            value: [
+                "data": [
+                    "generateCustomerRecommendations": [
+                        "sessionId": "test-session-id-123",
+                        "isInPayPalNetwork": true,
+                        "paymentRecommendations": [
+                            [
+                                "paymentOption": "PayPal",
+                                "recommendedPriority": 1
+                            ],
+                            [
+                                "paymentOption": "Venmo",
+                                "recommendedPriority": 2
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        )
+
+        mockAPIClient.cannedResponseBody = generateCustomerRecommendationResponse
+        mockAPIClient.cannedResponseError = nil
+
+        do {
+            let result = try await sut.generateCustomerRecommendations(
+                request: customerSessionRequest,
+                sessionID: sessionID
+            )
+
+            XCTAssertEqual(result.sessionID, "test-session-id-123")
+            XCTAssertTrue((result.isInPayPalNetwork != nil))
+
+            guard let recommendations = result.paymentRecommendations else {
+                XCTFail("Expected paymentRecommendations to be non-nil")
+                return
+            }
+
+            XCTAssertEqual(recommendations.count, 2)
+
+            XCTAssertEqual(recommendations[0].paymentOption, "PayPal")
+            XCTAssertEqual(recommendations[0].recommendedPriority, 1)
+
+            XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
+            XCTAssertEqual(recommendations[1].recommendedPriority, 2)
+
+        } catch {
+            XCTFail("Expected no error, but got: \(error)")
+        }
+    }
+
+    func testGenerateCustomerRecommendations_withError() async {
+        let expectedError = NSError(domain: "test-domain", code: 42, userInfo: nil)
+        mockAPIClient.cannedResponseError = expectedError
+
+        do {
+            _ = try await sut.generateCustomerRecommendations(
+                request: BTCustomerSessionRequest(),
+                sessionID: "test-session-id"
+            )
+            XCTFail("Expected error to be thrown, but got success")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, expectedError.domain)
+            XCTAssertEqual(error.code, expectedError.code)
+        } catch {
+            XCTFail("Expected NSError but got a different error: \(error)")
+        }
+    }
+    
+    func testGenerateCustomerRecommendations_withNilProperties_returnsNil() async {
+        let result = try? await sut.generateCustomerRecommendations(
+            request: nil,
+            sessionID: nil
+        )
+
+        XCTAssertNil(result, "Expected result to be nil when request and sessionID are nil")
+    }
 }
