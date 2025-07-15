@@ -284,7 +284,9 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
 
             XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
             XCTAssertEqual(recommendations[1].recommendedPriority, 2)
-
+            
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:generate-customer-recommendations:started")
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:generate-customer-recommendations:succeeded")
         } catch {
             XCTFail("Expected no error, but got: \(error)")
         }
@@ -303,6 +305,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         } catch let error as NSError {
             XCTAssertEqual(error.domain, expectedError.domain)
             XCTAssertEqual(error.code, expectedError.code)
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:generate-customer-recommendations:started")
+            XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:generate-customer-recommendations:failed")
         } catch {
             XCTFail("Expected NSError but got a different error: \(error)")
         }
