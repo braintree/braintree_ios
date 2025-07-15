@@ -14,6 +14,8 @@ enum BTPayPalReturnURLState {
 ///
 /// PayPal app switch and ASWebAuthenticationSession authorization requests should result in success or user-initiated cancelation. These states are communicated in the url.
 struct BTPayPalReturnURL {
+    
+    static let acceptedSchemes = ["https"]
 
     /// The overall status of the app switch - success, cancelation, or an unknown path
     var state: BTPayPalReturnURLState = .unknownPath
@@ -39,7 +41,7 @@ struct BTPayPalReturnURL {
     /// - Parameter url: an app switch or ASWebAuthenticationSession return URL
     /// - Returns: `true` if the url represents a valid PayPal app switch return
     static func isValid(_ url: URL) -> Bool {
-        let isHTTPSScheme = url.scheme == "https"
+        let isHTTPSScheme = self.acceptedSchemes.contains(url.scheme ?? "")
         let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal")
         let containsExpectedPath = url.path.contains("cancel") || url.path.contains("success")
         let isValidAppSwitchURL = isHTTPSScheme && containsAppSwitchPath && containsExpectedPath

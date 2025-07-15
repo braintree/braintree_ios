@@ -52,6 +52,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.braintreepayments.Demo.payments</string>
+				<string>braintree</string>
 			</array>
 		</dict>
 	</array>
