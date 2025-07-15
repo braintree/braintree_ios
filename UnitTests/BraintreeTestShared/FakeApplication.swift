@@ -8,6 +8,7 @@ public class FakeApplication: URLOpener {
     var cannedOpenURLSuccess: Bool = true
     public var cannedCanOpenURL: Bool = true
     public var canOpenURLWhitelist: [URL] = []
+    public var openCallCount = 0
 
     public func open(
         _ url: URL,
@@ -16,7 +17,8 @@ public class FakeApplication: URLOpener {
     ) {
         lastOpenURL = url
         openURLWasCalled = true
-        
+        openCallCount += 1
+
         Task { @MainActor in
             completion?(cannedOpenURLSuccess)
         }

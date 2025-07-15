@@ -44,6 +44,9 @@
 		45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */; };
 		45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */; };
 		454722B02CF0DA34000DCF4E /* LocalPaymentPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454722AF2CF0DA27000DCF4E /* LocalPaymentPOSTBody.swift */; };
+		454722AC2CEFB291000DCF4E /* BTContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454722AB2CEFB291000DCF4E /* BTContactInformation.swift */; };
+		454BCF752E1C5FAA0099E674 /* BTWebAuthenticationSession_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454BCF742E1C5FA50099E674 /* BTWebAuthenticationSession_Tests.swift */; };
+		454BCF772E1C60610099E674 /* MockPresentationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454BCF762E1C60610099E674 /* MockPresentationContext.swift */; };
 		457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */; };
 		457D7FCA2C2A250E00EF6523 /* RepeatingTimer_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */; };
 		458570782C34A699009CEF7A /* ConfigurationLoader_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458570772C34A699009CEF7A /* ConfigurationLoader_Tests.swift */; };
@@ -744,7 +747,10 @@
 		45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionTask.swift; sourceTree = "<group>"; };
 		45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBTHTTPNetworkTiming.swift; sourceTree = "<group>"; };
 		454722AF2CF0DA27000DCF4E /* LocalPaymentPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPaymentPOSTBody.swift; sourceTree = "<group>"; };
-		457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		454722AB2CEFB291000DCF4E /* BTContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactInformation.swift; sourceTree = "<group>"; };
+		454BCF742E1C5FA50099E674 /* BTWebAuthenticationSession_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTWebAuthenticationSession_Tests.swift; sourceTree = "<group>"; };
+		454BCF762E1C60610099E674 /* MockPresentationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPresentationContext.swift; sourceTree = "<group>"; };
+        457D7FC72C29CEC300EF6523 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer_Tests.swift; sourceTree = "<group>"; };
 		458570772C34A699009CEF7A /* ConfigurationLoader_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationLoader_Tests.swift; sourceTree = "<group>"; };
 		458570792C34B1E1009CEF7A /* MockClientAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockClientAuthorization.swift; sourceTree = "<group>"; };
@@ -1950,7 +1956,6 @@
 			children = (
 				8053F05529FAB6FF0076F988 /* Analytics */,
 				800BB3EF2BFCAC1100F30CE8 /* Authorization */,
-				80482BD92C484D6F00C71D03 /* Configuration */,
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
 				A7CCE2AD1B67F26C006EA661 /* BTAppContextSwitcher_Tests.swift */,
 				030DBF451F3A5F5B00E959F0 /* BTBinData_Tests.swift */,
@@ -1961,12 +1966,15 @@
 				805FD35B2331780F0000B514 /* BTPostalAddress_Tests.swift */,
 				A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */,
 				A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */,
+				454BCF742E1C5FA50099E674 /* BTWebAuthenticationSession_Tests.swift */,
+				80482BD92C484D6F00C71D03 /* Configuration */,
 				8053F05629FAD4790076F988 /* Encodable+Dictionary_Tests.swift */,
 				A908436924FD88C3004134CA /* Helpers */,
 				A9E5C22824FD6D0800EE691F /* Info.plist */,
-				45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */,
 				45227FC62C33104100A15018 /* MockBTHTTPNetworkTiming.swift */,
 				458570792C34B1E1009CEF7A /* MockClientAuthorization.swift */,
+				45227FC32C330FDE00A15018 /* MockURLSessionTask.swift */,
+				454BCF762E1C60610099E674 /* MockPresentationContext.swift */,
 			);
 			path = BraintreeCoreTests;
 			sourceTree = "<group>";
@@ -3500,6 +3508,7 @@
 				80BA3C292B23892700900BBB /* FakeRequest.swift in Sources */,
 				A95229C524FD8F15006F7D25 /* BTVersion_Tests.swift in Sources */,
 				45F766F82DE8E1CE0079016E /* MockBackgroundTaskManager.swift in Sources */,
+				454BCF772E1C60610099E674 /* MockPresentationContext.swift in Sources */,
 				BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */,
 				A908437124FD8BB0004134CA /* BTPostalAddress_Tests.swift in Sources */,
 				BEBC6F3229380B82004E25A0 /* BTExceptionCatcher.m in Sources */,
@@ -3524,6 +3533,7 @@
 				80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */,
 				8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */,
 				45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */,
+				454BCF752E1C5FAA0099E674 /* BTWebAuthenticationSession_Tests.swift in Sources */,
 				BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */,
 				458570782C34A699009CEF7A /* ConfigurationLoader_Tests.swift in Sources */,
 			);
