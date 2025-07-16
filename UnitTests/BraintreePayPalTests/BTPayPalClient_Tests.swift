@@ -354,6 +354,7 @@ class BTPayPalClient_Tests: XCTestCase {
     }
     
     func testTokenize_whenApprovalURLIsWebBrowserRedirectType_sendsBrowserPresentationStartedEvent() {
+        let approvalURL = "https://www.paypal.com/agreements/approve?ba_token=A_FAKE_BA_TOKEN"
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
                 "approvalUrl": "https://www.paypal.com/agreements/approve?ba_token=A_FAKE_BA_TOKEN"
@@ -361,6 +362,7 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
         
         let request = BTPayPalCheckoutRequest(amount: "10.00")
+        let returnURL = URL(string: "sdk.ios.braintree://onetouch/v1/success?ba_token=A_FAKE_BA_TOKEN")
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "sdk.ios.braintree://onetouch/v1/success?ba_token=A_FAKE_BA_TOKEN")
         payPalClient.tokenize(request) { _, _ in }
         
@@ -368,6 +370,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, false)
         XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, false)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("paypal:tokenize:browser-presentation:started"))
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL["paypal:tokenize:browser-presentation:started"], approvalURL)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL["paypal:tokenize:handle-return:started"], returnURL?.absoluteString)
     }
 
     // MARK: - Browser switch
@@ -413,8 +417,10 @@ class BTPayPalClient_Tests: XCTestCase {
 
         // Make sure analytics event was sent when switch occurred
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
-
+        let postedAppSwitchURLs = mockAPIClient.postedAppSwitchURL
+        
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.browserPresentationSucceeded))
+        XCTAssertEqual(postedAppSwitchURLs[BTPayPalAnalytics.browserPresentationSucceeded], "http://fakeURL.com")
     }
     
     func testTokenize_whenSessionIsDuplicated_sendsDuplicateRequestAnalyticsEvent() {
@@ -424,8 +430,10 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.tokenize(request) { _, _ in }
         
         let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
-
+        let postedAppSwitchURLs = mockAPIClient.postedAppSwitchURL
+        
         XCTAssertTrue(postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeDuplicateRequest))
+        XCTAssertEqual(postedAppSwitchURLs[BTPayPalAnalytics.tokenizeDuplicateRequest], "http://fakeURL.com")
     }
 
     // MARK: - handleBrowserSwitchReturn
@@ -587,6 +595,20 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let response = account?["response"] as? [String: String]
         XCTAssertEqual(response?["webURL"], "bar://onetouch/v1/success?token=hermes_token")
+    }
+    
+    func testHandleBrowserSwitchReturn_whenSuccessURL_sendsAnalytics() {
+        let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+        let expectation = expectation(description: "completion block called")
+
+        payPalClient.handleReturn(returnURL, paymentType: .checkout) { _, _ in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.handleReturnStarted))
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[BTPayPalAnalytics.handleReturnStarted], returnURL.absoluteString)
     }
 
     // MARK: - Tokenization
