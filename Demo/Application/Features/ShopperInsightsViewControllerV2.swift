@@ -176,7 +176,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 )
                 
                 self.paymentOptions = result.paymentRecommendations
-                
+                print(result)
                 if let recommendations = result.paymentRecommendations {
                     if let payPalOption = recommendations.first(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
                         togglePayPalVaultButton(enabled: true)
@@ -207,10 +207,10 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {
         switch priority {
-        case 0: return .first
-        case 1: return .second
-        case 2: return .third
-        case 3: return .fourth
+        case 1: return .first
+        case 2: return .second
+        case 3: return .third
+        case 4: return .fourth
         default: return .other
         }
     }
