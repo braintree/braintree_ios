@@ -48,7 +48,7 @@ final class BTCreateCustomerSessionAPI {
                 shopperSessionID: sessionID
             )
             return sessionID
-        } catch let error as NSError {
+        } catch let error {
             apiClient.sendAnalyticsEvent(
                 BTShopperInsightsAnalytics.createCustomerSessionFailed,
                 errorDescription: error.localizedDescription

@@ -50,7 +50,7 @@ final class BTUpdateCustomerSessionAPI {
                 shopperSessionID: sessionID
             )
             return sessionID
-        } catch let error as NSError {
+        } catch let error {
             apiClient.sendAnalyticsEvent(
                 BTShopperInsightsAnalytics.updateCustomerSessionFailed,
                 errorDescription: error.localizedDescription

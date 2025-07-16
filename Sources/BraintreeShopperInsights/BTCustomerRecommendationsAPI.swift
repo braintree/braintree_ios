@@ -61,7 +61,7 @@ final class BTCustomerRecommendationsAPI {
                 isInPayPalNetwork: isInPayPalNetwork,
                 paymentRecommendations: paymentOptions
             )
-        } catch let error as NSError {
+        } catch let error {
             apiClient.sendAnalyticsEvent(
                 BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed,
                 errorDescription: error.localizedDescription
