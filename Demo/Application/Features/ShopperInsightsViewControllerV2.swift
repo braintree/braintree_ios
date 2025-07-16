@@ -78,11 +78,12 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [createCustomerSessionButton,
-                       updateCustomerSessionButton,
-                       getCustomerRecommendationsButton,
-                       payPalVaultButton,
-                       venmoButton
+        let buttons = [
+            createCustomerSessionButton,
+            updateCustomerSessionButton,
+            getCustomerRecommendationsButton,
+            payPalVaultButton,
+            venmoButton
         ]
 
         payPalVaultButton.isEnabled = false
