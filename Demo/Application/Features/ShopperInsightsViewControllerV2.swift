@@ -5,6 +5,7 @@ import BraintreeVenmo
 import BraintreeShopperInsights
 import CryptoKit
 
+// swiftlint:disable:next type_body_length
 class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var shopperInsightsClient = BTShopperInsightsClientV2(apiClient: apiClient)
@@ -13,7 +14,9 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
-
+    
+    lazy var paymentOptions: [BTPaymentOptions]? = nil
+    
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
@@ -172,12 +175,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                     sessionID: sessionIDView.textField.text
                 )
                 
+                self.paymentOptions = result.paymentRecommendations
+                
                 if let recommendations = result.paymentRecommendations {
-                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
+                    if let payPalOption = recommendations.first(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
                         togglePayPalVaultButton(enabled: true)
                     }
 
-                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "VENMO" }) {
+                    if let venmoOption = recommendations.first(where: { $0.paymentOption.uppercased() == "VENMO" }) {
                         toggleVenmoButton(enabled: true)
                     }
                 }
@@ -200,6 +205,17 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         }
     }
     
+    private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {
+        switch priority {
+        case 0: return .first
+        case 1: return .second
+        case 2: return .third
+        case 3: return .fourth
+        default: return .other
+        }
+    }
+
+    
     private func sha256Hash(_ input: String) -> String {
         let inputData = Data(input.utf8)
         let hashed = SHA256.hash(data: inputData)
@@ -211,17 +227,23 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         guard enabled else { return }
         
-        let presentmentDetails = BTPresentmentDetails(
-            buttonOrder: .first,
-            experimentType: .control,
-            pageType: .about
-        )
-        
-        shopperInsightsClient.sendPresentedEvent(
-            for: .payPal,
-            presentmentDetails: presentmentDetails,
-            sessionID: sessionIDView.textField.text ?? ""
-        )
+        if let payPalOption = self.paymentOptions?
+            .filter({ $0.paymentOption.uppercased() == "PAYPAL" })
+            .sorted(by: { $0.recommendedPriority < $1.recommendedPriority })
+            .first {
+
+            let presentmentDetails = BTPresentmentDetails(
+                buttonOrder: mapPriorityToButtonOrder(payPalOption.recommendedPriority),
+                experimentType: .control,
+                pageType: .about
+            )
+
+            shopperInsightsClient.sendPresentedEvent(
+                for: .payPal,
+                presentmentDetails: presentmentDetails,
+                sessionID: sessionIDView.textField.text ?? ""
+            )
+        }
     }
     
     private func toggleVenmoButton(enabled: Bool) {
@@ -229,22 +251,31 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         
         guard enabled else { return }
         
-        let presentmentDetails = BTPresentmentDetails(
-            buttonOrder: .second,
-            experimentType: .control,
-            pageType: .about
-        )
-        
-        shopperInsightsClient.sendPresentedEvent(
-            for: .venmo,
-            presentmentDetails: presentmentDetails,
-            sessionID: sessionIDView.textField.text ?? ""
-        )
+        if let venmoOption = self.paymentOptions?
+            .filter({ $0.paymentOption.uppercased() == "VENMO" })
+            .sorted(by: { $0.recommendedPriority < $1.recommendedPriority })
+            .first {
+
+            let presentmentDetails = BTPresentmentDetails(
+                buttonOrder: mapPriorityToButtonOrder(venmoOption.recommendedPriority),
+                experimentType: .control,
+                pageType: .about
+            )
+
+            shopperInsightsClient.sendPresentedEvent(
+                for: .payPal,
+                presentmentDetails: presentmentDetails,
+                sessionID: sessionIDView.textField.text ?? ""
+            )
+        }
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendSelectedEvent(for: .payPal, sessionID: "94f0b2db-5323-4d86-add3-paypalmsg000")
+        
+        if let sessionID = sessionIDView.textField.text {
+            shopperInsightsClient.sendSelectedEvent(for: .payPal, sessionID: sessionID)
+        }
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
@@ -261,11 +292,11 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     @objc func venmoButtonTapped(_ button: UIButton) {
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendSelectedEvent(
-            for: .venmo,
-            sessionID: sessionIDView.textField.text ?? ""
-        )
-        
+
+        if let sessionID = sessionIDView.textField.text {
+            shopperInsightsClient.sendSelectedEvent(for: .venmo, sessionID: sessionID)
+        }
+
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
 
