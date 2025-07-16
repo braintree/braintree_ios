@@ -512,6 +512,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserPresentationStarted,
+            appSwitchURL: appSwitchURL,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
