@@ -507,6 +507,15 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.browserPresentationStarted,
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            isVaultRequest: isVaultRequest,
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
+        
         approvalURL = appSwitchURL
         webSessionReturned = false
         
