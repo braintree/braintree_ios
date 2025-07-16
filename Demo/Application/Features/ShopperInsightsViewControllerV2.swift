@@ -13,14 +13,12 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
-    
-    private var sessionID: String?
-    
+
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
         view.textField.placeholder = "Email"
-        view.textField.text = "PR1_merchantname@personal.example.com"
+        view.textField.text = "sandbox1@pp.com"
         return view
     }()
     
@@ -36,11 +34,17 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "National Number"
         view.textField.placeholder = "National Number"
-        view.textField.text = "4082321001"
+        view.textField.text = "4085005005"
         return view
     }()
     
-    lazy var shopperInsightsButton = createButton(title: "Fetch Shopper Insights", action: #selector(shopperInsightsButtonTapped))
+    lazy var sessionIDView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "SessionID"
+        view.textField.placeholder = "SessionID"
+        view.textField.text = "94f0b2db-5323-4d86-add3-paypalmsg000"
+        return view
+    }()
     
     lazy var createCustomerSessionButton = createButton(
         title: "Create Customer Session Button",
@@ -58,7 +62,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     )
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView])
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -74,8 +78,13 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     override func createPaymentButton() -> UIView {
-        let buttons = [createCustomerSessionButton, updateCustomerSessionButton, getCustomerRecommendationsButton, shopperInsightsButton, payPalVaultButton, venmoButton]
-        shopperInsightsButton.isEnabled = true
+        let buttons = [createCustomerSessionButton,
+                       updateCustomerSessionButton,
+                       getCustomerRecommendationsButton,
+                       payPalVaultButton,
+                       venmoButton
+        ]
+
         payPalVaultButton.isEnabled = false
         venmoButton.isEnabled = false
 
@@ -88,13 +97,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         return stackView
     }
     
-    @objc func shopperInsightsButtonTapped(_ button: UIButton) {
-        self.progressBlock("Fetching shopper insights...")
-        
-        let request = BTCustomerSessionRequest(hashedEmail: emailView.textField.text ?? "")
-        // TODO remove this 
-    }
-    
     @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
         Task {
             self.progressBlock("Create Customer Session...")
@@ -102,16 +104,16 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             let request = BTCustomerSessionRequest(
                 hashedEmail: sha256Hash(emailView.textField.text ?? ""),
                 hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
-                payPalAppInstalled: true,
-                venmoAppInstalled: false,
+                payPalAppInstalled: shopperInsightsClient.isPayPalAppInstalled(),
+                venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
                 purchaseUnits: [
                     BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
                 ]
             )
 
             do {
-                let result = try await shopperInsightsClient.createCustomerSession(request: request)
-                sessionID = result
+                let sessionID = try await shopperInsightsClient.createCustomerSession(request: request)
+                sessionIDView.textField.text = sessionID
                 self.progressBlock("SessionID: \(String(describing: sessionID))")
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription))")
@@ -125,8 +127,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let request = BTCustomerSessionRequest(
             hashedEmail: sha256Hash(emailView.textField.text ?? ""),
             hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
-            payPalAppInstalled: true,
-            venmoAppInstalled: false,
+            payPalAppInstalled: shopperInsightsClient.isPayPalAppInstalled(),
+            venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
             ]
@@ -134,8 +136,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
         Task {
             do {
-                let result = try await shopperInsightsClient.updateCustomerSession(request: request, sessionID: sessionID ?? "")
-                sessionID = result
+                let sessionID = try await shopperInsightsClient.updateCustomerSession(
+                    request: request,
+                    sessionID: sessionIDView.textField.text ?? ""
+                )
+                
+                sessionIDView.textField.text = sessionID
+                self.progressBlock("SessionID: \(String(describing: sessionID))")
+                
                 self.progressBlock("SessionID: \(String(describing: sessionID))")
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription))")
@@ -149,8 +157,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let request = BTCustomerSessionRequest(
             hashedEmail: sha256Hash(emailView.textField.text ?? ""),
             hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
-            payPalAppInstalled: true,
-            venmoAppInstalled: false,
+            payPalAppInstalled: shopperInsightsClient.isPayPalAppInstalled(),
+            venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
             ]
@@ -158,12 +166,26 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
         Task {
             do {
-                let result = try await shopperInsightsClient.generateCustomerRecommendations(request: request, sessionID: sessionID)
+                let result = try await shopperInsightsClient.generateCustomerRecommendations(
+                    request: request,
+                    sessionID: sessionIDView.textField.text
+                )
                 
-                togglePayPalVaultButton(enabled: result.isInPayPalNetwork ?? false)
+                if let recommendations = result.paymentRecommendations {
+                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
+                        togglePayPalVaultButton(enabled: true)
+                    }
+
+                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "VENMO" }) {
+                        toggleVenmoButton(enabled: true)
+                    }
+                }
+
+                sessionIDView.textField.text = result.sessionID
+                
                 self.progressBlock(
                     """
-                    SessionID: \(result.sessionID ?? "nil")
+                    SessionID: \(String(describing: result.sessionID))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
@@ -197,7 +219,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         shopperInsightsClient.sendPresentedEvent(
             for: .payPal,
             presentmentDetails: presentmentDetails,
-            sessionID: sessionID ?? ""
+            sessionID: sessionIDView.textField.text ?? ""
         )
     }
     
@@ -215,19 +237,19 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         shopperInsightsClient.sendPresentedEvent(
             for: .venmo,
             presentmentDetails: presentmentDetails,
-            sessionID: sessionID ?? ""
+            sessionID: sessionIDView.textField.text ?? ""
         )
     }
     
     @objc func payPalVaultButtonTapped(_ button: UIButton) {
         progressBlock("Tapped PayPal Vault")
-        shopperInsightsClient.sendSelectedEvent(for: .payPal, sessionID: sessionID ?? "")
+        shopperInsightsClient.sendSelectedEvent(for: .payPal, sessionID: "94f0b2db-5323-4d86-add3-paypalmsg000")
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
         let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.shopperSessionID = sessionID
+        paypalRequest.shopperSessionID = "94f0b2db-5323-4d86-add3-paypalmsg000"
         paypalRequest.userAuthenticationEmail = emailView.textField.text
         
         payPalClient.tokenize(paypalRequest) { nonce, error in
@@ -238,7 +260,10 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
     @objc func venmoButtonTapped(_ button: UIButton) {
         progressBlock("Tapped Venmo")
-        shopperInsightsClient.sendSelectedEvent(for: .venmo, sessionID: sessionID ?? "")
+        shopperInsightsClient.sendSelectedEvent(
+            for: .venmo,
+            sessionID: sessionIDView.textField.text ?? ""
+        )
         
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
