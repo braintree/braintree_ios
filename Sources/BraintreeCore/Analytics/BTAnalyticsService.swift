@@ -26,6 +26,16 @@ final class BTAnalyticsService: AnalyticsSendable {
     private let timer = RepeatingTimer()
 
     private var apiClient: BTAPIClient?
+    
+    @MainActor
+    private var applicationStateString: String {
+        switch UIApplication.shared.applicationState {
+        case .active: "active"
+        case .inactive: "inactive"
+        case .background: "background"
+        @unknown default: "unknown"
+        }
+    }
             
     // MARK: - Initializer
     
@@ -112,6 +122,7 @@ final class BTAnalyticsService: AnalyticsSendable {
             let configuration = try await apiClient.fetchConfiguration()
             try await postAnalyticsEvents(
                 configuration: configuration,
+                applicationState: self.applicationStateString,
                 sessionID: apiClient.metadata.sessionID,
                 events: [event]
             )
@@ -125,12 +136,14 @@ final class BTAnalyticsService: AnalyticsSendable {
     private func sendQueuedAnalyticsEvents() async {
         guard await !events.isEmpty, let apiClient else { return }
         
+        
         do {
             let configuration = try await apiClient.fetchConfiguration()
             
             for (sessionID, eventsPerSessionID) in await events.allValues {
                 try await postAnalyticsEvents(
                     configuration: configuration,
+                    applicationState: self.applicationStateString,
                     sessionID: sessionID,
                     events: eventsPerSessionID
                 )
@@ -142,9 +155,10 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
     
     /// Posts analytics events to the endpoint.
-    private func postAnalyticsEvents(configuration: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) async throws {
+    private func postAnalyticsEvents(configuration: BTConfiguration, applicationState: String, sessionID: String, events: [FPTIBatchData.Event]) async throws {
         let payload = createAnalyticsEvent(
             config: configuration,
+            applicationState: applicationState,
             sessionID: sessionID,
             events: events
         )
@@ -153,12 +167,13 @@ final class BTAnalyticsService: AnalyticsSendable {
     }
 
     /// Constructs POST params to be sent to FPTI
-    private func createAnalyticsEvent(config: BTConfiguration, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
+    private func createAnalyticsEvent(config: BTConfiguration, applicationState: String, sessionID: String, events: [FPTIBatchData.Event]) -> Codable {
         let batchMetadata = FPTIBatchData.Metadata(
             authorizationFingerprint: apiClient?.authorization.type == .clientToken ? apiClient?.authorization.bearer : nil,
             environment: config.fptiEnvironment,
             integrationType: apiClient?.metadata.integration.stringValue ?? BTClientMetadataIntegration.custom.stringValue,
             merchantID: config.merchantID,
+            applicationState: applicationState,
             sessionID: sessionID,
             tokenizationKey: apiClient?.authorization.type == .tokenizationKey ? apiClient?.authorization.originalValue : nil
         )
@@ -166,3 +181,4 @@ final class BTAnalyticsService: AnalyticsSendable {
         return FPTIBatchData(metadata: batchMetadata, events: events)
     }
 }
+
