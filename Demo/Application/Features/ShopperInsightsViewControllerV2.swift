@@ -214,7 +214,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         default: return .other
         }
     }
-
     
     private func sha256Hash(_ input: String) -> String {
         let inputData = Data(input.utf8)
