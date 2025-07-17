@@ -176,13 +176,13 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 )
                 
                 self.paymentOptions = result.paymentRecommendations
-                print(result)
+
                 if let recommendations = result.paymentRecommendations {
-                    if let payPalOption = recommendations.first(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
+                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "PAYPAL" }) {
                         togglePayPalVaultButton(enabled: true)
                     }
 
-                    if let venmoOption = recommendations.first(where: { $0.paymentOption.uppercased() == "VENMO" }) {
+                    if recommendations.contains(where: { $0.paymentOption.uppercased() == "VENMO" }) {
                         toggleVenmoButton(enabled: true)
                     }
                 }
