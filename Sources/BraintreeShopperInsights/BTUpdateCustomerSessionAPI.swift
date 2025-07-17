@@ -31,7 +31,10 @@ final class BTUpdateCustomerSessionAPI {
         sessionID: String
     ) async throws -> String {
         do {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.updateCustomerSessionStarted)
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.updateCustomerSessionStarted,
+                shopperSessionID: sessionID
+            )
             
             let graphQLParams = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
             

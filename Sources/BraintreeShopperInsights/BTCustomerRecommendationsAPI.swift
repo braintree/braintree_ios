@@ -30,7 +30,10 @@ final class BTCustomerRecommendationsAPI {
         sessionID: String?
     ) async throws -> BTCustomerRecommendationsResult {
         do {
-            apiClient.sendAnalyticsEvent(BTShopperInsightsAnalytics.generateCustomerRecommendationsStarted)
+            apiClient.sendAnalyticsEvent(
+                BTShopperInsightsAnalytics.generateCustomerRecommendationsStarted,
+                shopperSessionID: sessionID
+            )
             let graphQLParameters = GenerateCustomerRecommendationsGraphQLBody(request: request, sessionID: sessionID)
             let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
             
