@@ -18,4 +18,13 @@ public struct BTPayPalPhoneNumber: Encodable {
         self.countryCode = countryCode
         self.nationalNumber = nationalNumber
     }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        if !countryCode.isEmpty && !nationalNumber.isEmpty {
+            try container.encode(countryCode, forKey: .countryCode)
+            try container.encode(nationalNumber, forKey: .nationalNumber)
+        }
+    }
 }
