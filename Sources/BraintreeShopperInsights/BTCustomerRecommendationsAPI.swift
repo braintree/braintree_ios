@@ -64,10 +64,11 @@ final class BTCustomerRecommendationsAPI {
                 isInPayPalNetwork: isInPayPalNetwork,
                 paymentRecommendations: paymentOptions
             )
-        } catch let error {
+        } catch {
             apiClient.sendAnalyticsEvent(
                 BTShopperInsightsAnalytics.generateCustomerRecommendationsFailed,
-                errorDescription: error.localizedDescription
+                errorDescription: error.localizedDescription,
+                shopperSessionID: sessionID
             )
             throw error
         }
