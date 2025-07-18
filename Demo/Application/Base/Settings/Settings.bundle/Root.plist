@@ -27,7 +27,8 @@
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>SEPA Direct Debit</string>
-				<string>Shopper Insights</string>
+				<string>Payment Ready v1</string>
+				<string>Payment Ready v2</string>
 				<string>PayPal Messaging</string>
 			</array>
 			<key>Values</key>
@@ -43,6 +44,7 @@
 				<string>AmexViewController</string>
 				<string>SEPADirectDebitViewController</string>
 				<string>ShopperInsightsViewController</string>
+				<string>ShopperInsightsViewControllerV2</string>
 				<string>PayPalMessagingViewController</string>
 			</array>
 		</dict>

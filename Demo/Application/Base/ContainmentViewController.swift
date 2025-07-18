@@ -239,6 +239,8 @@ class ContainmentViewController: UIViewController {
             return SEPADirectDebitViewController(authorization: authorization)
         case "ShopperInsightsViewController":
             return ShopperInsightsViewController(authorization: authorization)
+        case "ShopperInsightsViewControllerV2":
+            return ShopperInsightsViewControllerV2(authorization: authorization)
         case "ThreeDSecureViewController":
             return ThreeDSecureViewController(authorization: authorization)
         case "VenmoViewController":
