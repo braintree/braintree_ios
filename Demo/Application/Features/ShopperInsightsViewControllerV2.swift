@@ -49,6 +49,15 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         return view
     }()
     
+    private let recommendationsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.isHidden = true
+        label.font = UIFont.systemFont(ofSize: 14)
+        return label
+    }()
+    
     lazy var createCustomerSessionButton = createButton(
         title: "Create Customer Session Button",
         action: #selector(createCustomerSessionButtonTapped)
@@ -73,14 +82,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         return stackView
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        createSubviews()
-        layoutConstraints()
-    }
-    
-    override func createPaymentButton() -> UIView {
+    // Declare the stack view as a property
+    private lazy var paymentButtonsStackView: UIStackView = {
         let buttons = [
             createCustomerSessionButton,
             updateCustomerSessionButton,
@@ -88,7 +91,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             payPalVaultButton,
             venmoButton
         ]
-
         payPalVaultButton.isEnabled = false
         venmoButton.isEnabled = false
 
@@ -97,11 +99,24 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
+    }()
+
+    // Update createPaymentButton to return the property
+    override func createPaymentButton() -> UIView {
+        return paymentButtonsStackView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        createSubviews()
+        layoutConstraints()
     }
     
     @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
+        resetRecommendationsLabel()
+
         Task {
             self.progressBlock("Create Customer Session...")
 
@@ -126,6 +141,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
 
     @objc func updateCustomerSessionButtonTapped(_ button: UIButton) {
+        resetRecommendationsLabel()
         self.progressBlock("Update Customer Session...")
 
         let request = BTCustomerSessionRequest(
@@ -156,8 +172,9 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     @objc func getCustomerRecommendationsButtonTapped(_ button: UIButton) {
+        resetRecommendationsLabel()
         self.progressBlock("Get Customer Recommendations...")
-        
+
         let request = BTCustomerSessionRequest(
             hashedEmail: sha256Hash(emailView.textField.text ?? ""),
             hashedPhoneNumber: sha256Hash(nationalNumberView.textField.text ?? ""),
@@ -174,7 +191,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                     request: request,
                     sessionID: sessionIDView.textField.text
                 )
-                
+
                 self.paymentOptions = result.paymentRecommendations
 
                 if let recommendations = result.paymentRecommendations {
@@ -188,21 +205,32 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 }
 
                 sessionIDView.textField.text = result.sessionID
-                
-                self.progressBlock(
-                    """
-                    SessionID: \(String(describing: result.sessionID))
+
+                // Show summary in progressBlock
+                self.progressBlock("Received \(result.paymentRecommendations?.count ?? 0) payment recommendations. See details above.")
+ 
+                let details = """
+                    SessionID: \(String(describing: result.sessionID ??
+                    ""))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
                         "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)"
                     }.joined(separator: "\n") ?? "nil")
                     """
-                )
+
+                self.recommendationsLabel.text = details
+                self.recommendationsLabel.isHidden = false
+
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription))")
             }
         }
+    }
+    
+    private func resetRecommendationsLabel() {
+        recommendationsLabel.text = ""
+        recommendationsLabel.isHidden = true
     }
     
     private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {
@@ -262,7 +290,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             )
 
             shopperInsightsClient.sendPresentedEvent(
-                for: .payPal,
+                for: .venmo,
                 presentmentDetails: presentmentDetails,
                 sessionID: sessionIDView.textField.text ?? ""
             )
@@ -279,11 +307,11 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let paypalRequest = BTPayPalVaultRequest()
-        paypalRequest.shopperSessionID = "94f0b2db-5323-4d86-add3-paypalmsg000"
-        paypalRequest.userAuthenticationEmail = emailView.textField.text
+        let payPalRequest = BTPayPalVaultRequest()
+        payPalRequest.shopperSessionID = sessionIDView.textField.text ?? ""
+        payPalRequest.userAuthenticationEmail = emailView.textField.text
         
-        payPalClient.tokenize(paypalRequest) { nonce, error in
+        payPalClient.tokenize(payPalRequest) { nonce, error in
             button.isEnabled = true
             self.displayResultDetails(nonce: nonce, error: error)
         }
@@ -307,18 +335,18 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     private func displayResultDetails(nonce: BTPaymentMethodNonce?, error: Error?) {
-        if let error {
-            progressBlock(error.localizedDescription)
-        } else if let nonce {
-            completionBlock(nonce)
-        } else {
-            progressBlock("Canceled")
+        guard let nonce else {
+            progressBlock(error?.localizedDescription)
+            return
         }
+
+        completionBlock(nonce)
     }
 
     private func createSubviews() {
         shopperInsightsInputView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(shopperInsightsInputView)
+        view.addSubview(recommendationsLabel)
     }
 
     private func layoutConstraints() {
@@ -328,6 +356,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
                 shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
                 shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 200)
+            ]
+        )
+        
+        NSLayoutConstraint.activate(
+            [
+                recommendationsLabel.topAnchor.constraint(equalTo: paymentButtonsStackView.bottomAnchor, constant: 10),
+                recommendationsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                recommendationsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
             ]
         )
     }
