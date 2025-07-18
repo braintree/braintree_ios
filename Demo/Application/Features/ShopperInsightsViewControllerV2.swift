@@ -53,6 +53,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.textAlignment = .center
         label.isHidden = true
         label.font = UIFont.systemFont(ofSize: 14)
         return label
@@ -210,8 +211,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 self.progressBlock("Received \(result.paymentRecommendations?.count ?? 0) payment recommendations. See details above.")
  
                 let details = """
-                    SessionID: \(String(describing: result.sessionID ??
-                    ""))
+                    SessionID: \(String(describing: result.sessionID ?? ""))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
