@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04C6528E2E2B107B00C879A0 /* BraintreeVisaCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */; };
+		04C6528F2E2B107B00C879A0 /* BraintreeVisaCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -112,6 +114,7 @@
 				9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
+				04C6528F2E2B107B00C879A0 /* BraintreeVisaCheckout.framework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
 				BE9BD75A28872E4D00022983 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */,
 				803D64FC256DAF9A00ACE692 /* BraintreeCore.framework in Embed Frameworks */,
@@ -128,6 +131,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -228,6 +232,7 @@
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
+				04C6528E2E2B107B00C879A0 /* BraintreeVisaCheckout.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
 				803D6503256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Frameworks */,
 				8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */,
@@ -377,6 +382,7 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */,
 				8028B9772B28D42400C88CE8 /* BraintreeShopperInsights.framework */,
 				BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */,
 				BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */,

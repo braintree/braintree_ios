@@ -23,7 +23,9 @@
 		04C652802E2B044000C879A0 /* BTVisaCheckoutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6527F2E2B043900C879A0 /* BTVisaCheckoutConfiguration.swift */; };
 		04C652822E2B046000C879A0 /* BTVisaCheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */; };
 		04C652842E2B049A00C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
-		04C652852E2B049A00C879A0 /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		04C652872E2B097E00C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
+		04C6528A2E2B0BC600C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
+		04C652902E2B112000C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
@@ -767,17 +769,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		04C652862E2B049A00C879A0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				04C652852E2B049A00C879A0 /* VisaCheckoutSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A9E80AA024FEF45400196BD3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1223,6 +1214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C652902E2B112000C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 				046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */,
 				04C652842E2B049A00C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 			);
@@ -1232,6 +1224,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C652872E2B097E00C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 				046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */,
 				046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */,
 			);
@@ -1241,6 +1234,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04C6528A2E2B0BC600C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */,
 				9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,
 				1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */,
 			);
@@ -2427,7 +2421,6 @@
 				046547B22DDE8B040054B80A /* Sources */,
 				046547B32DDE8B040054B80A /* Frameworks */,
 				046547B42DDE8B040054B80A /* Resources */,
-				04C652862E2B049A00C879A0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4523,7 +4516,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -4590,7 +4583,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -5794,7 +5787,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -5854,7 +5846,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
