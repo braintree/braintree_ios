@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "046547BE2DDE8B050054B80A"
+               BuildableName = "BraintreeVisaCheckoutTests.xctest"
+               BlueprintName = "BraintreeVisaCheckoutTests"
+               ReferencedContainer = "container:../Braintree.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -105,6 +119,13 @@
             BlueprintIdentifier = "A77AA29B1B618C7700217B73"
             BuildableName = "BraintreeVenmo.framework"
             BlueprintName = "BraintreeVenmo"
+            ReferencedContainer = "container:../Braintree.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "046547B52DDE8B040054B80A"
+            BuildableName = "BraintreeVisaCheckout.framework"
+            BlueprintName = "BraintreeVisaCheckout"
             ReferencedContainer = "container:../Braintree.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
