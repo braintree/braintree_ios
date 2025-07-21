@@ -128,7 +128,6 @@ public class BTVisaCheckoutClient {
                 return
             }
 
-            guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first
             else {
                 self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
                 return

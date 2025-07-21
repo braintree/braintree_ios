@@ -14,7 +14,7 @@ extension BTConfiguration {
     /// Indicates whether Visa Checkout is enabled for the merchant account.
     public var isVisaCheckoutEnabled: Bool {
         guard let visaCheckout = json?["visaCheckout"] as? [String: Any],
-              let apiKey = visaCheckout["apiKey"] as? String else {
+            let apiKey = visaCheckout["apiKey"] as? String else {
             return false
         }
         return !apiKey.isEmpty
@@ -33,7 +33,7 @@ extension BTConfiguration {
     /// Returns the Visa Checkout supported networks enabled for the merchant account.
     public var visaCheckoutSupportedNetworks: [NSNumber] {
         guard let visaCheckout = json?["visaCheckout"] as? [String: Any],
-              let supportedCardTypes = visaCheckout["supportedCardTypes"] as? [String] else {
+            let supportedCardTypes = visaCheckout["supportedCardTypes"] as? [String] else {
             return []
         }
 
