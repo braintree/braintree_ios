@@ -228,7 +228,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
                 self.recommendationsLabel.text = details
                 self.recommendationsLabel.isHidden = false
-
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription))")
             }
