@@ -6,6 +6,7 @@
   * Bug fix: Ensure that `ASWebAuthenticationSession.start` is only called with one URL at a time by blocking additional start calls until the current one completes.
   * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
   * Make `BTPayPalLineItem` parameters settable
+  * Bug fix: only attempt to call `UIApplication.shared.open` on one URL at a time blocking other `open` calls until the current one is finished
   * Add `userAction` property to `BTPayPalVaultRequest`
 
 ## 6.34.0 (2025-06-18)
