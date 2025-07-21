@@ -60,17 +60,17 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }()
     
     lazy var createCustomerSessionButton = createButton(
-        title: "Create Customer Session Button",
+        title: "Create Customer Session",
         action: #selector(createCustomerSessionButtonTapped)
     )
     
     lazy var updateCustomerSessionButton = createButton(
-        title: "Update Customer Session Button",
+        title: "Update Customer Session",
         action: #selector(updateCustomerSessionButtonTapped)
     )
     
     lazy var getCustomerRecommendationsButton = createButton(
-        title: "Get Customer Recommendations Button",
+        title: "Get Customer Recommendations",
         action: #selector(getCustomerRecommendationsButtonTapped)
     )
     
