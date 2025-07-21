@@ -105,7 +105,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
     // Update createPaymentButton to return the property
     override func createPaymentButton() -> UIView {
-        return paymentButtonsStackView
+        paymentButtonsStackView
     }
     
     override func viewDidLoad() {
