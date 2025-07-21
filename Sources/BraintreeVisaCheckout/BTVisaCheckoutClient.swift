@@ -26,7 +26,7 @@ public class BTVisaCheckoutClient {
     ///   `error` will be the related error if VisaProfile could not be created, otherwise `nil`.
     @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error = error {
+            if let error {
                 completion(nil, error)
                 return
             }
