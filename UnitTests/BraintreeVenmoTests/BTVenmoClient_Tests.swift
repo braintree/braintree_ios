@@ -339,7 +339,9 @@ class BTVenmoClient_Tests: XCTestCase {
             ]
         ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        }
 
         waitForExpectations(timeout: 1)
     }
@@ -359,7 +361,9 @@ class BTVenmoClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "some-domain", code: 1, userInfo: nil)
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        }
 
         waitForExpectations(timeout: 1)
     }
@@ -380,7 +384,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
 
         waitForExpectations(timeout: 2)
     }
@@ -403,7 +410,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(venmoAccount.username, "fake-username")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
         
         waitForExpectations(timeout: 2)
     }
@@ -419,7 +429,10 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+        
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+        }
 
         waitForExpectations(timeout: 2)
     }
@@ -437,7 +450,10 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
+        
         waitForExpectations(timeout: 2)
     }
 
@@ -452,7 +468,10 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
         
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
+        
         waitForExpectations(timeout: 2)
     }
     
@@ -490,7 +509,10 @@ class BTVenmoClient_Tests: XCTestCase {
             ] as [String: Any]]
         ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
+        
         waitForExpectations(timeout: 2)
     }
     
@@ -528,7 +550,10 @@ class BTVenmoClient_Tests: XCTestCase {
             ] as [String: Any]]
         ])
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
+        
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
@@ -551,7 +576,10 @@ class BTVenmoClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        }
+        
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
@@ -573,7 +601,10 @@ class BTVenmoClient_Tests: XCTestCase {
             
             expectation.fulfill()
         }
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
+        
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
+        }
 
         waitForExpectations(timeout: 2)
     }
@@ -748,7 +779,10 @@ class BTVenmoClient_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
+        DispatchQueue.main.async {
+            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
+        }
+        
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
