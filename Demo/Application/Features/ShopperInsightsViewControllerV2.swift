@@ -116,6 +116,9 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
+        toggleVenmoButton(enabled: false)
+        togglePayPalVaultButton(enabled: false)
+
         resetRecommendationsLabel()
 
         Task {
@@ -142,6 +145,9 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
 
     @objc func updateCustomerSessionButtonTapped(_ button: UIButton) {
+        toggleVenmoButton(enabled: false)
+        togglePayPalVaultButton(enabled: false)
+
         resetRecommendationsLabel()
         self.progressBlock("Update Customer Session...")
 
@@ -161,7 +167,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                     request: request,
                     sessionID: sessionIDView.textField.text ?? ""
                 )
-                
+
                 sessionIDView.textField.text = sessionID
                 self.progressBlock("SessionID: \(String(describing: sessionID))")
                 
@@ -173,6 +179,9 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     }
     
     @objc func getCustomerRecommendationsButtonTapped(_ button: UIButton) {
+        toggleVenmoButton(enabled: false)
+        togglePayPalVaultButton(enabled: false)
+
         resetRecommendationsLabel()
         self.progressBlock("Get Customer Recommendations...")
 
