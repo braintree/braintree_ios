@@ -170,8 +170,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
                 sessionIDView.textField.text = sessionID
                 self.progressBlock("SessionID: \(String(describing: sessionID))")
-                
-                self.progressBlock("SessionID: \(String(describing: sessionID))")
             } catch {
                 self.progressBlock("Error: \(error.localizedDescription))")
             }
