@@ -14,7 +14,8 @@ public class BTVisaCheckoutClient {
     ///
     /// - Parameters:
     ///   - apiClient: An API client.
-    @objc public init(apiClient: BTAPIClient) {
+    @objc(initWithAPIClient:)
+    public init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
 
