@@ -75,11 +75,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     }()
     
     let payLaterToggle = Toggle(title: "Offer Pay Later")
-    
-    let newPayPalCheckoutToggle = Toggle(title: "New PayPal Checkout Experience")
-    
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
-    
     let contactInformationToggle = Toggle(title: "Add Contact Information")
 
     override func viewDidLoad() {
@@ -104,7 +100,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
-            newPayPalCheckoutToggle,
             contactInformationToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton
@@ -164,7 +159,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         request.lineItems = [lineItem]
         request.offerPayLater = payLaterToggle.isOn
-        request.intent = newPayPalCheckoutToggle.isOn ? .sale : .authorize
 
         if contactInformationToggle.isOn {
             request.contactInformation = BTContactInformation(
