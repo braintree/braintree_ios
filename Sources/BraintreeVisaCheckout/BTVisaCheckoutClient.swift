@@ -19,12 +19,18 @@ public class BTVisaCheckoutClient {
         self.apiClient = apiClient
     }
 
-    /// Creates a Visa Checkout profile.
+    /// Creates a Visa Checkout `ProfileBuilder` with the merchant API key, environment, and other properties to be used with Visa Checkout.
+    ///
     /// - Parameters:
     ///   - completion: A completion block that is invoked when the profile is created.
-    ///   `profile` will be an instance of VisaProfile when successful, otherwise `nil`.
-    ///   `error` will be the related error if VisaProfile could not be created, otherwise `nil`.
-    @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
+    ///
+    /// In addition to setting the `merchantApiKey` and `environment` the other properties that Braintree will fill in on the ProfileBuilder are:
+    /// - Parameters:
+    ///   - dataLevel: Required to be [Profile.DataLevel.FULL] for Braintree to access card details
+    ///   - clientId: Allows the encrypted payload to be processable by Braintree.
+    ///   - acceptedCardBrands: A list of Card brands that your merchant account can transact.
+    ///
+    @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 completion(nil, error)
@@ -38,7 +44,7 @@ public class BTVisaCheckoutClient {
             }
 
             let environmentString = configuration.visaCheckoutEnvironment
-            let environment: Environment = (environmentString == "sandbox") ? .sandbox : .production
+            let environment: Environment = environmentString == "sandbox" ? .sandbox : .production
 
             let profile = Profile(
                 environment: environment,
@@ -47,7 +53,7 @@ public class BTVisaCheckoutClient {
             )
             profile.datalevel = .full
             profile.clientId = configuration.visaCheckoutExternalClientID
-            profile.acceptedCardBrands = configuration.visaCheckoutSupportedNetworks
+            profile.acceptedCardBrands = configuration.acceptedCardBrands
 
             completion(profile, nil)
         }
@@ -60,7 +66,7 @@ public class BTVisaCheckoutClient {
     ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds,
     ///   `tokenizedVisaCheckoutCard` will contain a nonce and `error` will be `nil`; if it fails
     ///   `tokenizedVisaCheckoutCard` will be `nil` and `error` will describe the failure.
-    @objc public func tokenizeVisaCheckoutResult(
+    @objc public func visaPaymentSummary(
         _ checkoutResult: CheckoutResult,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
@@ -69,7 +75,7 @@ public class BTVisaCheckoutClient {
         let encryptedKey = checkoutResult.encryptedKey
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
-        tokenizeVisaCheckoutResult(
+        tokenize(
             statusCode: statusCode,
             callID: callID,
             encryptedKey: encryptedKey,
@@ -85,7 +91,7 @@ public class BTVisaCheckoutClient {
     ///   - encryptedKey: The encrypted key associated with the Visa Checkout transaction.
     ///   - encryptedPaymentData: The encrypted payment data for the Visa Checkout transaction.
     ///   - completion: A completion block that is invoked when tokenization has completed.
-    @objc public func tokenizeVisaCheckoutResult(
+    @objc public func tokenize(
         statusCode: CheckoutResultStatus,
         callID: String?,
         encryptedKey: String?,
@@ -109,7 +115,7 @@ public class BTVisaCheckoutClient {
             return
         }
 
-        guard let callId = callID, let encryptedKey = encryptedKey, let encryptedPaymentData = encryptedPaymentData else {
+        guard let callID, let encryptedKey, let encryptedPaymentData else {
             let error = BTVisaCheckoutError.integration
             sendAnalyticsAndComplete("ios.visacheckout.result.failed.invalid-payment", result: nil, error: error, completion: completion)
             return
@@ -117,7 +123,7 @@ public class BTVisaCheckoutClient {
 
         let parameters: [String: Any] = [
             "visaCheckoutCard": [
-                "callId": callId,
+                "callId": callID,
                 "encryptedKey": encryptedKey,
                 "encryptedPaymentData": encryptedPaymentData
             ]
@@ -127,9 +133,7 @@ public class BTVisaCheckoutClient {
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
-            }
-
-            else {
+            } else {
                 self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
                 return
             }
