@@ -37,7 +37,7 @@ public class BTVisaCheckoutClient {
                 return
             }
 
-            guard let configuration, let json = configuration.json else {
+            guard let configuration else {
                 /// TODO: Add `fetchConfigurationFailed` analytics event
                 completion(nil, error)
                 return
@@ -89,11 +89,6 @@ public class BTVisaCheckoutClient {
         }
 
         guard statusCode == .statusSuccess else {
-            /// TODO: Add error code
-            return
-        }
-
-        guard let callID, let encryptedKey, let encryptedPaymentData else {
             /// TODO: Add error code
             return
         }
