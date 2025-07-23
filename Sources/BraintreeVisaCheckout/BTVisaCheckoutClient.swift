@@ -99,25 +99,16 @@ public class BTVisaCheckoutClient {
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         if statusCode == .statusUserCancelled {
-            sendAnalyticsAndComplete("ios.visacheckout.result.cancelled", result: nil, error: nil, completion: completion)
             return
         }
 
         guard statusCode == .statusSuccess else {
-            let analyticEvent = analyticsEvent(for: statusCode)
             let error = "Visa Checkout failed with status code \(statusCode.rawValue)"
-            sendAnalyticsAndComplete(
-                BTVisaCheckoutAnalytics.tokenizeFailed + ": \(analyticEvent)",
-                result: nil,
-                error: error as? Error,
-                completion: completion
-            )
             return
         }
 
         guard let callID, let encryptedKey, let encryptedPaymentData else {
             let error = BTVisaCheckoutError.integration
-            sendAnalyticsAndComplete("ios.visacheckout.result.failed.invalid-payment", result: nil, error: error, completion: completion)
             return
         }
 
@@ -128,51 +119,5 @@ public class BTVisaCheckoutClient {
                 "encryptedPaymentData": encryptedPaymentData
             ]
         ]
-
-        apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { _, _, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            } else {
-                self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
-                return
-            }
-            self.sendAnalyticsAndComplete(BTVisaCheckoutAnalytics.tokenizeSucceeded, result: nil, error: error, completion: completion)
-        }
-    }
-
-    // MARK: - Analytics Helper Methods
-
-    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error) -> Void) {
-        apiClient.sendAnalyticsEvent(
-            BTVisaCheckoutAnalytics.tokenizeFailed,
-            errorDescription: error.localizedDescription
-        )
-        completion(nil, error)
-    }
-
-    private func sendAnalyticsAndComplete(
-        _ event: String,
-        result: BTVisaCheckoutNonce?,
-        error: Error?,
-        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
-    ) {
-        apiClient.sendAnalyticsEvent(event)
-        completion(result, error)
-    }
-
-    private func analyticsEvent(for status: CheckoutResultStatus) -> String {
-        switch status {
-        case .statusDuplicateCheckoutAttempt:
-            return "duplicate-checkouts-open"
-        case .statusNotConfigured:
-            return "not-configured"
-        case .statusInternalError:
-            return "internal-error"
-        case .statusNetworkError:
-            return "network-error"
-        default:
-            return "unknown"
-        }
     }
 }

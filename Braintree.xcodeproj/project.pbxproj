@@ -19,7 +19,6 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
-		04C6527E2E2B040300C879A0 /* BTVisaCheckoutAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6527D2E2B03FD00C879A0 /* BTVisaCheckoutAnalytics.swift */; };
 		04C652802E2B044000C879A0 /* BTVisaCheckoutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6527F2E2B043900C879A0 /* BTVisaCheckoutConfiguration.swift */; };
 		04C652822E2B046000C879A0 /* BTVisaCheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */; };
 		04C652842E2B049A00C879A0 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
@@ -799,7 +798,6 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
-		04C6527D2E2B03FD00C879A0 /* BTVisaCheckoutAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAnalytics.swift; sourceTree = "<group>"; };
 		04C6527F2E2B043900C879A0 /* BTVisaCheckoutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutConfiguration.swift; sourceTree = "<group>"; };
 		04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutError.swift; sourceTree = "<group>"; };
 		04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
@@ -1497,7 +1495,6 @@
 				04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */,
 				046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */,
 				04C6527F2E2B043900C879A0 /* BTVisaCheckoutConfiguration.swift */,
-				04C6527D2E2B03FD00C879A0 /* BTVisaCheckoutAnalytics.swift */,
 				B84871F72DF3842D00618606 /* BTVisaCheckoutAddress.swift */,
 				B8FD52812E01E92D00E221D3 /* BTVisaCheckoutNonce.swift */,
 				B8FD52842E01EB1500E221D3 /* BTVisaCheckoutUserData.swift */,
@@ -3499,7 +3496,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				04C652822E2B046000C879A0 /* BTVisaCheckoutError.swift in Sources */,
-				04C6527E2E2B040300C879A0 /* BTVisaCheckoutAnalytics.swift in Sources */,
 				046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */,
 				B8FD52832E01E93900E221D3 /* BTVisaCheckoutNonce.swift in Sources */,
 				04C652802E2B044000C879A0 /* BTVisaCheckoutConfiguration.swift in Sources */,
