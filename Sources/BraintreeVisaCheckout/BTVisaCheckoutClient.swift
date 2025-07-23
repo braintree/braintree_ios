@@ -72,8 +72,8 @@ public class BTVisaCheckoutClient {
     ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds,
     ///   `tokenizedVisaCheckoutCard` will contain a nonce and `error` will be `nil`; if it fails
     ///   `tokenizedVisaCheckoutCard` will be `nil` and `error` will describe the failure.
-    @objc public func visaPaymentSummary(
-        _ checkoutResult: CheckoutResult,
+    @objc public func tokenize(
+        _ visaPaymentSummary: VisaPaymentSummary,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         let statusCode = checkoutResult.statusCode
