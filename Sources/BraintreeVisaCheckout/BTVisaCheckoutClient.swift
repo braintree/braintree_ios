@@ -109,21 +109,13 @@ public class BTVisaCheckoutClient {
         }
 
         guard statusCode == .statusSuccess else {
-            let error = "Visa Checkout failed with status code \(statusCode.rawValue)"
+            /// TODO: Add error code
             return
         }
 
         guard let callID, let encryptedKey, let encryptedPaymentData else {
-            let error = BTVisaCheckoutError.integration
+            /// TODO: Add error code
             return
         }
-
-        let parameters: [String: Any] = [
-            "visaCheckoutCard": [
-                "callId": callID,
-                "encryptedKey": encryptedKey,
-                "encryptedPaymentData": encryptedPaymentData
-            ]
-        ]
     }
 }
