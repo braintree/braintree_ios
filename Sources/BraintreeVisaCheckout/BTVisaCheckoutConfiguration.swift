@@ -11,17 +11,22 @@ extension BTConfiguration {
     
     /// Returns the enviornment used to run the Visa Checkout SDK.
     var visaCheckoutEnvironment: String? {
-        return json?["environment"].asString() as? String
+        json?["environment"].asString()
     }
-    
+
+    /// Determines if the Visa Checkout flow is available to be used. This can be used to determine if UI components should be shown or hidden.
+    var isVisaCheckoutEnabled: Bool {
+        json?["visaCheckout"]["apiKey"].isTrue ?? false
+    }
+
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
     var visaCheckoutAPIKey: String? {
-        return (json?["visaCheckout"] as? [String: Any])?["apikey"] as? String
+        json?["visaCheckout"]["apikey"].asString()
     }
-    
+
     /// Returns the Visa Checkout External Client ID configured in the Braintree Control Panel
     var visaCheckoutExternalClientID: String? {
-        return (json?["visaCheckout"] as? [String: Any])?["externalClientId"] as? String
+        json?["visaCheckout"]["externalClientId"].asString()
     }
 
     /// Returns the supported card types for Visa Checkout to accepted card brands.
@@ -32,17 +37,14 @@ extension BTConfiguration {
             "discover": "DISCOVER",
             "american express": "AMEX"
         ]
-        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()]
-        }
+        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
     }
 
     /// The accepted card brands for Visa Checkout.
     var acceptedCardBrands: [String]? {
-        guard let visaCheckout = json?["visaCheckout"] as? [String: Any],
-            let supportedCardTypes = visaCheckout["supportedCardTypes"] as? [String] else {
+        guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
             return []
         }
-
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
     }
 }
