@@ -23,11 +23,6 @@ public class BTVisaCheckoutClient {
     ///
     /// - Parameters:
     ///   - completion: A completion block that is invoked when the profile is created.
-    ///
-    /// In addition to setting the `merchantApiKey` and `environment` the other properties that Braintree will fill in on the ProfileBuilder are:
-    ///   - dataLevel: Required to be [Profile.DataLevel.FULL] for Braintree to access card details
-    ///   - clientId: Allows the encrypted payload to be processable by Braintree.
-    ///   - acceptedCardBrands: A list of Card brands that your merchant account can transact.
     @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
