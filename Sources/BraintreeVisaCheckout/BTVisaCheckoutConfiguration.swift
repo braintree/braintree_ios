@@ -32,11 +32,11 @@ extension BTConfiguration {
     /// Returns the supported card types for Visa Checkout to accepted card brands.
     func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
         let cardTypeMap: [String: String] = [
-                "visa": "VISA",
-                "mastercard": "MASTERCARD",
-                "discover": "DISCOVER",
-                "american express": "AMEX"
-            ]
+            "visa": "VISA",
+            "mastercard": "MASTERCARD",
+            "discover": "DISCOVER",
+            "american express": "AMEX"
+        ]
         return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()]
         }
     }

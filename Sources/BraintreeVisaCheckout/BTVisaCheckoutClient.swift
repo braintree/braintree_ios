@@ -129,7 +129,7 @@ public class BTVisaCheckoutClient {
             ]
         ]
 
-        apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { body, _, error in
+        apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { _, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
