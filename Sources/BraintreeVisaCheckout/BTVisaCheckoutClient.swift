@@ -28,7 +28,6 @@ public class BTVisaCheckoutClient {
     ///   - dataLevel: Required to be [Profile.DataLevel.FULL] for Braintree to access card details
     ///   - clientId: Allows the encrypted payload to be processable by Braintree.
     ///   - acceptedCardBrands: A list of Card brands that your merchant account can transact.
-    ///
     @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -80,9 +79,6 @@ public class BTVisaCheckoutClient {
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         let statusCode = checkoutResult.statusCode
-        let callID = checkoutResult.callId
-        let encryptedKey = checkoutResult.encryptedKey
-        let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
         if statusCode == .statusUserCancelled {
             return
