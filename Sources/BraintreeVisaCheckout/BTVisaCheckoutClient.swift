@@ -83,5 +83,10 @@ public class BTVisaCheckoutClient {
             /// TODO: Add error code
             return
         }
+
+        guard let callID, let encryptedKey, let encryptedPaymentData else {
+            /// TODO: Add error code
+            return
+        }
     }
 }
