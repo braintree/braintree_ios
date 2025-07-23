@@ -4,6 +4,7 @@
 * BraintreeVisaCheckout
     * Add Visa Checkout to the SDK as a payment option
     * Add `BTVisaCheckoutAddress`, `BTVisaCheckoutUserData`, `BTVisaCheckoutCardNonce`, `BTVisaCheckoutClient`
+## 6.35.0 (2025-07-23)
 * BraintreePayPal
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
   * Bug fix: Ensure that `ASWebAuthenticationSession.start` is only called with one URL at a time by blocking additional start calls until the current one completes.
