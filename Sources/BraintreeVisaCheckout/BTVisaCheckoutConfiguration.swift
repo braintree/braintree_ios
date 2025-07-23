@@ -14,11 +14,6 @@ extension BTConfiguration {
         return json?["environment"].asString() as? String
     }
     
-    /// Determines if the Visa Checkout flow is available to be used. This can be used to determine if UI components should be shown or hidden.
-    var isVisaCheckoutEnabled: Bool {
-        return json?["visaCheckout"]["apiKey"].isTrue ?? false
-    }
-    
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
     var visaCheckoutAPIKey: String? {
         return (json?["visaCheckout"] as? [String: Any])?["apikey"] as? String

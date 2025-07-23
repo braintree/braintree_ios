@@ -33,13 +33,19 @@ public class BTVisaCheckoutClient {
     @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
+                /// TODO: Add failure analytics event
                 completion(nil, error)
                 return
             }
 
-            guard let configuration = configuration, configuration.isVisaCheckoutEnabled else {
-                let error = BTVisaCheckoutError.unsupported
+            guard let configuration, let json = configuration.json else {
+                /// TODO: Add `fetchConfigurationFailed` analytics event
                 completion(nil, error)
+                return
+            }
+
+            guard json["visaCheckout"]["apiKey"].isTrue else {
+                /// TODO: Add failure analytics Visa Checkout not enabled
                 return
             }
 
