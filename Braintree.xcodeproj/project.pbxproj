@@ -2144,12 +2144,12 @@
 			children = (
 				62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */,
 				621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */,
-				455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */,
 				455AA2752DEE0574008D99AB /* BTCustomerRecommendationsResult.swift */,
 				62C458D42DD292CF00B4F9B3 /* BTCustomerSessionRequest.swift */,
 				455AA2772DEE067A008D99AB /* BTPaymentOptions.swift */,
 				62BEEB8F2E0B4059002C848D /* BTPurchaseUnit.swift */,
 				456B950D2DB963F7009A374D /* BTShopperInsightsClientV2.swift */,
+				455AA2792DEE38ED008D99AB /* BTUpdateCustomerSessionAPI.swift */,
 			);
 			path = V2;
 			sourceTree = "<group>";
