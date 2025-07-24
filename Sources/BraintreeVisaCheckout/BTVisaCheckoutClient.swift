@@ -74,6 +74,9 @@ public class BTVisaCheckoutClient {
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         let statusCode = checkoutResult.statusCode
+        let callID = checkoutResult.callId
+        let encryptedKey = checkoutResult.encryptedKey
+        let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
         if statusCode == .statusUserCancelled {
             return
