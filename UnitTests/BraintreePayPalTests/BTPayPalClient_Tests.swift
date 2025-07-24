@@ -607,6 +607,9 @@ class BTPayPalClient_Tests: XCTestCase {
         let returnURL = URL(string: "bar://onetouch/v1/success?token=hermes_token")!
         let expectation = expectation(description: "completion block called")
 
+        let payPalRequest = BTPayPalVaultRequest()
+        payPalClient.payPalRequest = payPalRequest
+        
         payPalClient.handleReturn(returnURL, paymentType: .checkout) { _, _ in
             expectation.fulfill()
         }
