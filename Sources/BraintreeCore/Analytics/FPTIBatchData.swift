@@ -71,6 +71,7 @@ struct FPTIBatchData: Codable {
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
+        let applicationState: String?
         
         init(
             appSwitchURL: URL? = nil,
@@ -92,7 +93,8 @@ struct FPTIBatchData: Codable {
             payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
-            startTime: Int? = nil
+            startTime: Int? = nil,
+            applicationState: String? = nil
         ) {
             self.appSwitchURL = appSwitchURL?.absoluteString
             self.buttonOrder = buttonOrder
@@ -114,6 +116,7 @@ struct FPTIBatchData: Codable {
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.startTime = startTime
+            self.applicationState = applicationState
         }
 
         enum CodingKeys: String, CodingKey {
@@ -139,6 +142,7 @@ struct FPTIBatchData: Codable {
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
+            case applicationState = "application_state"
         }
     }
     
@@ -203,6 +207,7 @@ struct FPTIBatchData: Codable {
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
 
         let platform = "iOS"
+        
 
         /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String

@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 // swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
@@ -26,7 +27,17 @@ import Foundation
     
     /// Exposed for testing analytics
     weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
-
+    
+    // MARK: - Private Properties
+    private var applicationStateString: String {
+        switch UIApplication.shared.applicationState {
+        case .active: "active"
+        case .inactive: "inactive"
+        case .background: "background"
+        @unknown default: "unknown"
+        }
+    }
+    
     // MARK: - Initializers
 
     /// Initialize a new API client.
@@ -334,7 +345,8 @@ import Foundation
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
                 payPalContextID: payPalContextID,
-                shopperSessionID: shopperSessionID
+                shopperSessionID: shopperSessionID,
+                applicationState: applicationStateString
             )
         )
     }
