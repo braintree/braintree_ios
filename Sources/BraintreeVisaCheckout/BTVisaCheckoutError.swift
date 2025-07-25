@@ -44,11 +44,11 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
         case .unsupported:
             return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
         case .integration:
-            return "A valid VisaCheckoutResult is required."
+            return "VisaCheckout is integrated incorrectly."
         case .checkoutUnsuccessful:
             return "Visa Checkout unsuccessful. Please try again."
         case .cancelled:
-            return "Visa Checkout cancelled"
+            return "Visa Checkout cancelled."
         }
     }
 

@@ -121,13 +121,6 @@
             BlueprintName = "BraintreeVenmo"
             ReferencedContainer = "container:../Braintree.xcodeproj">
          </BuildableReference>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "046547B52DDE8B040054B80A"
-            BuildableName = "BraintreeVisaCheckout.framework"
-            BlueprintName = "BraintreeVisaCheckout"
-            ReferencedContainer = "container:../Braintree.xcodeproj">
-         </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
          <TestableReference

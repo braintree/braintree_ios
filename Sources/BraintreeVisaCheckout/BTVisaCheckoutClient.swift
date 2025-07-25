@@ -22,7 +22,9 @@ public class BTVisaCheckoutClient {
     /// Creates a Visa Checkout `ProfileBuilder` with the merchant API key, environment, and other properties to be used with Visa Checkout.
     ///
     /// - Parameters:
-    ///   - completion: A completion block that is invoked when the profile is created.
+    ///   - completion: A completion block that is invoked when the profile is created. If the profile creation succeeds,
+    ///     `Profile` will contain a profile and `error` will be `nil`.
+    ///     If it fails, `Profile` will be `nil` and `error` will describe the failure.
     @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -31,14 +33,15 @@ public class BTVisaCheckoutClient {
                 return
             }
 
-            guard let configuration else {
-                /// TODO: Add `fetchConfigurationFailed` analytics event
+            guard let configuration, let json = configuration.json else {
+                let error = BTVisaCheckoutError.unsupported
                 completion(nil, error)
                 return
             }
 
             guard configuration.isVisaCheckoutEnabled else {
-                /// TODO: Add failure analytics Visa Checkout not enabled
+                let error = BTVisaCheckoutError.unsupported
+                completion(nil, error)
                 return
             }
 
@@ -64,9 +67,6 @@ public class BTVisaCheckoutClient {
     ///   - checkoutResult: A Visa `CheckoutResult` instance.
     ///   - completion: A completion block that is invoked when tokenization has completed. If tokenization succeeds,
     ///   - statusCode: The result code indicating the status of a completed Visa Checkout transaction.
-    ///   - callId: The unique identifier for the Visa Checkout transaction.
-    ///   - encryptedKey: The encrypted key associated with the Visa Checkout transaction.
-    ///   - encryptedPaymentData: The encrypted payment data for the Visa Checkout transaction.
     ///   `BTVisaCheckoutNonce` will contain a nonce and `error` will be `nil` if it fails
     ///   `BTVisaCheckoutNonce` will be `nil` and `error` will describe the failure.
     @objc public func visaPaymentSummary(
@@ -76,11 +76,14 @@ public class BTVisaCheckoutClient {
         let statusCode = checkoutResult.statusCode
 
         if statusCode == .statusUserCancelled {
+            let error = BTVisaCheckoutError.cancelled
+            completion(nil, error)
             return
         }
 
         guard statusCode == .statusSuccess else {
-            /// TODO: Add error code
+            let error = BTVisaCheckoutError.checkoutUnsuccessful
+            completion(nil, error)
             return
         }
     }

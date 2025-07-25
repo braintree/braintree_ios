@@ -9,7 +9,7 @@ extension BTConfiguration {
     
     // MARK: - Internal Properties
     
-    /// Returns the enviornment used to run the Visa Checkout SDK.
+    /// Returns the environment used to run the Visa Checkout SDK.
     var visaCheckoutEnvironment: String? {
         json?["environment"].asString()
     }
@@ -21,7 +21,7 @@ extension BTConfiguration {
 
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
     var visaCheckoutAPIKey: String? {
-        json?["visaCheckout"]["apikey"].asString()
+        json?["visaCheckout"]["apiKey"].asString()
     }
 
     /// Returns the Visa Checkout External Client ID configured in the Braintree Control Panel
@@ -30,6 +30,8 @@ extension BTConfiguration {
     }
 
     /// Returns the supported card types for Visa Checkout to accepted card brands.
+    /// - Parameters:
+    ///   - supportedCardTypes: The card types supported by Visa Checkout.
     func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
         let cardTypeMap: [String: String] = [
             "visa": "VISA",
@@ -43,7 +45,7 @@ extension BTConfiguration {
     /// The accepted card brands for Visa Checkout.
     var acceptedCardBrands: [String]? {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
-            return []
+            return ["VISA"]
         }
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
     }
