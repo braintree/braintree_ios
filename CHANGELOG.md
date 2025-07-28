@@ -27,7 +27,6 @@
 * BraintreePayPal
   * Bug fix: remove internal code signing from framework
   * Make `userAuthenticationEmail` property optional for all App Switch flows
-  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
 * BraintreeThreeDSecure
   * Bug fix: remove internal code signing from framework
 
