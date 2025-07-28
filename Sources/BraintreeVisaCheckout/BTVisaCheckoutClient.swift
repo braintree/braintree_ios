@@ -34,7 +34,7 @@ import BraintreeCore
             }
 
             guard let configuration else {
-                completion(nil, BTVisaCheckoutError.unsupported)
+                completion(nil, BTVisaCheckoutError.fetchConfigurationFailed)
                 return
             }
 

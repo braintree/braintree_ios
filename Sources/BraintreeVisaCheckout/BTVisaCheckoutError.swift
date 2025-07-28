@@ -16,10 +16,13 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
     /// 2. Failed to create Visa Checkout card nonce.
     case failedToCreateNonce
 
-    /// 3. Braintree SDK is integrated incorrectly.
+    /// 3.
+    case fetchConfigurationFailed
+
+    /// 4. Braintree SDK is integrated incorrectly.
     case integration
 
-    /// 4. Visa Checkout is disabled in the Braintree Control Panel.
+    /// 5. Visa Checkout is disabled in the Braintree Control Panel.
     case unsupported
 
     public var errorCode: Int {
@@ -30,10 +33,12 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
             return 2
         case .failedToCreateNonce:
             return 3
-        case .integration:
+        case .fetchConfigurationFailed:
             return 4
-        case .unsupported:
+        case .integration:
             return 5
+        case .unsupported:
+            return 6
         }
     }
 
@@ -45,6 +50,8 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
             return "Visa Checkout unsuccessful. Please try again."
         case .failedToCreateNonce:
             return "Failed to create Visa Checkout card nonce."
+        case .fetchConfigurationFailed:
+            return "Failed to fetch Braintree configuration."
         case .integration:
             return "VisaCheckout is integrated incorrectly."
         case .unsupported:
