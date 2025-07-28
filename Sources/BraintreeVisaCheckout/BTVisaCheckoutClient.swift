@@ -72,14 +72,6 @@ import BraintreeCore
         let encryptedKey = checkoutResult.encryptedKey
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
-        let parameters: [String: Any] = [
-            "visaCheckoutCard": [
-                "callId": callID,
-                "encryptedKey": encryptedKey,
-                "encryptedPaymentData": encryptedPaymentData
-            ]
-        ]
-
         if statusCode == .statusUserCancelled {
             completion(nil, BTVisaCheckoutError.canceled)
             return
@@ -95,21 +87,44 @@ import BraintreeCore
             return
         }
 
+        let parameters: [String: Any] = [
+            "visaCheckoutCard": [
+                "callId": callID,
+                "encryptedKey": encryptedKey,
+                "encryptedPaymentData": encryptedPaymentData
+            ]
+        ]
+
         apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { body, _, error in
             if let error = error {
                 completion(nil, error)
-                /// TODO: Send failure analytics event
                 return
             }
 
-            guard let visaCheckoutCard = body?["visaCheckoutCards"][0] else {
-                completion(nil, nil)
+            guard let body else {
+                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
 
-            let tokenizedVisaCheckoutCard = BTVisaCheckoutNonce(json: visaCheckoutCard)
-            /// TODO: Send success analytics event
-            completion(tokenizedVisaCheckoutCard, nil)
+            guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: body["visaCheckoutCards"][0]) else {
+                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                return
+            }
+            completion(visaCheckoutCardNonce, nil)
         }
+    }
+
+    /// Notifies the success of the Visa Checkout tokenization.
+    private func notifySuccess(
+        with result: BTVisaCheckoutNonce?,
+        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
+    ) {
+        /// TODO: Send success analytics event
+        completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
+        /// TODO: Send failure analytics event
+        completion(nil, error)
     }
 }

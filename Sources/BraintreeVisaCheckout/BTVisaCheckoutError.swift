@@ -7,48 +7,48 @@ import BraintreeCore
 /// Error details associated with Visa Checkout.
 public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable {
 
-    /// 0. Unknown error.
-    case unknown
+    /// 0. Visa Checkout was cancelled by the user.
+    case canceled
 
-    /// 1. Visa Checkout is disabled in the Braintree Control Panel.
-    case unsupported
-
-    /// 2. Braintree SDK is integrated incorrectly.
-    case integration
-
-    /// 3. Visa Checkout SDK responded with an unsuccessful status code.
+    /// 1. Visa Checkout SDK responded with an unsuccessful status code.
     case checkoutUnsuccessful
 
-    /// 4. Visa Checkout was cancelled by the user.
-    case canceled
+    /// 2. Failed to create Visa Checkout card nonce.
+    case failedToCreateNonce
+
+    /// 3. Braintree SDK is integrated incorrectly.
+    case integration
+
+    /// 4. Visa Checkout is disabled in the Braintree Control Panel.
+    case unsupported
 
     public var errorCode: Int {
         switch self {
-        case .unknown:
-            return 0
-        case .unsupported:
-            return 1
-        case .integration:
-            return 2
-        case .checkoutUnsuccessful:
-            return 3
         case .canceled:
+            return 1
+        case .checkoutUnsuccessful:
+            return 2
+        case .failedToCreateNonce:
+            return 3
+        case .integration:
             return 4
+        case .unsupported:
+            return 5
         }
     }
 
     public var errorDescription: String? {
         switch self {
-        case .unknown:
-            return "Failed to parse Visa Checkout card nonce."
-        case .unsupported:
-            return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
-        case .integration:
-            return "VisaCheckout is integrated incorrectly."
-        case .checkoutUnsuccessful:
-            return "Visa Checkout unsuccessful. Please try again."
         case .canceled:
             return "Visa Checkout cancelled."
+        case .checkoutUnsuccessful:
+            return "Visa Checkout unsuccessful. Please try again."
+        case .failedToCreateNonce:
+            return "Failed to create Visa Checkout card nonce."
+        case .integration:
+            return "VisaCheckout is integrated incorrectly."
+        case .unsupported:
+            return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
         }
     }
 
