@@ -6,7 +6,7 @@ import BraintreeCore
 #endif
 
 // Creates a Visa Checkout client for processing Visa Checkout payments.
-public class BTVisaCheckoutClient {
+@objc public class BTVisaCheckoutClient: NSObject {
 
     private let apiClient: BTAPIClient
 
@@ -33,15 +33,13 @@ public class BTVisaCheckoutClient {
                 return
             }
 
-            guard let configuration, let json = configuration.json else {
-                let error = BTVisaCheckoutError.unsupported
-                completion(nil, error)
+            guard let configuration else {
+                completion(nil, BTVisaCheckoutError.unsupported)
                 return
             }
 
             guard configuration.isVisaCheckoutEnabled else {
-                let error = BTVisaCheckoutError.unsupported
-                completion(nil, error)
+                completion(nil, BTVisaCheckoutError.unsupported)
                 return
             }
 
