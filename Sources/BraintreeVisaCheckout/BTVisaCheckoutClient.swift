@@ -74,7 +74,7 @@ import BraintreeCore
         let statusCode = checkoutResult.statusCode
 
         if statusCode == .statusUserCancelled {
-            let error = BTVisaCheckoutError.cancelled
+            let error = BTVisaCheckoutError.canceled
             completion(nil, error)
             return
         }

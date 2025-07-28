@@ -20,7 +20,7 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
     case checkoutUnsuccessful
 
     /// 4. Visa Checkout was cancelled by the user.
-    case cancelled
+    case canceled
 
     public var errorCode: Int {
         switch self {
@@ -32,7 +32,7 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
             return 2
         case .checkoutUnsuccessful:
             return 3
-        case .cancelled:
+        case .canceled:
             return 4
         }
     }
@@ -47,7 +47,7 @@ public enum BTVisaCheckoutError: Error, CustomNSError, LocalizedError, Equatable
             return "VisaCheckout is integrated incorrectly."
         case .checkoutUnsuccessful:
             return "Visa Checkout unsuccessful. Please try again."
-        case .cancelled:
+        case .canceled:
             return "Visa Checkout cancelled."
         }
     }
