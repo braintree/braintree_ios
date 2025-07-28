@@ -45,7 +45,7 @@ extension BTConfiguration {
     /// The accepted card brands for Visa Checkout.
     var acceptedCardBrands: [String]? {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
-            return ["VISA"]
+            return []
         }
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
     }
