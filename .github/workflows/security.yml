@@ -11,7 +11,9 @@ on:
 jobs:
   code-scanning:
     uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@jlesus-ios
+    with:
+      language: ios
 
-# dependency-review:
-#    if: ${{ github.event_name == 'pull_request' }}
-#    uses: braintree/security-workflows/.github/workflows/dependency-review.yml@main
+  dependency-review:
+    if: ${{ github.event_name == 'pull_request' }}
+    uses: braintree/security-workflows/.github/workflows/dependency-review.yml@jlesus-ios
