@@ -89,6 +89,9 @@ import BraintreeCore
     /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
     public var contactPreference: BTContactPreference = .none
 
+    /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
+    public var amountBreakdown: BTAmountBreakdown?
+
     // MARK: - Initializers
     
     /// Initializes a PayPal Checkout request for the PayPal App Switch flow
@@ -142,6 +145,9 @@ import BraintreeCore
     ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
     ///   A callback request will be sent to the merchant server at this URL.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - recurringBillingDetails: Optional: Recurring billing product details.
+    ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
+    ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
@@ -150,7 +156,10 @@ import BraintreeCore
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         shippingCallbackURL: URL? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
+        amountBreakdown: BTAmountBreakdown? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -159,11 +168,14 @@ import BraintreeCore
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
+        self.amountBreakdown = amountBreakdown
         
         super.init(
             hermesPath: "v1/paypal_hermes/create_payment_resource",
             paymentType: .checkout,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            recurringBillingDetails: recurringBillingDetails,
+            recurringBillingPlanType: recurringBillingPlanType
         )
     }
 
@@ -227,7 +239,11 @@ import BraintreeCore
         if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
             checkoutParameters["international_phone"] = recipientPhoneNumber
         }
-        
+
+        if let amountBreakdown {
+            baseParameters["amount_breakdown"] = amountBreakdown.parameters()
+        }
+
         return baseParameters.merging(checkoutParameters) { $1 }
     }
 }
