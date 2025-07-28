@@ -13,6 +13,7 @@ enum BTPayPalAnalytics {
    
     // MARK: - Browser Presentation Events
   
+    static let browserPresentationStarted = "paypal:tokenize:browser-presentation:started"
     static let browserPresentationSucceeded = "paypal:tokenize:browser-presentation:succeeded"
     static let browserPresentationFailed = "paypal:tokenize:browser-presentation:failed"
     

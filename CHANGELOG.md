@@ -2,12 +2,18 @@
 
 ## unreleased
 * BraintreePayPal
+  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+
+## 6.35.0 (2025-07-23)
+* BraintreePayPal
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
   * Bug fix: Ensure that `ASWebAuthenticationSession.start` is only called with one URL at a time by blocking additional start calls until the current one completes.
   * Bug fix: Pass `unitTaxAmount` as expected in `BTPayPalLineItem`
   * Make `BTPayPalLineItem` parameters settable
   * Bug fix: only attempt to call `UIApplication.shared.open` on one URL at a time blocking other `open` calls until the current one is finished
-  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+  * Bug fix: Ensure that the `browserLoginAlertCanceled` event is not fired off when the `ASWebAutheniticationSession` popup is disabled.
+  * Add `paypal:tokenize:browser-presentation:started` event for when the `ASWebAuthenticationSession.start` is launched.
+  * Update `url` FPTI tag to represent the approval URL prior to checkout and the success URL after checkout.
 
 ## 6.34.0 (2025-06-18)
 * BraintreePayPal

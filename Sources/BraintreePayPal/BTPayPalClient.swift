@@ -208,6 +208,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
+            appSwitchURL: url,
             correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -461,6 +462,7 @@ import BraintreeDataCollector
         guard !hasOpenedURL else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                appSwitchURL: payPalAppRedirectURL,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
@@ -476,6 +478,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
+            appSwitchURL: payPalAppRedirectURL,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -507,10 +510,20 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.browserPresentationStarted,
+            appSwitchURL: appSwitchURL,
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            isVaultRequest: isVaultRequest,
+            payPalContextID: payPalContextID,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
+        
         approvalURL = appSwitchURL
         webSessionReturned = false
         
-        webAuthenticationSession.prefersEphemeralWebBrowserSession = experiment == "InAppBrowserNoPopup"
+        configureSessionIfNeeded(for: experiment)
 
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
             self?.payPalContextID = self?.extractToken(from: url)
@@ -547,6 +560,7 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    appSwitchURL: appSwitchURL,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isConfigFromCache: isConfigFromCache,
@@ -557,6 +571,7 @@ import BraintreeDataCollector
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
+                    appSwitchURL: appSwitchURL,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isVaultRequest: isVaultRequest,
@@ -571,6 +586,7 @@ import BraintreeDataCollector
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
+                    appSwitchURL: appSwitchURL,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isVaultRequest: isVaultRequest,
@@ -587,6 +603,7 @@ import BraintreeDataCollector
             
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                appSwitchURL: appSwitchURL,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
@@ -603,6 +620,13 @@ import BraintreeDataCollector
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
         return baToken ?? ecToken
+    }
+    
+    private func configureSessionIfNeeded(for experiment: String? = nil) {
+        if experiment == "InAppBrowserNoPopup" {
+            webSessionReturned = true
+            webAuthenticationSession.prefersEphemeralWebBrowserSession = true
+        }
     }
 
     // MARK: - Analytics Helper Methods
