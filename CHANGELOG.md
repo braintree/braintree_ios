@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeCore
- * Improve latency for analytic events.
+  * Improve latency for analytic events.
 
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal
