@@ -33,28 +33,6 @@ import BraintreeCore
     }
 }
 
-///  The call-to-action in the PayPal Checkout flow.
-///
-///  - Note: By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
-///  Setting the BTPayPalRequest's userAction to `.payNow` changes the button text to "Pay Now", conveying to
-///  the user that billing will take place immediately.
-@objc public enum BTPayPalRequestUserAction: Int {
-    /// Default
-    case none
-
-    /// Pay Now
-    case payNow
-
-    var stringValue: String {
-        switch self {
-        case .payNow:
-            return "commit"
-        default:
-            return ""
-        }
-    }
-}
-
 /// Options for the PayPal Checkout flow.
 @objcMembers open class BTPayPalCheckoutRequest: BTPayPalRequest {
 
@@ -66,9 +44,6 @@ import BraintreeCore
 
     /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     public var intent: BTPayPalRequestIntent
-
-    /// Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
-    public var userAction: BTPayPalRequestUserAction
 
     /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     public var offerPayLater: Bool
@@ -163,7 +138,6 @@ import BraintreeCore
     ) {
         self.amount = amount
         self.intent = intent
-        self.userAction = userAction
         self.offerPayLater = offerPayLater
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
@@ -175,7 +149,8 @@ import BraintreeCore
             paymentType: .checkout,
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
-            recurringBillingPlanType: recurringBillingPlanType
+            recurringBillingPlanType: recurringBillingPlanType,
+            userAction: userAction
         )
     }
 
@@ -199,11 +174,6 @@ import BraintreeCore
 
         if currencyCode != nil {
             checkoutParameters["currency_iso_code"] = currencyCode
-        }
-
-        if userAction != .none, var experienceProfile = baseParameters["experience_profile"] as? [String: Any] {
-            experienceProfile["user_action"] = userAction.stringValue
-            baseParameters["experience_profile"] = experienceProfile
         }
 
         if requestBillingAgreement != false {

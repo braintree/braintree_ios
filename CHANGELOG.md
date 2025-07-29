@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+  * Add `userAction` property to `BTPayPalVaultRequest`
 
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal
