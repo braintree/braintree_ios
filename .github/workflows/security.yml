@@ -16,4 +16,4 @@ jobs:
 
   dependency-review:
     if: ${{ github.event_name == 'pull_request' }}
-    uses: braintree/security-workflows/.github/workflows/dependency-review.yml@jlesus-ios
+    uses: braintree/security-workflows/.github/workflows/dependency-review.yml@main
