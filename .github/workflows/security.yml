@@ -13,7 +13,7 @@ jobs:
     uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@jlesus-ios
     with:
       project: Braintree.xcodeproj
-      scheme: UnitTests
+      scheme: Demo
 
   dependency-review:
     if: ${{ github.event_name == 'pull_request' }}
