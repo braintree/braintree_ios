@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+ * Improve latency for analytic events.
+
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal
   * Bug fix: `BTPayPalRequest.userPhoneNumber` could be passed as an empty string resulting in an error
