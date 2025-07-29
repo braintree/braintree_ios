@@ -12,7 +12,7 @@ jobs:
   code-scanning:
     uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@jlesus-ios
     with:
-      workspace: Braintree.xcworkspace
+      project: Braintree.xcodeproj
       scheme: UnitTests
 
   dependency-review:
