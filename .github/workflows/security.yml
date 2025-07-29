@@ -12,8 +12,8 @@ jobs:
   code-scanning:
     uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@jlesus-ios
     with:
-      project: Braintree.xcodeproj
-      scheme: Demo
+      project: Braintree.xcworkspace
+      scheme: UnitTests
 
   dependency-review:
     if: ${{ github.event_name == 'pull_request' }}
