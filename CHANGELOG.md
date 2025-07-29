@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.0.0-beta2 (2025-07-29)
 * BraintreeCore
   * Improve latency for analytic events.
 
