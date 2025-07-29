@@ -5,12 +5,12 @@ on:
   pull_request:
     branches: [ main ]
   push:
-    branches: [ add-ios-security-scans ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   code-scanning:
-    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@jlesus-ios
+    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@main
     with:
       project: SampleApps/SPMTest/SPMTest.xcodeproj
       scheme: SPMTest
