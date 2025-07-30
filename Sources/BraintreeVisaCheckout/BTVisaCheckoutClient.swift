@@ -5,7 +5,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-// Creates a Visa Checkout client for processing Visa Checkout payments.
+/// Creates a Visa Checkout client for processing Visa Checkout payments.
 @objc public class BTVisaCheckoutClient: NSObject {
 
     private let apiClient: BTAPIClient
@@ -19,13 +19,13 @@ import BraintreeCore
         self.apiClient = apiClient
     }
 
-    /// Creates a Visa Checkout `ProfileBuilder` with the merchant API key, environment, and other properties to be used with Visa Checkout.
+    /// Creates a Visa Checkout `Profile` with the merchant API key, environment, and other properties to be used with Visa Checkout.
     ///
     /// - Parameters:
     ///   - completion: A completion block that is invoked when the profile is created. If the profile creation succeeds,
     ///     `Profile` will contain a profile and `error` will be `nil`.
     ///     If it fails, `Profile` will be `nil` and `error` will describe the failure.
-    @objc public func createProfileBuilder(completion: @escaping (Profile?, Error?) -> Void) {
+    @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 /// TODO: Add failure analytics event
@@ -39,7 +39,7 @@ import BraintreeCore
             }
 
             guard configuration.isVisaCheckoutEnabled else {
-                completion(nil, BTVisaCheckoutError.unsupported)
+                completion(nil, BTVisaCheckoutError.disabled)
                 return
             }
 
@@ -63,7 +63,7 @@ import BraintreeCore
     /// - Note: The `checkoutResult` parameter is declared as `callID` type, but you must pass a `VisaCheckoutResult` instance.
     ///   `BTVisaCheckoutNonce` will contain a nonce and `error` will be `nil` if it fails
     ///   `BTVisaCheckoutNonce` will be `nil` and `error` will describe the failure.
-    @objc public func visaPaymentSummary(
+    @objc public func tokenize(
         _ checkoutResult: CheckoutResult,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
@@ -96,7 +96,7 @@ import BraintreeCore
         ]
 
         apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { body, _, error in
-            if let error = error {
+            if let error {
                 completion(nil, error)
                 return
             }
@@ -110,6 +110,7 @@ import BraintreeCore
                 self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
+
             completion(visaCheckoutCardNonce, nil)
         }
     }

@@ -39,6 +39,7 @@ extension BTConfiguration {
             "discover": "DISCOVER",
             "american express": "AMEX"
         ]
+
         return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
     }
 
@@ -47,6 +48,7 @@ extension BTConfiguration {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
             return []
         }
+
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
     }
 }
