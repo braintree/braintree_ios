@@ -7,19 +7,19 @@ import BraintreeCore
 /// Error details associated with Visa Checkout.
 public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
-    /// 0. Visa Checkout was cancelled by the user.
+    /// 0. Visa Checkout flow was canceled by the user.
     case canceled
 
-    /// 1. Visa Checkout SDK responded with an unsuccessful status code.
+    /// 1. Visa Checkout SDK was unsuccessful.
     case checkoutUnsuccessful
 
     /// 2. Failed to create Visa Checkout card nonce.
     case failedToCreateNonce
 
-    /// 3.
+    /// 3. Failed to fetch Braintree configuration.
     case fetchConfigurationFailed
 
-    /// 4. Braintree SDK is integrated incorrectly.
+    /// 4. A valid VisaCheckoutResult is required.
     case integration
 
     /// 5. Visa Checkout is disabled in the Braintree Control Panel.
@@ -40,7 +40,7 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
         case .fetchConfigurationFailed:
             return "Failed to fetch Braintree configuration."
         case .integration:
-            return "VisaCheckout is integrated incorrectly."
+            return "A valid VisaCheckoutResult is required."
         case .disabled:
             return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
         }
