@@ -1,4 +1,6 @@
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 // swiftlint:disable nesting
 /// The POST body for graph QL `query PaymentContext`
