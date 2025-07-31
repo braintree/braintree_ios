@@ -1,6 +1,8 @@
+import BraintreeCore
+
 // swiftlint:disable nesting
 /// The POST body for graph QL `query PaymentContext`
-struct VenmoQueryPaymentContextGraphQLBody: Encodable {
+struct VenmoQueryPaymentContextGraphQLBody: BTGraphQLEncodableBody {
 
     var query: String
     var variables: Variables

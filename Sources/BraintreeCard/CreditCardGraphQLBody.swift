@@ -1,8 +1,9 @@
 import Foundation
+import BraintreeCore
 
 // swiftlint:disable nesting
 /// The POST body for graphQL API Credit Card Tokenize Post
-struct CreditCardGraphQLBody: Encodable {
+struct CreditCardGraphQLBody: BTGraphQLEncodableBody {
 
     var variables: Variables
     var query: String
