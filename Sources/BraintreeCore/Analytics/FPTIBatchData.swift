@@ -28,6 +28,8 @@ struct FPTIBatchData: Codable {
 
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
+        /// The app's state within the device's lifecycle (ie active, inactive, background)
+        let applicationState: String?
 
         let appSwitchURL: String?
         /// The order or ranking in which payment buttons appear.
@@ -73,6 +75,7 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
+            applicationState: String? = nil,
             appSwitchURL: URL? = nil,
             buttonOrder: String? = nil,
             buttonType: String? = nil,
@@ -114,6 +117,7 @@ struct FPTIBatchData: Codable {
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.startTime = startTime
+            self.applicationState = applicationState
         }
 
         enum CodingKeys: String, CodingKey {
@@ -139,6 +143,7 @@ struct FPTIBatchData: Codable {
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
+            case applicationState = "application_state"
         }
     }
     
