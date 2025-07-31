@@ -1,5 +1,8 @@
 import Foundation
+
+#if canImport(BraintreeCore)
 import BraintreeCore
+#endif
 
 // swiftlint:disable nesting
 /// The POST body for graphQL API Credit Card Tokenize Post
