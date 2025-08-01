@@ -81,6 +81,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
         XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
         XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
+        XCTAssertEqual(batchParams["product_name"] as? String, "BT_DCC")
         XCTAssertEqual(batchParams["api_integration_type"] as? String, "fake-integration-type")
         XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
