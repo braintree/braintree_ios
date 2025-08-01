@@ -18,6 +18,7 @@ final class FPTIBatchData_Tests: XCTestCase {
     let eventParams = [
         FPTIBatchData.Event(
             connectionStartTime: 123,
+            contextID: "fake-order-id",
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
@@ -26,12 +27,12 @@ final class FPTIBatchData_Tests: XCTestCase {
             isConfigFromCache: false,
             isVaultRequest: false,
             linkType: LinkType.universal.rawValue,
-            payPalContextID: "fake-order-id",
             requestStartTime: 456,
             startTime: 999888777666
         ),
         FPTIBatchData.Event(
             connectionStartTime: nil,
+            contextID: "fake-order-id-2",
             correlationID: nil,
             endpoint: nil,
             endTime: nil,
@@ -40,7 +41,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             isConfigFromCache: true,
             isVaultRequest: true,
             linkType: nil,
-            payPalContextID: "fake-order-id-2",
             requestStartTime: nil,
             startTime: nil
         )
@@ -101,8 +101,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["tenant_name"] as? String, "Braintree")
         XCTAssertEqual(eventParams[0]["link_type"] as? String, "universal")
         XCTAssertNil(eventParams[1]["link_type"])
-        XCTAssertEqual(eventParams[0]["paypal_context_id"] as! String, "fake-order-id")
-        XCTAssertEqual(eventParams[1]["paypal_context_id"] as! String, "fake-order-id-2")
+        XCTAssertEqual(eventParams[0]["context_id"] as! String, "fake-order-id")
+        XCTAssertEqual(eventParams[1]["context_id"] as! String, "fake-order-id-2")
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
