@@ -37,6 +37,9 @@ struct FPTIBatchData: Codable {
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
+        /// Used for linking events from the client to server side request
+        /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
+        let contextID: String?
         let correlationID: String?
         let endpoint: String?
         /// UTC millisecond timestamp when a networking task completed.
@@ -59,10 +62,6 @@ struct FPTIBatchData: Codable {
         let merchantExperiment: String?
         /// The type of page where the payment button is displayed or where an event occured.
         let pageType: String?
-        /// Used for linking events from the client to server side request
-        /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
-        let payPalContextID: String?
-
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
@@ -77,6 +76,7 @@ struct FPTIBatchData: Codable {
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
+            contextID: String? = nil,
             correlationID: String? = nil,
             didEnablePayPalAppSwitch: Bool? = nil,
             didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -89,7 +89,6 @@ struct FPTIBatchData: Codable {
             linkType: String? = nil,
             merchantExperiment: String? = nil,
             pageType: String? = nil,
-            payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
             startTime: Int? = nil
@@ -98,6 +97,7 @@ struct FPTIBatchData: Codable {
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
+            self.contextID = contextID
             self.correlationID = correlationID
             self.didEnablePayPalAppSwitch = didEnablePayPalAppSwitch
             self.didPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
@@ -110,7 +110,6 @@ struct FPTIBatchData: Codable {
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
             self.pageType = pageType
-            self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.startTime = startTime
@@ -121,6 +120,7 @@ struct FPTIBatchData: Codable {
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
+            case contextID = "context_id"
             case correlationID = "correlation_id"
             case didEnablePayPalAppSwitch = "merchant_enabled_app_switch"
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
@@ -131,7 +131,6 @@ struct FPTIBatchData: Codable {
             case linkType = "link_type"
             case merchantExperiment = "experiment"
             case pageType = "page_type"
-            case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
