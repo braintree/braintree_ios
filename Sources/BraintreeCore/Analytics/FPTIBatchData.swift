@@ -207,6 +207,8 @@ struct FPTIBatchData: Codable {
         /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
 
+        let spaceKey: String = "SKDUYK"
+
         let tokenizationKey: String?
 
         let venmoInstalled: Bool = application.isVenmoAppInstalled()
@@ -230,6 +232,7 @@ struct FPTIBatchData: Codable {
             case merchantID = "merchant_id"
             case platform = "platform"
             case sessionID = "session_id"
+            case spaceKey = "space_key"
             case tokenizationKey = "tokenization_key"
             case venmoInstalled = "venmo_installed"
         }
