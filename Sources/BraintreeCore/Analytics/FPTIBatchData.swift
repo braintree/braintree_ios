@@ -37,6 +37,7 @@ struct FPTIBatchData: Codable {
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
+        let contextType: String?
         let correlationID: String?
         let endpoint: String?
         /// UTC millisecond timestamp when a networking task completed.
@@ -77,6 +78,7 @@ struct FPTIBatchData: Codable {
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
+            contextType: String? = nil,
             correlationID: String? = nil,
             didEnablePayPalAppSwitch: Bool? = nil,
             didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -98,6 +100,7 @@ struct FPTIBatchData: Codable {
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
+            self.contextType = contextType
             self.correlationID = correlationID
             self.didEnablePayPalAppSwitch = didEnablePayPalAppSwitch
             self.didPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
@@ -121,6 +124,7 @@ struct FPTIBatchData: Codable {
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
+            case contextType = "context_type"
             case correlationID = "correlation_id"
             case didEnablePayPalAppSwitch = "merchant_enabled_app_switch"
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
