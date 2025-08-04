@@ -21,7 +21,7 @@ import PayPalCheckout
 
     /// Used for linking events from the client to server side request
     /// In the PayPal Native Checkout flow this will be an Order ID
-    private var payPalContextID: String?
+    private var contextID: String?
 
     private let nativeCheckoutProvider: BTPayPalNativeCheckoutStartable
 
@@ -139,8 +139,8 @@ import PayPalCheckout
                 return
             }
 
-            if let payPalContextID = orderCreationClient.payPalContextID, !payPalContextID.isEmpty {
-                self.payPalContextID = payPalContextID
+            if let contextID = orderCreationClient.contextID, !contextID.isEmpty {
+                self.contextID = contextID
             }
 
             switch result {
@@ -187,8 +187,8 @@ import PayPalCheckout
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeSucceeded,
-            correlationID: clientMetadataID,
-            payPalContextID: payPalContextID
+            contextID: contextID,
+            correlationID: clientMetadataID
         )
         completion(result, nil)
     }
@@ -196,9 +196,9 @@ import PayPalCheckout
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeFailed,
+            contextID: contextID,
             correlationID: clientMetadataID,
-            errorDescription: error.localizedDescription,
-            payPalContextID: payPalContextID
+            errorDescription: error.localizedDescription
         )
         completion(nil, error)
     }
@@ -206,8 +206,8 @@ import PayPalCheckout
     private func notifyCancel(completion: @escaping (BTPayPalNativeCheckoutAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalNativeCheckoutAnalytics.tokenizeCanceled,
-            correlationID: clientMetadataID,
-            payPalContextID: payPalContextID
+            contextID: contextID,
+            correlationID: clientMetadataID
         )
         completion(nil, BTPayPalNativeCheckoutError.canceled)
     }

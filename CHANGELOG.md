@@ -5,6 +5,7 @@
   * Analytics updates for PayPal's analytics service (FPTI)
     * Add `space_key` and `product_name` to `batch_params`
     * Add `context_type` to `event_params`
+    * Rename `paypal_context_id` to `context_id`
 
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal
