@@ -6,9 +6,7 @@ import BraintreeCore
 
 /// Contains the remote Visa Checkout configuration for the Braintree SDK.
 extension BTConfiguration {
-    
-    // MARK: - Internal Properties
-    
+
     /// Returns the environment used to run the Visa Checkout SDK.
     var visaCheckoutEnvironment: String? {
         json?["environment"].asString()
@@ -29,26 +27,26 @@ extension BTConfiguration {
         json?["visaCheckout"]["externalClientId"].asString()
     }
 
-    /// Returns the supported card types for Visa Checkout to accepted card brands.
-    /// - Parameters:
-    ///   - supportedCardTypes: The card types supported by Visa Checkout.
-    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
-        let cardTypeMap: [String: String] = [
-            "visa": "VISA",
-            "mastercard": "MASTERCARD",
-            "discover": "DISCOVER",
-            "american express": "AMEX"
-        ]
-
-        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
-    }
-
     /// The accepted card brands for Visa Checkout.
-    var acceptedCardBrands: [String]? {
+    var acceptedCardBrands: [String] {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
             return []
         }
 
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
+    }
+
+    /// Returns the supported card types for Visa Checkout to accepted card brands.
+    /// - Parameters:
+    ///   - supportedCardTypes: The card types supported by Visa Checkout.
+    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
+        let cardTypeMap: [String: String] = [
+            "visa": "Visa",
+            "mastercard": "MasterCard",
+            "discover": "Discover",
+            "american express": "AMEX"
+        ]
+
+        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
     }
 }

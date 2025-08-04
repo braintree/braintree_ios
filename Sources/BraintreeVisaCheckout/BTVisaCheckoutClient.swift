@@ -106,7 +106,8 @@ import BraintreeCore
                 return
             }
 
-            guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: body["visaCheckoutCards"][0]) else {
+            guard let firstCard = body["visaCheckoutCards"].asArray()?.first,
+                  let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: firstCard) else {
                 self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
