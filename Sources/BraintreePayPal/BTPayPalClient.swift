@@ -73,6 +73,9 @@ import BraintreeDataCollector
     
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
+    
+    /// Used for analytics purpose to determine if the context type is `BA_TOKEN` or `EC_TOKEN`
+    private var contextType: String?
 
     // MARK: - Initializer
 
@@ -127,6 +130,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = true
+        contextType = "BA_TOKEN"
         tokenize(request: request, completion: completion)
     }
 
@@ -170,6 +174,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = false
+        contextType = "EC_TOKEN"
         tokenize(request: request, completion: completion)
     }
 
@@ -210,7 +215,8 @@ import BraintreeDataCollector
             BTPayPalAnalytics.handleReturnStarted,
             appSwitchURL: url,
             contextID: contextID,
-            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            contextType: contextType,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -318,6 +324,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchSucceeded,
                 appSwitchURL: url,
                 contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest
@@ -333,6 +340,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchFailed,
                 appSwitchURL: url,
                 contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest
@@ -376,6 +384,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
@@ -464,6 +473,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 appSwitchURL: payPalAppRedirectURL,
                 contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
@@ -480,6 +490,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.appSwitchStarted,
             appSwitchURL: payPalAppRedirectURL,
             contextID: contextID,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -514,6 +525,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.browserPresentationStarted,
             appSwitchURL: appSwitchURL,
             contextID: contextID,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -562,6 +574,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserPresentationSucceeded,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isConfigFromCache: isConfigFromCache,
@@ -573,6 +586,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserPresentationFailed,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isVaultRequest: isVaultRequest,
@@ -588,6 +602,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserLoginAlertCanceled,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isVaultRequest: isVaultRequest
@@ -605,6 +620,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 appSwitchURL: appSwitchURL,
                 contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
@@ -638,7 +654,8 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
             contextID: contextID,
-            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            contextType: contextType,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -651,7 +668,8 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             contextID: contextID,
-            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            contextType: contextType,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
@@ -665,7 +683,8 @@ import BraintreeDataCollector
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
             contextID: contextID,
-            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            contextType: contextType,
+            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,

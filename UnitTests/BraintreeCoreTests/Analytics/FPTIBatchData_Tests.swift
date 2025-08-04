@@ -19,6 +19,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         FPTIBatchData.Event(
             connectionStartTime: 123,
             contextID: "fake-order-id",
+            contextType: "BA_TOKEN",
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
@@ -81,6 +82,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
         XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
         XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
+        XCTAssertEqual(batchParams["product_name"] as? String, "BT_DCC")
         XCTAssertEqual(batchParams["api_integration_type"] as? String, "fake-integration-type")
         XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
@@ -88,6 +90,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
         XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
+        XCTAssertEqual(batchParams["space_key"] as? String, "SKDUYK")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
         XCTAssertEqual(batchParams["paypal_installed"] as! Bool, false)
         XCTAssertEqual(batchParams["venmo_installed"] as! Bool, false)
@@ -105,6 +108,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["context_id"] as! String, "fake-order-id-2")
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
+        XCTAssertEqual(eventParams[0]["context_type"] as? String, "BA_TOKEN")
+        XCTAssertNil(eventParams[1]["context_type"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
         XCTAssertNil(eventParams[1]["correlation_id"])
         XCTAssertEqual(eventParams[0]["is_vault"] as? Bool, false)

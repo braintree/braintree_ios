@@ -40,6 +40,7 @@ struct FPTIBatchData: Codable {
         /// Used for linking events from the client to server side request
         /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
         let contextID: String?
+        let contextType: String?
         let correlationID: String?
         let endpoint: String?
         /// UTC millisecond timestamp when a networking task completed.
@@ -77,6 +78,7 @@ struct FPTIBatchData: Codable {
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
             contextID: String? = nil,
+            contextType: String? = nil,
             correlationID: String? = nil,
             didEnablePayPalAppSwitch: Bool? = nil,
             didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -98,6 +100,7 @@ struct FPTIBatchData: Codable {
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
             self.contextID = contextID
+            self.contextType = contextType
             self.correlationID = correlationID
             self.didEnablePayPalAppSwitch = didEnablePayPalAppSwitch
             self.didPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
@@ -121,6 +124,7 @@ struct FPTIBatchData: Codable {
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case contextID = "context_id"
+            case contextType = "context_type"
             case correlationID = "correlation_id"
             case didEnablePayPalAppSwitch = "merchant_enabled_app_switch"
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
@@ -202,9 +206,13 @@ struct FPTIBatchData: Codable {
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
 
         let platform = "iOS"
+        
+        let productName: String = "BT_DCC"
 
         /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
+
+        let spaceKey: String = "SKDUYK"
 
         let tokenizationKey: String?
 
@@ -223,12 +231,14 @@ struct FPTIBatchData: Codable {
             case environment = "merchant_sdk_env"
             case packageManager = "ios_package_manager"
             case payPalInstalled = "paypal_installed"
+            case productName = "product_name"
             case integrationType = "api_integration_type"
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
             case platform = "platform"
             case sessionID = "session_id"
+            case spaceKey = "space_key"
             case tokenizationKey = "tokenization_key"
             case venmoInstalled = "venmo_installed"
         }
