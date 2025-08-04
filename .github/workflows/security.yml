@@ -21,7 +21,7 @@ jobs:
     uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@ios-allow-inputs
     with:
       project: Demo/Demo.xcodeproj
-      scheme: Demo/Demo.xcodeproj/xcshareddata/xcschemes/Demo.xcscheme
+      scheme: Demo
 
   dependency-review:
     if: ${{ github.event_name == 'pull_request' }}
