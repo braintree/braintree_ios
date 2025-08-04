@@ -3,7 +3,7 @@
 ## unreleased
 * BraintreeCore
   * Analytics updates for PayPal's analytics service (FPTI)
-    * Add `space_key` to `event_params`
+    * Add `space_key` to `batch_params`
 
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal
