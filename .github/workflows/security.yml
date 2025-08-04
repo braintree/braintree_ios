@@ -13,12 +13,12 @@ on:
   pull_request:
     branches: [ main ]
   push:
-    branches: [ main ]
+    branches: [ add-ios-security-scans ]
   workflow_dispatch:
 
 jobs:
   code-scanning:
-    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@main
+    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@ios-allow-inputs
     with:
       project: Demo/Demo.xcodeproj
       scheme: Demo
