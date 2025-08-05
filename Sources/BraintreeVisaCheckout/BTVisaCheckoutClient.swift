@@ -43,6 +43,11 @@ import BraintreeCore
                 return
             }
 
+            guard let apiKey = configuration.visaCheckoutAPIKey else {
+                completion(nil, BTVisaCheckoutError.fetchConfigurationFailed)
+                return
+            }
+
             let environmentString = configuration.visaCheckoutEnvironment
             let environment: Environment = environmentString == "sandbox" ? .sandbox : .production
 
@@ -101,8 +106,8 @@ import BraintreeCore
                 return
             }
 
-            guard let body else {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+            guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first else {
+                self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
                 return
             }
 
