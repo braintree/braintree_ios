@@ -43,13 +43,24 @@ import BraintreeCore
                 return
             }
 
-            guard let visaCheckoutAPIKey = configuration.visaCheckoutAPIKey else {
+            guard
+                let visaCheckoutAPIKey = configuration.visaCheckoutAPIKey,
+                let environmentString = configuration.visaCheckoutEnvironment,
+                !environmentString.isEmpty else {
                 completion(nil, BTVisaCheckoutError.integration)
                 return
             }
 
-            let environmentString = configuration.visaCheckoutEnvironment
-            let environment: Environment = environmentString == "sandbox" ? .sandbox : .production
+            var environment: Environment = .sandbox
+
+            if environmentString == "production" {
+                environment = .production
+            } else if environmentString == "sandbox" {
+                environment = .sandbox
+            } else {
+                completion(nil, BTVisaCheckoutError.integration)
+                return
+            }
 
             let profile = Profile(
                 environment: environment,
