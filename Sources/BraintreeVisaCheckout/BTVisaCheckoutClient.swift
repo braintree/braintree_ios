@@ -43,8 +43,8 @@ import BraintreeCore
                 return
             }
 
-            guard let apiKey = configuration.visaCheckoutAPIKey else {
-                completion(nil, BTVisaCheckoutError.fetchConfigurationFailed)
+            guard let visaCheckoutAPIKey = configuration.visaCheckoutAPIKey else {
+                completion(nil, BTVisaCheckoutError.integration)
                 return
             }
 
@@ -53,7 +53,7 @@ import BraintreeCore
 
             let profile = Profile(
                 environment: environment,
-                apiKey: configuration.visaCheckoutAPIKey ?? "",
+                apiKey: visaCheckoutAPIKey,
                 profileName: nil
             )
             profile.datalevel = .full
@@ -107,12 +107,12 @@ import BraintreeCore
             }
 
             guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first else {
-                self.notifyFailure(with: BTVisaCheckoutError.unknown, completion: completion)
+                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
 
-            guard let firstCard = body["visaCheckoutCards"].asArray()?.first,
-                  let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: firstCard) else {
+            guard let firstCard = body?["visaCheckoutCards"].asArray()?.first,
+                let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: firstCard) else {
                 self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
