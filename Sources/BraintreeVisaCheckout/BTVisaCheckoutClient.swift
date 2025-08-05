@@ -56,6 +56,7 @@ import BraintreeCore
                 apiKey: visaCheckoutAPIKey,
                 profileName: nil
             )
+
             profile.datalevel = .full
             profile.clientId = configuration.visaCheckoutExternalClientID
             profile.acceptedCardBrands = configuration.acceptedCardBrands
@@ -65,7 +66,7 @@ import BraintreeCore
     }
 
     /// Tokenizes a Visa checkout result.
-    /// - Note: The `checkoutResult` parameter is declared as `callID` type, but you must pass a `VisaCheckoutResult` instance.
+    /// - Note: The `checkoutResult` parameter is declared as `callID` type, but you must pass a `CheckoutResult` instance.
     ///   `BTVisaCheckoutNonce` will contain a nonce and `error` will be `nil` if it fails
     ///   `BTVisaCheckoutNonce` will be `nil` and `error` will describe the failure.
     @objc public func tokenize(
@@ -111,8 +112,7 @@ import BraintreeCore
                 return
             }
 
-            guard let firstCard = body?["visaCheckoutCards"].asArray()?.first,
-                let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: firstCard) else {
+            guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: visaCheckoutCards) else {
                 self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }

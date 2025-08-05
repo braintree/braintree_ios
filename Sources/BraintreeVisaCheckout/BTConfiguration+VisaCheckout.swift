@@ -36,9 +36,9 @@ extension BTConfiguration {
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
     }
 
-    /// Returns the supported card types for Visa Checkout to accepted card brands.
+    /// Returns the accepted card brands for the corresponding Visa Checkout supported card types.
     /// - Parameters:
-    ///   - supportedCardTypes: The card types supported by Visa Checkout.
+    ///   - supportedCardTypes: Required: The card types supported by Visa Checkout.
     func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
         let cardTypeMap: [String: String] = [
             "visa": "Visa",
