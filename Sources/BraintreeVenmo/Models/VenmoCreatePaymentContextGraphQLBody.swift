@@ -1,8 +1,12 @@
 import Foundation
 
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
 // swiftlint:disable nesting
 /// The POST body for graph QL `mutation CreateVenmoPaymentContext`
-struct VenmoCreatePaymentContextGraphQLBody: Encodable {
+struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
     
     var query: String
     var variables: Variables
