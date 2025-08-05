@@ -28,7 +28,7 @@ extension BTConfiguration {
     }
 
     /// The accepted card brands for Visa Checkout.
-    var acceptedCardBrands: [String] {
+    var acceptedCardBrands: [Int] {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
             return []
         }
@@ -39,14 +39,22 @@ extension BTConfiguration {
     /// Returns the accepted card brands for the corresponding Visa Checkout supported card types.
     /// - Parameters:
     ///   - supportedCardTypes: Required: The card types supported by Visa Checkout.
-    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
-        let cardTypeMap: [String: String] = [
-            "visa": "Visa",
-            "mastercard": "MasterCard",
-            "discover": "Discover",
-            "american express": "AMEX"
-        ]
-
-        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
+    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [Int] {
+        var acceptedCardBrands: [Int] = []
+        for cardType in supportedCardTypes {
+            switch cardType {
+            case "Visa":
+                acceptedCardBrands.append(CardBrand.visa.rawValue)
+            case "MasterCard":
+                acceptedCardBrands.append(CardBrand.mastercard.rawValue)
+            case "American Express":
+                acceptedCardBrands.append(CardBrand.amex.rawValue)
+            case "Discover":
+                acceptedCardBrands.append(CardBrand.discover.rawValue)
+            default:
+                break
+            }
+        }
+        return acceptedCardBrands
     }
 }
