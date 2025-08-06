@@ -121,6 +121,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
             XCTAssertEqual(error.code, BTPayPalError.httpPostRequestError([:]).errorCode)
+            XCTAssertTrue(error.localizedDescription.contains("A fake error issue"), "error description should contain the fake error issue")
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 1)
