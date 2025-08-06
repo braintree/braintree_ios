@@ -19,7 +19,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         FPTIBatchData.Event(
             connectionStartTime: 123,
             contextID: "fake-order-id",
-            contextType: "BA_TOKEN",
+            contextType: "BA-TOKEN",
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
@@ -108,7 +108,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["context_id"] as! String, "fake-order-id-2")
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
-        XCTAssertEqual(eventParams[0]["context_type"] as? String, "BA_TOKEN")
+        XCTAssertEqual(eventParams[0]["context_type"] as? String, "BA-TOKEN")
         XCTAssertNil(eventParams[1]["context_type"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
         XCTAssertNil(eventParams[1]["correlation_id"])

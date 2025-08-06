@@ -1226,7 +1226,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let _ = try? await payPalClient.tokenize(vaultRequest)
 
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
-        XCTAssertEqual(mockAPIClient.postedContextType, "BA_TOKEN")
+        XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() async {
@@ -1235,7 +1235,7 @@ class BTPayPalClient_Tests: XCTestCase {
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
-        XCTAssertEqual(mockAPIClient.postedContextType, "EC_TOKEN")
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
     }
     
     func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {
