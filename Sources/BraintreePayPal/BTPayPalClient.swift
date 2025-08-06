@@ -412,7 +412,7 @@ import BraintreeDataCollector
                         return
                     }
 
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"]["issue"].asString()
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
                     self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
