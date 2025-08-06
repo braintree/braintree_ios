@@ -212,8 +212,8 @@ class BTCard_Tests: XCTestCase {
         let optionsDict = inputDict["options"] as! [String: Any]
         XCTAssertEqual(optionsDict["validate"] as? Bool, false)
 
-        if let authInsightVariables = variablesDict["authenticationInsightInput"] as? [String: Any] {
-            XCTAssertEqual(authInsightVariables["merchantAccountId"] as? String, "some id")
+        if let authInsightInput = variablesDict["authenticationInsightInput"] as? [String: Any] {
+            XCTAssertEqual(authInsightInput["merchantAccountId"] as? String, "some id")
         } else {
             XCTFail("Expected authenticationInsightInput dictionary not found")
         }
