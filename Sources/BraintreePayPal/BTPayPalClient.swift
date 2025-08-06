@@ -74,7 +74,7 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
     
-    /// Used for analytics purpose to determine if the context type is `BA_TOKEN` or `EC_TOKEN`
+    /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
 
     // MARK: - Initializer
@@ -130,7 +130,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = true
-        contextType = "BA_TOKEN"
+        contextType = "BA-TOKEN"
         tokenize(request: request, completion: completion)
     }
 
@@ -174,7 +174,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = false
-        contextType = "EC_TOKEN"
+        contextType = "EC-TOKEN"
         tokenize(request: request, completion: completion)
     }
 
