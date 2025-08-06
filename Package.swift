@@ -154,7 +154,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeVisaCheckout",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "BraintreeCard"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
     ]
