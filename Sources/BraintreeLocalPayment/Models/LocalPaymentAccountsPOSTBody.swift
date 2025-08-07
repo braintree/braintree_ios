@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The POST body for v1/payment_methods/paypal_accounts
+/// The POST body for `v1/payment_methods/paypal_accounts`
 struct LocalPaymentPayPalAccountsPOSTBody: Encodable {
     
     // MARK: - Private Properties
@@ -41,7 +41,7 @@ extension LocalPaymentPayPalAccountsPOSTBody {
         let intent = "sale"
         let response: Response
         let responseType = "web"
-        let options = [Option()]
+        let options = Option()
         
         var correlationID: String?
         
@@ -70,6 +70,7 @@ extension LocalPaymentPayPalAccountsPOSTBody {
             case correlationID = "correlation_id"
             case intent
             case options
+            case response
             case responseType = "response_type"
         }
     }
