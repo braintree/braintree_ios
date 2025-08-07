@@ -18,7 +18,7 @@ class BTConfiguration_VisaCheckoutTests: XCTestCase {
     func testIsVisaCheckoutEnabled_whenVisaCheckoutFromConfigurationJSONExists_returnsTrue() {
         let configurationJSON = BTJSON(value: [
             "visaCheckout": [
-                "apiKey": "apikey" // key must be 'apiKey' not 'apikey' to match Swift logic
+                "apiKey": "apikey"
             ]
         ])
         let configuration = BTConfiguration(json: configurationJSON)
