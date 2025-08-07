@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The POST body for v1/local_payments/create
+/// The POST body for `v1/local_payments/create`
 struct LocalPaymentPOSTBody: Encodable {
     
     // MARK: - Private Properties
