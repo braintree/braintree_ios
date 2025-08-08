@@ -11,6 +11,7 @@ import BraintreeThreeDSecure
 import BraintreeVenmo
 import BraintreePayPalNativeCheckout
 import BraintreeSEPADirectDebit
+import BraintreeVisaCheckout
 
 class ViewController: UIViewController {
 
@@ -28,5 +29,6 @@ class ViewController: UIViewController {
         let venmoClient = BTVenmoClient(apiClient: apiClient)
         let payPalNativeCheckoutClient = BTPayPalNativeCheckoutClient(apiClient: apiClient)
         let sepaDirectDebitClient = BTSEPADirectDebitClient(apiClient: apiClient)
+        let visaCheckoutClient = BTVisaCheckoutClient(apiClient: apiClient)
     }
 }
