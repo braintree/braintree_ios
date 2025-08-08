@@ -18,7 +18,7 @@ struct BTPayPalNativeOrder: Equatable {
 @available(*, deprecated, message: "BraintreePayPalNativeCheckout Module is deprecated, use BraintreePayPal Module instead")
 class BTPayPalNativeOrderCreationClient {
 
-    var payPalContextID: String?
+    var contextID: String?
 
     private let apiClient: BTAPIClient
 
@@ -76,7 +76,7 @@ class BTPayPalNativeOrderCreationClient {
                     orderID: hermesResponse.orderID
                 )
 
-                self.payPalContextID = order.orderID
+                self.contextID = order.orderID
                 completion(.success(order))
             }
         }
