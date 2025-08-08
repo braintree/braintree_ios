@@ -41,12 +41,12 @@ extension LocalPaymentPayPalAccountsPOSTBody {
         let intent = "sale"
         let response: Response
         let responseType = "web"
-        let options = Option()
+        let options = Options()
         
         var correlationID: String?
         
         // swiftlint:disable nesting
-        struct Option: Encodable {
+        struct Options: Encodable {
             
             let validate = false
         }
