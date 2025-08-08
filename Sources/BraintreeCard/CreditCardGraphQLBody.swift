@@ -21,24 +21,37 @@ struct CreditCardGraphQLBody: BTGraphQLEncodableBody {
     struct Variables: Encodable {
 
         var input: Input
+        var authenticationInsightInput: AuthenticationInsightInput?
         
         init(card: BTCard) {
             self.input = Input(card: card)
+            
+            if card.authenticationInsightRequested {
+                self.authenticationInsightInput = AuthenticationInsightInput(card: card)
+            }
+        }
+        
+        struct AuthenticationInsightInput: Encodable {
+        
+            var merchantAccountID: String?
+            
+            init(card: BTCard) {
+                self.merchantAccountID = card.merchantAccountID
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case merchantAccountID = "merchantAccountId"
+            }
         }
         
         struct Input: Encodable {
 
             var creditCard: CreditCard
             var options: Options
-            var authenticationInsightInput: AuthenticationInsightInput?
 
             init(card: BTCard) {
                 self.creditCard = CreditCard(card: card)
                 self.options = Options(validate: card.shouldValidate)
-                
-                if card.authenticationInsightRequested {
-                    self.authenticationInsightInput = AuthenticationInsightInput(card: card)
-                }
             }
             
             struct CreditCard: Encodable {
@@ -71,7 +84,7 @@ struct CreditCardGraphQLBody: BTGraphQLEncodableBody {
                     var region: String?
                     var countryName: String?
                     var countryCodeAlpha2: String?
-                    var countryCodeAlpha3: String?
+                    var countryCode: String?
                     var countryCodeNumeric: String?
 
                     init?(card: BTCard) {
@@ -106,22 +119,9 @@ struct CreditCardGraphQLBody: BTGraphQLEncodableBody {
                         self.region = card.region
                         self.countryName = card.countryName
                         self.countryCodeAlpha2 = card.countryCodeAlpha2
-                        self.countryCodeAlpha3 = card.countryCodeAlpha3
+                        self.countryCode = card.countryCodeAlpha3
                         self.countryCodeNumeric = card.countryCodeNumeric
                     }
-                }
-            }
-            
-            struct AuthenticationInsightInput: Encodable {
-            
-                var merchantAccountID: String?
-                
-                init(card: BTCard) {
-                    self.merchantAccountID = card.merchantAccountID
-                }
-
-                enum CodingKeys: String, CodingKey {
-                    case merchantAccountID = "merchantAccountId"
                 }
             }
 

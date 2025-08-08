@@ -37,24 +37,24 @@ import BraintreeCore
     /// - Parameters:
     ///   - number: The card number.
     ///   - expirationMonth: The expiration month as a one or two-digit number on the Gregorian calendar.
-    ///   - expirationYear:The expiration year as a two or four-digit number on the Gregorian calendar.
+    ///   - expirationYear: The expiration year as a two or four-digit number on the Gregorian calendar.
     ///   - cvv: The card verification code (like CVV or CID).
     ///   - postalCode: Optional: The postal code associated with the card's billing address.
-    ///   - cardholderName: Optional: the cardholder's name.
-    ///   - firstName: Optional: first name on the card.
-    ///   - lastName: Optional: last name on the card.
-    ///   - company: Optional: company name associated with the card.
-    ///   - streetAddress: Optional: the street address associated with the card's billing address.
-    ///   - extendedAddress: Optional: the extended address associated with the card's billing address.
-    ///   - locality: Optional: the city associated with the card's billing address.
-    ///   - region: Optional: either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
-    ///   - countryName: Optional: the country name associated with the card's billing address.
+    ///   - cardholderName: Optional: The cardholder's name.
+    ///   - firstName: Optional: First name on the card.
+    ///   - lastName: Optional: Last name on the card.
+    ///   - company: Optional: Company name associated with the card.
+    ///   - streetAddress: Optional: The street address associated with the card's billing address.
+    ///   - extendedAddress: Optional: The extended address associated with the card's billing address.
+    ///   - locality: Optional: The city associated with the card's billing address.
+    ///   - region: Optional: Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
+    ///   - countryName: Optional: The country name associated with the card's billing address.
     ///     - Note: Braintree only accepts specific country names.
     ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    ///   - countryCodeAlpha2: Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
+    ///   - countryCodeAlpha2: Optional: The ISO 3166-1 alpha-2 country code specified in the card's billing address.
     ///     - Note: Braintree only accepts specific alpha-2 values.
     ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
-    ///   - countryCodeAlpha3: Optional: the ISO 3166-1 alpha-3 country code specified in the card's billing address.
+    ///   - countryCodeAlpha3: Optional: The ISO 3166-1 alpha-3 country code specified in the card's billing address.
     ///     - Note: Braintree only accepts specific alpha-3 values.
     ///     - SeeAlso: https://developer.paypal.com/braintree/docs/reference/general/countries#list-of-countries
     ///   - countryCodeNumeric: Optional: The ISO 3166-1 numeric country code specified in the card's billing address.

@@ -65,7 +65,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(billingDict["region"] as? String, "IL")
         XCTAssertEqual(billingDict["countryName"] as? String, "US")
         XCTAssertEqual(billingDict["countryCodeAlpha2"] as? String, "US")
-        XCTAssertEqual(billingDict["countryCodeAlpha3"] as? String, "USA")
+        XCTAssertEqual(billingDict["countryCode"] as? String, "USA")
         XCTAssertEqual(billingDict["countryCodeNumeric"] as? String, "123")
             
         let optionsDict = inputDict["options"] as! [String: Any]
@@ -212,7 +212,7 @@ class BTCard_Tests: XCTestCase {
         let optionsDict = inputDict["options"] as! [String: Any]
         XCTAssertEqual(optionsDict["validate"] as? Bool, false)
 
-        if let authInsightInput = inputDict["authenticationInsightInput"] as? [String: Any] {
+        if let authInsightInput = variablesDict["authenticationInsightInput"] as? [String: Any] {
             XCTAssertEqual(authInsightInput["merchantAccountId"] as? String, "some id")
         } else {
             XCTFail("Expected authenticationInsightInput dictionary not found")
