@@ -31,19 +31,19 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 isFinalAmount: request.isFinalAmount.description,
                 displayName: request.displayName,
                 paysheetDetails: Variables.InputParameters.PaysheetDetails(
-                    collectCustomerBillingAddress: request.collectCustomerBillingAddress,
-                    collectCustomerShippingAddress: request.collectCustomerShippingAddress,
+                    collectCustomerBillingAddress: "\(request.collectCustomerBillingAddress)",
+                    collectCustomerShippingAddress: "\(request.collectCustomerShippingAddress)",
                     transactionDetails: Variables.InputParameters.PaysheetDetails.TransactionDetails(
                         lineItems: request.lineItems?.map { item in
                             Variables.InputParameters.PaysheetDetails.LineItem(
                                 quantity: item.quantity,
                                 unitAmount: item.unitAmount,
                                 name: item.name,
-                                kind: item.kind.rawValue,
+                                type: item.kind == .debit ? "DEBIT" : "CREDIT",
                                 unitTaxAmount: item.unitTaxAmount ?? "0",
-                                itemDescription: item.itemDescription,
+                                description: item.itemDescription,
                                 productCode: item.productCode,
-                                url: item.url
+                                url: item.url?.absoluteString
                             )
                         }
                     )
@@ -73,8 +73,8 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
             
             struct PaysheetDetails: Encodable {
                 
-                var collectCustomerBillingAddress: Bool?
-                var collectCustomerShippingAddress: Bool?
+                var collectCustomerBillingAddress: String?
+                var collectCustomerShippingAddress: String?
                 var transactionDetails: TransactionDetails?
                 
                 func encode(to encoder: Encoder) throws {
@@ -141,11 +141,11 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                     let quantity: Int
                     let unitAmount: String
                     let name: String
-                    let kind: Int
+                    let type: String
                     let unitTaxAmount: String?
-                    let itemDescription: String?
+                    let description: String?
                     let productCode: String?
-                    let url: URL?
+                    let url: String?
                 }
             }
         }
