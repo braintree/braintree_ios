@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0453F7AD2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
-		0453F7AE2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0453F7B02E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
 		0453F7B12E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		046547B02DDE874F0054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
@@ -769,17 +768,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0453F7AF2E3D5E7900849AD8 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0453F7AE2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0453F7B22E3D5E8200849AD8 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2442,7 +2430,6 @@
 				046547B22DDE8B040054B80A /* Sources */,
 				046547B32DDE8B040054B80A /* Frameworks */,
 				046547B42DDE8B040054B80A /* Resources */,
-				0453F7AF2E3D5E7900849AD8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
