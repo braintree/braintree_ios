@@ -19,7 +19,7 @@ extension BTConfiguration {
 
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
     var visaCheckoutAPIKey: String? {
-        json?["visaCheckout"]["apiKey"].asString()
+        json?["visaCheckout"]["apikey"].asString()
     }
 
     /// Returns the Visa Checkout External Client ID configured in the Braintree Control Panel
