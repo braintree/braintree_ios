@@ -13,7 +13,6 @@
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
-		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */; };
 		3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */; };
@@ -702,7 +701,6 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
-		09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem_Tests.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
@@ -1905,7 +1903,6 @@
 				428F48E32624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift */,
 				4245D668256C255F00F1A413 /* BTVenmoAppSwitchReturnURL_Tests.swift */,
 				A71F7DE61B6180A3005DA1B0 /* BTVenmoClient_Tests.swift */,
-				09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */,
 				4228D8682624E5C3001D2564 /* BTVenmoRequest_Tests.swift */,
 				A948D6F424FAC8F900F4F178 /* Info.plist */,
 			);
@@ -3456,7 +3453,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9589DDA24FEA45C00AF4FF7 /* BTConfiguration+Venmo_Tests.swift in Sources */,
-				09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */,
 				3B1C529729D638D400B68A58 /* BTVenmoAnalytics_Tests.swift in Sources */,
 				4228D8692624E5C3001D2564 /* BTVenmoRequest_Tests.swift in Sources */,
 				428F48E42624C9B700EC8DB4 /* BTVenmoAppSwitchRedirectURL_Tests.swift in Sources */,

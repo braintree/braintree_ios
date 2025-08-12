@@ -34,6 +34,11 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                     collectCustomerBillingAddress: "\(request.collectCustomerBillingAddress)",
                     collectCustomerShippingAddress: "\(request.collectCustomerShippingAddress)",
                     transactionDetails: Variables.InputParameters.PaysheetDetails.TransactionDetails(
+                        subTotalAmount: request.subTotalAmount,
+                        discountAmount: request.discountAmount,
+                        taxAmount: request.taxAmount,
+                        shippingAmount: request.shippingAmount,
+                        totalAmount: request.totalAmount,
                         lineItems: request.lineItems?.map { item in
                             Variables.InputParameters.PaysheetDetails.LineItem(
                                 quantity: item.quantity,
