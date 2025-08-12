@@ -53,35 +53,4 @@ import Foundation
         self.name = name
         self.kind = kind
     }
-    
-    // MARK: - Internal Methods
-
-    /// Returns the line item in a dictionary.
-    /// - Returns: A dictionary with the line item information formatted for a request.
-    func requestParameters() -> [String: Any] {
-        var requestParameters: [String: Any] = [
-            "quantity": quantity,
-            "unitAmount": unitAmount,
-            "name": name,
-            "type": kind == .debit ? "DEBIT" : "CREDIT"
-        ]
-
-        if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            requestParameters["unitTaxAmount"] = unitTaxAmount
-        }
-
-        if let itemDescription, !itemDescription.isEmpty {
-            requestParameters["description"] = itemDescription
-        }
-
-        if let productCode, !productCode.isEmpty {
-            requestParameters["productCode"] = productCode
-        }
-
-        if let url, url != URL(string: "") {
-            requestParameters["url"] = url.absoluteString
-        }
-        
-        return requestParameters
-    }
 }
