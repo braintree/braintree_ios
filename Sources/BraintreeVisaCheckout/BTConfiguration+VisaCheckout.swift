@@ -14,12 +14,12 @@ extension BTConfiguration {
 
     /// Determines if the Visa Checkout flow is available to be used. This can be used to determine if UI components should be shown or hidden.
     var isVisaCheckoutEnabled: Bool {
-        json?["visaCheckout"]["apiKey"].isTrue ?? false
+        visaCheckoutAPIKey?.isEmpty == false
     }
 
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
     var visaCheckoutAPIKey: String? {
-        json?["visaCheckout"]["apiKey"].asString()
+        json?["visaCheckout"]["apikey"].asString()
     }
 
     /// Returns the Visa Checkout External Client ID configured in the Braintree Control Panel
