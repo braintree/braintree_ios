@@ -30,29 +30,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 intent: "CONTINUE",
                 isFinalAmount: request.isFinalAmount.description,
                 displayName: request.displayName,
-                paysheetDetails: Variables.InputParameters.PaysheetDetails(
-                    collectCustomerBillingAddress: "\(request.collectCustomerBillingAddress)",
-                    collectCustomerShippingAddress: "\(request.collectCustomerShippingAddress)",
-                    transactionDetails: Variables.InputParameters.PaysheetDetails.TransactionDetails(
-                        subTotalAmount: request.subTotalAmount,
-                        discountAmount: request.discountAmount,
-                        taxAmount: request.taxAmount,
-                        shippingAmount: request.shippingAmount,
-                        totalAmount: request.totalAmount,
-                        lineItems: request.lineItems?.map { item in
-                            Variables.InputParameters.PaysheetDetails.LineItem(
-                                quantity: item.quantity,
-                                unitAmount: item.unitAmount,
-                                name: item.name,
-                                type: item.kind == .debit ? "DEBIT" : "CREDIT",
-                                unitTaxAmount: item.unitTaxAmount ?? "0",
-                                description: item.itemDescription,
-                                productCode: item.productCode,
-                                url: item.url?.absoluteString
-                            )
-                        }
-                    )
-                )
+                paysheetDetails: Variables.InputParameters.PaysheetDetails(request: request)
             )
         }
         
@@ -81,6 +59,21 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 var collectCustomerBillingAddress: String?
                 var collectCustomerShippingAddress: String?
                 var transactionDetails: TransactionDetails?
+                
+                init(request: BTVenmoRequest) {
+                    self.collectCustomerBillingAddress = "\(request.collectCustomerBillingAddress)"
+                    self.collectCustomerShippingAddress = "\(request.collectCustomerShippingAddress)"
+                    self.transactionDetails = Variables.InputParameters.PaysheetDetails.TransactionDetails(
+                        subTotalAmount: request.subTotalAmount,
+                        discountAmount: request.discountAmount,
+                        taxAmount: request.taxAmount,
+                        shippingAmount: request.shippingAmount,
+                        totalAmount: request.totalAmount,
+                        lineItems: request.lineItems?.compactMap {
+                            Variables.InputParameters.PaysheetDetails.LineItem(item: $0)
+                        }
+                    )
+                }
                 
                 func encode(to encoder: Encoder) throws {
                     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -151,6 +144,21 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                     let description: String?
                     let productCode: String?
                     let url: String?
+                    
+                    init(item: BTVenmoLineItem) {
+                        self.quantity = item.quantity
+                        self.unitAmount = item.unitAmount
+                        self.name = item.name
+                        self.type = item.kind == .debit ? "DEBIT" : "CREDIT"
+                        if let tax = item.unitTaxAmount, !tax.isEmpty {
+                            self.unitTaxAmount = tax
+                        } else {
+                            self.unitTaxAmount = "0"
+                        }
+                        self.description = item.itemDescription
+                        self.productCode = item.productCode
+                        self.url = item.url?.absoluteString
+                    }
                 }
             }
         }
