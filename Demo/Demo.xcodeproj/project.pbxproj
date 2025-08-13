@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */; };
+		0453F7B82E455FCF00849AD8 /* BraintreeVisaCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -107,6 +109,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0453F7B82E455FCF00849AD8 /* BraintreeVisaCheckout.framework in Embed Frameworks */,
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
 				8028B9792B28D42400C88CE8 /* BraintreeShopperInsights.framework in Embed Frameworks */,
 				9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */,
@@ -128,6 +131,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckoutViewController.swift; sourceTree = "<group>"; };
 		04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
@@ -350,6 +354,7 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */,
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
@@ -704,6 +709,7 @@
 				BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */,
 				809E86A62AD00AF4004998B0 /* AppDelegate.swift in Sources */,
 				8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */,
+				0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */,
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
