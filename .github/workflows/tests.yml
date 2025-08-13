@@ -23,7 +23,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.6,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macOS-14-xlarge
+    runs-on: macOS-15-large
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'UITests' -destination 'name=iPhone 16 Pro,OS=18.6,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   integration_test_job:
     name: Integration
-    runs-on: macOS-14-xlarge
+    runs-on: macOS-15-large
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
