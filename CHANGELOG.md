@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.36.0 (2025-08-13)
 * BraintreeCore
   * Analytics updates for PayPal's analytics service (FPTI)
     * Add `space_key` and `product_name` to `batch_params`
