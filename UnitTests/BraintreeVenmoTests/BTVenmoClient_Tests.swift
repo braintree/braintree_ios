@@ -597,7 +597,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
+        XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
         XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
@@ -638,7 +638,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
+        XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
         XCTAssertEqual(mockAPIClient.postedLinkType, .universal)
     }
 
@@ -664,7 +664,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
+        XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
         XCTAssertEqual(mockAPIClient.postedLinkType, .deeplink)
     }
 
@@ -904,7 +904,7 @@ class BTVenmoClient_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "some-resource-id")
+        XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
     }
 
     // Note: testing of handleReturnURL is done implicitly while testing authorizeAccountWithCompletion

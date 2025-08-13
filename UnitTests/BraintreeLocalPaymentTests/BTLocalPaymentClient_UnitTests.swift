@@ -334,10 +334,10 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
         XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
-        XCTAssertEqual(self.mockAPIClient.postedPayPalContextID, "123aaa-123-543-777")
+        XCTAssertEqual(self.mockAPIClient.postedContextID, "123aaa-123-543-777")
     }
 
-    func testStartPayment_whenPaymentResourcePayPalContextID_sendsPayPalContextIDInAnalytics() {
+    func testStartPayment_whenPaymentResourceContextID_sendsContextIDInAnalytics() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(apiClient: mockAPIClient)
@@ -355,10 +355,10 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
-        XCTAssertEqual(mockAPIClient.postedPayPalContextID, "123aaa-123-543-777")
+        XCTAssertEqual(mockAPIClient.postedContextID, "123aaa-123-543-777")
     }
 
-    func testStartPayment_whenPaymentResourceDoesNotContainPayPalContextID_doesNotSendPayPalContextIDInAnalytics() {
+    func testStartPayment_whenPaymentResourceDoesNotContainContextID_doesNotSendContextIDInAnalytics() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(apiClient: mockAPIClient)
@@ -376,7 +376,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
-        XCTAssertNil(mockAPIClient.postedPayPalContextID)
+        XCTAssertNil(mockAPIClient.postedContextID)
     }
 
     func testStartPayment_cancelResult_callsCompletionBlock() {
