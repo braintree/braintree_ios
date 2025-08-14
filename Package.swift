@@ -154,8 +154,12 @@ let package = Package(
         ),
         .target(
             name: "BraintreeVisaCheckout",
-            dependencies: ["BraintreeCore", "BraintreeCard"],
+            dependencies: ["BraintreeCore", "BraintreeCard", "VisaCheckoutSDK"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
+        .binaryTarget(
+            name: "VisaCheckoutSDK",
+            path: "Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework"
         ),
     ]
 )

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0453F7AD2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
-		0453F7AE2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0453F7B02E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
 		0453F7B12E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		046547B02DDE874F0054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
@@ -108,6 +107,7 @@
 		57D94372296CCA2F0079EAB1 /* String+NonceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */; };
 		620C3C652BA21E5700C40A03 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */; };
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
+		623C21C22E469B180059252A /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
 		62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */; };
 		6298A1992B91010600E46EDF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */; };
@@ -116,6 +116,8 @@
 		62B811882CC002470024A688 /* BTPayPalPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B811872CC002470024A688 /* BTPayPalPhoneNumber.swift */; };
 		62D5EC502B9F6E9D00D09C5D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62D5EC4F2B9F6E9D00D09C5D /* PrivacyInfo.xcprivacy */; };
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
+		62EA4CFE2E43CEB900359CC4 /* BTConfiguration+VisaCheckout_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */; };
+		62EA4CFF2E43CEB900359CC4 /* BTConfiguration+VisaCheckout_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
 		800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */; };
@@ -768,17 +770,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0453F7AF2E3D5E7900849AD8 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0453F7AE2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0453F7B22E3D5E8200849AD8 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -935,6 +926,7 @@
 		62B811872CC002470024A688 /* BTPayPalPhoneNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalPhoneNumber.swift; sourceTree = "<group>"; };
 		62D5EC4F2B9F6E9D00D09C5D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+VisaCheckout_Tests.swift"; sourceTree = "<group>"; };
 		62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentMethods.swift; sourceTree = "<group>"; };
 		800E23DC22206A8300C5D22E /* BTThreeDSecureAuthenticateJWT_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT_Tests.swift; sourceTree = "<group>"; };
 		800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FPTIBatchData.swift; sourceTree = "<group>"; };
@@ -1237,6 +1229,7 @@
 			files = (
 				046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */,
 				0453F7AD2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */,
+				623C21C22E469B180059252A /* VisaCheckoutSDK.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1527,6 +1520,7 @@
 		046547AE2DDE87340054B80A /* BraintreeVisaCheckoutTests */ = {
 			isa = PBXGroup;
 			children = (
+				62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */,
 				046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */,
 				B8F733522E0DC106007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift */,
 				B8F733552E0DC316007D06C0 /* BTVisaCheckoutUserData_Tests.swift */,
@@ -2440,7 +2434,6 @@
 				046547B22DDE8B040054B80A /* Sources */,
 				046547B32DDE8B040054B80A /* Frameworks */,
 				046547B42DDE8B040054B80A /* Resources */,
-				0453F7AF2E3D5E7900849AD8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3535,6 +3528,7 @@
 				B8F733532E0DC11A007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift in Sources */,
 				046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */,
 				B8F733562E0DC330007D06C0 /* BTVisaCheckoutUserData_Tests.swift in Sources */,
+				62EA4CFE2E43CEB900359CC4 /* BTConfiguration+VisaCheckout_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3949,6 +3943,7 @@
 				BEE2E4A728FDB64400C03FDD /* BTAnalyticsService_Tests.swift in Sources */,
 				457D7FCA2C2A250E00EF6523 /* RepeatingTimer_Tests.swift in Sources */,
 				A95229C424FD8EEE006F7D25 /* BTURLUtils_Tests.swift in Sources */,
+				62EA4CFF2E43CEB900359CC4 /* BTConfiguration+VisaCheckout_Tests.swift in Sources */,
 				A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */,
 				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
@@ -4557,6 +4552,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4625,6 +4624,10 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
