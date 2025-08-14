@@ -89,17 +89,17 @@ import BraintreeCore
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
         if statusCode == .statusUserCancelled {
-            completion(nil, "\(BTVisaCheckoutError.canceled)" as? Error)
+            completion(nil, BTVisaCheckoutError.canceled)
             return
         }
 
         guard statusCode == .statusSuccess else {
-            completion(nil, "\(BTVisaCheckoutError.checkoutUnsuccessful)" as? Error)
+            completion(nil, BTVisaCheckoutError.checkoutUnsuccessful)
             return
         }
 
-        guard let callID, let encryptedKey, let encryptedPaymentData else {
-            completion(nil, "\(BTVisaCheckoutError.integration)" as? Error)
+        guard let encryptedKey, let encryptedPaymentData else {
+            completion(nil, BTVisaCheckoutError.integration)
             return
         }
 
@@ -118,32 +118,17 @@ import BraintreeCore
             }
 
             guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first else {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                completion(nil, BTVisaCheckoutError.failedToCreateNonce)
                 return
             }
 
             guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: visaCheckoutCards) else {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                completion(nil, BTVisaCheckoutError.failedToCreateNonce)
                 return
             }
 
-            self.notifySuccess(with: visaCheckoutCardNonce, completion: completion)
+            completion(visaCheckoutCardNonce, nil)
             return
         }
-    }
-
-    // MARK: - Analytics Helper Methods
-
-    /// Notifies the success of the Visa Checkout tokenization.
-    private func notifySuccess(
-        with result: BTVisaCheckoutNonce?,
-        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
-    ) {
-        completion(result, nil)
-    }
-
-    /// Notifies the failure of the Visa Checkout tokenization.
-    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
-        completion(nil, error)
     }
 }
