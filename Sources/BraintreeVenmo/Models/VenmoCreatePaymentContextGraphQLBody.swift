@@ -99,9 +99,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                         self.totalAmount = request.totalAmount
                         
                         if let lineItems = request.lineItems, !lineItems.isEmpty {
-                            self.lineItems = lineItems.compactMap {
-                                LineItem(item: $0)
-                            }
+                            self.lineItems = lineItems.compactMap { LineItem(item: $0) }
                         }
                     }
                     
