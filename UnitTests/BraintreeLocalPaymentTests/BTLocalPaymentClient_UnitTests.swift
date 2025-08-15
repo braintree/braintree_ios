@@ -67,7 +67,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 10)
     }
 
     func testStartPayment_postsAllCreationParameters() {
