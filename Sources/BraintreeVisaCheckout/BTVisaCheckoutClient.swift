@@ -64,7 +64,7 @@ import BraintreeCore
             let profile = Profile(
                 environment: environment,
                 apiKey: visaCheckoutAPIKey,
-                profileName: " "
+                profileName: nil
             )
 
             profile.datalevel = .full

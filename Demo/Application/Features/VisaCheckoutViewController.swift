@@ -8,8 +8,7 @@ import BraintreeCore
 
 class VisaCheckoutViewController: PaymentButtonBaseViewController {
 
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    var visaCheckoutClient: BTVisaCheckoutClient!
+    lazy var visaCheckoutClient = BTVisaCheckoutClient(apiClient: apiClient)
     var launchHandler: LaunchHandle?
     let visaCheckoutButton = VisaCheckoutButton()
 
@@ -17,7 +16,6 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        visaCheckoutClient = BTVisaCheckoutClient(apiClient: apiClient)
         title = "Visa Checkout Button"
 
         createVisaCheckoutButton()
@@ -40,11 +38,15 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
     /// Creates a Visa profile and initiates the checkout process.
     func createVisaProfileAndCheckout() {
         visaCheckoutClient.createProfile { profile, error in
-            if let error = error {
-                print("Failed to create Visa profile: \(error)")
+            if let error {
+                self.progressBlock("Failed to create Visa profile: \(error)")
                 return
             }
-            guard let profile = profile else { return }
+
+            guard let profile = profile else {
+                self.progressBlock("Failed to create Visa profile: \(error ?? BTVisaCheckoutError.integration)")
+                return
+            }
 
             profile.displayName = "My App"
 
@@ -61,19 +63,20 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
                 },
                 onButtonTapped: {
                     guard let launchHandler = self.launchHandler else {
+                        self.progressBlock("Error: launchHandler is not set.")
                         return
                     }
                     launchHandler()
                 },
                 completion: { result in
-                    print("Tokenizing VisaCheckoutResult...")
+                    self.progressBlock("Tokenizing VisaCheckoutResult...")
                     self.visaCheckoutClient.tokenize(result) { tokenizedVisaCheckoutCard, error in
-                        if let error = error {
+                        if let error {
                             self.progressBlock("Error tokenizing Visa Checkout card: \(error.localizedDescription)")
                         } else if let tokenizedVisaCheckoutCard = tokenizedVisaCheckoutCard {
                             self.completionBlock(tokenizedVisaCheckoutCard)
                         } else {
-                            self.progressBlock("User canceled.")
+                            self.progressBlock("\(BTVisaCheckoutError.canceled)")
                         }
                     }
                 }

@@ -14,13 +14,8 @@ extension BTConfiguration {
 
     /// Determines if the Visa Checkout flow is available to be used. This can be used to determine if UI components should be shown or hidden.
     var isVisaCheckoutEnabled: Bool {
-        let visaCheckout = json?["visaCheckout"]
-        let apiKey = visaCheckout?["apikey"].asString()
-
-        if visaCheckout == nil && ((apiKey?.isEmpty) == nil) {
-            return false
-        }
-        return true
+        let apiKey = json?["visaCheckout"]["apikey"].asString()
+        return apiKey?.isEmpty == false
     }
 
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
