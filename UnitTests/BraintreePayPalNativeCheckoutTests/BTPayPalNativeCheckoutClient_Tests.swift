@@ -213,7 +213,7 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         }
     }
 
-    func testTokenize_whenOrderIDIsReturned_sendsPayPalContextIDInAnalytics() {
+    func testTokenize_whenOrderIDIsReturned_sendsContextIDInAnalytics() {
         apiClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypalEnabled": true,
@@ -232,10 +232,10 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
         mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
 
-        XCTAssertEqual(apiClient.postedPayPalContextID, "fake-ec-token")
+        XCTAssertEqual(apiClient.postedContextID, "fake-ec-token")
     }
 
-    func testTokenize_whenOrderIDIsNotReturned_doesNotSendPayPalContextIDInAnalytics() {
+    func testTokenize_whenOrderIDIsNotReturned_doesNotSendContextIDInAnalytics() {
         apiClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypalEnabled": true,
@@ -254,6 +254,6 @@ class BTPayPalNativeCheckoutClient_Tests: XCTestCase {
         payPalNativeCheckoutClient.tokenize(request) { _, _ in }
         mockNativeCheckoutProvider.triggerApprove(returnURL: "https://fake-return-url")
 
-        XCTAssertNil(apiClient.postedPayPalContextID)
+        XCTAssertNil(apiClient.postedContextID)
     }
 }
