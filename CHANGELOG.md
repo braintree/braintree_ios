@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Fix an issue where `PayPalRequest` was sending `phone_number` instead of `payer_phone`
+
 ## 6.36.0 (2025-08-13)
 * BraintreeCore
   * Analytics updates for PayPal's analytics service (FPTI)
