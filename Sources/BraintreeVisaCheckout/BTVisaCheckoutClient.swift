@@ -28,7 +28,6 @@ import BraintreeCore
     @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                /// TODO: Add failure analytics event
                 completion(nil, error)
                 return
             }
@@ -99,7 +98,7 @@ import BraintreeCore
             return
         }
 
-        guard let callID, let encryptedKey, let encryptedPaymentData else {
+        guard let encryptedKey, let encryptedPaymentData else {
             completion(nil, BTVisaCheckoutError.integration)
             return
         }
@@ -119,30 +118,17 @@ import BraintreeCore
             }
 
             guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first else {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                completion(nil, BTVisaCheckoutError.failedToCreateNonce)
                 return
             }
 
             guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: visaCheckoutCards) else {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                completion(nil, BTVisaCheckoutError.failedToCreateNonce)
                 return
             }
 
             completion(visaCheckoutCardNonce, nil)
+            return
         }
-    }
-
-    /// Notifies the success of the Visa Checkout tokenization.
-    private func notifySuccess(
-        with result: BTVisaCheckoutNonce?,
-        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
-    ) {
-        /// TODO: Send success analytics event
-        completion(result, nil)
-    }
-
-    private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
-        /// TODO: Send failure analytics event
-        completion(nil, error)
     }
 }

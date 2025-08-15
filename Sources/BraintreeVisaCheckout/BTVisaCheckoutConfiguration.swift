@@ -6,16 +6,17 @@ import BraintreeCore
 
 /// Contains the remote Visa Checkout configuration for the Braintree SDK.
 extension BTConfiguration {
-
-    /// Returns the environment used to run the Visa Checkout SDK.
+    
+    // MARK: - Internal Properties
+    
+    /// Returns the enviornment used to run the Visa Checkout SDK.
     var visaCheckoutEnvironment: String? {
         json?["environment"].asString()
     }
 
     /// Determines if the Visa Checkout flow is available to be used. This can be used to determine if UI components should be shown or hidden.
     var isVisaCheckoutEnabled: Bool {
-        let apiKey = json?["visaCheckout"]["apikey"].asString()
-        return apiKey?.isEmpty == false
+        json?["visaCheckout"]["apiKey"].isTrue ?? false
     }
 
     /// The Visa Checkout API Key associated with this merchant's Visa Checkout configuration.
@@ -28,34 +29,22 @@ extension BTConfiguration {
         json?["visaCheckout"]["externalClientId"].asString()
     }
 
+    /// Returns the supported card types for Visa Checkout to accepted card brands.
+    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [String] {
+        let cardTypeMap: [String: String] = [
+            "visa": "VISA",
+            "mastercard": "MASTERCARD",
+            "discover": "DISCOVER",
+            "american express": "AMEX"
+        ]
+        return supportedCardTypes.compactMap { cardTypeMap[$0.lowercased()] }
+    }
+
     /// The accepted card brands for Visa Checkout.
-    var acceptedCardBrands: [Int] {
+    var acceptedCardBrands: [String]? {
         guard let supportedCardTypes = json?["visaCheckout"]["supportedCardTypes"].asStringArray() else {
             return []
         }
-
         return supportedCardTypesToAcceptedCardBrands(supportedCardTypes)
-    }
-
-    /// Returns the accepted card brands for the corresponding Visa Checkout supported card types.
-    /// - Parameters:
-    ///   - supportedCardTypes: Required: The card types supported by Visa Checkout.
-    func supportedCardTypesToAcceptedCardBrands(_ supportedCardTypes: [String]) -> [Int] {
-        var acceptedCardBrands: [Int] = []
-        for cardType in supportedCardTypes {
-            switch cardType {
-            case "Visa":
-                acceptedCardBrands.append(CardBrand.visa.rawValue)
-            case "MasterCard":
-                acceptedCardBrands.append(CardBrand.mastercard.rawValue)
-            case "American Express":
-                acceptedCardBrands.append(CardBrand.amex.rawValue)
-            case "Discover":
-                acceptedCardBrands.append(CardBrand.discover.rawValue)
-            default:
-                break
-            }
-        }
-        return acceptedCardBrands
     }
 }

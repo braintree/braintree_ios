@@ -29,6 +29,7 @@
 				<string>SEPA Direct Debit</string>
 				<string>Shopper Insights</string>
 				<string>PayPal Messaging</string>
+				<string>Visa Checkout</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -44,6 +45,7 @@
 				<string>SEPADirectDebitViewController</string>
 				<string>ShopperInsightsViewController</string>
 				<string>PayPalMessagingViewController</string>
+				<string>VisaCheckoutViewController</string>
 			</array>
 		</dict>
 		<dict>
