@@ -17,6 +17,7 @@ final class FPTIBatchData_Tests: XCTestCase {
 
     let eventParams = [
         FPTIBatchData.Event(
+            applicationState: UIApplication.shared.applicationState.asString,
             connectionStartTime: 123,
             contextID: "fake-order-id",
             contextType: "BA-TOKEN",
@@ -126,6 +127,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["connect_start_time"])
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
+        XCTAssertEqual(eventParams[0]["application_state"] as? String, "active")
     }
 }
 
