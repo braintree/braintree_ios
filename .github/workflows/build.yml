@@ -5,23 +5,23 @@ concurrency:
   cancel-in-progress: true
 jobs:
   cocoapods:
-    name: CocoaPods (Xcode 16.2.0)
-    runs-on: macOS-15-xlarge
+    name: CocoaPods (Xcode 16.4.0)
+    runs-on: macOS-15-large
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.2.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
+      - name: Use Xcode 16.4.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
         run: pod lib lint
   carthage:
-    name: Carthage (Xcode 16.2.0)
-    runs-on: macOS-15-xlarge
+    name: Carthage (Xcode 16.4.0)
+    runs-on: macOS-15-large
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,8 +29,8 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.2.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
+      - name: Use Xcode 16.4.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Remove SPMTest
         run: |
           git checkout $GITHUB_HEAD_REF
@@ -47,16 +47,16 @@ jobs:
       - name: Build CarthageTest
         run: xcodebuild -project 'SampleApps/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build CODE_SIGNING_ALLOWED=NO
   spm:
-    name: SPM (Xcode 16.2.0)
-    runs-on: macOS-15-xlarge
+    name: SPM (Xcode 16.4.0)
+    runs-on: macOS-15-large
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.2.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
+      - name: Use Xcode 16.4.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF//\//\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
