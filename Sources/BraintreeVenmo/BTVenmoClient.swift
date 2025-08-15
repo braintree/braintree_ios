@@ -29,6 +29,10 @@ import BraintreeCore
     /// Stored property used to determine whether a Venmo account nonce should be vaulted after an app switch return
     var shouldVault: Bool = false
 
+    /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
+    /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
+    var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
+
     /// Used for linking events from the client to server side request
     /// In the Venmo flow this will be the payment context ID
     private var payPalContextID: String?
@@ -37,10 +41,6 @@ import BraintreeCore
     private var linkType: LinkType?
 
     private var universalLink: URL
-
-    /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
-    /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
-    var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
 
     // MARK: - Static Properties
 

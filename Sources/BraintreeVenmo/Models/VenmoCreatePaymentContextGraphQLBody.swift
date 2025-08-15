@@ -30,24 +30,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 intent: "CONTINUE",
                 isFinalAmount: request.isFinalAmount.description,
                 displayName: request.displayName,
-                paysheetDetails: Variables.InputParameters.PaysheetDetails(
-                    collectCustomerBillingAddress: request.collectCustomerBillingAddress,
-                    collectCustomerShippingAddress: request.collectCustomerShippingAddress,
-                    transactionDetails: Variables.InputParameters.PaysheetDetails.TransactionDetails(
-                        lineItems: request.lineItems?.map { item in
-                            Variables.InputParameters.PaysheetDetails.LineItem(
-                                quantity: item.quantity,
-                                unitAmount: item.unitAmount,
-                                name: item.name,
-                                kind: item.kind.rawValue,
-                                unitTaxAmount: item.unitTaxAmount ?? "0",
-                                itemDescription: item.itemDescription,
-                                productCode: item.productCode,
-                                url: item.url
-                            )
-                        }
-                    )
-                )
+                paysheetDetails: InputParameters.PaysheetDetails(request: request)
             )
         }
         
@@ -73,28 +56,23 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
             
             struct PaysheetDetails: Encodable {
                 
-                var collectCustomerBillingAddress: Bool?
-                var collectCustomerShippingAddress: Bool?
+                var collectCustomerBillingAddress: String?
+                var collectCustomerShippingAddress: String?
                 var transactionDetails: TransactionDetails?
                 
-                func encode(to encoder: Encoder) throws {
-                    var container = encoder.container(keyedBy: CodingKeys.self)
+                init(request: BTVenmoRequest) {
+                    self.collectCustomerBillingAddress = "\(request.collectCustomerBillingAddress)"
+                    self.collectCustomerShippingAddress = "\(request.collectCustomerShippingAddress)"
+                    let properties = [
+                        request.subTotalAmount,
+                        request.discountAmount,
+                        request.taxAmount,
+                        request.shippingAmount,
+                        request.totalAmount
+                    ]
                     
-                    try container.encodeIfPresent(collectCustomerBillingAddress, forKey: .collectCustomerBillingAddress)
-                    try container.encodeIfPresent(collectCustomerShippingAddress, forKey: .collectCustomerShippingAddress)
-                    
-                    if let transactionDetails = transactionDetails {
-                        let properties = [
-                            transactionDetails.subTotalAmount,
-                            transactionDetails.discountAmount,
-                            transactionDetails.taxAmount,
-                            transactionDetails.shippingAmount,
-                            transactionDetails.totalAmount
-                        ]
-                        
-                        if !properties.allSatisfy({ $0?.isEmpty ?? true }) || !(transactionDetails.lineItems?.isEmpty ?? true) {
-                            try container.encode(transactionDetails, forKey: .transactionDetails)
-                        }
+                    if !properties.allSatisfy({ $0?.isEmpty ?? true }) || !(request.lineItems?.isEmpty ?? true) {
+                        self.transactionDetails = TransactionDetails(request: request)
                     }
                 }
                 
@@ -111,18 +89,17 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                     var taxAmount: String?
                     var shippingAmount: String?
                     var totalAmount: String?
-                    let lineItems: [LineItem]?
+                    var lineItems: [LineItem]?
                     
-                    func encode(to encoder: Encoder) throws {
-                        var container = encoder.container(keyedBy: CodingKeys.self)
+                    init(request: BTVenmoRequest) {
+                        self.subTotalAmount = request.subTotalAmount
+                        self.discountAmount = request.discountAmount
+                        self.taxAmount = request.taxAmount
+                        self.shippingAmount = request.shippingAmount
+                        self.totalAmount = request.totalAmount
                         
-                        try container.encodeIfPresent(subTotalAmount, forKey: .subTotalAmount)
-                        try container.encodeIfPresent(discountAmount, forKey: .discountAmount)
-                        try container.encodeIfPresent(taxAmount, forKey: .taxAmount)
-                        try container.encodeIfPresent(shippingAmount, forKey: .shippingAmount)
-                        try container.encodeIfPresent(totalAmount, forKey: .totalAmount)
-                        if let lineItems, !lineItems.isEmpty {
-                            try container.encode(lineItems, forKey: .lineItems)
+                        if let lineItems = request.lineItems, !lineItems.isEmpty {
+                            self.lineItems = lineItems.compactMap { LineItem(item: $0) }
                         }
                     }
                     
@@ -141,11 +118,26 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                     let quantity: Int
                     let unitAmount: String
                     let name: String
-                    let kind: Int
-                    let unitTaxAmount: String?
-                    let itemDescription: String?
+                    let type: String
+                    let unitTaxAmount: String
+                    let description: String?
                     let productCode: String?
-                    let url: URL?
+                    let url: String?
+                    
+                    init(item: BTVenmoLineItem) {
+                        self.quantity = item.quantity
+                        self.unitAmount = item.unitAmount
+                        self.name = item.name
+                        self.type = item.kind == .debit ? "DEBIT" : "CREDIT"
+                        if let tax = item.unitTaxAmount, !tax.isEmpty {
+                            self.unitTaxAmount = tax
+                        } else {
+                            self.unitTaxAmount = "0"
+                        }
+                        self.description = item.itemDescription
+                        self.productCode = item.productCode
+                        self.url = item.url?.absoluteString
+                    }
                 }
             }
         }
