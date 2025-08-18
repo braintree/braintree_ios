@@ -29,7 +29,7 @@ struct FPTIBatchData: Codable {
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
         
-        /// The app's state within the device's lifecycle (ie active, inactive, background)
+        /// The app's state within the device's lifecycle (i.e. active, inactive, background)
         let applicationState: String?
 
         let appSwitchURL: String?

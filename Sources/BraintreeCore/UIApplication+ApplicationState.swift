@@ -1,19 +1,17 @@
 import UIKit
 
-
-protocol ApplicationStateProviding {
-    var applicationState: UIApplication.State { get }
-}
-
-extension UIApplication: ApplicationStateProviding {}
-
-extension UIApplication.State {
-    var asString: String {
-        switch self {
-        case .active: "active"
-        case .inactive: "inactive"
-        case .background: "background"
-        @unknown default: "unknown"
+extension UIApplication {
+    
+    public var applicationStateString: String {
+        switch applicationState {
+        case .active:
+            return "active"
+        case .background:
+            return "background"
+        case .inactive:
+            return "inactive"
+        @unknown default:
+            return "unknown"
         }
     }
 }
