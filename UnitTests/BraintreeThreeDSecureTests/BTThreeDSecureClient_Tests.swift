@@ -278,7 +278,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest = BTThreeDSecureRequest(amount: "", nonce: "fake-card-nonce")
         let expectation = self.expectation(description: "Callback invoked")
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             XCTAssertNil(result)
             XCTAssertEqual(error?.localizedDescription, "BTThreeDSecureRequest amount can not be nil or NaN.")
             expectation.fulfill()
@@ -296,7 +296,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
@@ -319,7 +319,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             "assetsUrl": "http://assets.example.com"
         ] as [String: Any])
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
@@ -362,7 +362,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             guard let result = result else { XCTFail(); return }
             guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
 
@@ -414,7 +414,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String: Any]
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        client.startPaymentFlow(threeDSecureRequest) { _, _ in }
+        client.start(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 1)
     }
@@ -424,7 +424,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else { return }
@@ -510,7 +510,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        client.startPaymentFlow(threeDSecureRequest) { _, _ in }
+        client.start(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 1)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
@@ -554,7 +554,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        client.startPaymentFlow(threeDSecureRequest) { _, _ in }
+        client.start(threeDSecureRequest) { _, _ in }
 
         waitForExpectations(timeout: 1)
 
@@ -570,7 +570,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = expectation(description: "Start payment expectation")
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             expectation.fulfill()
         }
 
@@ -608,7 +608,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
-        client.startPaymentFlow(threeDSecureRequest) { result, error in
+        client.start(threeDSecureRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
             guard let error = error as NSError? else {return}
