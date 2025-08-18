@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 // swiftlint:disable type_body_length file_length
@@ -304,6 +303,7 @@ import UIKit
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
@@ -322,7 +322,7 @@ import UIKit
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
-                applicationState: UIApplication.shared.applicationState.asString,
+                applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
