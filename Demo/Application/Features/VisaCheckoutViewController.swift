@@ -44,7 +44,7 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
             }
 
             guard let profile = profile else {
-                self.progressBlock("Failed to create Visa profile: \(error ?? BTVisaCheckoutError.integration)")
+                self.progressBlock("Failed to create Visa profile")
                 return
             }
 
