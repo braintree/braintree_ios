@@ -193,7 +193,7 @@ import BraintreeCore
         }
 
         if let userPhoneNumberDictionary = try? userPhoneNumber?.toDictionary(), !userPhoneNumberDictionary.isEmpty {
-            parameters["phone_number"] = userPhoneNumberDictionary
+            parameters["payer_phone"] = userPhoneNumberDictionary
         }
 
         if let userAuthenticationEmail, !userAuthenticationEmail.isEmpty {

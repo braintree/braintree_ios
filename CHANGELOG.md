@@ -5,6 +5,9 @@
     * Add Visa Checkout to the SDK as a payment option
     * Add `BTVisaCheckoutAddress`, `BTVisaCheckoutUserData`, `BTVisaCheckoutCardNonce`, `BTVisaCheckoutClient`
     * Add `BraintreeCard` as a dependency for `BraintreeVisaCheckout` module
+* BraintreePayPal
+  * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
+
 ## 6.36.0 (2025-08-13)
 * BraintreeCore
   * Analytics updates for PayPal's analytics service (FPTI)
