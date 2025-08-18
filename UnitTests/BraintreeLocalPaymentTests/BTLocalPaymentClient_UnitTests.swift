@@ -55,15 +55,32 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     }
 
     func testStartPayment_returnsErrorWhenLocalPaymentDelegateIsNil() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["paypalEnabled": true])
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         let expectation = expectation(description: "Start payment fails with error")
         localPaymentRequest.localPaymentFlowDelegate = nil
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
-            XCTAssertEqual(error.code, BTLocalPaymentError.integration.errorCode)
+        client.startPaymentFlow(localPaymentRequest) { result, error in
+            print("Callback called with result: \(String(describing: result)), error: \(String(describing: error))")
+            
+            guard let error = error as NSError? else {
+                XCTFail("Expected error but got none - delegate should be required")
+                expectation.fulfill()
+                return
+            }
+            
+            // Debug: Print actual error details
+            print("Actual error domain: \(error.domain)")
+            print("Actual error code: \(error.code)")
+            print("Expected domain: \(BTLocalPaymentError.errorDomain)")
+            print("Expected code: \(BTLocalPaymentError.integration.errorCode)")
+            
+            // Verify error properties
+            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain,
+                          "Error domain mismatch - got \(error.domain), expected \(BTLocalPaymentError.errorDomain)")
+            XCTAssertEqual(error.code, BTLocalPaymentError.integration.errorCode,
+                          "Error code mismatch - got \(error.code), expected \(BTLocalPaymentError.integration.errorCode)")
+            
             expectation.fulfill()
         }
 
