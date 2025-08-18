@@ -38,14 +38,34 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
-        payPalClient.handleReturn(returnURL,paymentType: .checkout) { tokenizedPayPalAccount, error in
-            guard let nonce = tokenizedPayPalAccount?.nonce else {
-                XCTFail("Failed to tokenize account.")
+        payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
+            // Add debug logging
+            print("Callback called with account: \(String(describing: tokenizedPayPalAccount)), error: \(String(describing: error))")
+            
+            // Handle error case first
+            if let error = error {
+                XCTFail("Unexpected error during tokenization: \(error)")
+                tokenizationExpectation.fulfill()
                 return
             }
             
-            XCTAssertTrue(nonce.isValidNonce)
-            XCTAssertNil(error)
+            // Verify we got a tokenized account
+            guard let tokenizedAccount = tokenizedPayPalAccount else {
+                XCTFail("Failed to tokenize account - no account returned and no error")
+                tokenizationExpectation.fulfill()
+                return
+            }
+            
+            // Get the nonce (it's a String, not optional)
+            let nonce = tokenizedAccount.nonce
+            
+            // Verify nonce is valid and not empty
+            XCTAssertFalse(nonce.isEmpty, "Nonce should not be empty")
+            XCTAssertTrue(nonce.isValidNonce, "Nonce should be valid")
+            XCTAssertNil(error, "Should not have error on successful tokenization")
+            // XCTAssertNotNil(tokenizedAccount.email, "Should have email")
+            // XCTAssertNotNil(tokenizedAccount.firstName, "Should have first name")
+            
             tokenizationExpectation.fulfill()
         }
         
