@@ -44,11 +44,11 @@ class ThreeDSecure_V2_UITests: XCTestCase {
 
         waitForElementToAppear(app.staticTexts["Purchase Authentication"], timeout: .threeDSecureTimeout)
         
-        let textField = app.secureTextFields.element(boundBy: 1)
-        waitForElementToBeHittable(textField)
-        textField.forceTapElement()
+        let newTextField = app.secureTextFields.element(boundBy: 1)
+        waitForElementToBeHittable(newTextField)
+        newTextField.forceTapElement()
         sleep(2)
-        textField.typeText("1234")
+        newTextField.typeText("1234")
 
         app.cardinalSubmitButton.forceTapElement()
         sleep(2)
