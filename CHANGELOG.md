@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeThreeDSecure
+  * Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
+
 ## 7.0.0-beta2 (2025-07-29)
 * BraintreeCore
   * Improve latency for analytic events.
