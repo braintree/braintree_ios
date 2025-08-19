@@ -129,7 +129,6 @@ import BraintreeCore
             }
 
             completion(visaCheckoutCardNonce, nil)
-            return
         }
     }
 
@@ -138,7 +137,7 @@ import BraintreeCore
         with result: BTVisaCheckoutNonce?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        /// TODO: Send success analytics
+        /// TODO: Send success analytics event
         completion(result, nil)
     }
 
