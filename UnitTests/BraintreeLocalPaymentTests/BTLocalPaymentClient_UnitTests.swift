@@ -28,7 +28,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         let expectation = expectation(description: "Start payment fails with error")
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.fetchConfigurationFailed.errorCode)
@@ -44,7 +44,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         let expectation = expectation(description: "Start payment fails with error")
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.disabled.errorCode)
@@ -60,7 +60,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         let expectation = expectation(description: "Start payment fails with error")
         localPaymentRequest.localPaymentFlowDelegate = nil
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.integration.errorCode)
@@ -110,7 +110,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         
-        client.startPaymentFlow(paymentRequest) { _, _ in }
+        client.start(paymentRequest) { _, _ in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
@@ -153,7 +153,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": ["paymentToken": "123aaa-123-543-777"]])
         let expectation = expectation(description: "Start payment fails with error")
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.appSwitchFailed.errorCode)
@@ -177,7 +177,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         let expectation = expectation(description: "Start payment fails with error")
 
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.appSwitchFailed.errorCode)
@@ -202,7 +202,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         waitForExpectations(timeout: 4)
 
@@ -229,7 +229,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = mockWebAuthenticationSession
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.paymentStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserPresentationSucceeded))
@@ -261,7 +261,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserLoginAlertCanceled))
     }
@@ -292,7 +292,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.paymentFailed))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserPresentationFailed))
     }
@@ -312,7 +312,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
@@ -336,7 +336,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
@@ -357,7 +357,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { _, _ in }
+        client.start(localPaymentRequest) { _, _ in }
 
         client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
@@ -377,7 +377,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
         
-        client.startPaymentFlow(localPaymentRequest) { _, error in
+        client.start(localPaymentRequest) { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.canceled("flow-type").errorCode)
@@ -398,7 +398,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.startPaymentFlow(localPaymentRequest) { result, error in
+        client.start(localPaymentRequest) { result, error in
             XCTAssertNotNil(error)
             XCTAssertNil(result)
         }
@@ -426,7 +426,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
 
-        client.startPaymentFlow(paymentRequest) { _, _ in }
+        client.start(paymentRequest) { _, _ in }
 
         client.handleOpen(
             URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!
