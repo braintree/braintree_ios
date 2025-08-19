@@ -259,14 +259,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		045C0C912E53C80B002A6FFC /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				04C6528D2E2B107B00C879A0 /* BraintreeVisaCheckout.framework */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		42456E3B25474B620018374E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,7 +314,6 @@
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
 				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
-				045C0C912E53C80B002A6FFC /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};

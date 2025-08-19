@@ -12,11 +12,9 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
     var launchHandler: LaunchHandle?
     let visaCheckoutButton = VisaCheckoutButton()
 
-    // MARK: - Public Methods
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Visa Checkout Button"
+        title = "Visa Checkout"
 
         createVisaCheckoutButton()
         createVisaProfileAndCheckout()
@@ -24,15 +22,17 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
 
     /// Creates and displays the Visa Checkout button.
     func createVisaCheckoutButton() {
-        visaCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
         visaCheckoutButton.style = .standard
+
         view.addSubview(visaCheckoutButton)
+
         NSLayoutConstraint.activate([
             visaCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             visaCheckoutButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             visaCheckoutButton.widthAnchor.constraint(equalToConstant: 215),
             visaCheckoutButton.heightAnchor.constraint(equalToConstant: 45)
         ])
+        visaCheckoutButton.translatesAutoresizingMaskIntoConstraints = false
     }
 
     /// Creates a Visa profile and initiates the checkout process.
@@ -43,7 +43,7 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
                 return
             }
 
-            guard let profile = profile else {
+            guard let profile else {
                 self.progressBlock("Failed to create Visa profile")
                 return
             }
@@ -73,10 +73,10 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
                     self.visaCheckoutClient.tokenize(result) { tokenizedVisaCheckoutCard, error in
                         if let error {
                             self.progressBlock("Error tokenizing Visa Checkout card: \(error.localizedDescription)")
-                        } else if let tokenizedVisaCheckoutCard = tokenizedVisaCheckoutCard {
+                        } else if let tokenizedVisaCheckoutCard {
                             self.completionBlock(tokenizedVisaCheckoutCard)
                         } else {
-                            self.progressBlock("\(BTVisaCheckoutError.canceled)")
+                            self.progressBlock("No error or nonce returned from the Visa Checkout flow.")
                         }
                     }
                 }
