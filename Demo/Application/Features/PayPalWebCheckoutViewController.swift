@@ -246,7 +246,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalCheckoutRequest(
             userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true,
-            amount: "10.00"
+            amount: "10.00",
+            userAction: .payNow
         )
 
         payPalClient.tokenize(request) { nonce, error in
