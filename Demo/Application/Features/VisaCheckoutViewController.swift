@@ -9,7 +9,9 @@ import BraintreeCore
 class VisaCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var visaCheckoutClient = BTVisaCheckoutClient(apiClient: apiClient)
+
     var launchHandler: LaunchHandle?
+
     let visaCheckoutButton = VisaCheckoutButton()
 
     override func viewDidLoad() {
