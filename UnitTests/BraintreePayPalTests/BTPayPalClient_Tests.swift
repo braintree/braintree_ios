@@ -874,6 +874,10 @@ class BTPayPalClient_Tests: XCTestCase {
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "va")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "unknown")
     }
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
@@ -989,6 +993,10 @@ class BTPayPalClient_Tests: XCTestCase {
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "unknown")
     }
     
     func testTokenizeCheckoutAccount_whenPayPalAppApprovalURLMissingECToken_returnsError() {
