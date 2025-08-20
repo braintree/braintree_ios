@@ -57,6 +57,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_returnsErrorWhenLocalPaymentDelegateIsNil() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["paypalEnabled": true])
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        client.apiClient = mockAPIClient
+        
         let expectation = expectation(description: "Start payment fails with error")
         localPaymentRequest.localPaymentFlowDelegate = nil
 
