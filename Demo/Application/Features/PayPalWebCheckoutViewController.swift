@@ -145,7 +145,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        let request = BTPayPalCheckoutRequest(amount: "5.00", offerPayLater: payLaterToggle.isOn)
+        let request = BTPayPalCheckoutRequest(amount: "50.00", offerPayLater: payLaterToggle.isOn)
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",
@@ -246,7 +246,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalCheckoutRequest(
             userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true,
-            amount: "10.00",
+            amount: "50.00",
             userAction: .payNow,
             offerPayLater: payLaterToggle.isOn
         )
