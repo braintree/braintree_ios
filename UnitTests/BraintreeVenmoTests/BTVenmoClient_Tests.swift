@@ -176,7 +176,15 @@ class BTVenmoClient_Tests: XCTestCase {
     func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() {
         venmoRequest.subTotalAmount = "9"
         venmoRequest.totalAmount = "9"
-        venmoRequest.lineItems = [BTVenmoLineItem(quantity: 1, unitAmount: "9", name: "name", kind: .debit)]
+        venmoRequest.discountAmount = "9"
+        venmoRequest.taxAmount = "9"
+        venmoRequest.shippingAmount = "9"
+        let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "9", name: "name", kind: .debit)
+        lineItem.unitTaxAmount = "1"
+        lineItem.itemDescription = "some-description"
+        lineItem.productCode = "some-product-code"
+        lineItem.url = URL(string: "some.fake.url")!
+        venmoRequest.lineItems = [lineItem]
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -191,25 +199,25 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual("MOBILE_APP", input["customerClient"] as? String)
             XCTAssertEqual("venmo_merchant_id",input["merchantProfileId"] as? String)
             
-            if let paysheetDetails = input["paysheetDetails"] as? String {
-                if let jsonData = paysheetDetails.data(using: .utf8),
-                   let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    XCTAssertEqual("false",json["collectCustomerShippingAddress"] as? String)
-                    XCTAssertEqual("false",json["collectCustomerBillingAddress"] as? String)
-                    
-                    if let transactionDetailsString = json["transactionDetails"] as? String {
-                        if let jsonData = transactionDetailsString.data(using: .utf8),
-                           let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                            XCTAssertEqual(json["totalAmount"] as? String, "9")
-                            XCTAssertEqual(json["subTotalAmount"] as? String, "9")
-                            if let lineItems = json["lineItems"] as? String {
-                                XCTAssertTrue(lineItems.contains("\"quantity\":1"))
-                                XCTAssertTrue(lineItems.contains("\"name\":\"name"))
-                                XCTAssertTrue(lineItems.contains("\"unit_amount\":\"9\""))
-                                XCTAssertTrue(lineItems.contains("\"kind\":\"debit\""))
-                                XCTAssertTrue(lineItems.contains("\"unit_tax_amount\":\"0\""))
-                            }
-                        }
+            if let paysheetDetails = input["paysheetDetails"] as? [String: Any] {
+                XCTAssertEqual("false",paysheetDetails["collectCustomerShippingAddress"] as? String)
+                XCTAssertEqual("false",paysheetDetails["collectCustomerBillingAddress"] as? String)
+                
+                if let transactionDetailsString = paysheetDetails["transactionDetails"] as? [String: Any] {
+                    XCTAssertEqual(transactionDetailsString["totalAmount"] as? String, "9")
+                    XCTAssertEqual(transactionDetailsString["subTotalAmount"] as? String, "9")
+                    XCTAssertEqual(transactionDetailsString["discountAmount"] as? String, "9")
+                    XCTAssertEqual(transactionDetailsString["taxAmount"] as? String, "9")
+                    XCTAssertEqual(transactionDetailsString["shippingAmount"] as? String, "9")
+                    if let lineItems = transactionDetailsString["lineItems"] as? [[String: Any]] {
+                        XCTAssertEqual(lineItems.first?["quantity"] as? Int, 1)
+                        XCTAssertEqual(lineItems.first?["name"] as? String, "name")
+                        XCTAssertEqual(lineItems.first?["unitAmount"] as? String, "9")
+                        XCTAssertEqual(lineItems.first?["type"] as? String, "DEBIT")
+                        XCTAssertEqual(lineItems.first?["unitTaxAmount"] as? String, "1")
+                        XCTAssertEqual(lineItems.first?["description"] as? String, "some-description")
+                        XCTAssertEqual(lineItems.first?["productCode"] as? String, "some-product-code")
+                        XCTAssertEqual(lineItems.first?["url"] as? String, "some.fake.url")
                     }
                 }
             }

@@ -58,7 +58,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
             self.progressBlock("Tokenized card, now verifying with 3DS")
             let threeDSecureRequest = self.createThreeDSecureRequest(with: tokenizedCard.nonce)
 
-            self.threeDSecureClient.startPaymentFlow(threeDSecureRequest) { threeDSecureResult, error in
+            self.threeDSecureClient.start(threeDSecureRequest) { threeDSecureResult, error in
                 self.callbackCount += 1
                 self.updateCallbackCount()
 

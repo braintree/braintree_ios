@@ -24,7 +24,7 @@ enum BTThreeDSecureAuthenticateJWT {
             return
         }
         
-        let threeDSecureAuthenticateJWTRequest = BTThreeDSecureAuthenticateJWTPOSTBody(
+        let threeDSecureAuthenticateJWTRequest = ThreeDSecureAuthenticateJWTPOSTBody(
             jwt: cardinalJWT,
             paymentMethodNonce: nonce
         )

@@ -91,6 +91,7 @@ Update initializer for `BTThreeDSecureClient`:
 -  var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)    
 +  var threeDSecureClient = BTThreeDSecureClient(authorization: "<CLIENT_AUTHORIZATION>")
 ```
+Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
 
 ## PayPal
 v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.

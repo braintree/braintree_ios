@@ -423,6 +423,55 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
     }
     
+    func testHandleOpenURL_postAllLocalPaymentPayPalAccountsParameters() {
+        let client = BTLocalPaymentClient(authorization: tempClientToken)
+        client.apiClient = mockAPIClient
+        
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "paymentResource": [
+                    "redirectUrl": "https://www.somebankurl.com",
+                    "paymentToken": "123aaa-123-543-777",
+                ]
+            ]
+        )
+        
+        let paymentRequest = BTLocalPaymentRequest(
+            paymentType: "ideal",
+            amount: "1.01",
+            currencyCode: "EUR"
+        )
+        paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
+
+        client.startPaymentFlow(paymentRequest) { _, _ in }
+
+        client.handleOpen(
+            URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!
+        )
+
+        guard
+            let payPalAccount = mockAPIClient.lastPOSTParameters!["paypal_account"] as? [String: Any],
+            let meta = mockAPIClient.lastPOSTParameters!["_meta"] as? [String: Any] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalAccount["response_type"] as? String, "web")
+        XCTAssertEqual(payPalAccount["intent"] as? String, "sale")
+        XCTAssertEqual(meta["source"] as? String, "unknown")
+        XCTAssertEqual(meta["integration"] as? String, "custom")
+        
+        guard
+            let options = payPalAccount["options"] as? [String: Any],
+            let response = payPalAccount["response"] as? [String: Any] else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertFalse(options["validate"] as! Bool)
+        XCTAssertEqual(response["webURL"] as? String, "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")
+    }
+    
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         let expectation = self.expectation(description: "Calls onPaymentComplete with result")
@@ -442,4 +491,3 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 }
-
