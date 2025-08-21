@@ -121,12 +121,12 @@ import BraintreeCore
             }
 
             guard let visaCheckoutCards = body?["visaCheckoutCards"].asArray()?.first else {
-                self.notifyFailure(with: "\(BTVisaCheckoutError.failedToCreateNonce): \(analyticEvent)" as! Error, completion: completion)
+                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
 
             guard let visaCheckoutCardNonce = BTVisaCheckoutNonce(json: visaCheckoutCards) else {
-                self.notifyFailure(with: "\(BTVisaCheckoutError.failedToCreateNonce): \(analyticEvent)" as! Error, completion: completion)
+                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             }
 
