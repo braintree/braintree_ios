@@ -455,7 +455,7 @@ import BraintreeDataCollector
                         return
                     }
                     let merchantAccountID = json["merchantId"].asString()
-                    self.launchPayPalApp(with: url, merchantAccountId: merchantAccountId, completion: completion)
+                    self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -504,7 +504,7 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
-            URLQueryItem(name: "merchant", value: merchantAccountId ?? "unknown")
+            URLQueryItem(name: "merchant", value: merchantAccountID ?? "unknown")
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
