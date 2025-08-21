@@ -454,7 +454,7 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    let merchantAccountId = json["merchantId"].asString()
+                    let merchantAccountID = json["merchantId"].asString()
                     self.launchPayPalApp(with: url, merchantAccountId: merchantAccountId, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
