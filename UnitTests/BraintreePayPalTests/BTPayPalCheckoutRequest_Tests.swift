@@ -116,7 +116,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["payer_email"] as? String, "fake@email.com")
         XCTAssertEqual(parameters["request_billing_agreement"] as? Bool, true)
         
-        guard let userPhoneNumberDetails = parameters["phone_number"] as? [String: String] else {
+        guard let userPhoneNumberDetails = parameters["payer_phone"] as? [String: String] else {
             XCTFail()
             return
         }
