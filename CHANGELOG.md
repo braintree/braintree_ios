@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreePayPal
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
+  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
 
 ## 6.36.0 (2025-08-13)
 * BraintreeCore

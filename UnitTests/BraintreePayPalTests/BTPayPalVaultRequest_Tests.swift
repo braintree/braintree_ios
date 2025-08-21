@@ -106,7 +106,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-merchant-url")
     }
-    
+
     func testParameters_withRecurringBillingDetails_returnsAllParams() {
         let billingPricing = BTPayPalBillingPricing(
             pricingModel: .autoReload,
@@ -123,7 +123,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             startDate: "test-date",
             pricing: billingPricing
         )
-        
+
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",
@@ -139,7 +139,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         
         let request = BTPayPalVaultRequest(recurringBillingDetails: recurringBillingDetails, recurringBillingPlanType: .subscription)
         
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!)
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url"))
         XCTAssertEqual(parameters["plan_type"] as! String, "SUBSCRIPTION")
         
         guard let planMetadata = parameters["plan_metadata"] as? [String: Any] else { XCTFail(); return }
