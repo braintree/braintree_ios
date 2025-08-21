@@ -78,6 +78,7 @@ final class BTPayPalAccountNonce_Tests: XCTestCase {
                     "description": "jane.doe@example.com",
                     "details": [
                         "email": "jane.doe@example.com",
+                        "paymentToken": "fake-order-id",
                         "creditFinancingOffered": [
                             "cardAmountImmutable": true,
                             "monthlyPayment": [
@@ -109,6 +110,7 @@ final class BTPayPalAccountNonce_Tests: XCTestCase {
         XCTAssertEqual(payPalAccountNonce?.type, "PayPal")
         XCTAssertEqual(payPalAccountNonce?.email, "jane.doe@example.com")
         XCTAssertTrue(payPalAccountNonce!.isDefault)
+        XCTAssertEqual(payPalAccountNonce?.payPalOrderID, "fake-order-id")
 
         guard let creditFinancing = payPalAccountNonce?.creditFinancing else {
             XCTFail("Expected credit financing terms")
