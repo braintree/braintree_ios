@@ -85,10 +85,6 @@ import BraintreeCore
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         let statusCode = checkoutResult.statusCode
-        let callID = checkoutResult.callId
-        let encryptedKey = checkoutResult.encryptedKey
-        let encryptedPaymentData = checkoutResult.encryptedPaymentData
-
         if statusCode == .statusUserCancelled {
             completion(nil, BTVisaCheckoutError.canceled)
             return
@@ -99,7 +95,11 @@ import BraintreeCore
             return
         }
 
-        guard let callID, let encryptedKey, let encryptedPaymentData else {
+        guard
+            let callID = checkoutResult.callId,
+            let encryptedKey = checkoutResult.encryptedKey,
+            let encryptedPaymentData = checkoutResult.encryptedPaymentData
+        else {
             completion(nil, BTVisaCheckoutError.integration)
             return
         }

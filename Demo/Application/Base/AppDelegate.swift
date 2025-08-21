@@ -1,5 +1,6 @@
 import UIKit
 import BraintreeCore
+import VisaCheckoutSDK
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
@@ -14,6 +15,7 @@ import BraintreeCore
         registerDefaultsFromSettings()
         persistDemoSettings()
         BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
+        VisaCheckoutSDK.configure()
 
         userDefaults.setValue(true, forKey: "magnes.debug.mode")
         

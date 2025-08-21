@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -134,6 +135,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckoutViewController.swift; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */,
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
@@ -664,13 +667,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -718,6 +717,7 @@
 				BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */,
 				809E86A62AD00AF4004998B0 /* AppDelegate.swift in Sources */,
 				8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */,
+				0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */,
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
