@@ -1,10 +1,7 @@
 import UIKit
 import BraintreeVisaCheckout
 import VisaCheckoutSDK
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 class VisaCheckoutViewController: PaymentButtonBaseViewController {
 
