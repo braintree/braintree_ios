@@ -36,8 +36,8 @@ import BraintreeCore
     /// Will be provided for Vault and Checkout.
     public let creditFinancing: BTPayPalCreditFinancing?
     
-    /// The PayPal order ID associated with this transaction.
-    public let payPalOrderID: String?
+    /// The payment ID associated with this transaction.
+    public let paymentID: String?
     
     init?(json: BTJSON) {
         guard let nonce = json["nonce"].asString() else { return nil }
@@ -54,7 +54,7 @@ import BraintreeCore
         self.clientMetadataID = details["correlationId"].asString()
         self.payerID = payerInfo["payerId"].asString()
         self.creditFinancing = details["creditFinancingOffered"].asPayPalCreditFinancing()
-        self.payPalOrderID = details["paymentToken"].asString()
+        self.paymentID = details["paymentToken"].asString()
         super.init(nonce: nonce, type: "PayPal", isDefault: json["default"].isTrue)
     }
 }
