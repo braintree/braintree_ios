@@ -168,5 +168,6 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-        git checkout ${{ github.event.inputs.version }}
-        pod trunk push Braintree.podspec
+          git stash
+          git checkout ${{ github.event.inputs.version }}
+          pod trunk push Braintree.podspec
