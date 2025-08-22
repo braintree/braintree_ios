@@ -14,7 +14,8 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
-            "paypal": ["environment": "offline"]
+            "paypal": ["environment": "offline"],
+            "merchantId": "testMerchantId"
         ] as [String: Any])
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
@@ -874,6 +875,10 @@ class BTPayPalClient_Tests: XCTestCase {
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "va")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
     }
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
@@ -989,6 +994,10 @@ class BTPayPalClient_Tests: XCTestCase {
         } else {
             XCTFail("Expected integer value for query param `switch_initiated_time`")
         }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
     }
     
     func testTokenizeCheckoutAccount_whenPayPalAppApprovalURLMissingECToken_returnsError() {
