@@ -83,17 +83,16 @@ import BraintreeCore
         _ checkoutResult: CheckoutResult,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
+
         let statusCode = checkoutResult.statusCode
         if statusCode == .statusUserCancelled {
-            completion(nil, BTVisaCheckoutError.canceled)
+            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
         }
 
-        let analyticEvent = visaCheckoutAnalyticsEvent(for: statusCode)
-        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
-
         guard statusCode == .statusSuccess else {
-            completion(nil, "\(BTVisaCheckoutError.checkoutUnsuccessful): \(analyticEvent)" as? Error)
+            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
             return
         }
 
@@ -102,7 +101,7 @@ import BraintreeCore
             let encryptedKey = checkoutResult.encryptedKey,
             let encryptedPaymentData = checkoutResult.encryptedPaymentData
         else {
-            completion(nil, "\(BTVisaCheckoutError.integration): \(analyticEvent)" as? Error)
+            notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
             return
         }
 
@@ -130,7 +129,7 @@ import BraintreeCore
                 return
             }
 
-            completion(visaCheckoutCardNonce, nil)
+            self.notifySuccess(with: visaCheckoutCardNonce, completion: completion)
         }
     }
 
@@ -149,20 +148,5 @@ import BraintreeCore
     private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
         completion(nil, error)
-    }
-    
-    private func visaCheckoutAnalyticsEvent(for status: CheckoutResultStatus) -> String {
-        switch status {
-        case .statusDuplicateCheckoutAttempt:
-            return "duplicate-checkouts-open"
-        case .statusNotConfigured:
-            return "not-configured"
-        case .statusInternalError:
-            return "internal-error"
-        case .statusNetworkError:
-            return "network-error"
-        default:
-            return "unknown"
-        }
     }
 }
