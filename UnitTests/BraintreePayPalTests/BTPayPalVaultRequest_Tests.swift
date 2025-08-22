@@ -80,7 +80,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["os_type"])
         XCTAssertNil(parameters["merchant_app_return_url"])
         
-        guard let userPhoneNumberDetails = parameters["phone_number"] as? [String: String] else {
+        guard let userPhoneNumberDetails = parameters["payer_phone"] as? [String: String] else {
             XCTFail()
             return
         }
