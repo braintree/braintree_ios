@@ -43,7 +43,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
                 XCTFail("Failed to tokenize account.")
                 return
             }
-            
+                        
             XCTAssertTrue(nonce.isValidNonce)
             XCTAssertNil(error)
             tokenizationExpectation.fulfill()
