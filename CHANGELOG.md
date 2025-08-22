@@ -4,6 +4,7 @@
 * BraintreePayPal
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
   * Add `merchant` and `flow_type` as query parameters to the app switch URL.
+  * Add `paymentID` to `BTPayPalAccountNonce`
 
 ## 6.36.0 (2025-08-13)
 * BraintreeCore
