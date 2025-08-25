@@ -7,6 +7,8 @@
   * Add `paymentID` to `BTPayPalAccountNonce`
 * BraintreeThreeDSecure
   * Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
+* BraintreeLocalPayment
+  * Rename `BTLocalPaymentClient.startPaymentFlow(with:completion:)` to `BTLocalPaymentClient.start(with:completion:)`
 
 ## 7.0.0-beta2 (2025-07-29)
 * BraintreeCore

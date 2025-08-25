@@ -82,6 +82,7 @@ Update initializer for `BTLocalPaymentClient`:
 - var localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
 + var localPaymentClient = BTLocalPaymentClient(authorization:"<CLIENT_AUTHORIZATION>")
 ```
+Rename `BTLocalPaymentClient.startPaymentFlow(with:completion:)` to `BTLocalPaymentClient.start(with:completion:)`
 
 ## 3D Secure
 All properties within `BTThreeDSecureRequest` can only be accessed on the initializer vs via the dot syntax.
