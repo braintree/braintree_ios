@@ -211,6 +211,8 @@ import Foundation
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
+        contextID: String? = nil,
+        contextType: String? = nil,
         correlationID: String? = nil,
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -220,7 +222,6 @@ import Foundation
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         pageType: String? = nil,
-        payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
@@ -228,6 +229,8 @@ import Foundation
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
+                contextID: contextID,
+                contextType: contextType,
                 correlationID: correlationID,
                 didEnablePayPalAppSwitch: didEnablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -238,7 +241,6 @@ import Foundation
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                payPalContextID: payPalContextID,
                 shopperSessionID: shopperSessionID
             )
         )

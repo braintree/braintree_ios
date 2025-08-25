@@ -31,7 +31,7 @@ import BraintreeDataCollector
 
     /// Used for linking events from the client to server side request
     /// In the Local Payment flow this will be a Payment Token/Order ID
-    private var payPalContextID: String?
+    private var contextID: String?
 
     // MARK: - Initializer
 
@@ -169,7 +169,7 @@ import BraintreeDataCollector
                 let url = URL(string: approvalURLString) {
 
                 if !paymentID.isEmpty {
-                    self.payPalContextID = paymentID
+                    self.contextID = paymentID
                 }
 
                 self.request?.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
@@ -245,15 +245,15 @@ import BraintreeDataCollector
         with result: BTLocalPaymentResult,
         completion: @escaping (BTLocalPaymentResult?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded, payPalContextID: payPalContextID)
+        apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded, contextID: contextID)
         completion(result, nil)
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTLocalPaymentAnalytics.paymentFailed,
-            errorDescription: error.localizedDescription,
-            payPalContextID: payPalContextID
+            contextID: contextID,
+            errorDescription: error.localizedDescription
         )
         completion(nil, error)
     }

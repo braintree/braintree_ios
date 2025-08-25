@@ -156,7 +156,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         )
         
         let request = BTPayPalCheckoutRequest(
-            amount: "5.00",
+            amount: payLaterToggle.isOn ? "35.00" : "5.00",
             offerPayLater: payLaterToggle.isOn,
             contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
             contactPreference: .updateContactInformation,
@@ -243,10 +243,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
+        // pay later is only available on amounts greater than or equal to 35
+        let amount = payLaterToggle.isOn ? "35.00" : "10.00"
         let request = BTPayPalCheckoutRequest(
             userAuthenticationEmail: emailTextField.text,
             enablePayPalAppSwitch: true,
-            amount: "10.00"
+            amount: amount,
+            userAction: .payNow,
+            offerPayLater: payLaterToggle.isOn
         )
 
         payPalClient.tokenize(request) { nonce, error in

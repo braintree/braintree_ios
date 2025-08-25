@@ -12,8 +12,10 @@ public struct BTPayPalPhoneNumber: Encodable {
     
     /// Intialize a `BTPayPalPhoneNumber`
     /// - Parameters:
-    ///    - countryCode: The international country code for the shopper's phone number i.e. "1" for US
+    ///    - countryCode: The international country code for the shopper's phone number
+    ///    (must be 1 to 3 digits, no symbols or spaces allowed; e.g., "1" for the United States).
     ///    - nationalNumber: The national segment of the shopper's phone number
+    ///    (must be 4 to 12 digits, no symbols or spaces allowed; excludes the country code).
     public init(countryCode: String, nationalNumber: String) {
         self.countryCode = countryCode
         self.nationalNumber = nationalNumber

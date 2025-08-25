@@ -33,6 +33,7 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Remove SPMTest
         run: |
+          git config --global user.email "code@getbraintree.com"
           git checkout $GITHUB_HEAD_REF
           rm -rf SampleApps/SPMTest
           rm -rf /Users/runner/Library/Developer/Xcode/DerivedData

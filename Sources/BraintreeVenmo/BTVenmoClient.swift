@@ -35,7 +35,7 @@ import BraintreeCore
 
     /// Used for linking events from the client to server side request
     /// In the Venmo flow this will be the payment context ID
-    private var payPalContextID: String?
+    private var contextID: String?
 
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
@@ -140,7 +140,7 @@ import BraintreeCore
                     return
                 }
 
-                self.payPalContextID = paymentContextID
+                self.contextID = paymentContextID
 
                 do {
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
@@ -197,9 +197,9 @@ import BraintreeCore
     func handleOpen(_ url: URL) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
+            contextID: contextID,
             isVaultRequest: shouldVault,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+            linkType: linkType
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
             notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
@@ -275,9 +275,9 @@ import BraintreeCore
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchStarted,
+            contextID: contextID,
             isVaultRequest: shouldVault,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+            linkType: linkType
         )
         application.open(appSwitchURL, options: [:]) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL, completion: completion)
@@ -296,9 +296,9 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchSucceeded,
                 appSwitchURL: appSwitchURL,
+                contextID: contextID,
                 isVaultRequest: shouldVault,
-                linkType: linkType,
-                payPalContextID: payPalContextID
+                linkType: linkType
             )
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
@@ -306,9 +306,9 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(
                 BTVenmoAnalytics.appSwitchFailed,
                 appSwitchURL: appSwitchURL,
+                contextID: contextID,
                 isVaultRequest: shouldVault,
-                linkType: linkType,
-                payPalContextID: payPalContextID
+                linkType: linkType
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed, completion: completion)
         }
@@ -365,9 +365,9 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
+            contextID: contextID,
             isVaultRequest: shouldVault,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+            linkType: linkType
         )
         completion(result, nil)
     }
@@ -375,10 +375,10 @@ import BraintreeCore
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeFailed,
+            contextID: contextID,
             errorDescription: error.localizedDescription,
             isVaultRequest: shouldVault,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+            linkType: linkType
         )
         completion(nil, error)
     }
@@ -386,9 +386,9 @@ import BraintreeCore
     private func notifyCancel(completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchCanceled,
+            contextID: contextID,
             isVaultRequest: shouldVault,
-            linkType: linkType,
-            payPalContextID: payPalContextID
+            linkType: linkType
         )
         completion(nil, BTVenmoError.canceled)
     }
