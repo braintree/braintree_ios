@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
@@ -303,6 +303,7 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
@@ -321,6 +322,7 @@ import Foundation
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
+                applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,

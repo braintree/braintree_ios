@@ -213,6 +213,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
             contextID: contextID,
             contextType: contextType,
@@ -322,6 +323,7 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
                 contextID: contextID,
                 contextType: contextType,
@@ -338,6 +340,7 @@ import BraintreeDataCollector
 
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
                 contextID: contextID,
                 contextType: contextType,
@@ -384,6 +387,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             isVaultRequest: isVaultRequest,
@@ -473,6 +477,7 @@ import BraintreeDataCollector
         guard !hasOpenedURL else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: payPalAppRedirectURL,
                 contextID: contextID,
                 contextType: contextType,
@@ -490,6 +495,7 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: payPalAppRedirectURL,
             contextID: contextID,
             contextType: contextType,
@@ -527,6 +533,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserPresentationStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: appSwitchURL,
             contextID: contextID,
             contextType: contextType,
@@ -576,6 +583,7 @@ import BraintreeDataCollector
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
                     contextType: contextType,
@@ -588,6 +596,7 @@ import BraintreeDataCollector
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
                     contextType: contextType,
@@ -604,6 +613,7 @@ import BraintreeDataCollector
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
                     contextID: contextID,
                     contextType: contextType,
@@ -622,6 +632,7 @@ import BraintreeDataCollector
             
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: appSwitchURL,
                 contextID: contextID,
                 contextType: contextType,
@@ -657,6 +668,7 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
+            applicationState: UIApplication.shared.applicationStateString,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -671,6 +683,7 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
+            applicationState: UIApplication.shared.applicationStateString,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
