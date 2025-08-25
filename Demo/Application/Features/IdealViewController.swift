@@ -68,7 +68,7 @@ class IdealViewController: PaymentButtonBaseViewController {
         )
         request.localPaymentFlowDelegate = self
 
-        localPaymentClient.startPaymentFlow(request) { result, error in
+        localPaymentClient.start(request) { result, error in
             guard let result else {
                 if error as? BTLocalPaymentError == .canceled("") {
                     self.progressBlock("Canceled 🎲")

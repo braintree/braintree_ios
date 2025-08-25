@@ -56,7 +56,7 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: A `BTLocalPaymentRequest` request.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
-    public func startPaymentFlow(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+    public func start(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
 
         self.request = request
@@ -97,9 +97,9 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTLocalPaymentRequest` request.
     /// - Returns: A `BTLocalPaymentResult` if successful
     /// - Throws: An `Error` describing the failure
-    public func startPaymentFlow(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
+    public func start(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
         try await withCheckedThrowingContinuation { continuation in
-            startPaymentFlow(request) { result, error in
+            start(request) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let result {
