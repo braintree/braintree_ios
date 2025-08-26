@@ -334,12 +334,59 @@ import BraintreeDataCollector
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
         } else {
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.appSwitchFailed,
+                appSwitchURL: url,
+                contextID: contextID,
+                contextType: contextType,
+                didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+                didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                isVaultRequest: isVaultRequest
+            )
+            
+            openUrlInDefaultBrowser(url, completion: completion)
+        }
+    }
+    
+    private func openUrlInDefaultBrowser(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.defaultBrowserStarted,
+            appSwitchURL: url,
+            contextID: contextID,
+            contextType: contextType,
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            isVaultRequest: isVaultRequest,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
+        
+        application.open(url) { success in
+            self.invokedOpenURLInDefaultBrowser(success: success, url: url, completion: completion)
+        }
+    }
+    
+    private func invokedOpenURLInDefaultBrowser(success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        if success {
+            
+            apiClient.sendAnalyticsEvent(
+                BTPayPalAnalytics.defaultBrowserStarted,
+                appSwitchURL: url,
+                contextID: contextID,
+                contextType: contextType,
+                didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+                didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                isVaultRequest: isVaultRequest
+            )
+            
+            BTPayPalClient.payPalClient = self
+            appSwitchCompletion = completion
+        } else {
             /// reset the `hasOpenedURL` flag to allow for
             /// future app switch attempts in case of failure to open the initial switch
             hasOpenedURL = false
 
             apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.appSwitchFailed,
+                BTPayPalAnalytics.defaultBrowserFailed,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
                 contextID: contextID,
@@ -521,7 +568,7 @@ import BraintreeDataCollector
             return
         }
 
-        application.open(redirectURL) { success in
+        application.open(redirectURL, options: [.universalLinksOnly: true as NSNumber]) { success in
             self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
