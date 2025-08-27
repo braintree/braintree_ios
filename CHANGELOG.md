@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add `application_state` to PayPal analytics for tracking UIApplication state
+  * Send `application_state` to FPTI for tracking UIApplication state
 
 ## 6.37.0 (2025-08-26)
 * BraintreePayPal
