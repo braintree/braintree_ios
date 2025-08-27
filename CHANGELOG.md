@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Send `application_state` to FPTI for tracking UIApplication state
+
 ## 6.37.0 (2025-08-26)
 * BraintreePayPal
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
