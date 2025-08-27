@@ -17,7 +17,7 @@ final class FPTIBatchData_Tests: XCTestCase {
 
     let eventParams = [
         FPTIBatchData.Event(
-            applicationState: UIApplication.shared.applicationStateString,
+            applicationState: "active",
             connectionStartTime: 123,
             contextID: "fake-order-id",
             contextType: "BA-TOKEN",

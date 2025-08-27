@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+* BraintreePayPal
+  * Add `application_state` to PayPal analytics for tracking UIApplication state
+
 ## 6.37.0 (2025-08-26)
 * BraintreePayPal
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
@@ -11,7 +15,6 @@
   * Analytics updates for PayPal's analytics service (FPTI)
     * Add `space_key` and `product_name` to `batch_params`
     * Add `context_type` to `event_params`
-    * Add `application_state` to PayPal analytics for tracking UIApplication state
     * Rename `paypal_context_id` to `context_id`
 
 ## 6.35.0 (2025-07-23)
