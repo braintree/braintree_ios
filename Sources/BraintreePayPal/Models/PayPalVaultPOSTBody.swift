@@ -106,7 +106,7 @@ struct PayPalVaultPOSTBody: Encodable {
         case shippingAddressOverride = "shipping_address"
         case universalLink = "merchant_app_return_url"
         case userAuthenticationEmail = "payer_email"
-        case userPhoneNumber = "phone_number"
+        case userPhoneNumber = "payer_phone"
         case shopperSessionID = "shopper_session_id"
     }
 }

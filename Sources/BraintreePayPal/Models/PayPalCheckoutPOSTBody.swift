@@ -158,7 +158,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case shopperSessionID = "shopper_session_id"
         case universalLink = "merchant_app_return_url"
         case userAuthenticationEmail = "payer_email"
-        case userPhoneNumber = "phone_number"
+        case userPhoneNumber = "payer_phone"
         
         // Address keys
         case streetAddress = "line1"
