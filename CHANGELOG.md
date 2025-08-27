@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * BraintreePayPal
   * Add `application_state` to PayPal analytics for tracking UIApplication state
 
