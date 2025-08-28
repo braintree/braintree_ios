@@ -44,3 +44,5 @@ import BraintreeCore
         self.rewardsUnit = json["rewardsUnit"].asString()
     }
 }
+
+extension BTAmericanExpressRewardsBalance: @unchecked Sendable { }

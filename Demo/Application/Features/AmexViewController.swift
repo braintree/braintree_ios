@@ -27,15 +27,18 @@ class AmexViewController: PaymentButtonBaseViewController {
     }
 
     @objc func tappedValidCard() {
-        getRewards(for: "371260714673002")
+//        getRewards(for: "371260714673002")
+        getAsyncRewards(for: "371260714673002")
     }
 
     @objc func tappedInsufficientPointsCard() {
-        getRewards(for: "371544868764018")
+//        getRewards(for: "371544868764018")
+        getAsyncRewards(for: "371260714673002")
     }
 
     @objc func tappedIneligibleCard() {
-        getRewards(for: "378267515471109")
+//        getRewards(for: "378267515471109")
+        getAsyncRewards(for: "371260714673002")
     }
 
     private func getRewards(for cardNumber: String) {
@@ -71,6 +74,39 @@ class AmexViewController: PaymentButtonBaseViewController {
                     let currencyIsoCode = rewardsBalance.currencyIsoCode {
                     self.progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
                 }
+            }
+        }
+    }
+    
+    private func getAsyncRewards(for cardNumber: String) {
+        let card = BTCard(
+            number: cardNumber,
+            expirationMonth: "12",
+            expirationYear: CardHelpers.generateFuture(.year),
+            cvv: "1234"
+        )
+        
+        progressBlock("Tokenizing Card")
+        
+        Task {
+            do {
+                let tokenizedCard = try await cardClient.tokenize(card)
+                
+                self.progressBlock("Amex - getting rewards balance")
+                
+                let rewardsBalance = try await amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD")
+                
+                if let errorCode = rewardsBalance.errorCode, let errorMessage = rewardsBalance.errorMessage {
+                    self.progressBlock("\(errorCode): \(errorMessage)")
+                } else if
+                    let rewardsAmount = rewardsBalance.rewardsAmount,
+                    let rewardsUnit = rewardsBalance.rewardsUnit,
+                    let currencyAmount = rewardsBalance.currencyAmount,
+                    let currencyIsoCode = rewardsBalance.currencyIsoCode {
+                    self.progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
+                }
+            } catch {
+                progressBlock("\(error.localizedDescription)")
             }
         }
     }
