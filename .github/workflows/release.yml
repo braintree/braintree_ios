@@ -168,4 +168,7 @@ jobs:
       - name: Publish to CocoaPods
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: pod trunk push Braintree.podspec
+        run: |
+          git stash
+          git checkout ${{ github.event.inputs.version }}
+          pod trunk push Braintree.podspec
