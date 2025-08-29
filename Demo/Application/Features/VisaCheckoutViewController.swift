@@ -73,8 +73,6 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
                         if let error {
                             self.progressBlock("Error tokenizing Visa Checkout card: \(error.localizedDescription)")
                         } else if let tokenizedVisaCheckoutCard {
-                            let nonce = tokenizedVisaCheckoutCard.nonce
-                            let shippingAddress = tokenizedVisaCheckoutCard.shippingAddress
                             self.completionBlock(tokenizedVisaCheckoutCard)
                         } else {
                             self.progressBlock("No error or nonce returned from the Visa Checkout flow.")

@@ -28,17 +28,18 @@ import BraintreeCore
     @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
+                self.notifyFailure(with: error, completion: completion)
                 completion(nil, error)
                 return
             }
 
             guard let configuration else {
-                completion(nil, BTVisaCheckoutError.fetchConfigurationFailed)
+                self.notifyFailure(with: BTVisaCheckoutError.fetchConfigurationFailed, completion: completion)
                 return
             }
 
             guard configuration.isVisaCheckoutEnabled else {
-                completion(nil, BTVisaCheckoutError.disabled)
+                self.notifyFailure(with: BTVisaCheckoutError.disabled, completion: completion)
                 return
             }
 
@@ -46,7 +47,7 @@ import BraintreeCore
                 let visaCheckoutAPIKey = configuration.visaCheckoutAPIKey,
                 let environmentString = configuration.visaCheckoutEnvironment,
                 !environmentString.isEmpty else {
-                completion(nil, BTVisaCheckoutError.integration)
+                self.notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
                 return
             }
 
@@ -57,7 +58,7 @@ import BraintreeCore
             } else if environmentString == "sandbox" {
                 environment = .sandbox
             } else {
-                completion(nil, BTVisaCheckoutError.integration)
+                self.notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
                 return
             }
 
@@ -146,6 +147,12 @@ import BraintreeCore
     
     /// Notifies the failure of the Visa Checkout tokenization.
     private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
+        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
+        completion(nil, error)
+    }
+
+    /// Notifies the failure of Visa Checkout Profile.
+    private func notifyFailure(with error: Error, completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
         completion(nil, error)
     }
