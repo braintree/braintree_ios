@@ -29,7 +29,6 @@ import BraintreeCore
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
-                completion(nil, error)
                 return
             }
 
