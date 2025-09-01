@@ -16,6 +16,15 @@ public class FakeApplication: URLOpener {
         openCallCount += 1
         completion?(cannedOpenURLSuccess)
     }
+    
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
+        lastOpenURL = url
+        openURLWasCalled = true
+        openCallCount += 1
+        Task { @MainActor in
+            completion?(cannedOpenURLSuccess)
+        }
+    }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
         for whitelistURL in canOpenURLWhitelist {

@@ -15,5 +15,8 @@ final class BTPayPalAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalAnalytics.appSwitchStarted, "paypal:tokenize:app-switch:started")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchSucceeded, "paypal:tokenize:app-switch:succeeded")
         XCTAssertEqual(BTPayPalAnalytics.appSwitchFailed, "paypal:tokenize:app-switch:failed")
+        XCTAssertEqual(BTPayPalAnalytics.defaultBrowserStarted, "paypal:tokenize:default-browser-switch:started")
+        XCTAssertEqual(BTPayPalAnalytics.defaultBrowserSucceeded, "paypal:tokenize:default-browser-switch:succeeded")
+        XCTAssertEqual(BTPayPalAnalytics.defaultBrowserFailed, "paypal:tokenize:default-browser-switch:failed")
     }
 }

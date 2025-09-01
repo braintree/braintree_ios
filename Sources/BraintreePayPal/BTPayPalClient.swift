@@ -361,15 +361,15 @@ import BraintreeDataCollector
         )
         
         application.open(url) { success in
-            self.invokedOpenURLInDefaultBrowser(success: success, url: url, completion: completion)
+            self.invokedOpenURLInDefaultBrowser(success, url: url, completion: completion)
         }
     }
     
-    private func invokedOpenURLInDefaultBrowser(success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    func invokedOpenURLInDefaultBrowser(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
             
             apiClient.sendAnalyticsEvent(
-                BTPayPalAnalytics.defaultBrowserStarted,
+                BTPayPalAnalytics.defaultBrowserSucceeded,
                 appSwitchURL: url,
                 contextID: contextID,
                 contextType: contextType,
