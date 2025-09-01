@@ -1174,6 +1174,24 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
     }
     
+    func testInvokedOpenURLInDefaultBrowser_whenSuccess_sendsBrowserSwitchFailedWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.defaultBrowserSucceeded
+        let fakeURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLInDefaultBrowser(true, url: fakeURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
+    }
+    
+    func testInvokedOpenURLInDefaultBrowser_whenFailure_sendsBrowserSwitchFailedWithAppSwitchURL() {
+        let eventName = BTPayPalAnalytics.defaultBrowserFailed
+        let fakeURL = URL(string: "some-url")!
+        payPalClient.invokedOpenURLInDefaultBrowser(false, url: fakeURL) { _, _ in }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
+        XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], fakeURL.absoluteString)
+    }
+    
     func testTokenize_calledMultipleTimes_onlyCallsOpenOnce() {
         let fakeApplication = FakeApplication()
         payPalClient.application = fakeApplication
