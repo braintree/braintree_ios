@@ -568,7 +568,7 @@ import BraintreeDataCollector
             return
         }
 
-        application.open(redirectURL, options: [.universalLinksOnly: true as NSNumber]) { success in
+        application.open(redirectURL, options: [.universalLinksOnly: NSNumber(booleanLiteral: true)]) { success in
             self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
