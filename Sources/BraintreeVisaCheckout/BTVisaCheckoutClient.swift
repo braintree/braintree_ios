@@ -114,8 +114,8 @@ import BraintreeCore
         ]
 
         apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { body, _, error in
-            if error != nil {
-                self.notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+            if let error {
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
