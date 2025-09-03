@@ -22,8 +22,11 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
+		04C4EE3C2E6785A500C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C4EE3B2E67859C00C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift */; };
+		04C4EE3D2E6785A500C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C4EE3B2E67859C00C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift */; };
 		04C652802E2B044000C879A0 /* BTConfiguration+VisaCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6527F2E2B043900C879A0 /* BTConfiguration+VisaCheckout.swift */; };
 		04C652822E2B046000C879A0 /* BTVisaCheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */; };
+		04E17E7C2E578CFA003EAD29 /* BTVisaCheckoutAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
@@ -812,10 +815,12 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
+		04C4EE3B2E67859C00C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAnalytics_Tests.swift; sourceTree = "<group>"; };
 		04C6527F2E2B043900C879A0 /* BTConfiguration+VisaCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTConfiguration+VisaCheckout.swift"; sourceTree = "<group>"; };
 		04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutError.swift; sourceTree = "<group>"; };
 		04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
 		04D5E6D92E3D5A7B00E187D8 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = ../../../Downloads/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
+		04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAnalytics.swift; sourceTree = "<group>"; };
 		04E6D6AF2DDFE7B100729D7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem_Tests.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
@@ -1508,6 +1513,7 @@
 		046547A92DDE86FD0054B80A /* BraintreeVisaCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */,
 				04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */,
 				046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */,
 				B84871F72DF3842D00618606 /* BTVisaCheckoutAddress.swift */,
@@ -1522,6 +1528,7 @@
 		046547AE2DDE87340054B80A /* BraintreeVisaCheckoutTests */ = {
 			isa = PBXGroup;
 			children = (
+				04C4EE3B2E67859C00C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift */,
 				62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */,
 				046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */,
 				B8F733522E0DC106007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift */,
@@ -3521,6 +3528,7 @@
 				04C652802E2B044000C879A0 /* BTConfiguration+VisaCheckout.swift in Sources */,
 				B84871F92DF3843300618606 /* BTVisaCheckoutAddress.swift in Sources */,
 				B8FD52862E01EB1900E221D3 /* BTVisaCheckoutUserData.swift in Sources */,
+				04E17E7C2E578CFA003EAD29 /* BTVisaCheckoutAnalytics.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3531,6 +3539,7 @@
 				B8F733532E0DC11A007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift in Sources */,
 				046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */,
 				B8F733562E0DC330007D06C0 /* BTVisaCheckoutUserData_Tests.swift in Sources */,
+				04C4EE3C2E6785A500C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift in Sources */,
 				62EA4CFE2E43CEB900359CC4 /* BTConfiguration+VisaCheckout_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3960,6 +3969,7 @@
 				454BCF752E1C5FAA0099E674 /* BTWebAuthenticationSession_Tests.swift in Sources */,
 				BEDA91A028EDDE64007441D9 /* FakeAnalyticsService.swift in Sources */,
 				458570782C34A699009CEF7A /* ConfigurationLoader_Tests.swift in Sources */,
+				04C4EE3D2E6785A500C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

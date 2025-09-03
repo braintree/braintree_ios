@@ -28,7 +28,6 @@ import BraintreeCore
     @objc public func createProfile(completion: @escaping (Profile?, Error?) -> Void) {
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
-                /// TODO: Add failure analytics event
                 completion(nil, error)
                 return
             }
@@ -84,14 +83,16 @@ import BraintreeCore
         _ checkoutResult: CheckoutResult,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
+        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
+
         let statusCode = checkoutResult.statusCode
         if statusCode == .statusUserCancelled {
-            completion(nil, BTVisaCheckoutError.canceled)
+            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
         }
 
         guard statusCode == .statusSuccess else {
-            completion(nil, BTVisaCheckoutError.checkoutUnsuccessful)
+            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
             return
         }
 
@@ -100,7 +101,7 @@ import BraintreeCore
             let encryptedKey = checkoutResult.encryptedKey,
             let encryptedPaymentData = checkoutResult.encryptedPaymentData
         else {
-            completion(nil, BTVisaCheckoutError.integration)
+            notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
             return
         }
 
@@ -114,7 +115,7 @@ import BraintreeCore
 
         apiClient.post("v1/payment_methods/visa_checkout_cards", parameters: parameters) { body, _, error in
             if let error {
-                completion(nil, error)
+                self.notifyFailure(with: error, completion: completion)
                 return
             }
 
@@ -128,21 +129,24 @@ import BraintreeCore
                 return
             }
 
-            completion(visaCheckoutCardNonce, nil)
+            self.notifySuccess(with: visaCheckoutCardNonce, completion: completion)
         }
     }
+
+    // MARK: - Analytics Helper Methods
 
     /// Notifies the success of the Visa Checkout tokenization.
     private func notifySuccess(
         with result: BTVisaCheckoutNonce?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        /// TODO: Send success analytics event
+        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeSucceeded)
         completion(result, nil)
     }
-
+    
+    /// Notifies the failure of the Visa Checkout tokenization.
     private func notifyFailure(with error: Error, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
-        /// TODO: Send failure analytics event
+        apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
         completion(nil, error)
     }
 }
