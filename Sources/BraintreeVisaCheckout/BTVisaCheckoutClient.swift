@@ -86,6 +86,15 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
 
         let statusCode = checkoutResult.statusCode
+        let callID = checkoutResult.callId
+        let encryptedKey = checkoutResult.encryptedKey
+        let encryptedPaymentData = checkoutResult.encryptedPaymentData
+
+        tokenize(statusCode: statusCode, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData, completion: completion)
+    }
+
+    func tokenize(statusCode: CheckoutResultStatus, callID: String?, encryptedKey: String?, encryptedPaymentData: String?, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
+
         if statusCode == .statusUserCancelled {
             notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
@@ -97,9 +106,9 @@ import BraintreeCore
         }
 
         guard
-            let callID = checkoutResult.callId,
-            let encryptedKey = checkoutResult.encryptedKey,
-            let encryptedPaymentData = checkoutResult.encryptedPaymentData
+            let callID = callID,
+            let encryptedKey = encryptedKey,
+            let encryptedPaymentData = encryptedPaymentData
         else {
             notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
             return
