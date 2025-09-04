@@ -367,7 +367,6 @@ import BraintreeDataCollector
     
     func invokedOpenURLInDefaultBrowser(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
-            
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.defaultBrowserSucceeded,
                 appSwitchURL: url,
