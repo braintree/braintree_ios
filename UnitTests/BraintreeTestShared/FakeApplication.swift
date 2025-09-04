@@ -11,8 +11,9 @@ public class FakeApplication: URLOpener {
     public var openCallCount = 0
     public var lastOpenOptions: [UIApplication.OpenExternalURLOptionsKey : Any]? = nil
 
-    public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completion: ((Bool) -> Void)?) {
         lastOpenURL = url
+        lastOpenOptions = options
         openURLWasCalled = true
         openCallCount += 1
         completion?(cannedOpenURLSuccess)
@@ -25,16 +26,6 @@ public class FakeApplication: URLOpener {
             }
         }
         return cannedCanOpenURL
-    }
-    
-    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
-        lastOpenURL = url
-        lastOpenOptions = options
-        openURLWasCalled = true
-        openCallCount += 1
-        Task { @MainActor in
-            completion?(cannedOpenURLSuccess)
-        }
     }
 
     public func isPayPalAppInstalled() -> Bool {

@@ -7,8 +7,7 @@ import UIKit
 public protocol URLOpener {
 
     func canOpenURL(_ url: URL) -> Bool
-    func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?)
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completion: ((Bool) -> Void)?)
     func isPayPalAppInstalled() -> Bool
     func isVenmoAppInstalled() -> Bool
 }
@@ -38,7 +37,7 @@ extension UIApplication: URLOpener {
     // TODO: once Xcode 16 is the minimum supported version remove this method and update the protocol to the default open signature from UIApplication
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
-    public func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
-        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+    public func open(_ url: URL, options: [OpenExternalURLOptionsKey: Any], completion: ((Bool) -> Void)?) {
+        UIApplication.shared.open(url, options: options, completionHandler: completion)
     }
 }

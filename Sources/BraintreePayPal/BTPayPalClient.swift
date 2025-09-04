@@ -362,7 +362,7 @@ import BraintreeDataCollector
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         
-        application.open(url) { success in
+        application.open(url, options: [:]) { success in
             self.invokedOpenURLInDefaultBrowser(success, url: url, completion: completion)
         }
     }
@@ -570,7 +570,7 @@ import BraintreeDataCollector
             return
         }
 
-        application.open(redirectURL, options: [.universalLinksOnly: NSNumber(booleanLiteral: true)]) { success in
+        application.open(redirectURL, options: [.universalLinksOnly: NSNumber(value: true)]) { success in
             self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
         }
     }
