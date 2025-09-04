@@ -5,6 +5,21 @@
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
   * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
   * Add `generateCustomerRecommendations(request:sessionID:)` to `BTShopperInsightsClientV2`
+* BraintreePayPal
+  * Send `application_state` to FPTI for tracking UIApplication state
+
+## 6.37.0 (2025-08-26)
+* BraintreePayPal
+  * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
+  * Add `merchant` and `flow_type` as query parameters to the app switch URL.
+  * Add `paymentID` to `BTPayPalAccountNonce`
+
+## 6.36.0 (2025-08-13)
+* BraintreeCore
+  * Analytics updates for PayPal's analytics service (FPTI)
+    * Add `space_key` and `product_name` to `batch_params`
+    * Add `context_type` to `event_params`
+    * Rename `paypal_context_id` to `context_id`
 
 ## 6.35.0 (2025-07-23)
 * BraintreePayPal

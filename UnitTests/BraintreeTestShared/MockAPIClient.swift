@@ -12,6 +12,7 @@ public class MockAPIClient: BTAPIClient {
     public var lastGETAPIClientHTTPType: BTAPIClientHTTPService?
 
     public var postedAnalyticsEvents: [String] = []
+    public var postedApplicationState: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
     public var postedButtonOrder: String? = nil
     public var postedButtonType: String? = nil
@@ -19,12 +20,13 @@ public class MockAPIClient: BTAPIClient {
     public var postedLinkType: LinkType? = nil
     public var postedMerchantExperiment: String? = nil
     public var postedPageType: String? = nil
-    public var postedPayPalContextID: String? = nil
+    public var postedContextID: String? = nil
     public var postedShopperSessionID: String? = nil
     public var postedIsPayPalAppInstalled: Bool? = nil
     public var postedDidEnablePayPalAppSwitch: Bool? = nil
     public var postedDidPayPalServerAttemptAppSwitch: Bool? = nil
     public var postedErrorDescription: String? = nil
+    public var postedContextType: String? = nil
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -100,9 +102,12 @@ public class MockAPIClient: BTAPIClient {
 
     public override func sendAnalyticsEvent(
         _ eventName: String,
+        applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
+        contextID: String? = nil,
+        contextType: String? = nil,
         correlationID: String? = nil,
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -112,13 +117,13 @@ public class MockAPIClient: BTAPIClient {
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         pageType: String? = nil,
-        payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
+        postedApplicationState = applicationState
         postedButtonType = buttonType
         postedButtonOrder = buttonOrder
         postedPageType = pageType
-        postedPayPalContextID = payPalContextID
+        postedContextID = contextID
         postedLinkType = linkType
         postedIsVaultRequest = isVaultRequest ?? false
         postedMerchantExperiment = experiment
@@ -127,6 +132,7 @@ public class MockAPIClient: BTAPIClient {
         postedDidEnablePayPalAppSwitch = didEnablePayPalAppSwitch
         postedDidPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
         postedErrorDescription = errorDescription
+        postedContextType = contextType
 
         postedAnalyticsEvents.append(eventName)
     }

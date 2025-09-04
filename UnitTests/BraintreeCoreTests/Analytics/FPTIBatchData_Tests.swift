@@ -17,7 +17,10 @@ final class FPTIBatchData_Tests: XCTestCase {
 
     let eventParams = [
         FPTIBatchData.Event(
+            applicationState: "active",
             connectionStartTime: 123,
+            contextID: "fake-order-id",
+            contextType: "BA-TOKEN",
             correlationID: "fake-correlation-id-1",
             endpoint: "/v1/paypal_hermes/setup_billing_agreement",
             endTime: 111222333444555,
@@ -26,12 +29,12 @@ final class FPTIBatchData_Tests: XCTestCase {
             isConfigFromCache: false,
             isVaultRequest: false,
             linkType: LinkType.universal.rawValue,
-            payPalContextID: "fake-order-id",
             requestStartTime: 456,
             startTime: 999888777666
         ),
         FPTIBatchData.Event(
             connectionStartTime: nil,
+            contextID: "fake-order-id-2",
             correlationID: nil,
             endpoint: nil,
             endTime: nil,
@@ -40,7 +43,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             isConfigFromCache: true,
             isVaultRequest: true,
             linkType: nil,
-            payPalContextID: "fake-order-id-2",
             requestStartTime: nil,
             startTime: nil
         )
@@ -81,6 +83,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_sdk_env"] as? String, "fake-env")
         XCTAssertEqual(batchParams["event_source"] as? String, "mobile-native")
         XCTAssertTrue((batchParams["ios_package_manager"] as! String).matches("Carthage or Other|CocoaPods|Swift Package Manager"))
+        XCTAssertEqual(batchParams["product_name"] as? String, "BT_DCC")
         XCTAssertEqual(batchParams["api_integration_type"] as? String, "fake-integration-type")
         XCTAssertEqual(batchParams["is_simulator"] as? Bool, true)
         XCTAssertNotNil(batchParams["mapv"] as? String) // Unable to specify bundle version number within test targets
@@ -88,6 +91,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(batchParams["merchant_id"] as! String, "fake-merchant-id")
         XCTAssertEqual(batchParams["platform"] as? String, "iOS")
         XCTAssertEqual(batchParams["session_id"] as? String, "fake-session")
+        XCTAssertEqual(batchParams["space_key"] as? String, "SKDUYK")
         XCTAssertEqual(batchParams["tokenization_key"] as! String, "fake-auth")
         XCTAssertEqual(batchParams["paypal_installed"] as! Bool, false)
         XCTAssertEqual(batchParams["venmo_installed"] as! Bool, false)
@@ -101,10 +105,12 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[1]["tenant_name"] as? String, "Braintree")
         XCTAssertEqual(eventParams[0]["link_type"] as? String, "universal")
         XCTAssertNil(eventParams[1]["link_type"])
-        XCTAssertEqual(eventParams[0]["paypal_context_id"] as! String, "fake-order-id")
-        XCTAssertEqual(eventParams[1]["paypal_context_id"] as! String, "fake-order-id-2")
+        XCTAssertEqual(eventParams[0]["context_id"] as! String, "fake-order-id")
+        XCTAssertEqual(eventParams[1]["context_id"] as! String, "fake-order-id-2")
         XCTAssertEqual(eventParams[0]["error_desc"] as? String, "fake-error-description-1")
         XCTAssertNil(eventParams[1]["error_desc"])
+        XCTAssertEqual(eventParams[0]["context_type"] as? String, "BA-TOKEN")
+        XCTAssertNil(eventParams[1]["context_type"])
         XCTAssertEqual(eventParams[0]["correlation_id"] as? String, "fake-correlation-id-1")
         XCTAssertNil(eventParams[1]["correlation_id"])
         XCTAssertEqual(eventParams[0]["is_vault"] as? Bool, false)
@@ -121,6 +127,7 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertNil(eventParams[1]["connect_start_time"])
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
+        XCTAssertEqual(eventParams[0]["application_state"] as? String, "active")
     }
 }
 

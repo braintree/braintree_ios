@@ -28,6 +28,9 @@ struct FPTIBatchData: Codable {
 
     /// Encapsulates a single event by it's name and timestamp.
     struct Event: Codable {
+        
+        /// The app's state within the device's lifecycle (i.e. active, inactive, background)
+        let applicationState: String?
 
         let appSwitchURL: String?
         /// The order or ranking in which payment buttons appear.
@@ -37,6 +40,10 @@ struct FPTIBatchData: Codable {
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         /// `nil` if a persistent connection is used.
         let connectionStartTime: Int?
+        /// Used for linking events from the client to server side request
+        /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
+        let contextID: String?
+        let contextType: String?
         let correlationID: String?
         let endpoint: String?
         /// UTC millisecond timestamp when a networking task completed.
@@ -59,10 +66,6 @@ struct FPTIBatchData: Codable {
         let merchantExperiment: String?
         /// The type of page where the payment button is displayed or where an event occured.
         let pageType: String?
-        /// Used for linking events from the client to server side request
-        /// This value will be PayPal Order ID, Payment Token, EC token, Billing Agreement, or Venmo Context ID depending on the flow
-        let payPalContextID: String?
-
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
@@ -73,10 +76,13 @@ struct FPTIBatchData: Codable {
         let tenantName: String = "Braintree"
         
         init(
+            applicationState: String? = nil,
             appSwitchURL: URL? = nil,
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
+            contextID: String? = nil,
+            contextType: String? = nil,
             correlationID: String? = nil,
             didEnablePayPalAppSwitch: Bool? = nil,
             didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -89,15 +95,17 @@ struct FPTIBatchData: Codable {
             linkType: String? = nil,
             merchantExperiment: String? = nil,
             pageType: String? = nil,
-            payPalContextID: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
             startTime: Int? = nil
         ) {
+            self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
+            self.contextID = contextID
+            self.contextType = contextType
             self.correlationID = correlationID
             self.didEnablePayPalAppSwitch = didEnablePayPalAppSwitch
             self.didPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
@@ -110,17 +118,19 @@ struct FPTIBatchData: Codable {
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
             self.pageType = pageType
-            self.payPalContextID = payPalContextID
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.startTime = startTime
         }
 
         enum CodingKeys: String, CodingKey {
+            case applicationState = "application_state"
             case appSwitchURL = "url"
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
+            case contextID = "context_id"
+            case contextType = "context_type"
             case correlationID = "correlation_id"
             case didEnablePayPalAppSwitch = "merchant_enabled_app_switch"
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
@@ -131,7 +141,6 @@ struct FPTIBatchData: Codable {
             case linkType = "link_type"
             case merchantExperiment = "experiment"
             case pageType = "page_type"
-            case payPalContextID = "paypal_context_id"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
@@ -203,9 +212,13 @@ struct FPTIBatchData: Codable {
         let payPalInstalled: Bool = application.isPayPalAppInstalled()
 
         let platform = "iOS"
+        
+        let productName: String = "BT_DCC"
 
         /// Either a randomly generated session ID or the shopper session ID passed in by a merchant
         let sessionID: String
+
+        let spaceKey: String = "SKDUYK"
 
         let tokenizationKey: String?
 
@@ -224,12 +237,14 @@ struct FPTIBatchData: Codable {
             case environment = "merchant_sdk_env"
             case packageManager = "ios_package_manager"
             case payPalInstalled = "paypal_installed"
+            case productName = "product_name"
             case integrationType = "api_integration_type"
             case isSimulator = "is_simulator"
             case merchantAppVersion = "mapv"
             case merchantID = "merchant_id"
             case platform = "platform"
             case sessionID = "session_id"
+            case spaceKey = "space_key"
             case tokenizationKey = "tokenization_key"
             case venmoInstalled = "venmo_installed"
         }

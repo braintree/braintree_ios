@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
@@ -303,9 +303,12 @@ import Foundation
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(
         _ eventName: String,
+        applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
+        contextID: String? = nil,
+        contextType: String? = nil,
         correlationID: String? = nil,
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
@@ -315,14 +318,16 @@ import Foundation
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         pageType: String? = nil,
-        payPalContextID: String? = nil,
         shopperSessionID: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
+                applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
+                contextID: contextID,
+                contextType: contextType,
                 correlationID: correlationID,
                 didEnablePayPalAppSwitch: didEnablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
@@ -333,7 +338,6 @@ import Foundation
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                payPalContextID: payPalContextID,
                 shopperSessionID: shopperSessionID
             )
         )

@@ -65,7 +65,7 @@ import BraintreeDataCollector
 
     /// Used for linking events from the client to server side request
     /// In the PayPal flow this will be either an EC token or a Billing Agreement token
-    private var payPalContextID: String?
+    private var contextID: String?
     
     /// Used to determine whether or not to render the WAS popup.
     /// If the experiement is enabled, set the `prefersEphemeralWebBrowserSession` flag to true.
@@ -73,6 +73,9 @@ import BraintreeDataCollector
     
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
+    
+    /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
+    private var contextType: String?
 
     // MARK: - Initializer
 
@@ -127,6 +130,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = true
+        contextType = "BA-TOKEN"
         tokenize(request: request, completion: completion)
     }
 
@@ -170,6 +174,7 @@ import BraintreeDataCollector
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         isVaultRequest = false
+        contextType = "EC-TOKEN"
         tokenize(request: request, completion: completion)
     }
 
@@ -204,16 +209,18 @@ import BraintreeDataCollector
         paymentType: BTPayPalPaymentType,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        payPalContextID = extractToken(from: url)
+        contextID = extractToken(from: url)
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.handleReturnStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
-            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
 
@@ -253,7 +260,7 @@ import BraintreeDataCollector
             }
         }
         
-        if let clientMetadataID = payPalContextID.flatMap({ clientMetadataIDs[$0] }) {
+        if let clientMetadataID = contextID.flatMap({ clientMetadataIDs[$0] }) {
             account["correlation_id"] = clientMetadataID
         }
 
@@ -316,11 +323,13 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
-                isVaultRequest: isVaultRequest,
-                payPalContextID: payPalContextID
+                isVaultRequest: isVaultRequest
             )
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
@@ -331,11 +340,13 @@ import BraintreeDataCollector
 
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
-                isVaultRequest: isVaultRequest,
-                payPalContextID: payPalContextID
+                isVaultRequest: isVaultRequest
             )
             notifyFailure(with: BTPayPalError.appSwitchFailed, completion: completion)
         }
@@ -376,6 +387,8 @@ import BraintreeDataCollector
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
+            applicationState: UIApplication.shared.applicationStateString,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
@@ -412,7 +425,7 @@ import BraintreeDataCollector
                         return
                     }
 
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"][0]["issue"]
+                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"]["issue"].asString()
                     var dictionary = error.userInfo
                     dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
                     self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
@@ -424,14 +437,14 @@ import BraintreeDataCollector
                     return
                 }
                 
-                self.payPalContextID = approvalURL.baToken ?? approvalURL.ecToken
+                self.contextID = approvalURL.baToken ?? approvalURL.ecToken
                 
                 self.experiment = approvalURL.experiment
 
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
-                let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.payPalContextID)
+                let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
                 
-                if let contextID = self.payPalContextID {
+                if let contextID = self.contextID {
                     self.clientMetadataIDs[contextID] = correlationID
                 }
                 
@@ -445,7 +458,8 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    self.launchPayPalApp(with: url, completion: completion)
+                    let merchantAccountID = json["merchantId"].asString()
+                    self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -456,17 +470,20 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
+        merchantAccountID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         /// Prevent multiple calls to open the app
         guard !hasOpenedURL else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: payPalAppRedirectURL,
+                contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
-                payPalContextID: payPalContextID,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
 
@@ -474,22 +491,26 @@ import BraintreeDataCollector
         }
         
         hasOpenedURL = true
-        payPalContextID = extractToken(from: payPalAppRedirectURL)
+        contextID = extractToken(from: payPalAppRedirectURL)
 
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.appSwitchStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: payPalAppRedirectURL,
+            contextID: contextID,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
         let additionalQueryItems: [URLQueryItem] = [
             URLQueryItem(name: "source", value: "braintree_sdk"),
-            URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000))))
+            URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
+            URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
+            URLQueryItem(name: "merchant", value: merchantAccountID ?? "unknown")
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
@@ -512,11 +533,13 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserPresentationStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: appSwitchURL,
+            contextID: contextID,
+            contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         
@@ -526,7 +549,7 @@ import BraintreeDataCollector
         configureSessionIfNeeded(for: experiment)
 
         webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
-            self?.payPalContextID = self?.extractToken(from: url)
+            self?.contextID = self?.extractToken(from: url)
             
             guard let self else {
                 completion(nil, BTPayPalError.deallocated)
@@ -555,42 +578,48 @@ import BraintreeDataCollector
                 notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString), completion: completion)
             }
         } sessionDidAppear: { [self] didAppear in
-            payPalContextID = extractToken(from: appSwitchURL)
+            contextID = extractToken(from: appSwitchURL)
             
             if didAppear {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationSucceeded,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
-                    payPalContextID: payPalContextID,
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             } else {
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserPresentationFailed,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     isVaultRequest: isVaultRequest,
-                    payPalContextID: payPalContextID,
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
             }
         } sessionDidCancel: { [self] in
-            payPalContextID = extractToken(from: appSwitchURL)
+            contextID = extractToken(from: appSwitchURL)
             
             if !webSessionReturned {
                 // User tapped system cancel button on permission alert
                 apiClient.sendAnalyticsEvent(
                     BTPayPalAnalytics.browserLoginAlertCanceled,
+                    applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    contextID: contextID,
+                    contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
-                    isVaultRequest: isVaultRequest,
-                    payPalContextID: payPalContextID
+                    isVaultRequest: isVaultRequest
                 )
             }
 
@@ -599,21 +628,23 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         } sessionDidDuplicate: { [self] in
-            payPalContextID = extractToken(from: appSwitchURL)
+            contextID = extractToken(from: appSwitchURL)
             
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: appSwitchURL,
+                contextID: contextID,
+                contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
-                payPalContextID: payPalContextID,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
         }
     }
     
-    /// extract BA or EC token from the URL to set `payPalContextID` correctly
+    /// extract BA or EC token from the URL to set `contextID` correctly
     private func extractToken(from url: URL?) -> String? {
         guard let url else { return nil }
 
@@ -637,11 +668,13 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
-            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
+            applicationState: UIApplication.shared.applicationStateString,
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(result, nil)
@@ -650,12 +683,14 @@ import BraintreeDataCollector
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
-            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
+            applicationState: UIApplication.shared.applicationStateString,
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(nil, error)
@@ -664,11 +699,12 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
-            correlationID: payPalContextID.flatMap { clientMetadataIDs[$0] },
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             isVaultRequest: isVaultRequest,
-            payPalContextID: payPalContextID,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(nil, BTPayPalError.canceled)
