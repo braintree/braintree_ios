@@ -213,18 +213,8 @@
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		04C4EE422E6798B500C1BAF0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				VisaCheckout_UITests.swift,
-			);
-			target = A9B5ABDD24EB2A2200A4E1C8 /* UITests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (04C4EE422E6798B500C1BAF0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
+		04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
