@@ -14,6 +14,7 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Visa Checkout"
+
         createVisaCheckoutButton()
         createVisaProfileAndCheckout()
     }
@@ -22,6 +23,10 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
     func createVisaCheckoutButton() {
 
         visaCheckoutButton.style = .standard
+        visaCheckoutButton.isAccessibilityElement = true
+        visaCheckoutButton.accessibilityLabel = "Visa Checkout"
+        visaCheckoutButton.accessibilityIdentifier = "visaCheckoutButton"
+        visaCheckoutButton.accessibilityTraits.insert(.button)
 
         view.addSubview(visaCheckoutButton)
 

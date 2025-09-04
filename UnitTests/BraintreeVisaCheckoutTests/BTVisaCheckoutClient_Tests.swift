@@ -437,7 +437,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
             XCTAssertEqual(nonce.type, "Visa")
             XCTAssertEqual(nonce.nonce, "123456-12345-12345-a-adfa")
-//            XCTAssertEqual(nonce.cardType, BTCardNetwork.visa.rawValue)
             XCTAssertEqual(nonce.lastTwo, "11")
 
             [(nonce.shippingAddress, "shipping"), (nonce.billingAddress, "billing")].forEach { address, type in
