@@ -6,8 +6,8 @@
   * Add `merchant` and `flow_type` as query parameters to the app switch URL.
   * Add `paymentID` to `BTPayPalAccountNonce`
   * Update `launchPayPalApp` open url with options `universalLinksOnly` as true.
-  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch failed for universalLink and `openUrlInDefaultBrowser` is triggered.
-  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` event for when the browserSwitch succeed or failed.
+  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openUrlInDefaultBrowser` is triggered.
+  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browserSwitch succeeds or fails.
 
 ## 6.36.0 (2025-08-13)
 * BraintreeCore

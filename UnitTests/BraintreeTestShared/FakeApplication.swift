@@ -27,12 +27,14 @@ public class FakeApplication: URLOpener {
         return cannedCanOpenURL
     }
     
-    @MainActor public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
+    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         lastOpenURL = url
         lastOpenOptions = options
         openURLWasCalled = true
         openCallCount += 1
-        completion?(cannedOpenURLSuccess)
+        Task { @MainActor in
+            completion?(cannedOpenURLSuccess)
+        }
     }
 
     public func isPayPalAppInstalled() -> Bool {
