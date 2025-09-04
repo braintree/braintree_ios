@@ -279,8 +279,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        mockAPIClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
-        mockAPIClient.cannedResponseError = NSError(domain: "https://braintree.com", code: 123, userInfo: nil)
+        mockAPIClient.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
 
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
