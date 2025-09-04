@@ -336,6 +336,7 @@ import BraintreeDataCollector
         } else {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchFailed,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
                 contextID: contextID,
                 contextType: contextType,
@@ -351,6 +352,7 @@ import BraintreeDataCollector
     private func openUrlInDefaultBrowser(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.defaultBrowserStarted,
+            applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
             contextID: contextID,
             contextType: contextType,
@@ -369,6 +371,7 @@ import BraintreeDataCollector
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.defaultBrowserSucceeded,
+                applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
                 contextID: contextID,
                 contextType: contextType,
