@@ -14,13 +14,13 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Visa Checkout"
-
         createVisaCheckoutButton()
         createVisaProfileAndCheckout()
     }
 
     /// Creates and displays the Visa Checkout button.
     func createVisaCheckoutButton() {
+
         visaCheckoutButton.style = .standard
 
         view.addSubview(visaCheckoutButton)
