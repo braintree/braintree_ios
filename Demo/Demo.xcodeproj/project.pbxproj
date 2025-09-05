@@ -317,6 +317,7 @@
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
 				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
+				04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,7 +424,6 @@
 		A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */ = {
 			isa = PBXGroup;
 			children = (
-				04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */,
 				42456E3B25474B620018374E /* Helpers */,
 				A9B5ABE224EB2A2200A4E1C8 /* Info.plist */,
 				BEF137E32B33818C00B9B225 /* PayPal Messaging UI Tests */,

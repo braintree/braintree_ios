@@ -15,43 +15,17 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
         sleep(2)
     }
 
-    // TODO: - Get new account credentials for this UI test / manual testing.
-    func testPendVisaCheckout_withSuccess_recievesNonceNew() {
-<<<<<<< Updated upstream
-        let visaButton = app.buttons["Visa Checkout"]
-        self.waitForElementToAppear(visaButton)
-        self.waitForElementToBeHittable(visaButton)
-        sleep(2)
-        visaButton.doubleTap()
-=======
+    func testVisaCheckout_withSuccess_recievesNonce() {
         let visaButton = app.buttons["visaCheckoutButton"]
         let expirationDate = UITestDateGenerator.sharedInstance.futureDate()
         self.waitForElementToAppear(visaButton)
         self.waitForElementToBeHittable(visaButton)
         sleep(3)
         visaButton.tap()
->>>>>>> Stashed changes
         
         // Long delay to ensure animation completes to check signed in status
         sleep(3)
 
-<<<<<<< Updated upstream
-        app.buttons.element(matching: NSPredicate(format: "label CONTAINS[c] %@", "Sign in to visa checkout")).forceTapElement()
-        sleep(2)
-
-        app.staticTexts["Email or Mobile Number"].forceTapElement()
-        sleep(2)
-
-        app.webViews.otherElements["main"].textFields.element(boundBy: 0).typeText("no-reply-visa-checkout@getbraintree.com")
-        app.buttons["Done"].tap()
-        sleep(2)
-
-        app.staticTexts["Password"].forceTapElement()
-        sleep(2)
-
-        app.webViews.otherElements["main"].secureTextFields.element(boundBy: 0).typeText("12345678")
-        app.buttons["Done"].tap()
-=======
         app.webViews.buttons["New user?"].forceTapElement()
         sleep(2)
 
@@ -107,24 +81,16 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
         sleep(2)
 
         app.buttons["USE RECOMMENDED ADDRESS"].forceTapElement()
->>>>>>> Stashed changes
         sleep(2)
 
-        app.buttons.element(matching: NSPredicate(format: "label CONTAINS[c] %@", "Sign in to visa checkout")).forceTapElement()
-        sleep(2)
-
-<<<<<<< Updated upstream
         app.buttons.element(matching: NSPredicate(format: "label CONTAINS[c] %@", "Continue")).forceTapElement()
         sleep(2)
         
-=======
->>>>>>> Stashed changes
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists)
     }
 
     func testVisaCheckout_returnToApp_whenCanceled() {
-<<<<<<< Updated upstream
         let visaButton = app.otherElements[]
         self.waitForElementToAppear(visaButton)
         self.waitForElementToBeHittable(visaButton)
@@ -137,23 +103,5 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
         self.waitForElementToAppear(app.buttons["User canceled."])
         XCTAssertTrue(app.buttons["User canceled."].exists)
-=======
-        let visaButton = app.buttons["visaCheckoutButton"]
-        self.waitForElementToAppear(visaButton)
-        self.waitForElementToBeHittable(visaButton)
-        sleep(2)
-        visaButton.tap()
-
-        let cancel = app.webViews.buttons["Cancel and return to My App"]
-        cancel.forceTapElement()
-        XCTAssertTrue(cancel.waitForExistence(timeout: 10))
-        sleep(2)
-
-        let canceled = app.staticTexts.element(matching: NSPredicate(format: "label CONTAINS[c] %@", "Error tokenizing Visa Checkout card"))
-
-        XCTAssertTrue(canceled.waitForExistence(timeout: 10))
-        self.waitForElementToAppear(app.staticTexts["Error tokenizing Visa Checkout card"])
-        XCTAssertTrue(app.staticTexts["Error tokenizing Visa Checkout card"].exists)
->>>>>>> Stashed changes
     }
 }
