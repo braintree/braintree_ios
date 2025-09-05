@@ -90,21 +90,13 @@ import BraintreeCore
         let encryptedKey = checkoutResult.encryptedKey
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
-        tokenize(statusCode: statusCode, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData, completion: completion)
-    }
-
-    func tokenize(statusCode: CheckoutResultStatus, callID: String?, encryptedKey: String?, encryptedPaymentData: String?, completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
-
-        if statusCode == .statusUserCancelled {
-            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
-            return
-        }
-
-        let callID = checkoutResult.callId
-        let encryptedKey = checkoutResult.encryptedKey
-        let encryptedPaymentData = checkoutResult.encryptedPaymentData
-
-        tokenize(statusCode: statusCode, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData, completion: completion)
+        tokenize(
+            statusCode: statusCode,
+            callID: callID,
+            encryptedKey: encryptedKey,
+            encryptedPaymentData: encryptedPaymentData,
+            completion: completion
+        )
     }
 
     func tokenize(
@@ -112,7 +104,13 @@ import BraintreeCore
         callID: String?,
         encryptedKey: String?,
         encryptedPaymentData: String?,
-        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void) {
+        completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
+    ) {
+
+        if statusCode == .statusUserCancelled {
+            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
+            return
+        }
 
         guard statusCode == .statusSuccess else {
             notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
