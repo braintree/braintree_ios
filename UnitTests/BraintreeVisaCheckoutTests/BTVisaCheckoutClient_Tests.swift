@@ -6,7 +6,6 @@ import VisaCheckoutSDK
 
 final class BTVisaCheckoutClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-    var visaCheckoutClient: BTVisaCheckoutClient!
     var tokenizeResult: CheckoutResultStatus = .statusSuccess
     var callID = "a"
     var encryptedKey = "b"
@@ -15,48 +14,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        visaCheckoutClient = BTVisaCheckoutClient(apiClient: mockAPIClient)
-    }
-
-    func testBTVisaCheckoutAddress_initializesAllPropertiesCorrectly() {
-        let json: BTJSON = BTJSON(value: [
-            "firstName": "John",
-            "lastName": "Doe",
-            "streetAddress": "123 Main St",
-            "extendedAddress": "Apt 4B",
-            "locality": "San Francisco",
-            "region": "CA",
-            "postalCode": "94105",
-            "countryCode": "US",
-            "phoneNumber": "1234567890"
-        ])
-
-        let address = BTVisaCheckoutAddress(json: json)
-
-        XCTAssertEqual(address.firstName, "John")
-        XCTAssertEqual(address.lastName, "Doe")
-        XCTAssertEqual(address.streetAddress, "123 Main St")
-        XCTAssertEqual(address.extendedAddress, "Apt 4B")
-        XCTAssertEqual(address.locality, "San Francisco")
-        XCTAssertEqual(address.region, "CA")
-        XCTAssertEqual(address.postalCode, "94105")
-        XCTAssertEqual(address.countryCode, "US")
-        XCTAssertEqual(address.phoneNumber, "1234567890")
-    }
-
-    func testBTVisaCheckoutAddress_withMissingValues_returnsNilProperties() {
-        let json = BTJSON(value: [:])
-        let address = BTVisaCheckoutAddress(json: json)
-
-        XCTAssertNil(address.firstName)
-        XCTAssertNil(address.lastName)
-        XCTAssertNil(address.streetAddress)
-        XCTAssertNil(address.extendedAddress)
-        XCTAssertNil(address.locality)
-        XCTAssertNil(address.region)
-        XCTAssertNil(address.postalCode)
-        XCTAssertNil(address.countryCode)
-        XCTAssertNil(address.phoneNumber)
     }
 
     func testCreateProfile_whenConfigurationFetchErrorOccurs_callsCompletionWithError() {
@@ -65,11 +22,15 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "profile error")
 
-        client.createProfile { (profile, error) in
-            let err = error! as NSError
+        client.createProfile { profile, error in
+            guard let error = error as? NSError else {
+                XCTFail("Error expected to be returned in this tests")
+                return
+            }
+
             XCTAssertNil(profile)
-            XCTAssertEqual(err.domain, "MyError")
-            XCTAssertEqual(err.code, 123)
+            XCTAssertEqual(error.domain, "MyError")
+            XCTAssertEqual(error.code, 123)
 
             expecation.fulfill()
         }
@@ -112,7 +73,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "profile success")
 
         client.createProfile { profile, error in
-            guard let profile = profile else {
+            guard let profile else {
                 XCTFail("Failed to create profile")
                 return
             }
@@ -161,8 +122,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 return
             }
             
-            guard let error = error else {
-                XCTFail("Expected error")
+            guard let error = error as? NSError else {
+                XCTFail("Error expected to be returned in this tests")
                 return
             }
 
@@ -253,8 +214,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 return
             }
 
-            guard let error = error as NSError? else {
-                XCTFail("Expected an error")
+            guard let error = error as? NSError else {
+                XCTFail("Error expected to be returned in this tests")
                 return
             }
 
@@ -363,7 +324,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 return
             }
 
-            guard let nonce = nonce else {
+            guard let nonce else {
                 XCTFail("Expected a nonce")
                 return
             }
@@ -429,14 +390,13 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 return
             }
 
-            guard let nonce = nonce else {
+            guard let nonce else {
                 XCTFail("Expected a nonce")
                 return
             }
 
             XCTAssertEqual(nonce.type, "Visa")
             XCTAssertEqual(nonce.nonce, "123456-12345-12345-a-adfa")
-//            XCTAssertEqual(nonce.cardType, BTCardNetwork.visa.rawValue)
             XCTAssertEqual(nonce.lastTwo, "11")
 
             [(nonce.shippingAddress, "shipping"), (nonce.billingAddress, "billing")].forEach { address, type in

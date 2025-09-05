@@ -361,7 +361,6 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */,
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
@@ -374,6 +373,7 @@
 				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
 				BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */,
 				80D36DED2A7967F20035380E /* VenmoViewController.swift */,
+				0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */,
 				809E86A42ACF6607004998B0 /* Helpers */,
 			);
 			path = Features;
@@ -667,9 +667,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

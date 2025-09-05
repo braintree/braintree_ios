@@ -26,6 +26,8 @@
 		04C652802E2B044000C879A0 /* BTConfiguration+VisaCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C6527F2E2B043900C879A0 /* BTConfiguration+VisaCheckout.swift */; };
 		04C652822E2B046000C879A0 /* BTVisaCheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652812E2B045C00C879A0 /* BTVisaCheckoutError.swift */; };
 		04E17E7C2E578CFA003EAD29 /* BTVisaCheckoutAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */; };
+		04E5EDEB2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */; };
+		04E5EDEC2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
@@ -809,6 +811,7 @@
 		04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = Frameworks/XCFrameworks/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
 		04D5E6D92E3D5A7B00E187D8 /* VisaCheckoutSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = VisaCheckoutSDK.xcframework; path = ../../../Downloads/VisaCheckoutSDK.xcframework; sourceTree = "<group>"; };
 		04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAnalytics.swift; sourceTree = "<group>"; };
+		04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVisaCheckoutAddress_Tests.swift; sourceTree = "<group>"; };
 		04E6D6AF2DDFE7B100729D7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem_Tests.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
@@ -1516,6 +1519,7 @@
 		046547AE2DDE87340054B80A /* BraintreeVisaCheckoutTests */ = {
 			isa = PBXGroup;
 			children = (
+				04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */,
 				04C4EE3B2E67859C00C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift */,
 				62EA4CFD2E43CEAC00359CC4 /* BTConfiguration+VisaCheckout_Tests.swift */,
 				046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */,
@@ -3524,6 +3528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8F733532E0DC11A007D06C0 /* BTVisaCheckoutCardNonce_Tests.swift in Sources */,
+				04E5EDEC2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */,
 				046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */,
 				B8F733562E0DC330007D06C0 /* BTVisaCheckoutUserData_Tests.swift in Sources */,
 				04C4EE3C2E6785A500C1BAF0 /* BTVisaCheckoutAnalytics_Tests.swift in Sources */,
@@ -3937,6 +3942,7 @@
 				4585707A2C34B1E1009CEF7A /* MockClientAuthorization.swift in Sources */,
 				A908436624FD8791004134CA /* BTConfiguration_Tests.swift in Sources */,
 				BE178DA328B52740005B9C09 /* BTClientToken_Tests.swift in Sources */,
+				04E5EDEB2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */,
 				428F976626727333001042E1 /* BTMockOpenURLContext.m in Sources */,
 				A9E5C23424FD6FAE00EE691F /* BTAPIClient_Tests.swift in Sources */,
 				8053F05729FAD4790076F988 /* Encodable+Dictionary_Tests.swift in Sources */,
