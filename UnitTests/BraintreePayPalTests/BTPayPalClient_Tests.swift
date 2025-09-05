@@ -1243,7 +1243,7 @@ class BTPayPalClient_Tests: XCTestCase {
     
     func testTokenize_whenDefaultBrowserSwitchSucceeds_sendsDefaultBrowserStartedAnalytics() {
         let fakeApplication = FakeApplication()
-        fakeApplication.cannedOpenURLSuccess = false
+        fakeApplication.cannedOpenURLSuccessPerCall = [1: false, 2: true]
         payPalClient.application = fakeApplication
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -1258,6 +1258,7 @@ class BTPayPalClient_Tests: XCTestCase {
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.appSwitchFailed))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserSucceeded))
     }
     
     func testTokenize_whenDefaultBrowserSwitchFails_sendsDefaultBrowserFailedAnalytics() {

@@ -10,13 +10,15 @@ public class FakeApplication: URLOpener {
     public var canOpenURLWhitelist: [URL] = []
     public var openCallCount = 0
     public var lastOpenOptions: [UIApplication.OpenExternalURLOptionsKey : Any]? = nil
+    public var cannedOpenURLSuccessPerCall: [Int: Bool] = [:]
 
     public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completion: ((Bool) -> Void)?) {
         lastOpenURL = url
         lastOpenOptions = options
         openURLWasCalled = true
         openCallCount += 1
-        completion?(cannedOpenURLSuccess)
+        let success = cannedOpenURLSuccessPerCall[openCallCount] ?? cannedOpenURLSuccess
+        completion?(success)
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
