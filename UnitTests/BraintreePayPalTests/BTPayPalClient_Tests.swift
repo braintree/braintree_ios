@@ -1241,7 +1241,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
     }
     
-    func testTokenize_whenDefaultBrowserSwitchSucceeds_sendsDefaultBrowserStartedAnalytics() {
+    func testTokenize_whenDefaultBrowserSwitchSucceeds_sendsDefaultBrowserSucceededAnalytics() {
         let fakeApplication = FakeApplication()
         fakeApplication.cannedOpenURLSuccessPerCall = [1: false, 2: true]
         payPalClient.application = fakeApplication
