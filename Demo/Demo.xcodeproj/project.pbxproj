@@ -327,7 +327,6 @@
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
 				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
-				04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -440,6 +439,7 @@
 				A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */,
 				A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */,
 				80581A752553187800006F53 /* Venmo UI Tests */,
+				04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */,
 			);
 			path = "UI Tests";
 			sourceTree = "<group>";
