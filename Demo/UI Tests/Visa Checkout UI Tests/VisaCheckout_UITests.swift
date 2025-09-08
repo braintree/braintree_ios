@@ -74,55 +74,16 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
         zipCodeField.forceTapElement()
         zipCodeField.typeText("94588")
 
-        let countryField = app.textFields["Country/Region, filters as you type, 219 items"]
-        countryField.forceTapElement()
-        countryField.typeText("United States of America")
-        sleep(2)
+        let mobileNumber = app.textFields["Mobile Number We may send a one-time code to this number to verify it's you. Message and data rates may apply."]
+        let mobileNumberCoordinates = mobileNumber.coordinate(withNormalizedOffset: CGVector(dx: 50.0, dy: 0.0))
 
-//        let mobileNumber = app.textFields["Mobile Number We may send a one-time code to this number to verify it's you. Message and data rates may apply."]
-        
 //        let mobileNumber = app.textFields.containing(NSPredicate(format: "label CONTAINS[c] %@", "Mobile Number")).firstMatch
-//        print(XCUIApplication().debugDescription)
-//        mobileNumber.forceTapElement()
-//        mobileNumber.typeText("864-275-2333")
-//        sleep(2)
+//        print("XYZ: \(XCUIApplication().debugDescription)")
+//        mobileNumber.tap()
+        // coordinate(withNormalizedOffset: CGVector(dx: 30.0, dy: 0.0))
 
-        let byContainsLabel = webView.textFields.containing(NSPredicate(format: "label CONTAINS[c] %@", "Mobile Number")).firstMatch
-
-        let byExactLongLabel = webView.textFields["Mobile Number We may send a one-time code to this number to verify it's you. Message and data rates may apply."]
-
-        // The placeholder often shows up as `value` when empty. Try that too.
-        let byPlaceholderValue = webView.textFields.containing(
-            NSPredicate(format: "value CONTAINS[c] %@", "Mobile Number")
-        ).firstMatch
-
-        // 4) Pick the first that exists
-        let mobileFieldCandidates: [XCUIElement] = [byContainsLabel, byExactLongLabel, byPlaceholderValue]
-        guard let mobileField = mobileFieldCandidates.first(where: { $0.exists }) else {
-            XCTFail("Could not find Mobile Number field with any strategy")
-            return
-        }
-
-        // 5) Ensure it’s visible/hittable. Scroll the webView if needed.
-        func scrollIntoViewIfNeeded(_ element: XCUIElement, in scrollable: XCUIElement) {
-            var attempts = 0
-            while !element.isHittable && attempts < 6 {
-                scrollable.swipeUp()
-                attempts += 1
-            }
-        }
-
-        scrollIntoViewIfNeeded(mobileField, in: webView)
-        XCTAssertTrue(mobileField.waitForExistence(timeout: 5), "Mobile Number field never existed")
-        mobileField.forceTapElement()
-        mobileField.typeText("864-275-2333")
-
-        // Dismiss keyboard if necessary
-        if app.keyboards.keys["Done"].exists {
-            app.keyboards.keys["Done"].tap()
-        }
-
-        app.keyboards.keys["Done"].tap()
+        mobileNumberCoordinates.tap()
+//        mobileNumber.typeText("8642752333")
         sleep(2)
 
         let emailAddressField = app.textFields["Email Address"]
