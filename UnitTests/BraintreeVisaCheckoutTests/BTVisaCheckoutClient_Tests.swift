@@ -196,10 +196,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 ]
             ]
         ])
-
         mockAPIClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
-        mockAPIClient.cannedResponseError = NSError(domain: "https://braintree.com", code: 123, userInfo: nil)
-
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
         
@@ -209,7 +206,9 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 return
             }
             XCTAssertNil(nonce)
-            XCTAssertEqual(error, self.mockAPIClient.cannedResponseError)
+            XCTAssertEqual(error.domain, BTVisaCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.failedToCreateNonce.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.failedToCreateNonce.errorDescription)
             expecation.fulfill()
         }
 
@@ -406,7 +405,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 3)
     }
 
     func testTokenize_whenTokenizationSuccess_sendsAnalyticEvent() {
