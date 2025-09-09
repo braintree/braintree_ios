@@ -370,16 +370,12 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "tokenization success")
 
         client.tokenize(statusCode: .statusSuccess, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
-            if error == nil {
-                XCTAssertNil(error)
-                return
-            }
-
             guard let nonce else {
                 XCTFail("Expected a nonce")
                 return
             }
 
+            XCTAssertNil(error)
             XCTAssertEqual(nonce.type, "Visa")
             XCTAssertEqual(nonce.nonce, "123456-12345-12345-a-adfa")
             XCTAssertEqual(nonce.lastTwo, "11")
@@ -406,6 +402,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 3)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
     }
 
     func testTokenize_whenTokenizationSuccess_sendsAnalyticEvent() {
