@@ -8,6 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */; };
+		04E5EE0E2E7006AD009E6BEF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04E5EE0C2E7006AD009E6BEF /* Info.plist */; };
+		04E5EE0F2E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE0A2E7006AD009E6BEF /* VisaCheckout_UITests.swift */; };
+		04E5EE102E7006AD009E6BEF /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFE2E7006AD009E6BEF /* BTUITest.swift */; };
+		04E5EE112E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE032E7006AD009E6BEF /* PayPal_Checkout_UITests.swift */; };
+		04E5EE122E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE062E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift */; };
+		04E5EE132E7006AD009E6BEF /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE082E7006AD009E6BEF /* Venmo_UITests.swift */; };
+		04E5EE142E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE012E7006AD009E6BEF /* PayPalMessaging_UITests.swift */; };
+		04E5EE152E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE042E7006AD009E6BEF /* PayPal_Vault_UITests.swift */; };
+		04E5EE162E7006AD009E6BEF /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFF2E7006AD009E6BEF /* DateGenerator.swift */; };
+		04E5EE172E7006AD009E6BEF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04E5EE0C2E7006AD009E6BEF /* Info.plist */; };
+		04E5EE182E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE0A2E7006AD009E6BEF /* VisaCheckout_UITests.swift */; };
+		04E5EE192E7006AD009E6BEF /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFE2E7006AD009E6BEF /* BTUITest.swift */; };
+		04E5EE1A2E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE032E7006AD009E6BEF /* PayPal_Checkout_UITests.swift */; };
+		04E5EE1B2E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE062E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift */; };
+		04E5EE1C2E7006AD009E6BEF /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE082E7006AD009E6BEF /* Venmo_UITests.swift */; };
+		04E5EE1D2E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE012E7006AD009E6BEF /* PayPalMessaging_UITests.swift */; };
+		04E5EE1E2E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE042E7006AD009E6BEF /* PayPal_Vault_UITests.swift */; };
+		04E5EE1F2E7006AD009E6BEF /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFF2E7006AD009E6BEF /* DateGenerator.swift */; };
+		04E5EE202E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE0A2E7006AD009E6BEF /* VisaCheckout_UITests.swift */; };
+		04E5EE212E7006AD009E6BEF /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFE2E7006AD009E6BEF /* BTUITest.swift */; };
+		04E5EE222E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE032E7006AD009E6BEF /* PayPal_Checkout_UITests.swift */; };
+		04E5EE232E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE062E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift */; };
+		04E5EE242E7006AD009E6BEF /* Venmo_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE082E7006AD009E6BEF /* Venmo_UITests.swift */; };
+		04E5EE252E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE012E7006AD009E6BEF /* PayPalMessaging_UITests.swift */; };
+		04E5EE262E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE042E7006AD009E6BEF /* PayPal_Vault_UITests.swift */; };
+		04E5EE272E7006AD009E6BEF /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDFF2E7006AD009E6BEF /* DateGenerator.swift */; };
+		04E5EE282E7006AD009E6BEF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04E5EE0C2E7006AD009E6BEF /* Info.plist */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -135,6 +162,15 @@
 
 /* Begin PBXFileReference section */
 		0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckoutViewController.swift; sourceTree = "<group>"; };
+		04E5EDFE2E7006AD009E6BEF /* BTUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
+		04E5EDFF2E7006AD009E6BEF /* DateGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
+		04E5EE012E7006AD009E6BEF /* PayPalMessaging_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalMessaging_UITests.swift; sourceTree = "<group>"; };
+		04E5EE032E7006AD009E6BEF /* PayPal_Checkout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Checkout_UITests.swift; sourceTree = "<group>"; };
+		04E5EE042E7006AD009E6BEF /* PayPal_Vault_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Vault_UITests.swift; sourceTree = "<group>"; };
+		04E5EE062E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
+		04E5EE082E7006AD009E6BEF /* Venmo_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_UITests.swift; sourceTree = "<group>"; };
+		04E5EE0A2E7006AD009E6BEF /* VisaCheckout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckout_UITests.swift; sourceTree = "<group>"; };
+		04E5EE0C2E7006AD009E6BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -270,6 +306,70 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04E5EE002E7006AD009E6BEF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EDFE2E7006AD009E6BEF /* BTUITest.swift */,
+				04E5EDFF2E7006AD009E6BEF /* DateGenerator.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		04E5EE022E7006AD009E6BEF /* PayPal Messaging UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE012E7006AD009E6BEF /* PayPalMessaging_UITests.swift */,
+			);
+			path = "PayPal Messaging UI Tests";
+			sourceTree = "<group>";
+		};
+		04E5EE052E7006AD009E6BEF /* PayPal UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE032E7006AD009E6BEF /* PayPal_Checkout_UITests.swift */,
+				04E5EE042E7006AD009E6BEF /* PayPal_Vault_UITests.swift */,
+			);
+			path = "PayPal UI Tests";
+			sourceTree = "<group>";
+		};
+		04E5EE072E7006AD009E6BEF /* ThreeDSecure UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE062E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift */,
+			);
+			path = "ThreeDSecure UI Tests";
+			sourceTree = "<group>";
+		};
+		04E5EE092E7006AD009E6BEF /* Venmo UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE082E7006AD009E6BEF /* Venmo_UITests.swift */,
+			);
+			path = "Venmo UI Tests";
+			sourceTree = "<group>";
+		};
+		04E5EE0B2E7006AD009E6BEF /* Visa Checkout UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE0A2E7006AD009E6BEF /* VisaCheckout_UITests.swift */,
+			);
+			path = "Visa Checkout UI Tests";
+			sourceTree = "<group>";
+		};
+		04E5EE0D2E7006AD009E6BEF /* UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04E5EE002E7006AD009E6BEF /* Helpers */,
+				04E5EE022E7006AD009E6BEF /* PayPal Messaging UI Tests */,
+				04E5EE052E7006AD009E6BEF /* PayPal UI Tests */,
+				04E5EE072E7006AD009E6BEF /* ThreeDSecure UI Tests */,
+				04E5EE092E7006AD009E6BEF /* Venmo UI Tests */,
+				04E5EE0B2E7006AD009E6BEF /* Visa Checkout UI Tests */,
+				04E5EE0C2E7006AD009E6BEF /* Info.plist */,
+			);
+			path = "UI Tests";
+			sourceTree = "<group>";
+		};
 		42456E3B25474B620018374E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +422,7 @@
 				A9C4E08024EC2A70002F6FF2 /* Application */,
 				42C574AC25FA66F9008B3681 /* MockVenmo */,
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
+				04E5EE0D2E7006AD009E6BEF /* UI Tests */,
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
 			);
@@ -623,6 +724,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E5EE172E7006AD009E6BEF /* Info.plist in Resources */,
 				42C574BA25FA66FB008B3681 /* LaunchScreen.storyboard in Resources */,
 				42C574B725FA66FB008B3681 /* Assets.xcassets in Resources */,
 				42C574B525FA66F9008B3681 /* Main.storyboard in Resources */,
@@ -633,6 +735,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E5EE0E2E7006AD009E6BEF /* Info.plist in Resources */,
 				A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
 				A0988FF924DB44B20095EEEE /* Images.xcassets in Resources */,
@@ -643,6 +746,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E5EE282E7006AD009E6BEF /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,6 +806,14 @@
 				42C574B225FA66F9008B3681 /* ViewController.swift in Sources */,
 				42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */,
 				42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */,
+				04E5EE182E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */,
+				04E5EE192E7006AD009E6BEF /* BTUITest.swift in Sources */,
+				04E5EE1A2E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */,
+				04E5EE1B2E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */,
+				04E5EE1C2E7006AD009E6BEF /* Venmo_UITests.swift in Sources */,
+				04E5EE1D2E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */,
+				04E5EE1E2E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */,
+				04E5EE1F2E7006AD009E6BEF /* DateGenerator.swift in Sources */,
 				42C574B025FA66F9008B3681 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -731,6 +843,14 @@
 				57108A152832E789004EB870 /* PayPalNativeCheckoutViewController.swift in Sources */,
 				BEBD52832AAB62FB005D6687 /* ApplePayViewController.swift in Sources */,
 				BEAAAD052970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift in Sources */,
+				04E5EE0F2E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */,
+				04E5EE102E7006AD009E6BEF /* BTUITest.swift in Sources */,
+				04E5EE112E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */,
+				04E5EE122E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */,
+				04E5EE132E7006AD009E6BEF /* Venmo_UITests.swift in Sources */,
+				04E5EE142E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */,
+				04E5EE152E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */,
+				04E5EE162E7006AD009E6BEF /* DateGenerator.swift in Sources */,
 				809E86A62AD00AF4004998B0 /* AppDelegate.swift in Sources */,
 				8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */,
 				0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */,
@@ -746,6 +866,14 @@
 				A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */,
 				80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */,
 				BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */,
+				04E5EE202E7006AD009E6BEF /* VisaCheckout_UITests.swift in Sources */,
+				04E5EE212E7006AD009E6BEF /* BTUITest.swift in Sources */,
+				04E5EE222E7006AD009E6BEF /* PayPal_Checkout_UITests.swift in Sources */,
+				04E5EE232E7006AD009E6BEF /* ThreeDSecure_V2_UITests.swift in Sources */,
+				04E5EE242E7006AD009E6BEF /* Venmo_UITests.swift in Sources */,
+				04E5EE252E7006AD009E6BEF /* PayPalMessaging_UITests.swift in Sources */,
+				04E5EE262E7006AD009E6BEF /* PayPal_Vault_UITests.swift in Sources */,
+				04E5EE272E7006AD009E6BEF /* DateGenerator.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
