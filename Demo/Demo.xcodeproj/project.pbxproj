@@ -324,7 +324,6 @@
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
-				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -334,6 +333,7 @@
 				A0988E4924DB43DC0095EEEE /* Demo.app */,
 				A9B5ABDE24EB2A2200A4E1C8 /* UITests.xctest */,
 				42C574AB25FA66F9008B3681 /* MockVenmo.app */,
+				A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
