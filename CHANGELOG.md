@@ -1,6 +1,11 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeShopperInsights (BETA)
+  * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
+  * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
+  * Add `generateCustomerRecommendations(request:sessionID:)` to `BTShopperInsightsClientV2`
+  * Add `BTPageType.paymentMethodSelection` and `BTPageType.paymentMethodAddition`
 * BraintreePayPal
   * Send `application_state` to FPTI for tracking UIApplication state
 
