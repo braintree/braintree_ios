@@ -116,7 +116,6 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-
         guard
             let callID = callID,
             let encryptedKey = encryptedKey,

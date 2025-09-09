@@ -25,6 +25,10 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
     /// 5. Visa Checkout is disabled in the Braintree Control Panel.
     case disabled
 
+    public static var errorDomain: String {
+        "com.braintreepayments.BTVisaCheckoutErrorDomain"
+    }
+
     public var errorCode: Int {
         rawValue
     }

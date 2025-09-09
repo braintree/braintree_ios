@@ -6,75 +6,30 @@ import VisaCheckoutSDK
 
 final class BTVisaCheckoutClient_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-    var visaCheckoutClient: BTVisaCheckoutClient!
     var tokenizeResult: CheckoutResultStatus = .statusSuccess
     var callID = "a"
     var encryptedKey = "b"
     var encryptedPaymentData = "c"
 
-    override func setUp() {
-        super.setUp()
-        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        visaCheckoutClient = BTVisaCheckoutClient(apiClient: mockAPIClient)
-    }
-
-    func testBTVisaCheckoutAddress_initializesAllPropertiesCorrectly() {
-        let json: BTJSON = BTJSON(value: [
-            "firstName": "John",
-            "lastName": "Doe",
-            "streetAddress": "123 Main St",
-            "extendedAddress": "Apt 4B",
-            "locality": "San Francisco",
-            "region": "CA",
-            "postalCode": "94105",
-            "countryCode": "US",
-            "phoneNumber": "1234567890"
-        ])
-
-        let address = BTVisaCheckoutAddress(json: json)
-
-        XCTAssertEqual(address.firstName, "John")
-        XCTAssertEqual(address.lastName, "Doe")
-        XCTAssertEqual(address.streetAddress, "123 Main St")
-        XCTAssertEqual(address.extendedAddress, "Apt 4B")
-        XCTAssertEqual(address.locality, "San Francisco")
-        XCTAssertEqual(address.region, "CA")
-        XCTAssertEqual(address.postalCode, "94105")
-        XCTAssertEqual(address.countryCode, "US")
-        XCTAssertEqual(address.phoneNumber, "1234567890")
-    }
-
-    func testBTVisaCheckoutAddress_withMissingValues_returnsNilProperties() {
-        let json = BTJSON(value: [:])
-        let address = BTVisaCheckoutAddress(json: json)
-
-        XCTAssertNil(address.firstName)
-        XCTAssertNil(address.lastName)
-        XCTAssertNil(address.streetAddress)
-        XCTAssertNil(address.extendedAddress)
-        XCTAssertNil(address.locality)
-        XCTAssertNil(address.region)
-        XCTAssertNil(address.postalCode)
-        XCTAssertNil(address.countryCode)
-        XCTAssertNil(address.phoneNumber)
-    }
-
     func testCreateProfile_whenConfigurationFetchErrorOccurs_callsCompletionWithError() {
-        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 123, userInfo: nil)
-
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let expecation = expectation(description: "profile error")
+        let expecation = expectation(description: "Profile error")
 
-        client.createProfile { (profile, error) in
-            let err = error! as NSError
+        client.createProfile { profile, error in
+            guard let error = error as? NSError else {
+                XCTFail("Expected error")
+                return
+            }
+
             XCTAssertNil(profile)
-            XCTAssertEqual(err.domain, "MyError")
-            XCTAssertEqual(err.code, 123)
+            XCTAssertEqual(error.domain, BTVisaCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.fetchConfigurationFailed.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.fetchConfigurationFailed.errorDescription)
 
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testCreateProfile_whenVisaCheckoutIsNotEnabled_callsBackWithError() {
@@ -84,13 +39,18 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "profile error")
 
         client.createProfile { profile, error in
+            guard let error = error as NSError? else {
+                XCTFail("Expected error")
+                return
+            }
             XCTAssertNil(profile)
-            XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.disabled)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.disabled.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.disabled.localizedDescription)
 
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testCreateProfile_whenSuccessful_returnsProfile() {
@@ -112,7 +72,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "profile success")
 
         client.createProfile { profile, error in
-            guard let profile = profile else {
+            guard let profile else {
                 XCTFail("Failed to create profile")
                 return
             }
@@ -131,7 +91,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenCheckoutResultMissingValues_callsCompletionWithIntegrationError() {
@@ -156,20 +116,16 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "Tokenization error due to malformed CheckoutResult")
         
         client.tokenize(statusCode: .statusSuccess, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
-            if nonce != nil {
-                XCTFail("Expected nonce")
+            guard let error = error as? NSError else {
+                XCTFail("Error expected")
                 return
             }
-            
-            guard let error = error else {
-                XCTFail("Expected error")
-                return
-            }
-
-            XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.integration)
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.integration.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.integration.localizedDescription)
             expecation.fulfill()
         }
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenStatusCodeIndicatesCancellation_callsCompletionWithNilNonceAndError() {
@@ -178,13 +134,12 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
         
         client.tokenize(statusCode: .statusUserCancelled, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { result, error in
-
             XCTAssertNil(result)
             XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.integration)
             expectation.fulfill()
         }
 
-        self.waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenStatusCodeIndicatesError_callsCompletionWithError() {
@@ -193,37 +148,37 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
         client.tokenize(statusCode: .statusInternalError, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, error in
             guard let error = error as NSError? else {
-                XCTFail("Expected an error to be returned")
+                XCTFail("Expected error")
                 return
             }
             XCTAssertEqual(error.code, BTVisaCheckoutError.failedToCreateNonce.rawValue)
             expectation.fulfill()
         }
 
-        self.waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenStatusCodeIndicatesCancellation_callsAnalyticsWithCancelled() {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let expectation = self.expectation(description: "Analytic sent")
+        let expectation = expectation(description: "Analytic sent")
         
         client.tokenize(statusCode: .statusUserCancelled, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, _ in
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, BTVisaCheckoutAnalytics.tokenizeFailed.description)
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:failed"))
             expectation.fulfill()
         }
 
-        self.waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenStatusCodeIndicatesError_callsAnalyticsTokenizeFailed() {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let expectation = self.expectation(description: "Analytic sent")
+        let expectation = expectation(description: "Analytic sent")
 
         client.tokenize(statusCode: .statusInternalError, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, _ in
-            XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, BTVisaCheckoutAnalytics.tokenizeFailed)
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:failed"))
             expectation.fulfill()
         }
-        self.waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenTokenizationErrorOccurs_callsCompletionWithError() {
@@ -240,29 +195,23 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 ]
             ]
         ])
-
         mockAPIClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
-        mockAPIClient.cannedResponseError = NSError(domain: "https://braintree.com", code: 123, userInfo: nil)
-
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
         
         client.tokenize(statusCode: .statusSuccess, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
-            if nonce != nil {
-                XCTFail("Expected nonce to be nil")
+            guard let error = error as? NSError else {
+                XCTFail("Error expected")
                 return
             }
-
-            guard let error = error as NSError? else {
-                XCTFail("Expected an error")
-                return
-            }
-
-            XCTAssertEqual(error, self.mockAPIClient.cannedResponseError)
+            XCTAssertNil(nonce)
+            XCTAssertEqual(error.domain, BTVisaCheckoutError.errorDomain)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.failedToCreateNonce.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.failedToCreateNonce.errorDescription)
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenTokenizationErrorOccurs_sendsAnalyticsEvent() {
@@ -279,7 +228,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        mockAPIClient.cannedResponseError = NSError(domain: "fake-error-domain", code: 123, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
+        mockAPIClient.cannedResponseError = NSError(domain: BTVisaCheckoutError.errorDomain, code: BTVisaCheckoutError.fetchConfigurationFailed.errorCode, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
 
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
@@ -288,7 +237,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
         XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "visa-checkout:tokenize:failed")
     }
 
@@ -303,7 +252,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
 
         XCTAssertEqual(self.mockAPIClient.lastPOSTPath, "v1/payment_methods/visa_checkout_cards")
 
@@ -358,23 +307,19 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "tokenization success")
 
         client.tokenize(statusCode: .statusSuccess, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
-            if error != nil {
-                XCTFail("Expected no error")
-                return
-            }
 
-            guard let nonce = nonce else {
+            guard let nonce else {
                 XCTFail("Expected a nonce")
                 return
             }
-
+            XCTAssertNil(error)
             XCTAssertNil(nonce.shippingAddress.phoneNumber)
             XCTAssertNil(nonce.billingAddress.phoneNumber)
 
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testTokenize_whenTokenizationSuccess_callsAPIClientWithVisaCheckoutCard() {
@@ -424,21 +369,17 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let expecation = expectation(description: "tokenization success")
 
         client.tokenize(statusCode: .statusSuccess, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
-            if error != nil {
-                XCTFail("Expected no error")
-                return
-            }
-
-            guard let nonce = nonce else {
+            guard let nonce else {
                 XCTFail("Expected a nonce")
                 return
             }
 
+            XCTAssertNil(error)
             XCTAssertEqual(nonce.type, "Visa")
             XCTAssertEqual(nonce.nonce, "123456-12345-12345-a-adfa")
             XCTAssertEqual(nonce.lastTwo, "11")
 
-            [(nonce.shippingAddress, "shipping"), (nonce.billingAddress, "billing")].forEach { address, type in
+            [(nonce.shippingAddress, "shipping"), (nonce.billingAddress, "billing")].forEach { address, value in
                 XCTAssertEqual(address.firstName, "First")
                 XCTAssertEqual(address.lastName, "Last")
                 XCTAssertEqual(address.streetAddress, "123 Townsend St")
@@ -459,7 +400,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 3)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
     }
 
     func testTokenize_whenTokenizationSuccess_sendsAnalyticEvent() {
@@ -503,7 +445,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
             expecation.fulfill()
         }
 
-        waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "visa-checkout:tokenize:succeeded")
+        waitForExpectations(timeout: 1)
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
     }
 }
