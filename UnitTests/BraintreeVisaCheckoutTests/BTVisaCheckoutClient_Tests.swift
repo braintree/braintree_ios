@@ -135,7 +135,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         
         client.tokenize(statusCode: .statusUserCancelled, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { result, error in
             XCTAssertNil(result)
-            XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.canceled)
+            XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.integration)
             expectation.fulfill()
         }
 
@@ -151,8 +151,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 XCTFail("Expected error")
                 return
             }
-            XCTAssertEqual(error.code, BTVisaCheckoutError.checkoutUnsuccessful.errorCode)
-            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.checkoutUnsuccessful.localizedDescription)
+            XCTAssertEqual(error.code, BTVisaCheckoutError.failedToCreateNonce.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTVisaCheckoutError.failedToCreateNonce.localizedDescription)
             expectation.fulfill()
         }
 
