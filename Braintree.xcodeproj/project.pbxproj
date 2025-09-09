@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0453F7AD2E3D5E7900849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
-		0453F7B02E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
 		046547B02DDE874F0054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
 		046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */; };
 		046547CE2DDE8B200054B80A /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
@@ -28,6 +27,8 @@
 		04E17E7C2E578CFA003EAD29 /* BTVisaCheckoutAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E17E7B2E578CF5003EAD29 /* BTVisaCheckoutAnalytics.swift */; };
 		04E5EDEB2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */; };
 		04E5EDEC2E6B88CA009E6BEF /* BTVisaCheckoutAddress_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EDEA2E6B88C4009E6BEF /* BTVisaCheckoutAddress_Tests.swift */; };
+		04E5EDF72E700336009E6BEF /* VisaCheckoutSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; };
+		04E5EDF82E700336009E6BEF /* VisaCheckoutSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04C652832E2B049A00C879A0 /* VisaCheckoutSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		09357DCB2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09357DCA2A2FBEC10096D449 /* BTVenmoLineItem_Tests.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
@@ -775,6 +776,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		04E5EDF92E700336009E6BEF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04E5EDF82E700336009E6BEF /* VisaCheckoutSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A9E80AA024FEF45400196BD3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1235,7 +1247,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0453F7B02E3D5E8200849AD8 /* VisaCheckoutSDK.xcframework in Frameworks */,
+				04E5EDF72E700336009E6BEF /* VisaCheckoutSDK.xcframework in Frameworks */,
 				046547F62DDE956C0054B80A /* BraintreeTestShared.framework in Frameworks */,
 				046547C02DDE8B050054B80A /* BraintreeVisaCheckout.framework in Frameworks */,
 			);
@@ -2456,6 +2468,7 @@
 				046547BB2DDE8B050054B80A /* Sources */,
 				046547BC2DDE8B050054B80A /* Frameworks */,
 				046547BD2DDE8B050054B80A /* Resources */,
+				04E5EDF92E700336009E6BEF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
