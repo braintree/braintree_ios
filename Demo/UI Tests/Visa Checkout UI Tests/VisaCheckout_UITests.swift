@@ -70,6 +70,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
     // MARK: - Helper Function
 
+    /// This function handles the different flows that can occur for new users
     private func handleNewUserScenerios(continueButton: XCUIElement) {
         if app.staticTexts["VERIFY YOUR ADDRESS"].waitForExistence(timeout: 5) {
             let recommendedButton = app.buttons["USE RECOMMENDED ADDRESS"]
