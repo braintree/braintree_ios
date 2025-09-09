@@ -139,7 +139,7 @@ internal extension XCUIApplication {
         firstName: String? = nil,
         lastName: String? = nil,
         addressLine1: String,
-        city: String,
+        city: String? = nil,
         state: String,
         zipCode: String,
         mobileNumber: String? = nil,
@@ -152,7 +152,7 @@ internal extension XCUIApplication {
         addressLine1TextField.forceTapElement()
         addressLine1TextField.typeText(addressLine1)
         cityTextField.forceTapElement()
-        cityTextField.typeText(city)
+        cityTextField.typeText(city ?? "")
         stateTextField.forceTapElement()
         stateTextField.typeText(state)
         zipCodeTextField.forceTapElement()
@@ -162,7 +162,7 @@ internal extension XCUIApplication {
         swipeUp()
         emailAddressTextField.forceTapElement()
         emailAddressTextField.typeText(emailAddress ?? "")
-        swipeUp()
+        tap()
     }
 }
 

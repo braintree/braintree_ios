@@ -19,10 +19,10 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
         let continueButton = app.buttons["CONTINUE"]
         let expirationDate = UITestDateGenerator.sharedInstance.futureDate()
 
-        XCTAssertTrue(visaButton.waitForExistence(timeout: 30))
+        XCTAssertTrue(visaButton.waitForExistence(timeout: 60))
         visaButton.forceTapElement()
 
-        XCTAssertTrue(app.webViews.buttons["New user?"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.webViews.buttons["New user?"].waitForExistence(timeout: 10))
         app.webViews.buttons["New user?"].forceTapElement()
 
         app.enterVisaCardDetailsWith(cardNumber: "4012000033330026", expirationDate: expirationDate)
@@ -34,14 +34,13 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
             firstName: "Joe",
             lastName: "Doe",
             addressLine1: "123 Main Street",
-            city: "Pleasanton",
             state: "CA",
             zipCode: "94533",
             mobileNumber: "8642752333",
             emailAddress: "joedoe@example.com"
         )
-
-        waitForElementToAppear(continueButton)
+    
+        XCTAssertTrue(app.buttons["CONTINUE"].waitForExistence(timeout: 10))
         continueButton.forceTapElement()
         sleep(5)
 
@@ -63,7 +62,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
         /// Taps the middle of the cancel button to avoid issues where the "X" is not tappable
         let closeButtonCoordinate = app.buttons["Cancel and return to My App"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-        closeButtonCoordinate.tap()
+        closeButtonCoordinate.doubleTap()
 
         XCTAssertTrue(visaButton.waitForExistence(timeout: 30))
     }
@@ -72,20 +71,20 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
     /// This function handles the different flows that can occur for new users
     private func handleNewUserScenerios(continueButton: XCUIElement) {
-        if app.staticTexts["VERIFY YOUR ADDRESS"].waitForExistence(timeout: 5) {
+        if app.staticTexts["VERIFY YOUR ADDRESS"].waitForExistence(timeout: 30) {
             let recommendedButton = app.buttons["USE RECOMMENDED ADDRESS"]
             XCTAssertTrue(recommendedButton.waitForExistence(timeout: 10))
             recommendedButton.forceTapElement()
         }
 
         let welcomeBackText = app.staticTexts["Welcome Back"]
-        if welcomeBackText.exists {
+        if welcomeBackText.waitForExistence(timeout: 30) {
             let continueAsGuest = app.buttons["CONTINUE AS GUEST"]
             XCTAssertTrue(continueAsGuest.waitForExistence(timeout: 10))
             continueAsGuest.forceTapElement()
         }
 
-        if app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 5) {
+        if app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 30) {
             app.enterBillingAddress(addressLine1: "123 Main Street", city: "Pleasanton", state: "CA", zipCode: "94533")
             continueButton.forceTapElement()
         }
