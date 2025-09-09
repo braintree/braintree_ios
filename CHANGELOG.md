@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
   * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
