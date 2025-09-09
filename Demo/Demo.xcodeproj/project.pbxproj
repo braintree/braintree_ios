@@ -64,6 +64,7 @@
 		A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */; };
 		A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */; };
 		A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */; };
+		B88F9CCE2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F9CCD2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift */; };
 		BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; };
 		BE35FCD92A1BD162008F0326 /* BraintreeLocalPayment.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */; };
@@ -191,6 +192,7 @@
 		A9C4E07A24EC290F002F6FF2 /* PayPal_Vault_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Vault_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_V2_UITests.swift; sourceTree = "<group>"; };
 		A9C4E07E24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
+		B88F9CCD2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopperInsightsViewControllerV2.swift; sourceTree = "<group>"; };
 		BE24C66A28E490F30067B11A /* PayPalCheckout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PayPalCheckout.xcframework; path = ../Frameworks/XCFrameworks/PayPalCheckout.xcframework; sourceTree = "<group>"; };
 		BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeLocalPayment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainmentViewController.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
 				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
+				B88F9CCD2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift */,
 				BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */,
 				80D36DED2A7967F20035380E /* VenmoViewController.swift */,
 				0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */,
@@ -714,6 +717,7 @@
 				BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */,
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* SEPADirectDebitViewController.swift in Sources */,
+				B88F9CCE2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift in Sources */,
 				BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
