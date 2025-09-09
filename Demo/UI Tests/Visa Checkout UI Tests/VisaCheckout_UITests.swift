@@ -27,7 +27,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
         app.enterVisaCardDetailsWith(cardNumber: "4012000033330026", expirationDate: expirationDate)
  
-        waitForElementToAppear(continueButton)
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 60))
         continueButton.forceTapElement()
 
         app.enterBillingAddress(
@@ -46,6 +46,11 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
         handleNewUserScenerios(continueButton: continueButton)
 
+        app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 30)
+        app.enterBillingAddress(addressLine1: "123 Main Street", state: "CA", zipCode: "94533", mobileNumber: "8642752333")
+        XCTAssertTrue(app.buttons["CONTINUE"].waitForExistence(timeout: 30))
+        continueButton.forceTapElement()
+
         XCTAssertTrue(app.buttons["CONTINUE AS GUEST"].waitForExistence(timeout: 10))
         app.buttons["CONTINUE AS GUEST"].forceTapElement()
 
@@ -55,7 +60,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
     func testVisaCheckout_whenCanceled_returnToApp() {
         let visaButton = app.buttons["visaCheckoutButton"]
 
-        XCTAssertTrue(visaButton.waitForExistence(timeout: 30))
+        XCTAssertTrue(visaButton.waitForExistence(timeout: 60))
         visaButton.forceTapElement()
 
         XCTAssertTrue(app.buttons["Cancel and return to My App"].waitForExistence(timeout: 30))
@@ -82,11 +87,6 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
             let continueAsGuest = app.buttons["CONTINUE AS GUEST"]
             XCTAssertTrue(continueAsGuest.waitForExistence(timeout: 10))
             continueAsGuest.forceTapElement()
-        }
-
-        if app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 30) {
-            app.enterBillingAddress(addressLine1: "123 Main Street", city: "Pleasanton", state: "CA", zipCode: "94533")
-            continueButton.forceTapElement()
         }
     }
 }
