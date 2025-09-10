@@ -34,6 +34,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
             firstName: "Joe",
             lastName: "Doe",
             addressLine1: "123 Main Street",
+            city: "Pleasanton",
             state: "CA",
             zipCode: "94533",
             mobileNumber: "8642752333",
@@ -46,13 +47,14 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
 
         handleNewUserScenerios(continueButton: continueButton)
 
-        app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 30)
-        app.enterBillingAddress(addressLine1: "123 Main Street", state: "CA", zipCode: "94533", mobileNumber: "8642752333")
-        XCTAssertTrue(app.buttons["CONTINUE"].waitForExistence(timeout: 30))
-        continueButton.forceTapElement()
-
         XCTAssertTrue(app.buttons["CONTINUE AS GUEST"].waitForExistence(timeout: 10))
         app.buttons["CONTINUE AS GUEST"].forceTapElement()
+
+        app.staticTexts["ADD DELIVERY ADDRESS"].waitForExistence(timeout: 30)
+        app.enterBillingAddress(addressLine1: "123 Main Street", state: "CA", zipCode: "94533")
+        
+        XCTAssertTrue(app.buttons["CONTINUE"].waitForExistence(timeout: 30))
+        continueButton.forceTapElement()
 
         XCTAssertTrue(visaButton.waitForExistence(timeout: 60))
     }
@@ -82,7 +84,7 @@ class BraintreeVisaCheckout_UITests: XCTestCase {
             recommendedButton.forceTapElement()
         }
 
-        let welcomeBackText = app.staticTexts["Welcome Back"]
+        let welcomeBackText = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Welcome Back")).firstMatch
         if welcomeBackText.waitForExistence(timeout: 30) {
             let continueAsGuest = app.buttons["CONTINUE AS GUEST"]
             XCTAssertTrue(continueAsGuest.waitForExistence(timeout: 10))
