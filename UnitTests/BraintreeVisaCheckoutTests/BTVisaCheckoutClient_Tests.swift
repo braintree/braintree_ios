@@ -96,24 +96,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
     }
 
     func testTokenize_whenCheckoutResultMissingValues_callsCompletionWithIntegrationError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
-            "visaCheckout": [
-                "apikey": "API Key",
-                "externalClientId": "clientExternalId",
-                "supportedCardTypes": [
-                    "Visa",
-                    "MasterCard",
-                    "American Express",
-                    "Discover"
-                ]
-            ]
-        ])
-
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let encryptedKey = "b"
-        let encryptedPaymentData = "c"
-
         let expecation = expectation(description: "Tokenization error due to malformed CheckoutResult")
         
         client.tokenize(statusCode: .statusSuccess, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { nonce, error in
@@ -192,21 +175,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
     }
 
     func testTokenize_whenTokenizationErrorOccurs_callsCompletionWithError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
-            "visaCheckout": [
-                "apikey": "API Key",
-                "externalClientId": "clientExternalId",
-                "supportedCardTypes": [
-                    "Visa",
-                    "MasterCard",
-                    "American Express",
-                    "Discover"
-                ]
-            ]
-        ])
-
-        mockAPIClient.cannedHTTPURLResponse = HTTPURLResponse(url: URL(string: "any")!, statusCode: 503, httpVersion: nil, headerFields: nil)
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
         
@@ -227,22 +195,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
     }
 
     func testTokenize_whenTokenizationErrorOccurs_sendsAnalyticsEvent() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
-            "visaCheckout": [
-                "apikey": "API Key",
-                "externalClientId": "clientExternalId",
-                "supportedCardTypes": [
-                    "Visa",
-                    "MasterCard",
-                    "American Express",
-                    "Discover"
-                ]
-            ]
-        ])
-
-        mockAPIClient.cannedResponseError = NSError(domain: BTVisaCheckoutError.errorDomain, code: BTVisaCheckoutError.fetchConfigurationFailed.errorCode, userInfo: [NSLocalizedDescriptionKey:"fake-error-description"])
-
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expecation = expectation(description: "tokenization error")
 
