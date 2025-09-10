@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */; };
 		04E5EE2E2E700CF7009E6BEF /* VisaCheckout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE2C2E700CF7009E6BEF /* VisaCheckout_UITests.swift */; };
+		04E5EE352E722FF9009E6BEF /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE342E722FEE009E6BEF /* ThreeDSecure_UITests_Extensions.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -137,6 +138,7 @@
 /* Begin PBXFileReference section */
 		0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckoutViewController.swift; sourceTree = "<group>"; };
 		04E5EE2C2E700CF7009E6BEF /* VisaCheckout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckout_UITests.swift; sourceTree = "<group>"; };
+		04E5EE342E722FEE009E6BEF /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 		A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */ = {
 			isa = PBXGroup;
 			children = (
+				04E5EE342E722FEE009E6BEF /* ThreeDSecure_UITests_Extensions.swift */,
 				A9C4E07C24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift */,
 			);
 			path = "ThreeDSecure UI Tests";
@@ -738,6 +741,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04E5EE352E722FF9009E6BEF /* ThreeDSecure_UITests_Extensions.swift in Sources */,
 				42456E3F25474B620018374E /* DateGenerator.swift in Sources */,
 				A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */,
 				80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */,
