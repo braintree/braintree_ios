@@ -17,7 +17,7 @@ public class FakeApplication: URLOpener {
         lastOpenOptions = options
         openURLWasCalled = true
         openCallCount += 1
-        let success = options.isEmpty ? cannedOpenURLSuccessPerCall[.none] : cannedOpenURLSuccessPerCall[.universalLinkOnly]
+        let success = options.isEmpty ? cannedOpenURLSuccessPerCall[.none] : cannedOpenURLSuccessPerCall[.universalLinksOnly]
         completion?(success ?? cannedOpenURLSuccess)
     }
 
@@ -38,8 +38,12 @@ public class FakeApplication: URLOpener {
         cannedCanOpenURL
     }
     
+    /// Represents options for mocking URL open behavior in `FakeApplication`.
     public enum MockOpenURLOption {
-        case universalLinkOnly
+        /// Simulates opening a URL as a universal link (using `UIApplication.OpenExternalURLOptionsKey.universalLinksOnly`).
+        case universalLinksOnly
+        
+        /// Simulates opening a URL with no special options.
         case none
     }
 }
