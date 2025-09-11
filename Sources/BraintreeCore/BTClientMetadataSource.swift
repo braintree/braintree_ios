@@ -1,4 +1,5 @@
-/// :nodoc: This enum is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+/// :nodoc: This enum is exposed for internal Braintree use only. Do not use.
+/// It is not covered by Semantic Versioning and may change or be removed at any time.
 /// Source of the metadata
 @_documentation(visibility: private)
 public enum BTClientMetadataSource: Int {
@@ -18,7 +19,8 @@ public enum BTClientMetadataSource: Int {
     /// Form
     case form
 
-    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use.
+    /// It is not covered by Semantic Versioning and may change or be removed at any time.
     /// String value representing the source.
     public var stringValue: String {
         switch self {
