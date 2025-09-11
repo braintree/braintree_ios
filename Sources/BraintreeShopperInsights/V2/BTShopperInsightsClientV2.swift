@@ -19,7 +19,8 @@ public class BTShopperInsightsClientV2 {
     
     // MARK: - Private Properties
     
-    private let apiClient: BTAPIClient
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
     
     // MARK: - Initializers
     
@@ -27,8 +28,8 @@ public class BTShopperInsightsClientV2 {
     /// - Parameters:
     ///    - apiClient: A `BTAPIClient` instance.
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
     
     // MARK: - Public Methods
