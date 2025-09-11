@@ -115,8 +115,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
     func testTokenize_whenStatusCodeIndicatesCancellation_callsCompletionWithNilNonceAndError() {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let expectation = self.expectation(description: "Callback invoked")
-
+        let expectation = expectation(description: "Callback invoked")
         
         client.tokenize(statusCode: .statusUserCancelled, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { result, error in
             guard let error = error as NSError? else {
@@ -135,7 +134,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
     func testTokenize_whenStatusCodeIndicatesError_callsCompletionWithError() {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
-        let expectation = self.expectation(description: "Callback invoked")
+        let expectation = expectation(description: "Callback invoked")
 
         client.tokenize(statusCode: .statusInternalError, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, error in
             guard let error = error as NSError? else {
@@ -203,7 +202,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
-        XCTAssertEqual(self.mockAPIClient.postedAnalyticsEvents.last, "visa-checkout:tokenize:failed")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "visa-checkout:tokenize:failed")
     }
 
     func testTokenize_whenCalled_makesPOSTRequestToTokenizationEndpoint() {
@@ -219,9 +218,9 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 1)
 
-        XCTAssertEqual(self.mockAPIClient.lastPOSTPath, "v1/payment_methods/visa_checkout_cards")
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/visa_checkout_cards")
 
-        if let visaCheckoutCard = self.mockAPIClient.lastPOSTParameters?["visaCheckoutCard"] as? [String: String] {
+        if let visaCheckoutCard = mockAPIClient.lastPOSTParameters?["visaCheckoutCard"] as? [String: String] {
             XCTAssertEqual(visaCheckoutCard, [
                 "callId": "callID",
                 "encryptedKey": "encryptedKey",
@@ -366,7 +365,7 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 3)
-        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
     }
 
     func testTokenize_whenTokenizationSuccess_sendsAnalyticEvent() {
@@ -411,6 +410,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
-        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:succeeded"))
     }
 }
