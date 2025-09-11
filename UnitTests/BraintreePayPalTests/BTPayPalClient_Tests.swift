@@ -1199,6 +1199,122 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(self.payPalClient.hasOpenedURL)
         XCTAssertEqual(fakeApplication.openCallCount, 1)
     }
+    
+    func testTokenize_whenAppSwitchAttempted_usesUniversalLinksOnlyOption() {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
+        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        XCTAssertNotNil(fakeApplication.lastOpenOptions)
+        XCTAssertEqual(fakeApplication.lastOpenOptions?[.universalLinksOnly] as? NSNumber, true as NSNumber)
+    }
+    
+    func testTokenize_whenAppSwitchFails_opensInDefaultBrowserWithAnalytics() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedOpenURLSuccess = false
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
+        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        XCTAssertEqual(fakeApplication.openCallCount, 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.appSwitchFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
+    }
+    
+    func testTokenize_whenDefaultBrowserSwitchSucceeds_sendsDefaultBrowserSucceededAnalytics() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedOpenURLSuccessPerCall = [.universalLinksOnly: false, .none: true]
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
+        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        payPalClient.tokenize(vaultRequest) { _, _ in }
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.appSwitchFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserSucceeded))
+    }
+    
+    func testTokenize_whenDefaultBrowserSwitchFails_sendsDefaultBrowserFailedAnalytics() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedOpenURLSuccess = false
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "agreementSetup": [
+                "paypalAppApprovalUrl": "https://www.some-url.com/some-path?ba_token=value1"
+            ]
+        ])
+
+        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        let expectation = expectation(description: "completion block called")
+        payPalClient.tokenize(vaultRequest) { nonce, error in
+            XCTAssertNil(nonce)
+            XCTAssertNotNil(error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.appSwitchFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserFailed))
+    }
+    
+    func testTokenizeCheckout_whenAppSwitchFails_opensInDefaultBrowserWithAnalytics() {
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedOpenURLSuccess = false
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.some-url.com/some-path?token=value1",
+                "launchPayPalApp": true
+            ]
+        ])
+
+        let checkoutRequest = BTPayPalCheckoutRequest(
+            userAuthenticationEmail: "fake-pp@gmail.com",
+            enablePayPalAppSwitch: true,
+            amount: "10.00"
+        )
+        
+        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        XCTAssertEqual(fakeApplication.openCallCount, 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.appSwitchFailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.defaultBrowserStarted))
+    }
+    
     // MARK: - Analytics
 
     func testAPIClientMetadata_hasIntegrationSetToCustom() {
