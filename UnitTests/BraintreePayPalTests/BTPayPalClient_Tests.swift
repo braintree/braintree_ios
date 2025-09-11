@@ -1243,7 +1243,7 @@ class BTPayPalClient_Tests: XCTestCase {
     
     func testTokenize_whenDefaultBrowserSwitchSucceeds_sendsDefaultBrowserSucceededAnalytics() {
         let fakeApplication = FakeApplication()
-        fakeApplication.cannedOpenURLSuccessPerCall = [1: false, 2: true]
+        fakeApplication.cannedOpenURLSuccessPerCall = [.universalLinkOnly: false, .none: true]
         payPalClient.application = fakeApplication
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
