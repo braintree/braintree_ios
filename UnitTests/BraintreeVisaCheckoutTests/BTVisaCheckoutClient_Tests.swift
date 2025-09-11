@@ -132,7 +132,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expectation = self.expectation(description: "Callback invoked")
 
-        
         client.tokenize(statusCode: .statusUserCancelled, callID: nil, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { result, error in
             XCTAssertNil(result)
             XCTAssertEqual(error as! BTVisaCheckoutError, BTVisaCheckoutError.integration)
