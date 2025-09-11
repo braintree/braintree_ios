@@ -5,6 +5,7 @@
     * Add Visa Checkout to the SDK as a payment option
     * Add `BTVisaCheckoutAddress`, `BTVisaCheckoutUserData`, `BTVisaCheckoutCardNonce`, `BTVisaCheckoutClient`
     * Add `BraintreeCard` as a dependency for `BraintreeVisaCheckout` module
+## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
   * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
