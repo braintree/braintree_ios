@@ -122,7 +122,6 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
                 XCTFail("Expected error")
                 return
             }
-
             XCTAssertNil(result)
             XCTAssertEqual(error.domain, BTVisaCheckoutError.errorDomain)
             XCTAssertEqual(error.code, BTVisaCheckoutError.canceled.errorCode)
