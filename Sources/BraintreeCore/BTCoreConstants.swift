@@ -4,7 +4,7 @@ import Foundation
 @_documentation(visibility: private)
 public class BTCoreConstants: NSObject {
 
-    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time. 
     public static var braintreeSDKVersion: String = "7.0.0-beta2"
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
