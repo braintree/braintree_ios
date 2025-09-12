@@ -143,7 +143,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
 
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "5.00"
@@ -172,7 +171,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
 
         payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
 
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
@@ -188,7 +186,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     @objc func tappedPayPalVault(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Vault using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
 
         var request = BTPayPalVaultRequest()
         request.userAuthenticationEmail = emailTextField.text
@@ -230,7 +227,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         }
 
         payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
 
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
@@ -243,7 +239,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     @objc func tappedPayPalAppSwitchForCheckout(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
         
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "10.00"
@@ -256,7 +251,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         )
 
         payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
             
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
@@ -269,7 +263,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     @objc func tappedPayPalAppSwitchForVault(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
-        sender.isEnabled = false
 
         let request = BTPayPalVaultRequest(
             userAuthenticationEmail: emailTextField.text,
@@ -277,7 +270,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         )
 
         payPalClient.tokenize(request) { nonce, error in
-            sender.isEnabled = true
             
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
