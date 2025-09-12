@@ -116,6 +116,16 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
+        if statusCode == .statusUserCancelled {
+            let error = NSError(
+                domain: BTVisaCheckoutError.errorDomain,
+                code: BTVisaCheckoutError.canceled.errorCode,
+                userInfo: [NSLocalizedDescriptionKey: BTVisaCheckoutError.canceled.errorDescription]
+            )
+            completion(nil, error)
+            return
+        }
+
         guard
             let callID = callID,
             let encryptedKey = encryptedKey,
