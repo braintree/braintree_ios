@@ -158,8 +158,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
         
         client.tokenize(statusCode: .statusUserCancelled, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, _ in
             XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:failed"))
+            expectation.fulfill()
         }
-        expectation.fulfill()
         waitForExpectations(timeout: 1)
     }
 
