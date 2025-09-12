@@ -155,9 +155,8 @@ final class BTVisaCheckoutClient_Tests: XCTestCase {
     func testTokenize_whenStatusCodeIndicatesCancellation_callsAnalyticsWithCancelled() {
         let client = BTVisaCheckoutClient(apiClient: mockAPIClient)
         let expectation = expectation(description: "Analytic sent")
-        let statusCode = CheckoutResultStatus.statusUserCancelled
         
-        client.tokenize(statusCode: statusCode, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, _ in
+        client.tokenize(statusCode: .statusUserCancelled, callID: callID, encryptedKey: encryptedKey, encryptedPaymentData: encryptedPaymentData) { _, _ in
             XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains("visa-checkout:tokenize:failed"))
         }
         expectation.fulfill()

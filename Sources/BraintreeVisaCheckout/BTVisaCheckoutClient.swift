@@ -86,7 +86,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
 
         let statusCode = checkoutResult.statusCode
-        guard statusCode == .statusSuccess else {
+        guard statusCode == .statusSuccess || statusCode == .statusUserCancelled else {
             notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
             return
         }
@@ -117,7 +117,7 @@ import BraintreeCore
                 code: BTVisaCheckoutError.canceled.errorCode,
                 userInfo: [NSLocalizedDescriptionKey: BTVisaCheckoutError.canceled.errorDescription]
             )
-            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
+            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
         }
 
