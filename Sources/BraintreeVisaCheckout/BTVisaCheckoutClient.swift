@@ -112,10 +112,13 @@ import BraintreeCore
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
         if statusCode == .statusUserCancelled {
-            let _ = NSError(
+            _ = NSError(
                 domain: BTVisaCheckoutError.errorDomain,
                 code: BTVisaCheckoutError.canceled.errorCode,
-                userInfo: [NSLocalizedDescriptionKey: BTVisaCheckoutError.canceled.errorDescription ?? "Visa Checkout flow was canceled by the user."]
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        BTVisaCheckoutError.canceled.errorDescription ?? "Visa Checkout flow was canceled by the user."
+                ]
             )
             notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
