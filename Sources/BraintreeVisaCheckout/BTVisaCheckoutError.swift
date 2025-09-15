@@ -33,7 +33,7 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
         rawValue
     }
 
-    public var errorDescription: String? {
+    public var errorDescription: String {
         switch self {
         case .canceled:
             return "Visa Checkout flow was canceled by the user."

@@ -111,24 +111,21 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        if statusCode == .statusUserCancelled {
-            _ = NSError(
-                domain: BTVisaCheckoutError.errorDomain,
-                code: BTVisaCheckoutError.canceled.errorCode,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        BTVisaCheckoutError.canceled.errorDescription ?? "Visa Checkout flow was canceled by the user."
-                ]
-            )
+        switch statusCode {
+        case .statusDuplicateCheckoutAttempt, .statusNotConfigured, .statusInternalError:
+            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
+            return
+        case .statusUserCancelled:
             notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
             return
+        case .statusNetworkError:
+            notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+            return
+        default:
+            break
         }
 
-        guard
-            let callID = callID,
-            let encryptedKey = encryptedKey,
-            let encryptedPaymentData = encryptedPaymentData
-        else {
+        guard let callID, let encryptedKey, let encryptedPaymentData else {
             notifyFailure(with: BTVisaCheckoutError.integration, completion: completion)
             return
         }
