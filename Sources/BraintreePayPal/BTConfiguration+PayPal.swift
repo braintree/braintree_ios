@@ -28,7 +28,8 @@ extension BTConfiguration {
         json?["paypal"]["currencyIsoCode"].asString()
     }
     
-    var merchantID: String? {
+    /// The merchant ID
+    var merchantAccountID: String? {
         json?["merchantId"].asString()
     }
 }

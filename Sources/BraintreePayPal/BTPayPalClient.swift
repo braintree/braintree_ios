@@ -436,7 +436,7 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    let merchantAccountID = configuration.merchantID
+                    let merchantAccountID = configuration.merchantAccountID
                     self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
