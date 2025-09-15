@@ -7,9 +7,9 @@ public class BTWebAuthenticationSession: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public var prefersEphemeralWebBrowserSession: Bool?
-
-    private var currentSession: ASWebAuthenticationSession?
-
+    
+    private var hasOpenedURL = false
+    
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public func start(
         url: URL,
@@ -19,16 +19,20 @@ public class BTWebAuthenticationSession: NSObject {
         sessionDidCancel: @escaping () -> Void,
         sessionDidDuplicate: @escaping () -> Void = { }
     ) {
-        guard currentSession == nil else {
+        
+        guard !hasOpenedURL else {
             sessionDidDuplicate()
             return
         }
         
-        currentSession = ASWebAuthenticationSession(
+        hasOpenedURL = true
+        
+        let currentSession = ASWebAuthenticationSession(
             url: url,
             callbackURLScheme: BTCoreConstants.callbackURLScheme
         ) { url, error in
-            self.currentSession = nil
+            self.hasOpenedURL = false
+            
             if let error = error as? NSError, error.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
                 sessionDidCancel()
             } else {
@@ -36,11 +40,11 @@ public class BTWebAuthenticationSession: NSObject {
             }
         }
 
-        currentSession?.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
-        currentSession?.presentationContextProvider = context
+        currentSession.prefersEphemeralWebBrowserSession = prefersEphemeralWebBrowserSession ?? false
+        currentSession.presentationContextProvider = context
         
         DispatchQueue.main.async {
-            sessionDidAppear(self.currentSession?.start() ?? false)
+            sessionDidAppear(currentSession.start())
         }
     }
 }
