@@ -7,6 +7,7 @@ import BraintreeCore
 ///  Use `BTShopperInsightsClient` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
+@available(*, deprecated, message: "Use BTShopperInsightsClientV2 instead.")
 public class BTShopperInsightsClient {
     
     // MARK: - Internal Properties
