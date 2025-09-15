@@ -1,6 +1,6 @@
 import XCTest
 
-class BraintreeVisaCheckout_UITests: XCTestCase {
+class VisaCheckout_UITests: XCTestCase {
 
     var app = XCUIApplication()
     
