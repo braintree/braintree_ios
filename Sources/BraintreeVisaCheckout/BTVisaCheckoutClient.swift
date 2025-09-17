@@ -86,12 +86,8 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
 
         let statusCode = checkoutResult.statusCode
-        guard statusCode == .statusSuccess else {
-            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
-            return
-        }
-
-        let callID = checkoutResult.callId
+        let checkoutResultCallID: Any = checkoutResult.callId as NSString? as Any
+        let callID = checkoutResultCallID as? String
         let encryptedKey = checkoutResult.encryptedKey
         let encryptedPaymentData = checkoutResult.encryptedPaymentData
 
@@ -111,18 +107,20 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        switch statusCode {
-        case .statusDuplicateCheckoutAttempt, .statusNotConfigured, .statusInternalError:
-            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
-            return
-        case .statusUserCancelled:
-            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
-            return
-        case .statusNetworkError:
-            notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
-            return
-        default:
-            break
+        if statusCode != .statusSuccess {
+            switch statusCode {
+            case .statusDuplicateCheckoutAttempt, .statusNotConfigured, .statusInternalError:
+                notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
+                return
+            case .statusUserCancelled:
+                notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
+                return
+            case .statusNetworkError:
+                notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                return
+            default:
+                break
+            }
         }
 
         guard let callID, let encryptedKey, let encryptedPaymentData else {
