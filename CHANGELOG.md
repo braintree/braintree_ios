@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Fix crash related to data race in `BTWebAuthenticationSession`
+
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
