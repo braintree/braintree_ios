@@ -24,13 +24,14 @@ public class BTWebAuthenticationSession: NSObject {
         sessionDidCancel: @escaping () -> Void,
         sessionDidDuplicate: @escaping () -> Void = { }
     ) {
-        
         let shouldStartSession = sessionQueue.sync {
             if currentSession != nil {
                 return false
             }
             
-            // Create the session but don't start it yet
+            // Create the session object here within the synchronized block,
+            // but defer the actual start() call until after we exit the lock.
+            // This pattern prevents deadlocks while maintaining thread safety.
             let session = ASWebAuthenticationSession(
                 url: url,
                 callbackURLScheme: BTCoreConstants.callbackURLScheme
@@ -60,7 +61,9 @@ public class BTWebAuthenticationSession: NSObject {
             return
         }
         
-        // Safe to access because we're holding a reference in the local scope
+        // Retrieve session with synchronized access to ensure thread safety
+        // Even though we set it earlier, we must access it through the queue again
+        // to guarantee we have the latest reference in case another thread modified it
         if let session = sessionQueue.sync(execute: { currentSession }) {
             DispatchQueue.main.async {
                 sessionDidAppear(session.start())
