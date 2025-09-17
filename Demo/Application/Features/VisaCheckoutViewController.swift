@@ -19,11 +19,19 @@ class VisaCheckoutViewController: PaymentButtonBaseViewController {
         createVisaProfileAndCheckout()
     }
 
+    /// Adds accessibility properties to the Visa Checkout button for UI testing.
+    private func addVisaCheckoutAccessibility() {
+        visaCheckoutButton.isAccessibilityElement = true
+        visaCheckoutButton.accessibilityLabel = "Visa Checkout"
+        visaCheckoutButton.accessibilityIdentifier = "visaCheckoutButton"
+        visaCheckoutButton.accessibilityTraits.insert(.button)
+    }
+
     /// Creates and displays the Visa Checkout button.
     func createVisaCheckoutButton() {
         visaCheckoutButton.style = .standard
-
         view.addSubview(visaCheckoutButton)
+        addVisaCheckoutAccessibility()
 
         NSLayoutConstraint.activate([
             visaCheckoutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
