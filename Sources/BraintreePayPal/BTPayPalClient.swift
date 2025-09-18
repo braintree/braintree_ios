@@ -373,7 +373,7 @@ import BraintreeDataCollector
                 return
             }
 
-            guard let configuration else {
+            guard let configuration, let json = configuration.json else {
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
@@ -436,7 +436,7 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    let merchantAccountID = configuration.merchantID
+                    let merchantAccountID = json["merchantId"].asString()
                     self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
