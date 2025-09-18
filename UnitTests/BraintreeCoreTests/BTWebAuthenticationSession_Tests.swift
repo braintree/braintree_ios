@@ -74,7 +74,11 @@ class BTWebAuthenticationSession_Tests: XCTestCase {
         let duplicateExpectation = expectation(description: "Duplicate sessions rejected")
         duplicateExpectation.expectedFulfillmentCount = duplicateCount
         
+        /// Coordination mechanism to track and wait for multiple asynchronous operations.
+        /// Used here to ensure all test threads run simultaneously.
         let group = DispatchGroup()
+        /// Synchronization barrier that begins in a "locked" state (value 0).
+        /// Used to block threads until all are ready, then release them simultaneously.
         let startBarrier = DispatchSemaphore(value: 0)
         
         for _ in 0..<threadCount {
