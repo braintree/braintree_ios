@@ -314,6 +314,7 @@ import UIKit
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
         merchantExperiment: String? = nil,
+        merchantPassedUserAction: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
@@ -337,6 +338,7 @@ import UIKit
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
+                merchantPassedUserAction: merchantPassedUserAction,
                 pageType: pageType,
                 shopperSessionID: shopperSessionID
             )

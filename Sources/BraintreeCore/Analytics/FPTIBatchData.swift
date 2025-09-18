@@ -64,6 +64,8 @@ struct FPTIBatchData: Codable {
         let didPayPalServerAttemptAppSwitch: Bool?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
+        /// Captures userAction value provided by the merchant and distinguish explicit vs. default SDK behavior
+        let merchantPassedUserAction: String?
         /// The type of page where the payment button is displayed or where an event occured.
         let pageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
@@ -94,6 +96,7 @@ struct FPTIBatchData: Codable {
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
+            merchantPassedUserAction: String? = nil,
             pageType: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
@@ -117,6 +120,7 @@ struct FPTIBatchData: Codable {
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
+            self.merchantPassedUserAction = merchantPassedUserAction
             self.pageType = pageType
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
@@ -140,6 +144,7 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
+            case merchantPassedUserAction = "merchant_passed_user_action"
             case pageType = "page_type"
             case requestStartTime = "request_start_time"
             case timestamp = "t"

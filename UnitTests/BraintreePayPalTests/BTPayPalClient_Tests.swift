@@ -1380,4 +1380,40 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedApplicationState, "active")
     }
+
+    func testTokenize_whenCheckoutRequest_setsMerchantPassedUserActionWithPayNow() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userAction = .payNow
+
+        let _ = try? await payPalClient.tokenize(request)
+
+        XCTAssertEqual(mockAPIClient.postedMerchantPassedUserAction, "pay")
+    }
+
+    func testTokenize_whenCheckoutRequest_setsMerchantPassedUserActionWithContinue() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userAction = .continue
+
+        let _ = try? await payPalClient.tokenize(request)
+
+        XCTAssertEqual(mockAPIClient.postedMerchantPassedUserAction, "continue")
+    }
+
+    func testTokenize_whenCheckoutRequest_setsMerchantPassedUserActionWithUnknown() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.userAction = .unknown
+
+        let _ = try? await payPalClient.tokenize(request)
+
+        XCTAssertEqual(mockAPIClient.postedMerchantPassedUserAction, "none")
+    }
+
+    func testTokenize_whenCheckoutRequest_setsMerchantPassedUserActionWithDefault() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        // Do not set userAction, uses default (.unknown)
+
+        let _ = try? await payPalClient.tokenize(request)
+
+        XCTAssertEqual(mockAPIClient.postedMerchantPassedUserAction, "none")
+    }
 }

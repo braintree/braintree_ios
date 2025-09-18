@@ -21,14 +21,14 @@ import BraintreeCore
     ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
-    ///   - userAction: Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.unknown`.
     public init(
         offerCredit: Bool = false,
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAction: BTPayPalRequestUserAction = .none
+        userAction: BTPayPalRequestUserAction = .unknown
     ) {
         self.offerCredit = offerCredit
         

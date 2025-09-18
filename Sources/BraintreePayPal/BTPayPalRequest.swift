@@ -111,7 +111,7 @@ import BraintreeCore
     /// Optional: Recurring billing product details.
     public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     
-    /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.none`.
+    /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.unknown`.
     public var userAction: BTPayPalRequestUserAction
 
     // MARK: - Internal Properties
@@ -145,7 +145,7 @@ import BraintreeCore
         shopperSessionID: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAction: BTPayPalRequestUserAction = .none
+        userAction: BTPayPalRequestUserAction = .unknown
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -192,8 +192,10 @@ import BraintreeCore
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
-        
-        if userAction != .none {
+
+        // Only set experienceProfile user_action for explicit actions like .payNow, .setupNow or future cases.
+        // For .continue, .none, and .unknown, do not set user_action. As they all use the default "continue" flow.
+        if ![.continue, .none, .unknown].contains(userAction) {
             experienceProfile["user_action"] = userAction.stringValue
         }
 
