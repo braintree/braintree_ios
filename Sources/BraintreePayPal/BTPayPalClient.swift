@@ -58,6 +58,9 @@ import BraintreeDataCollector
     // MARK: - Private Properties
 
     private var universalLink: URL?
+    
+    /// Used to deeplink back to merchant when universal link fails.
+    private var uriScheme: URL?
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
@@ -102,8 +105,8 @@ import BraintreeDataCollector
     ///   - apiClient: The API Client
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
-    @objc(initWithAPIClient:universalLink:)
-    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
+    @objc(initWithAPIClient:universalLink:uriScheme:)
+    public convenience init(apiClient: BTAPIClient, universalLink: URL, uriScheme: URL? = nil) {
         self.init(apiClient: apiClient)
         
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
@@ -416,6 +419,7 @@ import BraintreeDataCollector
                 parameters: request.parameters(
                     with: configuration,
                     universalLink: self.universalLink,
+                    uriScheme: self.uriScheme,
                     isPayPalAppInstalled: self.application.isPayPalAppInstalled()
                 )
             ) { body, _, error in

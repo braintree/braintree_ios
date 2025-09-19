@@ -41,6 +41,7 @@ import BraintreeCore
     public override func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
+        uriScheme: URL? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         let baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
