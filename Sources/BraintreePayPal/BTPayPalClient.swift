@@ -112,6 +112,7 @@ import BraintreeDataCollector
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchPayPal")
+        self.uriScheme = uriScheme
     }
 
     // MARK: - Public Methods
