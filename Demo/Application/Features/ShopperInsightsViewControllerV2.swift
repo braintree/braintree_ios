@@ -8,9 +8,13 @@ import CryptoKit
 // swiftlint:disable:next type_body_length
 class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     
-    lazy var shopperInsightsClient = BTShopperInsightsClientV2(apiClient: apiClient)
-    lazy var payPalClient = BTPayPalClient(apiClient: apiClient)
-    lazy var venmoClient = BTVenmoClient(apiClient: apiClient)
+    lazy var shopperInsightsClient = BTShopperInsightsClientV2(authorization: authorization)
+    lazy var payPalClient = BTPayPalClient(authorization: authorization)
+    lazy var venmoClient = BTVenmoClient(
+        authorization: authorization,
+        // swiftlint:disable:next force_unwrapping
+        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
+    )
     
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
@@ -313,9 +317,10 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         button.setTitle("Processing...", for: .disabled)
         button.isEnabled = false
         
-        let payPalRequest = BTPayPalVaultRequest()
-        payPalRequest.shopperSessionID = sessionIDView.textField.text ?? ""
-        payPalRequest.userAuthenticationEmail = emailView.textField.text
+        let payPalRequest = BTPayPalVaultRequest(
+            shopperSessionID: sessionIDView.textField.text ?? "",
+            userAuthenticationEmail: emailView.textField.text
+        )
         
         payPalClient.tokenize(payPalRequest) { nonce, error in
             button.isEnabled = true

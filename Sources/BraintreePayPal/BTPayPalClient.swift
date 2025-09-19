@@ -373,7 +373,7 @@ import BraintreeDataCollector
                 return
             }
 
-            guard let configuration else {
+            guard let configuration, let json = configuration.json else {
                 self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
                 return
             }
@@ -436,8 +436,8 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    let merchantAccountID = configuration.merchantID
-                    self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
+                    let merchantID = json["merchantId"].asString()
+                    self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -448,7 +448,7 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
-        merchantAccountID: String? = nil,
+        merchantID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         /// Prevent multiple calls to open the app
@@ -488,7 +488,7 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
-            URLQueryItem(name: "merchant", value: merchantAccountID ?? "unknown")
+            URLQueryItem(name: "merchant", value: merchantID ?? "unknown")
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
