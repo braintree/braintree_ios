@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeCore
-  * Fix crash related to data race in `BTWebAuthenticationSession`
+  * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
 
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
