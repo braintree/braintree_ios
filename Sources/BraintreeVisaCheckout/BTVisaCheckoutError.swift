@@ -25,6 +25,12 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
     /// 5. Visa Checkout is disabled in the Braintree Control Panel.
     case disabled
 
+    /// 6. A network error occurred.
+    case networkError
+
+    /// 7. Visa Checkout error is unknown.
+    case unknownStatus
+
     public static var errorDomain: String {
         "com.braintreepayments.BTVisaCheckoutErrorDomain"
     }
@@ -47,6 +53,10 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
             return "A valid VisaCheckoutResult is required."
         case .disabled:
             return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
+        case .networkError:
+            return "A network error occurred. Please try again."
+        case .unknown:
+            return "Visa error is unknown."
         }
     }
 

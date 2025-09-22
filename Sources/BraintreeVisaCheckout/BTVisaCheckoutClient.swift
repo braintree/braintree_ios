@@ -86,10 +86,9 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
 
         let statusCode = checkoutResult.statusCode
-        let checkoutResultCallID: Any = checkoutResult.callId as NSString? as Any
-        let callID = checkoutResultCallID as? String
-        let encryptedKey = checkoutResult.encryptedKey
-        let encryptedPaymentData = checkoutResult.encryptedPaymentData
+        let callID = safeStringValue(from: checkoutResult, key: "callid")
+        let encryptedKey = safeStringValue(from: checkoutResult, key: "encKey")
+        let encryptedPaymentData = safeStringValue(from: checkoutResult, key: "encPaymentData")
 
         tokenize(
             statusCode: statusCode,
@@ -107,7 +106,7 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        if statusCode != .statusSuccess {
+        guard statusCode == .statusSuccess else {
             switch statusCode {
             case .statusDuplicateCheckoutAttempt, .statusNotConfigured, .statusInternalError:
                 notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
@@ -119,7 +118,8 @@ import BraintreeCore
                 notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
                 return
             default:
-                break
+                notifyFailure(with: BTVisaCheckoutError.unknownStatus, completion: completion)
+                return
             }
         }
 
@@ -155,6 +155,17 @@ import BraintreeCore
             self.notifySuccess(with: visaCheckoutCardNonce, completion: completion)
         }
     }
+
+    func safeStringValue(from checkoutResult: CheckoutResult, key: String) -> String? {
+        guard
+          let result = checkoutResult["result"] as? [String: Any],
+          let value = result[key],
+          let string = value as? String,
+          !string.isEmpty
+        else { return nil }
+         
+        return string
+      }
 
     // MARK: - Analytics Helper Methods
 
