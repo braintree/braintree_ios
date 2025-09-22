@@ -30,7 +30,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTShopperInsightsClientV2(apiClient: mockAPIClient!)
+        sut = BTShopperInsightsClientV2(authorization: clientToken)
+        sut.apiClient = mockAPIClient
     }
     
     override func tearDown() {
