@@ -105,6 +105,12 @@ import BraintreeCore
     /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
     public var shopperSessionID: String?
 
+    /// Optional: Recurring billing plan type, or charge pattern.
+    public var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
+    
+    /// Optional: Recurring billing product details.
+    public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+
     // MARK: - Internal Properties
     
     /// Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
@@ -133,7 +139,9 @@ import BraintreeCore
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool = false,
-        shopperSessionID: String? = nil
+        shopperSessionID: String? = nil,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -151,10 +159,13 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.shopperSessionID = shopperSessionID
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
     }
 
     // MARK: Public Methods
 
+    // swiftlint:disable cyclomatic_complexity
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
     public func parameters(
@@ -217,6 +228,14 @@ import BraintreeCore
             ]
             
             return parameters.merging(appSwitchParameters) { $1 }
+        }
+
+        if let recurringBillingPlanType {
+            parameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            parameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
         
         return parameters

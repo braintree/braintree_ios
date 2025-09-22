@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
   * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
