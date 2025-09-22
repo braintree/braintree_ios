@@ -151,7 +151,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "5.00"
-        let request = BTPayPalCheckoutRequest(amount: amount, offerPayLater: payLaterToggle.isOn)
+        var request = BTPayPalCheckoutRequest(amount: amount, offerPayLater: payLaterToggle.isOn)
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",
