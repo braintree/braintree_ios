@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeCore
+  * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
 * BraintreePayPal
   * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
 
