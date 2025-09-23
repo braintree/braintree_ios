@@ -5,6 +5,10 @@
     * Add Visa Checkout to the SDK as a payment option
     * Add `BTVisaCheckoutAddress`, `BTVisaCheckoutUserData`, `BTVisaCheckoutCardNonce`, `BTVisaCheckoutClient`
     * Add `BraintreeCard` as a dependency for `BraintreeVisaCheckout` module
+
+* BraintreeCore
+  * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
+
 * BraintreePayPal
   * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
 

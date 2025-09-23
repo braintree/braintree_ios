@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0453F7B72E4552C400849AD8 /* VisaCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */; };
-		04E5EE2E2E700CF7009E6BEF /* VisaCheckout_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE2C2E700CF7009E6BEF /* VisaCheckout_UITests.swift */; };
 		04E5EE352E722FF9009E6BEF /* ThreeDSecure_UITests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E5EE342E722FEE009E6BEF /* ThreeDSecure_UITests_Extensions.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
@@ -138,7 +137,6 @@
 
 /* Begin PBXFileReference section */
 		0453F7B62E4552BE00849AD8 /* VisaCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckoutViewController.swift; sourceTree = "<group>"; };
-		04E5EE2C2E700CF7009E6BEF /* VisaCheckout_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckout_UITests.swift; sourceTree = "<group>"; };
 		04E5EE342E722FEE009E6BEF /* ThreeDSecure_UITests_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecure_UITests_Extensions.swift; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
@@ -218,7 +216,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
+		0422E90F2E832D4F00E6986C /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,14 +264,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04E5EE2D2E700CF7009E6BEF /* Visa Checkout UI Tests */ = {
-			isa = PBXGroup;
-			children = (
-				04E5EE2C2E700CF7009E6BEF /* VisaCheckout_UITests.swift */,
-			);
-			path = "Visa Checkout UI Tests";
-			sourceTree = "<group>";
-		};
 		42456E3B25474B620018374E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -436,14 +426,13 @@
 		A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */ = {
 			isa = PBXGroup;
 			children = (
-				04C4EE3E2E678EFD00C1BAF0 /* Visa Checkout UI Tests */,
 				42456E3B25474B620018374E /* Helpers */,
 				A9B5ABE224EB2A2200A4E1C8 /* Info.plist */,
 				BEF137E32B33818C00B9B225 /* PayPal Messaging UI Tests */,
 				A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */,
 				A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */,
 				80581A752553187800006F53 /* Venmo UI Tests */,
-				04E5EE2D2E700CF7009E6BEF /* Visa Checkout UI Tests */,
+				0422E90F2E832D4F00E6986C /* Visa Checkout UI Tests */,
 			);
 			path = "UI Tests";
 			sourceTree = "<group>";
@@ -757,7 +746,6 @@
 				BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
-				04E5EE2E2E700CF7009E6BEF /* VisaCheckout_UITests.swift in Sources */,
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
