@@ -3,6 +3,7 @@ import UIKit
 import BraintreePayPal
 import BraintreeCore
 
+// swiftlint:disable type_body_length
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
@@ -77,6 +78,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let payLaterToggle = Toggle(title: "Offer Pay Later")
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
     let contactInformationToggle = Toggle(title: "Add Contact Information")
+    let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
 
     override func viewDidLoad() {
         super.heightConstraint = 500
@@ -101,6 +103,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             payLaterToggle,
             contactInformationToggle,
+            amountBreakdownToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton
         ])
@@ -140,6 +143,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     
     // MARK: - 1-Time Checkout Flows
 
+    // swiftlint:disable function_body_length
     @objc func tappedPayPalCheckout(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
@@ -147,14 +151,14 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "5.00"
-        let request = BTPayPalCheckoutRequest(amount: amount, offerPayLater: payLaterToggle.isOn)
+        var request = BTPayPalCheckoutRequest(amount: amount, offerPayLater: payLaterToggle.isOn)
         request.userAuthenticationEmail = emailTextField.text
         request.userPhoneNumber = BTPayPalPhoneNumber(
             countryCode: countryCodeTextField.text ?? "",
             nationalNumber: nationalNumberTextField.text ?? ""
         )
         
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
+        var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
         lineItem.upcCode = "123456789"
         lineItem.upcType = .UPC_A
         lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
@@ -169,6 +173,52 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             )
 
             request.contactPreference = .updateContactInformation
+        }
+
+        if amountBreakdownToggle.isOn {
+            let billingPricing = BTPayPalBillingPricing(
+                pricingModel: .fixed,
+                amount: "9.99"
+            )
+
+            let billingCycle = BTPayPalBillingCycle(
+                isTrial: false,
+                numberOfExecutions: 1,
+                interval: .month,
+                intervalCount: 1,
+                sequence: 1,
+                startDate: "2024-08-01",
+                pricing: billingPricing
+            )
+
+            let amountBreakdown = BTAmountBreakdown(
+                itemTotal: "9.99",
+                taxTotal: "0.50",
+                shippingTotal: "0.50"
+            )
+
+            let recurringBillingDetails = BTPayPalRecurringBillingDetails(
+                billingCycles: [billingCycle],
+                currencyISOCode: "USD",
+                totalAmount: "9.99",
+                productName: "Vogue Magazine",
+                productDescription: "Home delivery to Chicago, IL",
+                productQuantity: 1,
+                oneTimeFeeAmount: "9.99"
+            )
+
+            lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "20.98", name: "Subscription Setup + First Cycle", kind: .credit)
+
+            request = BTPayPalCheckoutRequest(
+                amount: "10.99",
+                recurringBillingDetails: recurringBillingDetails,
+                recurringBillingPlanType: .subscription,
+                amountBreakdown: amountBreakdown
+            )
+
+            request.lineItems = [lineItem]
+            request.requestBillingAgreement = true
+            request.merchantAccountID = "quantumleapsandboxtesting-1"
         }
 
         payPalClient.tokenize(request) { nonce, error in
