@@ -55,7 +55,7 @@ public enum BTVisaCheckoutError: Int, Error, CustomNSError, LocalizedError, Equa
             return "Visa Checkout is not enabled. Please ensure that Visa Checkout is enabled in the Braintree Control Panel and try again."
         case .networkError:
             return "A network error occurred. Please try again."
-        case .unknown:
+        case .unknownStatus:
             return "Visa error is unknown."
         }
     }
