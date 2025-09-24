@@ -17,6 +17,8 @@ protocol BTPayPalRequest {
     var lineItems: [BTPayPalLineItem]? { get }
     var localeCode: BTPayPalLocaleCode? { get }
     var merchantAccountID: String? { get }
+    var recurringBillingDetails: BTPayPalRecurringBillingDetails? { get }
+    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType? { get }
     var riskCorrelationID: String? { get }
     var shippingAddressOverride: BTPostalAddress? { get }
     var shopperSessionID: String? { get }

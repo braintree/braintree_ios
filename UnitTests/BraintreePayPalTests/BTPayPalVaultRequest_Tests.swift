@@ -116,7 +116,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-merchant-url")
     }
-    
+
     func testParameters_withRecurringBillingDetails_returnsAllParams() {
         let billingPricing = BTPayPalBillingPricing(
             pricingModel: .autoReload,
@@ -133,7 +133,7 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             startDate: "test-date",
             pricing: billingPricing
         )
-        
+
         let recurringBillingDetails = BTPayPalRecurringBillingDetails(
             billingCycles: [billingCycle],
             currencyISOCode: "test-currency",

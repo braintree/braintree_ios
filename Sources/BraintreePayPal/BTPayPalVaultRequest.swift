@@ -72,8 +72,7 @@ import BraintreeCore
     ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     ///   - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
-    /// identified with the same phone number.
+    ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     public init(
         offerCredit: Bool = false,
         billingAgreementDescription: String? = nil,

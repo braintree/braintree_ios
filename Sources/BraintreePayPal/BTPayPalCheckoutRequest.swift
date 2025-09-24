@@ -67,6 +67,7 @@ import BraintreeCore
     var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
+    var amountBreakdown: BTAmountBreakdown?
     var billingAgreementDescription: String?
     var contactInformation: BTContactInformation?
     var contactPreference: BTContactPreference = .none
@@ -79,6 +80,8 @@ import BraintreeCore
     var lineItems: [BTPayPalLineItem]?
     var localeCode: BTPayPalLocaleCode?
     var merchantAccountID: String?
+    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var requestBillingAgreement: Bool
     var riskCorrelationID: String?
     var shippingAddressOverride: BTPostalAddress?
@@ -134,6 +137,7 @@ import BraintreeCore
     ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set.
     ///   - contactInformation: Optional: Contact information of the recipient for the order.
     ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
@@ -150,6 +154,8 @@ import BraintreeCore
     ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items.
     ///   - localeCode: Optional: A locale code to use for the transaction.
     ///   - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
+    ///   - recurringBillingDetails: Optional: Recurring billing product details.
+    ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
     ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
@@ -164,6 +170,7 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
+        amountBreakdown: BTAmountBreakdown? = nil,
         billingAgreementDescription: String? = nil,
         contactInformation: BTContactInformation? = nil,
         contactPreference: BTContactPreference = .none,
@@ -176,6 +183,8 @@ import BraintreeCore
         lineItems: [BTPayPalLineItem]? = nil,
         localeCode: BTPayPalLocaleCode = .none,
         merchantAccountID: String? = nil,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         requestBillingAgreement: Bool = false,
         riskCorrelationID: String? = nil,
         shippingAddressOverride: BTPostalAddress? = nil,
@@ -188,6 +197,7 @@ import BraintreeCore
         self.intent = intent
         self.userAction = userAction
         self.offerPayLater = offerPayLater
+        self.amountBreakdown = amountBreakdown
         self.billingAgreementDescription = billingAgreementDescription
         self.contactInformation = contactInformation
         self.contactPreference = contactPreference
@@ -200,6 +210,8 @@ import BraintreeCore
         self.lineItems = lineItems
         self.localeCode = localeCode
         self.merchantAccountID = merchantAccountID
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
         self.requestBillingAgreement = requestBillingAgreement
         self.riskCorrelationID = riskCorrelationID
         self.shippingAddressOverride = shippingAddressOverride
