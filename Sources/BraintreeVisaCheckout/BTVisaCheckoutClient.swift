@@ -86,19 +86,9 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTVisaCheckoutAnalytics.tokenizeStarted)
 
         let statusCode = checkoutResult.statusCode
-        if statusCode == .statusUserCancelled {
-            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
-            return
-        }
-
-        guard statusCode == .statusSuccess else {
-            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
-            return
-        }
-
-        let callID = checkoutResult.callId
-        let encryptedKey = checkoutResult.encryptedKey
-        let encryptedPaymentData = checkoutResult.encryptedPaymentData
+        let callID = safeStringValue(from: checkoutResult, key: "callid")
+        let encryptedKey = safeStringValue(from: checkoutResult, key: "encKey")
+        let encryptedPaymentData = safeStringValue(from: checkoutResult, key: "encPaymentData")
 
         tokenize(
             statusCode: statusCode,
@@ -116,14 +106,21 @@ import BraintreeCore
         encryptedPaymentData: String?,
         completion: @escaping (BTVisaCheckoutNonce?, Error?) -> Void
     ) {
-        if statusCode == .statusUserCancelled {
-            notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
-            return
-        }
-
         guard statusCode == .statusSuccess else {
-            notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
-            return
+            switch statusCode {
+            case .statusDuplicateCheckoutAttempt, .statusNotConfigured, .statusInternalError:
+                notifyFailure(with: BTVisaCheckoutError.checkoutUnsuccessful, completion: completion)
+                return
+            case .statusUserCancelled:
+                notifyFailure(with: BTVisaCheckoutError.canceled, completion: completion)
+                return
+            case .statusNetworkError:
+                notifyFailure(with: BTVisaCheckoutError.failedToCreateNonce, completion: completion)
+                return
+            default:
+                notifyFailure(with: BTVisaCheckoutError.unknownStatus, completion: completion)
+                return
+            }
         }
 
         guard let callID, let encryptedKey, let encryptedPaymentData else {
@@ -157,6 +154,17 @@ import BraintreeCore
 
             self.notifySuccess(with: visaCheckoutCardNonce, completion: completion)
         }
+    }
+
+    func safeStringValue(from checkoutResult: CheckoutResult, key: String) -> String? {
+        guard
+            let result = checkoutResult["result"] as? [String: Any],
+            let value = result[key],
+            let string = value as? String,
+            !string.isEmpty
+        else { return nil }
+
+        return string
     }
 
     // MARK: - Analytics Helper Methods

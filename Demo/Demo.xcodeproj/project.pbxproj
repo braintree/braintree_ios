@@ -216,7 +216,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0422E90F2E832D4F00E6986C /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
+		0422E91E2E836F8300E6986C /* Visa Checkout UI Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Visa Checkout UI Tests"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -432,7 +432,7 @@
 				A9C4E07624EC2889002F6FF2 /* PayPal UI Tests */,
 				A9C4E07724EC2899002F6FF2 /* ThreeDSecure UI Tests */,
 				80581A752553187800006F53 /* Venmo UI Tests */,
-				0422E90F2E832D4F00E6986C /* Visa Checkout UI Tests */,
+				0422E91E2E836F8300E6986C /* Visa Checkout UI Tests */,
 			);
 			path = "UI Tests";
 			sourceTree = "<group>";
