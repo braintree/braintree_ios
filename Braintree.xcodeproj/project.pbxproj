@@ -15,6 +15,7 @@
 		046547FD2DDE98B60054B80A /* BTVisaCheckoutClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AA2DDE87140054B80A /* BTVisaCheckoutClient.swift */; };
 		046548012DDE9A840054B80A /* BTVisaCheckoutClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046547AF2DDE87480054B80A /* BTVisaCheckoutClient_Tests.swift */; };
 		046548042DDE9B3A0054B80A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */; };
+		0426CADF2DBC3E4100210697 /* BTAmountBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -831,6 +832,7 @@
 		046547B62DDE8B040054B80A /* BraintreeVisaCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVisaCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		046547BF2DDE8B050054B80A /* BraintreeVisaCheckoutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeVisaCheckoutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		046548022DDE9B3A0054B80A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmountBreakdown.swift; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
@@ -1774,6 +1776,7 @@
 		807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */ = {
 			isa = PBXGroup;
 			children = (
+				0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */,
 				807D22ED2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift */,
 				807D22F42C29ADE2009FFEA4 /* BTPayPalRecurringBillingPlanType.swift */,
 				807D22EF2C29A93A009FFEA4 /* BTPayPalBillingCycle.swift */,
@@ -3653,6 +3656,7 @@
 				62B811882CC002470024A688 /* BTPayPalPhoneNumber.swift in Sources */,
 				807D22F52C29ADE2009FFEA4 /* BTPayPalRecurringBillingPlanType.swift in Sources */,
 				57544820294A2EBE00DEB7B0 /* BTPayPalCreditFinancing.swift in Sources */,
+				0426CADF2DBC3E4100210697 /* BTAmountBreakdown.swift in Sources */,
 				807D22EE2C29A918009FFEA4 /* BTPayPalRecurringBillingDetails.swift in Sources */,
 				B8A330FF2D83747100BC18EC /* BTContactPreference.swift in Sources */,
 				57544F5A29524E4D00DEB7B0 /* BTPayPalClient.swift in Sources */,
