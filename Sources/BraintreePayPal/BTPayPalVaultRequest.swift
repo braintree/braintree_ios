@@ -6,14 +6,6 @@ import BraintreeCore
 
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: BTPayPalVaultBaseRequest {
-    
-    // MARK: - Internal Properties
-    
-    /// Optional: Recurring billing plan type, or charge pattern.
-    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
-    
-    /// Optional: Recurring billing product details.
-    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
 
     // MARK: - Initializers
 
@@ -50,12 +42,11 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userAction: BTPayPalRequestUserAction = .none
     ) {
-        self.recurringBillingDetails = recurringBillingDetails
-        self.recurringBillingPlanType = recurringBillingPlanType
-
         super.init(
             offerCredit: offerCredit,
             userAuthenticationEmail: userAuthenticationEmail,
+            recurringBillingDetails: recurringBillingDetails,
+            recurringBillingPlanType: recurringBillingPlanType,
             userAction: userAction
         )
     }
@@ -65,15 +56,7 @@ import BraintreeCore
         universalLink: URL? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
-        
-        if let recurringBillingPlanType {
-            baseParameters["plan_type"] = recurringBillingPlanType.rawValue
-        }
-        
-        if let recurringBillingDetails {
-            baseParameters["plan_metadata"] = recurringBillingDetails.parameters()
-        }
+        let baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
 
         return baseParameters
     }

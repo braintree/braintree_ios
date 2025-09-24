@@ -104,6 +104,12 @@ import BraintreeCore
 
     /// Optional: The shopper session ID returned from your shopper insights server SDK integration.
     public var shopperSessionID: String?
+
+    /// Optional: Recurring billing plan type, or charge pattern.
+    public var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
+    
+    /// Optional: Recurring billing product details.
+    public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     
     /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.none`.
     public var userAction: BTPayPalRequestUserAction
@@ -137,6 +143,8 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         enablePayPalAppSwitch: Bool = false,
         shopperSessionID: String? = nil,
+        recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAction: BTPayPalRequestUserAction = .none
     ) {
         self.hermesPath = hermesPath
@@ -155,11 +163,14 @@ import BraintreeCore
         self.userAuthenticationEmail = userAuthenticationEmail
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.shopperSessionID = shopperSessionID
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
         self.userAction = userAction
     }
 
     // MARK: Public Methods
 
+    // swiftlint:disable cyclomatic_complexity
     /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
     @_documentation(visibility: private)
     public func parameters(
@@ -226,6 +237,14 @@ import BraintreeCore
             ]
             
             return parameters.merging(appSwitchParameters) { $1 }
+        }
+
+        if let recurringBillingPlanType {
+            parameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            parameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
         
         return parameters

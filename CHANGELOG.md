@@ -1,9 +1,26 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeCore
+  * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
+* BraintreePayPal
+  * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+  * Add `userAction` property to `BTPayPalVaultRequest`
+
+## 6.38.0 (2025-09-09)
+* BraintreeShopperInsights (BETA)
+  * Add `createCustomerSession(request:)` to `BTShopperInsightsClientV2`
+  * Add `updateCustomerSession(request:sessionID:)` to `BTShopperInsightsClientV2`
+  * Add `generateCustomerRecommendations(request:sessionID:)` to `BTShopperInsightsClientV2`
+  * Add `BTPageType.paymentMethodSelection` and `BTPageType.paymentMethodAddition`
+* BraintreePayPal
+  * Send `application_state` to FPTI for tracking UIApplication state
+
+## 6.37.0 (2025-08-26)
 * BraintreePayPal
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
-  * Add `userAction` property to `BTPayPalVaultRequest`
+  * Add `merchant` and `flow_type` as query parameters to the app switch URL.
+  * Add `paymentID` to `BTPayPalAccountNonce`
 
 ## 6.36.0 (2025-08-13)
 * BraintreeCore
