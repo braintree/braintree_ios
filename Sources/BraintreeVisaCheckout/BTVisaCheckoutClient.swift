@@ -158,14 +158,14 @@ import BraintreeCore
 
     func safeStringValue(from checkoutResult: CheckoutResult, key: String) -> String? {
         guard
-          let result = checkoutResult["result"] as? [String: Any],
-          let value = result[key],
-          let string = value as? String,
-          !string.isEmpty
+            let result = checkoutResult["result"] as? [String: Any],
+            let value = result[key],
+            let string = value as? String,
+            !string.isEmpty
         else { return nil }
-         
+
         return string
-      }
+    }
 
     // MARK: - Analytics Helper Methods
 
