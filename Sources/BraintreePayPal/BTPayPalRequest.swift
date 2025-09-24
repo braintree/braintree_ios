@@ -227,6 +227,14 @@ import BraintreeCore
         parameters["return_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)success"
         parameters["cancel_url"] = BTCoreConstants.callbackURLScheme + "://\(BTPayPalRequest.callbackURLHostAndPath)cancel"
         parameters["experience_profile"] = experienceProfile
+        
+        if let recurringBillingPlanType {
+            parameters["plan_type"] = recurringBillingPlanType.rawValue
+        }
+
+        if let recurringBillingDetails {
+            parameters["plan_metadata"] = recurringBillingDetails.parameters()
+        }
  
         if let universalLink, enablePayPalAppSwitch, isPayPalAppInstalled {
             let appSwitchParameters: [String: Any] = [
@@ -237,14 +245,6 @@ import BraintreeCore
             ]
             
             return parameters.merging(appSwitchParameters) { $1 }
-        }
-
-        if let recurringBillingPlanType {
-            parameters["plan_type"] = recurringBillingPlanType.rawValue
-        }
-
-        if let recurringBillingDetails {
-            parameters["plan_metadata"] = recurringBillingDetails.parameters()
         }
         
         return parameters
