@@ -1,0 +1,24 @@
+{
+  "originHash" : "efd35e0c849ab8a3f40d69e0fb6998f0163c2612df2ab9edddc56b0d91d0f7e0",
+  "pins" : [
+    {
+      "identity" : "paypal-messages-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypal-messages-ios",
+      "state" : {
+        "revision" : "86bb29908a7493c67af29d6039e3b737229f077a",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "paypalcheckout-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypalcheckout-ios/",
+      "state" : {
+        "revision" : "da1b998dcab91011b05df139a6819cc58dd45ccd",
+        "version" : "1.3.0"
+      }
+    }
+  ],
+  "version" : 3
+}
