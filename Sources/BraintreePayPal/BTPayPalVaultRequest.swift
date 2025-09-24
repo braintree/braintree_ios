@@ -34,17 +34,20 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
     public init(
         offerCredit: Bool = false,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAuthenticationEmail: String? = nil
+        userAuthenticationEmail: String? = nil,
+        userAction: BTPayPalRequestUserAction = .none
     ) {
         super.init(
             offerCredit: offerCredit,
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
-            recurringBillingPlanType: recurringBillingPlanType
+            recurringBillingPlanType: recurringBillingPlanType,
+            userAction: userAction
         )
     }
 

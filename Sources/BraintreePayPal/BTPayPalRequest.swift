@@ -110,6 +110,9 @@ import BraintreeCore
     
     /// Optional: Recurring billing product details.
     public var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+    
+    /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.none`.
+    public var userAction: BTPayPalRequestUserAction
 
     // MARK: - Internal Properties
     
@@ -141,7 +144,8 @@ import BraintreeCore
         enablePayPalAppSwitch: Bool = false,
         shopperSessionID: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
-        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil
+        recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
+        userAction: BTPayPalRequestUserAction = .none
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -161,6 +165,7 @@ import BraintreeCore
         self.shopperSessionID = shopperSessionID
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
+        self.userAction = userAction
     }
 
     // MARK: Public Methods
@@ -187,6 +192,10 @@ import BraintreeCore
         }
 
         experienceProfile["address_override"] = shippingAddressOverride != nil ? !isShippingAddressEditable : false
+        
+        if userAction != .none {
+            experienceProfile["user_action"] = userAction.stringValue
+        }
 
         var parameters: [String: Any] = [:]
 
