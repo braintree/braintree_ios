@@ -8,10 +8,8 @@
   * Add `BTPageType.paymentMethodSelection` and `BTPageType.paymentMethodAddition`
 * BraintreePayPal
   * Send `application_state` to FPTI for tracking UIApplication state
-  * Update `URLOpener.openURL(_:completionHandler:)` to `URLOpener.openURL(_:options:completionHandler:)` to provide options support.
-  * Update `launchPayPalApp` open url with options `universalLinksOnly` as true.
-  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openUrlInDefaultBrowser` is triggered.
-  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browserSwitch succeeds or fails.
+  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openURLInDefaultBrowser` is triggered.
+  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browser switch succeeds or fails.
 
 ## 6.37.0 (2025-08-26)
 * BraintreePayPal
