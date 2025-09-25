@@ -5,6 +5,7 @@
   * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
 * BraintreePayPal
   * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
+  * Add `userAction` property to `BTPayPalVaultRequest`
 
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)

@@ -33,28 +33,6 @@ import BraintreeCore
     }
 }
 
-///  The call-to-action in the PayPal Checkout flow.
-///
-///  - Note: By default the final button will show the localized word for "Continue" and implies that the final amount billed is not yet known.
-///  Setting the BTPayPalRequest's userAction to `.payNow` changes the button text to "Pay Now", conveying to
-///  the user that billing will take place immediately.
-@objc public enum BTPayPalRequestUserAction: Int {
-    /// Default
-    case none
-
-    /// Pay Now
-    case payNow
-
-    var stringValue: String {
-        switch self {
-        case .payNow:
-            return "commit"
-        default:
-            return ""
-        }
-    }
-}
-
 /// Options for the PayPal Checkout flow.
 @objcMembers public class BTPayPalCheckoutRequest: NSObject, BTPayPalRequest {
     

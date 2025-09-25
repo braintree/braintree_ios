@@ -22,6 +22,7 @@ protocol BTPayPalRequest {
     var riskCorrelationID: String? { get }
     var shippingAddressOverride: BTPostalAddress? { get }
     var shopperSessionID: String? { get }
+    var userAction: BTPayPalRequestUserAction { get }
     var userAuthenticationEmail: String? { get }
     var userPhoneNumber: BTPayPalPhoneNumber? { get }
     

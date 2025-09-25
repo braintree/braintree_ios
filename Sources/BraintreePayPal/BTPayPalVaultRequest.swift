@@ -14,6 +14,7 @@ import BraintreeCore
     
     var offerCredit: Bool
     var enablePayPalAppSwitch: Bool = false
+    var userAction: BTPayPalRequestUserAction = .none
     var billingAgreementDescription: String?
     var displayName: String?
     var isShippingAddressEditable: Bool = false
@@ -71,6 +72,7 @@ import BraintreeCore
     ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
     ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
     ///   - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    ///   - userAction: Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to `.none`.
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     public init(
@@ -89,6 +91,7 @@ import BraintreeCore
         riskCorrelationID: String? = nil,
         shippingAddressOverride: BTPostalAddress? = nil,
         shopperSessionID: String? = nil,
+        userAction: BTPayPalRequestUserAction = .none,
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
@@ -107,6 +110,7 @@ import BraintreeCore
         self.riskCorrelationID = riskCorrelationID
         self.shippingAddressOverride = shippingAddressOverride
         self.shopperSessionID = shopperSessionID
+        self.userAction = userAction
         self.userAuthenticationEmail = userAuthenticationEmail
         self.userPhoneNumber = userPhoneNumber
     }
