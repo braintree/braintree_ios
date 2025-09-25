@@ -16,7 +16,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
     
-    private var userPhoneNumber: BTPayPalPhoneNumber?
+    private var amountBreakdown: BTAmountBreakdown?
     private var billingAgreementDescription: BillingAgreementDescription?
     private var enablePayPalAppSwitch: Bool?
     private var contactPreference: String?
@@ -27,12 +27,15 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var osVersion: String?
     private var recipientPhoneNumber: BTPayPalPhoneNumber?
     private var recipientEmail: String?
+    private var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+    private var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
     private var shippingCallbackURL: String?
     private var shopperSessionID: String?
     private var universalLink: String?
     private var userAuthenticationEmail: String?
+    private var userPhoneNumber: BTPayPalPhoneNumber?
     
     // Address properties
     private var streetAddress: String?
@@ -55,6 +58,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.amount = payPalRequest.amount
         self.intent = payPalRequest.intent.stringValue
         self.offerPayLater = payPalRequest.offerPayLater
+        self.amountBreakdown = payPalRequest.amountBreakdown
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode
         
@@ -122,7 +126,15 @@ struct PayPalCheckoutPOSTBody: Encodable {
             !userPhoneNumber.nationalNumber.isEmpty {
             self.userPhoneNumber = userPhoneNumber
         }
+        
+        if let recurringBillingPlanType = payPalRequest.recurringBillingPlanType {
+            self.recurringBillingPlanType = recurringBillingPlanType
+        }
 
+        if let recurringBillingDetails = payPalRequest.recurringBillingDetails {
+            self.recurringBillingDetails = recurringBillingDetails
+        }
+        
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
         self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
@@ -137,6 +149,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     
     enum CodingKeys: String, CodingKey {
         case amount
+        case amountBreakdown = "amount_breakdown"
         case billingAgreementDescription = "billing_agreement_details"
         case cancelURL = "cancel_url"
         case contactPreference = "contact_preference"
@@ -151,6 +164,8 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case osVersion = "os_version"
         case recipientPhoneNumber = "international_phone"
         case recipientEmail = "recipient_email"
+        case recurringBillingDetails = "plan_metadata"
+        case recurringBillingPlanType = "plan_type"
         case requestBillingAgreement = "request_billing_agreement"
         case returnURL = "return_url"
         case riskCorrelationID = "correlation_id"

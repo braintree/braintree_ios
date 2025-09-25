@@ -419,16 +419,23 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         )
 
         let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
-        let parameters = request.parameters(with: configuration)
-        let amountParameters = request.amountBreakdown?.parameters()
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        guard let amountParameters = try? request.amountBreakdown?.toDictionary() else {
+            XCTFail()
+            return
+        }
 
         guard parameters["amount_breakdown"] is [String: String] else { XCTFail(); return }
-        XCTAssertEqual(amountParameters?["item_total"] as? String, "10.00")
-        XCTAssertEqual(amountParameters?["tax_total"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["shipping"] as? String, "2.00")
-        XCTAssertEqual(amountParameters?["handling"] as? String, "3.00")
-        XCTAssertEqual(amountParameters?["insurance"] as? String, "4.00")
-        XCTAssertEqual(amountParameters?["shipping_discount"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["discount"] as? String, "2.00")
+        XCTAssertEqual(amountParameters["item_total"] as? String, "10.00")
+        XCTAssertEqual(amountParameters["tax_total"] as? String, "1.00")
+        XCTAssertEqual(amountParameters["shipping"] as? String, "2.00")
+        XCTAssertEqual(amountParameters["handling"] as? String, "3.00")
+        XCTAssertEqual(amountParameters["insurance"] as? String, "4.00")
+        XCTAssertEqual(amountParameters["shipping_discount"] as? String, "1.00")
+        XCTAssertEqual(amountParameters["discount"] as? String, "2.00")
     }
 }
