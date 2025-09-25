@@ -18,7 +18,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 ## Supported Payment Methods
 
-- [AMEX](https://developer.paypal.com/braintree/articles/au/transactions/accepted-payment-methods#american-express)
+- [American Express](https://developer.paypal.com/braintree/articles/au/transactions/accepted-payment-methods#american-express)
 - [Apple Pay](https://developer.paypal.com/braintree/docs/guides/apple-pay/overview)
 - [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
 - [Local Payment Methods (LPM)](https://developer.paypal.com/braintree/articles/guides/payment-methods/local-payment-methods)
