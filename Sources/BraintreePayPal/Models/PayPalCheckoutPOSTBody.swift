@@ -28,7 +28,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var recipientPhoneNumber: BTPayPalPhoneNumber?
     private var recipientEmail: String?
     private var recurringBillingDetails: BTPayPalRecurringBillingDetails?
-    private var recurringBillingPlanType: BTPayPalRecurringBillingPlanType??
+    private var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     private var requestBillingAgreement: Bool?
     private var riskCorrelationID: String?
     private var shippingCallbackURL: String?
