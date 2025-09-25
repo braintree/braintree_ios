@@ -33,4 +33,10 @@ enum BTPayPalAnalytics {
     static let appSwitchStarted = "paypal:tokenize:app-switch:started"
     static let appSwitchSucceeded = "paypal:tokenize:app-switch:succeeded"
     static let appSwitchFailed = "paypal:tokenize:app-switch:failed"
+    
+    // MARK: - Default browser events
+    
+    static let defaultBrowserStarted = "paypal:tokenize:default-browser-switch:started"
+    static let defaultBrowserSucceeded = "paypal:tokenize:default-browser-switch:succeeded"
+    static let defaultBrowserFailed = "paypal:tokenize:default-browser-switch:failed"
 }
