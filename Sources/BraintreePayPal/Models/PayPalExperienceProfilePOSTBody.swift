@@ -50,6 +50,10 @@ struct PayPalExperienceProfile: Encodable {
         }
         
         self.shippingAddressOverride = payPalRequest.shippingAddressOverride != nil ? !payPalRequest.isShippingAddressEditable : false
+        
+        if payPalRequest.userAction != .none {
+            self.userAction = payPalRequest.userAction.stringValue
+        }
     }
     
     enum CodingKeys: String, CodingKey {

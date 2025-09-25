@@ -14,7 +14,6 @@ import BraintreeCore
     
     var offerCredit: Bool
     var enablePayPalAppSwitch: Bool = false
-    var userAction: BTPayPalRequestUserAction = .none
     var billingAgreementDescription: String?
     var displayName: String?
     var isShippingAddressEditable: Bool = false
@@ -28,6 +27,7 @@ import BraintreeCore
     var riskCorrelationID: String?
     var shippingAddressOverride: BTPostalAddress?
     var shopperSessionID: String?
+    var userAction: BTPayPalRequestUserAction = .none
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
     
