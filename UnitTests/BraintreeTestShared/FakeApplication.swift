@@ -22,12 +22,10 @@ public class FakeApplication: @preconcurrency URLOpener {
         openURLWasCalled = true
         openCallCount += 1
 
-//        Task { @MainActor in
-            let success = options.isEmpty
-            ? cannedOpenURLSuccessPerCall[.none]
-            : cannedOpenURLSuccessPerCall[.universalLinksOnly]
-            completion?(success ?? cannedOpenURLSuccess)
-//        }
+        let success = options.isEmpty
+        ? cannedOpenURLSuccessPerCall[.none]
+        : cannedOpenURLSuccessPerCall[.universalLinksOnly]
+        completion?(success ?? cannedOpenURLSuccess)
     }
 
     @objc public func canOpenURL(_ url: URL) -> Bool {
