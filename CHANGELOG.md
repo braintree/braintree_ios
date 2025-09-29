@@ -6,6 +6,8 @@
 * BraintreePayPal
   * Add `recurringBillingDetails`, `recurringBillingPlanType`, and `amountBreakdown` properties to `BTPayPalCheckoutRequest`. Enables RBA metadata to be passed for the PayPal Checkout Vault with Purchase flow
   * Add `userAction` property to `BTPayPalVaultRequest`
+  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openURLInDefaultBrowser` is triggered.
+  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browser switch succeeds or fails.
 
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
@@ -15,8 +17,6 @@
   * Add `BTPageType.paymentMethodSelection` and `BTPageType.paymentMethodAddition`
 * BraintreePayPal
   * Send `application_state` to FPTI for tracking UIApplication state
-  * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openURLInDefaultBrowser` is triggered.
-  * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browser switch succeeds or fails.
 
 ## 6.37.0 (2025-08-26)
 * BraintreePayPal
