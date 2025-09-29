@@ -16,14 +16,19 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 **The Braintree iOS SDK permits a deployment target of iOS 14.0 or higher**. It requires Xcode 15.0+ and Swift 5.9+.
 
-## Supported Payment Methods
+## Supported Payment Methods & Features
 
-- [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
-- [PayPal](https://developer.paypal.com/braintree/docs/guides/paypal/overview)
-- [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
+- [American Express](https://developer.paypal.com/braintree/articles/au/transactions/accepted-payment-methods#american-express)
 - [Apple Pay](https://developer.paypal.com/braintree/docs/guides/apple-pay/overview)
-- [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
+- [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
+- [Data Collector (Device data collection for fraud detection)](https://developer.paypal.com/braintree/docs/guides/premium-fraud-management-tools/client-side/)
 - [Local Payment Methods](https://developer.paypal.com/braintree/articles/guides/payment-methods/local-payment-methods)
+- [PayPal](https://developer.paypal.com/braintree/docs/guides/paypal/overview)
+- [PayPal Messaging (Pay Later Offers)](https://developer.paypal.com/braintree/docs/guides/paypal/pay-later-offers/ios/v6/)
+- [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
+- [Shopper Insights](https://developer.paypal.com/braintree/docs/guides/shopper-insights/)
+- [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
+- [SEPA Direct Debit](https://developer.paypal.com/braintree/docs/guides/sepa-direct-debit/overview/)
 
 ## Installation
 
