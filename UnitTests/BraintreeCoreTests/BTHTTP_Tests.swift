@@ -46,12 +46,17 @@ final class BTHTTP_Tests: XCTestCase {
         http.session = testURLSession
         let expectation = expectation(description: "GET callback")
 
-        http.httpRequest(method: "ANY", path: "200.json") { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
-            XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
-            XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
+        Task {
+            do {
+                let (body, response) = try await http.httpRequest(method: "ANY", path: "200.json")
+                XCTAssertNotNil(body)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
+                XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
+                XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
+            } catch {
+                XCTFail("Unexpected error: \(error)")
+            }
             expectation.fulfill()
         }
 
@@ -61,10 +66,14 @@ final class BTHTTP_Tests: XCTestCase {
     func testRequests_whenNoConfigurationSet_doesNotAppendPath() {
         let expectation = expectation(description: "callback")
 
-        http?.httpRequest(method: "ANY", path: "/some-really-long-path") { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
+        Task {
+            do {
+                let (body, _) = try await http?.httpRequest(method: "ANY", path: "/some-really-long-path") ?? (nil, nil)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
+            } catch {
+                XCTFail("Unexpected error: \(error)")
+            }
             expectation.fulfill()
         }
 
@@ -76,11 +85,16 @@ final class BTHTTP_Tests: XCTestCase {
         http.session = testURLSession
         let expectation = expectation(description: "callback")
 
-        http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
-            XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
+        Task {
+            do {
+                let (body, _) = try await http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration)
+                XCTAssertNotNil(body)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
+                XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
+            } catch {
+                XCTFail("Unexpected error: \(error)")
+            }
             expectation.fulfill()
         }
 
@@ -89,11 +103,16 @@ final class BTHTTP_Tests: XCTestCase {
     
     func testRequests_whenConfigurationSet_appendsPath() {
         let expectation = expectation(description: "callback")
-
-        http?.httpRequest(method: "ANY", path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
+        
+        Task {
+            do {
+                let (body, _) = try await http?.httpRequest(method: "ANY", path: "/some-really-long-path", configuration: fakeConfiguration) ?? (nil, nil)
+                XCTAssertNotNil(body)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
+            } catch {
+                XCTFail("Unexpected error: \(error)")
+            }
             expectation.fulfill()
         }
 

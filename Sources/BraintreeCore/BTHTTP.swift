@@ -69,12 +69,14 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        do {
-            let dict = try parameters?.toDictionary()
-            
-            httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict, completion: completion)
-        } catch let error {
-            completion(nil, nil, error)
+        Task {
+            do {
+                let dict = try parameters?.toDictionary()
+                let (json, response) = try await httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict)
+                completion(json, response, nil)
+            } catch {
+                completion(nil, nil, error)
+            }
         }
     }
     
@@ -102,14 +104,20 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
-        httpRequest(
-            method: "POST",
-            path: path,
-            configuration: configuration,
-            parameters: parameters,
-            headers: headers,
-            completion: completion
-        )
+        Task {
+            do {
+                let (json, response) = try await httpRequest(
+                    method: "POST",
+                    path: path,
+                    configuration: configuration,
+                    parameters: parameters,
+                    headers: headers
+                )
+                completion(json, response, nil)
+            } catch {
+                completion(nil, nil, error)
+            }
+        }
     }
     
     func post(
@@ -151,30 +159,34 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
-        headers: [String: String]? = nil,
-        completion: RequestCompletion?
-    ) {
-        do {
-            let request = try createRequest(
-                method: method,
-                path: path,
-                configuration: configuration,
-                parameters: parameters,
-                headers: headers
-            )
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        let request = try createRequest(
+            method: method,
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers
+        )
 
-            self.session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self else {
-                    completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                    return
-                }
+        let (data, response) = try await session.data(for: request)
+        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
 
-                handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
-            }.resume()
-        } catch {
-            self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
-            return
+        guard let httpResponse = createHTTPResponse(response: response) else {
+            throw BTHTTPError.httpResponseInvalid
         }
+
+        guard let data = data as Data? else {
+            throw BTHTTPError.dataNotFound
+        }
+
+        if json.isError {
+            if let error = try await handleJSONResponseError(json: json, response: response) {
+                throw error
+            }
+        }
+
+        return (json, httpResponse)
     }
 
     func createRequest(
@@ -288,7 +300,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         response: URLResponse?,
         error: Error?,
         completion: RequestCompletion?
-    ) {
+    ) async {
         guard let completion = completion else { return }
 
         guard error == nil else {
@@ -321,15 +333,15 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         // Empty response is valid
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            handleJSONResponseError(json: json, response: response) { [weak self] error in
-                guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+            do {
+                if let error = try await handleJSONResponseError(json: json, response: response) {
+                    callCompletionAsync(with: completion, body: nil, response: nil, error: error)
                     return
                 }
-
+            } catch {
                 callCompletionAsync(with: completion, body: nil, response: nil, error: error)
+                return
             }
-            return
         }
 
         callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
@@ -393,19 +405,18 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     func handleJSONResponseError(
         json: BTJSON,
-        response: URLResponse,
-        completion: @escaping (Error?) -> Void
-    ) {
+        response: URLResponse
+    ) async throws -> Error? {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
         if let contentType = responseContentType, contentType != "application/json" {
-            // Return error for unsupported response type
+            
             let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
-            completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
+            return BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo)
         } else {
-            completion(json.asError())
+            return json.asError()
         }
     }
 
