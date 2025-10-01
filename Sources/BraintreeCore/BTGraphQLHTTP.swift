@@ -96,17 +96,17 @@ class BTGraphQLHTTP: BTHTTP {
         guard let completion = completion else { return }
 
         if let error = error {
-            callCompletionAsync(with: completion, body: nil, response: response as? HTTPURLResponse, error: error)
+            completion(nil, response as? HTTPURLResponse, error)
             return
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
+            completion(nil, nil, BTHTTPError.httpResponseInvalid)
             return
         }
         
         guard let data = data else {
-            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPError.unknown)
+            completion(nil, httpResponse, BTHTTPError.unknown)
             return
         }
 
@@ -115,18 +115,13 @@ class BTGraphQLHTTP: BTHTTP {
 
         // Success case
         if body.asDictionary() != nil, body["errors"].asArray() == nil {
-            callCompletionAsync(with: completion, body: body, response: httpResponse, error: nil)
+            completion(body, httpResponse, nil)
             return
         }
         
         // Error case
         parseErrors(body: body, response: httpResponse) { errorJSON, error in
-            self.callCompletionAsync(
-                with: completion,
-                body: BTJSON(value: errorJSON),
-                response: httpResponse,
-                error: error
-            )
+            completion(BTJSON(value: errorJSON), httpResponse, error)
         }
     }
     
