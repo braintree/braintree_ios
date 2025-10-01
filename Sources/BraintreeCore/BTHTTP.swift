@@ -73,9 +73,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             do {
                 let dict = try parameters?.toDictionary()
                 let (json, response) = try await httpRequest(method: "GET", path: path, configuration: configuration, parameters: dict)
-                completion(json, response, nil)
+                dispatchQueue.async {
+                    completion(json, response, nil)
+                }
             } catch {
-                completion(nil, nil, error)
+                dispatchQueue.async {
+                    if let httpError = error as? BTHTTPError,
+                       let json = (httpError.errorUserInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON),
+                       let response = (httpError.errorUserInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse) {
+                        completion(json, response, error)
+                    } else {
+                        completion(nil, nil, error)
+                    }
+                }
             }
         }
     }
@@ -160,7 +170,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         configuration: BTConfiguration? = nil,
         parameters: [String: Any]? = [:],
         headers: [String: String]? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         let request = try createRequest(
             method: method,
             path: path,
@@ -170,7 +180,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         )
 
         let (data, response) = try await session.data(for: request)
-        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
 
         guard let httpResponse = createHTTPResponse(response: response) else {
             throw BTHTTPError.httpResponseInvalid
@@ -180,13 +189,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.dataNotFound
         }
 
-        if json.isError {
-            if let error = try await handleJSONResponseError(json: json, response: response) {
-                throw error
-            }
-        }
-
-        return (json, httpResponse)
+        return try await handleRequestCompletion(data: data, request: request, response: httpResponse)
     }
 
     func createRequest(
@@ -297,60 +300,30 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
-        response: URLResponse?,
-        error: Error?,
-        completion: RequestCompletion?
-    ) async {
-        guard let completion = completion else { return }
-
-        guard error == nil else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-            return
-        }
-
+        response: URLResponse?
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         guard let response, let httpResponse = createHTTPResponse(response: response) else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
-            return
+            throw BTHTTPError.httpResponseInvalid
         }
 
         guard let data else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.dataNotFound)
-            return
+            throw BTHTTPError.dataNotFound
         }
 
         if httpResponse.statusCode >= 400 {
-            handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
-                guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                    return
-                }
-
-                callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
-            }
-            return
+            let (json, error) = try handleHTTPResponseError(response: httpResponse, data: data)
+            throw error
         }
 
         // Empty response is valid
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            do {
-                if let error = try await handleJSONResponseError(json: json, response: response) {
-                    callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-                    return
-                }
-            } catch {
-                callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-                return
+            if let error = try handleJSONResponseError(json: json, response: response) {
+                throw error
             }
         }
 
-        callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
-    }
-    
-    func callCompletionAsync(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
-        self.dispatchQueue.async {
-            completion(body, response, error)
-        }
+        return (json, httpResponse)
     }
 
     func createHTTPResponse(response: URLResponse) -> HTTPURLResponse? {
@@ -367,7 +340,10 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return nil
     }
 
-    func handleHTTPResponseError(response: HTTPURLResponse, data: Data, completion: (BTJSON, Error) -> Void) {
+    func handleHTTPResponseError(
+        response: HTTPURLResponse,
+        data: Data
+    ) throws -> (BTJSON, Error) {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
@@ -400,13 +376,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             error = BTHTTPError.serverError(errorUserInfo)
         }
 
-        completion(json, error)
+        return (json, error)
     }
 
     func handleJSONResponseError(
         json: BTJSON,
         response: URLResponse
-    ) async throws -> Error? {
+    ) throws -> Error? {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
@@ -455,12 +431,18 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
             if trusted && error == nil {
                 let credential = URLCredential(trust: serverTrust)
-                completionHandler(.useCredential, credential)
+                dispatchQueue.async {
+                    completionHandler(.useCredential, credential)
+                }
             } else {
-                completionHandler(.rejectProtectionSpace, nil)
+                dispatchQueue.async {
+                    completionHandler(.rejectProtectionSpace, nil)
+                }
             }
         } else {
-            completionHandler(.performDefaultHandling, nil)
+            dispatchQueue.async {
+                completionHandler(.performDefaultHandling, nil)
+            }
         }
     }
 

@@ -50,7 +50,7 @@ final class BTHTTP_Tests: XCTestCase {
             do {
                 let (body, response) = try await http.httpRequest(method: "ANY", path: "200.json")
                 XCTAssertNotNil(body)
-                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
                 XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
                 XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
                 XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
@@ -89,7 +89,7 @@ final class BTHTTP_Tests: XCTestCase {
             do {
                 let (body, _) = try await http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration)
                 XCTAssertNotNil(body)
-                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
+                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
                 XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
                 XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
             } catch {
