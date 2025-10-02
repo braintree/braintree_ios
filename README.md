@@ -16,14 +16,19 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 - v6 is the latest major version of Braintree iOS. To update from v5, see the [v6 migration guide](https://github.com/braintree/braintree_ios/blob/main/V6_MIGRATION.md). If you have not yet migrated to v5, see the [v5 migration guide](https://github.com/braintree/braintree_ios/blob/5.x/V5_MIGRATION.md)
 
-## Supported Payment Methods
+## Supported Payment Methods & Features
 
-- [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
-- [PayPal](https://developer.paypal.com/braintree/docs/guides/paypal/overview)
-- [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
+- [American Express](https://developer.paypal.com/braintree/articles/au/transactions/accepted-payment-methods#american-express)
 - [Apple Pay](https://developer.paypal.com/braintree/docs/guides/apple-pay/overview)
-- [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
+- [Credit Cards](https://developer.paypal.com/braintree/docs/guides/credit-cards/overview)
+- [Data Collector (Device data collection for fraud detection)](https://developer.paypal.com/braintree/docs/guides/premium-fraud-management-tools/client-side/)
 - [Local Payment Methods](https://developer.paypal.com/braintree/articles/guides/payment-methods/local-payment-methods)
+- [PayPal](https://developer.paypal.com/braintree/docs/guides/paypal/overview)
+- [PayPal Messaging (Pay Later Offers)](https://developer.paypal.com/braintree/docs/guides/paypal/pay-later-offers/ios/v6/)
+- [Pay with Venmo](https://developer.paypal.com/braintree/docs/guides/venmo/overview)
+- [Shopper Insights](https://developer.paypal.com/braintree/docs/guides/shopper-insights/)
+- [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
+- [SEPA Direct Debit](https://developer.paypal.com/braintree/docs/guides/sepa-direct-debit/overview/)
 
 ## Installation
 

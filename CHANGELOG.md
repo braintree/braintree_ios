@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.39.0 (2025-10-01)
 * BraintreeCore
   * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
 * BraintreePayPal
