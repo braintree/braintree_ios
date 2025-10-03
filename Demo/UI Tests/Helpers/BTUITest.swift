@@ -1,10 +1,8 @@
 import XCTest
 
-// MARK: - Improved UI Test Helpers with Retry Logic
-
 extension XCTestCase {
 
-    /// Wait for element to appear with improved reliability
+    /// Wait for element to appear
     @discardableResult
     func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 30) -> Bool {
         let existsPredicate = NSPredicate(format: "exists == true")
@@ -13,7 +11,7 @@ extension XCTestCase {
         return result == .completed
     }
 
-    /// Wait for element to be hittable with improved reliability
+    /// Wait for element to be hittable
     @discardableResult
     func waitForElementToBeHittable(_ element: XCUIElement, timeout: TimeInterval = 30) -> Bool {
         let predicate = NSPredicate(format: "exists == true && hittable == true && enabled == true")
@@ -171,103 +169,7 @@ extension XCUIElement {
         return false
     }
 
-    /// Legacy method for backward compatibility
     func forceTapElement() {
         _ = self.tapWithRetry()
-    }
-}
-
-// MARK: - 3DS Specific Helpers
-
-extension XCTestCase {
-
-    /// Wait for 3DS authentication frame to load
-    func waitFor3DSFrame(timeout: TimeInterval = 45) -> Bool {
-        let app = XCUIApplication()
-
-        // Check for various 3DS indicators
-        let indicators = [
-            app.staticTexts["Purchase Authentication"],
-            app.staticTexts["Merchant Authentication"],
-            app.webViews.firstMatch,
-            app.otherElements["Cardinal-ChallengeView"]
-        ]
-
-        for indicator in indicators {
-            if waitForElementToAppear(indicator, timeout: timeout) {
-                // Give the frame time to fully load
-                Thread.sleep(forTimeInterval: 1)
-                return true
-            }
-        }
-        return false
-    }
-
-    /// Handle 3DS challenge with retry
-    func handle3DSChallenge(otp: String, timeout: TimeInterval = 30) -> Bool {
-        let app = XCUIApplication()
-
-        // Look for OTP input field
-        let otpFields = [
-            app.textFields.element(boundBy: 0),
-            app.secureTextFields.element(boundBy: 0),
-            app.textFields["otp"],
-            app.textFields["code"],
-            app.textFields["passcode"]
-        ]
-
-        for field in otpFields {
-            if waitForElementToBeHittable(field, timeout: timeout) {
-                if field.clearAndTypeText(otp) {
-                    // Look for submit button
-                    let submitButtons = [
-                        app.buttons["SUBMIT"],
-                        app.buttons["Submit"],
-                        app.buttons["Continue"],
-                        app.buttons["Verify"]
-                    ]
-
-                    for button in submitButtons {
-                        if button.exists && button.tapWithRetry() {
-                            return true
-                        }
-                    }
-                }
-            }
-        }
-        return false
-    }
-}
-
-// MARK: - Test Environment Setup
-
-extension XCTestCase {
-
-    /// Configure test environment for stability
-    func configureTestEnvironment(app: XCUIApplication) {
-        // Disable animations for faster, more reliable tests
-        app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
-
-        // Increase network timeouts for CI
-        app.launchEnvironment["NETWORK_TIMEOUT_MULTIPLIER"] = "2"
-
-        // Enable verbose logging for debugging
-        app.launchEnvironment["UITEST_VERBOSE_LOGGING"] = "YES"
-
-        // Disable rate limiting for tests
-        app.launchEnvironment["DISABLE_RATE_LIMITING"] = "YES"
-    }
-
-    /// Clean up test state
-    func cleanupTestState() {
-        // Clear any cached data
-        let app = XCUIApplication()
-        app.terminate()
-
-        // Clear simulator state if needed
-        if ProcessInfo.processInfo.environment["CI"] != nil {
-            // Running in CI, perform more aggressive cleanup
-            Thread.sleep(forTimeInterval: 2)
-        }
     }
 }

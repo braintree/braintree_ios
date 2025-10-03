@@ -118,22 +118,6 @@ jobs:
             echo "UI Tests passed on retry"
           fi
 
-      - name: Collect Diagnostics (on failure)
-        if: failure()
-        run: |
-          # Collect simulator logs
-          xcrun simctl diagnose
-          # Collect crash reports if any
-          find ~/Library/Logs/DiagnosticReports -name "*.crash" -mtime -1 -exec cat {} \;
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results-${{ matrix.test-suite }}
-          path: |
-            ~/Library/Developer/Xcode/DerivedData/*/Logs/Test/*.xcresult
-            ~/Library/Logs/DiagnosticReports/*.crash
   integration_test_job:
     name: Integration
     runs-on: macOS-14-xlarge
