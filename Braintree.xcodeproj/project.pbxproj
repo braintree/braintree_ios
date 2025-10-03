@@ -1425,11 +1425,11 @@
 		0357C47D1F96869600E63851 /* BraintreeAmericanExpress */ = {
 			isa = PBXGroup;
 			children = (
+				62E268BD2E905109006BF5E2 /* Models */,
 				3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */,
 				9CE8C7F9275ABDE700FB11F9 /* BTAmericanExpressClient.swift */,
 				9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */,
 				804B5711275AAF8500E51A52 /* BTAmericanExpressRewardsBalance.swift */,
-				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */,
 				80842DA62B8E49EF00A5CD92 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeAmericanExpress;
@@ -1453,6 +1453,7 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
+				62E268C12E905175006BF5E2 /* Models */,
 				BE6497D92DE79E6800E5473E /* BTPayPalRequestUserAction.swift */,
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				57544F5B295254A500DEB7B0 /* BTJSON+PayPal.swift */,
@@ -1472,7 +1473,6 @@
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
 				62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */,
 				807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */,
-				62B811872CC002470024A688 /* BTPayPalPhoneNumber.swift */,
 				454722AB2CEFB291000DCF4E /* BTContactInformation.swift */,
 				B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */,
 			);
@@ -1535,6 +1535,48 @@
 				621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */,
 				624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */,
 				455AA27A2DEE38ED008D99AB /* UpdateCustomerSessionMutationGraphQLBody.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		62E268BD2E905109006BF5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				804DC45A2B2CF3DC00F17A15 /* BTAmexRewardsBalanceRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		62E268BE2E90511B006BF5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		62E268C12E905175006BF5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				62B811872CC002470024A688 /* BTPayPalPhoneNumber.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		62E268C22E905186006BF5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */,
+				BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		62E268C32E9051C5006BF5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
+				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1894,11 +1936,11 @@
 		A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */ = {
 			isa = PBXGroup;
 			children = (
+				62E268BE2E90511B006BF5E2 /* Models */,
 				BEDB820129B109EE00075AF3 /* BTApplePayAnalytics.swift */,
 				BE895C60299433FB008112AB /* BTApplePayCardNonce.swift */,
 				BE895C6429944BF5008112AB /* BTApplePayClient.swift */,
 				BE895C6229944BD3008112AB /* BTApplePayError.swift */,
-				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
 				BE7A9643299FC5DE009AB920 /* BTConfiguration+ApplePay.swift */,
 				6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */,
 			);
@@ -2139,10 +2181,9 @@
 		BE5496E92E313A3B003CCA60 /* V1 */ = {
 			isa = PBXGroup;
 			children = (
+				62E268C32E9051C5006BF5E2 /* Models */,
 				62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */,
-				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
 				8064F38E2B1E492F0059C4CB /* BTShopperInsightsClient.swift */,
-				8064F3962B1E63800059C4CB /* BTShopperInsightsRequest.swift */,
 				8064F3902B1E49E10059C4CB /* BTShopperInsightsResult.swift */,
 			);
 			path = V1;
@@ -2221,6 +2262,7 @@
 		BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */ = {
 			isa = PBXGroup;
 			children = (
+				62E268C22E905186006BF5E2 /* Models */,
 				3BC0E09129E4673C009217D6 /* BTSEPADirectAnalytics.swift */,
 				BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */,
 				9C67362D27E3DAB90089BD99 /* BTSEPADirectDebitError.swift */,
@@ -2228,8 +2270,6 @@
 				BE642D8727D0094600694A5B /* BTSEPADirectDebitNonce.swift */,
 				BE642D8527D0047800694A5B /* BTSEPADirectDebitRequest.swift */,
 				BE0B163C27E0CC7400868C77 /* CreateMandateResult.swift */,
-				BEF177A52B51C7ED004F0F35 /* SEPADebitAccountsRequest.swift */,
-				BEF177A72B51D6A7004F0F35 /* SEPADebitRequest.swift */,
 				BE0B163E27E0CD7C00868C77 /* SEPADirectDebitAPI.swift */,
 				62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */,
 			);
