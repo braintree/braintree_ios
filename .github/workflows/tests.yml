@@ -25,7 +25,7 @@ jobs:
   ui_test_job:
     name: UI
     runs-on: macOS-14-xlarge
-    timeout-minutes: 60  # Add overall job timeout
+    timeout-minutes: 20  # Add overall job timeout
     strategy:
       matrix:
         test-suite:
@@ -74,12 +74,10 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
-            -test-timeouts-enabled YES \
-            -maximum-test-execution-time-allowance 180 \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
@@ -100,12 +98,10 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
-            -test-timeouts-enabled YES \
-            -maximum-test-execution-time-allowance 180 \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
@@ -134,4 +130,4 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'platform=iOS Simulator,name=iPhone 15' test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
