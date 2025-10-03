@@ -12,44 +12,82 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-MockedPayPalTokenizationKey")
         app.launchArguments.append("-Integration:PayPalWebCheckoutViewController")
+
+        // Disable animations for more reliable tests
+        app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
         app.launch()
 
-        app.buttons["PayPal Checkout"].tap()
-        
+        // Wait for app to be ready
+        _ = app.wait(for: .runningForeground, timeout: 10)
+
+        let checkoutButton = app.buttons["PayPal Checkout"]
+        XCTAssertTrue(
+            waitForElementToBeHittable(checkoutButton, timeout: 30),
+            "PayPal Checkout button did not appear"
+        )
+        XCTAssertTrue(checkoutButton.tapWithRetry(), "Failed to tap PayPal Checkout button")
+
         // Tap "Continue" on alert
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         waitForAuthDialogAndTapButton(named: "Continue")
     }
 
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
-        springboard.buttons[buttonName].tap()
+        let button = springboard.buttons[buttonName]
+        XCTAssertTrue(
+            button.waitForExistence(timeout: 20.0),
+            "Auth dialog button '\(buttonName)' did not appear"
+        )
+        XCTAssertTrue(button.tapWithRetry(), "Failed to tap auth dialog button '\(buttonName)'")
     }
 
     func testPayPal_checkout_receivesNonce() {
         let webviewElementsQuery = app.webViews.element.otherElements
+        let proceedLink = webviewElementsQuery.links["Proceed with Sandbox Purchase"]
 
-        self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
+        XCTAssertTrue(
+            waitForElementToAppear(proceedLink, timeout: 30),
+            "PayPal 'Proceed with Sandbox Purchase' link did not appear"
+        )
+        XCTAssertTrue(proceedLink.tapWithRetry(), "Failed to tap 'Proceed with Sandbox Purchase' link")
 
-        webviewElementsQuery.links["Proceed with Sandbox Purchase"].forceTapElement()
-
-        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2))
+        let nonceButton = app.buttons["Got a nonce. Tap to make a transaction."]
+        XCTAssertTrue(
+            waitForElementToAppear(nonceButton, timeout: 30),
+            "Nonce button did not appear"
+        )
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
         let webviewElementsQuery = app.webViews.element.otherElements
-        self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
+        let cancelLink = webviewElementsQuery.links["Cancel Sandbox Purchase"]
 
-        webviewElementsQuery.links["Cancel Sandbox Purchase"].forceTapElement()
+        XCTAssertTrue(
+            waitForElementToAppear(cancelLink, timeout: 30),
+            "PayPal 'Cancel Sandbox Purchase' link did not appear"
+        )
+        XCTAssertTrue(cancelLink.tapWithRetry(), "Failed to tap 'Cancel Sandbox Purchase' link")
 
-        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
+        let canceledButton = app.buttons["PayPal flow was canceled by the user."]
+        XCTAssertTrue(
+            waitForElementToAppear(canceledButton, timeout: 30),
+            "Canceled message did not appear"
+        )
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
-        self.waitForElementToAppear(app.buttons["Cancel"])
+        let cancelButton = app.buttons["Cancel"]
 
-        app.buttons["Cancel"].forceTapElement()
+        XCTAssertTrue(
+            waitForElementToAppear(cancelButton, timeout: 30),
+            "Cancel button did not appear"
+        )
+        XCTAssertTrue(cancelButton.tapWithRetry(), "Failed to tap Cancel button")
 
-        XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
+        let canceledButton = app.buttons["PayPal flow was canceled by the user."]
+        XCTAssertTrue(
+            waitForElementToAppear(canceledButton, timeout: 30),
+            "Canceled message did not appear"
+        )
     }
 }
