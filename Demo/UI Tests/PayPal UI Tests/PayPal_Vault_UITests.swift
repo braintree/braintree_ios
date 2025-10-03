@@ -19,13 +19,14 @@ class PayPal_Vault_UITests: XCTestCase {
         
         app.buttons["PayPal Vault"].tap()
 
-
-        // Wait for app to be ready
-        _ = app.wait(for: .runningForeground, timeout: 10)
-
         // Tap "Continue" on alert
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         waitForAuthDialogAndTapButton(named: "Continue")
+    }
+    
+    private func waitForAuthDialogAndTapButton(named buttonName: String) {
+        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
+        springboard.buttons[buttonName].tap()
     }
 
     func testPayPal_vault_receivesNonce() {
@@ -52,10 +53,5 @@ class PayPal_Vault_UITests: XCTestCase {
         app.buttons["Cancel"].forceTapElement()
 
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
-    }
-    
-    private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
-        springboard.buttons[buttonName].tap()
     }
 }
