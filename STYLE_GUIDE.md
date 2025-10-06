@@ -52,6 +52,8 @@ class MyViewController: UIViewController, UITableViewDataSource, UIScrollViewDel
 }
 ```
 
+**Note**: Classes or structs that conform to `Encodable` should be placed within a `Models` directory for relevant payment method types. This helps maintain a clear separation between data models and other components.
+
 ### Nested structs
 
 When defining struct model types that depend on other custom struct definitions, put both definitions in the same file.
