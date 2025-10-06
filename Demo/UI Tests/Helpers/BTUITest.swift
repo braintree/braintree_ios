@@ -2,7 +2,6 @@ import XCTest
 
 extension XCTestCase {
     
-    /// Wait for element to appear
     @discardableResult
     func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 30) -> Bool {
         let existsPredicate = NSPredicate(format: "exists == true")
@@ -11,7 +10,6 @@ extension XCTestCase {
         return result == .completed
     }
     
-    /// Wait for element to be hittable
     @discardableResult
     func waitForElementToBeHittable(_ element: XCUIElement, timeout: TimeInterval = 30) -> Bool {
         let predicate = NSPredicate(format: "exists == true && hittable == true && enabled == true")
@@ -25,16 +23,15 @@ extension XCTestCase {
 
 extension XCUIElement {
 
-    /// Improved tap with retry logic
     func tapWithRetry(maxAttempts: Int = 3) -> Bool {
         for attempt in 1...maxAttempts {
-            if self.waitForExistence(timeout: 2) {
-                if self.isHittable {
-                    self.tap()
+            if waitForExistence(timeout: 2) {
+                if isHittable {
+                    tap()
                     return true
                 } else {
-                    // Try coordinate-based tap if element exists but not hittable
-                    self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+                    /// Try coordinate-based tap if element exists but not hittable
+                    coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
                     return true
                 }
             }
