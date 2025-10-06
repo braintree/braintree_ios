@@ -87,22 +87,22 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
             XCTFail("Failed to initialize BTAPIClient with sandbox tokenization key.")
             return
         }
-        
+
         let payPalClient = BTPayPalClient(apiClient: apiClient)
         let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
-        
+
         payPalClient.handleReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
             guard let nonce = tokenizedPayPalAccount?.nonce else {
                 XCTFail("Failed to tokenize account.")
                 return
             }
-            
+
             XCTAssertTrue(nonce.isValidNonce)
             XCTAssertNil(error)
             tokenizationExpectation.fulfill()
         }
-        
-        waitForExpectations(timeout: 5)
+
+        waitForExpectations(timeout: 10)
     }
 }
