@@ -14,6 +14,13 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         app.launchArguments.append("-UITestHardcodedClientToken")
         app.launchArguments.append("-Integration:ThreeDSecureViewController")
         app.launch()
+        
+        // Disable animations for more reliable tests
+        app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
+        app.launch()
+
+        // Wait for app to be ready
+        _ = app.wait(for: .runningForeground, timeout: 10)
     }
 
     func testThreeDSecurePaymentFlowV2_challengeFlow_andTransacts() {
@@ -27,7 +34,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         let textField = app.textFields.allElementsBoundByIndex.first { $0.isHittable } ??
             app.secureTextFields.allElementsBoundByIndex.first { $0.isHittable } ??
             app.textFields.element(boundBy: 0)
-        
+
         waitForElementToBeHittable(textField)
         textField.forceTapElement()
         sleep(2)
@@ -50,7 +57,7 @@ class ThreeDSecure_V2_UITests: XCTestCase {
         let textField = app.textFields.allElementsBoundByIndex.first { $0.isHittable } ??
             app.secureTextFields.allElementsBoundByIndex.first { $0.isHittable } ??
             app.textFields.element(boundBy: 0)
-        
+
         waitForElementToBeHittable(textField)
         textField.forceTapElement()
         sleep(2)

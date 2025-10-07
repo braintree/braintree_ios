@@ -12,6 +12,9 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-MockedPayPalTokenizationKey")
         app.launchArguments.append("-Integration:PayPalWebCheckoutViewController")
+
+        // Disable animations for more reliable tests
+        app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
         app.launch()
 
         app.buttons["PayPal Checkout"].tap()
@@ -20,7 +23,7 @@ class PayPal_Checkout_UITests: XCTestCase {
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         waitForAuthDialogAndTapButton(named: "Continue")
     }
-
+    
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
         _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
         springboard.buttons[buttonName].tap()

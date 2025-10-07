@@ -2,7 +2,7 @@ import XCTest
 
 /// IMPORTANT: Hardware keyboard should be disabled on simulator for tests to run reliably.
 class PayPal_Vault_UITests: XCTestCase {
-    
+
     var app = XCUIApplication()
     var springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 
@@ -12,15 +12,18 @@ class PayPal_Vault_UITests: XCTestCase {
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-MockedPayPalTokenizationKey")
         app.launchArguments.append("-Integration:PayPalWebCheckoutViewController")
+
+        // Disable animations for more reliable tests
+        app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
         app.launch()
         
         app.buttons["PayPal Vault"].tap()
-        
+
         // Tap "Continue" on alert
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         waitForAuthDialogAndTapButton(named: "Continue")
     }
-
+    
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
         _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
         springboard.buttons[buttonName].tap()

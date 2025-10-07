@@ -22,13 +22,13 @@ Pod::Spec.new do |s|
   s.default_subspecs = %w[Core Card PayPal]
 
   s.subspec "AmericanExpress" do |s|
-    s.source_files  = "Sources/BraintreeAmericanExpress/*.swift"
+    s.source_files  = "Sources/BraintreeAmericanExpress/**/*.swift" 
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeAmericanExpress_PrivacyInfo" => "Sources/BraintreeAmericanExpress/PrivacyInfo.xcprivacy" }
   end
 
   s.subspec "ApplePay" do |s|
-    s.source_files  = "Sources/BraintreeApplePay/*.swift"
+    s.source_files  = "Sources/BraintreeApplePay/**/*.swift"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeApplePay_PrivacyInfo" => "Sources/BraintreeApplePay/PrivacyInfo.xcprivacy" }
     s.frameworks = "PassKit"
@@ -68,7 +68,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "SEPADirectDebit" do |s|
-    s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
+    s.source_files = "Sources/BraintreeSEPADirectDebit/**/*.swift"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeSEPADirectDebit_PrivacyInfo" => "Sources/BraintreeSEPADirectDebit/PrivacyInfo.xcprivacy" }
   end
