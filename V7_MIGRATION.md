@@ -34,7 +34,7 @@ Update initializer for `BTCardClient`:
 ```
 
 ## Venmo
-All properties within `BTVenmoRequest` can only be accessed on the initializer vs via the dot syntax.
+All properties within `BTVenmoRequest` and `BTVenmoLineItem` can only be accessed on the initializer vs via the dot syntax.
 
 Remove the `fallbackToWeb` boolean parameter from `BTVenmoRequest`. If a Buyer has the Venmo app installed and taps on "Pay with Venmo", they will automatically be switched to the Venmo app. If the Venmo app isn't installed, the Buyer will fallback to their default web browser to checkout.
 
