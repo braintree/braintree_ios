@@ -111,7 +111,6 @@ import Foundation
     ///   - imageURL: Optional. The URL to product image information.
     ///   - upcCode: Optional. UPC code for the item.
     ///   - upcType: Optional. UPC type for the item. Defaults to .none.
-    @objc(initWithQuantity:unitAmount:name:kind:unitTaxAmount:itemDescription:url:productCode:imageURL:upcCode:upcType:)
     public init(
         quantity: String,
         unitAmount: String,
