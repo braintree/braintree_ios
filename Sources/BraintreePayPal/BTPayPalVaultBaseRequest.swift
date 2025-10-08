@@ -44,10 +44,15 @@ import BraintreeCore
     public override func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
-        fallbackUrlScheme: String? = nil,
+        fallbackURLScheme: String? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        let baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
+        let baseParameters = super.parameters(
+            with: configuration,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme,
+            isPayPalAppInstalled: isPayPalAppInstalled
+        )
         var vaultParameters: [String: Any] = ["offer_paypal_credit": offerCredit]
 
         if let billingAgreementDescription {
@@ -66,6 +71,10 @@ import BraintreeCore
             ]
 
             vaultParameters["shipping_address"] = shippingAddressParameters
+        }
+        
+        if let fallbackURLScheme {
+            vaultParameters["merchant_app_fallback_url_scheme"] = fallbackURLScheme
         }
 
         return baseParameters.merging(vaultParameters) { $1 }

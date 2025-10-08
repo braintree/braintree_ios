@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* PayPal
+  * Add optional `fallbackURLScheme` parameter to support custom URL scheme fallback in PayPal App Switch flow
+
 ## 6.40.0 (2025-11-20)
 * PayPal
     * Add `offerCredit` property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit for Checkout requests.
@@ -12,7 +16,6 @@
   * Add `userAction` property to `BTPayPalVaultRequest`
   * Add `paypal:tokenize:default-browser-switch:started` event for when the appSwitch fails for universalLink and `openURLInDefaultBrowser` is triggered.
   * Add `paypal:tokenize:default-browser-switch:succeeded` and `paypal:tokenize:default-browser-switch:failed` events for when the browser switch succeeds or fails.
-  * Add `fallbackUrlScheme` to client initializer for merchants to have fallback return url if https url fails
 
 ## 6.38.0 (2025-09-09)
 * BraintreeShopperInsights (BETA)
