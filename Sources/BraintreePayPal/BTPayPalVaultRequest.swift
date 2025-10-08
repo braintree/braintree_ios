@@ -54,13 +54,13 @@ import BraintreeCore
     public override func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
-        fallbackUrlScheme: String? = nil,
+        fallbackURLScheme: String? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         super.parameters(
             with: configuration,
             universalLink: universalLink,
-            fallbackUrlScheme: fallbackUrlScheme,
+            fallbackURLScheme: fallbackURLScheme,
             isPayPalAppInstalled: isPayPalAppInstalled
         )
     }
