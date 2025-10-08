@@ -154,7 +154,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             unitAmount: "5.00",
             name: "item one 1234567",
             kind: .debit,
-            imageURL: URL(string: "https://www.example.com/example.jpg"), upcCode: "123456789",
+            imageURL: URL(string: "https://www.example.com/example.jpg"),
+            upcCode: "123456789",
             upcType: .UPC_A
         )
 
