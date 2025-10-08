@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 
+* BraintreePayPal
+  * Update `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.   
+
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
   * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
