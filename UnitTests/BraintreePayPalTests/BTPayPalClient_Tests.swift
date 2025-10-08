@@ -20,7 +20,7 @@ class BTPayPalClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": ["redirectUrl": "http://fakeURL.com"]
         ])
-        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!)
+        payPalClient = BTPayPalClient(apiClient: mockAPIClient, universalLink: URL(string: "https://www.paypal.com")!, fallbackUrlScheme: "paypal")
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
@@ -838,6 +838,24 @@ class BTPayPalClient_Tests: XCTestCase {
     func testHandleReturnURL_whenURLIsValid_setsBTPayPalClientToNil() {
         BTPayPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
         XCTAssertNil(BTPayPalClient.payPalClient)
+    }
+    
+    func testHandleReturnURL_whenFallBack_withPath() {
+        let url = URL(string: "paypal://path")!
+        BTPayPalClient.payPalClient = self.payPalClient
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+    }
+    
+    func testHandleReturnURL_whenFallBack_withoutPath() {
+        let url = URL(string: "paypal://")!
+        BTPayPalClient.payPalClient = self.payPalClient
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+    }
+    
+    func testHandleReturnURL_whenFallBack_wrongScheme() {
+        let url = URL(string: "palpay://")!
+        BTPayPalClient.payPalClient = self.payPalClient
+        XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
     }
     
     // MARK: - App Switch - Tokenize
