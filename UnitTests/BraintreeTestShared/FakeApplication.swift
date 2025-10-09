@@ -1,7 +1,7 @@
 import UIKit
 import BraintreeCore
 
-public class FakeApplication: @preconcurrency URLOpener {
+public class FakeApplication: URLOpener {
     
     public var lastOpenURL: URL? = nil
     public var openURLWasCalled: Bool = false
@@ -12,10 +12,10 @@ public class FakeApplication: @preconcurrency URLOpener {
     public var lastOpenOptions: [UIApplication.OpenExternalURLOptionsKey : Any]? = nil
     public var cannedOpenURLSuccessPerCall: [MockOpenURLOption: Bool] = [:]
 
-    @MainActor public func open(
+    public func open(
         _ url: URL,
         options: [UIApplication.OpenExternalURLOptionsKey: Any],
-        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+        completionHandler completion: (@Sendable (Bool) -> Void)?
     ) {
         lastOpenURL = url
         lastOpenOptions = options
@@ -25,6 +25,7 @@ public class FakeApplication: @preconcurrency URLOpener {
         let success = options.isEmpty
         ? cannedOpenURLSuccessPerCall[.none]
         : cannedOpenURLSuccessPerCall[.universalLinksOnly]
+
         completion?(success ?? cannedOpenURLSuccess)
     }
 
