@@ -17,7 +17,7 @@ class MockBackgroundTaskManager: BackgroundTaskManaging {
         
         // Simulate expiration handler call
         self.expirationHandler = handler
-        let id = taskIDsToReturn.popFirst() ?? .invalid
+        let id = taskIDsToReturn.isEmpty ? .invalid : taskIDsToReturn.removeFirst()
         begunTaskIDs.insert(id)
         return id
     }

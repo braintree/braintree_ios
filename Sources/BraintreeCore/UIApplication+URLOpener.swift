@@ -12,7 +12,7 @@ public protocol URLOpener {
     func open(
         _ url: URL,
         options: [UIApplication.OpenExternalURLOptionsKey: Any],
-        completionHandler completion: (@Sendable (Bool) -> Void)?
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
     )
 }
 
