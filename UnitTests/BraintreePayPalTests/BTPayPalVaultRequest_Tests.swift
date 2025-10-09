@@ -209,11 +209,16 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         request.riskCorrelationID = "123-correlation-id"
         request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
-        
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "1", name: "item", kind: .credit)
-        lineItem.imageURL = URL(string: "http://example/image.jpg")
-        lineItem.upcCode = "upc-code"
-        lineItem.upcType = .UPC_A
+                
+        let lineItem = BTPayPalLineItem(
+            quantity: "1",
+            unitAmount: "1",
+            name: "item",
+            kind: .credit,
+            imageURL: URL(string: "http://example/image.jpg"),
+            upcCode: "upc-code",
+            upcType: .UPC_A
+        )
         request.lineItems = [lineItem]
         
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {

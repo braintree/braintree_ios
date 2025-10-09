@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-##unreleased 
+## unreleased 
+* BraintreePayPal
+  * Update `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.   
 * BraintreeVenmo
   *  Update `BTVenmoLineItem` to make all properties accessible on the initializer only vs via the dot syntax.
 

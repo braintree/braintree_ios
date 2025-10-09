@@ -95,7 +95,7 @@ Update initializer for `BTThreeDSecureClient`:
 Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
 
 ## PayPal
-v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+v7 updates `BTPayPalRequest`, `BTPayPalVaultRequest`, `BTPayPalCheckoutRequest` and `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.
 
 Update initializer for `BTPayPalClient`:
 ```diff

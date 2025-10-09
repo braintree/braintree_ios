@@ -5,33 +5,32 @@ import XCTest
 class BTPayPalLineItem_Tests: XCTestCase {
     
     func testUPCTypeStringReturnsCorrectValue() {
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit)
-
-        lineItem.upcType = .UPC_A
+        
+        var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_A)
         var requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-A")
 
-        lineItem.upcType = .UPC_B 
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_B)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-B")
 
-        lineItem.upcType = .UPC_C 
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_C)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-C")
 
-        lineItem.upcType = .UPC_D 
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_D)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-D")
 
-        lineItem.upcType = .UPC_E 
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_E)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-E")
 
-        lineItem.upcType = .UPC_2 
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_2)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-2")
 
-        lineItem.upcType = .UPC_5
+        lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: .debit, upcType: .UPC_5)
         requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["upc_type"] as? String, "UPC-5")
     }
@@ -47,13 +46,19 @@ class BTPayPalLineItem_Tests: XCTestCase {
     }
     
     func testRequestParameters() {
-        let lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "10", name: "item-name", kind: BTPayPalLineItemKind.debit)
-        lineItem.unitTaxAmount = "8"
-        lineItem.itemDescription = "item description"
-        lineItem.imageURL = URL(string: "https://example.com/image.jpg")
-        lineItem.url = URL(string: "https://example.com")
-        lineItem.productCode = "product-code"
-        lineItem.upcCode = "upc-code"
+        let lineItem = BTPayPalLineItem(
+            quantity: "1",
+            unitAmount: "10",
+            name: "item-name",
+            kind: BTPayPalLineItemKind.debit,
+            unitTaxAmount: "8",
+            itemDescription: "item description",
+            url: URL(string: "https://example.com"),
+            productCode: "product-code",
+            imageURL: URL(string: "https://example.com/image.jpg"),
+            upcCode: "upc-code",
+            upcType: .none
+        )
         let requestParams = try? lineItem.toDictionary()
         XCTAssertEqual(requestParams?["name"] as? String, "item-name")
         XCTAssertEqual(requestParams?["kind"] as? String, "debit")
