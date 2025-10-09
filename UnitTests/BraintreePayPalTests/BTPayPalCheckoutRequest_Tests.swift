@@ -273,13 +273,19 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail() {
         let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
         
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        let parameters = request.parameters(
+            with: configuration,
+            universalLink: URL(string: "some-url")!,
+            fallbackURLScheme: "paypal",
+            isPayPalAppInstalled: true
+        )
         
         XCTAssertNil(parameters["payer_email"])
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
+        XCTAssertEqual(parameters["fallback_url_scheme"] as? String, "paypal")
     }
 
     func testCreateRequestBody_setsAmountBreakdown() {
