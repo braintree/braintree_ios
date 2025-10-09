@@ -179,11 +179,16 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoRequest.discountAmount = "9"
         venmoRequest.taxAmount = "9"
         venmoRequest.shippingAmount = "9"
-        let lineItem = BTVenmoLineItem(quantity: 1, unitAmount: "9", name: "name", kind: .debit)
-        lineItem.unitTaxAmount = "1"
-        lineItem.itemDescription = "some-description"
-        lineItem.productCode = "some-product-code"
-        lineItem.url = URL(string: "some.fake.url")!
+        let lineItem = BTVenmoLineItem(
+            quantity: 1,
+            unitAmount: "9",
+            name: "name",
+            kind: .debit,
+            unitTaxAmount: "1",
+            itemDescription: "some-description",
+            productCode: "some-product-code",
+            url: URL(string: "some.fake.url")!
+        )
         venmoRequest.lineItems = [lineItem]
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
