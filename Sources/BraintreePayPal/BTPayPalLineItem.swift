@@ -94,7 +94,7 @@ import Foundation
     let productCode: String?
     let imageURL: URL?
     let upcCode: String?
-    var upcType: BTPayPalLineItemUPCType?
+    let upcType: BTPayPalLineItemUPCType?
 
     // MARK: - Public Initializer
     
@@ -110,7 +110,7 @@ import Foundation
     ///   - productCode: Optional. Product or UPC code for the item. Maximum 127 characters.
     ///   - imageURL: Optional. The URL to product image information.
     ///   - upcCode: Optional. UPC code for the item.
-    ///   - upcType: Optional. UPC type for the item. Defaults to .none.
+    ///   - upcType: Optional. UPC type for the item. Defaults to `.none.`
     public init(
         quantity: String,
         unitAmount: String,
