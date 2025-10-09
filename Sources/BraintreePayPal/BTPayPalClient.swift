@@ -80,12 +80,12 @@ import BraintreeDataCollector
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
-    /// - Parameter apiClient: The API Client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
         BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
 
-        self.apiClient = apiClient
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
 
         super.init()
@@ -99,12 +99,12 @@ import BraintreeDataCollector
 
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A valid client token or tokenization key used to authorize API calls.
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
-    @objc(initWithAPIClient:universalLink:)
-    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
-        self.init(apiClient: apiClient)
+    @objc(initWithAuthorization:universalLink:)
+    public convenience init(authorization: String, universalLink: URL) {
+        self.init(authorization: authorization)
         
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
@@ -238,48 +238,22 @@ import BraintreeDataCollector
             notifyCancel(completion: completion)
             return
         }
-
-        let clientDictionary: [String: String] = [
-            "platform": "iOS",
-            "product_name": "PayPal",
-            "paypal_sdk_version": "version"
-        ]
-
-        let responseDictionary: [String: String] = ["webURL": url.absoluteString]
-
-        var account: [String: Any] = [
-            "client": clientDictionary,
-            "response": responseDictionary,
-            "response_type": "web"
-        ]
-
-        if paymentType == .checkout {
-            account["options"] = ["validate": false]
-            if let request = payPalRequest as? BTPayPalCheckoutRequest {
-                account["intent"] = request.intent.stringValue
-            }
-        }
         
-        if let clientMetadataID = contextID.flatMap({ clientMetadataIDs[$0] }) {
-            account["correlation_id"] = clientMetadataID
+        guard let payPalRequest else {
+            notifyFailure(with: BTPayPalError.missingPayPalRequest, completion: completion)
+            return
         }
 
-        var parameters: [String: Any] = ["paypal_account": account]
+        let encodableParams = PayPalAccountPOSTEncodable(
+            metadata: apiClient.metadata,
+            request: payPalRequest,
+            client: apiClient,
+            paymentType: paymentType,
+            url: url,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] }
+        )
         
-        if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
-            parameters["merchant_account_id"] = merchantAccountID
-        }
-
-        let metadata = apiClient.metadata
-        metadata.source = .payPalBrowser
-        
-        parameters["_meta"] = [
-            "source": metadata.source.stringValue,
-            "integration": metadata.integration.stringValue,
-            "sessionId": metadata.sessionID
-        ]
-        
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, _, error in
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -448,18 +422,22 @@ import BraintreeDataCollector
             
             self.isConfigFromCache = configuration.isFromCache
 
-            guard json["paypalEnabled"].isTrue else {
+            guard configuration.isPayPalEnabled else {
                 self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
                 return
             }
 
+            self.payPalRequest = request
+            
+            let parameters = request.encodedPostBodyWith(
+                configuration: configuration,
+                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+                universalLink: self.universalLink
+            )
+            
             self.apiClient.post(
                 request.hermesPath,
-                parameters: request.parameters(
-                    with: configuration,
-                    universalLink: self.universalLink,
-                    isPayPalAppInstalled: self.application.isPayPalAppInstalled()
-                )
+                parameters: parameters
             ) { body, _, error in
                 if let error = error as? NSError {
                     guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
@@ -483,7 +461,7 @@ import BraintreeDataCollector
                 
                 self.experiment = approvalURL.experiment
 
-                let dataCollector = BTDataCollector(apiClient: self.apiClient)
+                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
                 let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
                 
                 if let contextID = self.contextID {
@@ -500,8 +478,8 @@ import BraintreeDataCollector
                         )
                         return
                     }
-                    let merchantAccountID = json["merchantId"].asString()
-                    self.launchPayPalApp(with: url, merchantAccountID: merchantAccountID, completion: completion)
+                    let merchantID = json["merchantId"].asString()
+                    self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -512,7 +490,7 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
-        merchantAccountID: String? = nil,
+        merchantID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         /// Prevent multiple calls to open the app
@@ -552,7 +530,7 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
-            URLQueryItem(name: "merchant", value: merchantAccountID ?? "unknown")
+            URLQueryItem(name: "merchant", value: merchantID ?? "unknown")
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)

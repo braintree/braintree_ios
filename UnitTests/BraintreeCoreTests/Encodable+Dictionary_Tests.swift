@@ -15,24 +15,7 @@ final class Encodable_Dictionary_Tests: XCTestCase {
         }
     }
     
-    func testToDictionary_whenEncodingFails_throwsError() {
-        do {
-            _ = try fakeEncodable.toDictionary(MockJSONEncoder())
-        } catch let error {
-            let error = error as NSError
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTHTTPErrorDomain")
-            XCTAssertEqual(error.code, BTHTTPError.serializationError("").errorCode)
-        }
-    }
-    
     struct FakeEncodable: Encodable {
         let fake: String
-    }
-}
-
-class MockJSONEncoder: JSONEncoder {
-    
-    override func encode<T>(_ value: T) throws -> Data where T : Encodable {
-        throw EncodingError.invalidValue(1, EncodingError.Context(codingPath: [], debugDescription: ""))
     }
 }

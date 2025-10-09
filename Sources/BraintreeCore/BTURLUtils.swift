@@ -3,7 +3,7 @@ import Foundation
 /// :nodoc: This class is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
 /// A helper class for converting URL queries to and from dictionaries
 @_documentation(visibility: private)
-@objc public class BTURLUtils: NSObject {
+public class BTURLUtils: NSObject {
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Converts a key/value dictionary to a valid query string

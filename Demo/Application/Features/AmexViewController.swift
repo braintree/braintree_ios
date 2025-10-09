@@ -4,8 +4,8 @@ import BraintreeCard
 
 class AmexViewController: PaymentButtonBaseViewController {
 
-    lazy var amexClient = BTAmericanExpressClient(apiClient: apiClient)
-    lazy var cardClient = BTCardClient(apiClient: apiClient)
+    lazy var amexClient = BTAmericanExpressClient(authorization: authorization)
+    lazy var cardClient = BTCardClient(authorization: authorization)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +39,12 @@ class AmexViewController: PaymentButtonBaseViewController {
     }
 
     private func getRewards(for cardNumber: String) {
-        let card = BTCard()
-        card.number = cardNumber
-        card.expirationMonth = "12"
-        card.expirationYear = CardHelpers.generateFuture(.year)
-        card.cvv = "1234"
+        let card = BTCard(
+            number: cardNumber,
+            expirationMonth: "12",
+            expirationYear: CardHelpers.generateFuture(.year),
+            cvv: "1234"
+        )
 
         progressBlock("Tokenizing Card")
 

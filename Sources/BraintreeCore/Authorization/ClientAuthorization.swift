@@ -24,4 +24,5 @@ public protocol ClientAuthorization {
 public enum AuthorizationType {
     case tokenizationKey
     case clientToken
+    case invalidAuthorization
 }

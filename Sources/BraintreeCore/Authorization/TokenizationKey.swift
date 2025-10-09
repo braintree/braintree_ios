@@ -17,6 +17,7 @@ class TokenizationKey: ClientAuthorization {
         guard let configURL = TokenizationKey.baseURLFromTokenizationKey(rawValue) else {
             throw TokenizationKeyError.invalid
         }
+        
         self.configURL = configURL
     }
     

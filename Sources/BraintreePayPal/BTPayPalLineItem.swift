@@ -1,17 +1,31 @@
 import Foundation
 
 /// Use this option to specify whether a line item is a debit (sale) or credit (refund) to the customer.
-@objc public enum BTPayPalLineItemKind: Int {
+@objc public enum BTPayPalLineItemKind: Int, Encodable {
     /// Debit
     case debit
 
     /// Credit
     case credit
+    
+    var stringValue: String {
+        switch self {
+        case .debit:
+            return "debit"
+        case .credit:
+            return "credit"
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
+    }
 }
 
 // swiftlint:disable identifier_name
 /// Use this option to specify  the UPC type of the line item.
-@objc public enum BTPayPalLineItemUPCType: Int {
+@objc public enum BTPayPalLineItemUPCType: Int, Encodable {
 
     /// Default
     case none
@@ -58,102 +72,82 @@ import Foundation
             return "UPC-5"
         }
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(stringValue)
+    }
 }
 
 /// A PayPal line item to be displayed in the PayPal checkout flow.
-@objcMembers public class BTPayPalLineItem: NSObject {
+@objcMembers public class BTPayPalLineItem: NSObject, Encodable {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
     
-    /// Number of units of the item purchased. This value must be a whole number and can't be negative or zero.
-    public let quantity: String
-
-    /// Per-unit price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public let unitAmount: String
-
-    /// Item name. Maximum 127 characters.
-    public let name: String
-
-    /// Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
-    public let kind: BTPayPalLineItemKind
-
-    /// Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
-    public var unitTaxAmount: String?
-
-    /// Optional: Item description. Maximum 127 characters.
-    public var itemDescription: String?
-    
-    /// Optional: The URL to product information.
-    public var url: URL?
-
-    /// Optional: Product or UPC code for the item. Maximum 127 characters.
-    public var productCode: String?
-    
-    /// Optional: The URL to product image information.
-    public var imageURL: URL?
-
-    /// Optional: UPC code for the item.
-    public var upcCode: String?
-
-    /// Optional: UPC type for the item.
-    public var upcType: BTPayPalLineItemUPCType = .none
+    let quantity: String
+    let unitAmount: String
+    let name: String
+    let kind: BTPayPalLineItemKind
+    let unitTaxAmount: String?
+    let itemDescription: String?
+    let url: URL?
+    let productCode: String?
+    let imageURL: URL?
+    let upcCode: String?
+    let upcType: BTPayPalLineItemUPCType?
 
     // MARK: - Public Initializer
     
     /// Initialize a PayPayLineItem
     /// - Parameters:
-    ///   - quantity: Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
-    ///   - unitAmount: Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
-    ///   - name: Item name. Maximum 127 characters.
-    ///   - kind: Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
-    @objc(initWithQuantity:unitAmount:name:kind:)
-    public init(quantity: String, unitAmount: String, name: String, kind: BTPayPalLineItemKind) {
+    ///   - quantity: Required. Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
+    ///   - unitAmount: Required. Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
+    ///   - name: Required. Item name. Maximum 127 characters.
+    ///   - kind: Required. Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
+    ///   - unitTaxAmount: Optional. Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
+    ///   - itemDescription: Optional. Item description. Maximum 127 characters.
+    ///   - url: Optional. The URL to product information.
+    ///   - productCode: Optional. Product or UPC code for the item. Maximum 127 characters.
+    ///   - imageURL: Optional. The URL to product image information.
+    ///   - upcCode: Optional. UPC code for the item.
+    ///   - upcType: Optional. UPC type for the item. Defaults to `.none.`
+    public init(
+        quantity: String,
+        unitAmount: String,
+        name: String,
+        kind: BTPayPalLineItemKind,
+        unitTaxAmount: String? = nil,
+        itemDescription: String? = nil,
+        url: URL? = nil,
+        productCode: String? = nil,
+        imageURL: URL? = nil,
+        upcCode: String? = nil,
+        upcType: BTPayPalLineItemUPCType = .none
+    ) {
         self.quantity = quantity
         self.unitAmount = unitAmount
         self.name = name
         self.kind = kind
+        self.unitTaxAmount = unitTaxAmount
+        self.itemDescription = itemDescription
+        self.url = url
+        self.productCode = productCode
+        self.imageURL = imageURL
+        self.upcCode = upcCode
+        self.upcType = upcType
     }
     
-    // MARK: - Internal Methods
-
-    /// Returns the line item in a dictionary.
-    /// - Returns: A dictionary with the line item information formatted for a request.
-    func requestParameters() -> [String: String] {
-        var requestParameters = [
-            "quantity": quantity,
-            "unit_amount": unitAmount,
-            "name": name,
-            "kind": kind == .debit ? "debit" : "credit"
-        ]
-
-        if let unitTaxAmount, !unitTaxAmount.isEmpty {
-            requestParameters["unit_tax_amount"] = unitTaxAmount
-        }
-
-        if let itemDescription, !itemDescription.isEmpty {
-            requestParameters["description"] = itemDescription
-        }
-
-        if let productCode, !productCode.isEmpty {
-            requestParameters["product_code"] = productCode
-        }
-
-        if let url, url != URL(string: "") {
-            requestParameters["url"] = url.absoluteString
-        }
-        
-        if let imageURL, imageURL != URL(string: "") {
-            requestParameters["image_url"] = imageURL.absoluteString
-        }
-
-        if let upcCode, !upcCode.isEmpty {
-            requestParameters["upc_code"] = upcCode
-        }
-        
-        if upcType.stringValue != nil {
-            requestParameters["upc_type"] = upcType.stringValue
-        }
-                
-        return requestParameters
+    enum CodingKeys: String, CodingKey {
+        case imageURL = "image_url"
+        case itemDescription = "description"
+        case kind
+        case name
+        case productCode = "product_code"
+        case quantity
+        case unitAmount = "unit_amount"
+        case unitTaxAmount = "unit_tax_amount"
+        case upcCode = "upc_code"
+        case upcType = "upc_type"
+        case url
     }
 }

@@ -53,7 +53,7 @@ final class BTClientMetadata_Tests: XCTestCase {
 
     func testParameters_ReturnsTheMetadataMetaParametersForPosting() {
         let metadata = BTClientMetadata()
-        let parameters = metadata.parameters as? [String: String]
+        let parameters = try? metadata.toDictionary() as? [String: String]
         let expectedParameters: [String: String] = [
             "integration": metadata.integration.stringValue,
             "source": metadata.source.stringValue,

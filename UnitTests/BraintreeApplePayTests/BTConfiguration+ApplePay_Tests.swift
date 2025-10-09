@@ -5,7 +5,7 @@ import PassKit
 @testable import BraintreeTestShared
 
 class BTConfiguration_ApplePay_Tests : XCTestCase {
-    var mockAPIClient = MockAPIClient.init(authorization: "development_tokenization_key")!
+    var mockAPIClient = MockAPIClient.init(authorization: "development_tokenization_key")
 
     func testIsApplePayEnabled_whenApplePayStatusFromConfigurationJSONIsAString_returnsTrue() {
         for applePayStatus in ["mock", "production", "asdfasdf"] {

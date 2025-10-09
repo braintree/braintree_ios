@@ -22,9 +22,11 @@ import BraintreeDataCollector
     /// exposed for testing
     var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void) = { _, _ in }
     
-    // MARK: - Private Properties
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
     
-    private let apiClient: BTAPIClient
+    // MARK: - Private Properties
+
     private var request: BTLocalPaymentRequest?
 
     /// Used for linking events from the client to server side request
@@ -34,10 +36,10 @@ import BraintreeDataCollector
     // MARK: - Initializer
 
     /// Initialize a new `BTLocalPaymentClient` instance.
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
         self.webAuthenticationSession = BTWebAuthenticationSession()
         super.init()
         NotificationCenter.default.addObserver(
@@ -54,7 +56,7 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - request: A `BTLocalPaymentRequest` request.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
-    public func startPaymentFlow(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+    public func start(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
 
         self.request = request
@@ -66,7 +68,7 @@ import BraintreeDataCollector
                 return
             }
 
-            let dataCollector = BTDataCollector(apiClient: self.apiClient)
+            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
             request.correlationID = dataCollector.clientMetadataID(nil)
 
             guard let configuration else {
@@ -85,10 +87,6 @@ import BraintreeDataCollector
                 NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
                 self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
                 return
-            } else if request.amount == nil || request.paymentType == nil {
-                NSLog("%@ BTLocalPaymentRequest amount and paymentType can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
             }
 
             self.start(request: request, configuration: configuration)
@@ -99,9 +97,9 @@ import BraintreeDataCollector
     /// - Parameter request: A `BTLocalPaymentRequest` request.
     /// - Returns: A `BTLocalPaymentResult` if successful
     /// - Throws: An `Error` describing the failure
-    public func startPaymentFlow(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
+    public func start(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
         try await withCheckedThrowingContinuation { continuation in
-            startPaymentFlow(request) { result, error in
+            start(request) { result, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let result {
@@ -125,34 +123,12 @@ import BraintreeDataCollector
             return
         }
 
-        var paypalAccount: [String: Any] = [
-            "response": ["webURL": url.absoluteString],
-            "response_type": "web",
-            "options": ["validate": false],
-            "intent": "sale"
-        ]
-
-        if let correlationID = request?.correlationID {
-            paypalAccount["correlation_id"] = correlationID
-        }
-
-        var requestParameters: [String: Any] = [:]
-
-        if let merchantAccountID = request?.merchantAccountID {
-            requestParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        requestParameters["paypal_account"] = paypalAccount
-
-        let metadataParameters: [String: String] = [
-            "source": apiClient.metadata.source.stringValue,
-            "integration": apiClient.metadata.integration.stringValue,
-            "sessionId": apiClient.metadata.sessionID
-        ]
-
-        requestParameters["_meta"] = metadataParameters
-
-        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: requestParameters) { [weak self] body, _, error in
+        let localPaymentPayPalAccountRequest = LocalPaymentPayPalAccountsPOSTBody(
+            request: request,
+            clientMetadata: apiClient.metadata,
+            url: url
+        )
+        apiClient.post("/v1/payment_methods/paypal_accounts", parameters: localPaymentPayPalAccountRequest) { [weak self] body, _, error in
             guard let self else {
                 NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                 return
@@ -180,8 +156,8 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) {
-        let requestParameters = buildRequestDictionary(with: request)
-        apiClient.post("v1/local_payments/create", parameters: requestParameters) { body, _, error in
+        let localPaymentRequest = LocalPaymentPOSTBody(localPaymentRequest: request)
+        apiClient.post("v1/local_payments/create", parameters: localPaymentRequest) { body, _, error in
             if let error {
                 self.notifyFailure(with: error, completion: self.merchantCompletion)
                 return
@@ -210,67 +186,6 @@ import BraintreeDataCollector
                 return
             }
         }
-    }
-
-    private func buildRequestDictionary(with request: BTLocalPaymentRequest) -> [String: Any] {
-        var requestParameters: [String: Any] = [
-            "amount": request.amount ?? "",
-            "funding_source": request.paymentType ?? "",
-            "intent": "sale",
-            "return_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/success",
-            "cancel_url": "\(BTCoreConstants.callbackURLScheme)://x-callback-url/braintree/local-payment/cancel"
-        ]
-
-        if let countryCode = request.paymentTypeCountryCode {
-            requestParameters["payment_type_country_code"] = countryCode
-        }
-
-        if let address = request.address {
-            requestParameters["line1"] = address.streetAddress
-            requestParameters["line2"] = address.extendedAddress
-            requestParameters["city"] = address.locality
-            requestParameters["state"] = address.region
-            requestParameters["postal_code"] = address.postalCode
-            requestParameters["country_code"] = address.countryCodeAlpha2
-        }
-
-        if let currencyCode = request.currencyCode {
-            requestParameters["currency_iso_code"] = currencyCode
-        }
-
-        if let givenName = request.givenName {
-            requestParameters["first_name"] = givenName
-        }
-
-        if let surname = request.surname {
-            requestParameters["last_name"] = surname
-        }
-
-        if let email = request.email {
-            requestParameters["payer_email"] = email
-        }
-
-        if let phone = request.phone {
-            requestParameters["phone"] = phone
-        }
-
-        if let merchantAccountID = request.merchantAccountID {
-            requestParameters["merchant_account_id"] = merchantAccountID
-        }
-
-        if let bic = request.bic {
-            requestParameters["bic"] = bic
-        }
-
-        var experienceProfile: [String: Any] = ["no_shipping": !request.isShippingAddressRequired]
-
-        if let displayName = request.displayName {
-            experienceProfile["brand_name"] = displayName
-        }
-
-        requestParameters["experience_profile"] = experienceProfile
-
-        return requestParameters
     }
 
     private func onPayment(with url: URL?, error: Error?) {

@@ -64,7 +64,7 @@ struct BTPayPalReturnURL {
 
         /// If we are using the deeplink/ASWeb based PayPal flow we want to check that the host and path matches
         /// the static callbackURLHostAndPath. For the app switch flow we do not care about this check.
-        if hostAndPath != BTPayPalRequest.callbackURLHostAndPath && !didPayPalServerAttemptAppSwitch {
+        if hostAndPath != PayPalRequestConstants.callbackURLHostAndPath && !didPayPalServerAttemptAppSwitch {
             return false
         }
 

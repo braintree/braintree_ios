@@ -3,15 +3,14 @@ import BraintreeCore
 
 class PaymentButtonBaseViewController: BaseViewController {
 
-    let apiClient: BTAPIClient
+    let authorization: String
 
     var heightConstraint: CGFloat?
 
     private var paymentButton = UIView()
 
     override init(authorization: String) {
-        // swiftlint:disable:next force_unwrapping
-        apiClient = BTAPIClient(authorization: authorization)!
+        self.authorization = authorization
         super.init(authorization: authorization)
     }
     
@@ -50,5 +49,21 @@ class PaymentButtonBaseViewController: BaseViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: action, for: .touchUpInside)
         return button
+    }
+
+    // MARK: - Helpers
+
+    func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
+        let titleLabel = UILabel()
+        titleLabel.text = label
+
+        let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
+        buttonsStackView.axis = .vertical
+        buttonsStackView.distribution = .fillProportionally
+        buttonsStackView.backgroundColor = .systemGray6
+        buttonsStackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        buttonsStackView.isLayoutMarginsRelativeArrangement = true
+
+        return buttonsStackView
     }
 }

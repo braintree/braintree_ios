@@ -17,18 +17,17 @@ public class BTShopperInsightsClientV2 {
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
     var application: URLOpener = UIApplication.shared
     
-    // MARK: - Private Properties
-    
-    private let apiClient: BTAPIClient
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
     
     // MARK: - Initializers
     
     /// Creates a `BTShopperInsightsClientV2`
     /// - Parameters:
-    ///    - apiClient: A `BTAPIClient` instance.
+    ///    - authorization: A valid client token or tokenization key used to authorize API calls.
     /// - Warning: This init is beta. It's public API may change or be removed in future releases. This feature only works with a client token.
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
     
     // MARK: - Public Methods

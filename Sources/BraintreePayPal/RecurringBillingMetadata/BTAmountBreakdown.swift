@@ -4,7 +4,7 @@ import Foundation
 /// customize how the transaction amount is broken down. If `BTAmountBreakdown` is provided, `itemTotal`
 /// is required. Some fields are conditionally required or not accepted depending on the checkout flow (e.g., one-time
 /// vs subscription).
-public struct BTAmountBreakdown {
+public struct BTAmountBreakdown: Encodable {
 
     // MARK: - Private Properties
 
@@ -16,6 +16,16 @@ public struct BTAmountBreakdown {
     private let shippingDiscount: String?
     private let discountTotal: String?
 
+    private enum CodingKeys: String, CodingKey {
+        case itemTotal = "item_total"
+        case taxTotal = "tax_total"
+        case shippingTotal = "shipping"
+        case handlingTotal = "handling"
+        case insuranceTotal = "insurance"
+        case shippingDiscount = "shipping_discount"
+        case discountTotal = "discount"
+    }
+    
     // MARK: - Initializer
 
     /// Initialize a `BTAmountBreakdown` object.
@@ -43,39 +53,5 @@ public struct BTAmountBreakdown {
         self.insuranceTotal = insuranceTotal
         self.shippingDiscount = shippingDiscount
         self.discountTotal = discountTotal
-    }
-
-    // MARK: - Internal Methods
-
-    func parameters() -> [String: String] {
-        var parameters: [String: String] = [
-            "item_total": itemTotal
-        ]
-
-        if let taxTotal {
-            parameters["tax_total"] = taxTotal
-        }
-
-        if let shippingTotal {
-            parameters["shipping"] = shippingTotal
-        }
-
-        if let handlingTotal {
-            parameters["handling"] = handlingTotal
-        }
-
-        if let insuranceTotal {
-            parameters["insurance"] = insuranceTotal
-        }
-
-        if let shippingDiscount {
-            parameters["shipping_discount"] = shippingDiscount
-        }
-
-        if let discountTotal {
-            parameters["discount"] = discountTotal
-        }
-
-        return parameters
     }
 }

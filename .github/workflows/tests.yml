@@ -6,25 +6,24 @@ concurrency:
 jobs:
   unit_test_job:
     name: Unit
-    runs-on: macOS-14-xlarge
+    runs-on: macos-15-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 15.0.1
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'platform=iOS Simulator,name=iPhone 15' test | ./Pods/xcbeautify/xcbeautify
-
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macOS-14-xlarge
+    runs-on: macos-15-xlarge
     timeout-minutes: 20  # Add overall job timeout
     strategy:
       matrix:
@@ -41,8 +40,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: Use Xcode 15.0.1
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
       - name: Install CocoaPod dependencies
         run: pod install
@@ -50,9 +49,9 @@ jobs:
       - name: Boot Simulator
         run: |
           # Boot simulator ahead of time to reduce test startup time
-          xcrun simctl boot "iPhone 15" || true
+          xcrun simctl boot "iPhone 16" || true
           # Wait for simulator to boot
-          xcrun simctl bootstatus "iPhone 15" -b || true
+          xcrun simctl bootstatus "iPhone 16" -b || true
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
@@ -61,8 +60,8 @@ jobs:
           # Reset simulator state to ensure clean environment
           xcrun simctl shutdown all || true
           xcrun simctl erase all || true
-          xcrun simctl boot "iPhone 15" || true
-          xcrun simctl bootstatus "iPhone 15" -b || true
+          xcrun simctl boot "iPhone 16" || true
+          xcrun simctl bootstatus "iPhone 16" -b || true
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -74,7 +73,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
@@ -89,8 +88,8 @@ jobs:
           # Clean simulator state before retry
           xcrun simctl shutdown all || true
           xcrun simctl erase all || true
-          xcrun simctl boot "iPhone 15" || true
-          xcrun simctl bootstatus "iPhone 15" -b || true
+          xcrun simctl boot "iPhone 16" || true
+          xcrun simctl bootstatus "iPhone 16" -b || true
 
           set -o pipefail
           xcodebuild \
@@ -98,7 +97,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
@@ -116,18 +115,18 @@ jobs:
 
   integration_test_job:
     name: Integration
-    runs-on: macOS-14-xlarge
+    runs-on: macos-15-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 15.0.1
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 15,OS=17.2,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
