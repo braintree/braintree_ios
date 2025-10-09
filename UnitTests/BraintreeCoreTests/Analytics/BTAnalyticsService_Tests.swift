@@ -54,9 +54,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         sut.setAPIClient(stubAPIClient)
         sut.http = mockAnalyticsHTTP
         
-        // sends event to capture any previously queued events due to shared singleton, then captures current request count
-        await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "clear-queue-event"))
-        let currentPOSTRequestCount = mockAnalyticsHTTP.POSTRequestCount
+        await resetAnalyticsState(analyticsService: sut, analyticsHTTP: mockAnalyticsHTTP)
         
         // Send events associated with 1st sessionID
         stubAPIClient.metadata.sessionID = "session-id-1"
@@ -67,9 +65,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         sut.shouldBypassTimerQueue = true
         await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event2"))
         
-        let expectedPOSTRequestCount = currentPOSTRequestCount + 2
-        
-        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, expectedPOSTRequestCount)
+        XCTAssertEqual(mockAnalyticsHTTP.POSTRequestCount, 2)
     }
 
     func testSendAnalyticsEvents_whenMultipleEventsSent_tracksLatestEventName_andNumberOfPOSTRequests() async {
@@ -277,5 +273,10 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let topLevelEvent = postParameters?["events"] as? [[String: Any]]
         let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
         return eventParams?[index]["event_name"] as? String
+    }
+    
+    private func resetAnalyticsState(analyticsService: BTAnalyticsService, analyticsHTTP: FakeHTTP) async {
+        await analyticsService.performEventRequest(with: FPTIBatchData.Event(eventName: "clear-queue-event"))
+        analyticsHTTP.POSTRequestCount = 0
     }
 }
