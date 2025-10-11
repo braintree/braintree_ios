@@ -54,6 +54,8 @@ final class BTAnalyticsService_Tests: XCTestCase {
         sut.setAPIClient(stubAPIClient)
         sut.http = mockAnalyticsHTTP
         
+        await resetAnalyticsState(analyticsService: sut, analyticsHTTP: mockAnalyticsHTTP)
+        
         // Send events associated with 1st sessionID
         stubAPIClient.metadata.sessionID = "session-id-1"
         await sut.performEventRequest(with: FPTIBatchData.Event(eventName: "event1"))
@@ -271,5 +273,11 @@ final class BTAnalyticsService_Tests: XCTestCase {
         let topLevelEvent = postParameters?["events"] as? [[String: Any]]
         let eventParams = topLevelEvent?[0]["event_params"] as? [[String: Any]]
         return eventParams?[index]["event_name"] as? String
+    }
+    
+    /// Sends a dummy event to flush queued analytics and reset state before subsequent unit tests.
+    private func resetAnalyticsState(analyticsService: BTAnalyticsService, analyticsHTTP: FakeHTTP) async {
+        await analyticsService.performEventRequest(with: FPTIBatchData.Event(eventName: "clear-queue-event"))
+        analyticsHTTP.POSTRequestCount = 0
     }
 }
