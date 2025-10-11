@@ -275,6 +275,7 @@ final class BTAnalyticsService_Tests: XCTestCase {
         return eventParams?[index]["event_name"] as? String
     }
     
+    /// Sends a dummy event to flush queued analytics and reset state before subsequent unit tests.
     private func resetAnalyticsState(analyticsService: BTAnalyticsService, analyticsHTTP: FakeHTTP) async {
         await analyticsService.performEventRequest(with: FPTIBatchData.Event(eventName: "clear-queue-event"))
         analyticsHTTP.POSTRequestCount = 0
