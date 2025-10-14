@@ -9,9 +9,9 @@ import BraintreeCore
 
     // MARK: - Internal Properties
     
-    let accountHolderName: String?
-    let iban: String?
-    let customerID: String?
+    let accountHolderName: String
+    let iban: String
+    let customerID: String
     let billingAddress: BTPostalAddress?
     let mandateType: BTSEPADirectDebitMandateType?
     let merchantAccountID: String?
@@ -19,9 +19,9 @@ import BraintreeCore
 
     /// Initialize a new SEPA Direct Debit request.
     /// - Parameters:
-    ///   - accountHolderName: Optional. The account holder name.
-    ///   - iban: Optional. The full IBAN.
-    ///   - customerID: Optional. The customer ID.
+    ///   - accountHolderName: Required. The account holder name.
+    ///   - iban: Required. The full IBAN.
+    ///   - customerID: Required. The customer ID.
     ///   - billingAddress: Optional. The user's billing address.
     ///   - mandateType: Optional. The `BTSEPADebitMandateType`. If not set, defaults to `.oneOff
     ///   - merchantAccountID: Optional. A non-default merchant account to use for tokenization.
@@ -29,9 +29,9 @@ import BraintreeCore
     ///   See https://developer.paypal.com/reference/locale-codes/ for a list of possible values.
     ///   Locale code should be supplied as a BCP-47 formatted locale code.
     public init(
-        accountHolderName: String? = nil,
-        iban: String? = nil,
-        customerID: String? = nil,
+        accountHolderName: String,
+        iban: String,
+        customerID: String,
         billingAddress: BTPostalAddress? = nil,
         mandateType: BTSEPADirectDebitMandateType? = .oneOff,
         merchantAccountID: String? = nil,
