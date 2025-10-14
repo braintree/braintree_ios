@@ -1393,7 +1393,6 @@
 				BE6497D92DE79E6800E5473E /* BTPayPalRequestUserAction.swift */,
 				BE6BC22D2BA9CFFC00C3E321 /* BTPayPalReturnURL.swift */,
 				BE349110294B77E100D2CF68 /* BTPayPalVaultRequest.swift */,
-				62E268C12E905175006BF5E2 /* Models */,
 				45E8CE4A2D1F291400D7A2DC /* Models */,
 				62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */,
 				807D22F32C29ADA8009FFEA4 /* RecurringBillingMetadata */,
@@ -1501,13 +1500,6 @@
 			isa = PBXGroup;
 			children = (
 				804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		62E268C12E905175006BF5E2 /* Models */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Models;
 			sourceTree = "<group>";
