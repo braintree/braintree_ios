@@ -5,6 +5,8 @@
   * Update `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.   
 * BraintreeVenmo
   *  Update `BTVenmoLineItem` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeCore
+  *  Update`BTPostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
 
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
