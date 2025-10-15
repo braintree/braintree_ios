@@ -1331,9 +1331,9 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let checkoutRequest = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: "fake-pp@gmail.com",
             enablePayPalAppSwitch: true,
-            amount: "10.00"
+            amount: "10.00",
+            userAuthenticationEmail: "fake-pp@gmail.com"
         )
         
         payPalClient.tokenize(checkoutRequest) { _, _ in }
