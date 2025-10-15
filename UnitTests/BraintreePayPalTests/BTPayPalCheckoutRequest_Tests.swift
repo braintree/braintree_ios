@@ -89,14 +89,15 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
 
-        let shippingAddress = BTPostalAddress()
-        shippingAddress.streetAddress = "123 Main"
-        shippingAddress.extendedAddress = "Unit 1"
-        shippingAddress.locality = "Chicago"
-        shippingAddress.region = "IL"
-        shippingAddress.postalCode = "11111"
-        shippingAddress.countryCodeAlpha2 = "US"
-        shippingAddress.recipientName = "Recipient"
+        let shippingAddress = BTPostalAddress(
+            recipientName: "Recipient",
+            streetAddress: "123 Main",
+            extendedAddress: "Unit 1",
+            locality: "Chicago",
+            countryCodeAlpha2: "US",
+            postalCode: "11111",
+            region: "IL"
+        )
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 

@@ -6,20 +6,23 @@ import AuthenticationServices
 
 class BTSEPADirectDebitClient_Tests: XCTestCase {
     
-    var billingAddress = BTPostalAddress()
+    var billingAddress: BTPostalAddress!
     var sepaDirectDebitRequest: BTSEPADirectDebitRequest!
+
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
 
     override func setUp() {
         mockAPIClient = MockAPIClient(authorization: authorization)
 
-        billingAddress.streetAddress = "Kantstraße 70"
-        billingAddress.extendedAddress = "#170"
-        billingAddress.locality = "Freistaat Sachsen"
-        billingAddress.region = "Annaberg-buchholz"
-        billingAddress.postalCode = "09456"
-        billingAddress.countryCodeAlpha2 = "FR"
+        billingAddress = BTPostalAddress(
+            streetAddress: "Kantstraße 70",
+            extendedAddress: "#170",
+            locality: "Freistaat Sachsen",
+            countryCodeAlpha2: "FR",
+            postalCode: "09456",
+            region: "Annaberg-buchholz"
+        )
         
         sepaDirectDebitRequest = BTSEPADirectDebitRequest(
             accountHolderName: "John Doe",
