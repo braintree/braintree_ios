@@ -18,7 +18,7 @@ on:
 
 jobs:
   code-scanning:
-    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@addIOS7Support
+    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@main
     with:
       mac-runner-version: 'macos-15-xlarge'
       project: Demo/Demo.xcodeproj
