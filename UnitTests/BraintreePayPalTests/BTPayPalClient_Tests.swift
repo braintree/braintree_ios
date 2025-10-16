@@ -1331,8 +1331,8 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let checkoutRequest = BTPayPalCheckoutRequest(
-            enablePayPalAppSwitch: true,
             amount: "10.00",
+            enablePayPalAppSwitch: true,
             userAuthenticationEmail: "fake-pp@gmail.com"
         )
         
