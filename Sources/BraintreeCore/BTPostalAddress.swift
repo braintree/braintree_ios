@@ -7,7 +7,6 @@ import Foundation
     
     // Property names follow the `Braintree_Address` convention as documented at:
     // https://developer.paypal.com/braintree/docs/reference/request/address/create
-    
     let recipientName: String?
     let streetAddress: String?
     let extendedAddress: String?
@@ -20,13 +19,13 @@ import Foundation
     
     /// Creats a postal address with all components
     /// - Parameters:
-    ///    - recipientName: Recipient name for shipping address.
-    ///    - streetAddress: Line 1 of the Address (eg. number, street, etc).
-    ///    -  extendedAddress: Optional line 2 of the Address (eg. suite, apt #, etc.).
-    ///    - locality: City name
-    ///    - countryCodeAlpha2: 2 letter country code.
-    ///    - postalCode: Zip code or equivalent is usually required for countries that have them. For a list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code.
-    ///    - region: Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
+    ///    - recipientName: Optional. Recipient name for shipping address.
+    ///    - streetAddress: Optional. Line 1 of the Address (eg. number, street, etc).
+    ///    -  extendedAddress: Optional. Line 2 of the Address (eg. suite, apt #, etc.).
+    ///    - locality: Optional. City name
+    ///    - countryCodeAlpha2: Optional. 2 letter country code.
+    ///    - postalCode: Optional. Zip code or equivalent is usually required for countries that have them. For a list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code.
+    ///    - region: Optional. Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters.
     public init(
         recipientName: String? = nil,
         streetAddress: String? = nil,
@@ -58,15 +57,29 @@ import Foundation
     // MARK: - Helper Method
     
     /// Returns address components as a dictionary for accessing internal properties across modules
-    public func addressComponents() -> [String: String?] {
-        return [
-            "recipientName": recipientName,
-            "streetAddress": streetAddress,
-            "extendedAddress": extendedAddress,
-            "locality": locality,
-            "countryCodeAlpha2": countryCodeAlpha2,
-            "postalCode": postalCode,
-            "region": region
-        ]
+    public func addressComponents() -> [String: String] {
+        var components: [String: String] = [:]
+        if let recipientName = recipientName {
+            components["recipientName"] = recipientName
+        }
+        if let streetAddress = streetAddress {
+            components["streetAddress"] = streetAddress
+        }
+        if let extendedAddress = extendedAddress {
+            components["extendedAddress"] = extendedAddress
+        }
+        if let locality = locality {
+            components["locality"] = locality
+        }
+        if let countryCodeAlpha2 = countryCodeAlpha2 {
+            components["countryCodeAlpha2"] = countryCodeAlpha2
+        }
+        if let postalCode = postalCode {
+            components["postalCode"] = postalCode
+        }
+        if let region = region {
+            components["region"] = region
+        }
+        return components
     }
 }

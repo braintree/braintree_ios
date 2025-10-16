@@ -80,12 +80,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
         
         if let shippingAddressOverride = payPalRequest.shippingAddressOverride {
             let addressComponents = shippingAddressOverride.addressComponents()
-            self.streetAddress = addressComponents["streetAddress"] ?? nil
-            self.extendedAddress = addressComponents["extendedAddress"] ?? nil
-            self.locality = addressComponents["locality"] ?? nil
-            self.countryCodeAlpha2 = addressComponents["countryCodeAlpha2"] ?? nil
-            self.postalCode = addressComponents["postalCode"] ?? nil
-            self.region = addressComponents["region"] ?? nil
+            self.recipientName = addressComponents["recipientName"]
+            self.streetAddress = addressComponents["streetAddress"]
+            self.extendedAddress = addressComponents["extendedAddress"]
+            self.locality = addressComponents["locality"]
+            self.countryCodeAlpha2 = addressComponents["countryCodeAlpha2"]
+            self.postalCode = addressComponents["postalCode"]
+            self.region = addressComponents["region"]
         }
         
         if let merchantAccountID = payPalRequest.merchantAccountID {

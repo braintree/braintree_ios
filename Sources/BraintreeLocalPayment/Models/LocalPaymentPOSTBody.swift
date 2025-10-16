@@ -56,15 +56,14 @@ struct LocalPaymentPOSTBody: Encodable {
         self.returnURL = BTCoreConstants.callbackURLScheme + "://x-callback-url/braintree/local-payment/success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://x-callback-url/braintree/local-payment/cancel"
         
-        
         if let address = localPaymentRequest.address {
             let addressComponents = address.addressComponents()
-            self.streetAddress = addressComponents["streetAddress"] ?? nil
-            self.extendedAddress = addressComponents["extendedAddress"] ?? nil
-            self.locality = addressComponents["locality"] ?? nil
-            self.countryCodeAlpha2 = addressComponents["countryCodeAlpha2"] ?? nil
-            self.postalCode = addressComponents["postalCode"] ?? nil
-            self.region = addressComponents["region"] ?? nil
+            self.streetAddress = addressComponents["streetAddress"]
+            self.extendedAddress = addressComponents["extendedAddress"]
+            self.locality = addressComponents["locality"]
+            self.countryCodeAlpha2 = addressComponents["countryCodeAlpha2"]
+            self.postalCode = addressComponents["postalCode"]
+            self.region = addressComponents["region"]
         }
     }
     

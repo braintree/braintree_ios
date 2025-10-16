@@ -68,12 +68,12 @@ struct SEPADebitRequest: Encodable {
             self.billingAddress = sepaDirectDebitRequest.billingAddress.map { postalAddress in
                 let components = postalAddress.addressComponents()
                 return BillingAddress(
-                    streetAddress: components["streetAddress"] ?? nil,
-                    extendedAddress: components["extendedAddress"] ?? nil,
-                    locality: components["locality"] ?? nil,
-                    region: components["region"] ?? nil,
-                    postalCode: components["postalCode"] ?? nil,
-                    countryCodeAlpha2: components["countryCodeAlpha2"] ?? nil
+                    streetAddress: components["streetAddress"],
+                    extendedAddress: components["extendedAddress"],
+                    locality: components["locality"],
+                    region: components["region"],
+                    postalCode: components["postalCode"],
+                    countryCodeAlpha2: components["countryCodeAlpha2"]
                 )
             }
         }
