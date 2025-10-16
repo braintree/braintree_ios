@@ -27,7 +27,7 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
             extendedAddress: "#170",
             locality: "Freistaat Sachsen",
             countryCodeAlpha2: "FR",
-            postalCode: "09456", 
+            postalCode: "09456",
             region: "Annaberg-buchholz"
         )
 
