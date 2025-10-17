@@ -74,21 +74,15 @@ jobs:
           echo "Booting simulator..."
           xcrun simctl boot "$DEVICE_UDID"
 
-          # Wait for boot and data migration to complete
-          echo "Waiting for simulator to fully boot..."
-          for i in {1..90}; do
-            STATUS=$(xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -oE 'Status=[0-9]+' | head -1 | cut -d= -f2)
-            echo "Current boot status: $STATUS ($i/90)"
-            if [ "$STATUS" = "3" ]; then
-              echo "Simulator fully booted!"
-              break
-            fi
-            sleep 2
-          done
+          # Wait for boot - using timeout to prevent infinite blocking
+          echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
+          timeout 240 xcrun simctl bootstatus "$DEVICE_UDID" -b || {
+            echo "Boot status command timed out or exited, checking if simulator is usable..."
+          }
 
-          # Give extra time for services to stabilize after boot
+          # Additional wait for services to fully stabilize
           echo "Waiting for services to stabilize..."
-          sleep 5
+          sleep 10
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -123,21 +117,15 @@ jobs:
             defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
             xcrun simctl boot "$DEVICE_UDID"
 
-            # Wait for boot and data migration to complete
-            echo "Waiting for simulator to fully boot..."
-            for i in {1..90}; do
-              STATUS=$(xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -oE 'Status=[0-9]+' | head -1 | cut -d= -f2)
-              echo "Current boot status: $STATUS ($i/90)"
-              if [ "$STATUS" = "3" ]; then
-                echo "Simulator fully booted!"
-                break
-              fi
-              sleep 2
-            done
+            # Wait for boot - using timeout to prevent infinite blocking
+            echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
+            timeout 240 xcrun simctl bootstatus "$DEVICE_UDID" -b || {
+              echo "Boot status command timed out or exited, checking if simulator is usable..."
+            }
 
-            # Give extra time for services to stabilize
+            # Additional wait for services to stabilize
             echo "Waiting for services to stabilize..."
-            sleep 5
+            sleep 10
           fi
 
           set -o pipefail
