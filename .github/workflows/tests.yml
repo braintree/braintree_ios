@@ -46,10 +46,10 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Clean Simulator State
-        timeout-minutes: 5
+      - name: Boot Simulator
+        timeout-minutes: 3
         run: |
-          # Reset simulator state to ensure clean environment
+          # Find and boot simulator
           echo "Finding iPhone 16 simulator..."
           DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
 
@@ -60,27 +60,19 @@ jobs:
 
           echo "Using simulator: $DEVICE_UDID"
 
-          # Shutdown only the target simulator (not all)
+          # Shutdown if running
           xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-
-          # Erase only the target simulator
-          echo "Erasing simulator data..."
-          xcrun simctl erase "$DEVICE_UDID"
 
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
-          # Boot simulator
+          # Boot simulator (without erasing - let xcodebuild handle cleanup)
           echo "Booting simulator..."
-          xcrun simctl boot "$DEVICE_UDID"
+          xcrun simctl boot "$DEVICE_UDID" || true
 
-          # Wait for boot to complete - bootstatus -b blocks until ready
-          echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
-          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 | tail -20 || true
-
-          # Additional wait for services to fully stabilize
-          echo "Waiting for services to stabilize..."
-          sleep 15
+          # Give simulator time to start
+          echo "Waiting for simulator to start..."
+          sleep 10
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -105,25 +97,6 @@ jobs:
         timeout-minutes: 15
         run: |
           echo "First attempt failed, retrying..."
-          # Clean simulator state before retry
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
-
-          if [ -n "$DEVICE_UDID" ]; then
-            echo "Resetting simulator: $DEVICE_UDID"
-            xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-            xcrun simctl erase "$DEVICE_UDID"
-            defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-            xcrun simctl boot "$DEVICE_UDID"
-
-            # Wait for boot to complete - bootstatus -b blocks until ready
-            echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
-            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 | tail -20 || true
-
-            # Additional wait for services to stabilize
-            echo "Waiting for services to stabilize..."
-            sleep 15
-          fi
-
           set -o pipefail
           xcodebuild \
             -workspace 'Braintree.xcworkspace' \
