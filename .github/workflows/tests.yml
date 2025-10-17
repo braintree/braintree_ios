@@ -75,12 +75,19 @@ jobs:
           xcrun simctl boot "$DEVICE_UDID"
 
           # Wait for boot and data migration to complete
-          echo "Waiting for simulator to boot and complete data migration..."
-          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || true
+          echo "Waiting for simulator to fully boot..."
+          for i in {1..60}; do
+            if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
+              echo "Simulator fully booted (status 3)"
+              break
+            fi
+            echo "Still booting... ($i/60)"
+            sleep 2
+          done
 
-          # Give extra time for data migration and services to stabilize
-          echo "Waiting for simulator services to stabilize..."
-          sleep 10
+          # Give extra time for services to stabilize after boot
+          echo "Waiting for services to stabilize..."
+          sleep 5
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -114,9 +121,21 @@ jobs:
             xcrun simctl erase "$DEVICE_UDID"
             defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
             xcrun simctl boot "$DEVICE_UDID"
-            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || true
-            echo "Waiting for simulator services to stabilize..."
-            sleep 10
+
+            # Wait for boot and data migration to complete
+            echo "Waiting for simulator to fully boot..."
+            for i in {1..60}; do
+              if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
+                echo "Simulator fully booted (status 3)"
+                break
+              fi
+              echo "Still booting... ($i/60)"
+              sleep 2
+            done
+
+            # Give extra time for services to stabilize
+            echo "Waiting for services to stabilize..."
+            sleep 5
           fi
 
           set -o pipefail
