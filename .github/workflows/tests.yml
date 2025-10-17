@@ -47,7 +47,7 @@ jobs:
         run: pod install
 
       - name: Clean Simulator State
-        timeout-minutes: 3
+        timeout-minutes: 5
         run: |
           # Reset simulator state to ensure clean environment
           echo "Finding iPhone 16 simulator..."
@@ -76,12 +76,12 @@ jobs:
 
           # Wait for boot and data migration to complete
           echo "Waiting for simulator to fully boot..."
-          for i in {1..60}; do
+          for i in {1..90}; do
             if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
               echo "Simulator fully booted (status 3)"
               break
             fi
-            echo "Still booting... ($i/60)"
+            echo "Still booting... ($i/90)"
             sleep 2
           done
 
@@ -124,12 +124,12 @@ jobs:
 
             # Wait for boot and data migration to complete
             echo "Waiting for simulator to fully boot..."
-            for i in {1..60}; do
+            for i in {1..90}; do
               if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
                 echo "Simulator fully booted (status 3)"
                 break
               fi
-              echo "Still booting... ($i/60)"
+              echo "Still booting... ($i/90)"
               sleep 2
             done
 
