@@ -46,18 +46,18 @@ import BraintreeCore
         offerCredit: Bool = false
     ) {
         self.init(
-            offerCredit: offerCredit,
             enablePayPalAppSwitch: enablePayPalAppSwitch,
+            offerCredit: offerCredit,
             userAuthenticationEmail: userAuthenticationEmail
         )
     }
     
     /// Initializes a PayPal Vault request
     /// - Parameters:
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set.
     ///   - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
-    ///   - enablePayPalAppSwitch: Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
     ///   - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
     ///   - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
     ///   - landingPageType: Optional: Landing page type. Defaults to `.none`.
@@ -76,10 +76,10 @@ import BraintreeCore
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.
     public init(
+        enablePayPalAppSwitch: Bool = false,
         offerCredit: Bool = false,
         billingAgreementDescription: String? = nil,
         displayName: String? = nil,
-        enablePayPalAppSwitch: Bool = false,
         isShippingAddressEditable: Bool = false,
         isShippingAddressRequired: Bool = false,
         landingPageType: BTPayPalRequestLandingPageType = .none,
@@ -95,10 +95,10 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.offerCredit = offerCredit
         self.billingAgreementDescription = billingAgreementDescription
         self.displayName = displayName
-        self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.isShippingAddressEditable = isShippingAddressEditable
         self.isShippingAddressRequired = isShippingAddressRequired
         self.landingPageType = landingPageType
