@@ -46,15 +46,6 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Boot Simulator
-        run: |
-          # Boot simulator ahead of time to reduce test startup time
-          xcrun simctl boot "iPhone 16" || true
-          # Wait for simulator to boot
-          xcrun simctl bootstatus "iPhone 16" -b || true
-          # Disable hardware keyboard to avoid input issues
-          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-
       - name: Clean Simulator State
         timeout-minutes: 3
         run: |
@@ -76,13 +67,16 @@ jobs:
           echo "Erasing simulator data..."
           xcrun simctl erase "$DEVICE_UDID"
 
+          # Disable hardware keyboard to avoid input issues
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+
           # Boot simulator
           echo "Booting simulator..."
           xcrun simctl boot "$DEVICE_UDID"
 
-          # Wait for boot with timeout (60 seconds)
+          # Wait for boot - xcodebuild will handle if not fully ready
           echo "Waiting for simulator to boot..."
-          timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out, continuing anyway"
+          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || echo "Boot status check completed with warnings (simulator may still be usable)"
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -114,8 +108,9 @@ jobs:
             echo "Resetting simulator: $DEVICE_UDID"
             xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
             xcrun simctl erase "$DEVICE_UDID"
+            defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
             xcrun simctl boot "$DEVICE_UDID"
-            timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out"
+            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || echo "Boot status check completed with warnings (simulator may still be usable)"
           fi
 
           set -o pipefail
