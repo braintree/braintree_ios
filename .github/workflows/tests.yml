@@ -74,15 +74,13 @@ jobs:
           echo "Booting simulator..."
           xcrun simctl boot "$DEVICE_UDID"
 
-          # Wait for boot - using timeout to prevent infinite blocking
+          # Wait for boot to complete - bootstatus -b blocks until ready
           echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
-          timeout 240 xcrun simctl bootstatus "$DEVICE_UDID" -b || {
-            echo "Boot status command timed out or exited, checking if simulator is usable..."
-          }
+          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 | tail -20 || true
 
           # Additional wait for services to fully stabilize
           echo "Waiting for services to stabilize..."
-          sleep 10
+          sleep 15
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -117,15 +115,13 @@ jobs:
             defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
             xcrun simctl boot "$DEVICE_UDID"
 
-            # Wait for boot - using timeout to prevent infinite blocking
+            # Wait for boot to complete - bootstatus -b blocks until ready
             echo "Waiting for simulator to boot (this may take 1-2 minutes for data migration)..."
-            timeout 240 xcrun simctl bootstatus "$DEVICE_UDID" -b || {
-              echo "Boot status command timed out or exited, checking if simulator is usable..."
-            }
+            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 | tail -20 || true
 
             # Additional wait for services to stabilize
             echo "Waiting for services to stabilize..."
-            sleep 10
+            sleep 15
           fi
 
           set -o pipefail
