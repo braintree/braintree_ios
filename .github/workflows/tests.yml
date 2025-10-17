@@ -77,11 +77,12 @@ jobs:
           # Wait for boot and data migration to complete
           echo "Waiting for simulator to fully boot..."
           for i in {1..90}; do
-            if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
-              echo "Simulator fully booted (status 3)"
+            STATUS=$(xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -oE 'Status=[0-9]+' | head -1 | cut -d= -f2)
+            echo "Current boot status: $STATUS ($i/90)"
+            if [ "$STATUS" = "3" ]; then
+              echo "Simulator fully booted!"
               break
             fi
-            echo "Still booting... ($i/90)"
             sleep 2
           done
 
@@ -125,11 +126,12 @@ jobs:
             # Wait for boot and data migration to complete
             echo "Waiting for simulator to fully boot..."
             for i in {1..90}; do
-              if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 3"; then
-                echo "Simulator fully booted (status 3)"
+              STATUS=$(xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -oE 'Status=[0-9]+' | head -1 | cut -d= -f2)
+              echo "Current boot status: $STATUS ($i/90)"
+              if [ "$STATUS" = "3" ]; then
+                echo "Simulator fully booted!"
                 break
               fi
-              echo "Still booting... ($i/90)"
               sleep 2
             done
 
