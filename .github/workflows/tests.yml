@@ -74,9 +74,13 @@ jobs:
           echo "Booting simulator..."
           xcrun simctl boot "$DEVICE_UDID"
 
-          # Wait for boot - xcodebuild will handle if not fully ready
-          echo "Waiting for simulator to boot..."
-          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || echo "Boot status check completed with warnings (simulator may still be usable)"
+          # Wait for boot and data migration to complete
+          echo "Waiting for simulator to boot and complete data migration..."
+          xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || true
+
+          # Give extra time for data migration and services to stabilize
+          echo "Waiting for simulator services to stabilize..."
+          sleep 10
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -110,7 +114,9 @@ jobs:
             xcrun simctl erase "$DEVICE_UDID"
             defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
             xcrun simctl boot "$DEVICE_UDID"
-            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || echo "Boot status check completed with warnings (simulator may still be usable)"
+            xcrun simctl bootstatus "$DEVICE_UDID" -b 2>&1 || true
+            echo "Waiting for simulator services to stabilize..."
+            sleep 10
           fi
 
           set -o pipefail
