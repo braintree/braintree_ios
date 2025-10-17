@@ -58,28 +58,14 @@ import Foundation
     
     /// Returns address components as a dictionary for accessing internal properties across modules
     public func addressComponents() -> [String: String] {
-        var components: [String: String] = [:]
-        if let recipientName = recipientName {
-            components["recipientName"] = recipientName
-        }
-        if let streetAddress = streetAddress {
-            components["streetAddress"] = streetAddress
-        }
-        if let extendedAddress = extendedAddress {
-            components["extendedAddress"] = extendedAddress
-        }
-        if let locality = locality {
-            components["locality"] = locality
-        }
-        if let countryCodeAlpha2 = countryCodeAlpha2 {
-            components["countryCodeAlpha2"] = countryCodeAlpha2
-        }
-        if let postalCode = postalCode {
-            components["postalCode"] = postalCode
-        }
-        if let region = region {
-            components["region"] = region
-        }
-        return components
+        [
+            "recipientName": recipientName,
+            "streetAddress": streetAddress,
+            "extendedAddress": extendedAddress,
+            "locality": locality,
+            "countryCodeAlpha2": countryCodeAlpha2,
+            "postalCode": postalCode,
+            "region": region
+        ].compactMapValues { $0 }
     }
 }
