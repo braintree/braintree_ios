@@ -267,22 +267,14 @@ public class BTJSON: NSObject {
     public func asAddress() -> BTPostalAddress? {
         guard self.isObject else { return nil }
         
-        let recipientName = self["recipientName"].asString() ?? self["fullName"].asString()
-        let streetAddress = self["street1"].asString() ?? self["line1"].asString() ?? self["addressLine1"].asString()
-        let extendedAddress = self["street2"].asString() ?? self["line2"].asString() ?? self["addressLine2"].asString()
-        let locality = self["city"].asString() ?? self["adminArea2"].asString()
-        let region = self["state"].asString() ?? self["adminArea1"].asString()
-        let postalCode = self["postalCode"].asString()
-        let countryCodeAlpha2 = self["country"].asString() ?? self["countryCode"].asString()
-        
         return BTPostalAddress(
-            recipientName: recipientName,
-            streetAddress: streetAddress,
-            extendedAddress: extendedAddress,
-            locality: locality,
-            countryCodeAlpha2: countryCodeAlpha2,
-            postalCode: postalCode,
-            region: region
+            recipientName: self["recipientName"].asString() ?? self["fullName"].asString(),
+            streetAddress: self["street1"].asString() ?? self["line1"].asString() ?? self["addressLine1"].asString(),
+            extendedAddress: self["street2"].asString() ?? self["line2"].asString() ?? self["addressLine2"].asString(),
+            locality: self["city"].asString() ?? self["adminArea2"].asString(),
+            countryCodeAlpha2: self["country"].asString() ?? self["countryCode"].asString(),
+            postalCode: self["postalCode"].asString(),
+            region: self["state"].asString() ?? self["adminArea1"].asString()
         )
     }
 }
