@@ -22,13 +22,14 @@ class SEPADirectDebitViewController: PaymentButtonBaseViewController {
     @objc func sepaDirectDebitButtonTapped() {
         self.progressBlock("Tapped SEPA Direct Debit")
 
-        let billingAddress = BTPostalAddress()
-        billingAddress.streetAddress = "Kantstraße 70"
-        billingAddress.extendedAddress = "#170"
-        billingAddress.locality = "Freistaat Sachsen"
-        billingAddress.region = "Annaberg-buchholz"
-        billingAddress.postalCode = "09456"
-        billingAddress.countryCodeAlpha2 = "FR"
+        let billingAddress = BTPostalAddress(
+            streetAddress: "Kantstraße 70",
+            extendedAddress: "#170",
+            locality: "Freistaat Sachsen",
+            countryCodeAlpha2: "FR",
+            postalCode: "09456",
+            region: "Annaberg-buchholz"
+        )
 
         let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
             accountHolderName: "John Doe",

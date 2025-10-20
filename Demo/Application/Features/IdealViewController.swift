@@ -49,11 +49,12 @@ class IdealViewController: PaymentButtonBaseViewController {
     private func startPaymentWithBank() {
         localPaymentClient = BTLocalPaymentClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")
 
-        let postalAddress = BTPostalAddress()
-        postalAddress.countryCodeAlpha2 = "NL"
-        postalAddress.postalCode = "2585 GJ"
-        postalAddress.streetAddress = "836486 of 22321 Park Lake"
-        postalAddress.locality = "Den Haag"
+        let postalAddress = BTPostalAddress(
+            streetAddress: "836486 of 22321 Park Lake",
+            locality: "Den Haag",
+            countryCodeAlpha2: "NL",
+            postalCode: "2585 GJ"
+        )
         
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",

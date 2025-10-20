@@ -64,14 +64,18 @@ struct SEPADebitRequest: Encodable {
             self.mandateType = sepaDirectDebitRequest.mandateType?.description
             self.accountHolderName = sepaDirectDebitRequest.accountHolderName
             self.iban = sepaDirectDebitRequest.iban
-            self.billingAddress = BillingAddress(
-                streetAddress: sepaDirectDebitRequest.billingAddress?.streetAddress,
-                extendedAddress: sepaDirectDebitRequest.billingAddress?.extendedAddress,
-                locality: sepaDirectDebitRequest.billingAddress?.locality,
-                region: sepaDirectDebitRequest.billingAddress?.region,
-                postalCode: sepaDirectDebitRequest.billingAddress?.postalCode,
-                countryCodeAlpha2: sepaDirectDebitRequest.billingAddress?.countryCodeAlpha2
-            )
+            
+            self.billingAddress = sepaDirectDebitRequest.billingAddress.map { postalAddress in
+                let components = postalAddress.addressComponents()
+                return BillingAddress(
+                    streetAddress: components["streetAddress"],
+                    extendedAddress: components["extendedAddress"],
+                    locality: components["locality"],
+                    region: components["region"],
+                    postalCode: components["postalCode"],
+                    countryCodeAlpha2: components["countryCodeAlpha2"]
+                )
+            }
         }
     }
 

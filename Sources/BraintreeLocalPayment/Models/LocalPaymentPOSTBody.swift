@@ -57,12 +57,13 @@ struct LocalPaymentPOSTBody: Encodable {
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://x-callback-url/braintree/local-payment/cancel"
         
         if let address = localPaymentRequest.address {
-            self.streetAddress = address.streetAddress
-            self.extendedAddress = address.extendedAddress
-            self.locality = address.locality
-            self.countryCodeAlpha2 = address.countryCodeAlpha2
-            self.postalCode = address.postalCode
-            self.region = address.region
+            let addressComponents = address.addressComponents()
+            self.streetAddress = addressComponents["streetAddress"]
+            self.extendedAddress = addressComponents["extendedAddress"]
+            self.locality = addressComponents["locality"]
+            self.countryCodeAlpha2 = addressComponents["countryCodeAlpha2"]
+            self.postalCode = addressComponents["postalCode"]
+            self.region = addressComponents["region"]
         }
     }
     

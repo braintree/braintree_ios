@@ -88,13 +88,14 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        let postalAddress = BTPostalAddress()
-        postalAddress.countryCodeAlpha2 = "NL"
-        postalAddress.region = "CA"
-        postalAddress.postalCode = "2585 GJ"
-        postalAddress.streetAddress = "836486 of 22321 Park Lake"
-        postalAddress.extendedAddress = "#102"
-        postalAddress.locality = "Den Haag"
+        let postalAddress = BTPostalAddress(
+            streetAddress: "836486 of 22321 Park Lake",
+            extendedAddress: "#102",
+            locality: "Den Haag",
+            countryCodeAlpha2: "NL",
+            postalCode: "2585 GJ",
+            region: "CA"
+        )
         
         let paymentRequest = BTLocalPaymentRequest(
             paymentType: "ideal",
