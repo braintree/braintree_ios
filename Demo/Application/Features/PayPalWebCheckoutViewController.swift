@@ -302,9 +302,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "10.00"
         let request = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: emailTextField.text,
-            enablePayPalAppSwitch: true,
             amount: amount,
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
             offerPayLater: payLaterToggle.isOn
         )
@@ -326,8 +326,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: emailTextField.text,
-            enablePayPalAppSwitch: true
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text
         )
 
         payPalClient.tokenize(request) { nonce, error in
