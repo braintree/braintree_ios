@@ -73,9 +73,11 @@ class ContainmentViewController: UIViewController {
         button.addTarget(self, action: #selector(tappedStatus), for: .touchUpInside)
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = .systemFont(ofSize: 14)
-
-        let frame = navigationController?.navigationBar.frame
-        button.frame = CGRect(x: 0, y: 0, width: frame?.size.width ?? 100, height: frame?.size.height ?? 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        let widthConstraint = button.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
+        widthConstraint.priority = .defaultHigh
+        widthConstraint.isActive = true
 
         // Use custom view with button so the text can span multiple lines
         statusItem = UIBarButtonItem(customView: button)
