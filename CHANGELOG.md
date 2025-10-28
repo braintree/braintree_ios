@@ -21,6 +21,10 @@
 
 **Note:** Includes all changes in [7.0.0-beta1](#700-beta1-2025-04-30) and [7.0.0-beta2](#700-beta2-2025-07-29)
 
+## Unreleased
+* PayPal
+    * Add `shouldOfferCredit`property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit in Checkout requests.
+
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
   * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)

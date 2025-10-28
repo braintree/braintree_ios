@@ -45,6 +45,7 @@ import BraintreeCore
     var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
+    var shouldOfferCredit: Bool
     var amountBreakdown: BTAmountBreakdown?
     var billingAgreementDescription: String?
     var contactInformation: BTContactInformation?
@@ -92,6 +93,7 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
+        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         contactPreference: BTContactPreference = .none
@@ -102,6 +104,7 @@ import BraintreeCore
             userAction: userAction,
             offerPayLater: offerPayLater,
             contactPreference: contactPreference,
+            shouldOfferCredit: shouldOfferCredit,
             currencyCode: currencyCode,
             enablePayPalAppSwitch: enablePayPalAppSwitch,
             requestBillingAgreement: requestBillingAgreement,
@@ -152,6 +155,7 @@ import BraintreeCore
         billingAgreementDescription: String? = nil,
         contactInformation: BTContactInformation? = nil,
         contactPreference: BTContactPreference = .none,
+        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         displayName: String? = nil,
         enablePayPalAppSwitch: Bool = false,
@@ -175,6 +179,10 @@ import BraintreeCore
         self.intent = intent
         self.userAction = userAction
         self.offerPayLater = offerPayLater
+        self.shouldOfferCredit = shouldOfferCredit
+        self.currencyCode = currencyCode
+        self.requestBillingAgreement = requestBillingAgreement
+        self.shippingCallbackURL = shippingCallbackURL
         self.amountBreakdown = amountBreakdown
         self.billingAgreementDescription = billingAgreementDescription
         self.contactInformation = contactInformation
