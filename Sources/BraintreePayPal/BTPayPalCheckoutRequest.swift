@@ -66,9 +66,6 @@ import BraintreeCore
 
     /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
     public var amountBreakdown: BTAmountBreakdown?
-    
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
-    public var shouldOfferCredit: Bool = false
 
     // MARK: - Initializers
     
@@ -93,20 +90,20 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
-        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference = .none
+        contactPreference: BTContactPreference = .none,
+        shouldOfferCredit: Bool = false
     ) {
         self.init(
             amount: amount,
             intent: intent,
             userAction: userAction,
             offerPayLater: offerPayLater,
-            shouldOfferCredit: shouldOfferCredit,
             currencyCode: currencyCode,
             requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            shouldOfferCredit: shouldOfferCredit
         )
         super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
@@ -133,19 +130,18 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
-        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         shippingCallbackURL: URL? = nil,
         userAuthenticationEmail: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        amountBreakdown: BTAmountBreakdown? = nil
+        amountBreakdown: BTAmountBreakdown? = nil,
+        shouldOfferCredit: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
         self.offerPayLater = offerPayLater
-        self.shouldOfferCredit = shouldOfferCredit
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
@@ -157,7 +153,8 @@ import BraintreeCore
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
+            userAction: userAction,
+            shouldOfferCredit: shouldOfferCredit
         )
     }
 
