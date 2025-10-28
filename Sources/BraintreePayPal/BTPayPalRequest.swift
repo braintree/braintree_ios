@@ -114,6 +114,9 @@ import BraintreeCore
     /// Optional: Changes the call-to-action in the PayPal flow. Defaults to `.none`.
     public var userAction: BTPayPalRequestUserAction
 
+    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
+    public var shouldOfferCredit: Bool
+
     // MARK: - Internal Properties
     
     /// Optional: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`.
@@ -145,7 +148,8 @@ import BraintreeCore
         shopperSessionID: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        userAction: BTPayPalRequestUserAction = .none
+        userAction: BTPayPalRequestUserAction = .none,
+        shouldOfferCredit: Bool = false
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -166,6 +170,7 @@ import BraintreeCore
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.userAction = userAction
+        self.shouldOfferCredit = shouldOfferCredit
     }
 
     // MARK: Public Methods

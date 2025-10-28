@@ -81,7 +81,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
 
     override func viewDidLoad() {
-        super.heightConstraint = 500
+        super.heightConstraint = 550
         super.viewDidLoad()
     }
 

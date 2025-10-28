@@ -66,9 +66,6 @@ import BraintreeCore
 
     /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
     public var amountBreakdown: BTAmountBreakdown?
-    
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
-    public var shouldOfferCredit: Bool = false
 
     // MARK: - Initializers
     
@@ -84,6 +81,8 @@ import BraintreeCore
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
+    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
+    ///   - shouldOfferCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
@@ -93,20 +92,20 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
-        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference = .none
+        contactPreference: BTContactPreference = .none,
+        shouldOfferCredit: Bool = false
     ) {
         self.init(
             amount: amount,
             intent: intent,
             userAction: userAction,
             offerPayLater: offerPayLater,
-            shouldOfferCredit: shouldOfferCredit,
             currencyCode: currencyCode,
             requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            shouldOfferCredit: shouldOfferCredit
         )
         super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
@@ -128,24 +127,24 @@ import BraintreeCore
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
     ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
+    ///   - shouldOfferCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
-        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         shippingCallbackURL: URL? = nil,
         userAuthenticationEmail: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        amountBreakdown: BTAmountBreakdown? = nil
+        amountBreakdown: BTAmountBreakdown? = nil,
+        shouldOfferCredit: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
         self.offerPayLater = offerPayLater
-        self.shouldOfferCredit = shouldOfferCredit
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
@@ -157,7 +156,8 @@ import BraintreeCore
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
+            userAction: userAction,
+            shouldOfferCredit: shouldOfferCredit
         )
     }
 
