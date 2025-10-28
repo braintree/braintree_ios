@@ -35,10 +35,10 @@ import BraintreeCore
     
     /// Creates a Card
     /// - Parameters:
-    ///   - number: Required. The card number.
-    ///   - expirationMonth: Required. The expiration month as a one or two-digit number on the Gregorian calendar.
-    ///   - expirationYear: Required. The expiration year as a two or four-digit number on the Gregorian calendar.
-    ///   - cvv: Required. The card verification code (like CVV or CID).
+    ///   - number: Required: The card number.
+    ///   - expirationMonth: Required: The expiration month as a one or two-digit number on the Gregorian calendar.
+    ///   - expirationYear: Required: The expiration year as a two or four-digit number on the Gregorian calendar.
+    ///   - cvv: Required: The card verification code (like CVV or CID).
     ///   - postalCode: Optional: The postal code associated with the card's billing address.
     ///   - cardholderName: Optional: The cardholder's name.
     ///   - firstName: Optional: First name on the card.

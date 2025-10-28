@@ -14,7 +14,7 @@ import BraintreeCore
 
     var apiClient: BTAPIClient
 
-    ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
+    ///  Initializes a `BTDataCollector` instance.
     /// - Parameter  authorization: A valid client token or tokenization key used to authorize API calls.
     @objc(initWithAuthorization:)
     public init(authorization: String) {

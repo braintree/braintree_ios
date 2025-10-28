@@ -34,7 +34,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-
+        
         let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
         
@@ -43,7 +43,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
                 XCTFail("Failed to tokenize account.")
                 return
             }
-                        
+            
             XCTAssertTrue(nonce.isValidNonce)
             XCTAssertNil(error)
             tokenizationExpectation.fulfill()
