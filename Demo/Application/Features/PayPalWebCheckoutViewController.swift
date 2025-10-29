@@ -332,11 +332,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: emailTextField.text,
-            enablePayPalAppSwitch: true,
             amount: "10.00",
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerPayLater: false,
+            offerPayLater: payLaterToggle.isOn,
             shouldOfferCredit: true
         )
 
