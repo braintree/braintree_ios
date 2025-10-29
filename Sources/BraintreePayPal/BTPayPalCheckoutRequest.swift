@@ -90,6 +90,7 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
+        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         contactPreference: BTContactPreference = .none
@@ -99,6 +100,7 @@ import BraintreeCore
             intent: intent,
             userAction: userAction,
             offerPayLater: offerPayLater,
+            shouldOfferCredit: shouldOfferCredit,
             currencyCode: currencyCode,
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail
@@ -128,6 +130,7 @@ import BraintreeCore
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
+        shouldOfferCredit: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
         shippingCallbackURL: URL? = nil,
@@ -139,6 +142,7 @@ import BraintreeCore
         self.amount = amount
         self.intent = intent
         self.offerPayLater = offerPayLater
+        self.shouldOfferCredit = shouldOfferCredit
         self.currencyCode = currencyCode
         self.requestBillingAgreement = requestBillingAgreement
         self.shippingCallbackURL = shippingCallbackURL
@@ -150,7 +154,8 @@ import BraintreeCore
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
+            userAction: userAction,
+            shouldOfferCredit: shouldOfferCredit
         )
     }
 
@@ -167,7 +172,8 @@ import BraintreeCore
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,
             "amount": amount,
-            "offer_pay_later": offerPayLater
+            "offer_pay_later": offerPayLater,
+            "offer_paypal_credit": shouldOfferCredit
         ]
 
         let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
