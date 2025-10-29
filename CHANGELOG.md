@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * PayPal
     * Add `shouldOfferCredit`property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit in Checkout requests.
 
