@@ -17,7 +17,6 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
         self.variables = Variables(request: request, merchantProfileID: merchantProfileID)
     }
     
-    
     struct Variables: Encodable {
         
         let input: InputParameters
