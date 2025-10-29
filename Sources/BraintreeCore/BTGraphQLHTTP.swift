@@ -147,7 +147,7 @@ class BTGraphQLHTTP: BTHTTP {
             error = .clientError(errorBody)
         } else if let errorType, errorType == "developer_error" {
             statusCode = 403
- 
+
             if let message = errorJSON["message"].asString() {
                 errorBody["error"] = ["message": message]
             }
