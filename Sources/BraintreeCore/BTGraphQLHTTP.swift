@@ -89,7 +89,7 @@ class BTGraphQLHTTP: BTHTTP {
             handleRequestCompletion(data: data, response: response, error: error, completion: completion)
         }.resume()
     }
-    
+
     func handleRequestCompletion(
         data: Data?,
         response: URLResponse?,
@@ -97,12 +97,12 @@ class BTGraphQLHTTP: BTHTTP {
         completion: RequestCompletion?
     ) {
         guard let completion = completion else { return }
-        
+
         if let error = error {
             callCompletionAsync(with: completion, body: nil, response: response as? HTTPURLResponse, error: error)
             return
         }
-        
+
         guard let httpResponse = response as? HTTPURLResponse else {
             callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
             return
@@ -112,10 +112,10 @@ class BTGraphQLHTTP: BTHTTP {
             callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPError.unknown)
             return
         }
-        
+
         let json = try? JSONSerialization.jsonObject(with: data)
         let body = BTJSON(value: json)
-        
+
         // Success case
         if body.asDictionary() != nil, body["errors"].asArray() == nil {
             callCompletionAsync(with: completion, body: body, response: httpResponse, error: nil)
@@ -136,18 +136,18 @@ class BTGraphQLHTTP: BTHTTP {
     func parseErrors(body: BTJSON, response: HTTPURLResponse, completion: @escaping ([String: Any]?, Error?) -> Void) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
-        
+
         var statusCode = 0
         var error: BTHTTPError = .unknown
         var errorBody: [String: Any] = [:]
-        
+
         if let errorType, errorType == "user_error" {
             statusCode = 422
             errorBody = parseGraphQLError(fromJSON: body)
             error = .clientError(errorBody)
         } else if let errorType, errorType == "developer_error" {
             statusCode = 403
-            
+ 
             if let message = errorJSON["message"].asString() {
                 errorBody["error"] = ["message": message]
             }
@@ -171,7 +171,7 @@ class BTGraphQLHTTP: BTHTTP {
                 BTCoreConstants.jsonResponseBodyKey: BTJSON(value: errorBody)
             ]
         )
-        
+
         completion(errorBody, nestedGraphQLError)
     }
 

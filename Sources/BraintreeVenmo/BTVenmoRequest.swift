@@ -42,7 +42,7 @@ import Foundation
 
     /// Initialize a `BTVenmoRequest`
     /// - Parameters:
-    ///   - paymentMethodUsage: Required:  A `BTVenmoPaymentMethodUsage` that determines the usage type of a tokenized Venmo account.
+    ///   - paymentMethodUsage: Required: A `BTVenmoPaymentMethodUsage` that determines the usage type of a tokenized Venmo account.
     ///   - profileID: Optional: The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile. Venmo profile IDs can be found in the Braintree Control      Panel. Leaving this `nil` will use the default Venmo profile.
     ///   - vault: Optional: Whether to automatically vault the Venmo account on the client. For client-side vaulting, you must initialize BTAPIClient with a client token that was created with a customer ID.
     ///     Also, `paymentMethodUsage` on the BTVenmoRequest must be set to `.multiUse`. If this property is set to `false`, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is not set to `.singleUse`.
