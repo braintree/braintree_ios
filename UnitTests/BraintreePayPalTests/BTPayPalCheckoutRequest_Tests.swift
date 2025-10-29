@@ -82,7 +82,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .sale
         request.offerPayLater = true
-        request.shouldOfferCredit = true
+        request.offerCredit = true
         request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"
@@ -151,7 +151,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["intent"] as? String, "authorize")
         XCTAssertEqual(parameters["amount"] as? String, "1")
         XCTAssertEqual(parameters["offer_pay_later"] as? Bool, false)
-        XCTAssertNil(parameters["offer_paypal_credit"]) // defaults false should not include key unless true
+        XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, false)
     }
 
     func testParametersWithConfiguration_whenCurrencyCodeNotSet_usesConfigCurrencyCode() {
