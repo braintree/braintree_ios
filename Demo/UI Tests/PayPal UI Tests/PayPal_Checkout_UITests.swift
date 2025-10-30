@@ -17,16 +17,24 @@ class PayPal_Checkout_UITests: XCTestCase {
         app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
         app.launch()
 
-        app.buttons["PayPal Checkout"].tap()
-        
-        // Tap "Continue" on alert
+        // Wait for app to be fully ready
+        _ = app.wait(for: .runningForeground, timeout: 10)
+
+        let paypalButton = app.buttons["PayPal Checkout"]
+        XCTAssertTrue(
+            waitForElementToBeHittable(paypalButton, timeout: 30),
+            "PayPal Checkout button did not appear"
+        )
+        XCTAssertTrue(paypalButton.tapWithRetry(), "Failed to tap PayPal Checkout button")
+
+        // Tap "Continue" on ASWebAuthenticationSession alert
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        waitForAuthDialogAndTapButton(named: "Continue")
-    }
-    
-    private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 60.0)
-        springboard.buttons[buttonName].tap()
+        let continueButton = springboard.buttons["Continue"]
+        XCTAssertTrue(
+            waitForElementToBeHittable(continueButton, timeout: 90),
+            "Continue button did not appear in authentication dialog"
+        )
+        XCTAssertTrue(continueButton.tapWithRetry(), "Failed to tap Continue button")
     }
 
     func testPayPal_checkout_receivesNonce() {
