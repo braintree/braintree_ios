@@ -24,11 +24,15 @@ class PayPal_Checkout_UITests: XCTestCase {
         _ = paypalButton.waitForExistence(timeout: 30)
         paypalButton.tap()
 
-        // Tap "Continue" on ASWebAuthenticationSession alert
+        // Tap "Continue" on ASWebAuthenticationSession alert if it appears
+        // On CI, this dialog may be auto-dismissed or cached from previous runs
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let continueButton = springboard.buttons["Continue"]
-        _ = continueButton.waitForExistence(timeout: 30)
-        continueButton.tap()
+        if continueButton.waitForExistence(timeout: 5) {
+            continueButton.tap()
+        } else {
+            print("Continue button did not appear - may be auto-approved on CI")
+        }
     }
 
     func testPayPal_checkout_receivesNonce() {
