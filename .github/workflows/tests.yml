@@ -59,9 +59,7 @@ jobs:
       matrix:
         include:
           - test-suite: PayPal_Checkout_UITests
-            simulator-name: iPhone 16 Pro PayPalCheckout
           - test-suite: PayPal_Vault_UITests
-            simulator-name: iPhone 16 Pro PayPalVault
       max-parallel: 1  # ASWebAuthenticationSession can only run one at a time
       fail-fast: false  # Continue running other test suites if one fails
     steps:
@@ -123,8 +121,13 @@ jobs:
             sleep 2
           done
 
-          # Give simulator additional time to settle
-          sleep 5
+          # Give simulator additional time to settle for ASWebAuthenticationSession
+          echo "Allowing simulator to fully initialize..."
+          sleep 15
+
+          # Verify simulator is ready
+          echo "Verifying simulator state..."
+          xcrun simctl list devices | grep "$DEVICE_UDID"
 
       - name: Build for Testing - ${{ matrix.test-suite }}
         run: |
