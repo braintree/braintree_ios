@@ -27,12 +27,15 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        test-suite:
-          - ThreeDSecure_V2_UITests
-          - PayPal_Checkout_UITests
-          - PayPal_Vault_UITests
-          - Venmo_UITests
-      max-parallel: 1  # Run tests sequentially to avoid simulator conflicts
+        include:
+          - test-suite: ThreeDSecure_V2_UITests
+            simulator-name: iPhone 16 Pro ThreeDSecure
+          - test-suite: PayPal_Checkout_UITests
+            simulator-name: iPhone 16 Pro PayPalCheckout
+          - test-suite: PayPal_Vault_UITests
+            simulator-name: iPhone 16 Pro PayPalVault
+          - test-suite: Venmo_UITests
+            simulator-name: iPhone 16 Pro Venmo
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository
@@ -47,38 +50,39 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Boot Simulator
+      - name: Create and Boot Simulator - ${{ matrix.simulator-name }}
         timeout-minutes: 3
         run: |
-          # Find and boot simulator
-          echo "Finding iPhone 16 simulator..."
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
+          # Create a unique simulator for this matrix job to enable parallel execution
+          echo "Creating simulator: ${{ matrix.simulator-name }}"
 
-          if [ -z "$DEVICE_UDID" ]; then
-            echo "::error::iPhone 16 simulator not found"
-            exit 1
-          fi
+          # Delete if it already exists from a previous run
+          xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
 
-          echo "Using simulator: $DEVICE_UDID"
+          # Create new simulator with iPhone 16 Pro device type and iOS 18.5 runtime
+          DEVICE_UDID=$(xcrun simctl create "${{ matrix.simulator-name }}" "iPhone 16 Pro" "iOS18.5")
 
-          # Shutdown if running
-          xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-
-          # Erase simulator to ensure clean state between matrix jobs
-          # This is critical when max-parallel: 1 since all jobs use same runner
-          echo "Erasing simulator to ensure clean state..."
-          xcrun simctl erase "$DEVICE_UDID"
+          echo "Created simulator with UDID: $DEVICE_UDID"
 
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
-          # Boot simulator with clean state
+          # Boot simulator
           echo "Booting simulator..."
           xcrun simctl boot "$DEVICE_UDID"
 
-          # Give simulator time to start
-          echo "Waiting for simulator to start..."
-          sleep 10
+          # Wait for simulator to fully boot
+          echo "Waiting for simulator to boot..."
+          for i in {1..30}; do
+            if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 2"; then
+              echo "Simulator booted successfully"
+              break
+            fi
+            sleep 2
+          done
+
+          # Give simulator additional time to settle
+          sleep 5
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
@@ -90,10 +94,8 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'name=${{ matrix.simulator-name }}' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
@@ -109,10 +111,8 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'name=${{ matrix.simulator-name }}' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
@@ -124,6 +124,13 @@ jobs:
           else
             echo "UI Tests passed on retry"
           fi
+
+      - name: Cleanup Simulator
+        if: always()
+        run: |
+          # Delete the simulator to free up resources
+          echo "Cleaning up simulator: ${{ matrix.simulator-name }}"
+          xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
 
   integration_test_job:
     name: Integration
