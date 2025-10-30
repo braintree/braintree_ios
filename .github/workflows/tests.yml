@@ -82,8 +82,11 @@ jobs:
           # Create a unique simulator for this matrix job to enable parallel execution
           echo "Creating simulator: ${{ matrix.simulator-name }}"
 
-          # Delete if it already exists from a previous run
-          xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
+          # Shutdown and erase ALL simulators to ensure completely clean state
+          # This clears global ASWebAuthenticationSession state
+          echo "Cleaning all simulators..."
+          xcrun simctl shutdown all 2>/dev/null || true
+          xcrun simctl erase all 2>/dev/null || true
 
           # Find iOS 18.5 runtime identifier
           RUNTIME_ID=$(xcrun simctl list runtimes | grep "iOS 18.5" | head -n 1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[^)]+')
@@ -202,6 +205,8 @@ jobs:
         run: pod install
 
       - name: Run Venmo UI Tests
+        id: venmo_attempt_1
+        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -212,6 +217,32 @@ jobs:
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/Venmo_UITests \
             test | ./Pods/xcbeautify/xcbeautify
+
+      - name: Retry Venmo UI Tests (if failed)
+        if: steps.venmo_attempt_1.outcome == 'failure'
+        id: venmo_attempt_2
+        continue-on-error: true
+        run: |
+          echo "First attempt failed, retrying..."
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -only-testing:UITests/Venmo_UITests \
+            test | ./Pods/xcbeautify/xcbeautify
+
+      - name: Final Venmo Test Result
+        if: steps.venmo_attempt_1.outcome == 'failure'
+        run: |
+          if [ "${{ steps.venmo_attempt_2.outcome }}" == "failure" ]; then
+            echo "Venmo UI Tests failed after retry"
+            exit 1
+          else
+            echo "Venmo UI Tests passed on retry"
+          fi
 
   integration_test_job:
     name: Integration
