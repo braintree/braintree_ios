@@ -75,71 +75,28 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Create and Boot Simulator - ${{ matrix.simulator-name }}
+      - name: Clean Simulator State
         timeout-minutes: 3
         run: |
-          # Create a unique simulator for this matrix job to enable parallel execution
-          echo "Creating simulator: ${{ matrix.simulator-name }}"
-
-          # Shutdown and erase ALL simulators to ensure completely clean state
-          # This clears global ASWebAuthenticationSession state
-          echo "Cleaning all simulators..."
-          xcrun simctl shutdown all 2>/dev/null || true
-          xcrun simctl erase all 2>/dev/null || true
-
-          # Find iOS 18.5 runtime identifier
-          RUNTIME_ID=$(xcrun simctl list runtimes | grep "iOS 18.5" | head -n 1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[^)]+')
-
-          if [ -z "$RUNTIME_ID" ]; then
-            echo "::error::iOS 18.5 runtime not found"
-            xcrun simctl list runtimes
-            exit 1
-          fi
-
-          echo "Using runtime: $RUNTIME_ID"
-
-          # Create new simulator with iPhone 16 Pro device type and iOS 18.5 runtime
-          DEVICE_UDID=$(xcrun simctl create "${{ matrix.simulator-name }}" "com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro" "$RUNTIME_ID")
-
-          echo "Created simulator with UDID: $DEVICE_UDID"
-          echo "SIMULATOR_UDID=$DEVICE_UDID" >> $GITHUB_ENV
-
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
-          # Boot simulator
-          echo "Booting simulator..."
-          xcrun simctl boot "$DEVICE_UDID"
+          # Reset simulator state to ensure clean environment - erase ALL to clear ASWebAuthenticationSession global state
+          echo "Cleaning all simulators to clear ASWebAuthenticationSession state..."
+          xcrun simctl shutdown all 2>/dev/null || true
+          xcrun simctl erase all 2>/dev/null || true
+
+          # Boot the default iPhone 16 Pro simulator
+          echo "Booting iPhone 16 Pro simulator..."
+          xcrun simctl boot "iPhone 16 Pro" || true
 
           # Wait for simulator to fully boot
           echo "Waiting for simulator to boot..."
-          for i in {1..30}; do
-            if xcrun simctl bootstatus "$DEVICE_UDID" 2>&1 | grep -q "Boot status: 2"; then
-              echo "Simulator booted successfully"
-              break
-            fi
-            sleep 2
-          done
+          xcrun simctl bootstatus "iPhone 16 Pro" -b || echo "::warning::Boot status check timed out, continuing anyway"
 
-          # Give simulator additional time to settle for ASWebAuthenticationSession
-          echo "Allowing simulator to fully initialize..."
-          sleep 15
-
-          # Verify simulator is ready
-          echo "Verifying simulator state..."
-          xcrun simctl list devices | grep "$DEVICE_UDID"
-
-      - name: Build for Testing - ${{ matrix.test-suite }}
-        run: |
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
-            -derivedDataPath './DerivedData' \
-            build-for-testing | ./Pods/xcbeautify/xcbeautify
+          # Give extra time for ASWebAuthenticationSession to be ready
+          echo "Allowing additional time for system services to initialize..."
+          sleep 10
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         run: |
@@ -149,18 +106,10 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
-            -derivedDataPath './DerivedData' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -retry-tests-on-failure \
-            test-without-building | ./Pods/xcbeautify/xcbeautify
-
-      - name: Cleanup Simulator
-        if: always()
-        run: |
-          # Delete the simulator to free up resources
-          echo "Cleaning up simulator: ${{ matrix.simulator-name }}"
-          xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
+            test | ./Pods/xcbeautify/xcbeautify
 
   venmo_ui_test_job:
     name: UI Tests - Venmo
