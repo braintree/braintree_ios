@@ -48,6 +48,7 @@ jobs:
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/ThreeDSecure_V2_UITests \
+            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
 
   paypal_ui_test_job:
@@ -138,8 +139,6 @@ jobs:
             build-for-testing | ./Pods/xcbeautify/xcbeautify
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
-        id: test_attempt_1
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -150,35 +149,8 @@ jobs:
             -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
             -derivedDataPath './DerivedData' \
             -only-testing:UITests/${{ matrix.test-suite }} \
+            -retry-tests-on-failure \
             test-without-building | ./Pods/xcbeautify/xcbeautify
-
-      - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        id: test_attempt_2
-        continue-on-error: true
-        timeout-minutes: 15
-        run: |
-          echo "First attempt failed, retrying..."
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
-            -derivedDataPath './DerivedData' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            test-without-building | ./Pods/xcbeautify/xcbeautify
-
-      - name: Final UI Test Result - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        run: |
-          if [ "${{ steps.test_attempt_2.outcome }}" == "failure" ]; then
-            echo "UI Tests failed after retry"
-            exit 1
-          else
-            echo "UI Tests passed on retry"
-          fi
 
       - name: Cleanup Simulator
         if: always()
@@ -205,8 +177,6 @@ jobs:
         run: pod install
 
       - name: Run Venmo UI Tests
-        id: venmo_attempt_1
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -216,33 +186,8 @@ jobs:
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/Venmo_UITests \
+            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Retry Venmo UI Tests (if failed)
-        if: steps.venmo_attempt_1.outcome == 'failure'
-        id: venmo_attempt_2
-        continue-on-error: true
-        run: |
-          echo "First attempt failed, retrying..."
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
-            -only-testing:UITests/Venmo_UITests \
-            test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Final Venmo Test Result
-        if: steps.venmo_attempt_1.outcome == 'failure'
-        run: |
-          if [ "${{ steps.venmo_attempt_2.outcome }}" == "failure" ]; then
-            echo "Venmo UI Tests failed after retry"
-            exit 1
-          else
-            echo "Venmo UI Tests passed on retry"
-          fi
 
   integration_test_job:
     name: Integration
