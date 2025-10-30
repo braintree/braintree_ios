@@ -94,9 +94,13 @@ jobs:
           echo "Waiting for simulator to boot..."
           xcrun simctl bootstatus "iPhone 16 Pro" -b || echo "::warning::Boot status check timed out, continuing anyway"
 
-          # Give extra time for ASWebAuthenticationSession to be ready
-          echo "Allowing additional time for system services to initialize..."
-          sleep 10
+          # Open Simulator.app GUI to ensure ASWebAuthenticationSession has UI context
+          echo "Opening Simulator.app to provide UI context for ASWebAuthenticationSession..."
+          open -a Simulator
+
+          # Give extra time for ASWebAuthenticationSession to be ready and Simulator UI to appear
+          echo "Allowing additional time for system services and Simulator UI to initialize..."
+          sleep 15
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         run: |
