@@ -64,12 +64,17 @@ jobs:
           # Shutdown if running
           xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
 
+          # Erase simulator to ensure clean state between matrix jobs
+          # This is critical when max-parallel: 1 since all jobs use same runner
+          echo "Erasing simulator to ensure clean state..."
+          xcrun simctl erase "$DEVICE_UDID"
+
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
-          # Boot simulator (without erasing - let xcodebuild handle cleanup)
+          # Boot simulator with clean state
           echo "Booting simulator..."
-          xcrun simctl boot "$DEVICE_UDID" || true
+          xcrun simctl boot "$DEVICE_UDID"
 
           # Give simulator time to start
           echo "Waiting for simulator to start..."
