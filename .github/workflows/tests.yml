@@ -60,7 +60,7 @@ jobs:
           xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
 
           # Find iOS 18.5 runtime identifier
-          RUNTIME_ID=$(xcrun simctl list runtimes | grep "iOS 18.5" | head -n 1 | sed -E 's/.*\((com\.apple\.CoreSimulator\.SimRuntime\.[^)]+)\).*/\1/')
+          RUNTIME_ID=$(xcrun simctl list runtimes | grep "iOS 18.5" | head -n 1 | grep -oE 'com\.apple\.CoreSimulator\.SimRuntime\.[^)]+')
 
           if [ -z "$RUNTIME_ID" ]; then
             echo "::error::iOS 18.5 runtime not found"
