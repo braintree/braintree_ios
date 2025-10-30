@@ -8,7 +8,7 @@ import BraintreeCore
 struct PayPalAccountPOSTEncodable: Encodable {
 
     let meta: Meta
-    let paypalAccount: PayPalAccount
+    let payPalAccount: PayPalAccount
     let merchantAccountID: String?
 
     init(
@@ -25,7 +25,7 @@ struct PayPalAccountPOSTEncodable: Encodable {
             source: BTClientMetadataSource.payPalBrowser.stringValue
         )
         
-        self.paypalAccount = PayPalAccount(
+        self.payPalAccount = PayPalAccount(
             request: request,
             client: client,
             paymentType: paymentType,
@@ -38,7 +38,7 @@ struct PayPalAccountPOSTEncodable: Encodable {
 
     enum CodingKeys: String, CodingKey {
         case meta = "_meta"
-        case paypalAccount = "paypal_account"
+        case payPalAccount = "paypal_account"
         case merchantAccountID = "merchant_account_id"
     }
 }

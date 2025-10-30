@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public enum BTPayPalPaymentType: Int {
+enum BTPayPalPaymentType: Int {
     
     /// Checkout
     case checkout

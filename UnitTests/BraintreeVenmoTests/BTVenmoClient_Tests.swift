@@ -77,7 +77,7 @@ class BTVenmoClient_Tests: XCTestCase {
     }
 
     func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
-        venmoRequest.displayName = "app-display-name"
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, displayName: "app-display-name")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -123,9 +123,12 @@ class BTVenmoClient_Tests: XCTestCase {
                 "enrichedCustomerDataEnabled": false
             ]
         ])
-
-        venmoRequest.collectCustomerBillingAddress = true
-        venmoRequest.collectCustomerShippingAddress = true
+        
+        let venmoRequest = BTVenmoRequest(
+            paymentMethodUsage: .multiUse,
+            collectCustomerBillingAddress: true,
+            collectCustomerShippingAddress: true
+        )
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
@@ -149,8 +152,12 @@ class BTVenmoClient_Tests: XCTestCase {
                 "enrichedCustomerDataEnabled": true
             ]
         ])
-        venmoRequest.collectCustomerBillingAddress = true
-        venmoRequest.collectCustomerShippingAddress = true
+        
+        let venmoRequest = BTVenmoRequest(
+            paymentMethodUsage: .multiUse,
+            collectCustomerBillingAddress: true,
+            collectCustomerShippingAddress: true
+        )
 
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
@@ -174,11 +181,6 @@ class BTVenmoClient_Tests: XCTestCase {
     }
     
     func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() {
-        venmoRequest.subTotalAmount = "9"
-        venmoRequest.totalAmount = "9"
-        venmoRequest.discountAmount = "9"
-        venmoRequest.taxAmount = "9"
-        venmoRequest.shippingAmount = "9"
         let lineItem = BTVenmoLineItem(
             quantity: 1,
             unitAmount: "9",
@@ -189,7 +191,17 @@ class BTVenmoClient_Tests: XCTestCase {
             productCode: "some-product-code",
             url: URL(string: "some.fake.url")!
         )
-        venmoRequest.lineItems = [lineItem]
+        
+        let venmoRequest = BTVenmoRequest(
+            paymentMethodUsage: .multiUse,
+            subTotalAmount: "9",
+            discountAmount: "9",
+            taxAmount: "9",
+            shippingAmount: "9",
+            totalAmount: "9",
+            lineItems: [lineItem]
+        )
+        
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()

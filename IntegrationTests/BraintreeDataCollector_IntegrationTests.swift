@@ -5,7 +5,7 @@ import XCTest
 class BraintreeDataCollector_IntegrationTests: XCTestCase {
 
     var dataCollector: BTDataCollector?
-    
+
     override func setUp() {
         super.setUp()
         dataCollector = BTDataCollector(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
