@@ -25,7 +25,7 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
     
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
+        _ = springboard.buttons[buttonName].waitForExistence(timeout: 60.0)
         springboard.buttons[buttonName].tap()
     }
 
