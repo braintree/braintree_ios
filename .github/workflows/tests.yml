@@ -36,6 +36,7 @@ jobs:
             simulator-name: iPhone 16 Pro PayPalVault
           - test-suite: Venmo_UITests
             simulator-name: iPhone 16 Pro Venmo
+      max-parallel: 2  # Limit parallel execution to avoid resource contention
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository
@@ -96,6 +97,18 @@ jobs:
           # Give simulator additional time to settle
           sleep 5
 
+      - name: Build for Testing - ${{ matrix.test-suite }}
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
+            -derivedDataPath './DerivedData' \
+            build-for-testing | ./Pods/xcbeautify/xcbeautify
+
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
         continue-on-error: true
@@ -107,8 +120,9 @@ jobs:
             -configuration 'Release' \
             -scheme 'UITests' \
             -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
+            -derivedDataPath './DerivedData' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            test | ./Pods/xcbeautify/xcbeautify
+            test-without-building | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
         if: steps.test_attempt_1.outcome == 'failure'
@@ -124,8 +138,9 @@ jobs:
             -configuration 'Release' \
             -scheme 'UITests' \
             -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
+            -derivedDataPath './DerivedData' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            test | ./Pods/xcbeautify/xcbeautify
+            test-without-building | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
         if: steps.test_attempt_1.outcome == 'failure'
