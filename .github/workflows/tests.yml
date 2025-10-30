@@ -60,9 +60,10 @@ jobs:
           xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
 
           # Create new simulator with iPhone 16 Pro device type and iOS 18.5 runtime
-          DEVICE_UDID=$(xcrun simctl create "${{ matrix.simulator-name }}" "iPhone 16 Pro" "iOS18.5")
+          DEVICE_UDID=$(xcrun simctl create "${{ matrix.simulator-name }}" "iPhone 16 Pro" "iOS-18-5")
 
           echo "Created simulator with UDID: $DEVICE_UDID"
+          echo "SIMULATOR_UDID=$DEVICE_UDID" >> $GITHUB_ENV
 
           # Disable hardware keyboard to avoid input issues
           defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
@@ -94,7 +95,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=${{ matrix.simulator-name }}' \
+            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
             -only-testing:UITests/${{ matrix.test-suite }} \
             test | ./Pods/xcbeautify/xcbeautify
 
@@ -111,7 +112,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=${{ matrix.simulator-name }}' \
+            -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_UDID }}" \
             -only-testing:UITests/${{ matrix.test-suite }} \
             test | ./Pods/xcbeautify/xcbeautify
 
