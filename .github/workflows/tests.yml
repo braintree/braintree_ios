@@ -22,7 +22,7 @@ jobs:
       - name: Run Unit Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
   threeds_ui_test_job:
-    name: UI - ThreeDSecure
+    name: UI Tests - ThreeDSecure
     runs-on: macos-15-xlarge
     timeout-minutes: 15
     steps:
@@ -50,8 +50,8 @@ jobs:
             -only-testing:UITests/ThreeDSecure_V2_UITests \
             test | ./Pods/xcbeautify/xcbeautify
 
-  paypal_venmo_ui_test_job:
-    name: UI - PayPal/Venmo
+  paypal_ui_test_job:
+    name: UI Tests - PayPal
     runs-on: macos-15-xlarge
     timeout-minutes: 30
     strategy:
@@ -61,8 +61,6 @@ jobs:
             simulator-name: iPhone 16 Pro PayPalCheckout
           - test-suite: PayPal_Vault_UITests
             simulator-name: iPhone 16 Pro PayPalVault
-          - test-suite: Venmo_UITests
-            simulator-name: iPhone 16 Pro Venmo
       max-parallel: 1  # ASWebAuthenticationSession can only run one at a time
       fail-fast: false  # Continue running other test suites if one fails
     steps:
@@ -185,6 +183,35 @@ jobs:
           # Delete the simulator to free up resources
           echo "Cleaning up simulator: ${{ matrix.simulator-name }}"
           xcrun simctl delete "${{ matrix.simulator-name }}" 2>/dev/null || true
+
+  venmo_ui_test_job:
+    name: UI Tests - Venmo
+    runs-on: macos-15-xlarge
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Install CocoaPod dependencies
+        run: pod install
+
+      - name: Run Venmo UI Tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -only-testing:UITests/Venmo_UITests \
+            test | ./Pods/xcbeautify/xcbeautify
 
   integration_test_job:
     name: Integration
