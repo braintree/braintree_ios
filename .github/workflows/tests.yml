@@ -21,22 +21,49 @@ jobs:
         run: pod install
       - name: Run Unit Tests
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
-  ui_test_job:
-    name: UI
+  threeds_ui_test_job:
+    name: UI - ThreeDSecure
+    runs-on: macos-15-xlarge
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Install CocoaPod dependencies
+        run: pod install
+
+      - name: Run ThreeDSecure UI Tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -only-testing:UITests/ThreeDSecure_V2_UITests \
+            test | ./Pods/xcbeautify/xcbeautify
+
+  paypal_venmo_ui_test_job:
+    name: UI - PayPal/Venmo
     runs-on: macos-15-xlarge
     timeout-minutes: 30
     strategy:
       matrix:
         include:
-          - test-suite: ThreeDSecure_V2_UITests
-            simulator-name: iPhone 16 Pro ThreeDSecure
           - test-suite: PayPal_Checkout_UITests
             simulator-name: iPhone 16 Pro PayPalCheckout
           - test-suite: PayPal_Vault_UITests
             simulator-name: iPhone 16 Pro PayPalVault
           - test-suite: Venmo_UITests
             simulator-name: iPhone 16 Pro Venmo
-      max-parallel: 2  # Limit parallel execution to avoid resource contention
+      max-parallel: 1  # ASWebAuthenticationSession can only run one at a time
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository
