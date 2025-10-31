@@ -4,8 +4,8 @@ concurrency:
   group: tests-${{ github.event.number }}
   cancel-in-progress: true
 jobs:
-  build_job:
-    name: Build for Testing
+  build_unit_tests:
+    name: Build Unit Tests
     runs-on: macos-15-xlarge
     steps:
       - name: Checkout repository
@@ -42,6 +42,43 @@ jobs:
             -derivedDataPath DerivedData \
             DEBUG_INFORMATION_FORMAT=dwarf | ./Pods/xcbeautify/xcbeautify
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-build-artifacts
+          path: |
+            DerivedData/Build/Products
+            Braintree.xcworkspace
+            Pods
+          retention-days: 1
+
+  build_ui_tests:
+    name: Build UI Tests
+    runs-on: macos-15-xlarge
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Package dependencies
+        run: swift package resolve
+
+      - name: Install CocoaPod dependencies
+        run: pod install
+
       - name: Build UITests for Testing
         run: |
           set -o pipefail
@@ -53,6 +90,43 @@ jobs:
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             DEBUG_INFORMATION_FORMAT=dwarf | ./Pods/xcbeautify/xcbeautify
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-build-artifacts
+          path: |
+            DerivedData/Build/Products
+            Braintree.xcworkspace
+            Pods
+          retention-days: 1
+
+  build_integration_tests:
+    name: Build Integration Tests
+    runs-on: macos-15-xlarge
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Package dependencies
+        run: swift package resolve
+
+      - name: Install CocoaPod dependencies
+        run: pod install
 
       - name: Build IntegrationTests for Testing
         run: |
@@ -69,7 +143,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: integration-build-artifacts
           path: |
             DerivedData/Build/Products
             Braintree.xcworkspace
@@ -78,7 +152,7 @@ jobs:
 
   unit_test_job:
     name: Unit
-    needs: build_job
+    needs: build_unit_tests
     runs-on: macos-15-xlarge
     steps:
       - name: Checkout repository
@@ -93,13 +167,18 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: unit-build-artifacts
 
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild test-without-building -xctestrun 'DerivedData/Build/Products/UnitTests_iphonesimulator18.5-arm64.xctestrun' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' | ./Pods/xcbeautify/xcbeautify
+        run: |
+          set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UnitTests*.xctestrun' | head -n 1)
+          xcodebuild test-without-building \
+            -xctestrun "$XCTESTRUN" \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' | ./Pods/xcbeautify/xcbeautify
   threeds_ui_test_job:
     name: UI Tests - ThreeDSecure
-    needs: build_job
+    needs: build_ui_tests
     runs-on: macos-15-xlarge
     timeout-minutes: 15
     steps:
@@ -115,20 +194,21 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: ui-build-artifacts
 
       - name: Run ThreeDSecure UI Tests
         run: |
           set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
-            -xctestrun 'DerivedData/Build/Products/UITests_iphonesimulator18.5-arm64.xctestrun' \
+            -xctestrun "$XCTESTRUN" \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/ThreeDSecure_V2_UITests \
             -retry-tests-on-failure | ./Pods/xcbeautify/xcbeautify
 
   paypal_ui_test_job:
     name: UI Tests - PayPal
-    needs: build_job
+    needs: build_ui_tests
     runs-on: macos-15-xlarge
     timeout-minutes: 20
     steps:
@@ -144,7 +224,7 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: ui-build-artifacts
 
       - name: Setup Simulator for ASWebAuthenticationSession
         run: |
@@ -159,8 +239,9 @@ jobs:
       - name: Run PayPal UI Tests
         run: |
           set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
-            -xctestrun 'DerivedData/Build/Products/UITests_iphonesimulator18.5-arm64.xctestrun' \
+            -xctestrun "$XCTESTRUN" \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/PayPal_Checkout_UITests \
             -only-testing:UITests/PayPal_Vault_UITests \
@@ -168,7 +249,7 @@ jobs:
 
   paypal_messaging_ui_test_job:
     name: UI Tests - PayPal Messaging
-    needs: build_job
+    needs: build_ui_tests
     runs-on: macos-15-xlarge
     timeout-minutes: 15
     steps:
@@ -184,13 +265,14 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: ui-build-artifacts
 
       - name: Run PayPal Messaging UI Tests
         run: |
           set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
-            -xctestrun 'DerivedData/Build/Products/UITests_iphonesimulator18.5-arm64.xctestrun' \
+            -xctestrun "$XCTESTRUN" \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/PayPalMessaging_Success_UITests \
             -only-testing:UITests/PayPalMessaging_Failure_UITests \
@@ -198,7 +280,7 @@ jobs:
 
   venmo_ui_test_job:
     name: UI Tests - Venmo
-    needs: build_job
+    needs: build_ui_tests
     runs-on: macos-15-xlarge
     timeout-minutes: 15
     steps:
@@ -214,20 +296,21 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: ui-build-artifacts
 
       - name: Run Venmo UI Tests
         run: |
           set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
-            -xctestrun 'DerivedData/Build/Products/UITests_iphonesimulator18.5-arm64.xctestrun' \
+            -xctestrun "$XCTESTRUN" \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/Venmo_UITests \
             -retry-tests-on-failure | ./Pods/xcbeautify/xcbeautify
 
   integration_test_job:
     name: Integration
-    needs: build_job
+    needs: build_integration_tests
     runs-on: macos-15-xlarge
     steps:
       - name: Checkout repository
@@ -242,7 +325,12 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: integration-build-artifacts
 
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild test-without-building -xctestrun 'DerivedData/Build/Products/IntegrationTests_iphonesimulator18.5-arm64.xctestrun' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' | ./Pods/xcbeautify/xcbeautify
+        run: |
+          set -o pipefail
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*IntegrationTests*.xctestrun' | head -n 1)
+          xcodebuild test-without-building \
+            -xctestrun "$XCTESTRUN" \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' | ./Pods/xcbeautify/xcbeautify
