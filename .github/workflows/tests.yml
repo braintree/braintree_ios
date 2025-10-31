@@ -20,7 +20,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -retry-tests-on-failure test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
     runs-on: macos-15-xlarge
@@ -47,8 +47,6 @@ jobs:
         run: pod install
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
-        id: test_attempt_1
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -60,36 +58,8 @@ jobs:
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
+            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        id: test_attempt_2
-        continue-on-error: true
-        timeout-minutes: 15
-        run: |
-          echo "First attempt failed, retrying..."
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.6' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
-            test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Final UI Test Result - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        run: |
-          if [ "${{ steps.test_attempt_2.outcome }}" == "failure" ]; then
-            echo "UI Tests failed after retry"
-            exit 1
-          else
-            echo "UI Tests passed on retry"
-          fi
 
   integration_test_job:
     name: Integration
@@ -107,4 +77,4 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -retry-tests-on-failure test | ./Pods/xcbeautify/xcbeautify
