@@ -46,20 +46,29 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Run UI Tests - ${{ matrix.test-suite }}
-        id: test_attempt_1
-        continue-on-error: true
+      - name: Build UI Tests
         run: |
           set -o pipefail
-          xcodebuild \
+          xcodebuild build-for-testing \
             -workspace 'Braintree.xcworkspace' \
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            ONLY_ACTIVE_ARCH=NO \
-            test | ./Pods/xcbeautify/xcbeautify
+            ONLY_ACTIVE_ARCH=NO | ./Pods/xcbeautify/xcbeautify
+
+      - name: Run UI Tests - ${{ matrix.test-suite }}
+        id: test_attempt_1
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild test-without-building \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
+            -only-testing:UITests/${{ matrix.test-suite }} | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
         if: steps.test_attempt_1.outcome == 'failure'
@@ -69,15 +78,13 @@ jobs:
         run: |
           echo "First attempt failed, retrying..."
           set -o pipefail
-          xcodebuild \
+          xcodebuild test-without-building \
             -workspace 'Braintree.xcworkspace' \
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            ONLY_ACTIVE_ARCH=NO \
-            test | ./Pods/xcbeautify/xcbeautify
+            -only-testing:UITests/${{ matrix.test-suite }} | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
         if: steps.test_attempt_1.outcome == 'failure'
