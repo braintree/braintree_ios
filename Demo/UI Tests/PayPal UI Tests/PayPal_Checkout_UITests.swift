@@ -15,6 +15,17 @@ class PayPal_Checkout_UITests: XCTestCase {
 
         // Disable animations for more reliable tests
         app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
+
+        // Add UI interruption monitor to automatically handle ASWebAuthenticationSession alert
+        addUIInterruptionMonitor(withDescription: "ASWebAuthenticationSession Alert") { alert in
+            // Tap "Continue" button on the authentication session alert
+            if alert.buttons["Continue"].exists {
+                alert.buttons["Continue"].tap()
+                return true
+            }
+            return false
+        }
+
         app.launch()
 
         // Wait for app to be ready
@@ -24,14 +35,17 @@ class PayPal_Checkout_UITests: XCTestCase {
         _ = paypalButton.waitForExistence(timeout: 30)
         paypalButton.tap()
 
-        // Tap "Continue" on ASWebAuthenticationSession alert
-        springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let continueButton = springboard.buttons["Continue"]
-        _ = continueButton.waitForExistence(timeout: 20)
-        continueButton.tap()
+        // Give time for ASWebAuthenticationSession alert to appear
+        sleep(2)
     }
 
     func testPayPal_checkout_receivesNonce() {
+        // Trigger the interruption monitor to handle "Continue" button
+        app.tap()
+
+        // Wait for web view to confirm alert was handled and browser session started
+        _ = app.webViews.element.waitForExistence(timeout: 10)
+
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -42,6 +56,12 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
+        // Trigger the interruption monitor to handle "Continue" button
+        app.tap()
+
+        // Wait for web view to confirm alert was handled and browser session started
+        _ = app.webViews.element.waitForExistence(timeout: 10)
+
         let webviewElementsQuery = app.webViews.element.otherElements
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
 
@@ -51,9 +71,11 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingAuthenticationSessionCancelButton() {
-        self.waitForElementToAppear(app.buttons["Cancel"])
-
-        app.buttons["Cancel"].forceTapElement()
+        // Don't trigger the interruption monitor - manually tap Cancel instead
+        // The Cancel button is on the ASWebAuthenticationSession alert in springboard
+        let cancelButton = springboard.buttons["Cancel"]
+        _ = cancelButton.waitForExistence(timeout: 10)
+        cancelButton.tap()
 
         XCTAssertTrue(app.buttons["PayPal flow was canceled by the user."].waitForExistence(timeout: 2))
     }

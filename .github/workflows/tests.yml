@@ -72,8 +72,21 @@ jobs:
         run: |
           # ASWebAuthenticationSession requires Simulator.app to be open and frontmost
           # to provide a valid presentation anchor (key window)
+
+          # Boot the specific simulator first
+          xcrun simctl boot "iPhone 16 Pro" || echo "Simulator already booted"
+
+          # Open Simulator.app with UI
           open -a Simulator
+
+          # Wait for Simulator to launch
+          sleep 3
+
+          # Make Simulator the active, frontmost application
           osascript -e 'tell application "Simulator" to activate'
+          osascript -e 'tell application "System Events" to tell process "Simulator" to set frontmost to true'
+
+          # Give extra time for window to be ready
           sleep 5
 
       - name: Run PayPal UI Tests
