@@ -94,7 +94,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=26.0,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
@@ -124,7 +124,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=26.0,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
