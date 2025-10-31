@@ -46,6 +46,9 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
+      - name: Disable Hardware Keyboard
+        run: defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+
       - name: Run UI Tests - ${{ matrix.test-suite }}
         run: |
           set -o pipefail
