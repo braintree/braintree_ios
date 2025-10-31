@@ -13,14 +13,34 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
       - name: Install Package dependencies
         run: swift package resolve
+
       - name: Install CocoaPod dependencies
         run: pod install
+
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf ONLY_ACTIVE_ARCH=YES test | ./Pods/xcbeautify/xcbeautify
   threeds_ui_test_job:
     name: UI Tests - ThreeDSecure
     runs-on: macos-15-xlarge
@@ -34,6 +54,22 @@ jobs:
 
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
 
       - name: Install CocoaPod dependencies
         run: pod install
@@ -49,6 +85,8 @@ jobs:
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/ThreeDSecure_V2_UITests \
             -retry-tests-on-failure \
+            DEBUG_INFORMATION_FORMAT=dwarf \
+            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   paypal_ui_test_job:
@@ -65,6 +103,22 @@ jobs:
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
       - name: Install CocoaPod dependencies
         run: pod install
 
@@ -72,22 +126,11 @@ jobs:
         run: |
           # ASWebAuthenticationSession requires Simulator.app to be open and frontmost
           # to provide a valid presentation anchor (key window)
+          # Note: xcodebuild will automatically boot the simulator, we just need the UI window
 
-          # Boot the specific simulator first
-          xcrun simctl boot "iPhone 16 Pro" || echo "Simulator already booted"
-
-          # Open Simulator.app with UI
           open -a Simulator
-
-          # Wait for Simulator to launch
-          sleep 3
-
-          # Make Simulator the active, frontmost application
+          sleep 2
           osascript -e 'tell application "Simulator" to activate'
-          osascript -e 'tell application "System Events" to tell process "Simulator" to set frontmost to true'
-
-          # Give extra time for window to be ready
-          sleep 5
 
       - name: Run PayPal UI Tests
         run: |
@@ -101,6 +144,8 @@ jobs:
             -only-testing:UITests/PayPal_Checkout_UITests \
             -only-testing:UITests/PayPal_Vault_UITests \
             -retry-tests-on-failure \
+            DEBUG_INFORMATION_FORMAT=dwarf \
+            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   paypal_messaging_ui_test_job:
@@ -117,6 +162,22 @@ jobs:
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
       - name: Install CocoaPod dependencies
         run: pod install
 
@@ -132,6 +193,8 @@ jobs:
             -only-testing:UITests/PayPalMessaging_Success_UITests \
             -only-testing:UITests/PayPalMessaging_Failure_UITests \
             -retry-tests-on-failure \
+            DEBUG_INFORMATION_FORMAT=dwarf \
+            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   venmo_ui_test_job:
@@ -148,6 +211,22 @@ jobs:
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
       - name: Install CocoaPod dependencies
         run: pod install
 
@@ -162,6 +241,8 @@ jobs:
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/Venmo_UITests \
             -retry-tests-on-failure \
+            DEBUG_INFORMATION_FORMAT=dwarf \
+            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   integration_test_job:
@@ -173,11 +254,31 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Derived Data
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
       - name: Install Package dependencies
         run: swift package resolve
+
       - name: Install CocoaPod dependencies
         run: pod install
+
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf ONLY_ACTIVE_ARCH=YES test | ./Pods/xcbeautify/xcbeautify
