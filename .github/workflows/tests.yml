@@ -54,14 +54,7 @@ jobs:
   paypal_ui_test_job:
     name: UI Tests - PayPal
     runs-on: macos-15-xlarge
-    timeout-minutes: 30
-    strategy:
-      matrix:
-        include:
-          - test-suite: PayPal_Checkout_UITests
-          - test-suite: PayPal_Vault_UITests
-      max-parallel: 1  # ASWebAuthenticationSession can only run one at a time
-      fail-fast: false  # Continue running other test suites if one fails
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -75,42 +68,15 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Clean Simulator State
-        timeout-minutes: 3
+      - name: Setup Simulator for ASWebAuthenticationSession
         run: |
-          # Disable hardware keyboard to avoid input issues
-          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-
-          # Reset simulator state to ensure clean environment - erase ALL to clear ASWebAuthenticationSession global state
-          echo "Cleaning all simulators to clear ASWebAuthenticationSession state..."
-          xcrun simctl shutdown all 2>/dev/null || true
-          xcrun simctl erase all 2>/dev/null || true
-
-          # Boot the default iPhone 16 Pro simulator
-          echo "Booting iPhone 16 Pro simulator..."
-          xcrun simctl boot "iPhone 16 Pro" || true
-
-          # Wait for simulator to fully boot
-          echo "Waiting for simulator to boot..."
-          xcrun simctl bootstatus "iPhone 16 Pro" -b || echo "::warning::Boot status check timed out, continuing anyway"
-
-          # Open Simulator.app GUI to ensure ASWebAuthenticationSession has UI context
-          echo "Opening Simulator.app to provide UI context for ASWebAuthenticationSession..."
+          # ASWebAuthenticationSession requires Simulator.app to be open and frontmost
+          # to provide a valid presentation anchor (key window)
           open -a Simulator
-
-          # Activate Simulator to make it the frontmost application with key window
-          echo "Activating Simulator.app as frontmost application..."
           osascript -e 'tell application "Simulator" to activate'
-
-          # Ensure Simulator window becomes key window
           sleep 5
-          osascript -e 'tell application "System Events" to tell process "Simulator" to set frontmost to true'
 
-          # Give extra time for ASWebAuthenticationSession to be ready and Simulator UI to appear
-          echo "Allowing additional time for system services and Simulator UI to initialize..."
-          sleep 10
-
-      - name: Run UI Tests - ${{ matrix.test-suite }}
+      - name: Run PayPal UI Tests
         run: |
           set -o pipefail
           xcodebuild \
@@ -119,7 +85,39 @@ jobs:
             -configuration 'Release' \
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
+            -only-testing:UITests/PayPal_Checkout_UITests \
+            -only-testing:UITests/PayPal_Vault_UITests \
+            -retry-tests-on-failure \
+            test | ./Pods/xcbeautify/xcbeautify
+
+  paypal_messaging_ui_test_job:
+    name: UI Tests - PayPal Messaging
+    runs-on: macos-15-xlarge
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Install CocoaPod dependencies
+        run: pod install
+
+      - name: Run PayPal Messaging UI Tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -only-testing:UITests/PayPalMessaging_Success_UITests \
+            -only-testing:UITests/PayPalMessaging_Failure_UITests \
             -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
 
