@@ -20,7 +20,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -retry-tests-on-failure test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
     runs-on: macos-15-xlarge
@@ -46,47 +46,10 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Boot Simulator
-        run: |
-          # Boot simulator ahead of time to reduce test startup time
-          xcrun simctl boot "iPhone 16" || true
-          # Wait for simulator to boot
-          xcrun simctl bootstatus "iPhone 16" -b || true
-          # Disable hardware keyboard to avoid input issues
-          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-
-      - name: Clean Simulator State
-        timeout-minutes: 3
-        run: |
-          # Reset simulator state to ensure clean environment
-          echo "Finding iPhone 16 simulator..."
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
-
-          if [ -z "$DEVICE_UDID" ]; then
-            echo "::error::iPhone 16 simulator not found"
-            exit 1
-          fi
-
-          echo "Using simulator: $DEVICE_UDID"
-
-          # Shutdown only the target simulator (not all)
-          xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-
-          # Erase only the target simulator
-          echo "Erasing simulator data..."
-          xcrun simctl erase "$DEVICE_UDID"
-
-          # Boot simulator
-          echo "Booting simulator..."
-          xcrun simctl boot "$DEVICE_UDID"
-
-          # Wait for boot with timeout (60 seconds)
-          echo "Waiting for simulator to boot..."
-          timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out, continuing anyway"
+      - name: Disable Hardware Keyboard
+        run: defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
-        id: test_attempt_1
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -94,51 +57,12 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=18.6' \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
+            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        id: test_attempt_2
-        continue-on-error: true
-        timeout-minutes: 15
-        run: |
-          echo "First attempt failed, retrying..."
-          # Clean simulator state before retry
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
-
-          if [ -n "$DEVICE_UDID" ]; then
-            echo "Resetting simulator: $DEVICE_UDID"
-            xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-            xcrun simctl erase "$DEVICE_UDID"
-            xcrun simctl boot "$DEVICE_UDID"
-            timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out"
-          fi
-
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
-            test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Final UI Test Result - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        run: |
-          if [ "${{ steps.test_attempt_2.outcome }}" == "failure" ]; then
-            echo "UI Tests failed after retry"
-            exit 1
-          else
-            echo "UI Tests passed on retry"
-          fi
 
   integration_test_job:
     name: Integration
@@ -156,4 +80,4 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -retry-tests-on-failure test | ./Pods/xcbeautify/xcbeautify

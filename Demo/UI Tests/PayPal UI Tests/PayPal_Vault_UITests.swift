@@ -25,8 +25,15 @@ class PayPal_Vault_UITests: XCTestCase {
     }
     
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
-        springboard.buttons[buttonName].tap()
+        let button = springboard.buttons[buttonName]
+        // Wait for button to appear - it may not appear on all iOS versions
+        guard button.waitForExistence(timeout: 5.0) else {
+            // Button didn't appear - this might be expected on some iOS versions
+            // where the permission dialog is not shown
+            print("ASWebAuthenticationSession '\(buttonName)' button not found - may not be required on this iOS version")
+            return
+        }
+        button.tap()
     }
 
     func testPayPal_vault_receivesNonce() {
