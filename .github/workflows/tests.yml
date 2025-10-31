@@ -34,6 +34,7 @@ jobs:
       - name: Build UnitTests for Testing
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           xcodebuild build-for-testing \
             -workspace 'Braintree.xcworkspace' \
             -scheme 'UnitTests' \
@@ -82,6 +83,7 @@ jobs:
       - name: Build UITests for Testing
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           xcodebuild build-for-testing \
             -workspace 'Braintree.xcworkspace' \
             -scheme 'UITests' \
@@ -131,6 +133,7 @@ jobs:
       - name: Build IntegrationTests for Testing
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           xcodebuild build-for-testing \
             -workspace 'Braintree.xcworkspace' \
             -scheme 'IntegrationTests' \
@@ -172,6 +175,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*UnitTests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
@@ -199,6 +203,7 @@ jobs:
       - name: Run ThreeDSecure UI Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
@@ -239,6 +244,7 @@ jobs:
       - name: Run PayPal UI Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
@@ -270,6 +276,7 @@ jobs:
       - name: Run PayPal Messaging UI Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
@@ -301,6 +308,7 @@ jobs:
       - name: Run Venmo UI Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
@@ -330,6 +338,7 @@ jobs:
       - name: Run Integration Tests
         run: |
           set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
           XCTESTRUN=$(find DerivedData/Build/Products -name '*IntegrationTests*.xctestrun' | head -n 1)
           xcodebuild test-without-building \
             -xctestrun "$XCTESTRUN" \
