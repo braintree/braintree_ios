@@ -2,7 +2,7 @@
 /// It is not covered by Semantic Versioning and may change or be removed at any time.
 /// Integration Types
 @_documentation(visibility: private)
-@objc public enum BTClientMetadataIntegration: Int {
+public enum BTClientMetadataIntegration: Int {
     /// Custom
     case custom
     

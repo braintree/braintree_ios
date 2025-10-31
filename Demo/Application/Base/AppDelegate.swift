@@ -3,7 +3,6 @@ import BraintreeCore
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
         
-    private let returnURLScheme = "com.braintreepayments.Demo.payments"
     private let processInfoArgs = ProcessInfo.processInfo.arguments
     private let userDefaults = UserDefaults.standard
     
@@ -13,7 +12,6 @@ import BraintreeCore
     ) -> Bool {
         registerDefaultsFromSettings()
         persistDemoSettings()
-        BTAppContextSwitcher.sharedInstance.returnURLScheme = returnURLScheme
 
         userDefaults.setValue(true, forKey: "magnes.debug.mode")
         

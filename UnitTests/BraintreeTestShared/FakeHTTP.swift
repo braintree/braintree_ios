@@ -55,10 +55,10 @@ import Foundation
         }
     }
 
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
-        lastRequestParameters = parameters
+        lastRequestParameters = try? parameters?.toDictionary()
         lastRequestMethod = "POST"
         lastPOSTRequestHeaders = headers
         if cannedError != nil {
@@ -84,9 +84,9 @@ import Foundation
         return self.init(authorization: fakeTokenizationKey, customBaseURL: URL(string: "http://fake.com")!)
     }
 
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: [String: Any]?, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
-        lastRequestParameters = parameters
+        lastRequestParameters = try? parameters?.toDictionary()
         completion?(self.cannedConfiguration, nil, nil)
     }
 }

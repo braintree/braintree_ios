@@ -7,7 +7,7 @@ final class BTAPIClient_IntegrationTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         let expectation = expectation(description: "Fetch configuration")
 
-        apiClient?.fetchOrReturnRemoteConfiguration { configuration, error in
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             XCTAssertEqual(configuration?.json?["merchantId"].asString(), "dcpspy2brwdjr3qn")
             expectation.fulfill()
         }
@@ -19,7 +19,7 @@ final class BTAPIClient_IntegrationTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         let expectation = expectation(description: "Fetch configuration")
 
-        apiClient?.fetchOrReturnRemoteConfiguration { configuration, error in
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             // Note: client token uses a different merchant ID than the merchant whose tokenization key
             // we use in the other test
             XCTAssertEqual(configuration?.json?["merchantId"].asString(), "348pk9cgf3bgyw2b")
@@ -33,7 +33,7 @@ final class BTAPIClient_IntegrationTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         let expectation = expectation(description: "Fetch configuration")
 
-        apiClient?.fetchOrReturnRemoteConfiguration { configuration, error in
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             // Note: client token uses a different merchant ID than the merchant whose tokenization key
             // we use in the other test
             XCTAssertEqual(configuration?.json?["merchantId"].asString(), "dcpspy2brwdjr3qn")

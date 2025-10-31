@@ -34,46 +34,47 @@ import BraintreeCore
 }
 
 /// Options for the PayPal Checkout flow.
-@objcMembers open class BTPayPalCheckoutRequest: BTPayPalRequest {
-
-    // MARK: - Public Properties
-
-    ///  Used for a one-time payment.
-    ///  Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
-    public var amount: String
-
-    /// Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    public var intent: BTPayPalRequestIntent
-
-    /// Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
-    public var offerPayLater: Bool
-
-    /// Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
-    /// - Note: See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
-    public var currencyCode: String?
-
-    /// Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement during checkout. Defaults to `false`.
-    public var requestBillingAgreement: Bool
+@objcMembers public class BTPayPalCheckoutRequest: NSObject, BTPayPalRequest {
     
-    /// Optional: Contact information of the recipient for the order
-    public var contactInformation: BTContactInformation?
-
-    /// Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
-    public var shippingCallbackURL: URL?
+    // MARK: - Internal Properties
     
-    /// Optional: Preference for the contact information section within the payment flow. Defaults to `BTContactPreference.noContactInformation` if not set.
-    public var contactPreference: BTContactPreference = .none
-
-    /// Optional: Provides details to users about their recurring billing amount when using PayPal Checkout with Purchase.
-    public var amountBreakdown: BTAmountBreakdown?
-
-    // MARK: - Initializers
+    let hermesPath = "v1/paypal_hermes/create_payment_resource"
+    let paymentType: BTPayPalPaymentType = .checkout
     
+    var amount: String
+    var intent: BTPayPalRequestIntent
+    var userAction: BTPayPalRequestUserAction
+    var offerPayLater: Bool
+    var amountBreakdown: BTAmountBreakdown?
+    var billingAgreementDescription: String?
+    var contactInformation: BTContactInformation?
+    var contactPreference: BTContactPreference = .none
+    var currencyCode: String?
+    var displayName: String?
+    var enablePayPalAppSwitch: Bool = false
+    var isShippingAddressEditable: Bool = false
+    var isShippingAddressRequired: Bool = false
+    var landingPageType: BTPayPalRequestLandingPageType?
+    var lineItems: [BTPayPalLineItem]?
+    var localeCode: BTPayPalLocaleCode?
+    var merchantAccountID: String?
+    var recurringBillingDetails: BTPayPalRecurringBillingDetails?
+    var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
+    var requestBillingAgreement: Bool
+    var riskCorrelationID: String?
+    var shippingAddressOverride: BTPostalAddress?
+    var shippingCallbackURL: URL?
+    var shopperSessionID: String?
+    var userAuthenticationEmail: String?
+    var userPhoneNumber: BTPayPalPhoneNumber?
+    
+    // MARK: - Initializer
+
     /// Initializes a PayPal Checkout request for the PayPal App Switch flow
     /// - Parameters:
-    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
     ///   - amount: Required: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
     ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
@@ -81,12 +82,13 @@ import BraintreeCore
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
+    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
-        userAuthenticationEmail: String? = nil,
-        enablePayPalAppSwitch: Bool,
         amount: String,
+        enablePayPalAppSwitch: Bool,
+        userAuthenticationEmail: String? = nil,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
@@ -99,121 +101,116 @@ import BraintreeCore
             intent: intent,
             userAction: userAction,
             offerPayLater: offerPayLater,
+            contactPreference: contactPreference,
             currencyCode: currencyCode,
+            enablePayPalAppSwitch: enablePayPalAppSwitch,
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail
         )
-        super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
 
-    /// Initializes a PayPal Native Checkout request
+    /// Initializes a PayPal Checkout request
     /// - Parameters:
-    ///   - amount: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.'
+    ///   - amount: Required. Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
     ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    ///   and is limited to 7 digits before the decimal point.
     ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
     ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
+    ///   - billingAgreementDescription: Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set.
+    ///   - contactInformation: Optional: Contact information of the recipient for the order.
+    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
     ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
     ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
-    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
-    ///   during checkout. Defaults to `false`.
-    ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options.
-    ///   A callback request will be sent to the merchant server at this URL.
-    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - displayName: Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account.
+    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to `false`. This property is currently in beta and may change or be removed in future releases.
+    ///   - isShippingAddressEditable: Defaults to false. Set to true to enable user editing of the shipping address.
+    ///   - isShippingAddressRequired: Defaults to false. When set to true, the shipping address selector will be displayed.
+    ///   - landingPageType: Optional: Landing page type. Defaults to `.none`.
+    ///     - Note: Setting the BTPayPalRequest's landingPageType changes the PayPal page to display when a user lands on the PayPal site to complete the payment.
+    ///        `.login` specifies a PayPal account login page is used.
+    ///        `.billing` specifies a non-PayPal account landing page is used.
+    ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items.
+    ///   - localeCode: Optional: A locale code to use for the transaction.
+    ///   - merchantAccountID: Optional: A non-default merchant account to use for tokenization.
     ///   - recurringBillingDetails: Optional: Recurring billing product details.
     ///   - recurringBillingPlanType: Optional: Recurring billing plan type, or charge pattern.
-    ///   - amountBreakdown: Optional: Breakdown of items associated to the total cost.
+    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
+    ///   during checkout. Defaults to `false`.
+    ///   - riskCorrelationID: Optional: A risk correlation ID created with Set Transaction Context on your server.
+    ///   - shippingAddressOverride: Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
+    ///   - shippingCallbackURL: Optional: Server side shipping callback URL to be notified when a customer updates their shipping address or options. A callback request will be sent to the merchant server at this URL.
+    ///   - shopperSessionID: Optional: The shopper session ID returned from your shopper insights server SDK integration.
+    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
+    ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
+    ///   identified with the same phone number.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
+        amountBreakdown: BTAmountBreakdown? = nil,
+        billingAgreementDescription: String? = nil,
+        contactInformation: BTContactInformation? = nil,
+        contactPreference: BTContactPreference = .none,
         currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false,
-        shippingCallbackURL: URL? = nil,
-        userAuthenticationEmail: String? = nil,
+        displayName: String? = nil,
+        enablePayPalAppSwitch: Bool = false,
+        isShippingAddressEditable: Bool = false,
+        isShippingAddressRequired: Bool = false,
+        landingPageType: BTPayPalRequestLandingPageType = .none,
+        lineItems: [BTPayPalLineItem]? = nil,
+        localeCode: BTPayPalLocaleCode = .none,
+        merchantAccountID: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        amountBreakdown: BTAmountBreakdown? = nil
+        requestBillingAgreement: Bool = false,
+        riskCorrelationID: String? = nil,
+        shippingAddressOverride: BTPostalAddress? = nil,
+        shippingCallbackURL: URL? = nil,
+        shopperSessionID: String? = nil,
+        userAuthenticationEmail: String? = nil,
+        userPhoneNumber: BTPayPalPhoneNumber? = nil
     ) {
         self.amount = amount
         self.intent = intent
+        self.userAction = userAction
         self.offerPayLater = offerPayLater
-        self.currencyCode = currencyCode
-        self.requestBillingAgreement = requestBillingAgreement
-        self.shippingCallbackURL = shippingCallbackURL
         self.amountBreakdown = amountBreakdown
-        
-        super.init(
-            hermesPath: "v1/paypal_hermes/create_payment_resource",
-            paymentType: .checkout,
-            userAuthenticationEmail: userAuthenticationEmail,
-            recurringBillingDetails: recurringBillingDetails,
-            recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
-        )
+        self.billingAgreementDescription = billingAgreementDescription
+        self.contactInformation = contactInformation
+        self.contactPreference = contactPreference
+        self.currencyCode = currencyCode
+        self.displayName = displayName
+        self.enablePayPalAppSwitch = enablePayPalAppSwitch
+        self.isShippingAddressEditable = isShippingAddressEditable
+        self.isShippingAddressRequired = isShippingAddressRequired
+        self.landingPageType = landingPageType
+        self.lineItems = lineItems
+        self.localeCode = localeCode
+        self.merchantAccountID = merchantAccountID
+        self.recurringBillingDetails = recurringBillingDetails
+        self.recurringBillingPlanType = recurringBillingPlanType
+        self.requestBillingAgreement = requestBillingAgreement
+        self.riskCorrelationID = riskCorrelationID
+        self.shippingAddressOverride = shippingAddressOverride
+        self.shippingCallbackURL = shippingCallbackURL
+        self.shopperSessionID = shopperSessionID
+        self.userAuthenticationEmail = userAuthenticationEmail
+        self.userPhoneNumber = userPhoneNumber
     }
-
-    // MARK: Public Methods
-
-    /// :nodoc: Exposed publicly for use by PayPal Native Checkout module. This method is not covered by semantic versioning.
-    @_documentation(visibility: private)
-    public override func parameters(
-        with configuration: BTConfiguration,
-        universalLink: URL? = nil,
-        isPayPalAppInstalled: Bool = false
-    ) -> [String: Any] {
-        var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
-        var checkoutParameters: [String: Any] = [
-            "intent": intent.stringValue,
-            "amount": amount,
-            "offer_pay_later": offerPayLater
-        ]
-
-        let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
-
-        if currencyCode != nil {
-            checkoutParameters["currency_iso_code"] = currencyCode
-        }
-
-        if requestBillingAgreement != false {
-            checkoutParameters["request_billing_agreement"] = requestBillingAgreement
-
-            if billingAgreementDescription != nil {
-                checkoutParameters["billing_agreement_details"] = ["description": billingAgreementDescription]
-            }
-        }
-
-        if let shippingCallbackURL {
-            baseParameters["shipping_callback_url"] = shippingCallbackURL.absoluteString
-        }
-
-        if shippingAddressOverride != nil {
-            checkoutParameters["line1"] = shippingAddressOverride?.streetAddress
-            checkoutParameters["line2"] = shippingAddressOverride?.extendedAddress
-            checkoutParameters["city"] = shippingAddressOverride?.locality
-            checkoutParameters["state"] = shippingAddressOverride?.region
-            checkoutParameters["postal_code"] = shippingAddressOverride?.postalCode
-            checkoutParameters["country_code"] = shippingAddressOverride?.countryCodeAlpha2
-            checkoutParameters["recipient_name"] = shippingAddressOverride?.recipientName
-        }
-
-        if let recipientEmail = contactInformation?.recipientEmail {
-            checkoutParameters["recipient_email"] = recipientEmail
-        }
-
-        if contactPreference != .none {
-            checkoutParameters["contact_preference"] = contactPreference.stringValue
-        }
-
-        if let recipientPhoneNumber = try? contactInformation?.recipientPhoneNumber?.toDictionary() {
-            checkoutParameters["international_phone"] = recipientPhoneNumber
-        }
-
-        if let amountBreakdown {
-            baseParameters["amount_breakdown"] = amountBreakdown.parameters()
-        }
-
-        return baseParameters.merging(checkoutParameters) { $1 }
+    
+    // MARK: Internal Methods
+    
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil
+    ) -> Encodable {
+        PayPalCheckoutPOSTBody(
+            payPalRequest: self,
+            configuration: configuration,
+            isPayPalAppInstalled: isPayPalAppInstalled,
+            universalLink: universalLink
+        )
     }
 }

@@ -3,22 +3,25 @@ import BraintreeCore
 
 class BTPostalAddress_Tests: XCTestCase {
 
-    func testAsParameters_setsAllProperties() {
-        let postalAddress = BTPostalAddress()
-        postalAddress.recipientName = "Jane Smith"
-        postalAddress.streetAddress = "555 Smith St."
-        postalAddress.extendedAddress = "#5"
-        postalAddress.locality = "Oakland"
-        postalAddress.region = "CA"
-        postalAddress.countryCodeAlpha2 = "US"
-        postalAddress.postalCode = "54321"
+    func testInitializer_setsAllProperties() {
+        let postalAddress = BTPostalAddress(
+            recipientName: "Jane Smith",
+            streetAddress: "555 Smith St.",
+            extendedAddress: "#5",
+            locality: "Oakland",
+            countryCodeAlpha2: "US",
+            postalCode: "54321",
+            region: "CA"
+        )
+        
+        let addressComponents = postalAddress.addressComponents()
 
-        XCTAssertEqual(postalAddress.recipientName, "Jane Smith")
-        XCTAssertEqual(postalAddress.streetAddress, "555 Smith St.")
-        XCTAssertEqual(postalAddress.extendedAddress, "#5")
-        XCTAssertEqual(postalAddress.locality, "Oakland")
-        XCTAssertEqual(postalAddress.region, "CA")
-        XCTAssertEqual(postalAddress.countryCodeAlpha2, "US")
-        XCTAssertEqual(postalAddress.postalCode, "54321")
+        XCTAssertEqual(addressComponents["recipientName"], "Jane Smith")
+        XCTAssertEqual(addressComponents["streetAddress"], "555 Smith St.")
+        XCTAssertEqual(addressComponents["extendedAddress"], "#5")
+        XCTAssertEqual(addressComponents["locality"], "Oakland")
+        XCTAssertEqual(addressComponents["region"], "CA")
+        XCTAssertEqual(addressComponents["countryCodeAlpha2"], "US")
+        XCTAssertEqual(addressComponents["postalCode"], "54321")
     }
 }

@@ -47,31 +47,29 @@ class IdealViewController: PaymentButtonBaseViewController {
     }
 
     private func startPaymentWithBank() {
-        // swiftlint:disable:next force_unwrapping
-        let apiClient = BTAPIClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")!
-        localPaymentClient = BTLocalPaymentClient(apiClient: apiClient)
+        localPaymentClient = BTLocalPaymentClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg")
 
-        let request = BTLocalPaymentRequest()
-        request.paymentType = "ideal"
-        request.paymentTypeCountryCode = "NL"
-        request.currencyCode = "EUR"
-        request.amount = "1.01"
-        request.givenName = "Linh"
-        request.surname = "Ngo"
-        request.phone = "639847934"
-        request.email = "lingo-buyer@paypal.com"
-        request.isShippingAddressRequired = false
-
-        let postalAddress = BTPostalAddress()
-        postalAddress.countryCodeAlpha2 = "NL"
-        postalAddress.postalCode = "2585 GJ"
-        postalAddress.streetAddress = "836486 of 22321 Park Lake"
-        postalAddress.locality = "Den Haag"
-
-        request.address = postalAddress
+        let postalAddress = BTPostalAddress(
+            streetAddress: "836486 of 22321 Park Lake",
+            locality: "Den Haag",
+            countryCodeAlpha2: "NL",
+            postalCode: "2585 GJ"
+        )
+        
+        let request = BTLocalPaymentRequest(
+            paymentType: "ideal",
+            amount: "1.01",
+            currencyCode: "EUR",
+            paymentTypeCountryCode: "NL",
+            address: postalAddress,
+            email: "lingo-buyer@paypal.com",
+            givenName: "Linh",
+            surname: "Ngo",
+            phone: "639847934"
+        )
         request.localPaymentFlowDelegate = self
 
-        localPaymentClient.startPaymentFlow(request) { result, error in
+        localPaymentClient.start(request) { result, error in
             guard let result else {
                 if error as? BTLocalPaymentError == .canceled("") {
                     self.progressBlock("Canceled 🎲")

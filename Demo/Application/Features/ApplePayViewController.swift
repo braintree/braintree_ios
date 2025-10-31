@@ -4,7 +4,7 @@ import PassKit
 
 class ApplePayViewController: PaymentButtonBaseViewController {
 
-    lazy var applePayClient = BTApplePayClient(apiClient: apiClient)
+    lazy var applePayClient = BTApplePayClient(authorization: authorization)
     // swiftlint:disable:next force_unwrapping
     let managementURL = URL(string: "https://www.merchant.com/update-payment")!
 
