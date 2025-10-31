@@ -98,9 +98,17 @@ jobs:
           echo "Opening Simulator.app to provide UI context for ASWebAuthenticationSession..."
           open -a Simulator
 
+          # Activate Simulator to make it the frontmost application with key window
+          echo "Activating Simulator.app as frontmost application..."
+          osascript -e 'tell application "Simulator" to activate'
+
+          # Ensure Simulator window becomes key window
+          sleep 5
+          osascript -e 'tell application "System Events" to tell process "Simulator" to set frontmost to true'
+
           # Give extra time for ASWebAuthenticationSession to be ready and Simulator UI to appear
           echo "Allowing additional time for system services and Simulator UI to initialize..."
-          sleep 15
+          sleep 10
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
         run: |
