@@ -143,7 +143,7 @@ Update initializer for `BTDataCollector`:
 Update initializer for `BTDataCollector`:
 ```diff
 - var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: shopperSessionID)
-+ var shopperInsightsClient = BTShopperInsightsClient(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSIONS_ID>")
++ var shopperInsightsClient = BTShopperInsightsClient(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSION_ID>")
 ```
 
 ## PayPal Messaging View

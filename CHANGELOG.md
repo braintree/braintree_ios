@@ -7,6 +7,10 @@
   *  Update `BTVenmoLineItem` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeCore
   *  Update`BTPostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeThreeDSecure
+  * Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
+* BraintreeLocalPayment
+  * Rename `BTLocalPaymentClient.startPaymentFlow(with:completion:)` to `BTLocalPaymentClient.start(with:completion:)`
 
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
@@ -31,10 +35,6 @@
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
   * Add `merchant` and `flow_type` as query parameters to the app switch URL.
   * Add `paymentID` to `BTPayPalAccountNonce`
-* BraintreeThreeDSecure
-  * Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
-* BraintreeLocalPayment
-  * Rename `BTLocalPaymentClient.startPaymentFlow(with:completion:)` to `BTLocalPaymentClient.start(with:completion:)`
 
 ## 7.0.0-beta2 (2025-07-29)
 * BraintreeCore
