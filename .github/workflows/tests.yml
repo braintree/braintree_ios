@@ -58,8 +58,7 @@ jobs:
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
+            ONLY_ACTIVE_ARCH=NO \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
@@ -77,8 +76,7 @@ jobs:
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
+            ONLY_ACTIVE_ARCH=NO \
             test | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
