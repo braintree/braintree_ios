@@ -44,11 +44,8 @@ class PayPal_Vault_UITests: XCTestCase {
         // Trigger the interruption monitor to handle "Continue" button
         app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
 
-        // Small delay for alert to be handled before checking for web view
-        sleep(1)
-
-        // Wait for web view to confirm alert was handled and browser session started
-        XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 20), "Web view did not appear")
+        // Wait for web view to appear (this also confirms the alert was handled)
+        XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
 
         let webviewElementsQuery = app.webViews.element.otherElements
 
@@ -66,11 +63,8 @@ class PayPal_Vault_UITests: XCTestCase {
         // Trigger the interruption monitor to handle "Continue" button
         app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
 
-        // Wait for web view to confirm alert was handled and browser session started
-        XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 20), "Web view did not appear")
-
-        // Wait a moment for the web view to start loading content
-        sleep(2)
+        // Wait for web view to appear (this also confirms the alert was handled)
+        XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
 
         let webviewElementsQuery = app.webViews.element.otherElements
 
