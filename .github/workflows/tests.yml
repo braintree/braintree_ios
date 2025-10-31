@@ -46,23 +46,12 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
 
-      - name: Build UI Tests
-        run: |
-          set -o pipefail
-          xcodebuild build-for-testing \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
-            ONLY_ACTIVE_ARCH=NO | ./Pods/xcbeautify/xcbeautify
-
       - name: Run UI Tests - ${{ matrix.test-suite }}
         id: test_attempt_1
         continue-on-error: true
         run: |
           set -o pipefail
-          xcodebuild test-without-building \
+          xcodebuild test \
             -workspace 'Braintree.xcworkspace' \
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
@@ -78,7 +67,7 @@ jobs:
         run: |
           echo "First attempt failed, retrying..."
           set -o pipefail
-          xcodebuild test-without-building \
+          xcodebuild test \
             -workspace 'Braintree.xcworkspace' \
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
