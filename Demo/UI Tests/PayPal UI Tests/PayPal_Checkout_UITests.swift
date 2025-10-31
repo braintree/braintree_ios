@@ -17,16 +17,6 @@ class PayPal_Checkout_UITests: XCTestCase {
         // Disable animations for more reliable tests
         app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
 
-        // Add UI interruption monitor to automatically handle ASWebAuthenticationSession alert
-        addUIInterruptionMonitor(withDescription: "ASWebAuthenticationSession Alert") { alert in
-            // Tap "Continue" button on the authentication session alert
-            if alert.buttons["Continue"].exists {
-                alert.buttons["Continue"].tap()
-                return true
-            }
-            return false
-        }
-
         app.launch()
 
         // Wait for app to be ready
@@ -41,10 +31,13 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
 
     func testPayPal_checkout_receivesNonce() {
-        // Trigger the interruption monitor to handle "Continue" button
-        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        // Tap "Continue" button on the ASWebAuthenticationSession alert in springboard
+        let continueButton = springboard.buttons["Continue"]
+        if continueButton.waitForExistence(timeout: 10) {
+            continueButton.tap()
+        }
 
-        // Wait for web view to appear (this also confirms the alert was handled)
+        // Wait for web view to appear (this confirms the alert was handled)
         XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
 
         let webviewElementsQuery = app.webViews.element.otherElements
@@ -60,10 +53,13 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
 
     func testPayPal_checkout_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
-        // Trigger the interruption monitor to handle "Continue" button
-        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        // Tap "Continue" button on the ASWebAuthenticationSession alert in springboard
+        let continueButton = springboard.buttons["Continue"]
+        if continueButton.waitForExistence(timeout: 10) {
+            continueButton.tap()
+        }
 
-        // Wait for web view to appear (this also confirms the alert was handled)
+        // Wait for web view to appear (this confirms the alert was handled)
         XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
 
         let webviewElementsQuery = app.webViews.element.otherElements
