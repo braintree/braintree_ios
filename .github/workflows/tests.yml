@@ -91,7 +91,7 @@ jobs:
   paypal_ui_test_job:
     name: UI Tests - PayPal
     runs-on: macos-15-xlarge
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -109,14 +109,6 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
-      - name: Cache Derived Data
-        uses: actions/cache@v4
-        with:
-          path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-deriveddata-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-deriveddata-
 
       - name: Install CocoaPod dependencies
         run: pod install
