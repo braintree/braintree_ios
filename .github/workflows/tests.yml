@@ -238,8 +238,11 @@ jobs:
           # Note: xcodebuild will automatically boot the simulator, we just need the UI window
 
           open -a Simulator
-          sleep 2
+          sleep 3
           osascript -e 'tell application "Simulator" to activate'
+          sleep 1
+          # Ensure simulator is fully ready
+          xcrun simctl list devices | grep "iPhone 16 Pro"
 
       - name: Run PayPal UI Tests
         run: |

@@ -31,11 +31,13 @@ class PayPal_Vault_UITests: XCTestCase {
     }
 
     func testPayPal_vault_receivesNonce() {
-        // Tap "Continue" button on the ASWebAuthenticationSession alert in springboard
+        // Wait longer for Continue button on ASWebAuthenticationSession alert
         let continueButton = springboard.buttons["Continue"]
-        if continueButton.waitForExistence(timeout: 10) {
-            continueButton.tap()
-        }
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 15), "Continue button did not appear")
+
+        // Small delay to ensure button is tappable
+        sleep(1)
+        continueButton.tap()
 
         // Wait for web view to appear (this confirms the alert was handled)
         XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
@@ -53,11 +55,13 @@ class PayPal_Vault_UITests: XCTestCase {
     }
 
     func testPayPal_vault_cancelsSuccessfully_whenTappingCancelButtonOnPayPalSite() {
-        // Tap "Continue" button on the ASWebAuthenticationSession alert in springboard
+        // Wait longer for Continue button on ASWebAuthenticationSession alert
         let continueButton = springboard.buttons["Continue"]
-        if continueButton.waitForExistence(timeout: 10) {
-            continueButton.tap()
-        }
+        XCTAssertTrue(continueButton.waitForExistence(timeout: 15), "Continue button did not appear")
+
+        // Small delay to ensure button is tappable
+        sleep(1)
+        continueButton.tap()
 
         // Wait for web view to appear (this confirms the alert was handled)
         XCTAssertTrue(app.webViews.element.waitForExistence(timeout: 30), "Web view did not appear")
