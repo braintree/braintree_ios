@@ -211,8 +211,8 @@ jobs:
             -only-testing:UITests/ThreeDSecure_V2_UITests \
             -retry-tests-on-failure | ./Pods/xcbeautify/xcbeautify
 
-  paypal_ui_test_job:
-    name: UI Tests - PayPal
+  paypal_checkout_ui_test_job:
+    name: UI Tests - PayPal Checkout
     needs: build_ui_tests
     runs-on: macos-15-xlarge
     timeout-minutes: 20
@@ -244,7 +244,7 @@ jobs:
           # Ensure simulator is fully ready
           xcrun simctl list devices | grep "iPhone 16 Pro"
 
-      - name: Run PayPal UI Tests
+      - name: Run PayPal Checkout UI Tests
         run: |
           set -o pipefail
           chmod +x Pods/xcbeautify/xcbeautify
@@ -253,6 +253,49 @@ jobs:
             -xctestrun "$XCTESTRUN" \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/PayPal_Checkout_UITests \
+            -retry-tests-on-failure | ./Pods/xcbeautify/xcbeautify
+
+  paypal_vault_ui_test_job:
+    name: UI Tests - PayPal Vault
+    needs: build_ui_tests
+    runs-on: macos-15-xlarge
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Use Xcode 16.4
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-build-artifacts
+
+      - name: Setup Simulator for ASWebAuthenticationSession
+        run: |
+          # ASWebAuthenticationSession requires Simulator.app to be open and frontmost
+          # to provide a valid presentation anchor (key window)
+          # Note: xcodebuild will automatically boot the simulator, we just need the UI window
+
+          open -a Simulator
+          sleep 3
+          osascript -e 'tell application "Simulator" to activate'
+          sleep 1
+          # Ensure simulator is fully ready
+          xcrun simctl list devices | grep "iPhone 16 Pro"
+
+      - name: Run PayPal Vault UI Tests
+        run: |
+          set -o pipefail
+          chmod +x Pods/xcbeautify/xcbeautify
+          XCTESTRUN=$(find DerivedData/Build/Products -name '*UITests*.xctestrun' | head -n 1)
+          xcodebuild test-without-building \
+            -xctestrun "$XCTESTRUN" \
+            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
             -only-testing:UITests/PayPal_Vault_UITests \
             -retry-tests-on-failure | ./Pods/xcbeautify/xcbeautify
 
