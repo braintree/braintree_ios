@@ -56,7 +56,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=26.1,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} | ./Pods/xcbeautify/xcbeautify
 
       - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
@@ -72,7 +72,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=26.0.1,platform=iOS Simulator' \
+            -destination 'name=iPhone 16 Pro,OS=26.1,platform=iOS Simulator' \
             -only-testing:UITests/${{ matrix.test-suite }} | ./Pods/xcbeautify/xcbeautify
 
       - name: Final UI Test Result - ${{ matrix.test-suite }}
