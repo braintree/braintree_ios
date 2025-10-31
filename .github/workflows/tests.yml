@@ -40,7 +40,7 @@ jobs:
         run: pod install
 
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf ONLY_ACTIVE_ARCH=YES test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf test | ./Pods/xcbeautify/xcbeautify
   threeds_ui_test_job:
     name: UI Tests - ThreeDSecure
     runs-on: macos-15-xlarge
@@ -86,7 +86,6 @@ jobs:
             -only-testing:UITests/ThreeDSecure_V2_UITests \
             -retry-tests-on-failure \
             DEBUG_INFORMATION_FORMAT=dwarf \
-            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   paypal_ui_test_job:
@@ -145,7 +144,6 @@ jobs:
             -only-testing:UITests/PayPal_Vault_UITests \
             -retry-tests-on-failure \
             DEBUG_INFORMATION_FORMAT=dwarf \
-            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   paypal_messaging_ui_test_job:
@@ -194,7 +192,6 @@ jobs:
             -only-testing:UITests/PayPalMessaging_Failure_UITests \
             -retry-tests-on-failure \
             DEBUG_INFORMATION_FORMAT=dwarf \
-            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   venmo_ui_test_job:
@@ -242,7 +239,6 @@ jobs:
             -only-testing:UITests/Venmo_UITests \
             -retry-tests-on-failure \
             DEBUG_INFORMATION_FORMAT=dwarf \
-            ONLY_ACTIVE_ARCH=YES \
             test | ./Pods/xcbeautify/xcbeautify
 
   integration_test_job:
@@ -281,4 +277,4 @@ jobs:
         run: pod install
 
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf ONLY_ACTIVE_ARCH=YES test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' DEBUG_INFORMATION_FORMAT=dwarf test | ./Pods/xcbeautify/xcbeautify
