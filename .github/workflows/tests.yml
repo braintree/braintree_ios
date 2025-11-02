@@ -20,7 +20,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
     runs-on: macos-15-xlarge
@@ -32,6 +32,8 @@ jobs:
           - PayPal_Checkout_UITests
           - PayPal_Vault_UITests
           - Venmo_UITests
+          - PayPalMessaging_Failure_UITests
+          - PayPalMessaging_Success_UITests
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository
@@ -85,60 +87,19 @@ jobs:
           timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out, continuing anyway"
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
-        id: test_attempt_1
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
             -workspace 'Braintree.xcworkspace' \
             -sdk 'iphonesimulator' \
-            -configuration 'Release' \
+            -configuration 'Debug' \
             -scheme 'UITests' \
             -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
+            -disable-concurrent-destination-testing \
+            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        id: test_attempt_2
-        continue-on-error: true
-        timeout-minutes: 15
-        run: |
-          echo "First attempt failed, retrying..."
-          # Clean simulator state before retry
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 16 (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
-
-          if [ -n "$DEVICE_UDID" ]; then
-            echo "Resetting simulator: $DEVICE_UDID"
-            xcrun simctl shutdown "$DEVICE_UDID" 2>/dev/null || true
-            xcrun simctl erase "$DEVICE_UDID"
-            xcrun simctl boot "$DEVICE_UDID"
-            timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out"
-          fi
-
-          set -o pipefail
-          xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
-            -sdk 'iphonesimulator' \
-            -configuration 'Release' \
-            -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
-            -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
-            test | ./Pods/xcbeautify/xcbeautify
-
-      - name: Final UI Test Result - ${{ matrix.test-suite }}
-        if: steps.test_attempt_1.outcome == 'failure'
-        run: |
-          if [ "${{ steps.test_attempt_2.outcome }}" == "failure" ]; then
-            echo "UI Tests failed after retry"
-            exit 1
-          else
-            echo "UI Tests passed on retry"
-          fi
 
   integration_test_job:
     name: Integration
@@ -156,4 +117,4 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator'  test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
