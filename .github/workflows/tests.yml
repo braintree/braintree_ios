@@ -23,7 +23,7 @@ jobs:
         run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' -derivedDataPath DerivedData -retry-tests-on-failure test | ./Pods/xcbeautify/xcbeautify
   ui_test_job:
     name: UI
-    runs-on: macos-15-xlarge
+    runs-on: macos-14-xlarge
     timeout-minutes: 20
     strategy:
       matrix:
@@ -42,8 +42,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: Use Xcode 16.4
-        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Use Xcode 16.2
+        run: sudo xcode-select -switch /Applications/Xcode_16.2.app
 
       - name: Install CocoaPod dependencies
         run: pod install
@@ -51,7 +51,7 @@ jobs:
       - name: Boot Simulator
         run: |
           # Boot simulator ahead of time to reduce test startup time
-          SIMULATOR_ID=$(xcrun simctl list devices available | grep "iPhone 16 (.*) (18.6)" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/')
+          SIMULATOR_ID=$(xcrun simctl list devices available | grep "iPhone 16 (.*) (18.2)" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/')
           if [ -n "$SIMULATOR_ID" ]; then
             xcrun simctl boot "$SIMULATOR_ID" || true
             xcrun simctl bootstatus "$SIMULATOR_ID" -b || true
@@ -68,7 +68,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
