@@ -83,8 +83,7 @@ jobs:
             -destination 'name=iPhone 16,OS=18.2,platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
-            -maximum-concurrent-test-simulator-destinations 1 \
-            -disable-concurrent-testing \
+            -disable-concurrent-destination-testing \
             -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
 
