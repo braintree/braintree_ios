@@ -54,13 +54,26 @@ jobs:
           SIMULATOR_ID=$(xcrun simctl list devices available | grep "iPhone 16 (.*) (18.2)" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/')
           if [ -n "$SIMULATOR_ID" ]; then
             xcrun simctl boot "$SIMULATOR_ID" || true
+            # Wait for simulator to boot
+            xcrun simctl bootstatus "$SIMULATOR_ID" -b || true
+          fi
+          # Disable hardware keyboard to avoid input issues
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+
+      - name: Clean Simulator State
+        run: |
+          # Reset simulator state to ensure clean environment
+          xcrun simctl shutdown all || true
+          xcrun simctl erase all || true
+          SIMULATOR_ID=$(xcrun simctl list devices available | grep "iPhone 16 (.*) (18.2)" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/')
+          if [ -n "$SIMULATOR_ID" ]; then
+            xcrun simctl boot "$SIMULATOR_ID" || true
             xcrun simctl bootstatus "$SIMULATOR_ID" -b || true
           fi
 
-      - name: Disable Hardware Keyboard
-        run: defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
-
       - name: Run UI Tests - ${{ matrix.test-suite }}
+        id: test_attempt_1
+        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild \
@@ -68,13 +81,50 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Release' \
             -scheme 'UITests' \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+            -destination 'name=iPhone 16,OS=18.2,platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -maximum-concurrent-test-simulator-destinations 1 \
             -disable-concurrent-testing \
-            -retry-tests-on-failure \
             test | ./Pods/xcbeautify/xcbeautify
+
+      - name: Retry UI Tests (if failed) - ${{ matrix.test-suite }}
+        if: steps.test_attempt_1.outcome == 'failure'
+        id: test_attempt_2
+        continue-on-error: true
+        run: |
+          echo "First attempt failed, retrying..."
+          # Clean simulator state before retry
+          xcrun simctl shutdown all || true
+          xcrun simctl erase all || true
+          SIMULATOR_ID=$(xcrun simctl list devices available | grep "iPhone 16 (.*) (18.2)" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/')
+          if [ -n "$SIMULATOR_ID" ]; then
+            xcrun simctl boot "$SIMULATOR_ID" || true
+            xcrun simctl bootstatus "$SIMULATOR_ID" -b || true
+          fi
+
+          set -o pipefail
+          xcodebuild \
+            -workspace 'Braintree.xcworkspace' \
+            -sdk 'iphonesimulator' \
+            -configuration 'Release' \
+            -scheme 'UITests' \
+            -destination 'name=iPhone 16,OS=18.2,platform=iOS Simulator' \
+            -derivedDataPath DerivedData \
+            -only-testing:UITests/${{ matrix.test-suite }} \
+            -maximum-concurrent-test-simulator-destinations 1 \
+            -disable-concurrent-testing \
+            test | ./Pods/xcbeautify/xcbeautify
+
+      - name: Final UI Test Result - ${{ matrix.test-suite }}
+        if: steps.test_attempt_1.outcome == 'failure'
+        run: |
+          if [ "${{ steps.test_attempt_2.outcome }}" == "failure" ]; then
+            echo "UI Tests failed after retry"
+            exit 1
+          else
+            echo "UI Tests passed on retry"
+          fi
 
   integration_test_job:
     name: Integration
