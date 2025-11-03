@@ -10,6 +10,7 @@
 	<array>
 		<string>merchant.com.braintreepayments.apple-pay-demo.Braintree-Demo</string>
 		<string>merchant.com.braintreepayments.apple-pay-demo.production.Braintree-Demo</string>
+		<string>merchant.com.braintreepayments.richard</string>
 	</array>
 </dict>
 </plist>
