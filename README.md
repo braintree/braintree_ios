@@ -95,8 +95,9 @@ This SDK abides by our Client SDK Deprecation Policy. For more information on th
 
 | Major version number | Status | Released | Deprecated | Unsupported |
 | -------------------- | ------ | -------- | ---------- | ----------- |
-| 6.x.x | Active | June 2023 | TBA | TBA |
-| 5.x.x | Inactive | February 2021 | June 2024 | June 2025 |
+| 7.x.x | Active | November 2025 | TBA | TBA |
+| 6.x.x | Inactive | June 2023 | November 2026 | November 2027 |
+| 5.x.x | Unsupported | February 2021 | June 2024 | June 2025 |
 | 4.x.x | Unsupported | November 2015 | February 2022 | February 2023 |
 
 ## Demo
