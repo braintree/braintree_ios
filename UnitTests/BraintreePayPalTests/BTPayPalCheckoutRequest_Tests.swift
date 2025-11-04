@@ -89,18 +89,22 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
 
-        let shippingAddress = BTPostalAddress()
-        shippingAddress.streetAddress = "123 Main"
-        shippingAddress.extendedAddress = "Unit 1"
-        shippingAddress.locality = "Chicago"
-        shippingAddress.region = "IL"
-        shippingAddress.postalCode = "11111"
-        shippingAddress.countryCodeAlpha2 = "US"
-        shippingAddress.recipientName = "Recipient"
+        let shippingAddress = BTPostalAddress(
+            recipientName: "Recipient",
+            streetAddress: "123 Main",
+            extendedAddress: "Unit 1",
+            locality: "Chicago",
+            countryCodeAlpha2: "US",
+            postalCode: "11111",
+            region: "IL"
+        )
         request.shippingAddressOverride = shippingAddress
         request.isShippingAddressEditable = true
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["intent"] as? String, "sale")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -137,7 +141,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_returnsMinimumParams() {
         let request = BTPayPalCheckoutRequest(amount: "1")
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["intent"] as? String, "authorize")
         XCTAssertEqual(parameters["amount"] as? String, "1")
@@ -153,7 +160,11 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         configuration = BTConfiguration(json: json)
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        let parameters = request.parameters(with: configuration)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertEqual(parameters["currency_iso_code"] as? String, "currency-code")
     }
@@ -162,7 +173,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.billingAgreementDescription = "description"
 
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
 
         XCTAssertNil(parameters["request_billing_agreement"])
         XCTAssertNil(parameters["billing_agreement_details"])
@@ -172,9 +186,105 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAuthenticationEmail = ""
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertNil(parameters["payer_email"])
+    }
+
+    func testParametersWithConfiguration_returnsAllBaseParams() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.isShippingAddressRequired = true
+        request.displayName = "Display Name"
+        request.landingPageType = .login
+        request.localeCode = .en_US
+        request.riskCorrelationID = "123-correlation-id"
+        request.merchantAccountID = "merchant-account-id"
+        request.isShippingAddressEditable = true
+        
+        let lineItem = BTPayPalLineItem(
+            quantity: "1",
+            unitAmount: "1",
+            name: "item",
+            kind: .credit,
+            imageURL: URL(string: "http://example/image.jpg"),
+            upcCode: "upc-code",
+            upcType: .UPC_A
+        )
+        request.lineItems = [lineItem]
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
+        
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, "Display Name")
+        XCTAssertEqual(experienceProfile["landing_page_type"] as? String, "login")
+        XCTAssertEqual(experienceProfile["locale_code"] as? String, "en_US")
+        XCTAssertEqual(parameters["merchant_account_id"] as? String, "merchant-account-id")
+        XCTAssertEqual(parameters["correlation_id"] as? String, "123-correlation-id")
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
+        XCTAssertEqual(parameters["line_items"] as? [[String : String]], [["quantity" : "1",
+                                                                           "unit_amount": "1",
+                                                                           "name": "item",
+                                                                           "kind": "credit",
+                                                                           "upc_code": "upc-code",
+                                                                           "upc_type": "UPC-A",
+                                                                           "image_url": "http://example/image.jpg"]])
+        
+        XCTAssertEqual(parameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
+        XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
+    }
+
+    func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        // no_shipping = true should be the default.
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String : Any] else { XCTFail(); return }
+
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
+    }
+
+    func testParametersWithConfiguration_whenShippingAddressIsRequiredIsTrue_returnsNoShippingFalse() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.isShippingAddressRequired = true
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        guard let experienceProfile = parameters["experience_profile"] as? [String:Any] else { XCTFail(); return }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+    }
+    
+    // MARK: - landingPageTypeAsString
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsNotSpecified_returnNil() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        XCTAssertNil(request.landingPageType?.stringValue)
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsBilling_returnsBilling() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.landingPageType = .billing
+        XCTAssertEqual(request.landingPageType?.stringValue, "billing")
+    }
+
+    func testLandingPageTypeAsString_whenLandingPageTypeIsLogin_returnsLogin() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.landingPageType = .login
+        XCTAssertEqual(request.landingPageType?.stringValue, "login")
     }
     
     func testParametersWithConfiguration__withContactInformation_setsRecipientEmailAndPhoneNumber() {
@@ -184,7 +294,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["recipient_email"] as? String, "some@mail.com")
         let internationalPhone = parameters["international_phone"] as? [String: String]
@@ -194,22 +307,26 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_whenContactInformationNotSet_doesNotSetPayerEmailAndPhoneNumberInRequest() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertNil(parameters["recipient_email"])
         XCTAssertNil(parameters["international_phone"])
     }
     
     func testParametersWithConfiguration_withContactInformationToUpdate_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .updateContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .updateContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "UPDATE_CONTACT_INFO")
         
@@ -219,15 +336,16 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
     
     func testParametersWithConfiguration_withContactInformationToRetain_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .retainContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .retainContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "RETAIN_CONTACT_INFO")
         
@@ -237,15 +355,17 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
     
     func testParametersWithConfiguration_withContactInformationWithNoInfo_setsRecipientEmailAndPhoneNumber() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.contactPreference = .noContactInformation
-
-        request.contactInformation = BTContactInformation(
+        let contactInformation = BTContactInformation(
             recipientEmail: "some@mail.com",
             recipientPhoneNumber: BTPayPalPhoneNumber(countryCode: "US", nationalNumber: "123456789")
         )
+        let request = BTPayPalCheckoutRequest(amount: "1", contactInformation: contactInformation, contactPreference: .noContactInformation)
         
-        let parameters = request.parameters(with: configuration)
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         
         XCTAssertEqual(parameters["contact_preference"] as? String, "NO_CONTACT_INFO")
         
@@ -256,24 +376,35 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     func testParameters_whenShippingCallbackURLNotSet_returnsParameters() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-
+        
         XCTAssertNil(request.shippingCallbackURL)
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         XCTAssertNil(parameters["shipping_callback_url"])
     }
 
+
     func testParameters_withShippingCallbackURL_returnsParametersWithShippingCallbackURL() {
         let request = BTPayPalCheckoutRequest(amount: "1", shippingCallbackURL: URL(string: "www.some-url.com"))
-
+        
         XCTAssertNotNil(request.shippingCallbackURL)
-        let parameters = request.parameters(with: configuration)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
         XCTAssertNotNil(parameters["shipping_callback_url"])
     }
     
     func testParametersWithConfiguration_setsAppSwitchParameters_WithoutUserAuthenticationEmail() {
-        let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1", enablePayPalAppSwitch: true)
         
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration, isPayPalAppInstalled: true, universalLink:  URL(string: "some-url")!)
+            .toDictionary() else {
+                XCTFail()
+                return
+            }
         
         XCTAssertNil(parameters["payer_email"])
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
@@ -294,16 +425,23 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         )
 
         let request = BTPayPalCheckoutRequest(amount: "1.00", amountBreakdown: amountBreakdown)
-        let parameters = request.parameters(with: configuration)
-        let amountParameters = request.amountBreakdown?.parameters()
+        
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+        guard let amountParameters = try? request.amountBreakdown?.toDictionary() else {
+            XCTFail()
+            return
+        }
 
         guard parameters["amount_breakdown"] is [String: String] else { XCTFail(); return }
-        XCTAssertEqual(amountParameters?["item_total"] as? String, "10.00")
-        XCTAssertEqual(amountParameters?["tax_total"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["shipping"] as? String, "2.00")
-        XCTAssertEqual(amountParameters?["handling"] as? String, "3.00")
-        XCTAssertEqual(amountParameters?["insurance"] as? String, "4.00")
-        XCTAssertEqual(amountParameters?["shipping_discount"] as? String, "1.00")
-        XCTAssertEqual(amountParameters?["discount"] as? String, "2.00")
+        XCTAssertEqual(amountParameters["item_total"] as? String, "10.00")
+        XCTAssertEqual(amountParameters["tax_total"] as? String, "1.00")
+        XCTAssertEqual(amountParameters["shipping"] as? String, "2.00")
+        XCTAssertEqual(amountParameters["handling"] as? String, "3.00")
+        XCTAssertEqual(amountParameters["insurance"] as? String, "4.00")
+        XCTAssertEqual(amountParameters["shipping_discount"] as? String, "1.00")
+        XCTAssertEqual(amountParameters["discount"] as? String, "2.00")
     }
 }

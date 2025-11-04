@@ -5,17 +5,17 @@ import BraintreeCore
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
     var amexClient : BTAmericanExpressClient? = nil
 
     override func setUp() {
         super.setUp()
-        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        amexClient = BTAmericanExpressClient(apiClient: mockAPIClient)
+        amexClient = BTAmericanExpressClient(authorization: "development_tokenization_key")
+        amexClient?.apiClient = mockAPIClient
     }
     
     func testGetRewardsBalance_formatsGETRequest() async {
-        let result = try? await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "fake-code")
+        let _ = try? await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "fake-code")
         
         XCTAssertEqual(mockAPIClient.lastGETPath, "v1/payment_methods/amex_rewards_balance")
         
@@ -90,5 +90,28 @@ class BTAmericanExpressClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:failed")
+    }
+    
+    func testGetRewardsBalance_withInvalidAuthorization_returnsError() {
+        amexClient = BTAmericanExpressClient(authorization: "badAuth")
+        mockAPIClient.cannedResponseError = NSError(
+            domain: BTAPIClientError.errorDomain,
+            code: BTAPIClientError.invalidAuthorization("").errorCode,
+            userInfo: [NSLocalizedDescriptionKey: BTAPIClientError.invalidAuthorization("").errorDescription ?? ""]
+        )
+        
+        let expectation = expectation(description: "Amex reward balance should return invalid authorization error")
+        amexClient?.getRewardsBalance(forNonce: "", currencyISOCode: "") { rewardsBalance, error in
+            XCTAssertNil(rewardsBalance)
+            if let error = error as NSError? {
+                XCTAssertEqual(error.code, BTAPIClientError.invalidAuthorization("").errorCode)
+                XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth. See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info.")
+                XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
+            }
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
     }
 }

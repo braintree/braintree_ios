@@ -2,10 +2,10 @@ import Foundation
 
 /// :nodoc: This class is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
 @_documentation(visibility: private)
-@objcMembers public class BTCoreConstants: NSObject {
+public class BTCoreConstants: NSObject {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    public static var braintreeSDKVersion: String = "6.39.0"
+    public static var braintreeSDKVersion: String = "7.0.0-beta2"
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     public static let callbackURLScheme: String = "sdk.ios.braintree"
@@ -14,7 +14,7 @@ import Foundation
     public static let venmoURLScheme: String = "com.venmo.touch.v2"
 
     /// URL Scheme for PayPal App
-    public static let payPalURLScheme: String = "paypal-app-switch-checkout"
+    public static let payPalURLScheme: String = "paypal"
 
     static let apiVersion: String = "2016-10-07"
     

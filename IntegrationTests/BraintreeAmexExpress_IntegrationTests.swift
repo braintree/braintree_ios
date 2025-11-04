@@ -6,15 +6,15 @@ import XCTest
 class BraintreeAmexExpress_IntegrationTests: XCTestCase {
     
     func testGetRewardsBalance_returnsResult() async {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)!
-        let cardClient = BTCardClient(apiClient: apiClient)
-        let amexClient = BTAmericanExpressClient(apiClient: apiClient)
+        let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
+        let amexClient = BTAmericanExpressClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         
-        let card = BTCard()
-        card.number = "371260714673002"
-        card.expirationMonth = "12"
-        card.expirationYear = Helpers.shared.futureYear()
-        card.cvv = "1234"
+        let card = BTCard(
+            number: "371260714673002",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "1234"
+        )
         
         do {
             let tokenizedCard = try await cardClient.tokenize(card)

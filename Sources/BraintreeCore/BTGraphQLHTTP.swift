@@ -22,7 +22,7 @@ class BTGraphQLHTTP: BTHTTP {
     override func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = nil,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
@@ -34,13 +34,15 @@ class BTGraphQLHTTP: BTHTTP {
     func httpRequest(
         method: String,
         configuration: BTConfiguration? = nil,
-        parameters: [String: Any]? = [:],
+        parameters: Encodable? = nil,
         completion: @escaping RequestCompletion
     ) {
         var errorUserInfo: [String: Any] = [:]
-
-        guard let baseURL = configuration?.graphQLURL ?? customBaseURL,
-            !baseURL.absoluteString.isEmpty else {
+        
+        guard
+            let baseURL = configuration?.graphQLURL ?? customBaseURL,
+            !baseURL.absoluteString.isEmpty
+        else {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
             completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
@@ -51,12 +53,12 @@ class BTGraphQLHTTP: BTHTTP {
             completion(nil, nil, BTHTTPError.urlStringInvalid)
             return
         }
-
+        
         guard let urlFromComponents = components.url else {
             completion(nil, nil, BTHTTPError.urlStringInvalid)
             return
         }
-
+        
         let headers = [
             "User-Agent": userAgentString,
             "Braintree-Version": BTCoreConstants.graphQLVersion,
@@ -65,26 +67,27 @@ class BTGraphQLHTTP: BTHTTP {
         ]
         
         var request: URLRequest
-    
-        do {
-            let bodyData = try JSONSerialization.data(withJSONObject: parameters ?? [:])
-            request = URLRequest(url: urlFromComponents)
-            request.httpBody = bodyData
-            request.allHTTPHeaderFields = headers
-            request.httpMethod = method
-
-            // Perform the actual request
-            session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
-                    return
-                }
-
-                handleRequestCompletion(data: data, response: response, error: error, completion: completion)
-            }.resume()
-        } catch {
-            completion(nil, nil, error)
+        
+        // swiftlint:disable:next redundant_optional_initialization
+        var bodyData: Data? = nil
+        if let parameters {
+            bodyData = try? JSONEncoder().encode(parameters)
         }
+        
+        request = URLRequest(url: urlFromComponents)
+        request.httpBody = bodyData
+        request.allHTTPHeaderFields = headers
+        request.httpMethod = method
+        
+        // Perform the actual request
+        session.dataTask(with: request) { [weak self] data, response, error in
+            guard let self else {
+                completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
+                return
+            }
+            
+            handleRequestCompletion(data: data, response: response, error: error, completion: completion)
+        }.resume()
     }
 
     func handleRequestCompletion(

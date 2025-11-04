@@ -10,7 +10,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
     var callbackCountLabel = UILabel()
     var callbackCount: Int = 0
     
-    lazy var threeDSecureClient = BTThreeDSecureClient(apiClient: apiClient)
+    lazy var threeDSecureClient = BTThreeDSecureClient(authorization: authorization)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,8 +43,11 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         callbackCount = 0
         updateCallbackCount()
 
-        let card = CardHelpers.newCard(from: cardFormView)
-        let cardClient = BTCardClient(apiClient: apiClient)
+        guard let card = CardHelpers.newCard(from: cardFormView) else {
+            progressBlock("Fill in all the card fields.")
+            return
+        }
+        let cardClient = BTCardClient(authorization: authorization)
 
         cardClient.tokenize(card) { tokenizedCard, error in
             guard let tokenizedCard else {
@@ -55,7 +58,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
             self.progressBlock("Tokenized card, now verifying with 3DS")
             let threeDSecureRequest = self.createThreeDSecureRequest(with: tokenizedCard.nonce)
 
-            self.threeDSecureClient.startPaymentFlow(threeDSecureRequest) { threeDSecureResult, error in
+            self.threeDSecureClient.start(threeDSecureRequest) { threeDSecureResult, error in
                 self.callbackCount += 1
                 self.updateCallbackCount()
 
@@ -90,18 +93,7 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
     }
 
     private func createThreeDSecureRequest(with nonce: String) -> BTThreeDSecureRequest {
-        let request = BTThreeDSecureRequest()
         
-        request.threeDSecureRequestDelegate = self
-        request.amount = 10.32
-        request.nonce = nonce
-        request.accountType = .credit
-        request.requestedExemptionType = .lowValue
-        request.email = "test@example.com"
-        request.shippingMethod = .sameDay
-        request.uiType = .both
-        request.renderTypes = [.otp, .singleSelect, .multiSelect, .oob, .html]
-
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Jill"
         billingAddress.surname = "Doe"
@@ -112,10 +104,22 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.postalCode = "12345"
         billingAddress.phoneNumber = "8101234567"
-
-        request.billingAddress = billingAddress
-        request.v2UICustomization = createUICustomization()
-
+        
+        let request = BTThreeDSecureRequest(
+            amount: "10.32",
+            nonce: nonce,
+            accountType: .credit,
+            billingAddress: billingAddress,
+            email: "test@example.com",
+            renderTypes: [.otp, .singleSelect, .multiSelect, .oob, .html],
+            requestedExemptionType: .lowValue,
+            shippingMethod: .sameDay,
+            uiType: .both,
+            v2UICustomization: createUICustomization()
+        )
+        
+        request.threeDSecureRequestDelegate = self
+        
         return request
     }
 

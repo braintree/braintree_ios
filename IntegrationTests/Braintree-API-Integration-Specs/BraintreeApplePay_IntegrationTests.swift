@@ -6,8 +6,8 @@ import PassKit
 class BraintreeApplePay_IntegrationTests: XCTestCase {
 
     func testTokenizeApplePayPayment_whenApplePayEnabledInControlPanel_returnsANonce() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)!
-        let applePayClient = BTApplePayClient(apiClient: apiClient)
+        let applePayClient = BTApplePayClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
+        
         let expectation = expectation(description: "Tokenize Apple Pay payment")
 
         applePayClient.tokenize(PKPayment()) { tokenizedApplePayAccount, error in
@@ -25,8 +25,8 @@ class BraintreeApplePay_IntegrationTests: XCTestCase {
     }
 
     func testTokenizeApplePayPayment_whenApplePayDisabledInControlPanel_returnsError() {
-        let apiClient = BTAPIClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKeyApplePayDisabled)!
-        let applePayClient = BTApplePayClient(apiClient: apiClient)
+        let applePayClient = BTApplePayClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKeyApplePayDisabled)
+
         let expectation = expectation(description: "Tokenize Apple Pay payment")
 
         applePayClient.tokenize(PKPayment()) { nonce, error in

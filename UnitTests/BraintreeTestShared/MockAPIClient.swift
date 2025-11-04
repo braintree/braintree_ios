@@ -50,20 +50,9 @@ public class MockAPIClient: BTAPIClient {
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
-    public override func post(_ path: String, parameters: [String: Any]?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+    public override func post(_ path: String, parameters: Encodable? = nil, headers: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
-        lastPOSTParameters = parameters
-        lastPOSTAPIClientHTTPType = httpType
-        
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
-    }
-    
-    public override func post(_ path: String, parameters: Encodable, headers: [String: String]? = nil, httpType: BTAPIClientHTTPService = .gateway, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        lastPOSTPath = path
-        lastPOSTParameters = try? parameters.toDictionary()
+        lastPOSTParameters = try? parameters?.toDictionary()
         lastPOSTAPIClientHTTPType = httpType
         lastPOSTAdditionalHeaders = headers
         
@@ -86,18 +75,6 @@ public class MockAPIClient: BTAPIClient {
             throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
         }
         return BTConfiguration(json: responseBody)
-    }
-
-    public override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = false
-        completion([], nil)
-    }
-    
-    public override func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
-        fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = false
-        completion([], nil)
     }
 
     public override func sendAnalyticsEvent(

@@ -10,17 +10,17 @@ import BraintreeCore
     // MARK: - Internal Properties
 
     /// Exposed for testing to get the instance of BTAPIClient
-    let apiClient: BTAPIClient
+    var apiClient: BTAPIClient
 
     let graphQLTokenizeFeature: String = "tokenize_credit_cards"
 
     // MARK: - Initializer
 
     /// Creates a card client
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     // MARK: - Public Methods
@@ -79,7 +79,7 @@ import BraintreeCore
                     return
                 }
             } else {
-                let parameters = self.clientAPIParameters(for: card)
+                let parameters = card.parameters(apiClient: self.apiClient)
 
                 self.apiClient.post("v1/payment_methods/credit_cards", parameters: parameters) {body, _, error in
                     if let error = error as NSError? {
@@ -134,26 +134,6 @@ import BraintreeCore
         }
 
         return false
-    }
-
-    private func clientAPIParameters(for card: BTCard) -> [String: Any] {
-        var parameters: [String: Any] = [:]
-        parameters["credit_card"] = card.parameters()
-
-        let metadata: [String: String] = [
-            "source": apiClient.metadata.source.stringValue,
-            "integration": apiClient.metadata.integration.stringValue,
-            "sessionId": apiClient.metadata.sessionID
-        ]
-
-        parameters["_meta"] = metadata
-
-        if card.authenticationInsightRequested {
-            parameters["authenticationInsight"] = true
-            parameters["merchantAccountId"] = card.merchantAccountID
-        }
-
-        return parameters
     }
 
     // MARK: - Error Construction Methods

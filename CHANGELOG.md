@@ -1,5 +1,17 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased 
+* BraintreePayPal
+  * Update `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.   
+* BraintreeVenmo
+  *  Update `BTVenmoLineItem` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeCore
+  *  Update`BTPostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeThreeDSecure
+  * Rename `BTThreeDSecureClient.startPaymentFlow(with:completion:)` to `BTThreeDSecureClient.start(with:completion:)`
+* BraintreeLocalPayment
+  * Rename `BTLocalPaymentClient.startPaymentFlow(with:completion:)` to `BTLocalPaymentClient.start(with:completion:)`
+
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
   * Fix crash related to data race in `BTWebAuthenticationSession` (fixes #1653)
@@ -23,6 +35,10 @@
   * Fix an issue where `BTPayPalRequest` was sending `phone_number` instead of `payer_phone`
   * Add `merchant` and `flow_type` as query parameters to the app switch URL.
   * Add `paymentID` to `BTPayPalAccountNonce`
+
+## 7.0.0-beta2 (2025-07-29)
+* BraintreeCore
+  * Improve latency for analytic events.
 
 ## 6.36.0 (2025-08-13)
 * BraintreeCore
@@ -49,6 +65,51 @@
 ## 6.33.0 (2025-05-22)
 * BraintreeCore
   * Update batching for conversion events to send immediately using `beginBackgroundTask`
+
+## 7.0.0-beta1 (2025-04-30)
+* Require Xcode 16.2+ and Swift 5.10+
+* Breaking Changes
+  * Bump minimum supported deployment target to iOS 16+
+  * `countryCodeAlpha2` now returns a 2 character country code instead of a 3 character country code 
+  * BraintreePayPalNativeCheckout
+    * Remove entire PayPal Native Checkout module
+  * BraintreeVenmo
+    * Update `BTVenmoRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `fallbacktoWeb` property from `BTVenmoRequest`. All Venmo flows will now use universal links to switch to the Venmo app or fallback to the web flow if the Venmo app is not installed
+    * Remove `BTAppContextSwitcher.sharedInstance.returnURLScheme`
+    * `BTVenmoClient` initializer now requires a `universalLink` for switching to and from the Venmo app or web fallback flow
+    * Update initializer to `BTVenmoClient(authorization:)`
+  * BraintreeSEPADirectDebit
+    * Update `BTSEPADirectDebitRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Update initializer to `BTSEPADirectDebitClient(authorization:)`
+  * BraintreeLocalPayment
+    * Update `BTLocalPaymentRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Update initializer to `BTLocalPaymentClient(authorization:)`
+  * BraintreeCard
+    * Update `BTCard` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Remove `BTCardRequest`, use `BTCard` directly instead
+    * Update initializer to `BTCardClient(authorization:)`
+  * BraintreePayPal
+    * Update `BTPayPalRequest`, `BTPayPalVaultRequest` and `BTPayPalCheckoutRequest` to make all properties accessible on the initializer only vs via the dot syntax.
+    * Update PayPal app URL query scheme from `paypal-app-switch-checkout` to `paypal`
+    * Update initializer to `BTPayPalClient(authorization:)`
+  * BraintreeThreeDSecure
+    * Update `BTThreeDSecureRequest` to make all properties accessible on the initializer only vs via the dot syntax.  
+    * Update `BTThreeDSecureRequest.amount` to be a `String`
+    * Remove `cardAddChallenge` - use `cardAddChallengeRequested` instead
+    * Update initializer to `BTThreeDSecureClient(authorization:)`
+  * BraintreeCore
+    * Remove `fetchPaymentMethodNonces` methods and parser
+  * BraintreeAmericanExpress
+    * Update initializer to `BTAmericanExpressClient(authorization:)`
+  * BraintreeApplePay
+    * Update initializer to `BTApplePayClient(authorization:)`
+  * BraintreeDataCollector
+    * Update initializer to `BTDataCollector(authorization:)`
+  * BraintreeShopperInsights (BETA)
+    * Update initializer to `BTShopperInsightsClient(authorization:shopperSessionID:)`
+  * BraintreePayPalMessaging (BETA)
+    * Update initializer to `BTPayPalMessagingView(authorization:)`
 
 ## 6.32.0 (2025-04-29)
 * BraintreePayPal

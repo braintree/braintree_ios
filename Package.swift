@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -38,10 +38,6 @@ let package = Package(
         .library(
             name: "BraintreePayPalMessaging",
             targets: ["BraintreePayPalMessaging"]
-        ),
-        .library(
-            name: "BraintreePayPalNativeCheckout",
-            targets: ["BraintreePayPalNativeCheckout"]
         ),
         .library(
             name: "BraintreeSEPADirectDebit",
@@ -107,12 +103,6 @@ let package = Package(
             name: "PayPalMessages",
             url: "https://github.com/paypal/paypal-messages-ios/releases/download/1.0.0/PayPalMessages.xcframework.zip",
             checksum: "565ab72a3ab75169e41685b16e43268a39e24217a12a641155961d8b10ffe1b4"
-        ),
-        .target(
-            name: "BraintreePayPalNativeCheckout",
-            dependencies: ["BraintreeCore", "BraintreePayPal", "PayPalCheckout"],
-            path: "Sources/BraintreePayPalNativeCheckout",
-            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
             name: "PayPalCheckout",

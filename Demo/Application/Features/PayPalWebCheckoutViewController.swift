@@ -7,7 +7,7 @@ import BraintreeCore
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
-        apiClient: apiClient,
+        authorization: authorization,
         // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
@@ -148,32 +148,36 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         progressBlock("Tapped PayPal - Checkout using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
+        
+        var lineItem = BTPayPalLineItem(
+            quantity: "1",
+            unitAmount: "5.00",
+            name: "item one 1234567",
+            kind: .debit,
+            imageURL: URL(string: "https://www.example.com/example.jpg"),
+            upcCode: "123456789",
+            upcType: .UPC_A
+        )
 
-        // pay later is only available on amounts greater than or equal to 35
-        let amount = payLaterToggle.isOn ? "35.00" : "5.00"
-        var request = BTPayPalCheckoutRequest(amount: amount, offerPayLater: payLaterToggle.isOn)
-        request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
+        let contactInformation = BTContactInformation(
+            recipientEmail: "some@email.com",
+            recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
         )
         
-        var lineItem = BTPayPalLineItem(quantity: "1", unitAmount: "5.00", name: "item one 1234567", kind: .debit)
-        lineItem.upcCode = "123456789"
-        lineItem.upcType = .UPC_A
-        lineItem.imageURL = URL(string: "https://www.example.com/example.jpg")
-
-        request.lineItems = [lineItem]
-        request.offerPayLater = payLaterToggle.isOn
-
-        if contactInformationToggle.isOn {
-            request.contactInformation = BTContactInformation(
-                recipientEmail: "some@email.com",
-                recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
+        // pay later is only available on amounts greater than or equal to 35
+        let amount = payLaterToggle.isOn ? "35.00" : "5.00"
+        var request = BTPayPalCheckoutRequest(
+            amount: amount,
+            offerPayLater: payLaterToggle.isOn,
+            contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
+            contactPreference: .updateContactInformation,
+            lineItems: [lineItem],
+            userAuthenticationEmail: emailTextField.text,
+            userPhoneNumber: BTPayPalPhoneNumber(
+                countryCode: countryCodeTextField.text ?? "",
+                nationalNumber: nationalNumberTextField.text ?? ""
             )
-
-            request.contactPreference = .updateContactInformation
-        }
+        )
 
         if amountBreakdownToggle.isOn {
             let billingPricing = BTPayPalBillingPricing(
@@ -211,14 +215,13 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
             request = BTPayPalCheckoutRequest(
                 amount: "10.99",
+                amountBreakdown: amountBreakdown,
+                lineItems: [lineItem],
+                merchantAccountID: "quantumleapsandboxtesting-1",
                 recurringBillingDetails: recurringBillingDetails,
                 recurringBillingPlanType: .subscription,
-                amountBreakdown: amountBreakdown
+                requestBillingAgreement: true
             )
-
-            request.lineItems = [lineItem]
-            request.requestBillingAgreement = true
-            request.merchantAccountID = "quantumleapsandboxtesting-1"
         }
 
         payPalClient.tokenize(request) { nonce, error in
@@ -240,11 +243,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
 
-        var request = BTPayPalVaultRequest()
-        request.userAuthenticationEmail = emailTextField.text
-        request.userPhoneNumber = BTPayPalPhoneNumber(
-            countryCode: countryCodeTextField.text ?? "",
-            nationalNumber: nationalNumberTextField.text ?? ""
+        var request = BTPayPalVaultRequest(
+            userAuthenticationEmail: emailTextField.text,
+            userPhoneNumber: BTPayPalPhoneNumber(
+                countryCode: countryCodeTextField.text ?? "",
+                nationalNumber: nationalNumberTextField.text ?? ""
+            )
         )
         
         if rbaDataToggle.isOn {
@@ -298,9 +302,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         // pay later is only available on amounts greater than or equal to 35
         let amount = payLaterToggle.isOn ? "35.00" : "10.00"
         let request = BTPayPalCheckoutRequest(
-            userAuthenticationEmail: emailTextField.text,
-            enablePayPalAppSwitch: true,
             amount: amount,
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
             offerPayLater: payLaterToggle.isOn
         )
@@ -322,8 +326,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.isEnabled = false
 
         let request = BTPayPalVaultRequest(
-            userAuthenticationEmail: emailTextField.text,
-            enablePayPalAppSwitch: true
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -336,21 +340,5 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             
             self.completionBlock(nonce)
         }
-    }
-    
-    // MARK: - Helpers
-    
-    private func buttonsStackView(label: String, views: [UIView]) -> UIStackView {
-        let titleLabel = UILabel()
-        titleLabel.text = label
-        
-        let buttonsStackView = UIStackView(arrangedSubviews: [titleLabel] + views)
-        buttonsStackView.axis = .vertical
-        buttonsStackView.distribution = .fillProportionally
-        buttonsStackView.backgroundColor = .systemGray6
-        buttonsStackView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        buttonsStackView.isLayoutMarginsRelativeArrangement = true
-        
-        return buttonsStackView
     }
 }

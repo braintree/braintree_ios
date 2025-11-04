@@ -1,7 +1,7 @@
 import Foundation
 
 /// PayPal recurring billing product details.
-public struct BTPayPalRecurringBillingDetails {
+public struct BTPayPalRecurringBillingDetails: Encodable {
     
     // MARK: - Private Properties
     
@@ -54,43 +54,16 @@ public struct BTPayPalRecurringBillingDetails {
         self.taxAmount = taxAmount
     }
     
-    // MARK: - Internal Methods
-    
-    func parameters() -> [String: Any] {
-        var parameters: [String: Any] = [
-            "total_amount": totalAmount,
-            "currency_iso_code": currencyISOCode,
-            "billing_cycles": billingCycles.map { $0.parameters() }
-        ]
-        
-        if let productName {
-            parameters["name"] = productName
-        }
-        
-        if let productDescription {
-            parameters["product_description"] = productDescription
-        }
-        
-        if let productQuantity {
-            parameters["product_quantity"] = productQuantity
-        }
-        
-        if let oneTimeFeeAmount {
-            parameters["one_time_fee_amount"] = oneTimeFeeAmount
-        }
-        
-        if let shippingAmount {
-            parameters["shipping_amount"] = shippingAmount
-        }
-        
-        if let productAmount {
-            parameters["product_price"] = productAmount
-        }
-        
-        if let taxAmount {
-            parameters["tax_amount"] = taxAmount
-        }
-        
-        return parameters
+    enum CodingKeys: String, CodingKey {
+        case billingCycles = "billing_cycles"
+        case currencyISOCode = "currency_iso_code"
+        case oneTimeFeeAmount = "one_time_fee_amount"
+        case productAmount = "product_price"
+        case productDescription = "product_description"
+        case productName = "name"
+        case productQuantity = "product_quantity"
+        case shippingAmount = "shipping_amount"
+        case taxAmount = "tax_amount"
+        case totalAmount = "total_amount"
     }
 }

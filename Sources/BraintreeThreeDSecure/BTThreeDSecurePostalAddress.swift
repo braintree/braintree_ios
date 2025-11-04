@@ -36,47 +36,4 @@ import Foundation
     /// Optional. The phone number associated with the address
     /// - Note: Only numbers. Remove dashes, parentheses and other characters
     public var phoneNumber: String?
-
-    // MARK: - Internal Methods
-
-    /// :nodoc:
-    /// The postal address as parameters which can be used for API requests.
-    /// The prefix value will be prepended to each key in the return dictionary
-    /// - Parameter prefix: The prefix to prepend to the key in the dictionary
-    /// - Returns: A dictionary representing the postal address.
-    @_documentation(visibility: private)
-    func asParameters(withPrefix prefix: String? = "") -> [String: String] {
-        var parameters: [String: String?] = [
-            prepend(prefix, toKey: "givenName"): givenName,
-            prepend(prefix, toKey: "surname"): surname,
-            prepend(prefix, toKey: "line1"): streetAddress,
-            prepend(prefix, toKey: "line2"): extendedAddress,
-            prepend(prefix, toKey: "line3"): line3,
-            prepend(prefix, toKey: "city"): locality,
-            prepend(prefix, toKey: "state"): region,
-            prepend(prefix, toKey: "postalCode"): postalCode,
-            prepend(prefix, toKey: "countryCode"): countryCodeAlpha2
-        ]
-
-        let phoneKey: String = prefix == "shipping" ? "phone" : "phoneNumber"
-        parameters[prepend(prefix, toKey: phoneKey)] = phoneNumber
-
-        // Remove all nil values and their key
-        let filteredParameters: [String: String] = parameters.compactMapValues { $0 }
-
-        return filteredParameters
-    }
-
-    // MARK: Private Methods
-
-    private func prepend(_ prefix: String?, toKey key: String) -> String {
-        if let prefix, !prefix.isEmpty {
-            // Uppercase the first character in the key
-            let firstLetter = key.prefix(1).capitalized
-            let remainingLetters = key.dropFirst()
-            return prefix + firstLetter + remainingLetters
-        } else {
-            return key
-        }
-    }
 }

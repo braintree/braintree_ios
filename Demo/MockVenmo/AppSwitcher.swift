@@ -5,63 +5,23 @@ enum AppSwitcher {
     static var openVenmoURL: URL?
 
     static var successURLWithPaymentContext: URL? {
-        var successComponents = openVenmoURL
-            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?
-            .queryItems?
-            .first { $0.name == "x-success" }?
-            .value
-            .flatMap { URLComponents(string: $0) }
-
-        successComponents?.queryItems = [
-            URLQueryItem(name: "x-source", value: "Venmo"),
-            URLQueryItem(
-                name: "resource_id",
-                value: "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
-            )
-        ]
-
-        return successComponents?.url
+        let resourceID = "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
+        
+        return URL(string: "\(openVenmoURL?.absoluteString ?? "")/success?resource_id=\(resourceID)")
     }
 
     static var successURLWithoutPaymentContext: URL? {
-        var successComponents = openVenmoURL
-            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?
-            .queryItems?
-            .first { $0.name == "x-success" }?
-            .value
-            .flatMap { URLComponents(string: $0) }
-
-        successComponents?.queryItems = [
-            URLQueryItem(name: "x-source", value: "Venmo"),
-            URLQueryItem(name: "username", value: "@fake-venmo-username"),
-            URLQueryItem(name: "paymentMethodNonce", value: "fake-venmo-account-nonce")
-        ]
-
-        return successComponents?.url
+        let username = "@fake-venmo-username"
+        let nonce = "fake-venmo-account-nonce"
+        
+        return URL(string: "\(openVenmoURL?.absoluteString ?? "")/success?username=\(username)&paymentMethodNonce=\(nonce)")
     }
 
     static var errorURL: URL? {
-        var errorComponents = openVenmoURL
-            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?
-            .queryItems?
-            .first { $0.name == "x-error" }?
-            .value
-            .flatMap { URLComponents(string: $0) }
-
-        errorComponents?.queryItems = [
-            URLQueryItem(name: "errorMessage", value: "An error occurred during the Venmo flow"),
-            URLQueryItem(name: "errorCode", value: "123")
-        ]
-
-        return errorComponents?.url
+        URL(string: "\(openVenmoURL?.absoluteString ?? "")/error?errorMessage=An error occurred during the Venmo flow&errorCode=123")
     }
 
     static var cancelURL: URL? {
-        return openVenmoURL
-            .flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }?
-            .queryItems?
-            .first { $0.name == "x-cancel" }?
-            .value
-            .flatMap { URL(string: $0) }
+        URL(string: "\(openVenmoURL?.absoluteString ?? "")/cancel")
     }
 }

@@ -34,34 +34,31 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
     /// 1. Venmo is not enabled
     case disabled
 
-    /// 2. The Venmo app is not installed or configured for app Switch
-    case appNotAvailable
-
-    /// 3. Bundle display name is nil
+    /// 2. Bundle display name is nil
     case bundleDisplayNameMissing
 
-    /// 4. App Switch could not complete
+    /// 3. App Switch could not complete
     case appSwitchFailed
 
-    /// 5. Return URL is invalid
+    /// 4. Return URL is invalid
     case invalidReturnURL(String)
 
-    /// 6. No body was returned from the request
+    /// 5. No body was returned from the request
     case invalidBodyReturned
 
-    /// 7. Invalid request URL
+    /// 6. Invalid request URL
     case invalidRedirectURL(String)
 
-    /// 8. Failed to fetch Braintree configuration
+    /// 7. Failed to fetch Braintree configuration
     case fetchConfigurationFailed
 
-    /// 9. Enriched Customer Data is disabled
+    /// 8. Enriched Customer Data is disabled
     case enrichedCustomerDataDisabled
     
-    /// 10.  The Venmo flow was canceled by the user
+    /// 9.  The Venmo flow was canceled by the user
     case canceled
 
-    /// 11. One or more values in redirect URL are invalid
+    /// 10. One or more values in redirect URL are invalid
     case invalidRedirectURLParameter
 
     public static var errorDomain: String {
@@ -74,26 +71,24 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
             return 0
         case .disabled:
             return 1
-        case .appNotAvailable:
-            return 2
         case .bundleDisplayNameMissing:
-            return 3
+            return 2
         case .appSwitchFailed:
-            return 4
+            return 3
         case .invalidReturnURL:
-            return 5
+            return 4
         case .invalidBodyReturned:
-            return 6
+            return 5
         case .invalidRedirectURL:
-            return 7
+            return 6
         case .fetchConfigurationFailed:
-            return 8
+            return 7
         case .enrichedCustomerDataDisabled:
-            return 9
+            return 8
         case .canceled:
-            return 10
+            return 9
         case .invalidRedirectURLParameter:
-            return 11
+            return 10
         }
     }
 
@@ -103,8 +98,6 @@ public enum BTVenmoError: Error, CustomNSError, LocalizedError, Equatable {
             return "An unknown error occurred. Please contact support."
         case .disabled:
             return "Venmo is not enabled for this merchant account."
-        case .appNotAvailable:
-            return "The Venmo app is not installed on this device, or it is not configured or available for app switch."
         case .bundleDisplayNameMissing:
             return "CFBundleDisplayName must be non-nil. Please set 'Bundle display name' in your Info.plist."
         case .appSwitchFailed:

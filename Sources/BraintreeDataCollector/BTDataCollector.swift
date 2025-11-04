@@ -12,13 +12,13 @@ import BraintreeCore
     
     var config: BTConfiguration?
 
-    private let apiClient: BTAPIClient
+    var apiClient: BTAPIClient
 
-    ///  Initializes a `BTDataCollector` instance with a `BTAPIClient`.
-    /// - Parameter apiClient: An instance of `BTAPIClient`
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    ///  Initializes a `BTDataCollector` instance.
+    /// - Parameter  authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
     
     // MARK: Public methods

@@ -20,9 +20,9 @@ public class BTPayPalMessagingView: UIView {
     // MARK: - Initializers
 
     ///  Initializes a `BTPayPalMessagingView`.
-    /// - Parameter apiClient: The Braintree API client
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
 
         super.init(frame: .zero)
     }
@@ -121,15 +121,15 @@ public extension BTPayPalMessagingView {
         
         ///  Initializes a `BTPayPalMessagingView`.
         /// - Parameters:
-        ///   - apiClient: The Braintree API client
+        ///   - authorization: A valid client token or tokenization key used to authorize API calls.
         ///   - request: an optional `BTPayPalMessagingRequest`
         ///   - delegate: an optional `BTPayPalMessagingDelegate`
         public init(
-            apiClient: BTAPIClient,
+            authorization: String,
             request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(),
             delegate: BTPayPalMessagingDelegate? = nil
         ) {
-            self.apiClient = apiClient
+            self.apiClient = BTAPIClient(authorization: authorization)
             self.request = request
             self.delegate = delegate
         }
@@ -137,7 +137,7 @@ public extension BTPayPalMessagingView {
         // MARK: - UIViewRepresentable Methods
 
         public func makeUIView(context: Context) -> BTPayPalMessagingView {
-            let payPalMessagingView = BTPayPalMessagingView(apiClient: apiClient)
+            let payPalMessagingView = BTPayPalMessagingView(authorization: apiClient.authorization.originalValue)
             payPalMessagingView.start(request)
             payPalMessagingView.delegate = delegate
             return payPalMessagingView

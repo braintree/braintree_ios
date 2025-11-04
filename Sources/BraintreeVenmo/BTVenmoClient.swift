@@ -33,12 +33,6 @@ import BraintreeCore
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
 
-    // MARK: - Static Properties
-
-    /// This static instance of `BTVenmoClient` is used during the app switch process.
-    /// We require a static reference of the client to call `handleReturnURL` and return to the app.
-    static var venmoClient: BTVenmoClient?
-
     /// Used for linking events from the client to server side request
     /// In the Venmo flow this will be the payment context ID
     private var contextID: String?
@@ -46,25 +40,25 @@ import BraintreeCore
     /// Used for sending the type of flow, universal vs deeplink to FPTI
     private var linkType: LinkType?
 
-    private var universalLink: URL?
+    private var universalLink: URL
+
+    // MARK: - Static Properties
+
+    /// This static instance of `BTVenmoClient` is used during the app switch process.
+    /// We require a static reference of the client to call `handleReturnURL` and return to the app.
+    static var venmoClient: BTVenmoClient?
 
     // MARK: - Initializer
 
-    /// Creates a Venmo client
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
-        self.apiClient = apiClient
-    }
-
     /// Initialize a new Venmo client instance.
     /// - Parameters:
-    ///   - apiClient: The API Client
+    ///   - authorization: A valid client token or tokenization key used to authorize API calls.
     ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    @objc(initWithAPIClient:universalLink:)
-    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
-        self.init(apiClient: apiClient)
+    @objc(initWithAuthorization:universalLink:)
+    public init(authorization: String, universalLink: URL) {
+        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
+
+        self.apiClient = BTAPIClient(authorization: authorization)
         
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
@@ -80,34 +74,9 @@ import BraintreeCore
     ///   an instance of `BTVenmoAccountNonce`; on failure or user cancelation you will receive an error.
     ///   If the user cancels out of the flow, the error code will be `.canceled`.
     @objc(tokenizeWithVenmoRequest:completion:)
-    // swiftlint:disable:next function_body_length cyclomatic_complexity
+    // swiftlint:disable:next function_body_length
     public func tokenize(_ request: BTVenmoRequest, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-        linkType = request.fallbackToWeb ? .universal : .deeplink
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault, linkType: linkType)
-        let returnURLScheme = BTAppContextSwitcher.sharedInstance._returnURLScheme
-
-        if (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) && returnURLScheme.isEmpty {
-            NSLog(
-                "%@ Venmo requires a return URL scheme or universal link to be configured.",
-                BTLogLevelDescription.string(for: .critical)
-            )
-            notifyFailure(
-                with: BTVenmoError.invalidReturnURL("Venmo requires a return URL scheme or universal link to be configured."),
-                completion: completion
-            )
-            return
-        } else if
-            let bundleIdentifier = bundle.bundleIdentifier,
-                !returnURLScheme.hasPrefix(bundleIdentifier)
-                && (universalLink?.absoluteString.isEmpty == true || universalLink?.absoluteString == nil) {
-            NSLog(
-                // swiftlint:disable:next line_length
-                "%@ Venmo requires [BTAppContextSwitcher setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@)",
-                BTLogLevelDescription.string(for: .critical),
-                bundleIdentifier,
-                returnURLScheme
-            )
-        }
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -121,7 +90,7 @@ import BraintreeCore
             }
             
             do {
-                _ = try self.verifyAppSwitch(with: configuration, fallbackToWeb: request.fallbackToWeb)
+                _ = try self.verifyAppSwitch(with: configuration)
             } catch {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -140,7 +109,10 @@ import BraintreeCore
             let metadata = self.apiClient.metadata
             metadata.source = .venmoApp
             
-            let graphQLParameters = self.buildGraphQLDictionary(with: request, merchantProfileID: merchantProfileID)
+            let graphQLParameters = VenmoCreatePaymentContextGraphQLBody(
+                request: request,
+                merchantProfileID: merchantProfileID
+            )
 
             self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error = error as? NSError {
@@ -174,7 +146,6 @@ import BraintreeCore
                     let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
                         paymentContextID: paymentContextID,
                         metadata: metadata,
-                        returnURLScheme: returnURLScheme,
                         universalLink: self.universalLink,
                         forMerchantID: merchantProfileID,
                         accessToken: configuration.venmoAccessToken,
@@ -182,24 +153,15 @@ import BraintreeCore
                         environment: configuration.venmoEnvironment
                     )
 
-                    if request.fallbackToWeb {
-                        guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
-                            self.notifyFailure(
-                                with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"),
-                                completion: completion
-                            )
-                            return
-                        }
-
-                        self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
-                    } else {
-                        guard let urlSchemeURL = appSwitchURL.urlSchemeURL() else {
-                            self.notifyFailure(with: BTVenmoError.invalidReturnURL("App switch URL cannot be nil"), completion: completion)
-                            return
-                        }
-
-                        self.startVenmoFlow(with: urlSchemeURL, shouldVault: request.vault, completion: completion)
+                    guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
+                        self.notifyFailure(
+                            with: BTVenmoError.invalidReturnURL("Universal links URL cannot be nil"),
+                            completion: completion
+                        )
+                        return
                     }
+
+                    self.startVenmoFlow(with: universalLinksURL, shouldVault: request.vault, completion: completion)
                 } catch {
                     self.notifyFailure(with: error, completion: completion)
                     return
@@ -224,86 +186,9 @@ import BraintreeCore
         }
     }
 
-    /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
-    @objc public func isVenmoAppInstalled() -> Bool {
-        guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
-            return false
-        }
-
-        return application.canOpenURL(appSwitchURL)
-    }
-
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
-        application.open(appStoreURL, options: [:], completion: nil)
-    }
-
-    // MARK: - Internal Methods
-
-    func buildGraphQLDictionary(with request: BTVenmoRequest, merchantProfileID: String?) -> [String: Any] {
-        var inputParameters: [String: Any?] = [
-            "paymentMethodUsage": request.paymentMethodUsage.stringValue,
-            "merchantProfileId": merchantProfileID,
-            "customerClient": "MOBILE_APP",
-            "intent": "CONTINUE",
-            "isFinalAmount": "\(request.isFinalAmount)"
-        ]
-
-        if let displayName = request.displayName {
-            inputParameters["displayName"] = displayName
-        }
-
-        var paysheetDetails: [String: Any] = [
-            "collectCustomerBillingAddress": "\(request.collectCustomerBillingAddress)",
-            "collectCustomerShippingAddress": "\(request.collectCustomerShippingAddress)"
-        ]
-
-        var transactionDetails: [String: Any] = [:]
-        if let subTotalAmount = request.subTotalAmount {
-            transactionDetails["subTotalAmount"] = subTotalAmount
-        }
-
-        if let discountAmount = request.discountAmount {
-            transactionDetails["discountAmount"] = discountAmount
-        }
-
-        if let taxAmount = request.taxAmount {
-            transactionDetails["taxAmount"] = taxAmount
-        }
-
-        if let shippingAmount = request.shippingAmount {
-            transactionDetails["shippingAmount"] = shippingAmount
-        }
-
-        if let totalAmount = request.totalAmount {
-            transactionDetails["totalAmount"] = totalAmount
-        }
-
-        if let lineItems = request.lineItems, !lineItems.isEmpty {
-            for item in lineItems {
-                if item.unitTaxAmount == nil || item.unitTaxAmount?.isEmpty == true {
-                    item.unitTaxAmount = "0"
-                }
-            }
-            let lineItemsArray = lineItems.compactMap { $0.requestParameters() }
-            transactionDetails["lineItems"] = lineItemsArray
-        }
-
-        if !transactionDetails.isEmpty {
-            paysheetDetails["transactionDetails"] = transactionDetails
-        }
-
-        inputParameters["paysheetDetails"] = paysheetDetails
-
-        let inputDictionary: [String: Any] = ["input": inputParameters]
-
-        let graphQLParameters: [String: Any] = [
-            // swiftlint:disable:next line_length
-            "query": "mutation CreateVenmoPaymentContext($input: CreateVenmoPaymentContextInput!) { createVenmoPaymentContext(input: $input) { venmoPaymentContext { id } } }",
-            "variables": inputDictionary
-        ]
-
-        return graphQLParameters
+        application.open(appStoreURL, options: [:], completionHandler: nil)
     }
 
     // MARK: - App Switch Methods
@@ -328,12 +213,7 @@ import BraintreeCore
 
         switch returnURL.state {
         case .succeededWithPaymentContext:
-            let variablesDictionary: [String: String?] = ["id": returnURL.paymentContextID]
-            let graphQLParameters: [String: Any] = [
-                // swiftlint:disable:next line_length
-                "query": "query PaymentContext($id: ID!) { node(id: $id) { ... on VenmoPaymentContext { paymentMethodId userName payerInfo { firstName lastName phoneNumber email externalId userName shippingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } billingAddress { fullName addressLine1 addressLine2 adminArea1 adminArea2 postalCode countryCode } } } } }",
-                "variables": variablesDictionary
-            ]
+            let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
 
             apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI) { body, _, error in
                 if let error {
@@ -437,8 +317,7 @@ import BraintreeCore
     // MARK: - Vaulting Methods
 
     func vault(_ nonce: String) {
-        let venmoAccount: [String: String] = ["nonce": nonce]
-        let parameters: [String: Any] = ["venmoAccount": venmoAccount]
+        let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
         apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
             if let error {
@@ -466,14 +345,9 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    func verifyAppSwitch(with configuration: BTConfiguration, fallbackToWeb: Bool) throws -> Bool {
+    func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
             throw BTVenmoError.disabled
-        }
-
-
-        if !fallbackToWeb && !isVenmoAppInstalled() {
-            throw BTVenmoError.appNotAvailable
         }
 
         guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {

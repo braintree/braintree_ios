@@ -15,7 +15,8 @@ import BraintreeCore
     
     // MARK: - Private Properties
     
-    private let apiClient: BTAPIClient
+    /// exposed for testing
+    var apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
     private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
@@ -23,10 +24,10 @@ import BraintreeCore
     // MARK: - Initializer
     
     /// Initialize a new BTThreeDSecureClient instance.
-    /// - Parameter apiClient: An API client
-    @objc(initWithAPIClient:)
-    public init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
     
     // MARK: - Public Methods
@@ -35,7 +36,7 @@ import BraintreeCore
     /// - Parameters:
     ///   - request: A BTThreeDSecureRequest request.
     ///   - completion: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
-    public func startPaymentFlow(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
+    public func start(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyStarted)
         
         self.request = request
@@ -59,8 +60,8 @@ import BraintreeCore
                 return
             }
 
-            if request.amount?.decimalValue.isNaN == true || request.amount == nil {
-                NSLog("%@ BTThreeDSecureRequest amount can not be nil or NaN.", BTLogLevelDescription.string(for: .critical))
+            if request.amount.isEmpty {
+                NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
                 let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
                 notifyFailure(with: error, completion: completion)
                 return
@@ -103,9 +104,9 @@ import BraintreeCore
             return
         }
 
-        guard request.nonce != nil else {
+        if request.nonce.isEmpty {
             notifyFailure(
-                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce can not be nil."),
+                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce cannot be an empty string."),
                 completion: completion
             )
             return
@@ -352,8 +353,8 @@ import BraintreeCore
                 return
             }
 
-            let requestParameters = self.buildRequestDictionary(with: request)
-            guard let urlSafeNonce = request.nonce?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            let requestParameters = ThreeDSecurePOSTBody(request: request)
+            guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
                 self.notifyFailure(
                     with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."),
@@ -364,7 +365,7 @@ import BraintreeCore
 
             self.apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
-                parameters: requestParameters as [String: Any]
+                parameters: requestParameters
             ) { body, _, error in
                 if let error = error as NSError? {
                     // Provide more context for card validation error when status code 422
@@ -410,46 +411,6 @@ import BraintreeCore
                 return
             }
         }
-    }
-
-    private func buildRequestDictionary(with request: BTThreeDSecureRequest) -> [String: Any?] {
-        let customer: [String: String] = [:]
-
-        var requestParameters: [String: Any?] = [
-            "amount": request.amount,
-            "customer": customer,
-            "requestedThreeDSecureVersion": "2",
-            "dfReferenceId": request.dfReferenceID,
-            "accountType": request.accountType.stringValue,
-            "challengeRequested": request.challengeRequested,
-            "exemptionRequested": request.exemptionRequested,
-            "requestedExemptionType": request.requestedExemptionType.stringValue,
-            "dataOnlyRequested": request.dataOnlyRequested
-        ]
-
-        if let customFields = request.customFields {
-            requestParameters["customFields"] = customFields
-        }
-
-        if request._cardAddChallenge == .requested || request.cardAddChallengeRequested == true {
-            requestParameters["cardAdd"] = true
-        } else if request._cardAddChallenge == .notRequested {
-            requestParameters["cardAdd"] = false
-        }
-
-        var additionalInformation: [String: String?] = [
-            "mobilePhoneNumber": request.mobilePhoneNumber,
-            "email": request.email,
-            "shippingMethod": request.shippingMethod.stringValue
-        ]
-
-        additionalInformation = additionalInformation.merging(request.billingAddress?.asParameters(withPrefix: "billing") ?? [:]) { $1 }
-        additionalInformation = additionalInformation.merging(request.additionalInformation?.asParameters() ?? [:]) { $1 }
-
-        requestParameters["additionalInfo"] = additionalInformation
-        requestParameters = requestParameters.compactMapValues { $0 }
-
-        return requestParameters
     }
 
     // MARK: - Analytics Helper Methods

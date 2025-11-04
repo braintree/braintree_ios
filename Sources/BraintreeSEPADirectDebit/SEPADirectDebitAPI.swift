@@ -7,8 +7,7 @@ import BraintreeCore
 class SEPADirectDebitAPI {
     
     private let apiClient: BTAPIClient
-    
-    @objc(initWithAPIClient:)
+
     init(apiClient: BTAPIClient) {
         self.apiClient = apiClient
     }
