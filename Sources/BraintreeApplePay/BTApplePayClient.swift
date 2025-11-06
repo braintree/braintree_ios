@@ -81,28 +81,6 @@ import BraintreeCore
             }
         }
     }
-    
-//    public func canMakeApplePayPayments() async -> Bool {
-//        await withCheckedContinuation { continuation in
-//            apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-//                continuation.resume(returning: configuration?.canMakeApplePayPayments ?? false)
-//            }
-//        }
-//    }
-//    public func canMakeApplePayPayments(for configuration: BTConfiguration) -> Bool {
-//        return configuration.canMakeApplePayPayments
-//    }
-
-//    public func canMakeApplePayPayments() async -> Bool {
-//        await withCheckedContinuation { continuation in
-//            apiClient.fetchOrReturnRemoteConfiguration { configuration, _ in
-//                guard let configuration, configuration.canMakeApplePayPayments else {
-//                    return
-//                }
-//                continuation.resume(returning: configuration.canMakeApplePayPayments)
-//            }
-//        }
-//    }
 
     /// Tokenizes an Apple Pay payment.
     /// - Parameters:
