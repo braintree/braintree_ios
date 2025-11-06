@@ -140,10 +140,10 @@ Update initializer for `BTDataCollector`:
 ```
 
 ## Shopper Insights
-Update initializer for `BTDataCollector`:
+Update initializer for `BTShopperInsightsClientV2`:
 ```diff
-- var shopperInsightsClient = BTShopperInsightsClient(apiClient: apiClient, shopperSessionID: shopperSessionID)
-+ var shopperInsightsClient = BTShopperInsightsClient(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSION_ID>")
+- var shopperInsightsClient = BTShopperInsightsClientV2(apiClient: apiClient, shopperSessionID: shopperSessionID)
++ var shopperInsightsClient = BTShopperInsightsClientV2(authorization: "<CLIENT_AUTHORIZATION>", shopperSessionID: "<SHOPPER_SESSION_ID>")
 ```
 
 ## PayPal Messaging View
