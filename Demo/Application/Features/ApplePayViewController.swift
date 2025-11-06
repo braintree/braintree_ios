@@ -28,7 +28,7 @@ class ApplePayViewController: PaymentButtonBaseViewController {
         return applePayButton
     }
 
-    @objc func tappedApplePayButton() {
+    @objc func tappedApplePayButton() async {
         progressBlock("Constructing PKPaymentRequest")
 
         applePayClient.makePaymentRequest { request, error in

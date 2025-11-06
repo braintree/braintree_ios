@@ -14,6 +14,40 @@ class BTApplePay_Tests: XCTestCase {
 
     // MARK: - Payment Request
 
+    func testCanMakeApplePayPayments_ReturnsTrueWhenEnabled() async {
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production",
+                "countryCode": "BT",
+                "currencyCode": "BTB",
+                "merchantIdentifier": "merchant.com.braintree-unit-tests",
+                "supportedNetworks": ["visa", "mastercard", "amex"]
+            ] as [String: Any]
+        ])
+
+        applePayClient.apiClient = mockClient
+
+        let result = await applePayClient.isApplePaySupported()
+        XCTAssertTrue(result)
+    }
+
+    func testCanMakeApplePayPayments_ReturnsFalseWhenDisabled() async {
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "off"
+                ]
+        ])
+
+        applePayClient.apiClient = mockClient
+
+        let result = await applePayClient.isApplePaySupported()
+        XCTAssertFalse(result)
+    }
+
     func testPaymentRequest_whenConfiguredOff_callsBackWithError() {
         let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         
