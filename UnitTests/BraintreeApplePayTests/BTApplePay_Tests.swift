@@ -14,7 +14,7 @@ class BTApplePay_Tests: XCTestCase {
 
     // MARK: - Payment Request
 
-    func testCanMakeApplePayPayments_ReturnsTrueWhenEnabled() async {
+    func testIsApplePaySupported_ReturnsTrueWhenEnabled() {
         let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
 
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [
@@ -29,23 +29,31 @@ class BTApplePay_Tests: XCTestCase {
 
         applePayClient.apiClient = mockClient
 
-        let result = await applePayClient.isApplePaySupported()
-        XCTAssertTrue(result)
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.isApplePaySupported { isSupported in
+            XCTAssertTrue(isSupported)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testCanMakeApplePayPayments_ReturnsFalseWhenDisabled() async {
+    func testIsApplePaySupported_ReturnsFalseWhenDisabled() {
         let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "applePay" : [
-                "status" : "off"
-                ]
+            "applePay": [:] as [String: Any]
         ])
 
         applePayClient.apiClient = mockClient
 
-        let result = await applePayClient.isApplePaySupported()
-        XCTAssertFalse(result)
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.isApplePaySupported { isSupported in
+            XCTAssertFalse(isSupported)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testPaymentRequest_whenConfiguredOff_callsBackWithError() {

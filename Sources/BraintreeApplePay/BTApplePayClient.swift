@@ -69,15 +69,22 @@ import BraintreeCore
         }
     }
 
-    /// Checks if the Apple Pay merchant enabled payment networks are supported on the user's device.
-    /// - Returns: A `Bool`
+    /// Checks if Apple Pay is configured and available for the current merchant account and device.
+    /// - Parameter completion: A completion block that returns `true` if Apple Pay is supported for the customer.
+    @objc(isApplePaySupported:)
+    public func isApplePaySupported(completion: @escaping (Bool) -> Void) {
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, _ in
+            let isApplePayAvailable = configuration?.canMakeApplePayPayments ?? false
+            completion(isApplePayAvailable)
+        }
+    }
+
+    /// Checks if Apple Pay is configured and available for the current merchant account and device.
+    /// - Returns: A `Bool` that returns true if Apple Pay is supported for the customer.
     public func isApplePaySupported() async -> Bool {
         await withCheckedContinuation { continuation in
-            apiClient.fetchOrReturnRemoteConfiguration { configuration, _ in
-                let isConfigEnabled = configuration?.isApplePayEnabled ?? false
-                let canMakePayments = configuration?.canMakeApplePayPayments ?? false
-                let isApplePayAvailable = isConfigEnabled && canMakePayments
-                continuation.resume(returning: isApplePayAvailable)
+            isApplePaySupported { isSupported in
+                continuation.resume(returning: isSupported)
             }
         }
     }

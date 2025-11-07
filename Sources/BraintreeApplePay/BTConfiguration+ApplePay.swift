@@ -39,9 +39,14 @@ extension BTConfiguration {
     /// The Apple Pay payment networks supported by your Braintree merchant account.
     var applePaySupportedNetworks: [PKPaymentNetwork]? {
         let gatewaySupportedNetworks: [String]? = json?["applePay"]["supportedNetworks"].asStringArray()
+
+        guard let networks = gatewaySupportedNetworks, !networks.isEmpty else {
+            return nil
+        }
+
         var supportedNetworks: [PKPaymentNetwork] = []
 
-        gatewaySupportedNetworks?.forEach { gatewaySupportedNetwork in
+        networks.forEach { gatewaySupportedNetwork in
             if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("visa") == .orderedSame {
                 supportedNetworks.append(.visa)
             } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("mastercard") == .orderedSame {
@@ -57,6 +62,6 @@ extension BTConfiguration {
             }
         }
 
-        return supportedNetworks
+        return supportedNetworks.isEmpty ? nil : supportedNetworks
     }
 }
