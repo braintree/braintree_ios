@@ -62,6 +62,6 @@ extension BTConfiguration {
             }
         }
 
-        return supportedNetworks.isEmpty ? nil : supportedNetworks
+        return supportedNetworks.isEmpty ? [] : supportedNetworks
     }
 }
