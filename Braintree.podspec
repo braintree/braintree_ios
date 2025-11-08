@@ -99,4 +99,9 @@ Pod::Spec.new do |s|
     s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
   end
 
+  s.subspec "UIComponents" do |s|
+    s.source_files = "Sources/BraintreeUIComponents/*.swift"
+    s.dependency "Braintree/Core"
+  end
+
 end
