@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeUIComponents
+  * Add BraintreeUIComponents module
+
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal
   * Update `BTPayPalLineItem` to make all properties accessible on the initializer only vs via the dot syntax.   
