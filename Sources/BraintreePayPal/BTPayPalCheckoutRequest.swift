@@ -204,13 +204,15 @@ import BraintreeCore
     func encodedPostBodyWith(
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool = false,
-        universalLink: URL? = nil
+        universalLink: URL? = nil,
+        fallbackURLScheme: String? = nil
     ) -> Encodable {
         PayPalCheckoutPOSTBody(
             payPalRequest: self,
             configuration: configuration,
             isPayPalAppInstalled: isPayPalAppInstalled,
-            universalLink: universalLink
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme
         )
     }
 }
