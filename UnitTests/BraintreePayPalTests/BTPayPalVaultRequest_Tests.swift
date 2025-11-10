@@ -372,4 +372,60 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
         XCTAssertEqual(pricingScheme["price"], "test-price")
         XCTAssertEqual(pricingScheme["reload_threshold_amount"], "test-threshold")
     }
+    
+    // MARK: - fallbackURLScheme Tests
+    
+    func testParametersWithConfiguration_withFallbackURLScheme_setsFallbackURLSchemeInParameters() {
+        let request = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: true,
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "myapp"
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "https://example.com")
+        XCTAssertEqual(parameters["merchant_app_fallback_url_scheme"] as? String, "myapp")
+    }
+    
+    func testParametersWithConfiguration_withoutFallbackURLScheme_doesNotSetFallbackURLSchemeInParameters() {
+        let request = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
+        
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: true,
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: nil
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "https://example.com")
+        XCTAssertNil(parameters["merchant_app_fallback_url_scheme"])
+    }
+    
+    func testParametersWithConfiguration_withFallbackURLScheme_whenAppSwitchDisabled_doesNotSetFallbackURLScheme() {
+        let request = BTPayPalVaultRequest(enablePayPalAppSwitch: false)
+        
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: true,
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "myapp"
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertNil(parameters["launch_paypal_app"])
+        XCTAssertNil(parameters["merchant_app_return_url"])
+        XCTAssertNil(parameters["merchant_app_fallback_url_scheme"])
+    }
 }
