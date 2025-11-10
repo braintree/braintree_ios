@@ -36,13 +36,15 @@ struct BTPayPalReturnURL {
     // MARK: - Static Methods
 
     /// Evaluates whether the url represents a valid PayPal return URL.
-    /// - Parameter url: an app switch or ASWebAuthenticationSession return URL
+    /// - Parameters:
+    ///   - url: an app switch or ASWebAuthenticationSession return URL
+    ///   - fallbackURLScheme: Optional fallback URL scheme to check against if universal link fails
     /// - Returns: `true` if the url represents a valid PayPal app switch return
-    static func isValid(_ url: URL) -> Bool {
-        let isHTTPSScheme = url.scheme == "https"
-        let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal")
+    static func isValid(_ url: URL, fallbackURLScheme: String? = nil) -> Bool {
+        let isValidScheme = ["https", fallbackURLScheme].contains(url.scheme)
+        let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal") || fallbackURLScheme == url.scheme
         let containsExpectedPath = url.path.contains("cancel") || url.path.contains("success")
-        let isValidAppSwitchURL = isHTTPSScheme && containsAppSwitchPath && containsExpectedPath
+        let isValidAppSwitchURL = isValidScheme && containsAppSwitchPath && containsExpectedPath
         
         return isValidAppSwitchURL
     }

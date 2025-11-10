@@ -28,6 +28,7 @@ struct PayPalVaultPOSTBody: Encodable {
     private var shippingAddressOverride: BTPostalAddress?
     private var shopperSessionID: String?
     private var universalLink: String?
+    private var fallbackURLScheme: String?
     private var userAuthenticationEmail: String?
     
     // MARK: - Initializer
@@ -36,7 +37,8 @@ struct PayPalVaultPOSTBody: Encodable {
         payPalRequest: BTPayPalVaultRequest,
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool,
-        universalLink: URL?
+        universalLink: URL?,
+        fallbackURLScheme: String?
     ) {
         if let merchantAccountID = payPalRequest.merchantAccountID {
             self.merchantAccountID = merchantAccountID
@@ -64,6 +66,10 @@ struct PayPalVaultPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
+            
+            if let fallbackURLScheme {
+                self.fallbackURLScheme = fallbackURLScheme
+            }
         }
         
         if let recurringBillingPlanType = payPalRequest.recurringBillingPlanType {
@@ -105,6 +111,7 @@ struct PayPalVaultPOSTBody: Encodable {
         case riskCorrelationID = "correlation_id"
         case shippingAddressOverride = "shipping_address"
         case universalLink = "merchant_app_return_url"
+        case fallbackURLScheme = "merchant_app_fallback_url_scheme"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "payer_phone"
         case shopperSessionID = "shopper_session_id"
