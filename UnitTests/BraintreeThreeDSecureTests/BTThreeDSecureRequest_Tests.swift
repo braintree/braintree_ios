@@ -158,7 +158,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.phoneNumber = "1234567"
         
-        let info = AdditionalInformation()
+        let info = BTThreeDSecureAdditionalInformation()
         
         let threeDSecureRequest = BTThreeDSecureRequest(
             amount: "9.97",
@@ -287,7 +287,7 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     }
 
     func testAsParameters_parameterizesWithNilProperties() {
-        let info = AdditionalInformation()
+        let info = BTThreeDSecureAdditionalInformation()
         
         info.productCode = "AIR"
         

@@ -15,7 +15,7 @@ import BraintreeCore
     let amount: String
     let nonce: String
     let accountType: BTThreeDSecureAccountType
-    let additionalInformation: AdditionalInformation?
+    let additionalInformation: BTThreeDSecureAdditionalInformation?
     let billingAddress: BTThreeDSecurePostalAddress?
     let cardAddChallengeRequested: Bool
     let challengeRequested: Bool
@@ -61,7 +61,7 @@ import BraintreeCore
         amount: String,
         nonce: String,
         accountType: BTThreeDSecureAccountType = .unspecified,
-        additionalInformation: AdditionalInformation? = nil,
+        additionalInformation: BTThreeDSecureAdditionalInformation? = nil,
         billingAddress: BTThreeDSecurePostalAddress? = nil,
         cardAddChallengeRequested: Bool = false,
         challengeRequested: Bool = false,

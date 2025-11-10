@@ -94,17 +94,18 @@ class ThreeDSecureViewController: PaymentButtonBaseViewController {
 
     private func createThreeDSecureRequest(with nonce: String) -> BTThreeDSecureRequest {
         
-        let billingAddress = BTThreeDSecurePostalAddress()
-        billingAddress.givenName = "Jill"
-        billingAddress.surname = "Doe"
-        billingAddress.streetAddress = "555 Smith St."
-        billingAddress.extendedAddress = "#5"
-        billingAddress.locality = "Oakland"
-        billingAddress.region = "CA"
-        billingAddress.countryCodeAlpha2 = "US"
-        billingAddress.postalCode = "12345"
-        billingAddress.phoneNumber = "8101234567"
-        
+        let billingAddress = BTThreeDSecurePostalAddress(
+            givenName: "Jill",
+            surname: "Doe",
+            streetAddress: "555 Smith St.",
+            extendedAddress: "#5",
+            locality: "Oakland",
+            region: "CA",
+            postalCode: "12345",
+            countryCodeAlpha2: "US",
+            phoneNumber: "8101234567"
+        )
+
         let request = BTThreeDSecureRequest(
             amount: "10.32",
             nonce: nonce,
