@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeApplePay
-  * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:)`
+  * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal
