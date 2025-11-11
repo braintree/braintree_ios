@@ -96,6 +96,6 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
         ])
         let configuration = BTConfiguration(json: configurationJSON)
 
-        XCTAssertEqual(configuration.applePaySupportedNetworks!, [])
+        XCTAssertEqual(configuration.applePaySupportedNetworks, nil)
     }
 }
