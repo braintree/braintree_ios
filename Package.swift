@@ -144,7 +144,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeUIComponents",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "BraintreePayPal", "BraintreeVenmo"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         )
     ]
