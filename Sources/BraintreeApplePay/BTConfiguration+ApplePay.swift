@@ -17,7 +17,7 @@ extension BTConfiguration {
 
     /// Indicates if the Apple Pay merchant enabled payment networks are supported on this device.
     var canMakeApplePayPayments: Bool {
-        guard let applePaySupportedNetworks else { return false }
+        guard let applePaySupportedNetworks, !applePaySupportedNetworks.isEmpty else { return false }
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: applePaySupportedNetworks)
     }
 
@@ -40,13 +40,9 @@ extension BTConfiguration {
     var applePaySupportedNetworks: [PKPaymentNetwork]? {
         let gatewaySupportedNetworks: [String]? = json?["applePay"]["supportedNetworks"].asStringArray()
 
-        guard let networks = gatewaySupportedNetworks, !networks.isEmpty else {
-            return nil
-        }
-
         var supportedNetworks: [PKPaymentNetwork] = []
 
-        networks.forEach { gatewaySupportedNetwork in
+        gatewaySupportedNetworks?.forEach { gatewaySupportedNetwork in
             if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("visa") == .orderedSame {
                 supportedNetworks.append(.visa)
             } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("mastercard") == .orderedSame {
@@ -62,6 +58,6 @@ extension BTConfiguration {
             }
         }
 
-        return supportedNetworks.isEmpty ? nil : supportedNetworks
+        return supportedNetworks
     }
 }
