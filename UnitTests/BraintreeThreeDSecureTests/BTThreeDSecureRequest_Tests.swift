@@ -158,7 +158,48 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.phoneNumber = "1234567"
         
-        let info = BTThreeDSecureAdditionalInformation()
+        let info = BTThreeDSecureAdditionalInformation(
+            accountAgeIndicator: "05",
+            accountChangeDate: "20190304",
+            accountChangeIndicator: "02",
+            accountCreateDate: "20180203",
+            accountID: "ABC123",
+            accountPurchases: "4",
+            accountPwdChangeDate: "20190101",
+            accountPwdChangeIndicator: "03",
+            addCardAttempts: "3",
+            addressMatch: "N",
+            authenticationIndicator: "03",
+            deliveryEmail: "email@test.com",
+            deliveryTimeframe: "03",
+            fraudActivity: "01",
+            giftCardAmount: "10",
+            giftCardCount: "5",
+            giftCardCurrencyCode: "USD",
+            installment: "2",
+            ipAddress: "127.0.0.1",
+            orderDescription: "Description",
+            paymentAccountAge: "20190101",
+            paymentAccountIndicator: "03",
+            preorderDate: "20200101",
+            preorderIndicator: "02",
+            productCode: "GEN",
+            purchaseDate: "20190401123456",
+            recurringEnd: "20201231",
+            recurringFrequency: "30",
+            reorderIndicator: "01",
+            sdkMaxTimeout: "10",
+            shippingAddress: billingAddress,
+            shippingAddressUsageDate: "20190405",
+            shippingAddressUsageIndicator: "01",
+            shippingMethodIndicator: "01",
+            shippingNameIndicator: "02",
+            taxAmount: "1234",
+            transactionCountDay: "1",
+            transactionCountYear: "2",
+            userAgent: "User Agent",
+            workPhoneNumber: "5551115555"
+        )
         
         let threeDSecureRequest = BTThreeDSecureRequest(
             amount: "9.97",
@@ -177,47 +218,6 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         )
 
         //Same as billingAddress
-        info.shippingAddress = billingAddress
-
-        info.shippingMethodIndicator = "01"
-        info.productCode = "GEN"
-        info.deliveryTimeframe = "03"
-        info.deliveryEmail = "email@test.com"
-        info.reorderIndicator = "01"
-        info.preorderIndicator = "02"
-        info.preorderDate = "20200101"
-        info.giftCardAmount = "10"
-        info.giftCardCurrencyCode = "USD"
-        info.giftCardCount = "5"
-        info.accountAgeIndicator = "05"
-        info.accountCreateDate = "20180203"
-        info.accountChangeIndicator = "02"
-        info.accountChangeDate = "20190304"
-        info.accountPwdChangeIndicator = "03"
-        info.accountPwdChangeDate = "20190101"
-        info.shippingAddressUsageIndicator = "01"
-        info.shippingAddressUsageDate = "20190405"
-        info.transactionCountDay = "1"
-        info.transactionCountYear = "2"
-        info.addCardAttempts = "3"
-        info.accountPurchases = "4"
-        info.fraudActivity = "01"
-        info.shippingNameIndicator = "02"
-        info.paymentAccountIndicator = "03"
-        info.paymentAccountAge = "20190101"
-        info.addressMatch = "N"
-        info.accountID = "ABC123"
-        info.ipAddress = "127.0.0.1"
-        info.orderDescription = "Description"
-        info.taxAmount = "1234"
-        info.userAgent = "User Agent"
-        info.authenticationIndicator = "03"
-        info.installment = "2"
-        info.purchaseDate = "20190401123456"
-        info.recurringEnd = "20201231"
-        info.recurringFrequency = "30"
-        info.sdkMaxTimeout = "10"
-        info.workPhoneNumber = "5551115555"
         
         let params = try! ThreeDSecurePOSTBody(request: threeDSecureRequest).toDictionary()
 
@@ -287,10 +287,8 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
     }
 
     func testAsParameters_parameterizesWithNilProperties() {
-        let info = BTThreeDSecureAdditionalInformation()
-        
-        info.productCode = "AIR"
-        
+        let info = BTThreeDSecureAdditionalInformation(productCode: "AIR")
+
         let threeDSecureRequest = BTThreeDSecureRequest(
             amount: "9.97",
             nonce: "fake-card-nonce",

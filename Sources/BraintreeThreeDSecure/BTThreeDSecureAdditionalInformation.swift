@@ -103,6 +103,10 @@ import Foundation
     ///     - 04: 30-60 days
     ///     - 05: More than 60 days
     ///   - preorderDate: Optional. The 8-digit number (format: YYYYMMDD) indicating expected date that a pre-ordered purchase will be available
+    ///   - preorderIndicator: Optional. The 2-digit number indicating whether the cardholder is placing an order with a future availability or release date
+    ///     Possible values:
+    ///     - 01: Merchandise available
+    ///     - 02: Future availability
     ///   - productCode: Optional. The 3-letter string representing the merchant product code
     ///     Possible Values:
     ///     - AIR: Airline
@@ -117,10 +121,6 @@ import Foundation
     ///     - LUX: Luxury Retail
     ///     - ACC: Accommodation Retail
     ///     - TBD: Other
-    ///   - preorderIndicator: Optional. The 2-digit number indicating whether the cardholder is placing an order with a future availability or release date
-    ///     Possible values:
-    ///     - 01: Merchandise available
-    ///     - 02: Future availability
     ///   - purchaseDate: Optional. The 14-digit number (format: YYYYMMDDHHMMSS) indicating the date in UTC of original purchase.
     ///   - recurringEnd: Optional. The 8-digit number (format: YYYYMMDD) indicating the date after which no further recurring authorizations should be performed.
     ///   - recurringFrequency: Optional. Integer value indicating the minimum number of days between recurring authorizations.
@@ -179,8 +179,8 @@ import Foundation
         paymentAccountAge: String? = nil,
         paymentAccountIndicator: String? = nil,
         preorderDate: String? = nil,
-        productCode: String? = nil,
         preorderIndicator: String? = nil,
+        productCode: String? = nil,
         purchaseDate: String? = nil,
         recurringEnd: String? = nil,
         recurringFrequency: String? = nil,
