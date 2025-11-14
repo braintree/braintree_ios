@@ -4,6 +4,8 @@
 * BraintreeThreeDSecure
   * Rename `AdditionalInformation` to `BTThreeDSecureAdditionalInformation`.
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
+* BraintreeApplePay
+  * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal

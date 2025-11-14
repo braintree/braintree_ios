@@ -69,6 +69,26 @@ import BraintreeCore
         }
     }
 
+    /// Checks if Apple Pay is configured and available for the current merchant account and device.
+    /// - Parameter completion: A completion block that returns `true` if Apple Pay is supported for the customer.
+    @objc(isApplePaySupported:)
+    public func isApplePaySupported(completion: @escaping (Bool) -> Void) {
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, _ in
+            let isApplePayAvailable = configuration?.canMakeApplePayPayments ?? false
+            completion(isApplePayAvailable)
+        }
+    }
+
+    /// Checks if Apple Pay is configured and available for the current merchant account and device.
+    /// - Returns: A `Bool` that returns true if Apple Pay is supported for the customer.
+    public func isApplePaySupported() async -> Bool {
+        await withCheckedContinuation { continuation in
+            isApplePaySupported { isSupported in
+                continuation.resume(returning: isSupported)
+            }
+        }
+    }
+
     /// Tokenizes an Apple Pay payment.
     /// - Parameters:
     ///   - payment: A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
