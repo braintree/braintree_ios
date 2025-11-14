@@ -92,7 +92,8 @@ import BraintreeCore
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference = .none
+        contactPreference: BTContactPreference = .none,
+        shouldOfferCredit: Bool = false
     ) {
         self.init(
             amount: amount,
@@ -101,7 +102,8 @@ import BraintreeCore
             offerPayLater: offerPayLater,
             currencyCode: currencyCode,
             requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            shouldOfferCredit: shouldOfferCredit
         )
         super.enablePayPalAppSwitch = enablePayPalAppSwitch
     }
@@ -134,7 +136,8 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
-        amountBreakdown: BTAmountBreakdown? = nil
+        amountBreakdown: BTAmountBreakdown? = nil,
+        shouldOfferCredit: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
@@ -150,7 +153,8 @@ import BraintreeCore
             userAuthenticationEmail: userAuthenticationEmail,
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
+            userAction: userAction,
+            shouldOfferCredit: shouldOfferCredit
         )
     }
 
@@ -167,7 +171,8 @@ import BraintreeCore
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,
             "amount": amount,
-            "offer_pay_later": offerPayLater
+            "offer_pay_later": offerPayLater,
+            "offer_paypal_credit": shouldOfferCredit
         ]
 
         let currencyCode = currencyCode != nil ? currencyCode : configuration.json?["paypal"]["currencyIsoCode"].asString()
