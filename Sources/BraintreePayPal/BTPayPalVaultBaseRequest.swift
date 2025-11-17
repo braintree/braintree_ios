@@ -39,7 +39,8 @@ import BraintreeCore
             enablePayPalAppSwitch: enablePayPalAppSwitch,
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
-            userAction: userAction
+            userAction: userAction,
+            shouldOfferCredit: offerCredit
         )
     }
 
