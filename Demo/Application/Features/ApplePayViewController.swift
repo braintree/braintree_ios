@@ -15,8 +15,11 @@ class ApplePayViewController: PaymentButtonBaseViewController {
     }
 
     override func createPaymentButton() -> UIView {
-        if !PKPaymentAuthorizationViewController.canMakePayments() {
-            progressBlock("canMakePayments returned false, hiding Apple Pay button")
+        applePayClient.isApplePaySupported { isSupported in
+            if !isSupported {
+                self.progressBlock("canMakePayments returned false, hiding Apple Pay button")
+                return
+            }
         }
 
         let applePayButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)

@@ -237,7 +237,7 @@
 		BE01A82B29CCB22E000DFA24 /* BTCardAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A82A29CCB22E000DFA24 /* BTCardAnalytics.swift */; };
 		BE01A82D29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A82C29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift */; };
 		BE01A83529D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */; };
-		BE01A83D29D23833000DFA24 /* AdditionalInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A83C29D23833000DFA24 /* AdditionalInformation.swift */; };
+		BE01A83D29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A83C29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift */; };
 		BE01A83F29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A83E29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift */; };
 		BE01A84129D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */; };
 		BE01A84329D32EA9000DFA24 /* BTThreeDSecureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */; };
@@ -971,7 +971,7 @@
 		BE01A82A29CCB22E000DFA24 /* BTCardAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardAnalytics.swift; sourceTree = "<group>"; };
 		BE01A82C29CCCDE9000DFA24 /* BTThreeDSecureLookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureLookup.swift; sourceTree = "<group>"; };
 		BE01A83429D1F7B9000DFA24 /* BTThreeDSecurePostalAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecurePostalAddress.swift; sourceTree = "<group>"; };
-		BE01A83C29D23833000DFA24 /* AdditionalInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalInformation.swift; sourceTree = "<group>"; };
+		BE01A83C29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAdditionalInformation.swift; sourceTree = "<group>"; };
 		BE01A83E29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2Provider.swift; sourceTree = "<group>"; };
 		BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureAuthenticateJWT.swift; sourceTree = "<group>"; };
 		BE01A84229D32EA9000DFA24 /* BTThreeDSecureError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureError.swift; sourceTree = "<group>"; };
@@ -1927,7 +1927,7 @@
 			children = (
 				BE98349F2A041B0A00B6C3CC /* BTConfiguration+ThreeDSecure.swift */,
 				80482F8329D3A1D9007E5F50 /* BTThreeDSecureAccountType.swift */,
-				BE01A83C29D23833000DFA24 /* AdditionalInformation.swift */,
+				BE01A83C29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift */,
 				3BEB03C429FD55CA001133D5 /* BTThreeDSecureAnalytics.swift */,
 				BE01A84029D32CE1000DFA24 /* BTThreeDSecureAuthenticateJWT.swift */,
 				80D1638529E75766001D880E /* BTThreeDSecureClient.swift */,
@@ -3527,7 +3527,7 @@
 				BEEBC3C129D5DD68009C7F77 /* BTThreeDSecureV2LabelCustomization.swift in Sources */,
 				BEEBC3C029D5DD16009C7F77 /* BTThreeDSecureV2UICustomization.swift in Sources */,
 				80482F8029D39A1D007E5F50 /* BTThreeDSecureRequest.swift in Sources */,
-				BE01A83D29D23833000DFA24 /* AdditionalInformation.swift in Sources */,
+				BE01A83D29D23833000DFA24 /* BTThreeDSecureAdditionalInformation.swift in Sources */,
 				BEBF0C202B02793B0079DA74 /* BTThreeDSecureUIType.swift in Sources */,
 				BE01A83F29D32CA0000DFA24 /* BTThreeDSecureV2Provider.swift in Sources */,
 				BE82E73F29C4A06B0059FE97 /* BTThreeDSecureV2ToolbarCustomization.swift in Sources */,

@@ -17,7 +17,7 @@ extension BTConfiguration {
 
     /// Indicates if the Apple Pay merchant enabled payment networks are supported on this device.
     var canMakeApplePayPayments: Bool {
-        guard let applePaySupportedNetworks else { return false }
+        guard let applePaySupportedNetworks, !applePaySupportedNetworks.isEmpty else { return false }
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: applePaySupportedNetworks)
     }
 
@@ -39,6 +39,7 @@ extension BTConfiguration {
     /// The Apple Pay payment networks supported by your Braintree merchant account.
     var applePaySupportedNetworks: [PKPaymentNetwork]? {
         let gatewaySupportedNetworks: [String]? = json?["applePay"]["supportedNetworks"].asStringArray()
+
         var supportedNetworks: [PKPaymentNetwork] = []
 
         gatewaySupportedNetworks?.forEach { gatewaySupportedNetwork in

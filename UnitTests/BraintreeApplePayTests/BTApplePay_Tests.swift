@@ -14,6 +14,72 @@ class BTApplePay_Tests: XCTestCase {
 
     // MARK: - Payment Request
 
+    func testIsApplePaySupported_ReturnsTrueWhenEnabled() {
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production",
+                "countryCode": "BT",
+                "currencyCode": "BTB",
+                "merchantIdentifier": "merchant.com.braintree-unit-tests",
+                "supportedNetworks": ["visa", "mastercard", "amex"]
+            ] as [String: Any]
+        ])
+
+        applePayClient.apiClient = mockClient
+
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.isApplePaySupported { isSupported in
+            XCTAssertTrue(isSupported)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testIsApplePaySupported_ReturnsFalseWhenDisabled() {
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+        
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay": [:] as [String: Any]
+        ])
+
+        applePayClient.apiClient = mockClient
+
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.isApplePaySupported { isSupported in
+            XCTAssertFalse(isSupported)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testIsApplePaySupported_ReturnsFalseWhenNetworkIsNotSupported() {
+        let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
+
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production",
+                "countryCode": "BT",
+                "currencyCode": "BTB",
+                "merchantIdentifier": "merchant.com.braintree-unit-tests",
+                "supportedNetworks": ["fakeCard"]
+            ] as [String: Any]
+        ])
+
+        applePayClient.apiClient = mockClient
+
+        let expectation = self.expectation(description: "Callback invoked")
+        applePayClient.isApplePaySupported { isSupported in
+            XCTAssertFalse(isSupported)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
     func testPaymentRequest_whenConfiguredOff_callsBackWithError() {
         let applePayClient = BTApplePayClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn")
         
