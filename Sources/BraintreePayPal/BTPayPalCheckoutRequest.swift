@@ -84,7 +84,7 @@ import BraintreeCore
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
     ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
-    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
+    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
