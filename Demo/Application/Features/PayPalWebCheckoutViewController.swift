@@ -75,7 +75,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         return stackView
     }()
     
-    let payLaterToggle = Toggle(title: "Offer Pay Later")
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
     let contactInformationToggle = Toggle(title: "Add Contact Information")
     let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
@@ -99,13 +98,18 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             title: "PayPal App Switch - Vault",
             action: #selector(tappedPayPalAppSwitchForVault)
         )
+        
+        let payLaterButton = createButton(
+            title: "Pay Later App Switch - Checkout",
+            action: #selector(tappedPayLaterForCheckout)
+        )
 
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
-            payLaterToggle,
             contactInformationToggle,
             amountBreakdownToggle,
             payPalCheckoutButton,
-            payPalAppSwitchForCheckoutButton
+            payPalAppSwitchForCheckoutButton,
+            payLaterButton
         ])
         oneTimeCheckoutStackView.spacing = 12
         
@@ -164,11 +168,10 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             recipientPhoneNumber: .init(countryCode: "52", nationalNumber: "123456789")
         )
         
-        // pay later is only available on amounts greater than or equal to 35
-        let amount = payLaterToggle.isOn ? "35.00" : "5.00"
+        let amount = "5.00"
         var request = BTPayPalCheckoutRequest(
             amount: amount,
-            offerPayLater: payLaterToggle.isOn,
+            offerPayLater: false,
             contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
             contactPreference: .updateContactInformation,
             lineItems: [lineItem],
@@ -299,14 +302,13 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
         
-        // pay later is only available on amounts greater than or equal to 35
-        let amount = payLaterToggle.isOn ? "35.00" : "10.00"
+        let amount = "10.00"
         let request = BTPayPalCheckoutRequest(
             amount: amount,
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerPayLater: payLaterToggle.isOn
+            offerPayLater: false
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -328,6 +330,31 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let request = BTPayPalVaultRequest(
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text
+        )
+
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+            
+            self.completionBlock(nonce)
+        }
+    }
+    
+    @objc func tappedPayLaterForCheckout(_ sender: UIButton) {
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+        
+        let amount = "35.00"
+        let request = BTPayPalCheckoutRequest(
+            amount: amount,
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text,
+            userAction: .payNow,
+            offerPayLater: true
         )
 
         payPalClient.tokenize(request) { nonce, error in
