@@ -2,13 +2,13 @@ import SwiftUI
 
 struct PaymentButton: View {
 
-    let type: BTPaymentButtonType
+    let type: BTPaymentButtonStyle
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack {
-                Image(type.imageName)
+                Image(type.logoImage)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 26)

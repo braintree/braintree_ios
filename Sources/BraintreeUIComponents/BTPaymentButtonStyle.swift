@@ -1,11 +1,18 @@
 import SwiftUI
 
-enum BTPaymentButtonType {
+/// PayPal payment button style options
+enum BTPaymentButtonStyle {
+
+    /// The primary PayPal button style
     case primary
+
+    /// The black PayPal button style
     case black
+
+    /// The white PayPal button style
     case white
 
-    var imageName: ImageResource {
+    var logoImage: ImageResource {
         switch self {
         case .primary:
             return .payPalLogoBlack
