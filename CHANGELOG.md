@@ -3,6 +3,7 @@
 ## unreleased
 * PayPal
     * Add `shouldOfferCredit` property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit for Checkout requests.
+    * Rename `shouldOfferCredit` property to `offerCredit` in checkout requests. 
 
 ## 6.39.0 (2025-10-01)
 * BraintreeCore
