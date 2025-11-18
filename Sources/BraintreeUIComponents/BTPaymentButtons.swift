@@ -5,40 +5,43 @@ import SwiftUI
 import BraintreeCore
 #endif
 
-struct BTPaymentButton: ButtonStyle {
-    let buttonColor: Color
+struct PaymentButtonStyle: ButtonStyle {
+    
+    let backgroundColor: Color
+    let imageName: ImageResource
+    let hasOutline: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(buttonColor)
+            .background(backgroundColor)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(hasOutline ? Color.black : Color.clear, lineWidth: hasOutline ? 1 : 0)
+            )
             .cornerRadius(4)
             .frame(width: 300, height: 45, alignment: .center)
     }
 }
 
-struct ContentView: View {
-
+struct PaymentButton: View {
+    
+    let imageName: ImageResource
+    let backgroundColor: Color
+    let hasOutline: Bool
+    let action: () -> Void
+    
     var body: some View {
-        Button(action: {
-            print("Button pressed!")
-        }) {
+        Button(action: action) {
             HStack {
                 Spacer()
-                Image(.payPalLogoBlack)
+                Image(imageName)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 26)
                 Spacer()
             }
         }
-        .buttonStyle(BTPaymentButton(buttonColor: Color(red: 96 / 255, green: 205 / 255, blue: 255 / 255)))
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-
-    static var previews: some View {
-        ContentView()
+        .buttonStyle(PaymentButtonStyle(backgroundColor: backgroundColor, imageName: imageName, hasOutline: hasOutline))
     }
 }
