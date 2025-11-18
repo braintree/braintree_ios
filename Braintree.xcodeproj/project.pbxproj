@@ -20,6 +20,7 @@
 		046F006C2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
 		046F006D2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
 		046F006E2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
+		046F00742ECCEFC800F08512 /* BTPaymentButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F00732ECCEFC300F08512 /* BTPaymentButtonType.swift */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -773,6 +774,7 @@
 		045241682EC4F80F00C25EA6 /* BTPaymentButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentButtons.swift; sourceTree = "<group>"; };
 		045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		046F006B2ECBF46800F08512 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		046F00732ECCEFC300F08512 /* BTPaymentButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentButtonType.swift; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
@@ -1455,6 +1457,7 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				046F00732ECCEFC300F08512 /* BTPaymentButtonType.swift */,
 				045241682EC4F80F00C25EA6 /* BTPaymentButtons.swift */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
 			);
@@ -3442,6 +3445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046F00742ECCEFC800F08512 /* BTPaymentButtonType.swift in Sources */,
 				0452416C2EC4F80F00C25EA6 /* BTPaymentButtons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
