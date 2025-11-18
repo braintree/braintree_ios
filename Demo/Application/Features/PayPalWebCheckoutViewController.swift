@@ -95,6 +95,11 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             action: #selector(tappedPayPalAppSwitchForCheckout)
         )
         
+        let payPalAppSwitchForCreditButton = createButton(
+            title: "PayPal Credit",
+            action: #selector(tappedPayPalAppSwitchForCredit)
+        )
+        
         let payPalAppSwitchForVaultButton = createButton(
             title: "PayPal App Switch - Vault",
             action: #selector(tappedPayPalAppSwitchForVault)
@@ -105,7 +110,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             contactInformationToggle,
             amountBreakdownToggle,
             payPalCheckoutButton,
-            payPalAppSwitchForCheckoutButton
+            payPalAppSwitchForCheckoutButton,
+            payPalAppSwitchForCreditButton
         ])
         oneTimeCheckoutStackView.spacing = 12
         
@@ -307,6 +313,31 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
             offerPayLater: payLaterToggle.isOn
+        )
+
+        payPalClient.tokenize(request) { nonce, error in
+            sender.isEnabled = true
+            
+            guard let nonce else {
+                self.progressBlock(error?.localizedDescription)
+                return
+            }
+            
+            self.completionBlock(nonce)
+        }
+    }
+
+    @objc func tappedPayPalAppSwitchForCredit(_ sender: UIButton) {
+        sender.setTitle("Processing...", for: .disabled)
+        sender.isEnabled = false
+
+        let request = BTPayPalCheckoutRequest(
+            amount: "10.00",
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: emailTextField.text,
+            userAction: .payNow,
+            offerPayLater: payLaterToggle.isOn,
+            offerCredit: true
         )
 
         payPalClient.tokenize(request) { nonce, error in
