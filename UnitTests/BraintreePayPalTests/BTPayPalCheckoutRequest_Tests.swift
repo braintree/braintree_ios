@@ -82,7 +82,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.intent = .sale
         request.offerPayLater = true
-        request.shouldOfferCredit = true
+        request.offerCredit = true
         request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"

@@ -7,11 +7,6 @@ import BraintreeCore
 ///  Options for the PayPal Vault flow.
 @objcMembers open class BTPayPalVaultBaseRequest: BTPayPalRequest {
 
-    // MARK: - Public Properties
-
-    /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var offerCredit: Bool
-
     // MARK: - Initializer
 
     /// Initializes a PayPal Native Vault request
@@ -30,8 +25,6 @@ import BraintreeCore
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAction: BTPayPalRequestUserAction = .none
     ) {
-        self.offerCredit = offerCredit
-        
         super.init(
             hermesPath: "v1/paypal_hermes/setup_billing_agreement",
             paymentType: .vault,
@@ -40,7 +33,7 @@ import BraintreeCore
             recurringBillingDetails: recurringBillingDetails,
             recurringBillingPlanType: recurringBillingPlanType,
             userAction: userAction,
-            shouldOfferCredit: offerCredit
+            offerCredit: offerCredit
         )
     }
 

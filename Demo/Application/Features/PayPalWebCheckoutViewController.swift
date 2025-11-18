@@ -333,7 +333,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             amount: "10.00",
             userAction: .payNow,
             offerPayLater: false,
-            shouldOfferCredit: true
+            offerCredit: true
         )
 
         payPalClient.tokenize(request) { nonce, error in
