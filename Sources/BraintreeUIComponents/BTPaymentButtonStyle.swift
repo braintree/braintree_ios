@@ -1,20 +1,21 @@
 import SwiftUI
 
 /// PayPal payment button style options
-enum BTPaymentButtonStyle {
+public enum BTPaymentButtonStyle {
 
     /// The primary PayPal button style
-    case primary
+    case primaryPayPal
 
-    /// The black PayPal button style
+    /// The black PayPal or Venmo button style
     case black
 
-    /// The white PayPal button style
+    /// The white PayPal or Venmo button style
     case white
 
+    /// Logo image in the payment
     var logoImage: ImageResource {
         switch self {
-        case .primary:
+        case .primaryPayPal:
             return .payPalLogoBlack
         case .black:
             return .payPalLogoWhite
@@ -23,9 +24,10 @@ enum BTPaymentButtonStyle {
         }
     }
 
+    /// Background color of the payment button
     var backgroundColor: Color {
         switch self {
-        case .primary:
+        case .primaryPayPal:
             return Color(red: 96 / 255, green: 205 / 255, blue: 255 / 255)
         case .black:
             return .black
@@ -34,9 +36,10 @@ enum BTPaymentButtonStyle {
         }
     }
 
+    /// Outline around the payment button
     var hasOutline: Bool {
         switch self {
-        case .primary:
+        case .primaryPayPal:
             return false
         case .black:
             return false

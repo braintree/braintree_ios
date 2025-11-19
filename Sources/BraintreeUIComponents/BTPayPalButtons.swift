@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PaymentButton: View {
+struct PayPalButton: View {
 
     let type: BTPaymentButtonStyle
     let action: () -> Void
@@ -29,13 +29,13 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 16) {
             // Primary Button
-            PaymentButton(type: .primary) {}
+            PayPalButton(type: .primaryPayPal) {}
 
             // Black Button
-            PaymentButton(type: .black) {}
+            PayPalButton(type: .black) {}
 
             // White Button
-            PaymentButton(type: .white) {}
+            PayPalButton(type: .white) {}
         }
     }
 }
