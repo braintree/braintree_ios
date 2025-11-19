@@ -115,7 +115,7 @@ import BraintreeCore
     public var userAction: BTPayPalRequestUserAction
 
     /// Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    public var shouldOfferCredit: Bool
+    public var offerCredit: Bool
 
     // MARK: - Internal Properties
     
@@ -149,7 +149,7 @@ import BraintreeCore
         recurringBillingDetails: BTPayPalRecurringBillingDetails? = nil,
         recurringBillingPlanType: BTPayPalRecurringBillingPlanType? = nil,
         userAction: BTPayPalRequestUserAction = .none,
-        shouldOfferCredit: Bool = false
+        offerCredit: Bool = false
     ) {
         self.hermesPath = hermesPath
         self.paymentType = paymentType
@@ -170,7 +170,7 @@ import BraintreeCore
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.userAction = userAction
-        self.shouldOfferCredit = shouldOfferCredit
+        self.offerCredit = offerCredit
     }
 
     // MARK: Public Methods
