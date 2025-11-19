@@ -338,7 +338,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerPayLater: payLaterToggle.isOn,
+            offerPayLater: false,
             offerCredit: true
         )
 
