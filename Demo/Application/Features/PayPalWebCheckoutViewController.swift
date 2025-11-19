@@ -177,7 +177,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let amount = "5.00"
         var request = BTPayPalCheckoutRequest(
             amount: amount,
-            offerPayLater: false,
             contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
             contactPreference: .updateContactInformation,
             lineItems: [lineItem],
@@ -313,8 +312,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             amount: amount,
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
-            userAction: .payNow,
-            offerPayLater: false
+            userAction: .payNow
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -338,7 +336,6 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerPayLater: false,
             offerCredit: true
         )
 
