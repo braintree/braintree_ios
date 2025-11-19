@@ -8,7 +8,6 @@
   * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
 * PayPal
   * Add `offerCredit` property to `BTPayPalCheckoutRequest`, enabling merchants to offer PayPal credit for one-time checkout flows.
-  * Replace Pay Later Toggle with Pay Later Button in Braintree Demo app 
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal
