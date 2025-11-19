@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// PayPal payment button style options
+/// Payment button style options
 public enum BTPaymentButtonStyle {
 
     /// The primary PayPal button style
@@ -28,7 +28,7 @@ public enum BTPaymentButtonStyle {
     var backgroundColor: Color {
         switch self {
         case .primaryPayPal:
-            return Color(red: 96 / 255, green: 205 / 255, blue: 255 / 255)
+            return Color(hex: "#60CDFF")
         case .black:
             return .black
         case .white:

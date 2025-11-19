@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "PayPalLogoBlack.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "logo for paypal.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "logo for paypal-2.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "PayPalLogoBlack.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
