@@ -104,7 +104,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             action: #selector(tappedPayPalAppSwitchForVault)
         )
         
-        let payLaterButton = createButton(
+        let payPalAppSwitchForCheckoutWithPayLaterButton = createButton(
             title: "Pay Later App Switch - Checkout",
             action: #selector(tappedPayLaterForCheckout)
         )
@@ -114,7 +114,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             amountBreakdownToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton,
-            payLaterButton,
+            payPalAppSwitchForCheckoutWithPayLaterButton,
             payPalAppSwitchForCreditButton
         ])
         oneTimeCheckoutStackView.spacing = 12
