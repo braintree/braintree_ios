@@ -1458,12 +1458,21 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */,
-				046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */,
 				045241682EC4F80F00C25EA6 /* BTPayPalButtons.swift */,
+				046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */,
+				046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */,
+				046F00782ECE813200F08512 /* Resources */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeUIComponents;
+			sourceTree = "<group>";
+		};
+		046F00782ECE813200F08512 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				046F006B2ECBF46800F08512 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
@@ -1829,7 +1838,6 @@
 		A75DA343192138F000D997A2 = {
 			isa = PBXGroup;
 			children = (
-				046F006B2ECBF46800F08512 /* Assets.xcassets */,
 				57108A0E2832E1DE004EB870 /* Package.swift */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
