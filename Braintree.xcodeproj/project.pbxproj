@@ -26,7 +26,8 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
-		087F38DD2ECD25010033CDD2 /* VenmoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087F38DC2ECD25010033CDD2 /* VenmoButton.swift */; };
+		084135342ECE207800884FE9 /* BTVenmoStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135332ECE207800884FE9 /* BTVenmoStyle.swift */; };
+		087F38DD2ECD25010033CDD2 /* BTVenmoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087F38DC2ECD25010033CDD2 /* BTVenmoButton.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
@@ -781,7 +782,8 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
-		087F38DC2ECD25010033CDD2 /* VenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton.swift; sourceTree = "<group>"; };
+		084135332ECE207800884FE9 /* BTVenmoStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoStyle.swift; sourceTree = "<group>"; };
+		087F38DC2ECD25010033CDD2 /* BTVenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoButton.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
@@ -1459,10 +1461,12 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				046F006B2ECBF46800F08512 /* Assets.xcassets */,
 				046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */,
 				045241682EC4F80F00C25EA6 /* BTPayPalButtons.swift */,
+				087F38DC2ECD25010033CDD2 /* BTVenmoButton.swift */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
-				087F38DC2ECD25010033CDD2 /* VenmoButton.swift */,
+				084135332ECE207800884FE9 /* BTVenmoStyle.swift */,
 			);
 			path = BraintreeUIComponents;
 			sourceTree = "<group>";
@@ -1830,7 +1834,6 @@
 		A75DA343192138F000D997A2 = {
 			isa = PBXGroup;
 			children = (
-				046F006B2ECBF46800F08512 /* Assets.xcassets */,
 				57108A0E2832E1DE004EB870 /* Package.swift */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
@@ -3449,8 +3452,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				046F00742ECCEFC800F08512 /* BTPaymentButtonStyle.swift in Sources */,
+				084135342ECE207800884FE9 /* BTVenmoStyle.swift in Sources */,
 				0452416C2EC4F80F00C25EA6 /* BTPayPalButtons.swift in Sources */,
-				087F38DD2ECD25010033CDD2 /* VenmoButton.swift in Sources */,
+				087F38DD2ECD25010033CDD2 /* BTVenmoButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
