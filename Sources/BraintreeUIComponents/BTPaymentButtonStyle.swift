@@ -1,19 +1,38 @@
 import SwiftUI
 
-/// Payment button style options
-public enum BTPaymentButtonStyle {
+// MARK: - Payment Button Style Protocol
+
+/// Protocol for payment button styles to share common logic between PayPal and Venmo buttons
+protocol PaymentButtonStyleProtocol {
+    /// Logo image for the button
+    var logoImage: ImageResource? { get }
+
+    /// Background color of the button
+    var backgroundColor: Color { get }
+
+    /// Whether the button should have an outline
+    var hasOutline: Bool { get }
+    
+    /// Minimum width needed for the logo to look good with proper padding
+    var minimumWidth: CGFloat { get }
+}
+
+// MARK: - PayPal Button Style Implementation
+
+/// PayPal payment button style options
+public enum BTPaymentButtonStyle: PaymentButtonStyleProtocol {
 
     /// The primary PayPal button style
     case primaryPayPal
 
-    /// The black PayPal or Venmo button style
+    /// The black PayPal button style  
     case black
 
-    /// The white PayPal or Venmo button style
+    /// The white PayPal button style
     case white
 
     /// Logo image in the payment
-    var logoImage: ImageResource? {
+    public var logoImage: ImageResource? {
         switch self {
         case .primaryPayPal:
             return .payPalLogoBlack
@@ -25,7 +44,7 @@ public enum BTPaymentButtonStyle {
     }
 
     /// Background color of the payment button
-    var backgroundColor: Color {
+    public var backgroundColor: Color {
         switch self {
         case .primaryPayPal:
             return Color(hex: "#60CDFF")
@@ -37,7 +56,7 @@ public enum BTPaymentButtonStyle {
     }
 
     /// Outline around the payment button
-    var hasOutline: Bool {
+    public var hasOutline: Bool {
         switch self {
         case .primaryPayPal:
             return false
@@ -46,5 +65,10 @@ public enum BTPaymentButtonStyle {
         case .white:
             return true
         }
+    }
+
+    /// Minimum width for PayPal logo with proper padding
+    public var minimumWidth: CGFloat {
+        return 131
     }
 }

@@ -19,29 +19,13 @@ public struct PayPalButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
-            HStack {
-                if let logoImage = style.logoImage {
-                    Image(logoImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 26)
-                }
-            }
-            .frame(minWidth: 131, maxWidth: width ?? 300)
-            .frame(height: 45)
-            .background(style.backgroundColor)
-            .cornerRadius(4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(
-                        style.hasOutline ? .black : .clear,
-                        lineWidth: style.hasOutline ? 1 : 0
-                    )
-            )
-            .accessibilityLabel("PayPal checkout button")
-            .accessibilityHint("PayPal checkout button")
-        }
+        PaymentButtonView(
+            style: style,
+            width: width,
+            accessibilityLabel: "PayPal checkout button",
+            accessibilityHint: "PayPal checkout button",
+            action: action
+        )
     }
 }
 

@@ -1,10 +1,10 @@
 import SwiftUI
 
 /// Venmo payment button style options
-public enum BTVenmoButtonStyle {
+public enum BTVenmoButtonStyle: PaymentButtonStyleProtocol {
 
     /// The blue Venmo button style (Venmo exclusive)
-    case blue
+    case primaryVenmo
 
     /// The black Venmo button style
     case black
@@ -13,9 +13,9 @@ public enum BTVenmoButtonStyle {
     case white
 
     /// Logo image for the Venmo button
-    var logoImage: ImageResource? {
+    public var logoImage: ImageResource? {
         switch self {
-        case .blue:
+        case .primaryVenmo:
             return .venmoLogoWhite
         case .black:
             return .venmoLogoWhite
@@ -25,9 +25,9 @@ public enum BTVenmoButtonStyle {
     }
 
     /// Background color of the Venmo button
-    var backgroundColor: Color {
+    public var backgroundColor: Color {
         switch self {
-        case .blue:
+        case .primaryVenmo:
             return Color(hex: "#008CFF")
         case .black:
             return .black
@@ -37,14 +37,19 @@ public enum BTVenmoButtonStyle {
     }
 
     /// Outline around the Venmo button
-    var hasOutline: Bool {
+    public var hasOutline: Bool {
         switch self {
-        case .blue:
+        case .primaryVenmo:
             return false
         case .black:
             return false
         case .white:
             return true
         }
+    }
+    
+    /// Minimum width for Venmo logo with proper padding
+    public var minimumWidth: CGFloat {
+        return 166
     }
 }
