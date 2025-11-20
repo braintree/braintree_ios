@@ -4,8 +4,8 @@ import SwiftUI
 
 /// Protocol for payment button styles to share common logic between PayPal and Venmo buttons
 protocol PaymentButtonStyleProtocol {
-    /// Logo image for the button
-    var logoImage: ImageResource? { get }
+    /// Logo image name for the button
+    var logoImageName: String? { get }
 
     /// Background color of the button
     var backgroundColor: Color { get }
@@ -31,15 +31,15 @@ public enum BTPaymentButtonStyle: PaymentButtonStyleProtocol {
     /// The white PayPal button style
     case white
 
-    /// Logo image in the payment
-    public var logoImage: ImageResource? {
+    /// Logo image name for PayPal button
+    public var logoImageName: String? {
         switch self {
         case .primaryPayPal:
-            return .payPalLogoBlack
+            return "PayPalLogoBlack"
         case .black:
-            return .payPalLogoWhite
+            return "PayPalLogoWhite"
         case .white:
-            return .payPalLogoBlack
+            return "PayPalLogoBlack"
         }
     }
 

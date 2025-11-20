@@ -1469,9 +1469,9 @@
 				046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */,
 				084135352ECF507200884FE9 /* BTVenmoButton.swift */,
 				084135362ECF507200884FE9 /* BTVenmoButtonStyle.swift */,
+				084135392ECF67EB00884FE9 /* BTPaymentButtonView.swift */,
 				046F00782ECE813200F08512 /* Resources */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
-				084135392ECF67EB00884FE9 /* BTPaymentButtonView.swift */,
 			);
 			path = BraintreeUIComponents;
 			sourceTree = "<group>";

@@ -13,8 +13,8 @@ struct PaymentButtonView<Style: PaymentButtonStyleProtocol>: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                if let logoImage = style.logoImage {
-                    Image(logoImage)
+                if let logoImageName = style.logoImageName {
+                    Image(logoImageName, bundle: .uiComponents)
                         .resizable()
                         .scaledToFit()
                         .frame(height: 26)

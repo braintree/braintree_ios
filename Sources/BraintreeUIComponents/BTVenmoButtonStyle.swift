@@ -12,15 +12,15 @@ public enum BTVenmoButtonStyle: PaymentButtonStyleProtocol {
     /// The white Venmo button style
     case white
 
-    /// Logo image for the Venmo button
-    public var logoImage: ImageResource? {
+    /// Logo image name for Venmo button
+    public var logoImageName: String? {
         switch self {
         case .primaryVenmo:
-            return .venmoLogoWhite
+            return "VenmoLogoWhite"
         case .black:
-            return .venmoLogoWhite
+            return "VenmoLogoWhite"
         case .white:
-            return .venmoLogoBlue
+            return "VenmoLogoBlue"
         }
     }
 
