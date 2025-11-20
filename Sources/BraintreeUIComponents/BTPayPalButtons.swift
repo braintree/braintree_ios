@@ -16,10 +16,12 @@ public struct PayPalButton: View {
     public var body: some View {
         Button(action: action) {
             HStack {
-                Image(type.logoImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 26)
+                if let logoImage = type.logoImage {
+                    Image(logoImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 26)
+                }
             }
             .frame(minWidth: width ?? 300)
             .frame(height: 45)
