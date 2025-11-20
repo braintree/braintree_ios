@@ -1,11 +1,16 @@
 import SwiftUI
 
-/// PayPal branded checkout button. Available in the colors primary (PayPal blue), black, and white.
+/// PayPal payment button. Available in the colors primary (PayPal blue), black, and white.
 public struct PayPalButton: View {
 
+    /// The style of the PayPal payment button. Available in the colors primary (PayPal blue), black, and white.
     let style: BTPaymentButtonStyle
+
+    /// The width of the PayPal payment button. Minimum width is 131 points. Maximum width is 300 points.
+    let width: CGFloat?
+
+    /// The PayPal payment button action.
     let action: () -> Void
-    var width: CGFloat?
 
     public init(style: BTPaymentButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.style = style
