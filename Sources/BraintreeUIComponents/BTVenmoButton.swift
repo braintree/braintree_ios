@@ -12,7 +12,13 @@ public struct BTVenmoButton: View {
     /// The Venmo payment button action.
     let action: () -> Void
 
-    public init(style: BTVenmoButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
+    // MARK: - Initializer
+
+    /// Creates a Venmo button
+    /// - Parameter style: the desired button color with corresponding Venmo logo
+    /// - Parameter width: the width of the button
+    /// - Parameter action: the completion handler to handle Venmo tokenize request success or failureon button press
+    public init(style: BTVenmoButtonStyle = .primaryVenmo, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.style = style
         self.width = width
         self.action = action
@@ -21,8 +27,8 @@ public struct BTVenmoButton: View {
         PaymentButtonView(
             style: style,
             width: width,
-            accessibilityLabel: "Venmo checkout button",
-            accessibilityHint: "Venmo checkout button",
+            accessibilityLabel: "Pay with Venmo",
+            accessibilityHint: "Complete payment using Venmo",
             action: action
         )
     }
