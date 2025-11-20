@@ -10,10 +10,17 @@ jobs:
     name: Release
     runs-on: macos-15-xlarge
     steps:
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Use Xcode 16.4.0
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
