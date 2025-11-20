@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.1.0 (2025-11-20)
 * BraintreeThreeDSecure
   * Rename `AdditionalInformation` to `BTThreeDSecureAdditionalInformation`.
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
