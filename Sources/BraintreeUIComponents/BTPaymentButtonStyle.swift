@@ -13,14 +13,14 @@ public enum BTPaymentButtonStyle {
     case white
 
     /// Logo image in the payment
-    var logoImage: ImageResource? {
+    var logoImage: String? {
         switch self {
         case .primaryPayPal:
-            return .payPalLogoBlack
+            return "PayPalLogoBlack"
         case .black:
-            return .payPalLogoWhite
+            return "PayPalLogoWhite"
         case .white:
-            return .payPalLogoBlack
+            return "PayPalLogoBlack"
         }
     }
 
