@@ -13,7 +13,7 @@ public enum BTVenmoButtonStyle {
     case white
 
     /// Logo image for the Venmo button
-    var logoImage: ImageResource {
+    var logoImage: ImageResource? {
         switch self {
         case .blue:
             return .venmoLogoWhite
@@ -28,7 +28,7 @@ public enum BTVenmoButtonStyle {
     var backgroundColor: Color {
         switch self {
         case .blue:
-            return Color(red: 0 / 255, green: 140 / 255, blue: 255 / 255)
+            return Color(hex: "#008CFF")
         case .black:
             return .black
         case .white:
