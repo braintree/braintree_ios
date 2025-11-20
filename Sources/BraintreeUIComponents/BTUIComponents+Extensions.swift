@@ -27,3 +27,12 @@ extension Color {
         )
     }
 }
+
+extension Bundle {
+
+    static var uiComponents: Bundle {
+        return Bundle(for: BundleToken.self)
+    }
+}
+
+private final class BundleToken {}
