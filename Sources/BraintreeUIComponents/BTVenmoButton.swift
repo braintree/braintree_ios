@@ -33,7 +33,7 @@ struct VenmoButton_Previews: PreviewProvider {
         VStack {
             BTVenmoButton(style: .black, width: 300) {}
             BTVenmoButton(style: .primaryVenmo, width: 250) {}
-            BTVenmoButton(style: .white, width: 100) {}
+            BTVenmoButton(style: .white, width: 50) {}
         }
     }
 }
