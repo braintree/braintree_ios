@@ -1,11 +1,28 @@
 import SwiftUI
 
+public struct PayPalButtonStyle: ButtonStyle {
+
+    let backgroundColor: Color
+    let tappedColor: Color
+
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(height: 45)
+            .background(configuration.isPressed ? tappedColor : backgroundColor)
+            .cornerRadius(4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(Color.black.opacity(0.2), lineWidth: 1)
+            )
+    }
+}
+
 /// PayPal branded checkout button. Available in the colors primary (PayPal blue), black, and white.
 public struct PayPalButton: View {
 
     let type: BTPaymentButtonStyle
+    let width: CGFloat?
     let action: () -> Void
-    var width: CGFloat?
 
     public init(type: BTPaymentButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.type = type
@@ -23,20 +40,11 @@ public struct PayPalButton: View {
                         .frame(height: 26)
                 }
             }
-            .frame(minWidth: width ?? 300)
-            .frame(height: 45)
-            .background(type.backgroundColor)
-            .cornerRadius(4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(
-                        type.hasOutline ? .black : .clear,
-                        lineWidth: type.hasOutline ? 1 : 0
-                    )
-            )
-            .accessibilityLabel("PayPal checkout button")
-            .accessibilityHint("PayPal checkout button")
+            .frame(minWidth: 131, maxWidth: width ?? 300)
         }
+        .buttonStyle(PayPalButtonStyle(backgroundColor: type.backgroundColor, tappedColor: type.tappedButtonColor))
+        .accessibilityLabel("PayPal checkout button")
+        .accessibilityHint("PayPal checkout button")
     }
 }
 
