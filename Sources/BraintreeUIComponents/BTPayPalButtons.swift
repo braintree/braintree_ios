@@ -3,12 +3,12 @@ import SwiftUI
 /// PayPal branded checkout button. Available in the colors primary (PayPal blue), black, and white.
 public struct PayPalButton: View {
 
-    let type: BTPaymentButtonStyle
+    let style: BTPaymentButtonStyle
     let action: () -> Void
     var width: CGFloat?
 
-    public init(type: BTPaymentButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
-        self.type = type
+    public init(style: BTPaymentButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
+        self.style = style
         self.width = width
         self.action = action
     }
@@ -16,22 +16,22 @@ public struct PayPalButton: View {
     public var body: some View {
         Button(action: action) {
             HStack {
-                if let logoImage = type.logoImage {
+                if let logoImage = style.logoImage {
                     Image(logoImage)
                         .resizable()
                         .scaledToFit()
                         .frame(height: 26)
                 }
             }
-            .frame(minWidth: width ?? 300)
+            .frame(minWidth: 131, maxWidth: width ?? 300)
             .frame(height: 45)
-            .background(type.backgroundColor)
+            .background(style.backgroundColor)
             .cornerRadius(4)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(
-                        type.hasOutline ? .black : .clear,
-                        lineWidth: type.hasOutline ? 1 : 0
+                        style.hasOutline ? .black : .clear,
+                        lineWidth: style.hasOutline ? 1 : 0
                     )
             )
             .accessibilityLabel("PayPal checkout button")
@@ -45,13 +45,13 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 16) {
             // Primary Button
-            PayPalButton(type: .primaryPayPal, width: 300) {}
+            PayPalButton(style: .primaryPayPal, width: 300) {}
 
             // Black Button
-            PayPalButton(type: .black, width: 250) {}
+            PayPalButton(style: .black, width: 250) {}
 
             // White Button
-            PayPalButton(type: .white, width: 100) {}
+            PayPalButton(style: .white, width: 100) {}
         }
     }
 }
