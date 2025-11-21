@@ -16,7 +16,7 @@ protocol PaymentButtonColorProtocol {
 public enum VenmoButtonColor: PaymentButtonColorProtocol {
 
     /// The blue Venmo button style (Venmo exclusive)
-    case primaryVenmo
+    case primary
 
     /// The black Venmo button style
     case black

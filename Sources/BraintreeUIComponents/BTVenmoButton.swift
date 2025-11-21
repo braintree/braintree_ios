@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Venmo payment button. Available in the colors primaryVenmo (Venmo blue), black, and white.
+/// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
 public struct BTVenmoButton: View {
 
     /// The style of the Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
@@ -21,8 +21,8 @@ public struct BTVenmoButton: View {
     // MARK: - Initializer
 
     /// Creates a Venmo button
-    /// - Parameter style: the desired button color with corresponding Venmo logo
-    /// - Parameter width: the width of the button
+    /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.primary`.
+    /// - Parameter width: Optional. The width of the button. Defaults to 300px.
     /// - Parameter action: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(color: VenmoButtonColor = .primaryVenmo, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.color = color
