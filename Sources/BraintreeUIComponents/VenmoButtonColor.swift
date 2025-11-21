@@ -28,7 +28,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     case white
 
     /// Logo image name for Venmo button
-    public var logoImageName: String? {
+    var logoImageName: String? {
         switch self {
         case .primary:
             return "VenmoLogoWhite"
@@ -40,7 +40,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     }
 
     /// Background color of the Venmo button
-    public var backgroundColor: Color {
+    var backgroundColor: Color {
         switch self {
         case .primary:
             return Color(hex: "#008CFF")
@@ -52,7 +52,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     }
 
     /// Outline around the Venmo button
-    public var hasOutline: Bool {
+    var hasOutline: Bool {
         switch self {
         case .primary:
             return false
