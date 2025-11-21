@@ -1,18 +1,5 @@
 import SwiftUI
 
-// MARK: - Bundle Helper
-
-extension Bundle {
-    
-    static var uiComponents: Bundle {
-        return Bundle(for: BundleToken.self)
-    }
-}
-
-private final class BundleToken {}
-
-// MARK: - Color Extensions
-
 extension Color {
 
     init(hex: String) {
@@ -40,3 +27,12 @@ extension Color {
         )
     }
 }
+
+extension Bundle {
+
+    static var uiComponents: Bundle {
+        return Bundle(for: BundleToken.self)
+    }
+}
+
+private final class BundleToken {}
