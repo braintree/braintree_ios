@@ -4,7 +4,7 @@ import SwiftUI
 public struct VenmoButton: View {
 
     /// The style of the Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
-    let color: VenmoButtonColor
+    let color: VenmoButtonColor?
 
     /// The width of the Venmo payment button. Minimum width is 131 points. Maximum width is 300 points.
     let width: CGFloat?
@@ -19,13 +19,13 @@ public struct VenmoButton: View {
     /// - Parameter width: Optional. The width of the button. Defaults to 300px.
     /// - Parameter action: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(color: VenmoButtonColor? = .primary, width: CGFloat? = 300, action: @escaping () -> Void) {
-        self.color = color ?? .primary
+        self.color = color
         self.width = width
         self.action = action
     }
     public var body: some View {
         PaymentButtonView(
-            color: color,
+            color: color ?? .primary,
             width: width,
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo",
