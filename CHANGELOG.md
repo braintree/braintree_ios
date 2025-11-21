@@ -3,7 +3,6 @@
 ## unreleased
 * BraintreeUIComponents
   * Add BraintreeUIComponents module
-  * Add `PaymentButton(type:)` to create pre-configured payment buttons for PayPal
   * Add `VenmoButton(type:)` to create pre-configured payment buttons for PayPal
 * BraintreeThreeDSecure
   * Rename `AdditionalInformation` to `BTThreeDSecureAdditionalInformation`.
