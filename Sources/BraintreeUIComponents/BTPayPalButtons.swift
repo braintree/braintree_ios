@@ -4,7 +4,7 @@ import SwiftUI
 public struct PayPalButton: View {
 
     /// The style of the PayPal payment button. Available in the colors primary (PayPal blue), black, and white.
-    let style: BTPaymentButtonStyle
+    var color: BTPayPalButtonColor = .primary
     
     /// The width of the PayPal payment button.
     var width: CGFloat?
@@ -18,8 +18,13 @@ public struct PayPalButton: View {
     /// The PayPal payment button action.
     let action: () -> Void
 
-    public init(style: BTPaymentButtonStyle, width: CGFloat? = nil, action: @escaping () -> Void) {
-        self.style = style
+    /// Creates a PayPal payment button.
+    /// - Parameters:
+    ///   - color: Button color
+    ///   - width: Optional. Button width (min 131px, max 300px)
+    ///   - action: Button action
+    public init(color: BTPayPalButtonColor, width: CGFloat? = nil, action: @escaping () -> Void) {
+        self.color = color
         self.width = width
         self.action = action
     }
@@ -27,7 +32,7 @@ public struct PayPalButton: View {
     public var body: some View {
         Button(action: action) {
             HStack {
-                if let logoImage = style.logoImage {
+                if let logoImage = color.logoImage {
                     Image(logoImage, bundle: .uiComponents)
                         .resizable()
                         .scaledToFit()
@@ -36,16 +41,16 @@ public struct PayPalButton: View {
             }
             .frame(width: widthRange)
         }
-        .buttonStyle(PayPalButtonStyle(backgroundColor: style.backgroundColor, tappedColor: style.tappedButtonColor))
+        .buttonStyle(PayPalButtonStyle(backgroundColor: color.backgroundColor, tappedColor: color.tappedButtonColor))
         .overlay(
             RoundedRectangle(cornerRadius: 4)
                 .stroke(
-                    style.hasOutline ? .black : .clear,
-                    lineWidth: style.hasOutline ? 1 : 0
+                    color.hasOutline ? .black : .clear,
+                    lineWidth: color.hasOutline ? 1 : 0
                 )
         )
-        .accessibilityLabel("PayPal checkout button")
-        .accessibilityHint("PayPal checkout button")
+        .accessibilityLabel("Pay with PayPal")
+        .accessibilityHint("Complete payment using PayPal")
     }
 }
 
@@ -68,13 +73,13 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 16) {
             // Primary Button
-            PayPalButton(style: .primaryPayPal, width: 300) {}
+            PayPalButton(color: .primary, width: 300) {}
 
             // Black Button
-            PayPalButton(style: .black, width: 350) {}
+            PayPalButton(color: .black, width: 350) {}
 
             // White Button
-            PayPalButton(style: .white, width: 100) {}
+            PayPalButton(color: .white, width: 100) {}
         }
     }
 }
