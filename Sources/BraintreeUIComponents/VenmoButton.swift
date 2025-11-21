@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
-public struct BTVenmoButton: View {
+public struct VenmoButton: View {
 
     /// The style of the Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
     let color: VenmoButtonColor
@@ -24,8 +24,8 @@ public struct BTVenmoButton: View {
     /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.primary`.
     /// - Parameter width: Optional. The width of the button. Defaults to 300px.
     /// - Parameter action: the completion handler to handle Venmo tokenize request success or failure on button press
-    public init(color: VenmoButtonColor = .primaryVenmo, width: CGFloat? = nil, action: @escaping () -> Void) {
-        self.color = color
+    public init(color: VenmoButtonColor? = .primary, width: CGFloat? = 300, action: @escaping () -> Void) {
+        self.color = color ?? .primary
         self.width = width
         self.action = action
     }
@@ -44,9 +44,11 @@ struct VenmoButton_Previews: PreviewProvider {
 
     static var previews: some View {
         VStack {
-            BTVenmoButton(color: .black, width: 300) {}
-            BTVenmoButton(color: .primaryVenmo, width: 250) {}
-            BTVenmoButton(color: .white, width: 50) {}
+            // defaults to primary, width 300
+            VenmoButton() {}
+            VenmoButton(color: .black, width: 250) {}
+            // respects minimum width boundary
+            VenmoButton(color: .white, width: 1) {}
         }
     }
 }

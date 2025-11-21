@@ -1,17 +1,5 @@
 import SwiftUI
 
-/// Protocol for payment button color and styling logic
-protocol PaymentButtonColorProtocol {
-    /// Logo image name for the button
-    var logoImageName: String? { get }
-
-    /// Background color of the button
-    var backgroundColor: Color { get }
-
-    /// Whether the button should have an outline
-    var hasOutline: Bool { get }
-}
-
 /// Venmo payment button style options
 public enum VenmoButtonColor: PaymentButtonColorProtocol {
 
@@ -25,9 +13,9 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     case white
 
     /// Logo image name for Venmo button
-    public var logoImageName: String? {
+    var logoImageName: String? {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return "VenmoLogoWhite"
         case .black:
             return "VenmoLogoWhite"
@@ -37,9 +25,9 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     }
 
     /// Background color of the Venmo button
-    public var backgroundColor: Color {
+    var backgroundColor: Color {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return Color(hex: "#008CFF")
         case .black:
             return .black
@@ -49,9 +37,9 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     }
 
     /// Outline around the Venmo button
-    public var hasOutline: Bool {
+    var hasOutline: Bool {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return false
         case .black:
             return false
