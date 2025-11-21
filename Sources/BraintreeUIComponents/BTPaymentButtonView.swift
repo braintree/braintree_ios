@@ -10,7 +10,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     let accessibilityHint: String
     let action: () -> Void
 
-    /// This is the width range for the PayPal payment button.
+    /// This is the width range for the payment button.
     private var widthRange: CGFloat {
         guard let width else { return 300 }
         return min(max(width, 131), 300)

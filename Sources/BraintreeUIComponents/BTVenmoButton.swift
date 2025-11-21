@@ -6,7 +6,7 @@ public struct BTVenmoButton: View {
     /// The style of the Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
     let color: VenmoButtonColor
 
-    /// The width of the Venmo payment button. Minimum width is 166 points. Maximum width is 300 points.
+    /// The width of the Venmo payment button. Minimum width is 131 points. Maximum width is 300 points.
     let width: CGFloat?
 
     /// This is the width range for the Venmo payment button.
@@ -23,7 +23,7 @@ public struct BTVenmoButton: View {
     /// Creates a Venmo button
     /// - Parameter style: the desired button color with corresponding Venmo logo
     /// - Parameter width: the width of the button
-    /// - Parameter action: the completion handler to handle Venmo tokenize request success or failureon button press
+    /// - Parameter action: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(color: VenmoButtonColor = .primaryVenmo, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.color = color
         self.width = width
