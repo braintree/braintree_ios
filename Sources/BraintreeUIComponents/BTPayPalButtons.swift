@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// PayPal payment button. Available in the colors primary (PayPal blue), black, and white.
+/// PayPal branded checkout button
 public struct PayPalButton: View {
 
     /// The style of the PayPal payment button. Available in the colors primary (PayPal blue), black, and white.
@@ -17,7 +17,7 @@ public struct PayPalButton: View {
     
     /// The PayPal payment button action.
     let action: () -> Void
-    
+
     /// Creates a PayPal payment button.
     /// - Parameters:
     ///   - color: Button color
@@ -41,9 +41,7 @@ public struct PayPalButton: View {
             }
             .frame(width: widthRange)
         }
-        .frame(height: 45)
-        .background(color.backgroundColor)
-        .cornerRadius(4)
+        .buttonStyle(PayPalButtonStyle(backgroundColor: color.backgroundColor, tappedColor: color.tappedButtonColor))
         .overlay(
             RoundedRectangle(cornerRadius: 4)
                 .stroke(
@@ -51,30 +49,44 @@ public struct PayPalButton: View {
                     lineWidth: color.hasOutline ? 1 : 0
                 )
         )
-        .accessibilityLabel("PayPal checkout button")
-        .accessibilityHint("PayPal checkout button")
+        .accessibilityLabel("Pay with PayPal")
+        .accessibilityHint("Complete payment using PayPal")
     }
-    
-    struct ContentView: View {
-        
-        var body: some View {
-            VStack(spacing: 16) {
-                // Primary Button
-                PayPalButton(color: .primary, width: 300) {}
-                
-                // Black Button
-                PayPalButton(color: .black, width: 350) {}
-                
-                // White Button
-                PayPalButton(color: .white, width: 100) {}
-            }
+}
+
+/// Different styles of the PayPal payment buttons. Available in the colors primary (PayPal blue), black, and white.
+public struct PayPalButtonStyle: ButtonStyle {
+
+    let backgroundColor: Color
+    let tappedColor: Color
+
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(height: 45)
+            .background(configuration.isPressed ? tappedColor : backgroundColor)
+            .cornerRadius(4)
+    }
+}
+
+struct ContentView: View {
+
+    var body: some View {
+        VStack(spacing: 16) {
+            // Primary Button
+            PayPalButton(color: .primary, width: 300) {}
+
+            // Black Button
+            PayPalButton(color: .black, width: 350) {}
+
+            // White Button
+            PayPalButton(color: .white, width: 100) {}
         }
     }
+}
 
-    struct ContentView_Previews: PreviewProvider {
+struct ContentView_Previews: PreviewProvider {
 
-        static var previews: some View {
-            ContentView()
-        }
+    static var previews: some View {
+        ContentView()
     }
 }
