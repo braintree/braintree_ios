@@ -40,9 +40,9 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
                     lineWidth: color.hasOutline ? 1 : 0
                 )
         )
-        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, perform: {}, onPressingChanged: { pressing in
             isPressed = pressing
-        }, perform: {})
+        })
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }
