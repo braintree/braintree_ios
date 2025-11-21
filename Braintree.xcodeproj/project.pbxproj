@@ -19,7 +19,7 @@
 		045241772EC7F15400C25EA6 /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; platformFilter = ios; };
 		046F006C2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
 		046F006E2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
-		046F00742ECCEFC800F08512 /* BTPaymentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */; };
+		046F00742ECCEFC800F08512 /* BTPayPalButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F00732ECCEFC300F08512 /* BTPayPalButtonColor.swift */; };
 		046F00762ECE4E1400F08512 /* BTUIComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
@@ -774,7 +774,7 @@
 		045241682EC4F80F00C25EA6 /* BTPayPalButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalButtons.swift; sourceTree = "<group>"; };
 		045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		046F006B2ECBF46800F08512 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentButtonStyle.swift; sourceTree = "<group>"; };
+		046F00732ECCEFC300F08512 /* BTPayPalButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalButtonColor.swift; sourceTree = "<group>"; };
 		046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTUIComponents+Extensions.swift"; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
@@ -1459,7 +1459,7 @@
 			isa = PBXGroup;
 			children = (
 				045241682EC4F80F00C25EA6 /* BTPayPalButtons.swift */,
-				046F00732ECCEFC300F08512 /* BTPaymentButtonStyle.swift */,
+				046F00732ECCEFC300F08512 /* BTPayPalButtonColor.swift */,
 				046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */,
 				046F00782ECE813200F08512 /* Resources */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
@@ -3454,7 +3454,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				046F00742ECCEFC800F08512 /* BTPaymentButtonStyle.swift in Sources */,
+				046F00742ECCEFC800F08512 /* BTPayPalButtonColor.swift in Sources */,
 				046F00762ECE4E1400F08512 /* BTUIComponents+Extensions.swift in Sources */,
 				0452416C2EC4F80F00C25EA6 /* BTPayPalButtons.swift in Sources */,
 			);
