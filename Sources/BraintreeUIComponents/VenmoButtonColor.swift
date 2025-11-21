@@ -10,13 +10,16 @@ protocol PaymentButtonColorProtocol {
 
     /// Whether the button should have an outline
     var hasOutline: Bool { get }
+
+    /// Background color when button is tapped
+    var tappedButtonColor: Color { get }
 }
 
 /// Venmo payment button style options
 public enum VenmoButtonColor: PaymentButtonColorProtocol {
 
     /// The blue Venmo button style (Venmo exclusive)
-    case primaryVenmo
+    case primary
 
     /// The black Venmo button style
     case black
@@ -27,7 +30,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Logo image name for Venmo button
     public var logoImageName: String? {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return "VenmoLogoWhite"
         case .black:
             return "VenmoLogoWhite"
@@ -39,7 +42,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Background color of the Venmo button
     public var backgroundColor: Color {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return Color(hex: "#008CFF")
         case .black:
             return .black
@@ -51,12 +54,24 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Outline around the Venmo button
     public var hasOutline: Bool {
         switch self {
-        case .primaryVenmo:
+        case .primary:
             return false
         case .black:
             return false
         case .white:
             return true
+        }
+    }
+
+    /// Background color when button is tapped
+    public var tappedButtonColor: Color {
+        switch self {
+        case .primary:
+            return Color(hex: "#0074FF")
+        case .black:
+            return Color(hex: "#696969")
+        case .white:
+            return Color(hex: "#555555")
         }
     }
 }

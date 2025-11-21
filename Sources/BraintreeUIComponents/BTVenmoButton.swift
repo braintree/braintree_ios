@@ -24,7 +24,7 @@ public struct BTVenmoButton: View {
     /// - Parameter style: the desired button color with corresponding Venmo logo
     /// - Parameter width: the width of the button
     /// - Parameter action: the completion handler to handle Venmo tokenize request success or failure on button press
-    public init(color: VenmoButtonColor = .primaryVenmo, width: CGFloat? = nil, action: @escaping () -> Void) {
+    public init(color: VenmoButtonColor = .primary, width: CGFloat? = nil, action: @escaping () -> Void) {
         self.color = color
         self.width = width
         self.action = action
@@ -45,7 +45,7 @@ struct VenmoButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             BTVenmoButton(color: .black, width: 300) {}
-            BTVenmoButton(color: .primaryVenmo, width: 250) {}
+            BTVenmoButton(color: .primary, width: 250) {}
             BTVenmoButton(color: .white, width: 50) {}
         }
     }
