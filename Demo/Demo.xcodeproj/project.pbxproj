@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046F007A2ED0030800F08512 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F00792ED0030800F08512 /* Images.xcassets */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
@@ -123,6 +124,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		046F00792ED0030800F08512 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 			children = (
 				A0988E7C24DB44B10095EEEE /* Base */,
 				A0988F5924DB44B10095EEEE /* Features */,
+				046F00792ED0030800F08512 /* Images.xcassets */,
 				A0988F8F24DB44B20095EEEE /* Merchant API Client */,
 				A0988F5024DB44B10095EEEE /* Supporting Files */,
 			);
@@ -593,6 +596,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046F007A2ED0030800F08512 /* Images.xcassets in Resources */,
 				A0988F9824DB44B20095EEEE /* Launch Screen.storyboard in Resources */,
 				A0988F9324DB44B20095EEEE /* Settings.bundle in Resources */,
 			);
