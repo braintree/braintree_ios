@@ -45,7 +45,7 @@ struct VenmoButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             // defaults to primary, width 300
-            VenmoButton() {}
+            VenmoButton {}
             VenmoButton(color: .black, width: 250) {}
             // respects minimum width boundary
             VenmoButton(color: .white, width: 1) {}
