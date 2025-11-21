@@ -22,7 +22,7 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
-		084135412ED0CBAD00884FE9 /* BTPaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* BTPaymentButtonView.swift */; };
+		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
 		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
 		084135432ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */; };
 		084135442ED0CBAD00884FE9 /* VenmoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */; };
@@ -780,7 +780,7 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
-		0841353B2ED0CBAD00884FE9 /* BTPaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentButtonView.swift; sourceTree = "<group>"; };
+		0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTUIComponents+Extensions.swift"; sourceTree = "<group>"; };
 		0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton.swift; sourceTree = "<group>"; };
 		0841353E2ED0CBAD00884FE9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1463,7 +1463,7 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				0841353B2ED0CBAD00884FE9 /* BTPaymentButtonView.swift */,
+				0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */,
 				0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */,
 				0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */,
 				084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */,
@@ -3461,7 +3461,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				084135412ED0CBAD00884FE9 /* BTPaymentButtonView.swift in Sources */,
+				084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */,
 				084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */,
 				084135432ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift in Sources */,
 				084135442ED0CBAD00884FE9 /* VenmoButton.swift in Sources */,

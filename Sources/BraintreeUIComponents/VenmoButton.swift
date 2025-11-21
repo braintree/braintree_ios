@@ -9,12 +9,6 @@ public struct VenmoButton: View {
     /// The width of the Venmo payment button. Minimum width is 131 points. Maximum width is 300 points.
     let width: CGFloat?
 
-    /// This is the width range for the Venmo payment button.
-    private var widthRange: CGFloat {
-        guard let width else { return 300 }
-        return min(max(width, 131), 300)
-    }
-
     /// The Venmo payment button action.
     let action: () -> Void
 
@@ -37,7 +31,6 @@ public struct VenmoButton: View {
             accessibilityHint: "Complete payment using Venmo",
             action: action
         )
-        .frame(width: widthRange)
     }
 }
 struct VenmoButton_Previews: PreviewProvider {
