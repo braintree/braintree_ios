@@ -10,6 +10,8 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     let accessibilityHint: String
     let action: () -> Void
 
+    @State private var isPressed = false
+
     /// This is the width range for the payment button.
     private var widthRange: CGFloat {
         guard let width else { return 300 }
@@ -29,7 +31,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
             .frame(width: widthRange)
         }
         .frame(height: 45)
-        .background(color.backgroundColor)
+        .background(isPressed ? color.tappedButtonColor : color.backgroundColor)
         .cornerRadius(4)
         .overlay(
             RoundedRectangle(cornerRadius: 4)
@@ -38,6 +40,9 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
                     lineWidth: color.hasOutline ? 1 : 0
                 )
         )
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, perform: {}, onPressingChanged: { pressing in
+            isPressed = pressing
+        })
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }
