@@ -1,5 +1,7 @@
 import SwiftUI
-import BraintreeVenmo
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
 
 /// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
 public struct VenmoButton: View {
@@ -19,8 +21,8 @@ public struct VenmoButton: View {
     // MARK: - Initializer
 
     /// Creates a Venmo button
-    /// - Parameter request: A Venmo request.
-    /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.primary`.
+    /// - Parameter request: Required. A Venmo request.
+    /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
     /// - Parameter width: Optional. The width of the button. Defaults to 300px.
     /// - Parameter completion: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(
