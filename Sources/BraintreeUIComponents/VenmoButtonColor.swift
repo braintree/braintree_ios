@@ -4,7 +4,7 @@ import SwiftUI
 public enum VenmoButtonColor: PaymentButtonColorProtocol {
 
     /// The blue Venmo button style (Venmo exclusive)
-    case primary
+    case blue
 
     /// The black Venmo button style
     case black
@@ -15,7 +15,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Logo image name for Venmo button
     var logoImageName: String? {
         switch self {
-        case .primary:
+        case .blue:
             return "VenmoLogoWhite"
         case .black:
             return "VenmoLogoWhite"
@@ -27,7 +27,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Background color of the Venmo button
     var backgroundColor: Color {
         switch self {
-        case .primary:
+        case .blue:
             return Color(hex: "#008CFF")
         case .black:
             return .black
@@ -39,7 +39,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Outline around the Venmo button
     var hasOutline: Bool {
         switch self {
-        case .primary:
+        case .blue:
             return false
         case .black:
             return false
