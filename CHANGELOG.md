@@ -3,6 +3,7 @@
 ## unreleased
 * BraintreeUIComponents
   * Add BraintreeUIComponents module
+  * Add `VenmoButton(color:width:action:)` to generate a Venmo-branded button for launching Venmo flow
 * BraintreeThreeDSecure
   * Rename `AdditionalInformation` to `BTThreeDSecureAdditionalInformation`.
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
