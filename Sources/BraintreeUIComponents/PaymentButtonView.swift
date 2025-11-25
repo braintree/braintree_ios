@@ -19,26 +19,9 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
 
     var body: some View {
         Button(action: action) {
-            HStack {
-                if let logoImageName = color.logoImageName {
-                    Image(logoImageName, bundle: .uiComponents)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: logoHeight)
-                }
-            }
-            .frame(width: widthRange)
+            EmptyView()
         }
-        .frame(height: 45)
-        .background(color.backgroundColor)
-        .cornerRadius(4)
-        .overlay(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(
-                    color.hasOutline ? .black : .clear,
-                    lineWidth: color.hasOutline ? 1 : 0
-                )
-        )
+        .buttonStyle(PaymentButtonStyle(color: color, width: width, logoHeight: logoHeight))
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }
