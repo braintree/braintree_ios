@@ -26,6 +26,13 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
+		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
+		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
+		084135432ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */; };
+		084135442ED0CBAD00884FE9 /* VenmoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */; };
+		084135452ED0CBAD00884FE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0841353E2ED0CBAD00884FE9 /* Assets.xcassets */; };
+		084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */; };
+		084135492ED108D200884FE9 /* Bundle+UIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135482ED108D200884FE9 /* Bundle+UIComponents.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
@@ -781,6 +788,13 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
+		0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
+		0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BTUIComponents+Extensions.swift"; sourceTree = "<group>"; };
+		0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton.swift; sourceTree = "<group>"; };
+		0841353E2ED0CBAD00884FE9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButtonColor.swift; sourceTree = "<group>"; };
+		084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonColorProtocol.swift; sourceTree = "<group>"; };
+		084135482ED108D200884FE9 /* Bundle+UIComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+UIComponents.swift"; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
@@ -1459,18 +1473,23 @@
 			isa = PBXGroup;
 			children = (
 				045241682EC4F80F00C25EA6 /* BTPayPalButtons.swift */,
-				046F00732ECCEFC300F08512 /* BTPayPalButtonColor.swift */,
-				046F00752ECE4E0B00F08512 /* BTUIComponents+Extensions.swift */,
-				046F00782ECE813200F08512 /* Resources */,
+				0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */,
+				0841353C2ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift */,
+				0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */,
+				084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */,
+				0841353F2ED0CBAD00884FE9 /* Resources */,
+				045241682EC4F80F00C25EA6 /* BTPaymentButtons.swift */,
 				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
+				084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */,
+				084135482ED108D200884FE9 /* Bundle+UIComponents.swift */,
 			);
 			path = BraintreeUIComponents;
 			sourceTree = "<group>";
 		};
-		046F00782ECE813200F08512 /* Resources */ = {
+		0841353F2ED0CBAD00884FE9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				046F006B2ECBF46800F08512 /* Assets.xcassets */,
+				0841353E2ED0CBAD00884FE9 /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -3122,7 +3141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				046F006E2ECBF46800F08512 /* Assets.xcassets in Resources */,
+				084135452ED0CBAD00884FE9 /* Assets.xcassets in Resources */,
 				0452416B2EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3454,9 +3473,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				046F00742ECCEFC800F08512 /* BTPayPalButtonColor.swift in Sources */,
-				046F00762ECE4E1400F08512 /* BTUIComponents+Extensions.swift in Sources */,
 				0452416C2EC4F80F00C25EA6 /* BTPayPalButtons.swift in Sources */,
+				084135492ED108D200884FE9 /* Bundle+UIComponents.swift in Sources */,
+				084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */,
+				084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */,
+				084135432ED0CBAD00884FE9 /* BTUIComponents+Extensions.swift in Sources */,
+				084135442ED0CBAD00884FE9 /* VenmoButton.swift in Sources */,
+				084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */,
+				0452416C2EC4F80F00C25EA6 /* BTPaymentButtons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
