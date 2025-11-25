@@ -6,6 +6,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     
     let color: Color
     let width: CGFloat?
+    let logoHeight: CGFloat
     let accessibilityLabel: String
     let accessibilityHint: String
     let action: () -> Void
@@ -23,7 +24,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
                     Image(logoImageName, bundle: .uiComponents)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 14)
+                        .frame(height: logoHeight)
                 }
             }
             .frame(width: widthRange)
