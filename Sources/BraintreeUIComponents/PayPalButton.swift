@@ -27,25 +27,26 @@ public struct PayPalButton: View {
         PaymentButtonView(
             color: color ?? .blue,
             width: width,
+            logoHeight: 24,
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
             action: action
         )
     }
+}
 
-    struct PayPalButton_Previews: PreviewProvider {
-
-        static var previews: some View {
-            VStack {
-                // Blue Button
-                PayPalButton(color: .blue, width: 300) {}
-                
-                // Black Button. Respects maximum width
-                PayPalButton(color: .black, width: 350) {}
-                
-                // White Button. Respects minimum width.
-                PayPalButton(color: .white, width: 100) {}
-            }
+struct PayPalButton_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        VStack {
+            // Blue Button. Defaults to primary, width 300
+            PayPalButton {}
+            
+            // Black Button. Respects maximum width
+            PayPalButton(color: .black, width: 350) {}
+            
+            // White Button. Respects minimum width.
+            PayPalButton(color: .white, width: 100) {}
         }
     }
 }
