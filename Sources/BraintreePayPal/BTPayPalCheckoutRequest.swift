@@ -45,6 +45,7 @@ import BraintreeCore
     var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
+    var offerCredit: Bool
     var amountBreakdown: BTAmountBreakdown?
     var billingAgreementDescription: String?
     var contactInformation: BTContactInformation?
@@ -83,6 +84,7 @@ import BraintreeCore
     ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
     ///   during checkout. Defaults to `false`.
     ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
+    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
@@ -94,7 +96,8 @@ import BraintreeCore
         offerPayLater: Bool = false,
         currencyCode: String? = nil,
         requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference = .none
+        contactPreference: BTContactPreference = .none,
+        offerCredit: Bool = false
     ) {
         self.init(
             amount: amount,
@@ -105,7 +108,8 @@ import BraintreeCore
             currencyCode: currencyCode,
             enablePayPalAppSwitch: enablePayPalAppSwitch,
             requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail
+            userAuthenticationEmail: userAuthenticationEmail,
+            offerCredit: offerCredit
         )
     }
 
@@ -143,6 +147,7 @@ import BraintreeCore
     ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     ///   identified with the same phone number.
+    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
@@ -169,12 +174,17 @@ import BraintreeCore
         shippingCallbackURL: URL? = nil,
         shopperSessionID: String? = nil,
         userAuthenticationEmail: String? = nil,
-        userPhoneNumber: BTPayPalPhoneNumber? = nil
+        userPhoneNumber: BTPayPalPhoneNumber? = nil,
+        offerCredit: Bool = false
     ) {
         self.amount = amount
         self.intent = intent
         self.userAction = userAction
         self.offerPayLater = offerPayLater
+        self.offerCredit = offerCredit
+        self.currencyCode = currencyCode
+        self.requestBillingAgreement = requestBillingAgreement
+        self.shippingCallbackURL = shippingCallbackURL
         self.amountBreakdown = amountBreakdown
         self.billingAgreementDescription = billingAgreementDescription
         self.contactInformation = contactInformation

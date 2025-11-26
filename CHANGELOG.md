@@ -3,12 +3,16 @@
 ## unreleased
 * BraintreeUIComponents
   * Add BraintreeUIComponents module
+  * Add `PayPalButton(color:width:action:)` to generate a PayPal-branded button for launching PayPal flow
   * Add `VenmoButton(authentication:request:universalLink:color:width:completion:)` to generate a Venmo-branded button for launching Venmo flow
+## 7.1.0 (2025-11-20)
 * BraintreeThreeDSecure
   * Rename `AdditionalInformation` to `BTThreeDSecureAdditionalInformation`.
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeApplePay
   * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
+* PayPal
+  * Add `offerCredit` property to `BTPayPalCheckoutRequest`, enabling merchants to offer PayPal credit for one-time checkout flows.
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal

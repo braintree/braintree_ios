@@ -57,6 +57,7 @@ public struct VenmoButton: View {
         PaymentButtonView(
             color: color ?? .blue,
             width: width,
+            logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo"
         ) {

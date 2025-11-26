@@ -10,4 +10,7 @@ protocol PaymentButtonColorProtocol {
 
     /// Whether the button should have an outline
     var hasOutline: Bool { get }
+
+    /// Background color of button when tapped
+    var tappedButtonColor: Color { get }
 }

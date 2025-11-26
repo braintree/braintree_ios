@@ -1,34 +1,34 @@
 import SwiftUI
 
-/// Venmo payment button style options
-public enum VenmoButtonColor: PaymentButtonColorProtocol {
+/// Payment button color  options
+public enum PayPalButtonColor: PaymentButtonColorProtocol {
 
-    /// The blue Venmo button style (Venmo exclusive)
+    /// The default PayPal button color
     case blue
 
-    /// The black Venmo button style
+    /// The black PayPal button color
     case black
 
-    /// The white Venmo button style
+    /// The white PayPal button color
     case white
 
-    /// Logo image name for Venmo button
+    /// Logo image for the PayPal Button
     var logoImageName: String? {
         switch self {
         case .blue:
-            return "VenmoLogoWhite"
+            return "PayPalLogoBlack"
         case .black:
-            return "VenmoLogoWhite"
+            return "PayPalLogoWhite"
         case .white:
-            return "VenmoLogoBlue"
+            return "PayPalLogoBlack"
         }
     }
 
-    /// Background color of the Venmo button
+    /// Background color of the payment button
     var backgroundColor: Color {
         switch self {
         case .blue:
-            return Color(hex: "#008CFF")
+            return Color(hex: "#60CDFF")
         case .black:
             return .black
         case .white:
@@ -36,7 +36,7 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
         }
     }
 
-    /// Outline around the Venmo button
+    /// Outline around the payment button
     var hasOutline: Bool {
         switch self {
         case .blue:
@@ -51,12 +51,12 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     /// Background color when button is tapped
     var tappedButtonColor: Color {
         switch self {
-        case .primary:
-            return Color(hex: "#0074FF")
+        case .blue:
+            return Color(hex: "#3DB5FF")
         case .black:
             return Color(hex: "#696969")
         case .white:
-            return Color(hex: "#E9E9E9")
+            return Color(hex: "E9E9E9")
         }
     }
 }
