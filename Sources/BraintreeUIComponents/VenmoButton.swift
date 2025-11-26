@@ -33,7 +33,7 @@ public struct VenmoButton: View {
     ///   - completion: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(
         request: BTVenmoRequest,
-        color: VenmoButtonColor? = .blue,
+        color: VenmoButtonColor? = .primary,
         width: CGFloat? = 300,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
@@ -44,7 +44,7 @@ public struct VenmoButton: View {
     }
     public var body: some View {
         PaymentButtonView(
-            color: color ?? .blue,
+            color: color ?? .primary,
             width: width,
             logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
