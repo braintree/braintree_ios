@@ -61,10 +61,20 @@ struct PayPalButton_Previews: PreviewProvider {
             PayPalButton(request: BTPayPalCheckoutRequest(amount: "10"), completion: PayPalButton_Previews.closure)
             
             // Black Button. Respects maximum width
-            PayPalButton(request: BTPayPalCheckoutRequest(amount: "10"), color: .black, width: 350, completion: PayPalButton_Previews.closure)
+            PayPalButton(
+                request: BTPayPalCheckoutRequest(amount: "10"),
+                color: .black,
+                width: 350,
+                completion: PayPalButton_Previews.closure
+            )
             
             // White Button. Respects minimum width.
-            PayPalButton(request: BTPayPalCheckoutRequest(amount: "10"), color: .white, width: 100, completion: PayPalButton_Previews.closure)
+            PayPalButton(
+                request: BTPayPalCheckoutRequest(amount: "10"),
+                color: .white,
+                width: 100,
+                completion: PayPalButton_Previews.closure
+            )
         }
     }
 
