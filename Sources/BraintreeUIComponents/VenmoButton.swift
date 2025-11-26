@@ -32,23 +32,24 @@ public struct VenmoButton: View {
     // MARK: - Initializer
 
     /// Creates a Venmo button
-    /// - Parameter authentication: Required. A Braintree client token or  tokenization key.
-    /// - Parameter request: Required. A Venmo request.
-    /// - Parameter universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
-    /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
-    /// - Parameter width: Optional. The width of the button. Defaults to 300px.
-    /// - Parameter completion: the completion handler to handle Venmo tokenize request success or failure on button press
+    /// - Parameters:
+    ///   - authentication: Required. A Braintree client token or  tokenization key.
+    ///   - request: Required. A Venmo request.
+    ///   - universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
+    ///   - color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
+    ///   - width: Optional. The width of the button. Defaults to 300px.
+    ///   - completion: The completion handler to handle Venmo tokenize request success or failure on button press
     public init(
         authentication: String,
-        request: BTVenmoRequest,
         universalLink: URL,
+        request: BTVenmoRequest,
         color: VenmoButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
         self.authentication = authentication
-        self.request = request
         self.universalLink = universalLink
+        self.request = request
         self.color = color
         self.width = width
         self.completion = completion
@@ -68,7 +69,7 @@ public struct VenmoButton: View {
     private func invokeVenmoFlow() {
         let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
         
-        client.tokenize(request) { nonce, error in
+        venmoClient.tokenize(request) { nonce, error in
             self.completion(nonce, error)
         }
     }
@@ -80,15 +81,15 @@ struct VenmoButton_Previews: PreviewProvider {
             // defaults to primary, width 300
             VenmoButton(
                 authentication: "auth-key-goes-here",
-                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 universalLink: testURL(),
+                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 completion: VenmoButton_Previews.closure
             )
 
             VenmoButton(
                 authentication: "auth-key-goes-here",
-                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 universalLink: testURL(),
+                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .black,
                 width: 250,
                 completion: VenmoButton_Previews.closure
@@ -96,8 +97,8 @@ struct VenmoButton_Previews: PreviewProvider {
             // respects minimum width boundary
             VenmoButton(
                 authentication: "auth-key-goes-here",
-                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 universalLink: testURL(),
+                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .white,
                 width: 1,
                 completion: VenmoButton_Previews.closure
