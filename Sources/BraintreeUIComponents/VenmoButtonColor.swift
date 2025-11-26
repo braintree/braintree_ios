@@ -47,4 +47,9 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
             return true
         }
     }
+
+    /// Background color when button is tapped
+    var tappedButtonColor: Color {
+        .black
+    }
 }
