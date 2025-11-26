@@ -27,9 +27,9 @@ public struct PayPalButton: View {
     ///  - checkoutRequest: Optional. The PayPal Checkout request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
-    ///  - completion: The completion handler to handle Venmo tokenize request success or failure on button press.
+    ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        request: BTPayPalCheckoutRequest,
+        request: BTPayPalCheckoutRequest? = nil,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -44,7 +44,7 @@ public struct PayPalButton: View {
     ///  - vaultRequest: Optional. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
-    ///  - completion: The completion handler to handle Venmo tokenize request success or failure on button press.
+    ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
         request: BTPayPalVaultRequest? = nil,
         color: PayPalButtonColor? = .blue,
