@@ -11,6 +11,12 @@ import BraintreeCore
 /// PayPal payment button. Available in the colors PayPal blue, black, and white.
 public struct PayPalButton: View {
 
+    /// A valid client token or tokenization key used to authorize API calls.
+    let authKey: String
+
+    /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
+    let universalLink: URL
+
     /// The style of the PayPal payment button. Available in the colors PayPal blue, black, and white.
     let color: PayPalButtonColor?
     
@@ -25,9 +31,11 @@ public struct PayPalButton: View {
     /// Creates a PayPal Checkout payment button.
     /// - Parameters:
     ///  - checkoutRequest: Optional. The PayPal Checkout request.
+    ///  - authKey: Required. A valid client token or tokenization key used to authorize API calls.
+    ///  - universalLink: Required.  The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
-    ///  - completion: The completion handler to handle Venmo tokenize request success or failure on button press.
+    ///  - completion: The completion handler to handle PayPal Checkout tokenize request success or failure on button press.
     public init(
         request: BTPayPalCheckoutRequest,
         color: PayPalButtonColor? = .blue,
@@ -44,7 +52,7 @@ public struct PayPalButton: View {
     ///  - vaultRequest: Optional. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
-    ///  - completion: The completion handler to handle Venmo tokenize request success or failure on button press.
+    ///  - completion: The completion handler to handle PayPal Checkout tokenize request success or failure on button press.
     public init(
         request: BTPayPalVaultRequest? = nil,
         color: PayPalButtonColor? = .blue,
