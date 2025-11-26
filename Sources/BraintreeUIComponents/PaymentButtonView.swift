@@ -6,6 +6,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     
     let color: Color
     let width: CGFloat?
+    let logoHeight: CGFloat
     let accessibilityLabel: String
     let accessibilityHint: String
     let action: () -> Void

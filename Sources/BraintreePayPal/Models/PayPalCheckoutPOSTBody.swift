@@ -12,6 +12,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private let amount: String
     private let intent: String
     private let offerPayLater: Bool
+    private let offerCredit: Bool
     private let returnURL: String
     private let cancelURL: String
     private let experienceProfile: PayPalExperienceProfile
@@ -58,6 +59,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.amount = payPalRequest.amount
         self.intent = payPalRequest.intent.stringValue
         self.offerPayLater = payPalRequest.offerPayLater
+        self.offerCredit = payPalRequest.offerCredit
         self.amountBreakdown = payPalRequest.amountBreakdown
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode
@@ -161,6 +163,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case lineItems = "line_items"
         case merchantAccountID = "merchant_account_id"
         case offerPayLater = "offer_pay_later"
+        case offerCredit = "offer_paypal_credit"
         case osType = "os_type"
         case osVersion = "os_version"
         case recipientPhoneNumber = "international_phone"
