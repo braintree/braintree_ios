@@ -5,6 +5,7 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
     
     let color: Color
     let width: CGFloat?
+    let logoHeight: CGFloat
     
     /// This is the width range for the payment button.
     private var widthRange: CGFloat {
@@ -18,7 +19,7 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
                 Image(logoImageName, bundle: .uiComponents)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 14)
+                    .frame(height: logoHeight)
             }
         }
         .frame(width: widthRange)

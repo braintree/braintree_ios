@@ -48,7 +48,15 @@ public enum PayPalButtonColor: PaymentButtonColorProtocol {
         }
     }
 
+    /// Background color when button is tapped
     var tappedButtonColor: Color {
-        .black
+        switch self {
+        case .blue:
+            return Color(hex: "#3DB5FF")
+        case .black:
+            return Color(hex: "#696969")
+        case .white:
+            return Color(hex: "E9E9E9")
+        }
     }
 }

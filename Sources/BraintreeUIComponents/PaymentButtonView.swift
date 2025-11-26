@@ -15,7 +15,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
         Button(action: action) {
             EmptyView()
         }
-        .buttonStyle(PaymentButtonStyle(color: color, width: width))
+        .buttonStyle(PaymentButtonStyle(color: color, width: width, logoHeight: logoHeight))
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }
