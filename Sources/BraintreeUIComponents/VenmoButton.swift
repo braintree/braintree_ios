@@ -11,7 +11,7 @@ import BraintreeVenmo
 /// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
 public struct VenmoButton: View {
 
-    // Braintree authentication key or tokenization key
+    // Braintree client token or tokenization key
     let authentication: String
 
     /// The Venmo request
@@ -66,7 +66,7 @@ public struct VenmoButton: View {
     }
 
     private func invokeVenmoFlow() {
-        let client = BTVenmoClient(authorization: authentication, universalLink: universalLink)
+        let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
         
         client.tokenize(request) { nonce, error in
             self.completion(nonce, error)
