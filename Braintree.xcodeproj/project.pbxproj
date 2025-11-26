@@ -19,8 +19,8 @@
 		045241772EC7F15400C25EA6 /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; platformFilter = ios; };
 		046F006C2ECBF46800F08512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F006B2ECBF46800F08512 /* Assets.xcassets */; };
 		046F007C2ED6406000F08512 /* PayPalButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F007B2ED6404C00F08512 /* PayPalButtonColor.swift */; };
-		046F00802ED6905F00F08512 /* UIComponents+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F007F2ED6905800F08512 /* UIComponents+Bundle.swift */; };
 		046F007E2ED64E8D00F08512 /* PaymentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F007D2ED64E8800F08512 /* PaymentButtonStyle.swift */; };
+		046F00802ED6905F00F08512 /* UIComponents+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046F007F2ED6905800F08512 /* UIComponents+Bundle.swift */; };
 		04AA31182D07974D0043ACAB /* BTButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31172D0797460043ACAB /* BTButtonType.swift */; };
 		04AA311A2D0797570043ACAB /* BTPresentmentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */; };
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
@@ -782,8 +782,8 @@
 		045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		046F006B2ECBF46800F08512 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		046F007B2ED6404C00F08512 /* PayPalButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalButtonColor.swift; sourceTree = "<group>"; };
-		046F007F2ED6905800F08512 /* UIComponents+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIComponents+Bundle.swift"; sourceTree = "<group>"; };
 		046F007D2ED64E8800F08512 /* PaymentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonStyle.swift; sourceTree = "<group>"; };
+		046F007F2ED6905800F08512 /* UIComponents+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIComponents+Bundle.swift"; sourceTree = "<group>"; };
 		04AA31172D0797460043ACAB /* BTButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonType.swift; sourceTree = "<group>"; };
 		04AA31192D0797510043ACAB /* BTPresentmentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPresentmentDetails.swift; sourceTree = "<group>"; };
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
@@ -1474,7 +1474,6 @@
 			isa = PBXGroup;
 			children = (
 				0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */,
-				0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */,
 				0841353F2ED0CBAD00884FE9 /* Resources */,
 				045241682EC4F80F00C25EA6 /* PayPalButton.swift */,
 				046F007B2ED6404C00F08512 /* PayPalButtonColor.swift */,
