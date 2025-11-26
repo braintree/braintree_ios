@@ -181,6 +181,7 @@ import BraintreeCore
     public func parameters(
         with configuration: BTConfiguration,
         universalLink: URL? = nil,
+        fallbackURLScheme: String? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
         var experienceProfile: [String: Any] = [:]
