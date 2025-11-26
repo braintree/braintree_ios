@@ -32,12 +32,13 @@ public struct VenmoButton: View {
     // MARK: - Initializer
 
     /// Creates a Venmo button
-    /// - Parameter authentication: Required. A Braintree client token or  tokenization key.
-    /// - Parameter request: Required. A Venmo request.
-    /// - Parameter universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
-    /// - Parameter color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
-    /// - Parameter width: Optional. The width of the button. Defaults to 300px.
-    /// - Parameter completion: the completion handler to handle Venmo tokenize request success or failure on button press
+    /// - Parameters:
+    ///   - authentication: Required. A Braintree client token or  tokenization key.
+    ///   - request: Required. A Venmo request.
+    ///   - universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
+    ///   - color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
+    ///   - width: Optional. The width of the button. Defaults to 300px.
+    ///   - completion: the completion handler to handle Venmo tokenize request success or failure on button press
     public init(
         authentication: String,
         request: BTVenmoRequest,
