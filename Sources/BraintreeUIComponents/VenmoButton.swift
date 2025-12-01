@@ -11,7 +11,7 @@ import BraintreeVenmo
 /// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
 public struct VenmoButton: View {
 
-    // Braintree client token or tokenization key
+    /// Braintree client token or tokenization key
     let authentication: String
 
     /// The Venmo request
