@@ -11,8 +11,14 @@ import BraintreeVenmo
 /// Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
 public struct VenmoButton: View {
 
+    /// Braintree client token or tokenization key
+    let authentication: String
+
     /// The Venmo request
     let request: BTVenmoRequest
+
+    /// URL for Venmo request universalLink
+    let universalLink: URL
 
     /// The style of the Venmo payment button. Available in the colors primary (Venmo blue), black, and white.
     let color: VenmoButtonColor?
@@ -27,16 +33,22 @@ public struct VenmoButton: View {
 
     /// Creates a Venmo button
     /// - Parameters:
+    ///   - authentication: Required. A Braintree client token or  tokenization key.
+    ///   - universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
     ///   - request: Required. A Venmo request.
     ///   - color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
     ///   - width: Optional. The width of the button. Defaults to 300px.
-    ///   - completion: the completion handler to handle Venmo tokenize request success or failure on button press
+    ///   - completion: The completion handler to handle Venmo tokenize request success or failure on button press
     public init(
+        authentication: String,
+        universalLink: URL,
         request: BTVenmoRequest,
-        color: VenmoButtonColor? = .primary,
+        color: VenmoButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
+        self.authentication = authentication
+        self.universalLink = universalLink
         self.request = request
         self.color = color
         self.width = width
@@ -44,15 +56,21 @@ public struct VenmoButton: View {
     }
     public var body: some View {
         PaymentButtonView(
-            color: color ?? .primary,
+            color: color ?? .blue,
             width: width,
             logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo"
         ) {
-            // TODO: Implement Venmo flow when button is tapped
-            // This will create BTVenmoClient and call tokenize
-            // Then call completion with result
+            invokeVenmoFlow()
+        }
+    }
+
+    private func invokeVenmoFlow() {
+        let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
+        
+        venmoClient.tokenize(request) { nonce, error in
+            self.completion(nonce, error)
         }
     }
 }
@@ -61,9 +79,16 @@ struct VenmoButton_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             // defaults to primary, width 300
-            VenmoButton(request: BTVenmoRequest(paymentMethodUsage: .singleUse), completion: VenmoButton_Previews.closure)
+            VenmoButton(
+                authentication: "auth-key-goes-here",
+                universalLink: testURL(),
+                request: BTVenmoRequest(paymentMethodUsage: .singleUse),
+                completion: VenmoButton_Previews.closure
+            )
 
             VenmoButton(
+                authentication: "auth-key-goes-here",
+                universalLink: testURL(),
                 request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .black,
                 width: 250,
@@ -71,6 +96,8 @@ struct VenmoButton_Previews: PreviewProvider {
             )
             // respects minimum width boundary
             VenmoButton(
+                authentication: "auth-key-goes-here",
+                universalLink: testURL(),
                 request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .white,
                 width: 1,
@@ -80,4 +107,9 @@ struct VenmoButton_Previews: PreviewProvider {
     }
 
     static func closure(_: BTVenmoAccountNonce?, _: Error?) {}
+
+    static func testURL() -> URL {
+        // swiftlint:disable:next force_unwrapping
+        URL(string: "https://example.com")!
+    }
 }
