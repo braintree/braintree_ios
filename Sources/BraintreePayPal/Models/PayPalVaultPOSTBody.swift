@@ -40,22 +40,10 @@ struct PayPalVaultPOSTBody: Encodable {
         universalLink: URL?,
         fallbackURLScheme: String?
     ) {
-        if let merchantAccountID = payPalRequest.merchantAccountID {
-            self.merchantAccountID = merchantAccountID
-        }
-        
-        if let riskCorrelationID = payPalRequest.riskCorrelationID {
-            self.riskCorrelationID = riskCorrelationID
-        }
-        
-        if let lineItems = payPalRequest.lineItems, !lineItems.isEmpty {
-            self.lineItems = lineItems
-        }
-        
-        if let userAuthenticationEmail = payPalRequest.userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            self.userAuthenticationEmail = userAuthenticationEmail
-        }
-        
+        self.merchantAccountID = payPalRequest.merchantAccountID
+        self.riskCorrelationID = payPalRequest.riskCorrelationID
+        self.lineItems = payPalRequest.lineItems?.isEmpty == false ? payPalRequest.lineItems : nil
+        self.userAuthenticationEmail = payPalRequest.userAuthenticationEmail?.isEmpty == false ? payPalRequest.userAuthenticationEmail : nil
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
@@ -66,33 +54,15 @@ struct PayPalVaultPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
-            
-            if let fallbackURLScheme {
-                self.fallbackURLScheme = fallbackURLScheme
-            }
+            self.fallbackURLScheme = fallbackURLScheme
         }
         
-        if let recurringBillingPlanType = payPalRequest.recurringBillingPlanType {
-            self.recurringBillingPlanType = recurringBillingPlanType
-        }
-
-        if let recurringBillingDetails = payPalRequest.recurringBillingDetails {
-            self.recurringBillingDetails = recurringBillingDetails
-        }
-        
+        self.recurringBillingPlanType = payPalRequest.recurringBillingPlanType
+        self.recurringBillingDetails = payPalRequest.recurringBillingDetails
         self.offerCredit = payPalRequest.offerCredit
-        
-        if let billingAgreementDescription = payPalRequest.billingAgreementDescription {
-            self.billingAgreementDescription = billingAgreementDescription
-        }
-        
-        if let shippingAddressOverride = payPalRequest.shippingAddressOverride {
-            self.shippingAddressOverride = shippingAddressOverride
-        }
-        
-        if let shopperSessionID = payPalRequest.shopperSessionID {
-            self.shopperSessionID = shopperSessionID
-        }
+        self.billingAgreementDescription = payPalRequest.billingAgreementDescription
+        self.shippingAddressOverride = payPalRequest.shippingAddressOverride
+        self.shopperSessionID = payPalRequest.shopperSessionID
     }
     
     enum CodingKeys: String, CodingKey {
