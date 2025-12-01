@@ -11,6 +11,12 @@ import BraintreeCore
 /// PayPal payment button. Available in the colors PayPal blue, black, and white.
 public struct PayPalButton: View {
 
+    /// The PayPal Checkout request.
+    let checkoutRequest: BTPayPalCheckoutRequest?
+
+    /// The PayPal Vault request.
+    let vaultRequest: BTPayPalVaultRequest?
+
     /// The style of the PayPal payment button. Available in the colors PayPal blue, black, and white.
     let color: PayPalButtonColor?
     
@@ -29,11 +35,13 @@ public struct PayPalButton: View {
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        request: BTPayPalCheckoutRequest? = nil,
+        request: BTPayPalCheckoutRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        self.checkoutRequest = request
+        self.vaultRequest = nil
         self.color = color
         self.width = width
         self.completion = completion
@@ -41,25 +49,28 @@ public struct PayPalButton: View {
 
     /// Creates a Vault PayPal payment button.
     /// - Parameters:
-    ///  - vaultRequest: Optional. The PayPal Vault request.
+    ///  - request: Optional. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        request: BTPayPalVaultRequest? = nil,
+        request: BTPayPalVaultRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        self.checkoutRequest = nil
+        self.vaultRequest = request
         self.color = color
         self.width = width
         self.completion = completion
     }
 
     public var body: some View {
+        let clampedWidth = min(max(width ?? 300, 131), 300)
         PaymentButtonView(
             color: color ?? .blue,
-            width: width,
+            width: clampedWidth,
             logoHeight: 24,
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
