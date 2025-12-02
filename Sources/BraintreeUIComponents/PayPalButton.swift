@@ -11,8 +11,11 @@ import BraintreeCore
 /// PayPal payment button. Available in the colors PayPal blue, black, and white.
 public struct PayPalButton: View {
 
-    /// Client token or tokenization key
+    /// A valid client token or tokenization key used to authorize API calls.
     let authKey: String
+
+    /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
+    let universalLink: URL
 
     /// The PayPal Checkout request.
     let checkoutRequest: BTPayPalCheckoutRequest?
@@ -33,13 +36,13 @@ public struct PayPalButton: View {
 
     /// Creates a PayPal Checkout payment button.
     /// - Parameters:
-    ///  - request: Optional. The PayPal Checkout request.
+    ///  - checkoutRequest: Optional. The PayPal Checkout request.
     ///  - authKey: Required. A valid client token or tokenization key used to authorize API calls.
+    ///  - universalLink: Required.  The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        authKey: String,
         request: BTPayPalCheckoutRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
@@ -47,7 +50,6 @@ public struct PayPalButton: View {
     ) {
         self.checkoutRequest = request
         self.vaultRequest = nil
-        self.authKey = authKey
         self.color = color
         self.width = width
         self.completion = completion
@@ -60,7 +62,6 @@ public struct PayPalButton: View {
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        authKey: String,
         request: BTPayPalVaultRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
@@ -68,7 +69,6 @@ public struct PayPalButton: View {
     ) {
         self.checkoutRequest = nil
         self.vaultRequest = request
-        self.authKey = authKey
         self.color = color
         self.width = width
         self.completion = completion
@@ -83,39 +83,20 @@ public struct PayPalButton: View {
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
         ) {
-            invokePayPalFlow(authorization: authKey)
-        }
-    }
-
-    private func invokePayPalFlow(authorization: String) {
-        if let checkoutRequest = checkoutRequest {
-            let payPalClient = BTPayPalClient(authorization: authKey)
-            payPalClient.tokenize(checkoutRequest) { nonce, error in
-                completion(nonce, error)
-            }
-        } else if let vaultRequest = vaultRequest {
-            let payPalClient = BTPayPalClient(authorization: authKey)
-            payPalClient.tokenize(vaultRequest) { nonce, error in
-                completion(nonce, error)
-            }
+            // TODO: Implement PayPal flow when button is tapped
         }
     }
 }
 
 struct PayPalButton_Previews: PreviewProvider {
-
+    
     static var previews: some View {
         VStack {
             // Blue Button. Defaults to primary, width 300
-            PayPalButton(
-                authKey: "auth-key",
-                request: BTPayPalCheckoutRequest(amount: "10"),
-                completion: PayPalButton_Previews.closure
-            )
-
+            PayPalButton(request: BTPayPalCheckoutRequest(amount: "10"), completion: PayPalButton_Previews.closure)
+            
             // Black Button. Respects maximum width
             PayPalButton(
-                authKey: "auth-key",
                 request: BTPayPalVaultRequest(enablePayPalAppSwitch: true),
                 color: .black,
                 width: 350,
@@ -124,7 +105,6 @@ struct PayPalButton_Previews: PreviewProvider {
             
             // White Button. Respects minimum width.
             PayPalButton(
-                authKey: "auth-key",
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 color: .white,
                 width: 100,
