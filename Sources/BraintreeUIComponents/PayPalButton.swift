@@ -12,7 +12,7 @@ import BraintreeCore
 public struct PayPalButton: View {
 
     /// Client token or tokenization key.
-    let authKey: String
+    let authorization: String
 
     /// The PayPal Checkout request.
     let checkoutRequest: BTPayPalCheckoutRequest?
@@ -39,13 +39,13 @@ public struct PayPalButton: View {
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        authKey: String,
+        authorization: String,
         request: BTPayPalCheckoutRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.authKey = authKey
+        self.authorization = authorization
         self.checkoutRequest = request
         self.vaultRequest = nil
         self.color = color
@@ -60,13 +60,13 @@ public struct PayPalButton: View {
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        authKey: String,
+        authorization: String,
         request: BTPayPalVaultRequest,
         color: PayPalButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        self.authKey = authKey
+        self.authorization = authorization
         self.checkoutRequest = nil
         self.vaultRequest = request
         self.color = color
@@ -83,18 +83,18 @@ public struct PayPalButton: View {
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
         ) {
-            invokePayPalFlow(authorization: authKey)
+            invokePayPalFlow(authorization: authorization)
         }
     }
     
     private func invokePayPalFlow(authorization: String) {
         if let checkoutRequest = checkoutRequest {
-            let payPalClient = BTPayPalClient(authorization: authKey)
+            let payPalClient = BTPayPalClient(authorization: authorization)
             payPalClient.tokenize(checkoutRequest) { nonce, error in
                 completion(nonce, error)
             }
         } else if let vaultRequest = vaultRequest {
-            let payPalClient = BTPayPalClient(authorization: authKey)
+            let payPalClient = BTPayPalClient(authorization: authorization)
             payPalClient.tokenize(vaultRequest) { nonce, error in
                 completion(nonce, error)
             }
