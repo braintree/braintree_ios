@@ -80,7 +80,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
         }
 
         hostingController = UIHostingController(rootView: venmoButtonView)
-        guard let hostingController = hostingController else { return }
+        guard let hostingController else { return }
         
         addChild(hostingController)
 
