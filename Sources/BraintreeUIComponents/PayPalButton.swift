@@ -33,8 +33,8 @@ public struct PayPalButton: View {
 
     /// Creates a PayPal Checkout payment button.
     /// - Parameters:
-    ///  - authKey: Required. A valid client token or tokenization key.
-    ///  - request: Optional. The PayPal Checkout request.
+    ///  - authorization: Required. A valid client token or tokenization key.
+    ///  - request: Required. The PayPal Checkout request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
@@ -55,7 +55,8 @@ public struct PayPalButton: View {
 
     /// Creates a Vault PayPal payment button.
     /// - Parameters:
-    ///  - request: Optional. The PayPal Vault request.
+    ///  - authorization: Required. A valid client token or tokenization key.
+    ///  - request: Required. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
@@ -86,18 +87,24 @@ public struct PayPalButton: View {
             invokePayPalFlow(authorization: authorization)
         }
     }
-    
+
     private func invokePayPalFlow(authorization: String) {
+        let payPalClient = BTPayPalClient(authorization: authorization)
         if let checkoutRequest = checkoutRequest {
-            let payPalClient = BTPayPalClient(authorization: authorization)
             payPalClient.tokenize(checkoutRequest) { nonce, error in
                 completion(nonce, error)
             }
         } else if let vaultRequest = vaultRequest {
-            let payPalClient = BTPayPalClient(authorization: authorization)
             payPalClient.tokenize(vaultRequest) { nonce, error in
                 completion(nonce, error)
             }
+        } else {
+            let error = NSError(
+                domain: "PayPalButton",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "No PayPal request provided."]
+            )
+            completion(nil, error)
         }
     }
 }
@@ -108,14 +115,14 @@ struct PayPalButton_Previews: PreviewProvider {
         VStack {
             // Blue Button. Defaults to primary, width 300
             PayPalButton(
-                authKey: "auth-key",
+                authorization: "auth-key",
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 completion: PayPalButton_Previews.closure
             )
             
             // Black Button. Respects maximum width
             PayPalButton(
-                authKey: "auth-key",
+                authorization: "auth-key",
                 request: BTPayPalVaultRequest(enablePayPalAppSwitch: true),
                 color: .black,
                 width: 350,
@@ -124,7 +131,7 @@ struct PayPalButton_Previews: PreviewProvider {
             
             // White Button. Respects minimum width.
             PayPalButton(
-                authKey: "auth-key",
+                authorization: "auth-key",
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 color: .white,
                 width: 100,
