@@ -89,10 +89,10 @@ class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
             width: 300
         ) { [weak self] nonce, error in
             DispatchQueue.main.async {
-                if let nonce = nonce {
+                if let nonce {
                     self?.progressBlock("Got a nonce 💎!")
                     self?.completionBlock(nonce)
-                } else if let error = error {
+                } else if let error {
                     if error as? BTVenmoError == .canceled {
                         self?.progressBlock("Canceled 🔰")
                     } else {
