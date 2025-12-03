@@ -3,7 +3,7 @@ import SwiftUI
 import BraintreeUIComponents
 import BraintreeVenmo
 
-class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
+class PaymentButtonViewController: PaymentButtonBaseViewController {
 
     private var hostingController: UIHostingController<VenmoButton>?
     private var selectedColor: VenmoButtonColor = .blue
@@ -11,7 +11,7 @@ class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Venmo Payment Button"
+        title = "Payment Buttons"
         view.backgroundColor = .systemBackground
 
         setupColorSelector()
@@ -31,19 +31,6 @@ class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
             colorSegmentedControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -80),
             colorSegmentedControl.widthAnchor.constraint(equalToConstant: 250)
         ])
-
-        let colorLabel = UILabel()
-        colorLabel.text = "Button Color:"
-        colorLabel.textAlignment = .center
-        colorLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        colorLabel.textColor = .label
-        colorLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(colorLabel)
-        
-        NSLayoutConstraint.activate([
-            colorLabel.centerXAnchor.constraint(equalTo: colorSegmentedControl.centerXAnchor),
-            colorLabel.bottomAnchor.constraint(equalTo: colorSegmentedControl.topAnchor, constant: -10)
-        ])
     }
     
     @objc private func colorChanged(_ sender: UISegmentedControl) {
@@ -58,26 +45,10 @@ class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
             selectedColor = .blue
         }
 
-        createVenmoButton()
+        setupVenmoButton()
     }
     
     private func setupVenmoButton() {
-        let descriptionLabel = UILabel()
-        descriptionLabel.text = "VenmoButton from BraintreeUIComponents"
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descriptionLabel)
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            descriptionLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20)
-        ])
-        
-        createVenmoButton()
-    }
-    
-    private func createVenmoButton() {
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .singleUse)
 
         let venmoButtonView = VenmoButton(
