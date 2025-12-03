@@ -1,7 +1,7 @@
 import UIKit
+import SwiftUI
 import BraintreeUIComponents
 import BraintreeVenmo
-import SwiftUI
 
 class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
 
