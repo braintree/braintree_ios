@@ -29,6 +29,9 @@ public struct VenmoButton: View {
     /// The completion handler to handle Venmo tokenize request success or failure
     let completion: (BTVenmoAccountNonce?, Error?) -> Void
 
+    /// private BTAPIClient to send analytic events
+    private let apiClient: BTAPIClient?
+
     // MARK: - Initializer
 
     /// Creates a Venmo button
@@ -53,6 +56,7 @@ public struct VenmoButton: View {
         self.color = color
         self.width = width
         self.completion = completion
+        self.apiClient = BTAPIClient(authorization: authentication)
     }
     public var body: some View {
         PaymentButtonView(
@@ -62,13 +66,17 @@ public struct VenmoButton: View {
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo"
         ) {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonClicked)
             invokeVenmoFlow()
+        }
+        .onAppear {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonShown)
         }
     }
 
     private func invokeVenmoFlow() {
         let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
-        
+
         venmoClient.tokenize(request) { nonce, error in
             self.completion(nonce, error)
         }
