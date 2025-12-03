@@ -3,20 +3,10 @@ import BraintreeUIComponents
 import BraintreeVenmo
 import SwiftUI
 
-class VenmoPaymentButtonViewController: BaseViewController {
+class VenmoPaymentButtonViewController: PaymentButtonBaseViewController {
 
-    let authorization: String
     private var hostingController: UIHostingController<VenmoButton>?
-    private var currentColor: VenmoButtonColor = .blue
-
-    override init(authorization: String) {
-        self.authorization = authorization
-        super.init(authorization: authorization)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var selectedColor: VenmoButtonColor = .blue
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,13 +49,13 @@ class VenmoPaymentButtonViewController: BaseViewController {
     @objc private func colorChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            currentColor = .blue
+            selectedColor = .blue
         case 1:
-            currentColor = .black
+            selectedColor = .black
         case 2:
-            currentColor = .white
+            selectedColor = .white
         default:
-            currentColor = .blue
+            selectedColor = .blue
         }
 
         createVenmoButton()
@@ -95,7 +85,7 @@ class VenmoPaymentButtonViewController: BaseViewController {
             // swiftlint:disable:next force_unwrapping
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
             request: venmoRequest,
-            color: currentColor,
+            color: selectedColor,
             width: 300
         ) { [weak self] nonce, error in
             DispatchQueue.main.async {
