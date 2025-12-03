@@ -90,11 +90,11 @@ public struct PayPalButton: View {
 
     private func invokePayPalFlow(authorization: String) {
         let payPalClient = BTPayPalClient(authorization: authorization)
-        if let checkoutRequest = checkoutRequest {
+        if let checkoutRequest {
             payPalClient.tokenize(checkoutRequest) { nonce, error in
                 completion(nonce, error)
             }
-        } else if let vaultRequest = vaultRequest {
+        } else if let vaultRequest {
             payPalClient.tokenize(vaultRequest) { nonce, error in
                 completion(nonce, error)
             }
