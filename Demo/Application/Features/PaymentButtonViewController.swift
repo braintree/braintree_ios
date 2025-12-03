@@ -34,15 +34,15 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     }
     
     @objc private func colorChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
+        selectedColor = switch sender.selectedSegmentIndex {
         case 0:
-            selectedColor = .blue
+            .blue
         case 1:
-            selectedColor = .black
+            .black
         case 2:
-            selectedColor = .white
+            .white
         default:
-            selectedColor = .blue
+            .blue
         }
 
         setupVenmoButton()
@@ -57,22 +57,9 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
             request: venmoRequest,
             color: selectedColor,
-            width: 300
-        ) { [weak self] nonce, error in
-            DispatchQueue.main.async {
-                if let nonce {
-                    self?.progressBlock("Got a nonce 💎!")
-                    self?.completionBlock(nonce)
-                } else if let error {
-                    if error as? BTVenmoError == .canceled {
-                        self?.progressBlock("Canceled 🔰")
-                    } else {
-                        self?.progressBlock(error.localizedDescription)
-                    }
-                }
-            }
-        }
-
+            width: 300,
+            completion: venmoCompletionHandler
+        )
         if let existingHostingController = hostingController {
             existingHostingController.willMove(toParent: nil)
             existingHostingController.view.removeFromSuperview()
@@ -96,5 +83,20 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
         ])
         
         hostingController.didMove(toParent: self)
+    }
+
+    private func venmoCompletionHandler(nonce: BTVenmoAccountNonce?, error: Error?) {
+        DispatchQueue.main.async { [weak self] in
+            if let nonce {
+                self?.progressBlock("Got a nonce 💎!")
+                self?.completionBlock(nonce)
+            } else if let error {
+                if error as? BTVenmoError == .canceled {
+                    self?.progressBlock("Canceled 🔰")
+                } else {
+                    self?.progressBlock(error.localizedDescription)
+                }
+            }
+        }
     }
 }
