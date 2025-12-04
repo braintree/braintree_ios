@@ -3,7 +3,7 @@
 ## unreleased
 * BraintreeUIComponents
   * Add BraintreeUIComponents module
-  * Add `PayPalButton(request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
+  * Add `PayPalButton(authorization:request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
   * Add `VenmoButton(authentication:universalLink:request:color:width:completion:)` to generate a Venmo-branded button for launching Venmo flow
 
 ## 7.1.0 (2025-11-20)
