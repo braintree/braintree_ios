@@ -1,8 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* PayPal
-  * Add optional `fallbackURLScheme` parameter to support custom URL scheme fallback in PayPal App Switch
+* BraintreePayPal
+  * Add optional `fallbackURLScheme` parameter to `BTPayPalClient` to support custom URL scheme fallback in PayPal App Switch flow
 
 ## 7.1.0 (2025-11-20)
 * BraintreeThreeDSecure

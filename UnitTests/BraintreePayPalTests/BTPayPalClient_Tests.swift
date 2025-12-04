@@ -1441,7 +1441,7 @@ class BTPayPalClient_Tests: XCTestCase {
         )
         BTPayPalClient.payPalClient = client
         
-        let url = URL(string: "myapp://braintreeAppSwitchPayPal/success?token=test")!
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
         XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
         
         BTPayPalClient.payPalClient = nil
@@ -1468,7 +1468,7 @@ class BTPayPalClient_Tests: XCTestCase {
         )
         BTPayPalClient.payPalClient = client
         
-        let url = URL(string: "myapp://braintreeAppSwitchPayPal/success?token=test")!
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
         XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
         
         BTPayPalClient.payPalClient = nil

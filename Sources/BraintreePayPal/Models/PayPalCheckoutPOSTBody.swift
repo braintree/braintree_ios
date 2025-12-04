@@ -149,10 +149,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
-            
-            if let fallbackURLScheme {
-                self.fallbackURLScheme = fallbackURLScheme
-            }
+            self.fallbackURLScheme = fallbackURLScheme
         }
     }
     

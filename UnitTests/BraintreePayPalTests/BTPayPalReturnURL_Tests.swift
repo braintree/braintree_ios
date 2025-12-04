@@ -51,7 +51,7 @@ final class BTPayPalReturnURL_Tests: XCTestCase {
     }
     
     func testIsValid_withCustomScheme_andFallbackURLScheme_returnsTrue() {
-        let url = URL(string: "myapp://braintreeAppSwitchPayPal/success?token=test")!
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
         XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
     }
     
@@ -66,7 +66,7 @@ final class BTPayPalReturnURL_Tests: XCTestCase {
     }
     
     func testIsValid_withCustomScheme_andAppSwitchPath_andFallbackURLScheme_returnsTrue() {
-        let url = URL(string: "myapp://braintreeAppSwitchPayPal/success?token=test")!
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
         XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
     }
     
@@ -81,7 +81,7 @@ final class BTPayPalReturnURL_Tests: XCTestCase {
     }
     
     func testIsValid_withCustomScheme_withCancelPath_returnsTrue() {
-        let url = URL(string: "myapp://braintreeAppSwitchPayPal/cancel?token=test")!
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/cancel?token=test")!
         XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
     }
     

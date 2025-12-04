@@ -43,7 +43,7 @@ struct PayPalVaultPOSTBody: Encodable {
         self.merchantAccountID = payPalRequest.merchantAccountID
         self.riskCorrelationID = payPalRequest.riskCorrelationID
         self.lineItems = payPalRequest.lineItems?.isEmpty == false ? payPalRequest.lineItems : nil
-        self.userAuthenticationEmail = payPalRequest.userAuthenticationEmail?.isEmpty == false ? payPalRequest.userAuthenticationEmail : nil
+        self.userAuthenticationEmail = payPalRequest.userAuthenticationEmail
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"

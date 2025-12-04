@@ -37,16 +37,22 @@ struct BTPayPalReturnURL {
 
     /// Evaluates whether the url represents a valid PayPal return URL.
     /// - Parameters:
-    ///   - url: an app switch or ASWebAuthenticationSession return URL
-    ///   - fallbackURLScheme: Optional fallback URL scheme to check against if universal link fails
-    /// - Returns: `true` if the url represents a valid PayPal app switch return
+    ///   - url: An App Switch or `ASWebAuthenticationSession` return URL.
+    ///   - fallbackURLScheme: Optional. A fallback URL scheme if the universal link fails.
+    /// - Returns: `true` if the url represents a valid PayPal app switch return.
     static func isValid(_ url: URL, fallbackURLScheme: String? = nil) -> Bool {
-        let isValidScheme = ["https", fallbackURLScheme].contains(url.scheme)
-        let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal") || fallbackURLScheme == url.scheme
-        let containsExpectedPath = url.path.contains("cancel") || url.path.contains("success")
-        let isValidAppSwitchURL = isValidScheme && containsAppSwitchPath && containsExpectedPath
+        let containsExpectedPathAction = url.path.contains("cancel") || url.path.contains("success")
+        let containsAppSwitchPath = url.path.contains("braintreeAppSwitchPayPal")
         
-        return isValidAppSwitchURL
+        // Check for valid HTTPS universal link
+        let isHTTPSScheme = url.scheme == "https"
+        let isValidUniversalLink = isHTTPSScheme && containsAppSwitchPath && containsExpectedPathAction
+        
+        // Check for valid fallback URL scheme
+        let isFallbackURLScheme = fallbackURLScheme != nil && url.scheme == fallbackURLScheme
+        let isValidFallbackURL = isFallbackURLScheme && containsAppSwitchPath && containsExpectedPathAction
+        
+        return isValidUniversalLink || isValidFallbackURL
     }
 
     static func isValidURLAction(url: URL, didPayPalServerAttemptAppSwitch: Bool) -> Bool {
