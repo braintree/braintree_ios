@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
+		08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */; };
+		08A83F5B2EDF965E0076BD28 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
 		42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AD25FA66F9008B3681 /* AppDelegate.swift */; };
@@ -124,6 +126,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonViewController.swift; sourceTree = "<group>"; };
+		08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -210,6 +214,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08A83F5B2EDF965E0076BD28 /* BraintreeUIComponents.framework in Frameworks */,
 				45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */,
 				BE67CDC22B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Frameworks */,
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
@@ -347,6 +352,7 @@
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
 				BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */,
 				BEAAAA332A98E5E6001ECA63 /* IdealViewController.swift */,
+				08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */,
 				BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
@@ -370,6 +376,7 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */,
 				8028B9772B28D42400C88CE8 /* BraintreeShopperInsights.framework */,
 				BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */,
 				BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */,
@@ -642,9 +649,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -686,6 +697,7 @@
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
+				08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */,
 				80D36DEE2A7967F20035380E /* VenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */,
 				BEBD52832AAB62FB005D6687 /* ApplePayViewController.swift in Sources */,
