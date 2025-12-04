@@ -2,11 +2,14 @@ import UIKit
 import SwiftUI
 import BraintreeUIComponents
 import BraintreeVenmo
+import BraintreePayPal
 
 class PaymentButtonViewController: PaymentButtonBaseViewController {
 
-    private var hostingController: UIHostingController<VenmoButton>?
-    private var selectedColor: VenmoButtonColor = .blue
+    private var hostingVenmoController: UIHostingController<VenmoButton>?
+    private var hostingPayPalController: UIHostingController<PayPalButton>?
+    private var selectedVenmoColor: VenmoButtonColor = .blue
+    private var selectedPayPalColor: PayPalButtonColor = .blue
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,40 +17,56 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
         title = "Payment Buttons"
         view.backgroundColor = .systemBackground
 
-        setupColorSelector()
+        setupColorSelector(for: .paypal, verticalOffset: -30)
+        setupColorSelector(for: .venmo, verticalOffset: -160)
         setupVenmoButton()
+        setupPayPalButton()
     }
-    
-    private func setupColorSelector() {
-        let colorSegmentedControl = UISegmentedControl(items: ["Blue", "Black", "White"])
-        colorSegmentedControl.selectedSegmentIndex = 0
-        colorSegmentedControl.addTarget(self, action: #selector(colorChanged(_:)), for: .valueChanged)
-        colorSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+
+    enum PaymentButtonType {
+        case venmo
+        case paypal
+    }
+
+    private func setupColorSelector(for buttonType: PaymentButtonType, verticalOffset: CGFloat) {
+        let segmentedControl = UISegmentedControl(items: ["Blue", "Black", "White"])
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(colorSegmentedControl)
-        
+        segmentedControl.addAction(UIAction { [weak self] action in
+            guard let self = self, let sender = action.sender as? UISegmentedControl else { return }
+            self.colorChange(for: buttonType, selectedIndex: sender.selectedSegmentIndex)
+        }, for: .valueChanged)
+
+        view.addSubview(segmentedControl)
         NSLayoutConstraint.activate([
-            colorSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            colorSegmentedControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -80),
-            colorSegmentedControl.widthAnchor.constraint(equalToConstant: 250)
+            segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            segmentedControl.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: verticalOffset),
+            segmentedControl.widthAnchor.constraint(equalToConstant: 250)
         ])
     }
-    
-    @objc private func colorChanged(_ sender: UISegmentedControl) {
-        selectedColor = switch sender.selectedSegmentIndex {
-        case 0:
-            .blue
-        case 1:
-            .black
-        case 2:
-            .white
-        default:
-            .blue
-        }
 
-        setupVenmoButton()
+    private func colorChange(for buttonType: PaymentButtonType, selectedIndex: Int) {
+        switch buttonType {
+        case .venmo:
+            switch selectedIndex {
+            case 0: selectedVenmoColor = .blue
+            case 1: selectedVenmoColor = .black
+            case 2: selectedVenmoColor = .white
+            default: selectedVenmoColor = .blue
+            }
+            setupVenmoButton()
+        case .paypal:
+            switch selectedIndex {
+            case 0: selectedPayPalColor = .blue
+            case 1: selectedPayPalColor = .black
+            case 2: selectedPayPalColor = .white
+            default: selectedPayPalColor = .blue
+            }
+            setupPayPalButton()
+        }
     }
-    
+
     private func setupVenmoButton() {
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .singleUse)
 
@@ -56,33 +75,34 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             // swiftlint:disable:next force_unwrapping
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
             request: venmoRequest,
-            color: selectedColor,
+            color: selectedVenmoColor,
             width: 300,
             completion: venmoCompletionHandler
         )
-        if let existingHostingController = hostingController {
+
+        if let existingHostingController = hostingVenmoController {
             existingHostingController.willMove(toParent: nil)
             existingHostingController.view.removeFromSuperview()
             existingHostingController.removeFromParent()
         }
 
-        hostingController = UIHostingController(rootView: venmoButtonView)
-        guard let hostingController else { return }
-        
-        addChild(hostingController)
+        hostingVenmoController = UIHostingController(rootView: venmoButtonView)
+        guard let hostingVenmoController else { return }
 
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostingController.view.backgroundColor = .clear
-        view.addSubview(hostingController.view)
+        addChild(hostingVenmoController)
+
+        hostingVenmoController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostingVenmoController.view.backgroundColor = .clear
+        view.addSubview(hostingVenmoController.view)
 
         NSLayoutConstraint.activate([
-            hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20),
-            hostingController.view.widthAnchor.constraint(equalToConstant: 300),
-            hostingController.view.heightAnchor.constraint(equalToConstant: 45)
+            hostingVenmoController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            hostingVenmoController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 20),
+            hostingVenmoController.view.widthAnchor.constraint(equalToConstant: 300),
+            hostingVenmoController.view.heightAnchor.constraint(equalToConstant: 45)
         ])
-        
-        hostingController.didMove(toParent: self)
+
+        hostingVenmoController.didMove(toParent: self)
     }
 
     private func venmoCompletionHandler(nonce: BTVenmoAccountNonce?, error: Error?) {
@@ -92,6 +112,57 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
                 self?.completionBlock(nonce)
             } else if let error {
                 if error as? BTVenmoError == .canceled {
+                    self?.progressBlock("Canceled 🔰")
+                } else {
+                    self?.progressBlock(error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    private func setupPayPalButton() {
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+
+        let paypalButtonView = PayPalButton(
+            authorization: authorization,
+            request: paypalRequest,
+            color: selectedPayPalColor,
+            width: 300,
+            completion: paypalCompletionHandler(nonce:error:)
+        )
+
+        if let existingHostingController = hostingPayPalController {
+            existingHostingController.willMove(toParent: nil)
+            existingHostingController.view.removeFromSuperview()
+            existingHostingController.removeFromParent()
+        }
+
+        hostingPayPalController = UIHostingController(rootView: paypalButtonView)
+        guard let hostingPayPalController else { return }
+        
+        addChild(hostingPayPalController)
+
+        hostingPayPalController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostingPayPalController.view.backgroundColor = .clear
+        view.addSubview(hostingPayPalController.view)
+
+        NSLayoutConstraint.activate([
+            hostingPayPalController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            hostingPayPalController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120),
+            hostingPayPalController.view.widthAnchor.constraint(equalToConstant: 300),
+            hostingPayPalController.view.heightAnchor.constraint(equalToConstant: 45)
+        ])
+
+        hostingPayPalController.didMove(toParent: self)
+    }
+
+    private func paypalCompletionHandler(nonce: BTPayPalAccountNonce?, error: Error?) {
+        DispatchQueue.main.async { [weak self] in
+            if let nonce {
+                self?.progressBlock("Got a nonce 💎!")
+                self?.completionBlock(nonce)
+            } else if let error {
+                if error as? BTPayPalError == .canceled {
                     self?.progressBlock("Canceled 🔰")
                 } else {
                     self?.progressBlock(error.localizedDescription)
