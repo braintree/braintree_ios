@@ -99,12 +99,7 @@ public struct PayPalButton: View {
                 completion(nonce, error)
             }
         } else {
-            let error = NSError(
-                domain: "PayPalButton",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "No PayPal request provided."]
-            )
-            completion(nil, error)
+            completion(nil, BTPayPalError.missingPayPalRequest)
         }
     }
 }
