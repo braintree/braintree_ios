@@ -98,7 +98,12 @@ public struct PayPalButton: View {
     }
 
     private func invokePayPalFlow(authorization: String) {
-        let payPalClient = BTPayPalClient(authorization: authorization)
+        guard let apiClient = apiClient else {
+            completion(nil, BTAPIClientError.deallocated)
+            return
+        }
+
+        let payPalClient = BTPayPalClient(apiClient: apiClient)
         if let checkoutRequest {
             payPalClient.tokenize(checkoutRequest) { nonce, error in
                 completion(nonce, error)

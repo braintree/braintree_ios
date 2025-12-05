@@ -75,7 +75,12 @@ public struct VenmoButton: View {
     }
 
     private func invokeVenmoFlow() {
-        let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
+        guard let apiClient = apiClient else {
+            completion(nil, BTAPIClientError.deallocated)
+            return
+        }
+
+        let venmoClient = BTVenmoClient(apiClient: apiClient, universalLink: universalLink)
 
         venmoClient.tokenize(request) { nonce, error in
             self.completion(nonce, error)
