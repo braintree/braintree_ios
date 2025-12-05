@@ -13,7 +13,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         title = "Payment Buttons"
         view.backgroundColor = .systemBackground
 
@@ -32,11 +32,12 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
         let segmentedControl = UISegmentedControl(items: ["Blue", "Black", "White"])
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        
-        segmentedControl.addAction(UIAction { [weak self] action in
-            guard let self = self, let sender = action.sender as? UISegmentedControl else { return }
-            self.colorChange(for: buttonType, selectedIndex: sender.selectedSegmentIndex)
-        }, for: .valueChanged)
+
+        segmentedControl.addAction(
+            UIAction { [weak self] action in
+                guard let self = self, let sender = action.sender as? UISegmentedControl else { return }
+                self.colorChange(for: buttonType, selectedIndex: sender.selectedSegmentIndex)
+            }, for: .valueChanged)
 
         view.addSubview(segmentedControl)
         NSLayoutConstraint.activate([
@@ -139,7 +140,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
 
         hostingPayPalController = UIHostingController(rootView: paypalButtonView)
         guard let hostingPayPalController else { return }
-        
+
         addChild(hostingPayPalController)
 
         hostingPayPalController.view.translatesAutoresizingMaskIntoConstraints = false
