@@ -89,11 +89,11 @@ public struct PayPalButton: View {
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
         ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.paypalButtonClicked)
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.paypalButtonSelected)
             invokePayPalFlow(authorization: authorization)
         }
         .onAppear {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.paypalButtonShown)
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.paypalButtonPresented)
         }
     }
 

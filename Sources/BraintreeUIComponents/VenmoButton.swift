@@ -66,11 +66,11 @@ public struct VenmoButton: View {
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo"
         ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonClicked)
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
             invokeVenmoFlow()
         }
         .onAppear {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonShown)
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
         }
     }
 
