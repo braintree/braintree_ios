@@ -12,7 +12,7 @@ import BraintreeVenmo
 public struct VenmoButton: View {
 
     /// Braintree client token or tokenization key
-    let authentication: String
+    let authorization: String
 
     /// The Venmo request
     let request: BTVenmoRequest
@@ -29,30 +29,34 @@ public struct VenmoButton: View {
     /// The completion handler to handle Venmo tokenize request success or failure
     let completion: (BTVenmoAccountNonce?, Error?) -> Void
 
+    /// private BTAPIClient to send analytic events
+    private let apiClient: BTAPIClient?
+
     // MARK: - Initializer
 
     /// Creates a Venmo button
     /// - Parameters:
-    ///   - authentication: Required. A Braintree client token or  tokenization key.
+    ///   - authorization: Required. A Braintree client token or  tokenization key.
     ///   - universalLink: Required. The URL for the Venmo app to redirect to after user authentication completes.
     ///   - request: Required. A Venmo request.
     ///   - color: Optional. The desired button color with corresponding Venmo logo. Defaults to `.blue`.
     ///   - width: Optional. The width of the button. Defaults to 300px.
     ///   - completion: The completion handler to handle Venmo tokenize request success or failure on button press
     public init(
-        authentication: String,
+        authorization: String,
         universalLink: URL,
         request: BTVenmoRequest,
         color: VenmoButtonColor? = .blue,
         width: CGFloat? = 300,
         completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void
     ) {
-        self.authentication = authentication
+        self.authorization = authorization
         self.universalLink = universalLink
         self.request = request
         self.color = color
         self.width = width
         self.completion = completion
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
     public var body: some View {
         PaymentButtonView(
@@ -62,13 +66,17 @@ public struct VenmoButton: View {
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo"
         ) {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
             invokeVenmoFlow()
+        }
+        .onAppear {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
         }
     }
 
     private func invokeVenmoFlow() {
-        let venmoClient = BTVenmoClient(authorization: authentication, universalLink: universalLink)
-        
+        let venmoClient = BTVenmoClient(authorization: authorization, universalLink: universalLink)
+
         venmoClient.tokenize(request) { nonce, error in
             self.completion(nonce, error)
         }
@@ -80,14 +88,14 @@ struct VenmoButton_Previews: PreviewProvider {
         VStack {
             // defaults to primary, width 300
             VenmoButton(
-                authentication: "auth-key-goes-here",
+                authorization: "auth-key-goes-here",
                 universalLink: testURL(),
                 request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 completion: VenmoButton_Previews.closure
             )
 
             VenmoButton(
-                authentication: "auth-key-goes-here",
+                authorization: "auth-key-goes-here",
                 universalLink: testURL(),
                 request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .black,
@@ -96,7 +104,7 @@ struct VenmoButton_Previews: PreviewProvider {
             )
             // respects minimum width boundary
             VenmoButton(
-                authentication: "auth-key-goes-here",
+                authorization: "auth-key-goes-here",
                 universalLink: testURL(),
                 request: BTVenmoRequest(paymentMethodUsage: .singleUse),
                 color: .white,

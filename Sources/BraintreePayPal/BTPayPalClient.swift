@@ -105,7 +105,7 @@ import BraintreeDataCollector
     @objc(initWithAuthorization:universalLink:)
     public convenience init(authorization: String, universalLink: URL) {
         self.init(authorization: authorization)
-        
+
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchPayPal")
