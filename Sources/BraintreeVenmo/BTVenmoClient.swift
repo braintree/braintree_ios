@@ -59,6 +59,7 @@ import BraintreeCore
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
 
         self.apiClient = BTAPIClient(authorization: authorization)
+        
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchVenmo")
