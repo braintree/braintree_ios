@@ -29,11 +29,30 @@ final class BTClientMetadata_Tests: XCTestCase {
         XCTAssertEqual(metadata.sessionID.count, 32)
     }
 
-    func testSessionID_shouldBeDifferent_whenAnotherMetadataInstance() {
-        let metdataOne = BTClientMetadata()
-        let metdataTwo = BTClientMetadata()
+    func testSessionID_shouldBeShared_whenAnotherMetadataInstance() {
+        BTSessionManager.shared.resetSession()
 
-        XCTAssertNotEqual(metdataOne.sessionID, metdataTwo.sessionID)
+        let metadataOne = BTClientMetadata()
+        let metadataTwo = BTClientMetadata()
+
+        XCTAssertEqual(metadataOne.sessionID, metadataTwo.sessionID)
+    }
+
+    func testSessionID_shouldBeDifferent_afterReset() {
+        // Reset to ensure we start fresh
+        BTSessionManager.shared.resetSession()
+
+        let metadataOne = BTClientMetadata()
+        let firstSessionID = metadataOne.sessionID
+
+        // Reset the session
+        BTSessionManager.shared.resetSession()
+
+        let metadataTwo = BTClientMetadata()
+        let secondSessionID = metadataTwo.sessionID
+
+        // After reset, a new session ID should be generated
+        XCTAssertNotEqual(firstSessionID, secondSessionID)
     }
 
     func testMetadata_init_containsExpectedDefaultValues() {
