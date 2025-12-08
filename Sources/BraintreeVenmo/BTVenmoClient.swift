@@ -59,21 +59,6 @@ import BraintreeCore
         BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
 
         self.apiClient = BTAPIClient(authorization: authorization)
-
-        /// appending a PayPal app switch specific path to verify we are in the correct flow when
-        /// `canHandleReturnURL` is called
-        self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchVenmo")
-    }
-
-    /// Initialize a new Venmo client instance with an existing BTAPIClient. Used with UIComponent VenmoButton for passing along existing sessionID parameter
-    /// - Parameters:
-    ///   - apiClient: An existing BTAPIClient instance to use for API calls and analytics. Using the same apiClient ensures session ID continuity across analytics events.
-    ///   - universalLink: The URL for the Venmo app to redirect to after user authentication completes. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    public init(apiClient: BTAPIClient, universalLink: URL) {
-        BTAppContextSwitcher.sharedInstance.register(BTVenmoClient.self)
-
-        self.apiClient = apiClient
-
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchVenmo")

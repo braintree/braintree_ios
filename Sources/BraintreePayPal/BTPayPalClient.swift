@@ -97,23 +97,6 @@ import BraintreeDataCollector
         )
     }
 
-    /// Initialize a new PayPal client instance with an existing BTAPIClient. Used with UIComponent PayPalButton for passing along existing sessionID parameter
-    /// - Parameter apiClient: An existing BTAPIClient instance to use for API calls and analytics.
-    public init(apiClient: BTAPIClient) {
-        BTAppContextSwitcher.sharedInstance.register(BTPayPalClient.self)
-
-        self.apiClient = apiClient
-        self.webAuthenticationSession = BTWebAuthenticationSession()
-
-        super.init()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationDidBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
-    }
-
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:
     ///   - authorization: A valid client token or tokenization key used to authorize API calls.
