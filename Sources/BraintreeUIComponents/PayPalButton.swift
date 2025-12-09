@@ -29,6 +29,9 @@ public struct PayPalButton: View {
     /// The completion handler to handle PayPal tokenization request success or failure.
     let completion: (BTPayPalAccountNonce?, Error?) -> Void
 
+    /// private BTAPIClient to send analytic events
+    private let apiClient: BTAPIClient?
+
     // MARK: - Initializers
 
     /// Creates a PayPal Checkout payment button.
@@ -51,6 +54,7 @@ public struct PayPalButton: View {
         self.color = color
         self.width = width
         self.completion = completion
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     /// Creates a Vault PayPal payment button.
@@ -73,6 +77,7 @@ public struct PayPalButton: View {
         self.color = color
         self.width = width
         self.completion = completion
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     public var body: some View {
@@ -84,7 +89,11 @@ public struct PayPalButton: View {
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
         ) {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
             invokePayPalFlow(authorization: authorization)
+        }
+        .onAppear {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
         }
     }
 

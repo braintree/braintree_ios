@@ -52,7 +52,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .singleUse)
 
         let venmoButtonView = VenmoButton(
-            authentication: authorization,
+            authorization: authorization,
             // swiftlint:disable:next force_unwrapping
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
             request: venmoRequest,
