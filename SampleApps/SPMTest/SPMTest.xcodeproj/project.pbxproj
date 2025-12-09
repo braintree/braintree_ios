@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		45B2CA822C08D70E00FCCD4C /* BraintreePayPalMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 45B2CA812C08D70E00FCCD4C /* BraintreePayPalMessaging */; };
+		62CA3D752EE8A58F00BBDD2E /* BraintreeUIComponents in Frameworks */ = {isa = PBXBuildFile; productRef = 62CA3D742EE8A58F00BBDD2E /* BraintreeUIComponents */; };
 		80214E042551FB5A00695A6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E032551FB5A00695A6F /* AppDelegate.swift */; };
 		80214E062551FB5A00695A6F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E052551FB5A00695A6F /* SceneDelegate.swift */; };
 		80214E082551FB5A00695A6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80214E072551FB5A00695A6F /* ViewController.swift */; };
@@ -53,6 +54,7 @@
 				BE35FCDB2A1BD2EF008F0326 /* BraintreeLocalPayment in Frameworks */,
 				BE35FCE42A1C0885008F0326 /* BraintreeApplePay in Frameworks */,
 				BE35FCE62A1C0885008F0326 /* BraintreeCard in Frameworks */,
+				62CA3D752EE8A58F00BBDD2E /* BraintreeUIComponents in Frameworks */,
 				BE35FCF42A1C0885008F0326 /* BraintreeThreeDSecure in Frameworks */,
 				BE35FCF22A1C0885008F0326 /* BraintreeSEPADirectDebit in Frameworks */,
 				BE35FCEA2A1C0885008F0326 /* BraintreeDataCollector in Frameworks */,
@@ -140,6 +142,7 @@
 				BE35FCF32A1C0885008F0326 /* BraintreeThreeDSecure */,
 				BE35FCF52A1C0885008F0326 /* BraintreeVenmo */,
 				45B2CA812C08D70E00FCCD4C /* BraintreePayPalMessaging */,
+				62CA3D742EE8A58F00BBDD2E /* BraintreeUIComponents */,
 			);
 			productName = SPMTest;
 			productReference = 80214E002551FB5A00695A6F /* SPMTest.app */;
@@ -433,6 +436,10 @@
 		45B2CA812C08D70E00FCCD4C /* BraintreePayPalMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraintreePayPalMessaging;
+		};
+		62CA3D742EE8A58F00BBDD2E /* BraintreeUIComponents */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraintreeUIComponents;
 		};
 		BE35FCDA2A1BD2EF008F0326 /* BraintreeLocalPayment */ = {
 			isa = XCSwiftPackageProductDependency;
