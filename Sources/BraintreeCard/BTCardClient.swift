@@ -32,7 +32,6 @@ import BraintreeCore
     ///    `tokenize` will contain a nonce and `error` will be `nil`; if it fails, `tokenize` will be `nil` and `error`will describe the failure.
     @objc(tokenizeCard:completion:)
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
-        BTSessionManager.shared.reset()
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -192,6 +191,7 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
         completion(result, nil)
+        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTCardNonce?, Error?) -> Void) {

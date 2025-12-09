@@ -29,7 +29,6 @@ import BraintreeCore
     /// - Parameter completion: A completion block that returns the payment request or an error.
     @objc(makePaymentRequest:)
     public func makePaymentRequest(completion: @escaping (PKPaymentRequest?, Error?) -> Void) {
-        BTSessionManager.shared.reset()
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestStarted)
 
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
@@ -174,6 +173,7 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestSucceeded)
         completion(result, nil)
+        BTSessionManager.shared.reset()
     }
     
     private func notifyFailure(

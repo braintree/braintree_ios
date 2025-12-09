@@ -179,10 +179,8 @@ import BraintreeCore
             tokenize(request) { nonce, error in
                 if let error {
                     continuation.resume(throwing: error)
-                    BTSessionManager.shared.reset()
                 } else if let nonce {
                     continuation.resume(returning: nonce)
-                    BTSessionManager.shared.reset()
                 }
             }
         }
@@ -372,6 +370,7 @@ import BraintreeCore
             linkType: linkType
         )
         completion(result, nil)
+        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
