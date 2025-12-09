@@ -11,6 +11,7 @@ public class BTSessionManager {
     public static let shared = BTSessionManager()
 
     private var currentSessionID: String?
+    private let lock = NSLock()
 
     private init() {}
 
@@ -18,6 +19,9 @@ public class BTSessionManager {
 
     /// Checks for existing session ID. If a session ID doesn't exist, it creates one to be reused across a single customer session.
     public func getOrCreateSessionID() -> String {
+        lock.lock()
+        defer { lock.unlock() }
+
         if let existingSessionID = currentSessionID {
             return existingSessionID
         }
@@ -30,6 +34,8 @@ public class BTSessionManager {
     /// Resets the current session, forcing a new session ID to be generated on the next call.
     /// This is for internal/testing purposes and should not be called directly.
     public func reset() {
+        lock.lock()
+        defer { lock.unlock() }
         currentSessionID = nil
     }
 }
