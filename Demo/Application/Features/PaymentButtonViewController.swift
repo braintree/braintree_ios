@@ -65,7 +65,6 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
 
         // Setup color selector
         let segmentedControl = UISegmentedControl(items: ["Blue", "Black", "White"])
-        segmentedControl.selectedSegmentIndex = 0
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.addAction(
             UIAction { [weak self] action in
