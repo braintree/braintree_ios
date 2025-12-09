@@ -28,8 +28,8 @@ public class BTSessionManager {
     }
 
     /// Resets the current session, forcing a new session ID to be generated on the next call.
-    /// This is for testing purposes and should not be called directly.
-    public func resetSession() {
+    /// This is for internal/testing purposes and should not be called directly.
+    public func reset() {
         currentSessionID = nil
     }
 }

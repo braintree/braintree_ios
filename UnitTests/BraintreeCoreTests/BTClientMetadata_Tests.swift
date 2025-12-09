@@ -30,7 +30,7 @@ final class BTClientMetadata_Tests: XCTestCase {
     }
 
     func testSessionID_shouldBeShared_whenAnotherMetadataInstance() {
-        BTSessionManager.shared.resetSession()
+        BTSessionManager.shared.reset()
 
         let metadataOne = BTClientMetadata()
         let metadataTwo = BTClientMetadata()
@@ -39,14 +39,12 @@ final class BTClientMetadata_Tests: XCTestCase {
     }
 
     func testSessionID_shouldBeDifferent_afterReset() {
-        // Reset to ensure we start fresh
-        BTSessionManager.shared.resetSession()
+        BTSessionManager.shared.reset()
 
         let metadataOne = BTClientMetadata()
         let firstSessionID = metadataOne.sessionID
 
-        // Reset the session
-        BTSessionManager.shared.resetSession()
+        BTSessionManager.shared.reset()
 
         let metadataTwo = BTClientMetadata()
         let secondSessionID = metadataTwo.sessionID

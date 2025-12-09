@@ -57,6 +57,7 @@ import BraintreeDataCollector
     ///   - request: A `BTLocalPaymentRequest` request.
     ///   - completion: This completion will be invoked exactly once when the payment flow is complete or an error occurs.
     public func start(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+        BTSessionManager.shared.reset()
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
 
         self.request = request

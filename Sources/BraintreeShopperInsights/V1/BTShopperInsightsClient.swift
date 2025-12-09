@@ -47,6 +47,7 @@ public class BTShopperInsightsClient {
         request: BTShopperInsightsRequest,
         experiment: String? = nil
     ) async throws -> BTShopperInsightsResult {
+        BTSessionManager.shared.reset()
         apiClient.sendAnalyticsEvent(
             BTShopperInsightsAnalytics.recommendedPaymentsStarted,
             merchantExperiment: experiment,
