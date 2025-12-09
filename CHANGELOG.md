@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeCore
+  * Add `BTSessionManager` To manage the persisting of Session ID throughout a single checkout session
 * BraintreeUIComponents
   * Add BraintreeUIComponents module
   * Add `PayPalButton(authorization:request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
