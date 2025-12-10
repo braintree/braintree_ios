@@ -112,13 +112,13 @@ Xcode 15.0+ is required to run the demo app.
 
 ## Payment Buttons
 
-The Braintree iOS SDK now allows merchants to draw and render both PayPal and Venmo payment buttons using a discrete set of parameters. 
+The Braintree iOS SDK now allows merchants to draw and render both PayPal and Venmo payment buttons using a discrete set of parameters. The SDK will handle the loading and disable state of the button and allow you to display and offer buttons meeting the current brand guidelines versus maintaining responsibility on your own. We will call the `tokenize` methods with your request and allow you a seamless branded experience in your mobile apps.
 
 *Note:* Ensure you include the `BraintreeUIComponents` module in your project to use this feature.
 
 If you would like to draw a Venmo branded button in your mobile app, you can do so like this:
 
-```
+```swift
 import BraintreeUIComponents
 import BraintreeVenmo
         
@@ -126,7 +126,6 @@ let venmoRequest = BTVenmoRequest(paymentMethodUsage: .singleUse)
 
 let venmoButtonView = VenmoButton(
     authorization: authorization,
-    // swiftlint:disable:next force_unwrapping
     universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
     request: venmoRequest,
     color: .blue,
@@ -142,7 +141,7 @@ let venmoButtonView = VenmoButton(
 
 Similarly, if you would like to draw a PayPal branded button in your mobile app, you can do so like this:
 
-```
+```swift
 import BraintreeUIComponents
 import BraintreePayPal
         
