@@ -14,10 +14,11 @@ import BraintreeSEPADirectDebit
 import BraintreeUIComponents
 
 class ViewController: UIViewController {
-    private var hostingController: UIHostingController<VenmoButton>?
     
+    private var venmoHostingController: UIHostingController<VenmoButton>?
+    private var paypalHostingController: UIHostingController<PayPalButton>?
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
-
+    
     override func viewDidLoad() {
         let amexClient = BTAmericanExpressClient(authorization: authorization)
         let applePayClient = BTApplePayClient(authorization: authorization)
@@ -33,6 +34,7 @@ class ViewController: UIViewController {
         )
         let sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
         setupVenmoButton()
+        setupPayPalButton()
     }
     
     private func setupVenmoButton() {
@@ -42,26 +44,63 @@ class ViewController: UIViewController {
             authorization: authorization,
             universalLink: URL(string: "https://example.com")!,
             request: venmoRequest,
-            color: .blue,
+            color: .black,
             width: 300
         ) { nonce, error in
-            print("Button tapped")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else if let nonce = nonce {
+                print("Venmo Account Nonce: \(nonce)")
+            }
         }
         
-        hostingController = UIHostingController(rootView: venmoButton)
-        guard let hostingController else { return }
+        venmoHostingController = UIHostingController(rootView: venmoButton)
+        guard let venmoHostingController else { return }
         
-        addChild(hostingController)
-        view.addSubview(hostingController.view)
+        addChild(venmoHostingController)
+        view.addSubview(venmoHostingController.view)
         
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        venmoHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            hostingController.view.widthAnchor.constraint(equalToConstant: 300),
-            hostingController.view.heightAnchor.constraint(equalToConstant: 45)
+            venmoHostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            venmoHostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+            venmoHostingController.view.widthAnchor.constraint(equalToConstant: 300),
+            venmoHostingController.view.heightAnchor.constraint(equalToConstant: 45)
         ])
         
-        hostingController.didMove(toParent: self)
+        venmoHostingController.didMove(toParent: self)
+    }
+    
+    private func setupPayPalButton() {
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+        
+        let paypalButton = PayPalButton(
+            authorization: authorization,
+            request: paypalRequest,
+            color: .black,
+            width: 300
+        ) { (nonce, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else if let nonce = nonce {
+                print("PayPal Account Nonce: \(nonce)")
+            }
+        }
+        
+        paypalHostingController = UIHostingController(rootView: paypalButton)
+        guard let paypalHostingController else { return }
+        
+        addChild(paypalHostingController)
+        view.addSubview(paypalHostingController.view)
+        
+        paypalHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            paypalHostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            paypalHostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            paypalHostingController.view.widthAnchor.constraint(equalToConstant: 300),
+            paypalHostingController.view.heightAnchor.constraint(equalToConstant: 45)
+        ])
+        
+        paypalHostingController.didMove(toParent: self)
     }
 }
