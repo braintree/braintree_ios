@@ -10,10 +10,15 @@ import BraintreePayPalMessaging
 import BraintreeThreeDSecure
 import BraintreeVenmo
 import BraintreeSEPADirectDebit
+import BraintreeUIComponents
+import SwiftUI
+import UIKit
 
 class ViewController: UIViewController {
     
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
+    private var venmoHostingController: UIHostingController<VenmoButton>?
+    private var paypalHostingController: UIHostingController<PayPalButton>?
 
     override func viewDidLoad() {
         let amexClient = BTAmericanExpressClient(authorization: authorization)
@@ -29,6 +34,38 @@ class ViewController: UIViewController {
             universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
         )
         let sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
+        
+        // draw PayPal branded button
+        let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+        let paypalButton = PayPalButton(
+            authorization: authorization,
+            request: paypalRequest,
+            color: .black,
+            width: 300
+        ) { (nonce, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else if let nonce = nonce {
+                print("PayPal Account Nonce: \(nonce)")
+            }
+        }
+
+        
+        // draw Venmo branded button
+        let venmoRequest = BTVenmoRequest(paymentMethodUsage: .singleUse)
+        let venmoButton = VenmoButton(
+            authorization: authorization,
+            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
+            request: venmoRequest,
+            color: .blue,
+            width: 300
+        ) { (nonce, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else if let nonce = nonce {
+                print("Venmo Account Nonce: \(nonce)")
+            }
+        }
+
     }
 }
-
