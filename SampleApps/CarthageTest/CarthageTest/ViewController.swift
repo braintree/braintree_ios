@@ -49,7 +49,11 @@ class ViewController: UIViewController {
             color: .blue,
             width: 300
         ) { nonce, error in
-            print("Button tapped")
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            } else if let nonce = nonce {
+                print("Venmo Account Nonce: \(nonce)")
+            }
         }
         
         venmoHostingController = UIHostingController(rootView: venmoButton)
