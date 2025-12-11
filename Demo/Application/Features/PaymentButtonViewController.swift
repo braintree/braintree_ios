@@ -16,6 +16,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     private var paypalStackView: UIStackView?
     private var venmoStackView: UIStackView?
 
+    // swiftlint:disable:next overridden_super_call
     override func viewDidLoad() {
         UIViewController.instancesRespond(to: #selector(UIViewController.viewDidLoad))
 
