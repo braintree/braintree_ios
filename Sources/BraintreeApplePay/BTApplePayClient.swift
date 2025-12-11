@@ -173,7 +173,6 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestSucceeded)
         completion(result, nil)
-        BTSessionManager.shared.reset()
     }
     
     private func notifyFailure(

@@ -191,7 +191,6 @@ import BraintreeCore
     ) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
         completion(result, nil)
-        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTCardNonce?, Error?) -> Void) {

@@ -143,7 +143,6 @@ public class BTShopperInsightsClient {
             merchantExperiment: experiment,
             shopperSessionID: shopperSessionID
         )
-        BTSessionManager.shared.reset()
         return result
     }
     

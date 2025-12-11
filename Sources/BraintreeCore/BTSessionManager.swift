@@ -30,12 +30,4 @@ public class BTSessionManager {
         currentSessionID = newSessionID
         return newSessionID
     }
-
-    /// Resets the current session, forcing a new session ID to be generated on the next call.
-    /// This is for internal/testing purposes and should not be called directly.
-    public func reset() {
-        lock.lock()
-        defer { lock.unlock() }
-        currentSessionID = nil
-    }
 }

@@ -370,7 +370,6 @@ import BraintreeCore
             linkType: linkType
         )
         completion(result, nil)
-        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {

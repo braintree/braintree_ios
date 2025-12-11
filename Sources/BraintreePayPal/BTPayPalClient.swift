@@ -698,7 +698,6 @@ import BraintreeDataCollector
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(result, nil)
-        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {

@@ -30,27 +30,25 @@ final class BTClientMetadata_Tests: XCTestCase {
     }
 
     func testSessionID_shouldBeShared_whenAnotherMetadataInstance() {
-        BTSessionManager.shared.reset()
-
         let metadataOne = BTClientMetadata()
         let metadataTwo = BTClientMetadata()
 
         XCTAssertEqual(metadataOne.sessionID, metadataTwo.sessionID)
     }
 
-    func testSessionID_shouldBeDifferent_afterReset() {
-        BTSessionManager.shared.reset()
+    func testSessionID_shouldBeShared_whenNewAPIClientCreated() {
+        let paypalAPIClient = BTAPIClient(authorization: "sandbox_tokenization_key")
+        let paypalSessionID = paypalAPIClient.metadata.sessionID
 
-        let metadataOne = BTClientMetadata()
-        let firstSessionID = metadataOne.sessionID
+        let cardAPIClient = BTAPIClient(authorization: "sandbox_tokenization_key")
+        let cardSessionID = cardAPIClient.metadata.sessionID
 
-        BTSessionManager.shared.reset()
 
-        let metadataTwo = BTClientMetadata()
-        let secondSessionID = metadataTwo.sessionID
+        XCTAssertEqual(paypalSessionID, cardSessionID, "PayPal and Venmo should share the same session ID")
 
-        // After reset, a new session ID should be generated
-        XCTAssertNotEqual(firstSessionID, secondSessionID)
+        let sharedSessionID = BTSessionManager.shared.getOrCreateSessionID()
+        XCTAssertEqual(paypalSessionID, sharedSessionID, "PayPal should use the shared session ID")
+        XCTAssertEqual(cardSessionID, sharedSessionID, "Card should use the shared session ID")
     }
 
     func testMetadata_init_containsExpectedDefaultValues() {

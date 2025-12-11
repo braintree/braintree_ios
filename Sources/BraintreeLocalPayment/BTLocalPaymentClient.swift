@@ -247,7 +247,6 @@ import BraintreeDataCollector
     ) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded, contextID: contextID)
         completion(result, nil)
-        BTSessionManager.shared.reset()
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
