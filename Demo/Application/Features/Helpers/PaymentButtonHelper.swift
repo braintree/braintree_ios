@@ -1,6 +1,6 @@
 import Foundation
 
-enum PaymentButtonType {
-    case venmo
-    case paypal
+@objc enum PaymentButtonType: Int {
+    case venmo = 0
+    case paypal = 1
 }
