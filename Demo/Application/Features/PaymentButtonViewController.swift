@@ -12,6 +12,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     private var selectedVenmoColor: VenmoButtonColor = .blue
     private var selectedPayPalColor: PayPalButtonColor = .blue
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var buttonsStackView: UIStackView!
     private var payPalStackView: UIStackView?
     private var venmoStackView: UIStackView?
