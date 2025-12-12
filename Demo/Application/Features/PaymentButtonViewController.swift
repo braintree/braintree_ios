@@ -93,7 +93,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     // MARK: - UI Setup
 
     @objc
-    func colorChanged(_ sender: UISegmentedControl) {
+    func tappedColorSegment(_ sender: UISegmentedControl) {
         guard let buttonType = PaymentButtonType(rawValue: sender.tag) else { return }
         switch buttonType {
         case .venmo:
@@ -186,7 +186,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             }
         }
         
-        segmentedControl.addTarget(self, action: #selector(colorChanged(_:)), for: .valueChanged)
+        segmentedControl.addTarget(self, action: #selector(tappedColorSegment(_:)), for: .valueChanged)
 
         let hostingController = UIHostingController(rootView: buttonView)
         addChild(hostingController)
