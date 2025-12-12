@@ -12,34 +12,31 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     private var selectedVenmoColor: VenmoButtonColor = .blue
     private var selectedPayPalColor: PayPalButtonColor = .blue
 
-    private var buttonsStackView: UIStackView?
-    private var paypalStackView: UIStackView?
+    private var buttonsStackView: UIStackView!
+    private var payPalStackView: UIStackView?
     private var venmoStackView: UIStackView?
 
-    // swiftlint:disable:next overridden_super_call
     override func viewDidLoad() {
-        UIViewController.instancesRespond(to: #selector(UIViewController.viewDidLoad))
-
         title = "Payment Buttons"
-        view.backgroundColor = .systemBackground
-
-        setupPaymentButtons()
+        
+        super.heightConstraint = 250
+        super.viewDidLoad()
     }
 
     // MARK: - Setup PayPal Payment Button
 
     private func setupPayPalButton() -> UIView {
-        let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+        let payPalRequest = BTPayPalCheckoutRequest(amount: "10.00")
 
-        let paypalButtonView = PayPalButton(
+        let payPalButtonView = PayPalButton(
             authorization: authorization,
-            request: paypalRequest,
+            request: payPalRequest,
             color: selectedPayPalColor,
             width: 300,
             completion: payPalCompletionHandler(nonce:error:)
         )
 
-        return setupPaymentButtonSection(for: .paypal, buttonView: paypalButtonView)
+        return setupPaymentButtonSection(for: .payPal, buttonView: payPalButtonView)
     }
 
     private func payPalCompletionHandler(nonce: BTPayPalAccountNonce?, error: Error?) {
@@ -104,14 +101,14 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             default: .blue
             }
             updateButtonSection(for: .venmo)
-        case .paypal:
+        case .payPal:
             selectedPayPalColor = switch sender.selectedSegmentIndex {
             case 0: .blue
             case 1: .black
             case 2: .white
             default: .blue
             }
-            updateButtonSection(for: .paypal)
+            updateButtonSection(for: .payPal)
         }
     }
     
@@ -125,8 +122,8 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
                 mainStackView.removeArrangedSubview(oldStackView)
                 oldStackView.removeFromSuperview()
             }
-        case .paypal:
-            if let oldStackView = paypalStackView {
+        case .payPal:
+            if let oldStackView = payPalStackView {
                 mainStackView.removeArrangedSubview(oldStackView)
                 oldStackView.removeFromSuperview()
             }
@@ -139,9 +136,9 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             newStackView = setupVenmoButton()
             venmoStackView = newStackView as? UIStackView
             mainStackView.insertArrangedSubview(newStackView, at: 0)
-        case .paypal:
+        case .payPal:
             newStackView = setupPayPalButton()
-            paypalStackView = newStackView as? UIStackView
+            payPalStackView = newStackView as? UIStackView
             mainStackView.insertArrangedSubview(newStackView, at: 1)
         }
     }
@@ -157,7 +154,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
                 existing.view.removeFromSuperview()
                 existing.removeFromParent()
             }
-        case .paypal:
+        case .payPal:
             if let existing = hostingPayPalController {
                 existing.willMove(toParent: nil)
                 existing.view.removeFromSuperview()
@@ -177,7 +174,7 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
             case .white: 2
             default: 0
             }
-        case .paypal:
+        case .payPal:
             segmentedControl.selectedSegmentIndex = switch selectedPayPalColor {
             case .blue: 0
             case .black: 1
@@ -195,29 +192,23 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
 
         let stackView = UIStackView(arrangedSubviews: [segmentedControl, hostingController.view])
         stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 15
         return stackView
     }
 
-    private func setupPaymentButtons() {
+    override func createPaymentButton() -> UIView {
         venmoStackView = setupVenmoButton() as? UIStackView
-        paypalStackView = setupPayPalButton() as? UIStackView
+        payPalStackView = setupPayPalButton() as? UIStackView
         
-        let stackView = UIStackView(arrangedSubviews: [venmoStackView, paypalStackView].compactMap { $0 })
+        let stackView = UIStackView(arrangedSubviews: [venmoStackView, payPalStackView].compactMap { $0 })
         stackView.axis = .vertical
-        stackView.spacing = 50
+        stackView.spacing = 30
+        stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         
         buttonsStackView = stackView
-
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100)
-        ])
+        
+        return buttonsStackView
     }
 }
