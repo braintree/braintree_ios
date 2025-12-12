@@ -32,6 +32,12 @@ public struct VenmoButton: View {
     /// private BTAPIClient to send analytic events
     private let apiClient: BTAPIClient?
 
+    /// Loading state of button
+    @State private var isLoading: Bool = false
+
+    /// Rotation angle for spinner animation
+    @State private var spinnerRotation: Double = 0
+
     // MARK: - Initializer
 
     /// Creates a Venmo button
@@ -58,19 +64,44 @@ public struct VenmoButton: View {
         self.completion = completion
         self.apiClient = BTAPIClient(authorization: authorization)
     }
+
     public var body: some View {
         PaymentButtonView(
             color: color ?? .blue,
             width: width,
             logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
-            accessibilityHint: "Complete payment using Venmo"
-        ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
-            invokeVenmoFlow()
-        }
+            accessibilityHint: "Complete payment using Venmo",
+            action: {
+                apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
+                isLoading = true
+                spinnerRotation = 0
+                invokeVenmoFlow()
+            },
+            isDisabled: isLoading,
+            spinnerImageName: color?.spinnerColor,
+            isLoading: isLoading,
+            spinnerRotation: spinnerRotation
+        )
+        .id(isLoading)
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
+            isLoading = false
+        }
+        // Spinner animation
+        .onChange(of: isLoading) { _, loading in
+            if loading {
+                spinnerRotation = 0
+                withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    spinnerRotation = 360
+                }
+            }
+        }
+        // On app switch abandonment
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            if isLoading {
+                isLoading = false
+            }
         }
     }
 
@@ -78,7 +109,8 @@ public struct VenmoButton: View {
         let venmoClient = BTVenmoClient(authorization: authorization, universalLink: universalLink)
 
         venmoClient.tokenize(request) { nonce, error in
-            self.completion(nonce, error)
+            isLoading = false
+            completion(nonce, error)
         }
     }
 }

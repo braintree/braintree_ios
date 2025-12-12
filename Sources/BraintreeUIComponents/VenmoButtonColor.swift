@@ -59,4 +59,16 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
             return Color(hex: "#E9E9E9")
         }
     }
+
+    /// Spinner color when button is tapped
+    var spinnerColor: String? {
+        switch self {
+        case .blue:
+            return "SpinnerWhite"
+        case .black:
+            return "SpinnerWhite"
+        case .white:
+            return "SpinnerBlack"
+        }
+    }
 }

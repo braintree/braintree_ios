@@ -32,6 +32,12 @@ public struct PayPalButton: View {
     /// private BTAPIClient to send analytic events
     private let apiClient: BTAPIClient?
 
+    /// Loading state of button
+    @State private var isLoading: Bool = false
+
+    /// Rotation angle for spinner animation
+    @State private var spinnerRotation: Double = 0
+
     // MARK: - Initializers
 
     /// Creates a PayPal Checkout payment button.
@@ -88,12 +94,33 @@ public struct PayPalButton: View {
             logoHeight: 24,
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
-        ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
-            invokePayPalFlow(authorization: authorization)
-        }
+            action: {
+                apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
+                isLoading = true
+                spinnerRotation = 0
+                invokePayPalFlow(authorization: authorization)
+            },
+            isDisabled: isLoading,
+            spinnerImageName: color?.spinnerColor,
+            isLoading: isLoading,
+            spinnerRotation: spinnerRotation
+        )
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
+            isLoading = false // re-enable on app relaunch
+        }
+        // Spinner animation
+        .onChange(of: isLoading) { _, loading in
+            if loading {
+                spinnerRotation = 0
+                withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    spinnerRotation = 360
+                }
+            }
+        }
+        // On app switch abandonment and app relaunch
+        .onOpenURL { _ in
+            isLoading = false
         }
     }
 
@@ -101,13 +128,16 @@ public struct PayPalButton: View {
         let payPalClient = BTPayPalClient(authorization: authorization)
         if let checkoutRequest {
             payPalClient.tokenize(checkoutRequest) { nonce, error in
+                isLoading = false
                 completion(nonce, error)
             }
         } else if let vaultRequest {
             payPalClient.tokenize(vaultRequest) { nonce, error in
+                isLoading = false
                 completion(nonce, error)
             }
         } else {
+            isLoading = false
             completion(nil, BTPayPalError.missingPayPalRequest)
         }
     }

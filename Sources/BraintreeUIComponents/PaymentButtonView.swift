@@ -10,12 +10,26 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     let accessibilityLabel: String
     let accessibilityHint: String
     let action: () -> Void
+    let isDisabled: Bool
+    let spinnerImageName: String?
+    let isLoading: Bool
+    let spinnerRotation: Double
 
     var body: some View {
         Button(action: action) {
             EmptyView()
         }
-        .buttonStyle(PaymentButtonStyle(color: color, width: width, logoHeight: logoHeight))
+        .buttonStyle(
+            PaymentButtonStyle(
+                color: color,
+                width: width,
+                logoHeight: logoHeight,
+                spinnerImageName: spinnerImageName,
+                isLoading: isLoading,
+                spinnerRotation: spinnerRotation
+            )
+        )
+        .disabled(isDisabled)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }
