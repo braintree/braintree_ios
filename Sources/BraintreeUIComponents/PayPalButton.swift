@@ -110,7 +110,7 @@ public struct PayPalButton: View {
             isLoading = false // re-enable on app relaunch
         }
         // Spinner animation
-        .onChange(of: isLoading) { _, loading in
+        .onChange(of: isLoading) { loading in
             if loading {
                 spinnerRotation = 0
                 withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
