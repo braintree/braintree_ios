@@ -24,7 +24,7 @@ public class BTClientMetadata: Encodable {
 
     /// :nodoc: This property is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Auto-generated UUID
-    public var sessionID = BTSessionManager.shared.getOrCreateSessionID()
+    public var sessionID = BTSessionIDManager.shared.sessionID
 
     public var platform = "iOS"
     

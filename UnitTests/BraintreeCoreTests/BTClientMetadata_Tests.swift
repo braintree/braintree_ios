@@ -44,9 +44,9 @@ final class BTClientMetadata_Tests: XCTestCase {
         let cardSessionID = cardAPIClient.metadata.sessionID
 
 
-        XCTAssertEqual(paypalSessionID, cardSessionID, "PayPal and Venmo should share the same session ID")
+        XCTAssertEqual(paypalSessionID, cardSessionID, "PayPal and Card should share the same session ID")
 
-        let sharedSessionID = BTSessionManager.shared.getOrCreateSessionID()
+        let sharedSessionID = BTSessionIDManager.shared.sessionID
         XCTAssertEqual(paypalSessionID, sharedSessionID, "PayPal should use the shared session ID")
         XCTAssertEqual(cardSessionID, sharedSessionID, "Card should use the shared session ID")
     }
