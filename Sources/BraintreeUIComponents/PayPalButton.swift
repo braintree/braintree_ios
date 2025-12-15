@@ -112,7 +112,7 @@ public struct PayPalButton: View {
             isLoading = false // re-enable on app relaunch
         }
         // Spinner animation
-        .onChange(of: isLoading) { oldValue, newValue in
+        .onChange(of: isLoading) { _, newValue in
             if newValue {
                 spinnerRotation = 0
                 withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
@@ -128,7 +128,7 @@ public struct PayPalButton: View {
             }
         }
         // Ensure spinner is replaced with logo on app relaunch, abandonment, or universal web link flow abandonment
-        .onChange(of: scenePhase) { oldPhase, newPhase in
+        .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active && isLoading {
                 print("[PayPalButton] App became active via scenePhase, resetting isLoading to false")
                 isLoading = false
