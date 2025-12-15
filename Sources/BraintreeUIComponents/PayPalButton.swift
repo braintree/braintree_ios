@@ -38,6 +38,7 @@ public struct PayPalButton: View {
     /// Rotation angle for spinner animation
     @State private var spinnerRotation: Double = 0
 
+    /// The current phase of the system's scene - active, inactive, or background
     @Environment(\.scenePhase) private var scenePhase
 
     // MARK: - Initializers
@@ -106,7 +107,6 @@ public struct PayPalButton: View {
             spinnerRotation = 0
             invokePayPalFlow(authorization: authorization)
         }
-        .id(isLoading) // Force re-render when isLoading changes
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
             isLoading = false // re-enable on app relaunch
@@ -130,14 +130,12 @@ public struct PayPalButton: View {
         // Ensure spinner is replaced with logo on app relaunch, abandonment, or universal web link flow abandonment
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active && isLoading {
-                print("[PayPalButton] App became active via scenePhase, resetting isLoading to false")
                 isLoading = false
             }
         }
         // Additional listener for app foregrounding (more reliable when embedded in UIHostingController)
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             if isLoading {
-                print("[PayPalButton] App will enter foreground via notification, resetting isLoading to false")
                 isLoading = false
             }
         }
