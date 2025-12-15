@@ -76,13 +76,12 @@ public struct VenmoButton: View {
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
             spinnerRotation: spinnerRotation,
-            action: {
-                apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
-                isLoading = true
-                spinnerRotation = 0
-                invokeVenmoFlow()
-            }
-        )
+        ) {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
+            isLoading = true
+            spinnerRotation = 0
+            invokeVenmoFlow()
+        }
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
             isLoading = false
