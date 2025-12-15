@@ -94,16 +94,15 @@ public struct PayPalButton: View {
             logoHeight: 24,
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
-            action: {
-                apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
-                isLoading = true
-                spinnerRotation = 0
-                invokePayPalFlow(authorization: authorization)
-            },
             isDisabled: isLoading,
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
-            spinnerRotation: spinnerRotation
+            spinnerRotation: spinnerRotation,
+            action: { apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
+                isLoading = true
+                spinnerRotation = 0
+                invokePayPalFlow(authorization: authorization)
+            }
         )
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)

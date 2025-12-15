@@ -9,11 +9,11 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     let logoHeight: CGFloat
     let accessibilityLabel: String
     let accessibilityHint: String
-    let action: () -> Void
     let isDisabled: Bool
     let spinnerImageName: String?
     let isLoading: Bool
     let spinnerRotation: Double
+    let action: () -> Void
 
     var body: some View {
         Button(action: action) {
@@ -29,7 +29,7 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
                 spinnerRotation: spinnerRotation
             )
         )
-        .disabled(isDisabled)
+        .disabled(isLoading)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
     }

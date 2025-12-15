@@ -72,18 +72,17 @@ public struct VenmoButton: View {
             logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo",
+            isDisabled: isLoading,
+            spinnerImageName: color?.spinnerColor,
+            isLoading: isLoading,
+            spinnerRotation: spinnerRotation,
             action: {
                 apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
                 isLoading = true
                 spinnerRotation = 0
                 invokeVenmoFlow()
-            },
-            isDisabled: isLoading,
-            spinnerImageName: color?.spinnerColor,
-            isLoading: isLoading,
-            spinnerRotation: spinnerRotation
+            }
         )
-        .id(isLoading)
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
             isLoading = false
