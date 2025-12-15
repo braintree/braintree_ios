@@ -72,10 +72,6 @@ import BraintreeCore
 
             vaultParameters["shipping_address"] = shippingAddressParameters
         }
-        
-        if let fallbackURLScheme {
-            vaultParameters["merchant_app_fallback_url_scheme"] = fallbackURLScheme
-        }
 
         return baseParameters.merging(vaultParameters) { $1 }
     }
