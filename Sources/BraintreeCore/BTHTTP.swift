@@ -77,15 +77,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            get(path, configuration: configuration, parameters: parameters) { body, response, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (body, response))
-                }
-            }
-        }
+        try await httpRequest(
+            method: "GET",
+            path: path,
+            configuration: configuration,
+            parameters: parameters
+        )
     }
     
     func post(
@@ -116,15 +113,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         parameters: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            post(path, configuration: configuration, parameters: parameters, headers: headers) { body, response, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (body, response))
-                }
-            }
-        }
+        try await httpRequest(
+            method: "POST",
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers
+        )
     }
 
     // MARK: - HTTP Method Helpers
@@ -158,6 +153,50 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
             return
         }
+    }
+    
+    
+    func httpRequest(
+        method: String,
+        path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        let request = try createRequest(
+            method: method,
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers
+        )
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = createHTTPResponse(response: response) else {
+            throw BTHTTPError.httpResponseInvalid
+        }
+        guard let data = data as Data?, !data.isEmpty || httpResponse.statusCode == 204 else {
+            throw BTHTTPError.dataNotFound
+        }
+        if httpResponse.statusCode >= 400 {
+            var error: Error = BTHTTPError.clientError([:])
+            handleHTTPResponseError(response: httpResponse, data: data) { _, err in
+                error = err
+            }
+            throw error
+        }
+        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
+        if json.isError {
+            var jsonError: Error?
+            handleJSONResponseError(json: json, response: response) { err in
+                jsonError = err
+            }
+            throw jsonError ?? BTHTTPError.clientError([:])
+        }
+        return (json, httpResponse)
+    }
+    
+    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+        try await session.data(for: request)
     }
 
     func createRequest(
