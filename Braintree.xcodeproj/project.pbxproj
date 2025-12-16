@@ -1477,10 +1477,10 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
-				0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */,
 				0841353F2ED0CBAD00884FE9 /* Resources */,
 				045241682EC4F80F00C25EA6 /* PayPalButton.swift */,
 				046F007B2ED6404C00F08512 /* PayPalButtonColor.swift */,
+				0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */,
 				0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */,
 				084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */,
 				046F007D2ED64E8800F08512 /* PaymentButtonStyle.swift */,
@@ -1488,8 +1488,8 @@
 				0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */,
 				0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */,
 				046F007F2ED6905800F08512 /* UIComponents+Bundle.swift */,
-				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
 				08A83F5C2EE096860076BD28 /* UIComponentsAnalytics.swift */,
+				045241692EC4F80F00C25EA6 /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeUIComponents;
 			sourceTree = "<group>";

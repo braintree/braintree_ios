@@ -2,11 +2,14 @@ import SwiftUI
 
 /// Generic button style for payment buttons that handles interaction states
 struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
-    
+
     let color: Color
     let width: CGFloat?
     let logoHeight: CGFloat
-    
+    let spinnerImageName: String?
+    let isLoading: Bool
+    let spinnerRotation: Double
+
     /// This is the width range for the payment button.
     private var widthRange: CGFloat {
         guard let width else { return 300 }
@@ -15,7 +18,13 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         HStack {
-            if let logoImageName = color.logoImageName {
+            if isLoading, let spinnerImageName {
+                Image(spinnerImageName, bundle: .uiComponents)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: logoHeight)
+                    .rotationEffect(.degrees(spinnerRotation))
+            } else if let logoImageName = color.logoImageName {
                 Image(logoImageName, bundle: .uiComponents)
                     .resizable()
                     .scaledToFit()

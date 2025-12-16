@@ -13,4 +13,7 @@ protocol PaymentButtonColorProtocol {
 
     /// Background color of button when tapped
     var tappedButtonColor: Color { get }
+
+    /// Spinner color for loading state
+    var spinnerColor: String? { get }
 }
