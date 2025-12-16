@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Shared payment button view that works with any PaymentButtonColorProtocol
-///  Not to be called directly. Use either BTPayPalButtons or BTVenmoButton instead.
+/// Not to be called directly. Use either BTPayPalButtons or BTVenmoButton instead.
 struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     
     let color: Color
