@@ -97,7 +97,6 @@ public struct PayPalButton: View {
             logoHeight: 24,
             accessibilityLabel: "Pay with PayPal",
             accessibilityHint: "Complete payment using PayPal",
-            isDisabled: isLoading,
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
             spinnerRotation: spinnerRotation
@@ -123,7 +122,7 @@ public struct PayPalButton: View {
         // Listen for app switch abandonment, cancel, or finish via PayPal universal link
         .onOpenURL { url in
             // Reset spinner if returning from PayPal via universal link (success or cancel)
-            if url.host?.contains("paypal") == true || url.absoluteString.contains("paypal") {
+            if url.path.contains("paypal") == true {
                 isLoading = false
             }
         }

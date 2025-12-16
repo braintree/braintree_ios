@@ -72,7 +72,6 @@ public struct VenmoButton: View {
             logoHeight: 14,
             accessibilityLabel: "Pay with Venmo",
             accessibilityHint: "Complete payment using Venmo",
-            isDisabled: isLoading,
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
             spinnerRotation: spinnerRotation,
@@ -112,6 +111,7 @@ public struct VenmoButton: View {
         }
     }
 }
+
 struct VenmoButton_Previews: PreviewProvider {
 
     static var previews: some View {
