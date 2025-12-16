@@ -34,6 +34,8 @@ jobs:
           - Venmo_UITests
           - PayPalMessaging_Failure_UITests
           - PayPalMessaging_Success_UITests
+          - PayPal_Button_UITests
+          - Venmo_Button_UITests
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository
