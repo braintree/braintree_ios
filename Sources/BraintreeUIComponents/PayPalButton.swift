@@ -38,9 +38,6 @@ public struct PayPalButton: View {
     /// Rotation angle for spinner animation
     @State private var spinnerRotation: Double = 0
 
-    /// The current phase of the system's scene - active, inactive, or background
-    @Environment(\.scenePhase) private var scenePhase
-
     // MARK: - Initializers
 
     /// Creates a PayPal Checkout payment button.
