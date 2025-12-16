@@ -145,7 +145,7 @@ import BraintreeCore
                 return
             }
 
-            self.notifySuccess(with: jsonString, completion: completion)
+            completion(jsonString, nil)
             return
         }
     }
@@ -407,7 +407,7 @@ import BraintreeCore
                 }
 
                 self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
-                self.notifySuccess(with: BTThreeDSecureResult(json: body), completion: completion)
+                completion(BTThreeDSecureResult(json: body), nil)
                 return
             }
         }
@@ -437,10 +437,5 @@ import BraintreeCore
             errorDescription: error.localizedDescription
         )
         completion(nil, error)
-    }
-
-    private func notifySuccess(with payload: String, completion: @escaping (String?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
-        completion(payload, nil)
     }
 }

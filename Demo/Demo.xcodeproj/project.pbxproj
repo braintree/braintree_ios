@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
+		086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
+		086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */; };
 		08A83F5B2EDF965E0076BD28 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		08A83F6A2EE9AB5A0076BD28 /* Venmo_Button_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F692EE9AB5A0076BD28 /* Venmo_Button_UITests.swift */; };
@@ -112,6 +114,7 @@
 				803D64F6256DAF9A00ACE692 /* BraintreeAmericanExpress.framework in Embed Frameworks */,
 				8028B9792B28D42400C88CE8 /* BraintreeShopperInsights.framework in Embed Frameworks */,
 				9C36BD4D26B311D900F0A559 /* CardinalMobile.xcframework in Embed Frameworks */,
+				086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */,
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
@@ -220,7 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08A83F5B2EDF965E0076BD28 /* BraintreeUIComponents.framework in Frameworks */,
+				086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */,
 				45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */,
 				BE67CDC22B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Frameworks */,
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
