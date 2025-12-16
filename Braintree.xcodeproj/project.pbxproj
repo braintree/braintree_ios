@@ -806,7 +806,6 @@
 		0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonStyle.swift; sourceTree = "<group>"; };
 		08A83F5C2EE096860076BD28 /* UIComponentsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsAnalytics.swift; sourceTree = "<group>"; };
 		08A83F662EE72F440076BD28 /* BTSessionIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSessionIDManager.swift; sourceTree = "<group>"; };
-		08A83F6F2EEB14E20076BD28 /* BraintreeUIComponentsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeUIComponentsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
@@ -1477,7 +1476,6 @@
 			children = (
 				0452410D2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift */,
 				0452413A2EBECC7300C25EA6 /* Info.plist */,
-				08A83F6F2EEB14E20076BD28 /* BraintreeUIComponentsTests-Bridging-Header.h */,
 				081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */,
 				081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */,
 			);
