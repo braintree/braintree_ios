@@ -108,31 +108,18 @@ public struct PayPalButton: View {
         }
         .onAppear {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
-            isLoading = false // re-enable on app relaunch
+            isLoading = false
         }
         // Spinner animation
-        .onChange(of: isLoading) { newValue in
-            if newValue {
+        .onChange(of: isLoading) { loading in
+            if loading {
                 spinnerRotation = 0
                 withAnimation(Animation.linear(duration: 1).repeatForever(autoreverses: false)) {
                     spinnerRotation = 360
                 }
             }
         }
-        // Listen for app switch abandonment, cancel, or finish via PayPal universal link
-        .onOpenURL { url in
-            // Reset spinner if returning from PayPal via universal link (success or cancel)
-            if url.path.contains("paypal") == true {
-                isLoading = false
-            }
-        }
-        // Ensure spinner is replaced with logo on app relaunch, abandonment, or universal web link flow abandonment
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active && isLoading {
-                isLoading = false
-            }
-        }
-        // Additional listener for app foregrounding (more reliable when embedded in UIHostingController)
+        // On app switch abandonment
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             if isLoading {
                 isLoading = false
