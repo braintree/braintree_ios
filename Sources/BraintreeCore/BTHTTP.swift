@@ -184,7 +184,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             }
             throw error
         }
-        let json = BTJSON(data: data)
+        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             var jsonError: Error?
             handleJSONResponseError(json: json, response: response) { err in
