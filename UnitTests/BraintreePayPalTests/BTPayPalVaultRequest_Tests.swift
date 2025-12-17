@@ -118,7 +118,6 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             userAuthenticationEmail: "sally@gmail.com",
             enablePayPalAppSwitch: true
         )
-
         let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)

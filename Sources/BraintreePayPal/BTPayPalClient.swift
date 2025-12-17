@@ -103,7 +103,7 @@ import BraintreeDataCollector
     /// - Parameters:
     ///   - apiClient: The API Client
     ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allowlisted in your Braintree Control Panel.
-    ///   - fallbackURLScheme: Optional: A custom URL scheme to use as a fallback if the universal link fails. This scheme must be registered in your app's Info.plist and allowlisted in the Braintree Control Panel.
+    ///   - fallbackURLScheme: Optional: A custom URL scheme to use as a fallback if the universal link fails. Pass only the scheme name using alphanumeric characters, hyphens, and periods—without `://` (e.g., `"com.my-app.payments"` not `"com.my-app.payments://"`). This scheme must be registered in your app's Info.plist. You must also contact Braintree to register your URL scheme.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     @objc(initWithAPIClient:universalLink:fallbackURLScheme:)
     public convenience init(apiClient: BTAPIClient, universalLink: URL, fallbackURLScheme: String? = nil) {
