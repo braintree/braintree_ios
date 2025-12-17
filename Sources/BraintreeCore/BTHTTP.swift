@@ -174,7 +174,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         guard let httpResponse = createHTTPResponse(response: response) else {
             throw BTHTTPError.httpResponseInvalid
         }
-        guard let data = data as Data?, !data.isEmpty || httpResponse.statusCode == 204 else {
+        guard let data = data as Data? else {
             throw BTHTTPError.dataNotFound
         }
         if httpResponse.statusCode >= 400 {
@@ -184,7 +184,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             }
             throw error
         }
-        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
+        let json = BTJSON(data: data)
         if json.isError {
             var jsonError: Error?
             handleJSONResponseError(json: json, response: response) { err in
