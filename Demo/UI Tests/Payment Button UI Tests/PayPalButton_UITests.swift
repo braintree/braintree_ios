@@ -17,7 +17,7 @@ final class PayPalButton_UITests: XCTestCase {
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }
 
-    func testPayPal_button_disabledInLoadingState() {
+    func testPayPalButton_disabledInLoadingState() {
         let button = app.buttons["Pay with PayPal"]
 
         XCTAssertTrue(button.isEnabled, "Button should be enabled initially")
@@ -26,7 +26,6 @@ final class PayPalButton_UITests: XCTestCase {
         button.tap()
 
         XCTAssertFalse(button.isEnabled, "Button should be disabled after tap")
-
         XCTAssertTrue(app.buttons["loading"].waitForExistence(timeout: 2), "Loading identifier should appear when in loading state")
     }
 

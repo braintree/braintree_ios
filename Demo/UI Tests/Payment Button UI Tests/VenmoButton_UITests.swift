@@ -19,7 +19,7 @@ final class VenmoButton_UITests: XCTestCase {
         springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
     }
 
-    func testVenmo_button_disabledInLoadingState() {
+    func testVenmoButton_disabledInLoadingState() {
         let button = app.buttons["Pay with Venmo"]
 
         XCTAssertTrue(button.isEnabled, "Button should be enabled initially")
@@ -32,7 +32,7 @@ final class VenmoButton_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["loading"].waitForExistence(timeout: 2), "Loading identifier should appear when in loading state")
     }
 
-    func testVenmo_button_tapLaunchesVenmoFlow() {
+    func testVenmoButton_tapLaunchesVenmoFlow() {
         app.buttons["Pay with Venmo"].tap()
         _ = springboard.buttons["Return to SDK Demo"].waitForExistence(timeout: 3.0)
 
