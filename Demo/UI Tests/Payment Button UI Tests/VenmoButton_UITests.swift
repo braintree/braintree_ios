@@ -1,6 +1,6 @@
 import XCTest
 
-final class Venmo_Button_UITests: XCTestCase {
+final class VenmoButton_UITests: XCTestCase {
 
     var app = XCUIApplication()
     var springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

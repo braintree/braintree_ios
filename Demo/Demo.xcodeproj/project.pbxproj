@@ -12,9 +12,8 @@
 		086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */; };
-		08A83F5B2EDF965E0076BD28 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
-		08A83F6A2EE9AB5A0076BD28 /* Venmo_Button_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F692EE9AB5A0076BD28 /* Venmo_Button_UITests.swift */; };
-		08A83F6C2EE9CC730076BD28 /* PayPal_Button_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F6B2EE9CC730076BD28 /* PayPal_Button_UITests.swift */; };
+		08A83F6A2EE9AB5A0076BD28 /* VenmoButton_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */; };
+		08A83F6C2EE9CC730076BD28 /* PayPalButton_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
 		42456E3F25474B620018374E /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3D25474B620018374E /* DateGenerator.swift */; };
 		42C574AE25FA66F9008B3681 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574AD25FA66F9008B3681 /* AppDelegate.swift */; };
@@ -135,8 +134,8 @@
 		04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonHelper.swift; sourceTree = "<group>"; };
 		08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonViewController.swift; sourceTree = "<group>"; };
 		08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		08A83F692EE9AB5A0076BD28 /* Venmo_Button_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venmo_Button_UITests.swift; sourceTree = "<group>"; };
-		08A83F6B2EE9CC730076BD28 /* PayPal_Button_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPal_Button_UITests.swift; sourceTree = "<group>"; };
+		08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton_UITests.swift; sourceTree = "<group>"; };
+		08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalButton_UITests.swift; sourceTree = "<group>"; };
 		42456E3C25474B620018374E /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTUITest.swift; sourceTree = "<group>"; };
 		42456E3D25474B620018374E /* DateGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = ../Frameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -256,8 +255,8 @@
 		08A83F682EE8D0F10076BD28 /* Payment Button UI Tests */ = {
 			isa = PBXGroup;
 			children = (
-				08A83F692EE9AB5A0076BD28 /* Venmo_Button_UITests.swift */,
-				08A83F6B2EE9CC730076BD28 /* PayPal_Button_UITests.swift */,
+				08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */,
+				08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */,
 			);
 			path = "Payment Button UI Tests";
 			sourceTree = "<group>";
@@ -669,9 +668,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -731,11 +734,11 @@
 			files = (
 				A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */,
 				42456E3F25474B620018374E /* DateGenerator.swift in Sources */,
-				08A83F6A2EE9AB5A0076BD28 /* Venmo_Button_UITests.swift in Sources */,
+				08A83F6A2EE9AB5A0076BD28 /* VenmoButton_UITests.swift in Sources */,
 				A9C4E07924EC28F7002F6FF2 /* PayPal_Checkout_UITests.swift in Sources */,
 				80581A5F2553170000006F53 /* Venmo_UITests.swift in Sources */,
 				BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */,
-				08A83F6C2EE9CC730076BD28 /* PayPal_Button_UITests.swift in Sources */,
+				08A83F6C2EE9CC730076BD28 /* PayPalButton_UITests.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
