@@ -11,6 +11,7 @@ final class PayPalButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "PayPalLogoBlack")
         XCTAssertFalse(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#3DB5FF"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerBlack")
     }
 
     func testPayPalButtonColor_black_hasCorrectProperties() {
@@ -20,6 +21,7 @@ final class PayPalButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "PayPalLogoWhite")
         XCTAssertFalse(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#696969"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerWhite")
     }
 
     func testPayPalButtonColor_white_hasCorrectProperties() {
@@ -29,5 +31,6 @@ final class PayPalButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "PayPalLogoBlack")
         XCTAssertTrue(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#E9E9E9"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerBlack")
     }
 }
