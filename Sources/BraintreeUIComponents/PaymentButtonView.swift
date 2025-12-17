@@ -31,5 +31,6 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
         .disabled(isLoading)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityHint(accessibilityHint)
+        .accessibilityIdentifier(isLoading ? "loading" : "ready")
     }
 }

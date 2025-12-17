@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0426CADF2DBC3E4100210697 /* BTAmountBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */; };
-		0452410E2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0452410D2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift */; };
 		045241242EBEBAC100C25EA6 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045241192EBEBAC100C25EA6 /* BraintreeUIComponents.framework */; };
 		045241302EBEBAD200C25EA6 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; platformFilter = ios; };
 		045241352EBEBAEA00C25EA6 /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; platformFilter = ios; };
@@ -26,6 +25,10 @@
 		04AA311E2D0798FC0043ACAB /* BTPageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311D2D0798F70043ACAB /* BTPageType.swift */; };
 		04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */; };
 		04B001102D0CF46E00C0060D /* BTExperimentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B0010F2D0CF46900C0060D /* BTExperimentType.swift */; };
+		081F74702EF09793002D53EA /* PayPalButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */; };
+		081F74712EF09793002D53EA /* PayPalButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */; };
+		081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
+		081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
 		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
 		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
 		084135432ED0CBAD00884FE9 /* UIComponents+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */; };
@@ -776,7 +779,6 @@
 		035A59D91EA5DE97002960C8 /* BTLocalPaymentClient_UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTLocalPaymentClient_UnitTests.swift; sourceTree = "<group>"; };
 		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
 		0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmountBreakdown.swift; sourceTree = "<group>"; };
-		0452410D2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentButtons_Tests.swift; sourceTree = "<group>"; };
 		045241192EBEBAC100C25EA6 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		045241232EBEBAC100C25EA6 /* BraintreeUIComponentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeUIComponentsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0452413A2EBECC7300C25EA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -791,6 +793,8 @@
 		04AA311D2D0798F70043ACAB /* BTPageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPageType.swift; sourceTree = "<group>"; };
 		04AA311F2D07990A0043ACAB /* BTButtonOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTButtonOrder.swift; sourceTree = "<group>"; };
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
+		081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalButton_Tests.swift; sourceTree = "<group>"; };
+		081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton_Tests.swift; sourceTree = "<group>"; };
 		0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIComponents+Color.swift"; sourceTree = "<group>"; };
 		0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton.swift; sourceTree = "<group>"; };
@@ -1468,8 +1472,9 @@
 		045241112EBEB3E700C25EA6 /* BraintreeUIComponentsTests */ = {
 			isa = PBXGroup;
 			children = (
-				0452410D2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift */,
 				0452413A2EBECC7300C25EA6 /* Info.plist */,
+				081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */,
+				081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */,
 			);
 			path = BraintreeUIComponentsTests;
 			sourceTree = "<group>";
@@ -3003,6 +3008,7 @@
 					};
 					045241222EBEBAC100C25EA6 = {
 						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
 					};
 					2D941D371B59C76A0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
@@ -3501,6 +3507,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				081F74712EF09793002D53EA /* PayPalButton_Tests.swift in Sources */,
+				081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3891,6 +3899,7 @@
 				BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */,
 				A908437124FD8BB0004134CA /* BTPostalAddress_Tests.swift in Sources */,
 				BEBC6F3229380B82004E25A0 /* BTExceptionCatcher.m in Sources */,
+				081F74702EF09793002D53EA /* PayPalButton_Tests.swift in Sources */,
 				8053F05429FAB6B00076F988 /* FPTIBatchData_Tests.swift in Sources */,
 				45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */,
 				A908436B24FD89DA004134CA /* BTJSON_Tests.swift in Sources */,
@@ -3906,9 +3915,9 @@
 				A95229C424FD8EEE006F7D25 /* BTURLUtils_Tests.swift in Sources */,
 				A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */,
 				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
+				081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
-				0452410E2EBEB2C200C25EA6 /* BTPaymentButtons_Tests.swift in Sources */,
 				4585707C2C34B7B5009CEF7A /* MockConfigurationLoader.swift in Sources */,
 				80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */,
 				8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */,
@@ -4625,6 +4634,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UnitTests/BraintreeUIComponentsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
@@ -4664,6 +4674,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UnitTests/BraintreeUIComponentsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;

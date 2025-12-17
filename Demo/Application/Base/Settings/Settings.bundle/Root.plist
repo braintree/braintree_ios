@@ -36,7 +36,7 @@
 				<string>PayPalWebCheckoutViewController</string>
 				<string>CardTokenizationViewController</string>
 				<string>VenmoViewController</string>
-				<string>PaymentButtonsViewController</string>
+				<string>PaymentButtonViewController</string>
 				<string>ApplePayViewController</string>
 				<string>ThreeDSecureViewController</string>
 				<string>DataCollectorViewController</string>
