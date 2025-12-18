@@ -171,7 +171,12 @@ import BraintreeCore
         fallbackURLScheme: String? = nil,
         isPayPalAppInstalled: Bool = false
     ) -> [String: Any] {
-        var baseParameters = super.parameters(with: configuration, universalLink: universalLink, isPayPalAppInstalled: isPayPalAppInstalled)
+        var baseParameters = super.parameters(
+            with: configuration,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme,
+            isPayPalAppInstalled: isPayPalAppInstalled
+        )
         
         var checkoutParameters: [String: Any] = [
             "intent": intent.stringValue,

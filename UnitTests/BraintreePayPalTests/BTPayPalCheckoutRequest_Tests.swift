@@ -284,6 +284,31 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
     }
+    
+    func testParametersWithConfiguration_whenFallbackURLSchemeProvided_includesFallbackURLScheme() {
+        let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
+        
+        let parameters = request.parameters(
+            with: configuration,
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "com.my-app.payments",
+            isPayPalAppInstalled: true
+        )
+        
+        XCTAssertEqual(parameters["merchant_app_fallback_url_scheme"] as? String, "com.my-app.payments")
+    }
+    
+    func testParametersWithConfiguration_whenFallbackURLSchemeNotProvided_doesNotIncludeFallbackURLScheme() {
+        let request = BTPayPalCheckoutRequest(enablePayPalAppSwitch: true, amount: "1")
+        
+        let parameters = request.parameters(
+            with: configuration,
+            universalLink: URL(string: "https://example.com")!,
+            isPayPalAppInstalled: true
+        )
+        
+        XCTAssertNil(parameters["merchant_app_fallback_url_scheme"])
+    }
 
     func testCreateRequestBody_setsAmountBreakdown() {
         let amountBreakdown = BTAmountBreakdown(
