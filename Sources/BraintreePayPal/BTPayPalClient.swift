@@ -58,6 +58,8 @@ import BraintreeDataCollector
     // MARK: - Private Properties
 
     private var universalLink: URL?
+    
+    private var fallbackURLScheme: String?
 
     /// Indicates if the user returned back to the merchant app from the `BTWebAuthenticationSession`
     /// Will only be `true` if the user proceed through the `UIAlertController`
@@ -68,7 +70,7 @@ import BraintreeDataCollector
     private var contextID: String?
     
     /// Used to determine whether or not to render the WAS popup.
-    /// If the experiement is enabled, set the `prefersEphemeralWebBrowserSession` flag to true.
+    /// If the experiment is enabled, set the `prefersEphemeralWebBrowserSession` flag to true.
     private var experiment: String?
     
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
@@ -100,15 +102,17 @@ import BraintreeDataCollector
     /// Initialize a new PayPal client instance for the PayPal App Switch flow.
     /// - Parameters:
     ///   - apiClient: The API Client
-    ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
+    ///   - universalLink: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allowlisted in your Braintree Control Panel.
+    ///   - fallbackURLScheme: Optional: A custom URL scheme to use as a fallback if the universal link fails. Pass only the scheme name using alphanumeric characters, hyphens, and periods—without `://` (e.g., `"com.my-app.payments"` not `"com.my-app.payments://"`). This scheme must be registered in your app's Info.plist. You must also contact Braintree to register your URL scheme.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
-    @objc(initWithAPIClient:universalLink:)
-    public convenience init(apiClient: BTAPIClient, universalLink: URL) {
+    @objc(initWithAPIClient:universalLink:fallbackURLScheme:)
+    public convenience init(apiClient: BTAPIClient, universalLink: URL, fallbackURLScheme: String? = nil) {
         self.init(apiClient: apiClient)
         
         /// appending a PayPal app switch specific path to verify we are in the correct flow when
         /// `canHandleReturnURL` is called
         self.universalLink = universalLink.appendingPathComponent("braintreeAppSwitchPayPal")
+        self.fallbackURLScheme = fallbackURLScheme
     }
 
     // MARK: - Public Methods
@@ -458,6 +462,7 @@ import BraintreeDataCollector
                 parameters: request.parameters(
                     with: configuration,
                     universalLink: self.universalLink,
+                    fallbackURLScheme: self.fallbackURLScheme,
                     isPayPalAppInstalled: self.application.isPayPalAppInstalled()
                 )
             ) { body, _, error in
@@ -765,6 +770,6 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
-        BTPayPalReturnURL.isValid(url)
+        BTPayPalReturnURL.isValid(url, fallbackURLScheme: payPalClient?.fallbackURLScheme)
     }
 }

@@ -104,12 +104,25 @@ class BTPayPalVaultRequest_Tests: XCTestCase {
             enablePayPalAppSwitch: true
         )
 
-        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, fallbackURLScheme: "myapp", isPayPalAppInstalled: true)
 
         XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
         XCTAssertTrue((parameters["os_version"] as! String).matches("\\d+\\.\\d+"))
         XCTAssertTrue((parameters["os_type"] as! String).matches("iOS|iPadOS"))
         XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
+        XCTAssertEqual(parameters["merchant_app_fallback_url_scheme"] as? String, "myapp")
+    }
+    
+    func testParameters_withEnablePayPalAppSwitchTrue_withoutFallbackURLScheme_doesNotIncludeFallbackURLScheme() {
+        let request = BTPayPalVaultRequest(
+            userAuthenticationEmail: "sally@gmail.com",
+            enablePayPalAppSwitch: true
+        )
+        let parameters = request.parameters(with: configuration, universalLink: URL(string: "some-url")!, isPayPalAppInstalled: true)
+
+        XCTAssertEqual(parameters["launch_paypal_app"] as? Bool, true)
+        XCTAssertEqual(parameters["merchant_app_return_url"] as? String, "some-url")
+        XCTAssertNil(parameters["merchant_app_fallback_url_scheme"])
     }
     
     func testParametersWithConfiguration_setsAppSwitchParameters_withoutUserAuthenticationEmail() {
