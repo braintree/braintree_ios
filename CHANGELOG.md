@@ -6,8 +6,12 @@
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeApplePay
   * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
-* PayPal
+* BraintreePayPal
   * Add `offerCredit` property to `BTPayPalCheckoutRequest`, enabling merchants to offer PayPal credit for one-time checkout flows.
+ 
+## 6.40.0 (2025-11-20)
+* BraintreePayPal
+    * Add `offerCredit` property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit for Checkout requests.
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal
