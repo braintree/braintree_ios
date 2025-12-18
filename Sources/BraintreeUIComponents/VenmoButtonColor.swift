@@ -64,11 +64,11 @@ public enum VenmoButtonColor: PaymentButtonColorProtocol {
     var spinnerColor: String? {
         switch self {
         case .blue:
-            return "SpinnerBlack"
+            return "SpinnerWhite"
         case .black:
             return "SpinnerWhite"
         case .white:
-            return "SpinnerBlack"
+            return "SpinnerBlue"
         }
     }
 }

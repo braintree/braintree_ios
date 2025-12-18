@@ -11,6 +11,7 @@ final class VenmoButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "VenmoLogoWhite")
         XCTAssertFalse(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#0074FF"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerWhite")
     }
 
     func testVenmoButtonColor_black_hasCorrectProperties() {
@@ -20,6 +21,7 @@ final class VenmoButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "VenmoLogoWhite")
         XCTAssertFalse(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#696969"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerWhite")
     }
 
     func testVenmoButtonColor_white_hasCorrectProperties() {
@@ -29,5 +31,6 @@ final class VenmoButton_Tests: XCTestCase {
         XCTAssertEqual(color.logoImageName, "VenmoLogoBlue")
         XCTAssertTrue(color.hasOutline)
         XCTAssertEqual(color.tappedButtonColor, Color(hex: "#E9E9E9"))
+        XCTAssertEqual(color.spinnerColor, "SpinnerBlue")
     }
 }
