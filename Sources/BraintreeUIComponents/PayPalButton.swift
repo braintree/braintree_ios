@@ -78,8 +78,8 @@ public struct PayPalButton: View {
     /// Creates a Vault PayPal payment button.
     /// - Parameters:
     ///  - authorization: Required. A valid client token or tokenization key.
-    ///  - universalLink: Optional. The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
-    ///  - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails. Pass only the scheme name using alphanumeric characters, hyphens, and periods—without `://` (e.g., `"com.my-app.payments"` not `"com.my-app.payments://"`). This scheme must be registered in your app's Info.plist. You must also contact Braintree to register your URL scheme.
+    ///  - universalLink: Optional. The URL to use for the PayPal app switch flow.
+    ///  - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
     ///  - request: Required. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
     ///  - width: Optional. The width of the button. Defaults to 300 px.
@@ -143,7 +143,6 @@ public struct PayPalButton: View {
     }
 
     private func invokePayPalFlow(authorization: String) {
-        // Create BTPayPalClient (matching VenmoButton pattern)
         let payPalClient: BTPayPalClient
         if let universalLink {
             payPalClient = BTPayPalClient(
