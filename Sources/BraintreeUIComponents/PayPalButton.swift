@@ -29,8 +29,8 @@ public struct PayPalButton: View {
     /// The completion handler to handle PayPal tokenization request success or failure.
     let completion: (BTPayPalAccountNonce?, Error?) -> Void
 
-    /// Optional: The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
-    let universalLink: URL?
+    /// The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns.
+    let universalLink: URL
 
     /// Optional: A custom URL scheme to use as a fallback if the universal link fails.
     let fallbackURLScheme: String?
@@ -49,7 +49,7 @@ public struct PayPalButton: View {
     /// Creates a PayPal Checkout payment button.
     /// - Parameters:
     ///  - authorization: Required. A valid client token or tokenization key.
-    ///  - universalLink: Optional. The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
+    ///  - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid HTTPS URL dedicated to Braintree app switch returns. This URL must be allow-listed in your Braintree Control Panel.
     ///  - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails. Pass only the scheme name using alphanumeric characters, hyphens, and periods—without `://` (e.g., `"com.my-app.payments"` not `"com.my-app.payments://"`). This scheme must be registered in your app's Info.plist. You must also contact Braintree to register your URL scheme.
     ///  - request: Required. The PayPal Checkout request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
@@ -57,7 +57,7 @@ public struct PayPalButton: View {
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
         authorization: String,
-        universalLink: URL? = nil,
+        universalLink: URL,
         fallbackURLScheme: String? = nil,
         request: BTPayPalCheckoutRequest,
         color: PayPalButtonColor? = .blue,
@@ -78,7 +78,7 @@ public struct PayPalButton: View {
     /// Creates a Vault PayPal payment button.
     /// - Parameters:
     ///  - authorization: Required. A valid client token or tokenization key.
-    ///  - universalLink: Optional. The URL to use for the PayPal app switch flow.
+    ///  - universalLink: Required. The URL to use for the PayPal app switch flow.
     ///  - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
     ///  - request: Required. The PayPal Vault request.
     ///  - color: Optional. The color of the button. Defaults to `.blue`.
@@ -86,7 +86,7 @@ public struct PayPalButton: View {
     ///  - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
         authorization: String,
-        universalLink: URL? = nil,
+        universalLink: URL,
         fallbackURLScheme: String? = nil,
         request: BTPayPalVaultRequest,
         color: PayPalButtonColor? = .blue,
@@ -143,16 +143,11 @@ public struct PayPalButton: View {
     }
 
     private func invokePayPalFlow(authorization: String) {
-        let payPalClient: BTPayPalClient
-        if let universalLink {
-            payPalClient = BTPayPalClient(
-                authorization: authorization,
-                universalLink: universalLink,
-                fallbackURLScheme: fallbackURLScheme
-            )
-        } else {
-            payPalClient = BTPayPalClient(authorization: authorization)
-        }
+        let payPalClient = BTPayPalClient(
+            authorization: authorization,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme
+        )
 
         if let checkoutRequest {
             payPalClient.tokenize(checkoutRequest) { nonce, error in
@@ -178,6 +173,7 @@ struct PayPalButton_Previews: PreviewProvider {
             // Blue Button. Defaults to primary, width 300
             PayPalButton(
                 authorization: "auth-key",
+                universalLink: sampleURL,
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 completion: PayPalButton_Previews.closure
             )
@@ -185,6 +181,7 @@ struct PayPalButton_Previews: PreviewProvider {
             // Black Button. Respects maximum width
             PayPalButton(
                 authorization: "auth-key",
+                universalLink: sampleURL,
                 request: BTPayPalVaultRequest(enablePayPalAppSwitch: true),
                 color: .black,
                 width: 350,
@@ -194,6 +191,7 @@ struct PayPalButton_Previews: PreviewProvider {
             // White Button. Respects minimum width.
             PayPalButton(
                 authorization: "auth-key",
+                universalLink: sampleURL,
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 color: .white,
                 width: 100,
@@ -202,5 +200,7 @@ struct PayPalButton_Previews: PreviewProvider {
         }
     }
 
+    // swiftlint:disable:next force_unwrapping
+    static let sampleURL: URL = URL(string: "https://www.example.com/paypal")!
     static func closure(_: BTPayPalAccountNonce?, _: Error?) {}
 }
