@@ -7,6 +7,8 @@
   * Add BraintreeUIComponents module
   * Add `PayPalButton(authorization:request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
   * Add `VenmoButton(authorization:universalLink:request:color:width:completion:)` to generate a Venmo-branded button for launching Venmo flow
+* BraintreePayPal
+  * Add optional `fallbackURLScheme` parameter to `BTPayPalClient` to support custom URL scheme fallback in PayPal App Switch flow
 
 ## 7.1.0 (2025-11-20)
 * BraintreeThreeDSecure
@@ -14,8 +16,12 @@
   * Update `BTThreeDSecurePostalAddress` to make all properties accessible on the initializer only vs via the dot syntax.
 * BraintreeApplePay
   * Expose `BTConfiguration.canMakeApplePayPayments` publicly using `BTApplePayClient.isApplePaySupported(completion:) or `BTApplePayClient.isApplePaySupported() async -> Bool` (fixes #1671)`
-* PayPal
+* BraintreePayPal
   * Add `offerCredit` property to `BTPayPalCheckoutRequest`, enabling merchants to offer PayPal credit for one-time checkout flows.
+ 
+## 6.40.0 (2025-11-20)
+* BraintreePayPal
+    * Add `offerCredit` property to `PayPalCheckoutRequest`. Enables merchants to offer PayPal Credit for Checkout requests.
 
 ## 7.0.0 (2025-11-04)
 * BraintreePayPal

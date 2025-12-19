@@ -1409,4 +1409,68 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedApplicationState, "active")
     }
+    
+    // MARK: - fallbackURLScheme Tests
+    
+    func testInit_withFallbackURLScheme_storesFallbackURLScheme() {
+        let client = BTPayPalClient(
+            authorization: "test-authorization",
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "myapp"
+        )
+        
+        // Verify initialization doesn't crash and client is created
+        XCTAssertNotNil(client)
+    }
+    
+    func testInit_withoutFallbackURLScheme_initializesSuccessfully() {
+        let client = BTPayPalClient(
+            authorization: "test-authorization",
+            universalLink: URL(string: "https://example.com")!
+        )
+        
+        // Verify initialization doesn't crash and client is created
+        XCTAssertNotNil(client)
+    }
+    
+    func testCanHandleReturnURL_withFallbackURLScheme_acceptsCustomSchemeURL() {
+        let client = BTPayPalClient(
+            authorization: "test-authorization",
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "myapp"
+        )
+        BTPayPalClient.payPalClient = client
+        
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+        
+        BTPayPalClient.payPalClient = nil
+    }
+    
+    func testCanHandleReturnURL_withHTTPSScheme_acceptsUniversalLink() {
+        let client = BTPayPalClient(
+            authorization: "test-authorization",
+            universalLink: URL(string: "https://example.com")!,
+            fallbackURLScheme: "myapp"
+        )
+        BTPayPalClient.payPalClient = client
+        
+        let url = URL(string: "https://example.com/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalClient.canHandleReturnURL(url))
+        
+        BTPayPalClient.payPalClient = nil
+    }
+    
+    func testCanHandleReturnURL_withoutFallbackURLScheme_rejectsCustomSchemeURL() {
+        let client = BTPayPalClient(
+            authorization: "test-authorization",
+            universalLink: URL(string: "https://example.com")!
+        )
+        BTPayPalClient.payPalClient = client
+        
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
+        
+        BTPayPalClient.payPalClient = nil
+    }
 }

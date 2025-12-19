@@ -28,6 +28,7 @@ struct PayPalVaultPOSTBody: Encodable {
     private var shippingAddressOverride: BTPostalAddress?
     private var shopperSessionID: String?
     private var universalLink: String?
+    private var fallbackURLScheme: String?
     private var userAuthenticationEmail: String?
     
     // MARK: - Initializer
@@ -36,24 +37,13 @@ struct PayPalVaultPOSTBody: Encodable {
         payPalRequest: BTPayPalVaultRequest,
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool,
-        universalLink: URL?
+        universalLink: URL?,
+        fallbackURLScheme: String?
     ) {
-        if let merchantAccountID = payPalRequest.merchantAccountID {
-            self.merchantAccountID = merchantAccountID
-        }
-        
-        if let riskCorrelationID = payPalRequest.riskCorrelationID {
-            self.riskCorrelationID = riskCorrelationID
-        }
-        
-        if let lineItems = payPalRequest.lineItems, !lineItems.isEmpty {
-            self.lineItems = lineItems
-        }
-        
-        if let userAuthenticationEmail = payPalRequest.userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
-            self.userAuthenticationEmail = userAuthenticationEmail
-        }
-        
+        self.merchantAccountID = payPalRequest.merchantAccountID
+        self.riskCorrelationID = payPalRequest.riskCorrelationID
+        self.lineItems = payPalRequest.lineItems?.isEmpty == false ? payPalRequest.lineItems : nil
+        self.userAuthenticationEmail = payPalRequest.userAuthenticationEmail
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
@@ -64,29 +54,15 @@ struct PayPalVaultPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
+            self.fallbackURLScheme = fallbackURLScheme
         }
         
-        if let recurringBillingPlanType = payPalRequest.recurringBillingPlanType {
-            self.recurringBillingPlanType = recurringBillingPlanType
-        }
-
-        if let recurringBillingDetails = payPalRequest.recurringBillingDetails {
-            self.recurringBillingDetails = recurringBillingDetails
-        }
-        
+        self.recurringBillingPlanType = payPalRequest.recurringBillingPlanType
+        self.recurringBillingDetails = payPalRequest.recurringBillingDetails
         self.offerCredit = payPalRequest.offerCredit
-        
-        if let billingAgreementDescription = payPalRequest.billingAgreementDescription {
-            self.billingAgreementDescription = billingAgreementDescription
-        }
-        
-        if let shippingAddressOverride = payPalRequest.shippingAddressOverride {
-            self.shippingAddressOverride = shippingAddressOverride
-        }
-        
-        if let shopperSessionID = payPalRequest.shopperSessionID {
-            self.shopperSessionID = shopperSessionID
-        }
+        self.billingAgreementDescription = payPalRequest.billingAgreementDescription
+        self.shippingAddressOverride = payPalRequest.shippingAddressOverride
+        self.shopperSessionID = payPalRequest.shopperSessionID
     }
     
     enum CodingKeys: String, CodingKey {
@@ -105,6 +81,7 @@ struct PayPalVaultPOSTBody: Encodable {
         case riskCorrelationID = "correlation_id"
         case shippingAddressOverride = "shipping_address"
         case universalLink = "merchant_app_return_url"
+        case fallbackURLScheme = "merchant_app_fallback_url_scheme"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "payer_phone"
         case shopperSessionID = "shopper_session_id"
