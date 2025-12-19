@@ -35,6 +35,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var shippingCallbackURL: String?
     private var shopperSessionID: String?
     private var universalLink: String?
+    private var fallbackURLScheme: String?
     private var userAuthenticationEmail: String?
     private var userPhoneNumber: BTPayPalPhoneNumber?
     
@@ -54,7 +55,8 @@ struct PayPalCheckoutPOSTBody: Encodable {
         payPalRequest: BTPayPalCheckoutRequest,
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool,
-        universalLink: URL?
+        universalLink: URL?,
+        fallbackURLScheme: String?
     ) {
         self.amount = payPalRequest.amount
         self.intent = payPalRequest.intent.stringValue
@@ -147,6 +149,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.osType = UIDevice.current.systemName
             self.osVersion = UIDevice.current.systemVersion
             self.universalLink = universalLink.absoluteString
+            self.fallbackURLScheme = fallbackURLScheme
         }
     }
     
@@ -176,6 +179,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case shippingCallbackURL = "shipping_callback_url"
         case shopperSessionID = "shopper_session_id"
         case universalLink = "merchant_app_return_url"
+        case fallbackURLScheme = "merchant_app_fallback_url_scheme"
         case userAuthenticationEmail = "payer_email"
         case userPhoneNumber = "payer_phone"
         
