@@ -174,29 +174,17 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         guard let httpResponse = createHTTPResponse(response: response) else {
             throw BTHTTPError.httpResponseInvalid
         }
-        guard let data = data as Data? else {
-            throw BTHTTPError.dataNotFound
-        }
         if httpResponse.statusCode >= 400 {
-            var error: Error = BTHTTPError.clientError([:])
-            handleHTTPResponseError(response: httpResponse, data: data) { _, err in
-                error = err
-            }
+            let (_, error) = try await handleHTTPResponseError(response: httpResponse, data: data)
             throw error
         }
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            var jsonError: Error?
-            handleJSONResponseError(json: json, response: response) { err in
-                jsonError = err
+            if let jsonError = try await handleJSONResponseError(json: json, response: response) {
+                throw jsonError
             }
-            throw jsonError ?? BTHTTPError.clientError([:])
         }
         return (json, httpResponse)
-    }
-    
-    func data(for request: URLRequest) async throws -> (Data, URLResponse) {
-        try await session.data(for: request)
     }
 
     func createRequest(
@@ -418,6 +406,40 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         completion(json, error)
     }
+    
+    func handleHTTPResponseError(response: HTTPURLResponse, data: Data) async throws -> (BTJSON, Error) {
+        let responseContentType: String? = response.mimeType
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
+        
+        errorUserInfo[NSLocalizedFailureReasonErrorKey] = [HTTPURLResponse.localizedString(forStatusCode: response.statusCode)]
+        
+        var json = BTJSON()
+        if responseContentType == "application/json" {
+            json = data.isEmpty ? BTJSON() : BTJSON(data: data)
+            if !json.isError {
+                errorUserInfo[BTCoreConstants.jsonResponseBodyKey] = json
+                let errorResponseMessage: String? = json["error"]["developer_message"].asString() ?? json["error"]["message"].asString()
+                if errorResponseMessage != nil {
+                    errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage
+                }
+            }
+        }
+        
+        var error = BTHTTPError.clientError(errorUserInfo)
+        
+        if response.statusCode == 429 {
+            errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again in a few minutes."
+            error = BTHTTPError.rateLimitError(errorUserInfo)
+        } else if response.statusCode <= 500 {
+            error = BTHTTPError.clientError(errorUserInfo)
+        } else if response.statusCode >= 500 {
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
+            error = BTHTTPError.serverError(errorUserInfo)
+        }
+        
+        return (json, error)
+    }
 
     func handleJSONResponseError(
         json: BTJSON,
@@ -434,6 +456,23 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
         } else {
             completion(json.asError())
+        }
+    }
+    
+    func handleJSONResponseError(
+        json: BTJSON,
+        response: URLResponse
+    ) async throws -> Error? {
+        let responseContentType: String? = response.mimeType
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
+
+        if let contentType = responseContentType, contentType != "application/json" {
+            // Return error for unsupported response type
+            let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
+            errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
+            return BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo)
+        } else {
+            return json.asError()
         }
     }
 
