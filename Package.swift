@@ -6,6 +6,12 @@ import PackageDescription
 let package = Package(
     name: "Braintree",
     platforms: [.iOS(.v14)],
+    dependencies: [
+        .package(
+            url: "https://github.com/gicugavrisco/paypal-messages-ios.git",
+            branch: "feature/source-spm"
+        )
+    ],
     products: [
         .library(
             name: "BraintreeAmericanExpress",
@@ -96,13 +102,11 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalMessaging",
-            dependencies: ["BraintreeCore", "PayPalMessages"],
+            dependencies: [
+                "BraintreeCore",
+                .product(name: "PayPalMessages", package: "paypal-messages-ios")
+            ],
             resources: [.copy("PrivacyInfo.xcprivacy")]
-        ),
-        .binaryTarget(
-            name: "PayPalMessages",
-            url: "https://github.com/paypal/paypal-messages-ios/releases/download/1.0.0/PayPalMessages.xcframework.zip",
-            checksum: "565ab72a3ab75169e41685b16e43268a39e24217a12a641155961d8b10ffe1b4"
         ),
         .binaryTarget(
             name: "PayPalCheckout",

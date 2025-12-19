@@ -17,7 +17,6 @@
 		42C574B725FA66FB008B3681 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42C574B625FA66FB008B3681 /* Assets.xcassets */; };
 		42C574BA25FA66FB008B3681 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42C574B825FA66FB008B3681 /* LaunchScreen.storyboard */; };
 		42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574D425FA6CAC008B3681 /* AppSwitcher.swift */; };
-		45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 45DDDDA82C08FB0B00C262E5 /* PayPalMessages */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
 		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
@@ -210,7 +209,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */,
 				BE67CDC22B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Frameworks */,
 				803D64FB256DAF9A00ACE692 /* BraintreeCore.framework in Frameworks */,
 				9C36BD4C26B311D900F0A559 /* CardinalMobile.xcframework in Frameworks */,
@@ -490,9 +488,6 @@
 			dependencies = (
 			);
 			name = Demo;
-			packageProductDependencies = (
-				45DDDDA82C08FB0B00C262E5 /* PayPalMessages */,
-			);
 			productName = Demo;
 			productReference = A0988E4924DB43DC0095EEEE /* Demo.app */;
 			productType = "com.apple.product-type.application";
@@ -568,7 +563,7 @@
 			);
 			mainGroup = A0988E4024DB43DC0095EEEE;
 			packageReferences = (
-				45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
+				DF57D36C2EF57339004AC90C /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 			);
 			productRefGroup = A0988E4A24DB43DC0095EEEE /* Products */;
 			projectDirPath = "";
@@ -1053,23 +1048,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */ = {
+		DF57D36C2EF57339004AC90C /* XCRemoteSwiftPackageReference "paypal-messages-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/paypal/paypal-messages-ios";
+			repositoryURL = "https://github.com/gicugavrisco/paypal-messages-ios";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = "feature/source-spm";
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		45DDDDA82C08FB0B00C262E5 /* PayPalMessages */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */;
-			productName = PayPalMessages;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A0988E4124DB43DC0095EEEE /* Project object */;
 }
