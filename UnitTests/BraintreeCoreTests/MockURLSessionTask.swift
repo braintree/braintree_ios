@@ -1,6 +1,6 @@
 import Foundation
 
-class MockURLSessionTaskTransactionMetrics: URLSessionTaskTransactionMetrics {
+class MockURLSessionTaskTransactionMetrics: URLSessionTaskTransactionMetrics, @unchecked Sendable {
     
     var mockConnectStartDate: Date?
     var mockFetchStartDate: Date?
@@ -24,10 +24,11 @@ class MockURLSessionTaskTransactionMetrics: URLSessionTaskTransactionMetrics {
     }
 }
 
-class MockURLSessionTaskMetrics: URLSessionTaskMetrics {
+class MockURLSessionTaskMetrics: URLSessionTaskMetrics, @unchecked Sendable {
     var mockTransactionMetrics: [URLSessionTaskTransactionMetrics]
 
     /// For testing only
+    @available(iOS, deprecated: 13.0, message: "Required for mocking URLSessionTaskMetrics in tests")
     init(transactionMetrics: [URLSessionTaskTransactionMetrics]) {
         self.mockTransactionMetrics = transactionMetrics
     }
