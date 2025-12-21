@@ -7050,8 +7050,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gicugavrisco/paypal-messages-ios";
 			requirement = {
-				branch = "feature/source-spm";
-				kind = branch;
+				kind = exactVersion;
+				version = 1.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
