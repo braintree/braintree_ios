@@ -55,6 +55,23 @@ import Foundation
         }
     }
 
+    public override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+        GETRequestCount += 1
+        lastRequestEndpoint = path
+        lastRequestParameters = try? parameters?.toDictionary()
+        lastRequestMethod = "GET"
+
+        if let error = cannedError {
+            throw error
+        }
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+        if path.contains("v1/configuration") {
+            return (cannedConfiguration, httpResponse)
+        } else {
+            return (cannedResponse, httpResponse)
+        }
+    }
+
     public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
@@ -71,6 +88,19 @@ import Foundation
                 completion?(self.cannedResponse, httpResponse, nil)
             }
         }
+    }
+    
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+        POSTRequestCount += 1
+        lastRequestEndpoint = path
+        lastRequestParameters = try? parameters?.toDictionary()
+        lastRequestMethod = "POST"
+        lastPOSTRequestHeaders = headers
+        if let error = cannedError {
+            throw error
+        }
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+        return (cannedResponse, httpResponse)
     }
 }
 
