@@ -201,6 +201,6 @@ struct PayPalButton_Previews: PreviewProvider {
     }
 
     // swiftlint:disable:next force_unwrapping
-    static let sampleURL: URL = URL(string: "https://www.example.com/paypal")!
+    static let sampleURL = URL(string: "https://www.example.com/paypal")!
     static func closure(_: BTPayPalAccountNonce?, _: Error?) {}
 }
