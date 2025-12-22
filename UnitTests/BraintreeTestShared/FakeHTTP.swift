@@ -1,19 +1,19 @@
 import Foundation
 @testable import BraintreeCore
 
-@objc public class FakeHTTP: BTHTTP {
-    @objc public var GETRequestCount: Int = 0
-    @objc public var POSTRequestCount: Int = 0
-    @objc public var lastRequestEndpoint: String?
-    public var lastRequestMethod: String?
-    public var lastPOSTRequestHeaders: [String: String]? = [:]
-    @objc public var lastRequestParameters: [String: Any]?
-    var stubMethod: String?
-    var stubEndpoint: String?
-    public var cannedResponse: BTJSON?
-    @objc public var cannedConfiguration: BTJSON?
-    @objc public var cannedStatusCode: Int = 0
-    public var cannedError: Error?
+@objc public final class FakeHTTP: BTHTTP, @unchecked Sendable {
+    @objc public nonisolated(unsafe) var GETRequestCount: Int = 0
+    @objc public nonisolated(unsafe) var POSTRequestCount: Int = 0
+    @objc public nonisolated(unsafe) var lastRequestEndpoint: String?
+    public nonisolated(unsafe) var lastRequestMethod: String?
+    public nonisolated(unsafe) var lastPOSTRequestHeaders: [String: String]? = [:]
+    @objc public nonisolated(unsafe) var lastRequestParameters: [String: Any]?
+    nonisolated(unsafe) var stubMethod: String?
+    nonisolated(unsafe) var stubEndpoint: String?
+    public nonisolated(unsafe) var cannedResponse: BTJSON?
+    @objc public nonisolated(unsafe) var cannedConfiguration: BTJSON?
+    @objc public nonisolated(unsafe) var cannedStatusCode: Int = 0
+    public nonisolated(unsafe) var cannedError: Error?
 
     @objc public static func fakeHTTP() -> FakeHTTP {
         let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
@@ -74,10 +74,10 @@ import Foundation
     }
 }
 
-@objc public class FakeGraphQLHTTP: BTGraphQLHTTP {
-    var POSTRequestCount: Int = 0
-    @objc public var lastRequestParameters: [String: Any]?
-    @objc public var cannedConfiguration: BTJSON?
+@objc public final class FakeGraphQLHTTP: BTGraphQLHTTP, @unchecked Sendable {
+    nonisolated(unsafe) var POSTRequestCount: Int = 0
+    @objc public nonisolated(unsafe) var lastRequestParameters: [String: Any]?
+    @objc public nonisolated(unsafe) var cannedConfiguration: BTJSON?
 
     @objc public static func fakeHTTP() -> FakeGraphQLHTTP {
         let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")

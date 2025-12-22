@@ -18,7 +18,7 @@ import BraintreeCore
 
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
-    var application: URLOpener = UIApplication.shared
+    nonisolated(unsafe) var application: URLOpener = UIApplication.shared
 
     /// Defaults to `Bundle.main`, but exposed for unit tests to inject test doubles to stub values in infoDictionary
     var bundle: Bundle = .main

@@ -750,6 +750,7 @@ final class BTHTTP_Tests: XCTestCase {
         }
     }
     
+    @available(iOS, deprecated: 13.0, message: "Required for mocking URLSessionTaskMetrics in tests")
     func testURLSessionTaskDidFinishCollectingMetrics() {
         let mockDelegate = MockNetworkTimingDelegate()
         http?.networkTimingDelegate = mockDelegate

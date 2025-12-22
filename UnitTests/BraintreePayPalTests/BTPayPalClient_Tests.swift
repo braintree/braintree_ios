@@ -886,7 +886,7 @@ class BTPayPalClient_Tests: XCTestCase {
             userAuthenticationEmail: "fake@gmail.com"
         )
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        await payPalClient.tokenize(vaultRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         
@@ -1006,7 +1006,7 @@ class BTPayPalClient_Tests: XCTestCase {
             userAuthenticationEmail: "fake-pp@gmail.com"
         )
         
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        await payPalClient.tokenize(checkoutRequest) { _, _ in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         

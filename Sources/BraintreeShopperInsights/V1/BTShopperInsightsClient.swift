@@ -13,7 +13,7 @@ public class BTShopperInsightsClient {
     // MARK: - Internal Properties
     
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to mock calls to `canOpenURL`.
-    var application: URLOpener = UIApplication.shared
+    nonisolated(unsafe) var application: URLOpener = UIApplication.shared
     
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient

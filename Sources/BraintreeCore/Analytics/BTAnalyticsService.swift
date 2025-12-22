@@ -18,7 +18,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     var shouldBypassTimerQueue = false
     
     /// Exposed for testing only
-    var application: BackgroundTaskManaging = UIApplication.shared
+    nonisolated(unsafe) var application: BackgroundTaskManaging = UIApplication.shared
 
     // MARK: - Private Properties
     
