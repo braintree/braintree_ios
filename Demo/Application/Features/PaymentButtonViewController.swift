@@ -27,10 +27,17 @@ class PaymentButtonViewController: PaymentButtonBaseViewController {
     // MARK: - Setup PayPal Payment Button
 
     private func setupPayPalButton() -> UIView {
-        let payPalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+        let payPalRequest = BTPayPalCheckoutRequest(
+            amount: "10.00",
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: nil,
+            userAction: .payNow
+        )
 
         let payPalButtonView = PayPalButton(
             authorization: authorization,
+            // swiftlint:disable:next force_unwrapping
+            universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
             request: payPalRequest,
             color: selectedPayPalColor,
             width: 300,
