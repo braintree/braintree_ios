@@ -172,6 +172,17 @@
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "045241222EBEBAC100C25EA6"
+               BuildableName = "BraintreeUIComponentsTests.xctest"
+               BlueprintName = "BraintreeUIComponentsTests"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

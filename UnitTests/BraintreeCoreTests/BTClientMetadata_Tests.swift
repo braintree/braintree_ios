@@ -29,11 +29,26 @@ final class BTClientMetadata_Tests: XCTestCase {
         XCTAssertEqual(metadata.sessionID.count, 32)
     }
 
-    func testSessionID_shouldBeDifferent_whenAnotherMetadataInstance() {
-        let metdataOne = BTClientMetadata()
-        let metdataTwo = BTClientMetadata()
+    func testSessionID_shouldBeShared_whenAnotherMetadataInstance() {
+        let metadataOne = BTClientMetadata()
+        let metadataTwo = BTClientMetadata()
 
-        XCTAssertNotEqual(metdataOne.sessionID, metdataTwo.sessionID)
+        XCTAssertEqual(metadataOne.sessionID, metadataTwo.sessionID)
+    }
+
+    func testSessionID_shouldBeShared_whenNewAPIClientCreated() {
+        let paypalAPIClient = BTAPIClient(authorization: "sandbox_tokenization_key")
+        let paypalSessionID = paypalAPIClient.metadata.sessionID
+
+        let cardAPIClient = BTAPIClient(authorization: "sandbox_tokenization_key")
+        let cardSessionID = cardAPIClient.metadata.sessionID
+
+
+        XCTAssertEqual(paypalSessionID, cardSessionID, "PayPal and Card should share the same session ID")
+
+        let sharedSessionID = BTSessionIDManager.shared.sessionID
+        XCTAssertEqual(paypalSessionID, sharedSessionID, "PayPal should use the shared session ID")
+        XCTAssertEqual(cardSessionID, sharedSessionID, "Card should use the shared session ID")
     }
 
     func testMetadata_init_containsExpectedDefaultValues() {
