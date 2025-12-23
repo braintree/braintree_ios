@@ -31,6 +31,8 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
                     .frame(height: logoHeight)
             }
         }
+        .padding(.top, 11)
+        .padding(.bottom, 8)
         .frame(width: widthRange)
         .frame(height: 45)
         .background(configuration.isPressed ? color.tappedButtonColor : color.backgroundColor)
