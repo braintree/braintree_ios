@@ -75,6 +75,8 @@ public struct VenmoButton: View {
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
             spinnerRotation: spinnerRotation,
+            logoTopPadding: 0,
+            logoBottomPadding: 0
         ) {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
             isLoading = true

@@ -3,7 +3,7 @@ import SwiftUI
 /// Shared payment button view that works with any PaymentButtonColorProtocol
 /// Not to be called directly. Use either BTPayPalButtons or BTVenmoButton instead.
 struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
-    
+
     let color: Color
     let width: CGFloat?
     let logoHeight: CGFloat
@@ -12,6 +12,8 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
     let spinnerImageName: String?
     let isLoading: Bool
     let spinnerRotation: Double
+    let logoTopPadding: CGFloat
+    let logoBottomPadding: CGFloat
     let action: () -> Void
 
     var body: some View {
@@ -25,7 +27,9 @@ struct PaymentButtonView<Color: PaymentButtonColorProtocol>: View {
                 logoHeight: logoHeight,
                 spinnerImageName: spinnerImageName,
                 isLoading: isLoading,
-                spinnerRotation: spinnerRotation
+                spinnerRotation: spinnerRotation,
+                logoTopPadding: logoTopPadding,
+                logoBottomPadding: logoBottomPadding
             )
         )
         .disabled(isLoading)

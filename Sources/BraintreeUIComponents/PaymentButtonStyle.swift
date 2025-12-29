@@ -9,6 +9,8 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
     let spinnerImageName: String?
     let isLoading: Bool
     let spinnerRotation: Double
+    let logoTopPadding: CGFloat
+    let logoBottomPadding: CGFloat
 
     /// This is the width range for the payment button.
     private var widthRange: CGFloat {
@@ -29,10 +31,10 @@ struct PaymentButtonStyle<Color: PaymentButtonColorProtocol>: ButtonStyle {
                     .resizable()
                     .scaledToFit()
                     .frame(height: logoHeight)
+                    .padding(.top, logoTopPadding)
+                    .padding(.bottom, logoBottomPadding)
             }
         }
-        .padding(.top, 11)
-        .padding(.bottom, 8)
         .frame(width: widthRange)
         .frame(height: 45)
         .background(configuration.isPressed ? color.tappedButtonColor : color.backgroundColor)
