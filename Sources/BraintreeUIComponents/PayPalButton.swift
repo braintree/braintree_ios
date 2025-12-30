@@ -114,7 +114,9 @@ public struct PayPalButton: View {
             accessibilityHint: "Complete payment using PayPal",
             spinnerImageName: color?.spinnerColor,
             isLoading: isLoading,
-            spinnerRotation: spinnerRotation
+            spinnerRotation: spinnerRotation,
+            logoTopPadding: 11,
+            logoBottomPadding: 8
         ) {
             apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
             isLoading = true
