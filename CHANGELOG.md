@@ -1,6 +1,12 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeCore
+  * Add `BTSessionIDManager` to manage the persisting of Session ID throughout a single checkout session
+* BraintreeUIComponents
+  * Add BraintreeUIComponents module
+  * Add `PayPalButton(authorization:universalLink:fallbackURLScheme:request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
+  * Add `VenmoButton(authorization:universalLink:request:color:width:completion:)` to generate a Venmo-branded button for launching Venmo flow
 * BraintreePayPal
   * Add optional `fallbackURLScheme` parameter to `BTPayPalClient` to support custom URL scheme fallback in PayPal App Switch flow
 
