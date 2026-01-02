@@ -2,14 +2,13 @@ import Foundation
 
 class BTGraphQLHTTP: BTHTTP {
 
-    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
-
     // MARK: - Properties
 
     private let exceptionName = NSExceptionName("")
 
     // MARK: - Overrides
 
+    // TODO: Remove this version of get once BTAPIClient converted to async/await
     override func get(
         _ path: String,
         configuration: BTConfiguration? = nil,
@@ -19,6 +18,18 @@ class BTGraphQLHTTP: BTHTTP {
         NSException(name: exceptionName, reason: "GET is unsupported").raise()
     }
 
+    override func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        struct UnsupportedOperationError: Error, LocalizedError {
+            var errorDescription: String? { "GET is unsupported" }
+        }
+        throw UnsupportedOperationError()
+    }
+
+    // TODO: Remove this version of get once BTAPIClient converted to async/await
     override func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
@@ -26,7 +37,23 @@ class BTGraphQLHTTP: BTHTTP {
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
-        httpRequest(method: "POST", configuration: configuration, parameters: parameters, completion: completion)
+        Task {
+            let (body, response, error) = await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+            completion(body, response, error)
+        }
+    }
+
+    override func post(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        let (body, response, error) = await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+        if let error = error {
+            throw error
+        }
+        return (body, response)
     }
 
     // MARK: - Internal methods
@@ -34,83 +61,71 @@ class BTGraphQLHTTP: BTHTTP {
     func httpRequest(
         method: String,
         configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
-        completion: @escaping RequestCompletion
-    ) {
+        parameters: Encodable? = nil
+    ) async -> (BTJSON?, HTTPURLResponse?, Error?) {
         var errorUserInfo: [String: Any] = [:]
-        
+
         guard
             let baseURL = configuration?.graphQLURL ?? customBaseURL,
             !baseURL.absoluteString.isEmpty
         else {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
-            completion(nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
-            return
+            return (nil, nil, BTHTTPError.missingBaseURL(errorUserInfo))
         }
-        
+
         guard let components = URLComponents(string: baseURL.absoluteString) else {
-            completion(nil, nil, BTHTTPError.urlStringInvalid)
-            return
+            return (nil, nil, BTHTTPError.urlStringInvalid)
         }
-        
+
         guard let urlFromComponents = components.url else {
-            completion(nil, nil, BTHTTPError.urlStringInvalid)
-            return
+            return (nil, nil, BTHTTPError.urlStringInvalid)
         }
-        
+
         let headers = [
             "User-Agent": userAgentString,
             "Braintree-Version": BTCoreConstants.graphQLVersion,
             "Authorization": "Bearer \(authorization.bearer)",
             "Content-Type": "application/json; charset=utf-8"
         ]
-        
+
         var request: URLRequest
-        
+
         // swiftlint:disable:next redundant_optional_initialization
         var bodyData: Data? = nil
         if let parameters {
             bodyData = try? JSONEncoder().encode(parameters)
         }
-        
+
         request = URLRequest(url: urlFromComponents)
         request.httpBody = bodyData
         request.allHTTPHeaderFields = headers
         request.httpMethod = method
-        
+
         // Perform the actual request
-        session.dataTask(with: request) { [weak self] data, response, error in
-            guard let self else {
-                completion(nil, nil, BTHTTPError.deallocated("BTGraphQLHTTP"))
-                return
-            }
-            
-            handleRequestCompletion(data: data, response: response, error: error, completion: completion)
-        }.resume()
+        do {
+            let (data, response) = try await session.data(for: request)
+            return handleRequestCompletion(data: data, response: response, error: nil)
+        } catch {
+            return handleRequestCompletion(data: nil, response: nil, error: error)
+        }
     }
 
     func handleRequestCompletion(
         data: Data?,
         response: URLResponse?,
-        error: Error?,
-        completion: RequestCompletion?
-    ) {
-        guard let completion = completion else { return }
-
+        error: Error?
+    ) -> (BTJSON?, HTTPURLResponse?, Error?) {
         if let error = error {
-            callCompletionAsync(with: completion, body: nil, response: response as? HTTPURLResponse, error: error)
-            return
+            return (nil, response as? HTTPURLResponse, error)
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
-            return
+            return (nil, nil, BTHTTPError.httpResponseInvalid)
         }
-        
+
         guard let data = data else {
-            callCompletionAsync(with: completion, body: nil, response: httpResponse, error: BTHTTPError.unknown)
-            return
+            return (nil, httpResponse, BTHTTPError.unknown)
         }
 
         let json = try? JSONSerialization.jsonObject(with: data)
@@ -118,22 +133,15 @@ class BTGraphQLHTTP: BTHTTP {
 
         // Success case
         if body.asDictionary() != nil, body["errors"].asArray() == nil {
-            callCompletionAsync(with: completion, body: body, response: httpResponse, error: nil)
-            return
+            return (body, httpResponse, nil)
         }
-        
+
         // Error case
-        parseErrors(body: body, response: httpResponse) { errorJSON, error in
-            self.callCompletionAsync(
-                with: completion,
-                body: BTJSON(value: errorJSON),
-                response: httpResponse,
-                error: error
-            )
-        }
+        let (errorJSON, parseError) = parseErrors(body: body, response: httpResponse)
+        return (BTJSON(value: errorJSON), httpResponse, parseError)
     }
     
-    func parseErrors(body: BTJSON, response: HTTPURLResponse, completion: @escaping ([String: Any]?, Error?) -> Void) {
+    func parseErrors(body: BTJSON, response: HTTPURLResponse) -> ([String: Any]?, Error?) {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
 
@@ -161,7 +169,7 @@ class BTGraphQLHTTP: BTHTTP {
             errorBody["error"] = ["message": "An unexpected error occurred"]
             error = .serverError(errorBody)
         }
-        
+
         let nestedErrorResponse = createHTTPResponse(response: response, statusCode: statusCode)
         let nestedGraphQLError = NSError(
             domain: BTHTTPError.errorDomain,
@@ -172,7 +180,7 @@ class BTGraphQLHTTP: BTHTTP {
             ]
         )
 
-        completion(errorBody, nestedGraphQLError)
+        return (errorBody, nestedGraphQLError)
     }
 
     func createHTTPResponse(response: URLResponse, statusCode: Int) -> HTTPURLResponse? {
