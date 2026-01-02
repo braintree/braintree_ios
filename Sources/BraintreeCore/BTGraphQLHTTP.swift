@@ -26,7 +26,7 @@ class BTGraphQLHTTP: BTHTTP {
         throw UnsupportedOperationError()
     }
 
-    // TODO: Remove this version of get once BTAPIClient converted to async/await
+    // TODO: Remove this version of post once BTAPIClient converted to async/await
     override func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
@@ -36,7 +36,7 @@ class BTGraphQLHTTP: BTHTTP {
     ) {
         Task {
             let (body, response, error) = await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
-            completion(body, response, error)
+            callCompletionAsync(with: completion, body: body, response: response, error: error)
         }
     }
 
