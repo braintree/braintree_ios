@@ -23,9 +23,6 @@ class BTGraphQLHTTP: BTHTTP {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        struct UnsupportedOperationError: Error, LocalizedError {
-            var errorDescription: String? { "GET is unsupported" }
-        }
         throw UnsupportedOperationError()
     }
 
@@ -58,6 +55,7 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Internal methods
     
+    // swiftlint:disable:next large_tuple
     func httpRequest(
         method: String,
         configuration: BTConfiguration? = nil,
@@ -115,6 +113,7 @@ class BTGraphQLHTTP: BTHTTP {
         data: Data?,
         response: URLResponse?,
         error: Error?
+        // swiftlint:disable:next large_tuple
     ) -> (BTJSON?, HTTPURLResponse?, Error?) {
         if let error = error {
             return (nil, response as? HTTPURLResponse, error)
@@ -222,4 +221,9 @@ class BTGraphQLHTTP: BTHTTP {
 
         return errorTree.toDictionary()
     }
+}
+
+// MARK: - UnsupportedOperationError Definition
+struct UnsupportedOperationError: Error, LocalizedError {
+    var errorDescription: String? { "GET is unsupported" }
 }
