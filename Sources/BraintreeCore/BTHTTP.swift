@@ -155,7 +155,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
     }
     
-    
     func httpRequest(
         method: String,
         path: String,
@@ -301,7 +300,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             throw BTHTTPError.dataNotFound
         }
         if httpResponse.statusCode >= 400 {
-            let (json, error) = try handleHTTPResponseError(response: httpResponse, data: data)
+            let (_, error) = try handleHTTPResponseError(response: httpResponse, data: data)
             throw error
         }
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
