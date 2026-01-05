@@ -162,7 +162,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
         headers: [String: String]? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         let request = try createRequest(
             method: method,
             path: path,
@@ -180,9 +180,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
-            if let jsonError = try await handleJSONResponseError(json: json, response: response) {
-                throw jsonError
-            }
+            try handleJSONResponseError(json: json, response: response)
         }
         return (json, httpResponse)
     }
@@ -462,7 +460,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     func handleJSONResponseError(
         json: BTJSON,
         response: URLResponse
-    ) async throws -> Error? {
+    ) throws {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
 
@@ -470,9 +468,9 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             // Return error for unsupported response type
             let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
             errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
-            return BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo)
-        } else {
-            return json.asError()
+            throw BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo)
+        } else if let error = json.asError() {
+            throw error
         }
     }
 
