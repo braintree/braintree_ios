@@ -575,8 +575,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
     }
 
     func testHttpError_withEmptyDataAndNoError_returnsError() {
-        let (_, _, error) = http!.handleRequestCompletion(data: nil, response: nil, error: nil)
-        let nsError = error as NSError?
+        let result = http!.handleRequestCompletion(data: nil, response: nil, error: nil)
+        let nsError = result.error as NSError?
         XCTAssertEqual(nsError?.localizedDescription, "Unable to create HTTPURLResponse from response data.")
         XCTAssertEqual(nsError?.domain, BTHTTPError.errorDomain)
         XCTAssertEqual(nsError?.code, BTHTTPError.httpResponseInvalid.errorCode)
