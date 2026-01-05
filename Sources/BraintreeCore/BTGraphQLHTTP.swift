@@ -2,29 +2,7 @@ import Foundation
 
 class BTGraphQLHTTP: BTHTTP {
 
-    // MARK: - Properties
-
-    private let exceptionName = NSExceptionName("")
-
     // MARK: - Overrides
-
-    // TODO: Remove this version of get once BTAPIClient converted to async/await
-    override func get(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        NSException(name: exceptionName, reason: "GET is unsupported").raise()
-    }
-
-    override func get(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        throw UnsupportedOperationError()
-    }
 
     // TODO: Remove this version of post once BTAPIClient converted to async/await
     override func post(
@@ -221,10 +199,4 @@ class BTGraphQLHTTP: BTHTTP {
 
         return errorTree.toDictionary()
     }
-}
-
-// MARK: - UnsupportedOperationError Definition
-struct UnsupportedOperationError: Error, LocalizedError {
-    
-    var errorDescription: String? { "GET is unsupported" }
 }

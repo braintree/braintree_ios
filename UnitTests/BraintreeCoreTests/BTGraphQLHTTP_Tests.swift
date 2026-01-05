@@ -96,20 +96,6 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    // MARK: - Unsupported requests
-
-    func testGETRequests_areUnsupported() {
-        do {
-            try BTExceptionCatcher.catchException {
-                self.http?.get("") { _, _, _ in
-                    // no-op
-                }
-            }
-        } catch let error as NSError {
-            XCTAssertEqual(error.userInfo["ExceptionReason"] as! String, "GET is unsupported")
-        }
-    }
-
     // MARK: - POST requests
     
     func testPOSTRequests_sendsParametersInBody() {
