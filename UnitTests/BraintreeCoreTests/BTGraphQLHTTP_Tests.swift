@@ -755,14 +755,4 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             }
         }
     }
-
-    // TODO: remove this troubleshooting test
-    func testAsyncGet_throwsError() async {
-        do {
-            _ = try await http?.get("")
-            XCTFail("Should have thrown an error")
-        } catch {
-            XCTAssertEqual(error.localizedDescription, "GET is unsupported")
-        }
-    }
 }
