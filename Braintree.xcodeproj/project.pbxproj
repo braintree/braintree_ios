@@ -95,6 +95,7 @@
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
 		624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
+		625719C52F0DBAF6008D019E /* BTHTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */; };
 		62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */; };
 		6298A1992B91010600E46EDF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */; };
 		62A659A42B98CB23008DFD67 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */; };
@@ -824,6 +825,7 @@
 		62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
+		625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPMethod.swift; sourceTree = "<group>"; };
 		62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics_Tests.swift; sourceTree = "<group>"; };
 		6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1447,6 +1449,7 @@
 				BC17F9B328D23C5C004B18CC /* BTGraphQLMultiErrorNode.swift */,
 				BC17F9BF28D255B9004B18CC /* BTGraphQLSingleErrorNode.swift */,
 				BE698E9F28AA8DCB001D9B10 /* BTHTTP.swift */,
+				625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */,
 				BEC3F11228A4401E0074DF0F /* BTHTTPError.swift */,
 				5708E0A528809AD9007946B9 /* BTJSON.swift */,
 				5708E0A728809BC6007946B9 /* BTJSONError.swift */,
@@ -3345,6 +3348,7 @@
 				57CBBCE828B033760037F4EE /* BTGraphQLHTTP.swift in Sources */,
 				80AD35F22BFBB1DD00BF890E /* TokenizationKeyError.swift in Sources */,
 				BE63A3A7288F3026001936DA /* BTPostalAddress.swift in Sources */,
+				625719C52F0DBAF6008D019E /* BTHTTPMethod.swift in Sources */,
 				BE2F98D028A2BCCD008EF189 /* BTConfiguration.swift in Sources */,
 				804DC45D2B2D08FF00F17A15 /* BTConfigurationRequest.swift in Sources */,
 				BED3A2C62C5D74B20034D9A6 /* LinkType.swift in Sources */,

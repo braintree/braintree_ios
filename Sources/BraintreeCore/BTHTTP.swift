@@ -290,7 +290,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         response: URLResponse? = nil,
         error: Error? = nil
     ) throws -> (BTJSON, HTTPURLResponse) {
-        if let error = error {
+        if let error {
             throw error
         }
         
@@ -572,10 +572,4 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
         return finalQuery
     }
-}
-
-enum BTHTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-    case delete = "DELETE"
 }
