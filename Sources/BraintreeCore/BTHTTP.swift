@@ -170,7 +170,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             headers: headers
         )
         let (data, response) = try await session.data(for: request)
-        return try await handleRequestCompletion(data: data, request: request, response: response, error: nil)
+        return try await handleRequestCompletion(data: data, request: request, response: response)
     }
 
     func createRequest(
@@ -285,31 +285,37 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     func handleRequestCompletion(
-        data: Data?,
-        request: URLRequest?,
-        response: URLResponse?,
-        error: Error?
-    ) async throws -> (BTJSON, HTTPURLResponse) {
+        data: Data? = nil,
+        request: URLRequest? = nil,
+        response: URLResponse? = nil,
+        error: Error? = nil
+    ) throws -> (BTJSON, HTTPURLResponse) {
         if let error = error {
             throw error
         }
+        
         guard let response, let httpResponse = createHTTPResponse(response: response) else {
             throw BTHTTPError.httpResponseInvalid
         }
-        guard let data = data else {
+        
+        guard let data else {
             throw BTHTTPError.dataNotFound
         }
+        
         if httpResponse.statusCode >= 400 {
             let (_, error) = try handleHTTPResponseError(response: httpResponse, data: data)
             throw error
         }
+        
         let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
         if json.isError {
             try handleJSONResponseError(json: json, response: response)
         }
+        
         return (json, httpResponse)
     }
     
+    // TODO: Remove this completion handler version after migrating all callers to async/await
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
