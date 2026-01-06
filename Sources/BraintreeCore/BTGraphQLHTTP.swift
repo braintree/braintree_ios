@@ -12,8 +12,8 @@ class BTGraphQLHTTP: BTHTTP {
         headers: [String: String]? = nil,
         completion: @escaping RequestCompletion
     ) {
-        Task {
-            let result = await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+        Task { [self] in
+            let result = await httpRequestReturningResult(method: "POST", configuration: configuration, parameters: parameters)
             callCompletionAsync(with: completion, body: result.body, response: result.response, error: result.error)
         }
     }
@@ -24,16 +24,26 @@ class BTGraphQLHTTP: BTHTTP {
         parameters: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        let result = await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+        try await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+    }
+
+    // MARK: - Internal methods
+
+    func httpRequest(
+        method: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        let result = await httpRequestReturningResult(method: method, configuration: configuration, parameters: parameters)
         if let error = result.error {
             throw error
         }
         return (result.body, result.response)
     }
 
-    // MARK: - Internal methods
+    // MARK: - Private methods
 
-    func httpRequest(
+    private func httpRequestReturningResult(
         method: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
@@ -80,13 +90,13 @@ class BTGraphQLHTTP: BTHTTP {
         // Perform the actual request
         do {
             let (data, response) = try await session.data(for: request)
-            return handleRequestCompletion(data: data, response: response, error: nil)
+            return handleRequestCompletionReturningResult(data: data, response: response, error: nil)
         } catch {
-            return handleRequestCompletion(data: nil, response: nil, error: error)
+            return handleRequestCompletionReturningResult(data: nil, response: nil, error: error)
         }
     }
 
-    func handleRequestCompletion(
+    private func handleRequestCompletionReturningResult(
         data: Data?,
         response: URLResponse?,
         error: Error?

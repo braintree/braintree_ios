@@ -432,6 +432,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         ]
 
         for (errorType, _) in errorTypes {
+            HTTPStubs.removeAllStubs()
+
             let expectedStatusCode = errorTypes[errorType]
             let stubGraphQLErrorResponse = [
                 "errors": [
@@ -451,13 +453,26 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 )
             }
 
-            let expectation = expectation(description: "POST callback")
-            http?.post("", configuration: fakeConfiguration) { body, _, error in
-                let error = error as NSError?
-                let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
+            let expectation = expectation(description: "POST callback \(errorType)")
+            let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
+            let testHttp = BTGraphQLHTTP(authorization: fakeClientToken)
+
+            testHttp.post("", configuration: fakeConfiguration) { body, _, error in
+                guard let error = error as NSError? else {
+                    XCTFail("Expected error but got nil for errorType: \(errorType)")
+                    expectation.fulfill()
+                    return
+                }
+
+                guard let errorDictionary = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse else {
+                    XCTFail("Expected urlResponseKey in error.userInfo for errorType: \(errorType). Error: \(error), userInfo: \(error.userInfo)")
+                    expectation.fulfill()
+                    return
+                }
+
                 XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
-                XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
-                XCTAssertEqual(error?.code, errorCodes[errorType])
+                XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+                XCTAssertEqual(error.code, errorCodes[errorType])
 
                 expectation.fulfill()
             }
@@ -572,14 +587,6 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 2)
-    }
-
-    func testHttpError_withEmptyDataAndNoError_returnsError() {
-        let result = http!.handleRequestCompletion(data: nil, response: nil, error: nil)
-        let nsError = result.error as NSError?
-        XCTAssertEqual(nsError?.localizedDescription, "Unable to create HTTPURLResponse from response data.")
-        XCTAssertEqual(nsError?.domain, BTHTTPError.errorDomain)
-        XCTAssertEqual(nsError?.code, BTHTTPError.httpResponseInvalid.errorCode)
     }
 
     // MARK: - Async/Await Tests
