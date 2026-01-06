@@ -484,7 +484,20 @@ import BraintreeDataCollector
                         return
                     }
                     let merchantID = json["merchantId"].asString()
-                    self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
+                    let fundingSource: String
+                    if let checkoutRequest = request as? BTPayPalCheckoutRequest {
+                        if checkoutRequest.offerCredit {
+                            fundingSource = "credit"
+                        } else if checkoutRequest.offerPayLater {
+                            fundingSource = "paylater"
+                        } else {
+                            fundingSource = "paypal"
+                        }
+                    } else {
+                        fundingSource = "paypal"
+                    }
+                    
+                    self.launchPayPalApp(with: url, fundingSource: fundingSource, merchantID: merchantID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
                     self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
@@ -495,6 +508,7 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
+        fundingSource: String,
         merchantID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
@@ -535,7 +549,8 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
-            URLQueryItem(name: "merchant", value: merchantID ?? "unknown")
+            URLQueryItem(name: "merchant", value: merchantID ?? "unknown"),
+            URLQueryItem(name: "funding_source", value: fundingSource)
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
