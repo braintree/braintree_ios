@@ -3,6 +3,24 @@ import Foundation
 class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Overrides
+    
+    // TODO: Remove this version of get once BTAPIClient converted to async/await
+    override func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil,
+        completion: @escaping RequestCompletion
+    ) {
+        callCompletionAsync(with: completion, body: nil, response: nil, error: BTGraphQLHTTPError.unsupportedOperation)
+    }
+    
+    override func get(
+        _ path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        throw BTGraphQLHTTPError.unsupportedOperation
+    }
 
     // TODO: Remove this version of post once BTAPIClient converted to async/await
     override func post(

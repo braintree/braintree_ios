@@ -95,6 +95,19 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
+    
+    // MARK: - Unsupported requests
+
+    func testGETRequests_areUnsupported() {
+        let expectation = expectation(description: "GET callback")
+        http?.get("") { body, response, error in
+            XCTAssertNil(body)
+            XCTAssertNil(response)
+            XCTAssertEqual((error as? BTGraphQLHTTPError), BTGraphQLHTTPError.unsupportedOperation)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2)
+    }
 
     // MARK: - POST requests
     
