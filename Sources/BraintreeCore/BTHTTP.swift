@@ -170,7 +170,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             headers: headers
         )
         let (data, response) = try await session.data(for: request)
-        return try await handleRequestCompletion(data: data, request: request, response: response)
+        return try handleRequestCompletion(data: data, request: request, response: response)
     }
 
     func createRequest(

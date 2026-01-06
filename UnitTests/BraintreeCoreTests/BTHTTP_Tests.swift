@@ -46,7 +46,7 @@ final class BTHTTP_Tests: XCTestCase {
         http.session = testURLSession
         let expectation = expectation(description: "GET callback")
 
-        http.httpRequest(method: "ANY", path: "200.json") { body, _, error in
+        http.httpRequest(method: .get, path: "200.json") { body, _, error in
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
@@ -61,7 +61,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testRequests_whenNoConfigurationSet_doesNotAppendPath() {
         let expectation = expectation(description: "callback")
 
-        http?.httpRequest(method: "ANY", path: "/some-really-long-path") { body, _, error in
+        http?.httpRequest(method: .get, path: "/some-really-long-path") { body, _, error in
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
@@ -76,7 +76,7 @@ final class BTHTTP_Tests: XCTestCase {
         http.session = testURLSession
         let expectation = expectation(description: "callback")
 
-        http.httpRequest(method: "ANY", path: "", configuration: fakeConfiguration) { body, _, error in
+        http.httpRequest(method: .get, path: "", configuration: fakeConfiguration) { body, _, error in
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
@@ -90,7 +90,7 @@ final class BTHTTP_Tests: XCTestCase {
     func testRequests_whenConfigurationSet_appendsPath() {
         let expectation = expectation(description: "callback")
 
-        http?.httpRequest(method: "ANY", path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
+        http?.httpRequest(method: .get, path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
             XCTAssertNil(error)
             let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
             XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
