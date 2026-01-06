@@ -69,7 +69,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
+        httpRequest(method: .get, path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
     func get(
@@ -78,7 +78,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         parameters: Encodable? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await httpRequest(
-            method: "GET",
+            method: .get,
             path: path,
             configuration: configuration,
             parameters: parameters
@@ -98,7 +98,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         
         httpRequest(
-            method: "POST",
+            method: .post,
             path: path,
             configuration: configuration,
             parameters: parameters,
@@ -114,7 +114,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         headers: [String: String]? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         try await httpRequest(
-            method: "POST",
+            method: .post,
             path: path,
             configuration: configuration,
             parameters: parameters,
@@ -125,7 +125,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Method Helpers
 
     func httpRequest(
-        method: String,
+        method: BTHTTPMethod,
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
@@ -156,7 +156,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
     
     func httpRequest(
-        method: String,
+        method: BTHTTPMethod,
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
@@ -174,7 +174,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     func createRequest(
-        method: String,
+        method: BTHTTPMethod,
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
@@ -189,7 +189,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         if fullPathURL.absoluteString.isEmpty {
             var errorUserInfo: [String: Any] = [:]
-            errorUserInfo["method"] = method
+            errorUserInfo["method"] = method.rawValue
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
@@ -219,7 +219,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     func buildHTTPRequest(
-        method: String,
+        method: BTHTTPMethod,
         url: URL,
         parameters: NSMutableDictionary? = [:],
         headers additionalHeaders: [String: String]? = nil
@@ -247,7 +247,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             headers = headers.merging(additionalHeaders) { $1 }
         }
         
-        if method == "GET" || method == "DELETE" {
+        if method == .get || method == .delete {
             components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             
             guard let urlFromComponents = components.url else {
@@ -279,7 +279,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         
         request.allHTTPHeaderFields = headers
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         
         return request
     }
@@ -572,4 +572,10 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         let finalQuery = query.replacingOccurrences(of: queryDiscardHolder, with: "")
         return finalQuery
     }
+}
+
+enum BTHTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case delete = "DELETE"
 }
