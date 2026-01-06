@@ -245,6 +245,8 @@ class ContainmentViewController: UIViewController {
             return ThreeDSecureViewController(authorization: authorization)
         case "VenmoViewController":
             return VenmoViewController(authorization: authorization)
+        case "PaymentButtonViewController":
+            return PaymentButtonViewController(authorization: authorization)
         case "PayPalMessagingViewController":
             return PayPalMessagingViewController(authorization: authorization)
         default:

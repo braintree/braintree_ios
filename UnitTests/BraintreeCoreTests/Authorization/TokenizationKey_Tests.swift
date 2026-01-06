@@ -22,7 +22,7 @@ class TokenizationKey_Tests: XCTestCase {
     
     func testInit_forInvalidEnvironment_throwsError() {
         do {
-            let sut = try TokenizationKey("fake-env_part2_part3")
+            let _ = try TokenizationKey("fake-env_part2_part3")
         } catch {
             let error = error as NSError
             XCTAssertEqual(error.localizedDescription, "Invalid tokenization key. Please ensure your server is generating a valid Braintree Tokenization Key.")
@@ -33,7 +33,7 @@ class TokenizationKey_Tests: XCTestCase {
     
     func testInit_forInvalidFormat_throwsError() {
         do {
-            let sut = try TokenizationKey("invalid_tokenization_key_format_example")
+            let _ = try TokenizationKey("invalid_tokenization_key_format_example")
         } catch {
             let error = error as NSError
             XCTAssertEqual(error.localizedDescription, "Invalid tokenization key. Please ensure your server is generating a valid Braintree Tokenization Key.")

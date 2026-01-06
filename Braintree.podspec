@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "7.1.0"
+  s.version          = "7.2.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -97,6 +97,17 @@ Pod::Spec.new do |s|
     s.source_files = "Sources/BraintreeVenmo/**/*.swift"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreeVenmo_PrivacyInfo" => "Sources/BraintreeVenmo/PrivacyInfo.xcprivacy" }
+  end
+
+  s.subspec "UIComponents" do |s|
+    s.source_files = "Sources/BraintreeUIComponents/*.swift"
+    s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPal"
+    s.dependency "Braintree/Venmo"
+    s.resource_bundle = {
+      'BraintreeUIComponents' => ['Sources/BraintreeUIComponents/Resources/*.xcassets'],
+      "BraintreeUIComponents_PrivacyInfo" => "Sources/BraintreeUIComponents/PrivacyInfo.xcprivacy"
+    }
   end
 
 end

@@ -37,4 +37,56 @@ final class BTPayPalReturnURL_Tests: XCTestCase {
         let returnURL = BTPayPalReturnURL(.payPalApp(url: URL(string: "bar://onetouch/v1/invalid")!))
         XCTAssertEqual(returnURL?.state, .unknownPath)
     }
+    
+    // MARK: - isValid with fallbackURLScheme Tests
+    
+    func testIsValid_withHTTPSScheme_andAppSwitchPath_returnsTrue() {
+        let url = URL(string: "https://example.com/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: nil))
+    }
+    
+    func testIsValid_withHTTPSScheme_withoutAppSwitchPath_returnsFalse() {
+        let url = URL(string: "https://example.com/other-path/success?token=test")!
+        XCTAssertFalse(BTPayPalReturnURL.isValid(url, fallbackURLScheme: nil))
+    }
+    
+    func testIsValid_withCustomScheme_andFallbackURLScheme_returnsTrue() {
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
+    }
+    
+    func testIsValid_withCustomScheme_withoutFallbackURLScheme_returnsFalse() {
+        let url = URL(string: "myapp://success?token=test")!
+        XCTAssertFalse(BTPayPalReturnURL.isValid(url, fallbackURLScheme: nil))
+    }
+    
+    func testIsValid_withCustomScheme_andDifferentFallbackURLScheme_returnsFalse() {
+        let url = URL(string: "myapp://success?token=test")!
+        XCTAssertFalse(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "otherapp"))
+    }
+    
+    func testIsValid_withCustomScheme_andAppSwitchPath_andFallbackURLScheme_returnsTrue() {
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
+    }
+    
+    func testIsValid_withHTTPSScheme_andFallbackURLSchemeProvided_stillAcceptsHTTPS() {
+        let url = URL(string: "https://example.com/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
+    }
+    
+    func testIsValid_withCustomScheme_withoutSuccessOrCancelPath_returnsFalse() {
+        let url = URL(string: "myapp://other?token=test")!
+        XCTAssertFalse(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
+    }
+    
+    func testIsValid_withCustomScheme_withCancelPath_returnsTrue() {
+        let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/cancel?token=test")!
+        XCTAssertTrue(BTPayPalReturnURL.isValid(url, fallbackURLScheme: "myapp"))
+    }
+    
+    func testIsValid_withInvalidScheme_returnsFalse() {
+        let url = URL(string: "http://example.com/braintreeAppSwitchPayPal/success?token=test")!
+        XCTAssertFalse(BTPayPalReturnURL.isValid(url, fallbackURLScheme: nil))
+    }
 }
