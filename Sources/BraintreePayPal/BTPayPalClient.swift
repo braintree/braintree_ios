@@ -405,13 +405,15 @@ import BraintreeDataCollector
     ) {
         self.payPalRequest = request
 
+        let fundingSource: String = getFundingSource(from: request)
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
             applicationState: UIApplication.shared.applicationStateString,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            fundingSource: fundingSource
         )
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -484,19 +486,6 @@ import BraintreeDataCollector
                         return
                     }
                     let merchantID = json["merchantId"].asString()
-                    let fundingSource: String
-                    if let checkoutRequest = request as? BTPayPalCheckoutRequest {
-                        if checkoutRequest.offerCredit {
-                            fundingSource = "credit"
-                        } else if checkoutRequest.offerPayLater {
-                            fundingSource = "paylater"
-                        } else {
-                            fundingSource = "paypal"
-                        }
-                    } else {
-                        fundingSource = "paypal"
-                    }
-                    
                     self.launchPayPalApp(with: url, fundingSource: fundingSource, merchantID: merchantID, completion: completion)
                 case .webBrowser(let url):
                     self.didPayPalServerAttemptAppSwitch = false
@@ -505,10 +494,22 @@ import BraintreeDataCollector
             }
         }
     }
+    
+    private func getFundingSource(from request: BTPayPalRequest) -> String {
+        if let checkoutRequest = request as? BTPayPalCheckoutRequest {
+            if checkoutRequest.offerCredit {
+                return "credit"
+            }
+            if checkoutRequest.offerPayLater {
+                return "paylater"
+            }
+        }
+        return "paypal"
+    }
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
-        fundingSource: String,
+        fundingSource: String? = nil,
         merchantID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
@@ -523,7 +524,8 @@ import BraintreeDataCollector
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 isVaultRequest: isVaultRequest,
-                shopperSessionID: payPalRequest?.shopperSessionID
+                shopperSessionID: payPalRequest?.shopperSessionID,
+                fundingSource: fundingSource
             )
 
             return
@@ -721,6 +723,7 @@ import BraintreeDataCollector
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+        let fundingSource: String? = payPalRequest != nil ? getFundingSource(from: payPalRequest!) : nil
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             applicationState: UIApplication.shared.applicationStateString,
@@ -731,7 +734,8 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            fundingSource: fundingSource
         )
         completion(nil, error)
     }

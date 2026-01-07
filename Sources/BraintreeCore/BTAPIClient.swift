@@ -223,7 +223,8 @@ import UIKit
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         pageType: String? = nil,
-        shopperSessionID: String? = nil
+        shopperSessionID: String? = nil,
+        fundingSource: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
@@ -243,7 +244,8 @@ import UIKit
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                shopperSessionID: shopperSessionID
+                shopperSessionID: shopperSessionID,
+                fundingSource: fundingSource
             )
         )
     }
