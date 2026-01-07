@@ -723,7 +723,12 @@ import BraintreeDataCollector
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
-        let fundingSource: String? = payPalRequest != nil ? getFundingSource(from: payPalRequest!) : nil
+        let fundingSource: String?
+        if let request = payPalRequest {
+            fundingSource = getFundingSource(from: request)
+        } else {
+            fundingSource = nil
+        }
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             applicationState: UIApplication.shared.applicationStateString,
