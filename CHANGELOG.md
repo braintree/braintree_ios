@@ -2,9 +2,8 @@
 
 ## unreleased
 
-* PayPal
-    * Add `fundingSource` to the app switch url link. 
-    * Add `funding_source` attribute to instrumentation events. 
+* BraintreePayPal
+    * Pass `fundingSource` to the app switch url link and to analytics events. 
 
 ## 7.2.0 (2026-01-05)
 * BraintreeCore
