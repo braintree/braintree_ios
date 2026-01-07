@@ -95,19 +95,18 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
-
+    
     // MARK: - Unsupported requests
 
     func testGETRequests_areUnsupported() {
-        do {
-            try BTExceptionCatcher.catchException {
-                self.http?.get("") { _, _, _ in
-                    // no-op
-                }
-            }
-        } catch let error as NSError {
-            XCTAssertEqual(error.userInfo["ExceptionReason"] as! String, "GET is unsupported")
+        let expectation = expectation(description: "GET callback")
+        http?.get("") { body, response, error in
+            XCTAssertNil(body)
+            XCTAssertNil(response)
+            XCTAssertEqual((error as? BTGraphQLHTTPError), BTGraphQLHTTPError.unsupportedOperation)
+            expectation.fulfill()
         }
+        waitForExpectations(timeout: 2)
     }
 
     // MARK: - POST requests
@@ -446,6 +445,8 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         ]
 
         for (errorType, _) in errorTypes {
+            HTTPStubs.removeAllStubs()
+
             let expectedStatusCode = errorTypes[errorType]
             let stubGraphQLErrorResponse = [
                 "errors": [
@@ -465,13 +466,26 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 )
             }
 
-            let expectation = expectation(description: "POST callback")
-            http?.post("", configuration: fakeConfiguration) { body, _, error in
-                let error = error as NSError?
-                let errorDictionary = error!.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
+            let expectation = expectation(description: "POST callback \(errorType)")
+            let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
+            let testHttp = BTGraphQLHTTP(authorization: fakeClientToken)
+
+            testHttp.post("", configuration: fakeConfiguration) { body, _, error in
+                guard let error = error as NSError? else {
+                    XCTFail("Expected error but got nil for errorType: \(errorType)")
+                    expectation.fulfill()
+                    return
+                }
+
+                guard let errorDictionary = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse else {
+                    XCTFail("Expected urlResponseKey in error.userInfo for errorType: \(errorType). Error: \(error), userInfo: \(error.userInfo)")
+                    expectation.fulfill()
+                    return
+                }
+
                 XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
-                XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
-                XCTAssertEqual(error?.code, errorCodes[errorType])
+                XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+                XCTAssertEqual(error.code, errorCodes[errorType])
 
                 expectation.fulfill()
             }
@@ -588,12 +602,163 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         waitForExpectations(timeout: 2)
     }
 
-    func testHttpError_withEmptyDataAndNoError_returnsError() {
-        http?.handleRequestCompletion(data: nil, response: nil, error: nil) { _, _, error in
-            let error = error as NSError?
-            XCTAssertEqual(error?.localizedDescription, "Unable to create HTTPURLResponse from response data.")
-            XCTAssertEqual(error?.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error?.code, BTHTTPError.httpResponseInvalid.errorCode)
+    // MARK: - Async/Await Tests
+
+    func testAsyncPost_whenSuccessful_returnsData() async throws {
+        let stubResponseData: [String: Any] = ["success": true]
+
+        HTTPStubs.stubRequests { request in
+            return true
+        } withStubResponse: { request in
+            return HTTPStubsResponse(
+                data: try! JSONSerialization.data(withJSONObject: stubResponseData, options: .prettyPrinted),
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        let (body, response) = try await http!.post("", configuration: fakeConfiguration, parameters: ["hey": "now"])
+
+        XCTAssertEqual(body?.asDictionary(), stubResponseData as NSDictionary)
+        XCTAssertNotNil(response)
+    }
+
+    func testAsyncPost_whenNilConfig_throwsError() async {
+        do {
+            _ = try await http!.post("", configuration: nil, parameters: nil as Encodable?)
+            XCTFail("Should have thrown an error")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, "com.braintreepayments.BTHTTPErrorDomain")
+            XCTAssertEqual(nsError.code, 4)
+        }
+    }
+
+    func testAsyncPost_whenNetworkError_throwsError() async {
+        HTTPStubs.stubRequests { request in
+            return true
+        } withStubResponse: { request in
+            return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: -1002, userInfo: [:]))
+        }
+
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
+            XCTFail("Should have thrown an error")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, URLError.errorDomain)
+            XCTAssertEqual(nsError.code, -1002)
+        }
+    }
+
+    func testAsyncPost_whenErrorTypeIsUserError_throwsErrorWithExpectedDetails() async {
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "data": ["tokenizeCreditCard": nil] as [String: Any?],
+            "errors": [
+                [
+                    "message": "Expiration month is invalid",
+                    "path": ["tokenizeCreditCard"],
+                    "locations": [
+                        ["line": 1, "column": 66]
+                    ],
+                    "extensions": [
+                        "errorType": "user_error",
+                        "legacyCode": "81712",
+                        "inputPath": ["input", "creditCard", "expirationMonth"]
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ]
+
+        let expectedErrorBody: [String: Any] = [
+            "error": ["message": "Input is invalid"],
+            "fieldErrors": [
+                [
+                    "field": "creditCard",
+                    "fieldErrors": [
+                        [
+                            "field": "expirationMonth",
+                            "code": "81712",
+                            "message": "Expiration month is invalid"
+                        ]
+                    ]
+                ] as [String: Any]
+            ]
+        ]
+
+        HTTPStubs.stubRequests { request in
+            return true
+        } withStubResponse: { request in
+            return HTTPStubsResponse(
+                data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
+            XCTFail("Should have thrown an error")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(nsError.code, BTHTTPError.clientError([:]).errorCode)
+
+            if let errorJSON = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON,
+               let errorDictionary = errorJSON.asDictionary() {
+                XCTAssertEqual(errorDictionary, expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected error user info to contain JSON response body")
+            }
+        }
+    }
+
+    func testAsyncPost_whenErrorTypeIsDeveloperError_throwsErrorWithExpectedDetails() async {
+        let stubGraphQLErrorResponse: [String: Any?] = [
+            "data": ["tokenizeCard": nil] as [String: Any?],
+            "errors": [
+                [
+                    "message": "Validation is not supported for requests authorized with a tokenization key.",
+                    "locations": [
+                        ["line": 2, "column": 9]
+                    ],
+                    "path": ["tokenizeCreditCard"],
+                    "extensions": [
+                        "errorType": "developer_error",
+                        "legacyCode": "50000",
+                        "inputPath": ["input", "options", "validate"]
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ]
+
+        let expectedErrorBody = [
+            "error": ["message": "Validation is not supported for requests authorized with a tokenization key."]
+        ]
+
+        HTTPStubs.stubRequests { request in
+            return true
+        } withStubResponse: { request in
+            return HTTPStubsResponse(
+                data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"]
+            )
+        }
+
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
+            XCTFail("Should have thrown an error")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, BTHTTPError.errorDomain)
+
+            if let errorJSON = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON,
+               let errorDictionary = errorJSON.asDictionary() {
+                XCTAssertEqual(errorDictionary, expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected error user info to contain JSON response body")
+            }
         }
     }
 }

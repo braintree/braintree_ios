@@ -35,9 +35,11 @@
 		084135442ED0CBAD00884FE9 /* VenmoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */; };
 		084135452ED0CBAD00884FE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0841353E2ED0CBAD00884FE9 /* Assets.xcassets */; };
 		084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */; };
+		087CA76E2F0D72E80065D89B /* BTGraphQLHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */; };
 		0889DB142ED4C0350023AA64 /* PaymentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */; };
 		08A83F5D2EE096860076BD28 /* UIComponentsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F5C2EE096860076BD28 /* UIComponentsAnalytics.swift */; };
 		08A83F672EE72F440076BD28 /* BTSessionIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F662EE72F440076BD28 /* BTSessionIDManager.swift */; };
+		08CA32AA2F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CA32A92F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
@@ -802,9 +804,11 @@
 		0841353E2ED0CBAD00884FE9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButtonColor.swift; sourceTree = "<group>"; };
 		084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonColorProtocol.swift; sourceTree = "<group>"; };
+		087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTPError.swift; sourceTree = "<group>"; };
 		0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonStyle.swift; sourceTree = "<group>"; };
 		08A83F5C2EE096860076BD28 /* UIComponentsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsAnalytics.swift; sourceTree = "<group>"; };
 		08A83F662EE72F440076BD28 /* BTSessionIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSessionIDManager.swift; sourceTree = "<group>"; };
+		08CA32A92F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLRequestResult.swift; sourceTree = "<group>"; };
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
@@ -1605,7 +1609,9 @@
 				CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
+				08CA32A92F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift */,
 				08A83F662EE72F440076BD28 /* BTSessionIDManager.swift */,
+				087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */,
 			);
 			path = BraintreeCore;
 			sourceTree = "<group>";
@@ -3556,6 +3562,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				087CA76E2F0D72E80065D89B /* BTGraphQLHTTPError.swift in Sources */,
 				BED00CAE28A5419900D74AEC /* BTBinData.swift in Sources */,
 				BE549F142BF6576300B6F441 /* BTAnalyticsEventsStorage.swift in Sources */,
 				BC17F9BE28D25054004B18CC /* BTGraphQLErrorNode.swift in Sources */,
@@ -3602,6 +3609,7 @@
 				BE24C67328E73E810067B11A /* BTAPIClientHTTPType.swift in Sources */,
 				457D7FC82C29CEC300EF6523 /* RepeatingTimer.swift in Sources */,
 				BE9EC0982899CF040022EC63 /* BTAPIPinnedCertificates.swift in Sources */,
+				08CA32AA2F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift in Sources */,
 				BEF1089029019CAE003B2FDA /* BTAnalyticsService.swift in Sources */,
 				B8447AC42E3BCFFA00A1D6E6 /* BTGraphQLEncodableBody.swift in Sources */,
 				BEF388C32BE9340C000965C8 /* BTAPITimingDelegate.swift in Sources */,
