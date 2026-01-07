@@ -519,6 +519,11 @@ public enum BTPayPalFundingSource: String {
                 return .payLater
             }
         }
+        if let vaultRequest = request as? BTPayPalVaultRequest {
+            if vaultRequest.offerCredit {
+                return .credit
+            }
+        }
         return .payPal
     }
 

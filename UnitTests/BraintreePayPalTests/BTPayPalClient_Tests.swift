@@ -1476,6 +1476,16 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
     }
+    
+    func testTokenize_whenVaultCreditRequest_setsVaultAnalyticsTags() async {
+        let vaultRequest = BTPayPalVaultRequest(offerCredit: true)
+
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
+    }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() async {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
