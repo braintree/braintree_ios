@@ -411,9 +411,9 @@ import BraintreeDataCollector
             applicationState: UIApplication.shared.applicationStateString,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            fundingSource: fundingSource,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID,
-            fundingSource: fundingSource
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
         apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
             if let error {
@@ -523,9 +523,9 @@ import BraintreeDataCollector
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                fundingSource: fundingSource,
                 isVaultRequest: isVaultRequest,
-                shopperSessionID: payPalRequest?.shopperSessionID,
-                fundingSource: fundingSource
+                shopperSessionID: payPalRequest?.shopperSessionID
             )
 
             return
@@ -738,9 +738,9 @@ import BraintreeDataCollector
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
+            fundingSource: fundingSource,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID,
-            fundingSource: fundingSource
+            shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(nil, error)
     }

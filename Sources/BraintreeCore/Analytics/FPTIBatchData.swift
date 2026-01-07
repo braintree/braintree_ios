@@ -91,6 +91,7 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            fundingSource: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
@@ -98,8 +99,7 @@ struct FPTIBatchData: Codable {
             pageType: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
-            startTime: Int? = nil,
-            fundingSource: String? = nil
+            startTime: Int? = nil
         ) {
             self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString

@@ -90,13 +90,13 @@ public class MockAPIClient: BTAPIClient {
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
-        merchantExperiment experiment: String? = nil,
+        fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
+        merchantExperiment experiment: String? = nil,
         pageType: String? = nil,
-        shopperSessionID: String? = nil,
-        fundingSource: String? = nil
+        shopperSessionID: String? = nil
     ) {
         postedApplicationState = applicationState
         postedButtonType = buttonType
