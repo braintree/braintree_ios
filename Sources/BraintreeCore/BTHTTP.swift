@@ -69,7 +69,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     // MARK: - HTTP Methods
 
     func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
+        httpRequest(method: .get, path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
     func get(
@@ -77,15 +77,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            get(path, configuration: configuration, parameters: parameters) { body, response, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (body, response))
-                }
-            }
-        }
+        try await httpRequest(
+            method: .get,
+            path: path,
+            configuration: configuration,
+            parameters: parameters
+        )
     }
     
     func post(
@@ -101,7 +98,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         
         httpRequest(
-            method: "POST",
+            method: .post,
             path: path,
             configuration: configuration,
             parameters: parameters,
@@ -116,21 +113,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         parameters: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            post(path, configuration: configuration, parameters: parameters, headers: headers) { body, response, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (body, response))
-                }
-            }
-        }
+        try await httpRequest(
+            method: .post,
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers
+        )
     }
 
     // MARK: - HTTP Method Helpers
 
     func httpRequest(
-        method: String,
+        method: BTHTTPMethod,
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
@@ -159,9 +154,27 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             return
         }
     }
+    
+    func httpRequest(
+        method: BTHTTPMethod,
+        path: String,
+        configuration: BTConfiguration? = nil,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil
+    ) async throws -> (BTJSON, HTTPURLResponse) {
+        let request = try createRequest(
+            method: method,
+            path: path,
+            configuration: configuration,
+            parameters: parameters,
+            headers: headers
+        )
+        let (data, response) = try await session.data(for: request)
+        return try handleRequestCompletion(data: data, request: request, response: response)
+    }
 
     func createRequest(
-        method: String,
+        method: BTHTTPMethod,
         path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
@@ -176,7 +189,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         if fullPathURL.absoluteString.isEmpty {
             var errorUserInfo: [String: Any] = [:]
-            errorUserInfo["method"] = method
+            errorUserInfo["method"] = method.rawValue
             errorUserInfo["path"] = path
             errorUserInfo["parameters"] = parameters
 
@@ -206,7 +219,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     func buildHTTPRequest(
-        method: String,
+        method: BTHTTPMethod,
         url: URL,
         parameters: NSMutableDictionary? = [:],
         headers additionalHeaders: [String: String]? = nil
@@ -234,7 +247,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             headers = headers.merging(additionalHeaders) { $1 }
         }
         
-        if method == "GET" || method == "DELETE" {
+        if method == .get || method == .delete {
             components.percentEncodedQuery = BTURLUtils.queryString(from: parameters ?? [:])
             
             guard let urlFromComponents = components.url else {
@@ -266,11 +279,43 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         
         request.allHTTPHeaderFields = headers
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         
         return request
     }
 
+    func handleRequestCompletion(
+        data: Data? = nil,
+        request: URLRequest? = nil,
+        response: URLResponse? = nil,
+        error: Error? = nil
+    ) throws -> (BTJSON, HTTPURLResponse) {
+        if let error {
+            throw error
+        }
+        
+        guard let response, let httpResponse = createHTTPResponse(response: response) else {
+            throw BTHTTPError.httpResponseInvalid
+        }
+        
+        guard let data else {
+            throw BTHTTPError.dataNotFound
+        }
+        
+        if httpResponse.statusCode >= 400 {
+            let (_, error) = try handleHTTPResponseError(response: httpResponse, data: data)
+            throw error
+        }
+        
+        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
+        if json.isError {
+            try handleJSONResponseError(json: json, response: response)
+        }
+        
+        return (json, httpResponse)
+    }
+    
+    // TODO: Remove this completion handler version after migrating all callers to async/await
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
@@ -379,6 +424,40 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         completion(json, error)
     }
+    
+    func handleHTTPResponseError(response: HTTPURLResponse, data: Data) throws -> (BTJSON, Error) {
+        let responseContentType: String? = response.mimeType
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
+        
+        errorUserInfo[NSLocalizedFailureReasonErrorKey] = [HTTPURLResponse.localizedString(forStatusCode: response.statusCode)]
+        
+        var json = BTJSON()
+        if responseContentType == "application/json" {
+            json = data.isEmpty ? BTJSON() : BTJSON(data: data)
+            if !json.isError {
+                errorUserInfo[BTCoreConstants.jsonResponseBodyKey] = json
+                let errorResponseMessage: String? = json["error"]["developer_message"].asString() ?? json["error"]["message"].asString()
+                if errorResponseMessage != nil {
+                    errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage
+                }
+            }
+        }
+        
+        var error = BTHTTPError.clientError(errorUserInfo)
+        
+        if response.statusCode == 429 {
+            errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again in a few minutes."
+            error = BTHTTPError.rateLimitError(errorUserInfo)
+        } else if response.statusCode <= 500 {
+            error = BTHTTPError.clientError(errorUserInfo)
+        } else if response.statusCode >= 500 {
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
+            error = BTHTTPError.serverError(errorUserInfo)
+        }
+        
+        return (json, error)
+    }
 
     func handleJSONResponseError(
         json: BTJSON,
@@ -395,6 +474,23 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
             completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
         } else {
             completion(json.asError())
+        }
+    }
+    
+    func handleJSONResponseError(
+        json: BTJSON,
+        response: URLResponse
+    ) throws {
+        let responseContentType: String? = response.mimeType
+        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
+
+        if let contentType = responseContentType, contentType != "application/json" {
+            // Return error for unsupported response type
+            let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
+            errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
+            throw BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo)
+        } else if let error = json.asError() {
+            throw error
         }
     }
 
