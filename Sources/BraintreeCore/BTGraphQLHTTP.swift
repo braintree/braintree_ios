@@ -33,9 +33,15 @@ class BTGraphQLHTTP: BTHTTP {
         completion: @escaping RequestCompletion
     ) {
         Task { [self] in
-            let result = await httpRequestReturningResult(method: "POST", configuration: configuration, parameters: parameters)
-            dispatchQueue.async {
-                completion(result.body, result.response, result.error)
+            do {
+                let (body, response) = try await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
+                dispatchQueue.async {
+                    completion(body, response, nil)
+                }
+            } catch {
+                dispatchQueue.async {
+                    completion(nil, nil, error)
+                }
             }
         }
     }
@@ -56,20 +62,6 @@ class BTGraphQLHTTP: BTHTTP {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        let result = await httpRequestReturningResult(method: method, configuration: configuration, parameters: parameters)
-        if let error = result.error {
-            throw error
-        }
-        return (result.body, result.response)
-    }
-
-    // MARK: - Private methods
-
-    private func httpRequestReturningResult(
-        method: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil
-    ) async -> BTGraphQLRequestResult {
         var errorUserInfo: [String: Any] = [:]
 
         guard
@@ -78,15 +70,15 @@ class BTGraphQLHTTP: BTHTTP {
         else {
             errorUserInfo["method"] = method
             errorUserInfo["parameters"] = parameters
-            return BTGraphQLRequestResult(body: nil, response: nil, error: BTHTTPError.missingBaseURL(errorUserInfo))
+            throw BTHTTPError.missingBaseURL(errorUserInfo)
         }
 
         guard let components = URLComponents(string: baseURL.absoluteString) else {
-            return BTGraphQLRequestResult(body: nil, response: nil, error: BTHTTPError.urlStringInvalid)
+            throw BTHTTPError.urlStringInvalid
         }
 
         guard let urlFromComponents = components.url else {
-            return BTGraphQLRequestResult(body: nil, response: nil, error: BTHTTPError.urlStringInvalid)
+            throw BTHTTPError.urlStringInvalid
         }
 
         let headers = [
@@ -110,29 +102,25 @@ class BTGraphQLHTTP: BTHTTP {
         request.httpMethod = method
 
         // Perform the actual request
-        do {
-            let (data, response) = try await session.data(for: request)
-            return handleRequestCompletionReturningResult(data: data, response: response, error: nil)
-        } catch {
-            return handleRequestCompletionReturningResult(data: nil, response: nil, error: error)
-        }
+        let (data, response) = try await session.data(for: request)
+        return try handleRequestCompletion(data: data, response: response, error: nil)
     }
 
-    private func handleRequestCompletionReturningResult(
+    private func handleRequestCompletion(
         data: Data?,
         response: URLResponse?,
         error: Error?
-    ) -> BTGraphQLRequestResult {
+    ) throws -> (BTJSON, HTTPURLResponse) {
         if let error = error {
-            return BTGraphQLRequestResult(body: nil, response: response as? HTTPURLResponse, error: error)
+            throw error
         }
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            return BTGraphQLRequestResult(body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
+            throw BTHTTPError.httpResponseInvalid
         }
 
         guard let data = data else {
-            return BTGraphQLRequestResult(body: nil, response: httpResponse, error: BTHTTPError.unknown)
+            throw BTHTTPError.unknown
         }
 
         let json = try? JSONSerialization.jsonObject(with: data)
@@ -140,15 +128,14 @@ class BTGraphQLHTTP: BTHTTP {
 
         // Success case
         if body.asDictionary() != nil, body["errors"].asArray() == nil {
-            return BTGraphQLRequestResult(body: body, response: httpResponse, error: nil)
+            return (body, httpResponse)
         }
 
         // Error case
-        let (errorJSON, parseError) = parseErrors(body: body, response: httpResponse)
-        return BTGraphQLRequestResult(body: BTJSON(value: errorJSON), response: httpResponse, error: parseError)
+        throw parseErrors(body: body, response: httpResponse)
     }
     
-    func parseErrors(body: BTJSON, response: HTTPURLResponse) -> ([String: Any]?, Error?) {
+    func parseErrors(body: BTJSON, response: HTTPURLResponse) -> Error {
         let errorJSON = body["errors"][0]
         let errorType = errorJSON["extensions"]["errorType"].asString()
 
@@ -187,7 +174,7 @@ class BTGraphQLHTTP: BTHTTP {
             ]
         )
 
-        return (errorBody, nestedGraphQLError)
+        return nestedGraphQLError
     }
 
     func createHTTPResponse(response: URLResponse, statusCode: Int) -> HTTPURLResponse? {
