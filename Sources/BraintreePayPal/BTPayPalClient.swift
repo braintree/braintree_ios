@@ -9,12 +9,6 @@ import BraintreeCore
 import BraintreeDataCollector
 #endif
 
-public enum BTPayPalFundingSource: String {
-    case payPal = "paypal"
-    case credit
-    case payLater = "paylater"
-}
-
 // swiftlint:disable type_body_length file_length
 @objc public class BTPayPalClient: BTWebAuthenticationSessionClient {
     
