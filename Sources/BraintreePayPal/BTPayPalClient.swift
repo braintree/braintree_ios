@@ -79,7 +79,7 @@ import BraintreeDataCollector
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
     
-    /// Used for analytics purpose as well as passed as a parameter to PayPal app
+    /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
     private var fundingSource: BTPayPalFundingSource?
 
     // MARK: - Initializer
