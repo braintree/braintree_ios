@@ -132,26 +132,26 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         headers: [String: String]? = nil,
         completion: RequestCompletion?
     ) {
-        do {
-            let request = try createRequest(
-                method: method,
-                path: path,
-                configuration: configuration,
-                parameters: parameters,
-                headers: headers
-            )
+        guard let completion else { return }
 
-            self.session.dataTask(with: request) { [weak self] data, response, error in
-                guard let self else {
-                    completion?(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                    return
-                }
+        Task { [weak self] in
+            guard let self else {
+                await callCompletionAsync(completion: completion, body: nil, response: nil, error: BTHTTPError.deallocated("BTHTTP"))
+                return
+            }
 
-                handleRequestCompletion(data: data, request: request, response: response, error: error, completion: completion)
-            }.resume()
-        } catch {
-            self.handleRequestCompletion(data: nil, request: nil, response: nil, error: error, completion: completion)
-            return
+            do {
+                let (json, httpResponse) = try await httpRequest(
+                    method: method,
+                    path: path,
+                    configuration: configuration,
+                    parameters: parameters,
+                    headers: headers
+                )
+                await callCompletionAsync(completion: completion, body: json, response: httpResponse, error: nil)
+            } catch {
+                await callCompletionAsync(completion: completion, body: nil, response: nil, error: error)
+            }
         }
     }
     
@@ -315,63 +315,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return (json, httpResponse)
     }
     
-    // TODO: Remove this completion handler version after migrating all callers to async/await
-    func handleRequestCompletion(
-        data: Data?,
-        request: URLRequest?,
-        response: URLResponse?,
-        error: Error?,
-        completion: RequestCompletion?
-    ) {
-        guard let completion = completion else { return }
-
-        guard error == nil else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-            return
-        }
-
-        guard let response, let httpResponse = createHTTPResponse(response: response) else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.httpResponseInvalid)
-            return
-        }
-
-        guard let data else {
-            callCompletionAsync(with: completion, body: nil, response: nil, error: BTHTTPError.dataNotFound)
-            return
-        }
-
-        if httpResponse.statusCode >= 400 {
-            handleHTTPResponseError(response: httpResponse, data: data) { [weak self] json, error in
-                guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                    return
-                }
-
-                callCompletionAsync(with: completion, body: json, response: httpResponse, error: error)
+    func callCompletionAsync(completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) async {
+        await withCheckedContinuation { continuation in
+            self.dispatchQueue.async {
+                completion(body, response, error)
+                continuation.resume()
             }
-            return
-        }
-
-        // Empty response is valid
-        let json: BTJSON = data.isEmpty ? BTJSON() : BTJSON(data: data)
-        if json.isError {
-            handleJSONResponseError(json: json, response: response) { [weak self] error in
-                guard let self else {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                    return
-                }
-
-                callCompletionAsync(with: completion, body: nil, response: nil, error: error)
-            }
-            return
-        }
-
-        callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
-    }
-    
-    func callCompletionAsync(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
-        self.dispatchQueue.async {
-            completion(body, response, error)
         }
     }
 
@@ -389,42 +338,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return nil
     }
 
-    func handleHTTPResponseError(response: HTTPURLResponse, data: Data, completion: (BTJSON, Error) -> Void) {
-        let responseContentType: String? = response.mimeType
-        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
-
-        errorUserInfo[NSLocalizedFailureReasonErrorKey] = [HTTPURLResponse.localizedString(forStatusCode: response.statusCode)]
-
-        var json = BTJSON()
-        if responseContentType == "application/json" {
-            json = data.isEmpty ? BTJSON() : BTJSON(data: data)
-
-            if !json.isError {
-                errorUserInfo[BTCoreConstants.jsonResponseBodyKey] = json
-                let errorResponseMessage: String? = json["error"]["developer_message"].asString() ?? json["error"]["message"].asString()
-
-                if errorResponseMessage != nil {
-                    errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage
-                }
-            }
-        }
-
-        var error = BTHTTPError.clientError(errorUserInfo)
-
-        if response.statusCode == 429 {
-            errorUserInfo[NSLocalizedDescriptionKey] = "You are being rate-limited."
-            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again in a few minutes."
-            error = BTHTTPError.rateLimitError(errorUserInfo)
-        } else if response.statusCode <= 500 {
-            error = BTHTTPError.clientError(errorUserInfo)
-        } else if response.statusCode >= 500 {
-            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = "Please try again later."
-            error = BTHTTPError.serverError(errorUserInfo)
-        }
-
-        completion(json, error)
-    }
-    
     func handleHTTPResponseError(response: HTTPURLResponse, data: Data) throws -> (BTJSON, Error) {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
@@ -459,24 +372,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return (json, error)
     }
 
-    func handleJSONResponseError(
-        json: BTJSON,
-        response: URLResponse,
-        completion: @escaping (Error?) -> Void
-    ) {
-        let responseContentType: String? = response.mimeType
-        var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
-
-        if let contentType = responseContentType, contentType != "application/json" {
-            // Return error for unsupported response type
-            let message = "BTHTTP only supports application/json responses, received Content-Type: \(contentType)"
-            errorUserInfo[NSLocalizedFailureReasonErrorKey] = message
-            completion(BTHTTPError.responseContentTypeNotAcceptable(errorUserInfo))
-        } else {
-            completion(json.asError())
-        }
-    }
-    
     func handleJSONResponseError(
         json: BTJSON,
         response: URLResponse

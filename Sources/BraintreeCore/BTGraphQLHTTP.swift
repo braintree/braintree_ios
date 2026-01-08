@@ -11,7 +11,9 @@ class BTGraphQLHTTP: BTHTTP {
         parameters: Encodable? = nil,
         completion: @escaping RequestCompletion
     ) {
-        callCompletionAsync(with: completion, body: nil, response: nil, error: BTGraphQLHTTPError.unsupportedOperation)
+        dispatchQueue.async {
+            completion(nil, nil, BTGraphQLHTTPError.unsupportedOperation)
+        }
     }
     
     override func get(
@@ -32,7 +34,9 @@ class BTGraphQLHTTP: BTHTTP {
     ) {
         Task { [self] in
             let result = await httpRequestReturningResult(method: "POST", configuration: configuration, parameters: parameters)
-            callCompletionAsync(with: completion, body: result.body, response: result.response, error: result.error)
+            dispatchQueue.async {
+                completion(result.body, result.response, result.error)
+            }
         }
     }
 
