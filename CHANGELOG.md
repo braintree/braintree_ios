@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* BraintreePayPal
+    * Pass `fundingSource` to the app switch url link and to analytics events. 
+
 ## 7.2.0 (2026-01-05)
 * BraintreeCore
   * Add `BTSessionIDManager` to manage the persisting of Session ID throughout a single checkout session
