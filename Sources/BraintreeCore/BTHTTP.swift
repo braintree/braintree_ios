@@ -124,6 +124,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - HTTP Method Helpers
 
+    // TODO: Remove on code calling completion handler version is removed.
     func httpRequest(
         method: BTHTTPMethod,
         path: String,
@@ -136,7 +137,9 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         Task { [weak self] in
             guard let self else {
-                await callCompletionAsync(completion: completion, body: nil, response: nil, error: BTHTTPError.deallocated("BTHTTP"))
+                DispatchQueue.main.async {
+                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
+                }
                 return
             }
 
@@ -148,9 +151,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                     parameters: parameters,
                     headers: headers
                 )
-                await callCompletionAsync(completion: completion, body: json, response: httpResponse, error: nil)
+                self.dispatchQueue.async {
+                    completion(json, httpResponse, nil)
+                }
             } catch {
-                await callCompletionAsync(completion: completion, body: nil, response: nil, error: error)
+                self.dispatchQueue.async {
+                    completion(nil, nil, error)
+                }
             }
         }
     }
@@ -313,15 +320,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         }
         
         return (json, httpResponse)
-    }
-    
-    func callCompletionAsync(completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) async {
-        await withCheckedContinuation { continuation in
-            self.dispatchQueue.async {
-                completion(body, response, error)
-                continuation.resume()
-            }
-        }
     }
 
     func createHTTPResponse(response: URLResponse) -> HTTPURLResponse? {
