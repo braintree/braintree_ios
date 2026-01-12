@@ -1,5 +1,5 @@
 /// Funding sources available when creating a PayPal payment.
-public enum BTPayPalFundingSource: String {
+enum BTPayPalFundingSource: String {
     /// Standard PayPal balance or linked bank account funding.
     case payPal = "paypal"
     /// PayPal Credit revolving line of credit.

@@ -506,18 +506,10 @@ import BraintreeDataCollector
     
     private func getFundingSource(from request: BTPayPalRequest) -> BTPayPalFundingSource {
         if let checkoutRequest = request as? BTPayPalCheckoutRequest {
-            if checkoutRequest.offerCredit {
-                return .credit
-            }
-            if checkoutRequest.offerPayLater {
-                return .payLater
-            }
+            if checkoutRequest.offerCredit { return .credit }
+            if checkoutRequest.offerPayLater { return .payLater }
         }
-        if let vaultRequest = request as? BTPayPalVaultRequest {
-            if vaultRequest.offerCredit {
-                return .credit
-            }
-        }
+        if let vaultRequest = request as? BTPayPalVaultRequest, vaultRequest.offerCredit { return .credit }
         return .payPal
     }
 
