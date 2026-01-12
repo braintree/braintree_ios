@@ -1,5 +1,6 @@
 import UIKit
 
+// swiftlint:disable:next orphaned_doc_comment
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 // swiftlint:disable:next type_body_length
