@@ -90,6 +90,16 @@ import UIKit
         }
     }
     
+    public func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
+        do {
+            let configuration = try await configurationLoader.getConfig()
+            setupHTTPCredentials(configuration)
+            return configuration
+        } catch {
+            throw error
+        }
+    }
+    
     @MainActor func fetchConfiguration() async throws -> BTConfiguration {
         try await configurationLoader.getConfig()
     }
@@ -130,6 +140,33 @@ import UIKit
 
             http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
+    }
+    
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
+    /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
+    /// - Parameters:
+    ///   - path: The endpoint URI path.
+    ///   - parameters: Optional set of query parameters to be encoded with the request.
+    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
+    /// - Returns: On success, `(BTJSON?, HTTPURLResponse?)` will contain the JSON body response and the HTTP response.
+    @_documentation(visibility: private)
+    public func get(
+        _ path: String,
+        parameters: Encodable? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        if authorization.type == .invalidAuthorization {
+            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
+        }
+        
+        let configuration = try await fetchOrReturnRemoteConfiguration()
+        
+        return try await http(for: httpType)?.get(
+            path,
+            configuration: configuration,
+            parameters: parameters
+        ) ?? (nil, nil)
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
