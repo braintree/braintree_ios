@@ -193,15 +193,21 @@ import UIKit
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResponse, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (json, httpResponse))
-                }
-            }
+        if authorization.type == .invalidAuthorization {
+            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
         }
+
+        let configuration = try await configurationLoader.getConfig()
+        setupHTTPCredentials(configuration)
+
+        let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
+        
+        return try await http(for: httpType)?.post(
+            path,
+            configuration: configuration,
+            parameters: postParameters,
+            headers: headers
+        ) ?? (nil, nil)
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
