@@ -1,7 +1,8 @@
+import Foundation
 @testable import BraintreeCore
 
 class MockBackgroundTaskManager: BackgroundTaskManaging {
-    
+
     var didBeginBackgroundTask = false
     var didEndBackgroundTask = false
     var lastTaskName: String?
@@ -10,11 +11,16 @@ class MockBackgroundTaskManager: BackgroundTaskManaging {
     var endedTaskIDs: Set<UIBackgroundTaskIdentifier> = []
     var begunTaskIDs: Set<UIBackgroundTaskIdentifier> = []
     var taskIDsToReturn: Set<UIBackgroundTaskIdentifier> = []
-    
+
+    private let lock = NSLock()
+
     func beginBackgroundTask(named: String?, expirationHandler handler: (() -> Void)?) -> UIBackgroundTaskIdentifier {
+        lock.lock()
+        defer { lock.unlock() }
+
         didBeginBackgroundTask = true
         lastTaskName = named
-        
+
         // Simulate expiration handler call
         self.expirationHandler = handler
         let id = taskIDsToReturn.isEmpty ? .invalid : taskIDsToReturn.removeFirst()
@@ -23,6 +29,9 @@ class MockBackgroundTaskManager: BackgroundTaskManaging {
     }
 
     func endBackgroundTask(_ identifier: UIBackgroundTaskIdentifier) {
+        lock.lock()
+        defer { lock.unlock() }
+
         didEndBackgroundTask = true
         endedTaskID = identifier
         endedTaskIDs.insert(identifier)
