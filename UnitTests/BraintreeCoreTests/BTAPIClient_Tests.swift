@@ -300,4 +300,44 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 5)
 
     }
+    
+    // MARK: - Async/Await POST and GET Requests
+    
+    func testPOST_withAsyncAwait_whenUsingGateway_includesMetadata() async throws {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockHTTP = FakeHTTP.fakeHTTP()
+        let metadata = apiClient.metadata
+
+        apiClient.http = mockHTTP
+        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
+        mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+        mockHTTP.cannedStatusCode = 200
+
+        let postParameters = FakeRequest(testValue: "fake-value")
+        _ = try await apiClient.post("/", parameters: postParameters, httpType: .gateway)
+
+        let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+        XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
+        XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
+        XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
+    }
+    
+    func testGET_withAsyncAwait_returnFetchConfigErrors() async throws {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
+        apiClient.http = mockHTTP
+        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
+        
+        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
+
+        do {
+            let _ = try await apiClient.get("/example", parameters: nil)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, mockError.domain)
+            XCTAssertEqual(nsError.code, mockError.code)
+        }
+    }
 }
