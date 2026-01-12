@@ -2,6 +2,7 @@ import UIKit
 
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
+// swiftlint:disable:next type_body_length
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
 
     /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
