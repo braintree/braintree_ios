@@ -151,16 +151,19 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                     parameters: parameters,
                     headers: headers
                 )
+                let capturedJSON = json
+                let capturedResponse = httpResponse
                 self.dispatchQueue.async {
-                    completion(json, httpResponse, nil)
+                    completion(capturedJSON, capturedResponse, nil)
                 }
             } catch {
                 // Extract JSON body from error userInfo if it exists
                 let body = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
                 let response = (error as NSError).userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
+                let capturedError = error
 
                 self.dispatchQueue.async {
-                    completion(body, response, error)
+                    completion(body, response, capturedError)
                 }
             }
         }
