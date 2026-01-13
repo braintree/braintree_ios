@@ -80,7 +80,7 @@ import UIKit
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // TODO: - Consider updating all feature clients to use async version of this method?
+        // TODO: - Consider updating all feature clients to use async version of this method and remove this method once done
         Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
