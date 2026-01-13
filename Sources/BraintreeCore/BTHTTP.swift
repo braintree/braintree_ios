@@ -72,6 +72,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         httpRequest(method: "GET", path: path, configuration: configuration, parameters: parameters, completion: completion)
     }
     
+    // TODO 1: Update this method to use the new async/await pattern and remove the completion handler version
     func get(
         _ path: String,
         configuration: BTConfiguration? = nil,
@@ -110,6 +111,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         )
     }
     
+    // TODO 2: Update this method to use async/await instead of just wrapping the post completion handler method call
     func post(
         _ path: String,
         configuration: BTConfiguration? = nil,
@@ -129,6 +131,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - HTTP Method Helpers
 
+    // TODO: Create async/await version of `httpRequest` and remove the completion handler version
     func httpRequest(
         method: String,
         path: String,
@@ -271,6 +274,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return request
     }
 
+    // TODO: Create async/await version of `handleRequestCompletion` and remove the completion handler version
     func handleRequestCompletion(
         data: Data?,
         request: URLRequest?,
@@ -323,7 +327,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         callCompletionAsync(with: completion, body: json, response: httpResponse, error: nil)
     }
-    
+
+    // TODO: Update this version and possibly get rid of the completion handler version of this function once the async/await version is implemented
     func callCompletionAsync(with completion: @escaping RequestCompletion, body: BTJSON?, response: HTTPURLResponse?, error: Error?) {
         self.dispatchQueue.async {
             completion(body, response, error)
@@ -344,6 +349,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         return nil
     }
 
+    // TODO: Update this to async/await and remove completion handler version
     func handleHTTPResponseError(response: HTTPURLResponse, data: Data, completion: (BTJSON, Error) -> Void) {
         let responseContentType: String? = response.mimeType
         var errorUserInfo: [String: Any] = [BTCoreConstants.urlResponseKey: response]
@@ -380,6 +386,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         completion(json, error)
     }
 
+    // TODO: Update this to async/await and remove completion handler version
     func handleJSONResponseError(
         json: BTJSON,
         response: URLResponse,
@@ -413,6 +420,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - URLSessionTaskDelegate conformance
 
+    // TODO: Maybe consider breaking this into an Extension i.e. extension BTHTTP: URLSessionTaskDelegate and moving it to its own file if it grows too large
     func urlSession(
         _ session: URLSession,
         didReceive challenge: URLAuthenticationChallenge,
