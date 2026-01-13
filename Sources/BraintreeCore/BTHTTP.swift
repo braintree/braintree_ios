@@ -137,9 +137,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
         Task { [weak self] in
             guard let self else {
-                DispatchQueue.main.async {
-                    completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                }
+                completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
                 return
             }
 
