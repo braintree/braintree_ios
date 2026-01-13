@@ -124,7 +124,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
 
     // MARK: - HTTP Method Helpers
 
-    // TODO: Remove on code calling completion handler version is removed.
+    // TODO: Remove once code calling completion handler version is removed.
     func httpRequest(
         method: BTHTTPMethod,
         path: String,
@@ -151,19 +151,22 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                     parameters: parameters,
                     headers: headers
                 )
-                nonisolated(unsafe) let capturedJSON = json
+                let jsonDict = json.asDictionary() as? [String: Any]
+                let jsonValue = json.value
                 let capturedResponse = httpResponse
                 self.dispatchQueue.async {
-                    completion(capturedJSON, capturedResponse, nil)
+                    let reconstructedJSON = jsonDict.map { BTJSON(value: $0) } ?? BTJSON(value: jsonValue)
+                    completion(reconstructedJSON, capturedResponse, nil)
                 }
             } catch {
-                // Extract JSON body from error userInfo if it exists
-                nonisolated(unsafe) let body = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                let bodyFromError = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                let bodyDict = bodyFromError?.asDictionary() as? [String: Any]
                 let response = (error as NSError).userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                 let capturedError = error
 
                 self.dispatchQueue.async {
-                    completion(body, response, capturedError)
+                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
+                    completion(reconstructedBody, response, capturedError)
                 }
             }
         }

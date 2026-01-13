@@ -35,19 +35,21 @@ class BTGraphQLHTTP: BTHTTP {
         Task { [self] in
             do {
                 let (body, response) = try await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
-                nonisolated(unsafe) let capturedBody = body
+                let bodyDict = body?.asDictionary() as? [String: Any]
                 let capturedResponse = response
                 dispatchQueue.async {
-                    completion(capturedBody, capturedResponse, nil)
+                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
+                    completion(reconstructedBody, capturedResponse, nil)
                 }
             } catch {
-                // Extract JSON body from error userInfo if it exists
-                nonisolated(unsafe) let body = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                let bodyFromError = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+                let bodyDict = bodyFromError?.asDictionary() as? [String: Any]
                 let response = (error as NSError).userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                 let capturedError = error
 
                 dispatchQueue.async {
-                    completion(body, response, capturedError)
+                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
+                    completion(reconstructedBody, response, capturedError)
                 }
             }
         }
