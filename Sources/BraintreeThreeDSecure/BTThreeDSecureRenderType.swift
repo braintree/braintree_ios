@@ -25,18 +25,19 @@ import CardinalMobile
     /// OOB
     public static let oob = BTThreeDSecureRenderType(rawValue: 5)
 
+    // TODO: figure out why the underlying enum from cardinal is not properly exposed
     var cardinalValue: String {
         switch self {
         case .otp:
-            return CardinalUiTypeOTP
+            return "01"  // EMVCo 3-D Secure UI Type for text/OTP
         case .html:
-            return CardinalUiTypeHTML
+            return "05"  // EMVCo 3-D Secure UI Type for HTML
         case .singleSelect:
-            return CardinalUiTypeSingleSelect
+            return "02"  // EMVCo 3-D Secure UI Type for single select
         case .multiSelect:
-            return CardinalUiTypeMultiSelect
+            return "03"  // EMVCo 3-D Secure UI Type for multi select
         case .oob:
-            return CardinalUiTypeOOB
+            return "04"  // EMVCo 3-D Secure UI Type for OOB
         default:
             return ""
         }

@@ -82,19 +82,12 @@ class BTThreeDSecureV2Provider {
         challengeParameters.transactionId = lookupResult.lookup?.transactionID ?? ""
         challengeParameters.acsReferenceNumber = lookupResult.lookup?.paReq ?? ""
 
-        var cardinalError: CardinalError?
-
         cardinalSession.doChallengewithChallengeParameters(
             challengeParameters: challengeParameters,
             challengeStatusReceiver: self,
             timeOut: 1000000,
-            error: &cardinalError
+            error: nil
         )
-
-        if let cardinalError {
-            // Handle Cardinal error if needed
-            completionHandler(nil, cardinalError as? any Error)
-        }
     }
 
     private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
