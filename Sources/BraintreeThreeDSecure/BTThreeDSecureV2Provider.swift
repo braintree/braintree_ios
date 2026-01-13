@@ -9,7 +9,7 @@ class BTThreeDSecureV2Provider {
 
     // MARK: - Internal Properties
 
-    let cardinalSession: CardinalSessionTestable
+    let cardinalSession: CardinalService
     let apiClient: BTAPIClient
 
     var lookupResult: BTThreeDSecureResult?
@@ -21,7 +21,7 @@ class BTThreeDSecureV2Provider {
         configuration: BTConfiguration,
         apiClient: BTAPIClient,
         request: BTThreeDSecureRequest,
-        cardinalSession: CardinalSessionTestable = CardinalSession(),
+        cardinalSession: CardinalService = CardinalService(),
         completion: @escaping ([String: String]?) -> Void
     ) {
         self.apiClient = apiClient
@@ -39,10 +39,12 @@ class BTThreeDSecureV2Provider {
             cardinalEnvironment = .production
         }
 
-        cardinalConfiguration.uiType = request.uiType.cardinalValue
+        // NEXT_MAJOR_VERSION: rename these to align with cardinal new names
+        cardinalConfiguration.renderType = request.uiType.cardinalValue
 
+        // NEXT_MAJOR_VERSION: rename these to align with cardinal new names
         if let renderTypes = request.renderTypes {
-            cardinalConfiguration.renderType = renderTypes.compactMap { $0.cardinalValue }
+            cardinalConfiguration.uiType = renderTypes.compactMap { $0.cardinalValue }
         }
 
         if let requestorAppURL = request.requestorAppURL {
@@ -55,12 +57,12 @@ class BTThreeDSecureV2Provider {
         }
 
         cardinalConfiguration.deploymentEnvironment = cardinalEnvironment
-        cardinalSession.configure(cardinalConfiguration)
-        cardinalSession.setup(
+        cardinalSession.jwtInitialize(
             jwtString: cardinalAuthenticationJWT,
-            completed: { consumerSessionID in
+            configParameters: cardinalConfiguration,
+            success: { consumerSessionID in
                 completion(["dfReferenceId": consumerSessionID])
-            }, validated: { _ in
+            }, error: { _ in
                 completion([:])
             }
         )
@@ -74,12 +76,25 @@ class BTThreeDSecureV2Provider {
     ) {
         self.lookupResult = lookupResult
         completionHandler = completion
+        
+        // TODO: I don't think all of this is the right thing
+        let challengeParameters = CardinalChallengeParameters()
+        challengeParameters.transactionId = lookupResult.lookup?.transactionID ?? ""
+        challengeParameters.acsReferenceNumber = lookupResult.lookup?.paReq ?? ""
 
-        cardinalSession.continueWith(
-            transactionId: lookupResult.lookup?.transactionID ?? "",
-            payload: lookupResult.lookup?.paReq ?? "",
-            validationDelegate: self
+        var cardinalError: CardinalError?
+
+        cardinalSession.doChallengewithChallengeParameters(
+            challengeParameters: challengeParameters,
+            challengeStatusReceiver: self,
+            timeOut: 1000000,
+            error: &cardinalError
         )
+
+        if let cardinalError {
+            // Handle Cardinal error if needed
+            completionHandler(nil, cardinalError as? any Error)
+        }
     }
 
     private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
@@ -104,46 +119,54 @@ class BTThreeDSecureV2Provider {
 
 // MARK: - CardinalValidationDelegate Protocol Conformance
 
-extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
+// TODO: we still need to set lookupResult back to nil in here
+extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
+    func completed(_ completionEvent: CompletionEvent!) {
+        // TODO: find out what this is now
+//    case .success, .noAction, .failure:
+//        if validateResponse.actionCode == .failure {
+//            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+//        } else {
+//            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
+//        }
 
-    // swiftlint:disable implicitly_unwrapped_optional
-    public func cardinalSession(
-        cardinalSession session: CardinalSession!,
-        stepUpValidated validateResponse: CardinalResponse!,
-        serverJWT: String!
-    ) {
-        // swiftlint:enable implicitly_unwrapped_optional
-        switch validateResponse.actionCode {
-        case .success, .noAction, .failure:
-            if validateResponse.actionCode == .failure {
-                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            } else {
-                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
-            }
+        BTThreeDSecureAuthenticateJWT.authenticate(
+            jwt: completionEvent.sdkTransactionID,
+            withAPIClient: apiClient,
+            forResult: lookupResult,
+            completion: completionHandler
+        )
+    }
+    
+    func cancelled() {
+        completionHandler(nil, BTThreeDSecureError.canceled)
+    }
+    
+    func timedout() {
+        completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
+    }
+    
+    func protocolError(_ protocolErrorEvent: ProtocolErrorEvent!) {
+        let errorUserInfo = [NSLocalizedDescriptionKey: protocolErrorEvent.errorMessage]
+        var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
-            BTThreeDSecureAuthenticateJWT.authenticate(
-                jwt: serverJWT,
-                withAPIClient: apiClient,
-                forResult: lookupResult,
-                completion: completionHandler
-            )
-        case .error:
-            let errorUserInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
-            var errorCode: Int = BTThreeDSecureError.unknown.errorCode
+        // TODO: what is this now?
+//        if validateResponse.errorNumber == 1050 {
+//            errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
+//        }
+        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+        completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
+    }
+    
+    func runtimeError(_ runtimeErrorEvent: RuntimeErrorEvent!) {
+        let errorUserInfo = [NSLocalizedDescriptionKey: runtimeErrorEvent.errorMessage]
+        var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
-            if validateResponse.errorNumber == 1050 {
-                errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
-            }
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
-        case .timeout:
-            completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
-        case .cancel:
-            completionHandler(nil, BTThreeDSecureError.canceled)
-        default:
-            break
-        }
-
-        lookupResult = nil
+        // TODO: what is this now?
+//        if validateResponse.errorNumber == 1050 {
+//            errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
+//        }
+        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
+        completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
     }
 }

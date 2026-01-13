@@ -11,7 +11,7 @@ import BraintreeCore
     // MARK: - Internal Properties
 
     /// Exposed for mocking Cardinal
-    var cardinalSession: CardinalSessionTestable = CardinalSession()
+    var cardinalSession: CardinalService = CardinalService()
     
     // MARK: - Private Properties
     

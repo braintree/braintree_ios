@@ -13,7 +13,7 @@ import CardinalMobile
     /// Both
     case both
 
-    var cardinalValue: CardinalSessionUIType {
+    var cardinalValue: CardinalRenderType {
         switch self {
         case .native:
             return .native

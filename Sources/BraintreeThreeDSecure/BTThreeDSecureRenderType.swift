@@ -28,15 +28,15 @@ import CardinalMobile
     var cardinalValue: String {
         switch self {
         case .otp:
-            return CardinalSessionRenderTypeOTP
+            return CardinalUiTypeOTP
         case .html:
-            return CardinalSessionRenderTypeHTML
+            return CardinalUiTypeHTML
         case .singleSelect:
-            return CardinalSessionRenderTypeSingleSelect
+            return CardinalUiTypeSingleSelect
         case .multiSelect:
-            return CardinalSessionRenderTypeMultiSelect
+            return CardinalUiTypeMultiSelect
         case .oob:
-            return CardinalSessionRenderTypeOOB
+            return CardinalUiTypeOOB
         default:
             return ""
         }
