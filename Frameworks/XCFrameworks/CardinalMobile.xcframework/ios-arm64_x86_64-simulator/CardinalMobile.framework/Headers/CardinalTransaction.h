@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CardinalMobile/Transaction.h>
+#import "Transaction.h"
 
 @interface CardinalTransaction : NSObject<Transaction>
 

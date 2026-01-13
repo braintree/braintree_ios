@@ -6,19 +6,19 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		9Wl6D60O5oPeeb5f0J0iYTE4y0Y=
+		E0c4N12RFyfaF2iHtQaR/t2s7o4=
 		</data>
 		<key>CCStoryBoard.storyboardc/CCHtmlViewController.nib</key>
 		<data>
-		Af/vPbNERYjasJVkolNP+zmwVug=
+		DLoLBI0/F6pHZcwkbdBokm2ycis=
 		</data>
 		<key>CCStoryBoard.storyboardc/CCViewController.nib</key>
 		<data>
-		esYL0Nm1EV0Cvnkyp26LcAhY7/c=
+		2v+hZCUlloP4UNbbkPAjU7C1f5Q=
 		</data>
 		<key>CCStoryBoard.storyboardc/DIH-hs-KJy-view-kOh-XJ-af6.nib</key>
 		<data>
-		WGzOflqLNNbaH4balJWYQ9ZXU4Q=
+		fQzfD0py8iga/hPqQgP8bM1MFTM=
 		</data>
 		<key>CCStoryBoard.storyboardc/Info.plist</key>
 		<data>
@@ -32,21 +32,49 @@
 		<data>
 		pWqZhNLP/OwNh85RzFFJg0iKyyE=
 		</data>
+		<key>CardinalMobile-dev.podspec</key>
+		<data>
+		BrbaRnWW6RbdaktXgJU+KXep5xc=
+		</data>
+		<key>CardinalMobile.podspec</key>
+		<data>
+		KHe69hSAPx3Dg/U5Wgk3rGlL7Fs=
+		</data>
+		<key>Headers/AuthenticationParameters.h</key>
+		<data>
+		vqhL9HnaAq9uwLOPk56t2SSW0rI=
+		</data>
 		<key>Headers/AuthenticationRequestParameters.h</key>
 		<data>
 		b7OC1aGD8mBvBpo/aGfIsd7wSRo=
 		</data>
 		<key>Headers/ButtonCustomization.h</key>
 		<data>
-		DP8Eh6s9PXV2awXfvNl77wEyicM=
+		gPGt21zrzNcQ2AUgjvlBdvykiHo=
+		</data>
+		<key>Headers/CCAImageUrl.h</key>
+		<data>
+		+sm9CvgORoZbqievqDIFGTW7DBE=
+		</data>
+		<key>Headers/CardBrandConfig.h</key>
+		<data>
+		EbBhK3d62VZOiAxDotUsuB2LGF8=
 		</data>
 		<key>Headers/CardinalCMSDK.h</key>
 		<data>
-		CDE5D15evB3OQYk1AzY4qlxwKsI=
+		f2vPDzyaw+sGEr41IVRZbyb+JwQ=
+		</data>
+		<key>Headers/CardinalChallengeParameters.h</key>
+		<data>
+		oE6i60ZhvAO8JoUbVP5KHaCedyg=
 		</data>
 		<key>Headers/CardinalEMVCoSDK.h</key>
 		<data>
-		rJj80k+f1UMBG0eo4FCLnFHLCBI=
+		Lxbb7qP1SWtffqbl/OtHuVZ3BuI=
+		</data>
+		<key>Headers/CardinalError.h</key>
+		<data>
+		X1dXR3vBU6mhpCCo1P3r8EvWZJc=
 		</data>
 		<key>Headers/CardinalMobile.h</key>
 		<data>
@@ -56,33 +84,45 @@
 		<data>
 		knAt8qmXfOEHUHvku7nBA1hN07I=
 		</data>
-		<key>Headers/CardinalSession.h</key>
+		<key>Headers/CardinalService.h</key>
 		<data>
-		m+VQ99ElhxnjwxeCjTDuo1hZ6QM=
+		WzKxDNbplWz6/mvDkeEJTLsjNqY=
+		</data>
+		<key>Headers/CardinalServiceProtocol.h</key>
+		<data>
+		hGtFBvWhvJDSXkLCY6C3x0xfTuU=
+		</data>
+		<key>Headers/CardinalSessionConfigPrivate.h</key>
+		<data>
+		sqjSoCGQPHG3HU4RocfYxtqFFgU=
 		</data>
 		<key>Headers/CardinalSessionConfiguration.h</key>
 		<data>
-		LC+/p4NgBvht+kqKM32xYX9nCx0=
-		</data>
-		<key>Headers/CardinalStepUpDelegate.h</key>
-		<data>
-		0SBNgZi41zmNwnOYmVRN8RiGnxQ=
+		HyRg57ExLK1GZ0sC1pOdxcO3WSE=
 		</data>
 		<key>Headers/CardinalThreeDS2ServiceImpl.h</key>
 		<data>
-		QSEdQjylBRgkPBqOF9wza8+DdrQ=
+		ls46GnuXxqWj50SzR5D/NyLYaIY=
 		</data>
 		<key>Headers/CardinalTransaction.h</key>
 		<data>
-		Yvhd+t7d7RWQ9Ub0a6awvgNH0rg=
+		C9GBO5LlODm1eSUkuzLaOWLyv7I=
+		</data>
+		<key>Headers/CertificateInfoConfiguration.h</key>
+		<data>
+		0tYQ993OBZ3voYP8QAZVy5+oGk0=
 		</data>
 		<key>Headers/ChallengeParameters.h</key>
 		<data>
 		UTsLimjmffEI0Ug0at3pL5t6Wpc=
 		</data>
+		<key>Headers/ChallengeResponse.h</key>
+		<data>
+		7wyR7UBQ5N9GcYA4tvvz/GYl9TA=
+		</data>
 		<key>Headers/ChallengeStatusReceiver.h</key>
 		<data>
-		TNSWuecmKJwZrPxFaJrKjhclLI4=
+		dpGQDbjHgBGn2MO4qcG0nSHKb+w=
 		</data>
 		<key>Headers/CompletionEvent.h</key>
 		<data>
@@ -96,17 +136,29 @@
 		<data>
 		5kw/qqM6ON01uox29cRxYycJeS4=
 		</data>
+		<key>Headers/DSPublicKey.h</key>
+		<data>
+		bnp9ol5vza04P6EljNCdKxQOSGI=
+		</data>
 		<key>Headers/DirectoryServerIDConst.h</key>
 		<data>
 		1jPIUKEDmT0R3z40j/uH7yLQBkE=
+		</data>
+		<key>Headers/EMVCOChallengeStatusReceiver.h</key>
+		<data>
+		JUF+HCMtqmc5lrCIX/dR7V859o8=
 		</data>
 		<key>Headers/ErrorMessage.h</key>
 		<data>
 		Vjfwbi37Ojljrp6DtgP/9rmsqSI=
 		</data>
+		<key>Headers/GMEllipticCurveCrypto.h</key>
+		<data>
+		PVcZnNV/RNtqoJu5hfHPkEgX3yI=
+		</data>
 		<key>Headers/LabelCustomization.h</key>
 		<data>
-		zCX1TaVKbdli+B4NiDlVhbF+1ls=
+		M1VaaJGOKgzbZs5zAuJ1rVPHHAQ=
 		</data>
 		<key>Headers/ProgressDialog.h</key>
 		<data>
@@ -114,7 +166,7 @@
 		</data>
 		<key>Headers/ProtocolErrorEvent.h</key>
 		<data>
-		Z/HTRI3CmR9K8Ir8C80zOWCJtfc=
+		76HBKF2QYnqbbszXj9h9qRjn2/U=
 		</data>
 		<key>Headers/RuntimeErrorEvent.h</key>
 		<data>
@@ -122,23 +174,23 @@
 		</data>
 		<key>Headers/TextBoxCustomization.h</key>
 		<data>
-		VVCj8dgPD15h81+9pupO+CRoe0w=
+		muuZ4kaZ0TlfOhijOtBWLWQ9koQ=
 		</data>
 		<key>Headers/ThreeDS2Service.h</key>
 		<data>
-		eRfAmMwIJaSsltq83JaZ7AJbHrQ=
+		ebs86mxfDURF32D7abR57BbLLKE=
 		</data>
 		<key>Headers/ToolbarCustomization.h</key>
 		<data>
-		WkqE2LsAYb9sCDT/ejoIx29wnBc=
+		df4uapz0N7Rrqc6zWDInbTFkv8s=
 		</data>
 		<key>Headers/Transaction.h</key>
 		<data>
-		QYzs1NgdxXFep06sxaXFDY/xTGM=
+		t5JI2rL07Ua1cn8ItApdS/dI+PM=
 		</data>
 		<key>Headers/UiCustomization.h</key>
 		<data>
-		hT25FvHCXzHUkRcjPvFeNKv3p1Y=
+		CaF5zX8KbRXD+Ql01eadVo2VX8Q=
 		</data>
 		<key>Headers/Warning.h</key>
 		<data>
@@ -146,7 +198,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		cO0js3URw4r+vNmmHRLjKoiWzkI=
+		kQBl6l4yA4DhBxdor9woPioffTA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -154,11 +206,11 @@
 		</data>
 		<key>MultiSelectView.nib</key>
 		<data>
-		qBjGW0FU43goTZW8+seJCgJXkHs=
+		9t5qmONEtQSd6ULLnRncbvzps0g=
 		</data>
 		<key>OTPView.nib</key>
 		<data>
-		o+1hzMChBkkAkEKq3g2oYmblPSI=
+		v+uFA6NRKXkAXh8h0McoeHGqpkk=
 		</data>
 		<key>PrivacyInfo.xcprivacy</key>
 		<data>
@@ -166,11 +218,11 @@
 		</data>
 		<key>SingleSelectView.nib</key>
 		<data>
-		K+qUsNNLedcncmKJeYx/Ty2LOYw=
+		EvRV+vgNw4Wcj2Q8kJKInNPeXVs=
 		</data>
 		<key>export_file.txt</key>
 		<data>
-		lC6ujxjCSo5QK99u7uMb6KiR1Ug=
+		sUcU8M309O9v0VlGwWIkYBI1hNQ=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -179,28 +231,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			n/mP9HvuWq8NTfAfP318owxRmAWGJ4qqhTgb/EhdylE=
+			5FOCzNuAyV+g7eigeh1AgSq5LZx0/cqoTG6hNdDlDmc=
 			</data>
 		</dict>
 		<key>CCStoryBoard.storyboardc/CCHtmlViewController.nib</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			XLS/dJ7y2Ew8dFX6tmHflKwQFGbPieVvtt5O5QjwqKY=
+			3jmgw+t6+DcefusQIcbQwDLrn1czkZhOQUJShuHPpXQ=
 			</data>
 		</dict>
 		<key>CCStoryBoard.storyboardc/CCViewController.nib</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CbGvUwjiZZEqcUu3l9QqYOvtyLZFb7Cxnq7qP6xyr7A=
+			jtZwXFgfmTu6i6ANRYrlGvStBt1IIoLMWWNKYg8xMDM=
 			</data>
 		</dict>
 		<key>CCStoryBoard.storyboardc/DIH-hs-KJy-view-kOh-XJ-af6.nib</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			b2zizLUY8oVQt7dKwJbID+qKYOCrzW2y9Br7G1XdDGs=
+			umSakG4Cvv1imY9xdu2tRvyda5a6U785TKw0Oxq8/Ck=
 			</data>
 		</dict>
 		<key>CCStoryBoard.storyboardc/Info.plist</key>
@@ -224,6 +276,27 @@
 			C+FuWdWbmXzRfNK3xVzPcVJb+3BN+swhVLfPbahVbug=
 			</data>
 		</dict>
+		<key>CardinalMobile-dev.podspec</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wYdsG/KVSEygy/wqUhtWDtBpEhqofqla/XLvn1v+qeI=
+			</data>
+		</dict>
+		<key>CardinalMobile.podspec</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6QO38Mb7aIepzRqsU0UTchaJq9HnXr8yjnMhwipXyUY=
+			</data>
+		</dict>
+		<key>Headers/AuthenticationParameters.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			mLT5jZ8IelKluvsrp/Gtn8ZK3QDP2A6u43f3w0nYzXI=
+			</data>
+		</dict>
 		<key>Headers/AuthenticationRequestParameters.h</key>
 		<dict>
 			<key>hash2</key>
@@ -235,21 +308,49 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FkbkmdRMEkzAM2Qe426CvIp8QGrYn6jI10C+/J+heII=
+			UXuodoPSwzy1sskWMJfPvrYO12+gWJWFU4gmDiJ31JE=
+			</data>
+		</dict>
+		<key>Headers/CCAImageUrl.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			faFB/qTMmFC1LQm8Wtu0ta/Xn39lKYx3gMWp8NEdfdg=
+			</data>
+		</dict>
+		<key>Headers/CardBrandConfig.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IpidUYZoEpvtN11WRqp/eLbxB6jggmNXdhxZdiHufO8=
 			</data>
 		</dict>
 		<key>Headers/CardinalCMSDK.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			IbU7WbXySG8qpDBALBCM/cw97WFkFaHSP2cut19eYgQ=
+			gYt++REeQYt7o1gO0ER/wFu36GnG1jfJjdKK5350DVw=
+			</data>
+		</dict>
+		<key>Headers/CardinalChallengeParameters.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NQHWbW/mYK+CPR55vOWGFpziCqMzYMmdFMZzO40/i+4=
 			</data>
 		</dict>
 		<key>Headers/CardinalEMVCoSDK.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			D7v1uN313LGLuEYYRq9QbB1tlcIE1uhCUQJjrm9SijA=
+			13wGNxtI44kmmeLGPDBtuyK0cUujsBl0665cTQ472gw=
+			</data>
+		</dict>
+		<key>Headers/CardinalError.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IvsRsWy1SBfybKKMHj5VtckVkiMw7JYWs+vN2kqde2Q=
 			</data>
 		</dict>
 		<key>Headers/CardinalMobile.h</key>
@@ -266,39 +367,53 @@
 			DjYHGve8hR2mjjR+KQWqjw3qvEoOrP/RMcH7bKGtV8g=
 			</data>
 		</dict>
-		<key>Headers/CardinalSession.h</key>
+		<key>Headers/CardinalService.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			eDyD66d860UQdexFh3Hu2NKk6vv/z7k5Qx82Uoya4Rk=
+			I74P5Evbz3GZrRhEhENKz72T10MtnR9P5h76WNLgDrk=
+			</data>
+		</dict>
+		<key>Headers/CardinalServiceProtocol.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			K2K+6ubfL1s2070Ix241K9bj+CiCUsGZCJnFsf5OnQ8=
+			</data>
+		</dict>
+		<key>Headers/CardinalSessionConfigPrivate.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			crDMFNamWXrf2nVi1GulhGTgPTLSbT41WynpHa79qh0=
 			</data>
 		</dict>
 		<key>Headers/CardinalSessionConfiguration.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			IUN5l6uLlOHyCSxLC/Idrw4yuJ0FJqjQ4QFpeb5NERw=
-			</data>
-		</dict>
-		<key>Headers/CardinalStepUpDelegate.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			NipVw/je3shxZbzyMDSqg9NcpGaFPDMXaMHIWZ2Rjh4=
+			whxM845PpuVFQE+hGgcl1TO7N19MyHyCkFmCzypzRpc=
 			</data>
 		</dict>
 		<key>Headers/CardinalThreeDS2ServiceImpl.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/WJbrtrwAfXMahvuN2uFzXbRbd0FbyOjPtWtWkAJM0I=
+			Iq3b92KI77Yi80TA2uC11BtElbekZm4/6VLtgy5cWy8=
 			</data>
 		</dict>
 		<key>Headers/CardinalTransaction.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			HuS2Rw7+zxx2lVxKT2wyuuqt96ZA84AMd6weXEKi2bA=
+			eKK0NuKHmSj9rxzGxn5QSVg/EIE+ZOmLMYJFXdz5kbk=
+			</data>
+		</dict>
+		<key>Headers/CertificateInfoConfiguration.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			lu1wsO1OTCFGM091YqWAmFD+kjfaGp5zOapUUB1E7K4=
 			</data>
 		</dict>
 		<key>Headers/ChallengeParameters.h</key>
@@ -308,11 +423,18 @@
 			s4BeO0exwbqHMHpkJoH7sTjUNPCwzbG7mLyQTuyyeWY=
 			</data>
 		</dict>
+		<key>Headers/ChallengeResponse.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Kvw/J0P33l6u9KHL8N97KncwH2bWGxDmLxEHscHJn+w=
+			</data>
+		</dict>
 		<key>Headers/ChallengeStatusReceiver.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			YwwsAOmtIcieDU2aNcpsY6feRNu8bPxCtH48YdhAGIY=
+			A7/kcNjhWLyOcQ2Z9iSuqR4xRirHQNqfox8kvIvs+Nw=
 			</data>
 		</dict>
 		<key>Headers/CompletionEvent.h</key>
@@ -336,11 +458,25 @@
 			IYrVQtop1+HplblSg0yXMR5li/9blsv+B37j/BKrdQk=
 			</data>
 		</dict>
+		<key>Headers/DSPublicKey.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			z+AtYmJZlL/Tl+Yj3zxo16xnfNj5lW1g6ah65mLskLk=
+			</data>
+		</dict>
 		<key>Headers/DirectoryServerIDConst.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			LDkWNhK6HfbNJ+8OJvjgEhAwh3LNtNcO0PYrSmVTKyg=
+			</data>
+		</dict>
+		<key>Headers/EMVCOChallengeStatusReceiver.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kPgBwALr6NFBlyzctoDAIBJaXD4cEiR7dYIbZF/XPhU=
 			</data>
 		</dict>
 		<key>Headers/ErrorMessage.h</key>
@@ -350,11 +486,18 @@
 			Ke2GX0P7ye4Xs0lpWrrByz3DODJkRYWxjpxKlKm7c1I=
 			</data>
 		</dict>
+		<key>Headers/GMEllipticCurveCrypto.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			5OYPcA/kU2No4zhQUOXSLYe6QV5ngeha1vuaPnI3b80=
+			</data>
+		</dict>
 		<key>Headers/LabelCustomization.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			5XTAX0r3GOhbz77u27E6Y8pUJ63HSVyyKmcmKgatKQo=
+			r6pgx3ODPRl5+bCFEuaLQhayfBGFETKVzlgv/M7wIzA=
 			</data>
 		</dict>
 		<key>Headers/ProgressDialog.h</key>
@@ -368,7 +511,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			XQC5d6iiN5fot+HNMjzacnDGfdQCqQTP3jfBQ/i8AQM=
+			bkuKcjmWpgdZOPQ+b3Onk0eveHAay4y8Zu+PrqYxjwA=
 			</data>
 		</dict>
 		<key>Headers/RuntimeErrorEvent.h</key>
@@ -382,35 +525,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FVvlcdu5pLQEN0Y3BcDd/XkQcW+CCehpeLBGgRELnKY=
+			yabankSHzA2oN3CNHQeFAvgOQpS13CquHlpRVwp0/y4=
 			</data>
 		</dict>
 		<key>Headers/ThreeDS2Service.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SCsnRozkG7r4sIs8Z4TYyMUrAzUqykvzy5LI/RCpGv0=
+			ZG8sDfSXd967RLvtJuGmNpXzaaTzF+HzrbFh9bVoPr0=
 			</data>
 		</dict>
 		<key>Headers/ToolbarCustomization.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			WOHBR01LkqZuRhlTTr+Y6kq2AYD+rPrsmpBz7HhfWzU=
+			Qs7rxy9Slt3wbVGNVEYbiXIFWjx4e4r6rf8wcn0A4hY=
 			</data>
 		</dict>
 		<key>Headers/Transaction.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ODbECdLFzyQx5gtcDu3WZAZ6nFLYqQMtmKAqZ0CWhb0=
+			QEUlMurvXlMMGrRejsFwD0Ui/9dCrzMUFJetFrcncq0=
 			</data>
 		</dict>
 		<key>Headers/UiCustomization.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			s4qsjqqDx9zd9aM3W1uQhDeYsAnZJCN13EUWdlts2oI=
+			S2r8E7qX6HFOnnKaF4z+ZdS0fVmb3zzsDB1CNxxsc1E=
 			</data>
 		</dict>
 		<key>Headers/Warning.h</key>
@@ -431,14 +574,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			S9LzqlZHSIh0k7XA4EsSVr6SGZOizfinZUFRFwBqT4A=
+			Tf7IXucoNSoYnplhlvMB4RSFrQRk2mGxVAcO5E1FmLc=
 			</data>
 		</dict>
 		<key>OTPView.nib</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lvjcW9ACS3HdzB7frRoagmTXPfvI+oXKZfiHICLQngg=
+			ik3gt0hMRk/TijGvwVoWEamPJQBO8bf3sQ19Oso90Xg=
 			</data>
 		</dict>
 		<key>PrivacyInfo.xcprivacy</key>
@@ -452,14 +595,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			mE4hKEZPgTPOSQJTfMKWW/MAwr7oHObVlECNfKZhQpE=
+			x7mvg5q/y3Ya4ol+Qqv4U59bG/1tOD4pytBR0Y5Yk/U=
 			</data>
 		</dict>
 		<key>export_file.txt</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			DgvRZgpmqIK7nqzCWWvLCT5R+OqpGxiFnPDxkPmpBpM=
+			CaOvUeHUsUCReNxNXbR5pKWdZ/c9Di5Ve+QQ76auoXk=
 			</data>
 		</dict>
 	</dict>

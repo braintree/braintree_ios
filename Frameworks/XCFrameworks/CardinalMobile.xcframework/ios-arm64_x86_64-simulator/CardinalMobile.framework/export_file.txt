@@ -1,9 +1,4 @@
 _CardinalSessionEnvironmentDEFAULT
-_CardinalSessionRenderTypeHTML
-_CardinalSessionRenderTypeMultiSelect
-_CardinalSessionRenderTypeOOB
-_CardinalSessionRenderTypeOTP
-_CardinalSessionRenderTypeSingleSelect
 _CardinalSessionTimeoutDEFAULT
 _CardinalSessionTimeoutShort
 _CardinalSessionTimeoutStandard
@@ -18,8 +13,9 @@ _OBJC_CLASS_$_CardinalTransaction
 _OBJC_CLASS_$_CardinalPayment
 _OBJC_CLASS_$_CardinalPaymentExtendedData
 _OBJC_CLASS_$_CardinalResponse
-_OBJC_CLASS_$_CardinalSession
 _OBJC_CLASS_$_CardinalSessionConfiguration
+_OBJC_CLASS_$_CardinalService
+_OBJC_CLASS_$_CardinalChallengeParameters
 _OBJC_CLASS_$_ChallengeParameters
 _OBJC_CLASS_$_CompletionEvent
 _OBJC_CLASS_$_ConfigParameters
@@ -45,8 +41,9 @@ _OBJC_METACLASS_$_CardinalTransaction
 _OBJC_METACLASS_$_CardinalPayment
 _OBJC_METACLASS_$_CardinalPaymentExtendedData
 _OBJC_METACLASS_$_CardinalResponse
-_OBJC_METACLASS_$_CardinalSession
 _OBJC_METACLASS_$_CardinalSessionConfiguration
+_OBJC_METACLASS_$_CardinalService
+_OBJC_METACLASS_$_CardinalChallengeParameters
 _OBJC_METACLASS_$_ChallengeParameters
 _OBJC_METACLASS_$_CompletionEvent
 _OBJC_METACLASS_$_ConfigParameters

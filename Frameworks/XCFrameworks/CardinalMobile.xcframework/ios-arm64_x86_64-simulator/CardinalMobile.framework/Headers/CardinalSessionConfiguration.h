@@ -6,7 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CardinalMobile/UiCustomization.h>
+#import "UiCustomization.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /*!
@@ -21,62 +22,74 @@ typedef NS_ENUM(NSUInteger, CardinalSessionEnvironment) {
 };
 
 /*!
- * @typedef CardinalSessionUIType
- * @brief List of CardinalSession UI Types
- * @constant CardinalSessionUITypeBoth Support for both Native and HTML
- * @constant CardinalSessionUITypeNative Support for Native UI Type
- * @constant CardinalSessionUITypeHTML Support for HTML UI Type
+ * @typedef CardinalRenderType
+ * @brief List of Cardinal Render Types
+ * @constant CardinalRenderTypeBoth Support for both Native and HTML
+ * @constant CardinalRenderTypeNative Support for Native Render Type
+ * @constant CardinalRenderTypeHTML Support for HTML Render Type
  */
-typedef NS_ENUM(NSUInteger, CardinalSessionUIType) {
-    CardinalSessionUITypeNative,
+typedef NS_ENUM(NSUInteger, CardinalRenderType) {
+    CardinalRenderTypeNative,
 #if TARGET_OS_IOS
-    CardinalSessionUITypeHTML,
-    CardinalSessionUITypeBoth
-#endif 
+    CardinalRenderTypeHTML,
+    CardinalRenderTypeBoth
+#endif
 };
 
-/*!
- * @typedef CardinalSessionRenderType
- * @brief NSString that represents different RenderTypes
- */
-typedef NSString CardinalSessionRenderType;
+/*
+* @typedef CardinalDatacenter
+* @brief List of CardinalDatacenter
+* @constant CARDINAL CCAUrls
+* @constant VISA VISAUrls
+*/
+typedef enum CardinalDatacenter {
+   Cardinal,
+   Visa
+} CardinalDatacenter;
 
 /*!
- * @typedef CardinalSessionRenderTypeArray
- * @brief NSArray of type CardinalSessionRenderType for holding all the RenderTyper supported
+ * @typedef CardinalUiType
+ * @brief NSString that represents different UiTypes
  */
-typedef NSArray<const CardinalSessionRenderType *> CardinalSessionRenderTypeArray;
+typedef NSString CardinalUiType;
 
 /*!
- * @const CardinalSessionRenderTypeOTP
- * @brief CardinalSessionRenderType for OTP
+ * @typedef CardinalUiTypeArray
+ * @brief NSArray of type CardinalUiType for holding all the UiType supported
  */
-extern CardinalSessionRenderType const *CardinalSessionRenderTypeOTP;
+
+typedef NSArray<const CardinalUiType *> CardinalUiTypeArray;
 
 /*!
- * @const CardinalSessionRenderTypeSingleSelect
- * @brief CardinalSessionRenderType for Single Select
+ * @const CardinalUiTypeOTP
+ * @brief CardinalUiType for OTP
  */
-extern CardinalSessionRenderType const *CardinalSessionRenderTypeSingleSelect;
+extern CardinalUiType const *CardinalUiTypeOTP;
 
 /*!
- * @const CardinalSessionRenderTypeMultiSelect
- * @brief CardinalSessionRenderType for Multi Select
+ * @const CardinalUiTypeSingleSelect
+ * @brief CardinalUiType for Single Select
  */
-extern CardinalSessionRenderType const *CardinalSessionRenderTypeMultiSelect;
+extern CardinalUiType const *CardinalUiTypeSingleSelect;
 
 /*!
- * @const CardinalSessionRenderTypeOOB
- * @brief CardinalSessionRenderType for OOB
+ * @const CardinalUiTypeMultiSelect
+ * @brief CardinalUiType for Multi Select
  */
-extern CardinalSessionRenderType const *CardinalSessionRenderTypeOOB;
+extern CardinalUiType const *CardinalUiTypeMultiSelect;
+
+/*!
+ * @const CardinalUiTypeOOB
+ * @brief CardinalUiType for OOB
+ */
+extern CardinalUiType const *CardinalUiTypeOOB;
 
 #if TARGET_OS_IOS
 /*!
- * @const CardinalSessionRenderTypeHTML
- * @brief CardinalSessionRenderType for HTML
+ * @const CardinalUiTypeHTML
+ * @brief CardinalUiType for HTML
  */
-extern CardinalSessionRenderType const *CardinalSessionRenderTypeHTML;
+extern CardinalUiType const *CardinalUiTypeHTML;
 #endif
 
 /*!
@@ -105,6 +118,12 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
  * @brief Various Configurations for CardinalSession
  */
 @interface CardinalSessionConfiguration : NSObject <NSCopying>
+#if DEBUG
+#define kCCAConfigChallengeTimeoutInMinuteMIN 0
+#else
+#define kCCAConfigChallengeTimeoutInMinuteMIN 5
+#endif
+
 
 /*!
  * @property deploymentEnvironment Deployment Environment
@@ -114,19 +133,11 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
 @property (nonatomic, assign) CardinalSessionEnvironment deploymentEnvironment;
 
 /*!
- * @property requestTimeout Timeout in Milliseconds
- * @brief Sets the default timeout in milliseconds for how long the SDK will wait for a response from a Cardinal server for all operations. See preset values for Standard and Short timeouts.
- * Default value is CardinalSessionTimeoutDEFAULT (about 8 seconds).
- */
-@property (nonatomic, assign) NSUInteger requestTimeout;
-
-
-/*!
  * @property timeout Challenge Screen Timeout in Minutes.
  * @brief Sets the time in Minute before how long the SDK Challenge Screen will timeout. Minimum timeout is 5 minutes.
  * Default value is 5 minutes.
  */
-@property (nonatomic, assign) NSUInteger challengeTimeout;
+@property (nonatomic, assign) NSUInteger sdkMaxTimeout;
 
 /*!
  * @property proxyServerURL Proxy Server URL
@@ -137,32 +148,26 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
 
 #if TARGET_OS_IOS
 /*!
- * @property uiType UI Type
- * @brief Sets the Interface type that the device supports for displaying specific challenge user interfaces within the SDK.
- * Default value is CardinalSessionUITypeBoth.
+ * @property renderType Render Type
+ * @brief Sets the Render type that the device supports for displaying specific challenge user interfaces within the SDK.
+ * Default value is CardinalRenderTypeBoth.
  */
-@property (nonatomic, assign) CardinalSessionUIType uiType;
+@property (nonatomic, assign) CardinalRenderType renderType;
 #elif TARGET_OS_TV
 /*!
-* @property uiType UI Type
-* @brief The Interface type that the device supports for displaying specific challenge user interfaces within the SDK.
-* Default value is CardinalSessionUITypeNative.
+* @property renderType Render Type
+* @brief Sets RenderTypes that the device supports for displaying specific challenge user interfaces within the SDK.
+* Default value is CardinalSessionRenderTypeNative.
 */
-@property (nonatomic, assign, readonly) CardinalSessionUIType uiType;
+@property (nonatomic, assign, readonly) CardinalRenderType renderType;
 #endif
-/*!
- * @property enableQuickAuth Enable Quick Authentication
- * @brief Sets enable quick auth. This property is deprecated in v2.2.4. This feature will no longer be supported in the SDK.
- * Default value is false.
- */
-@property (nonatomic) BOOL enableQuickAuth DEPRECATED_ATTRIBUTE;
 
 /*!
- * @property renderType Render Type
- * @brief Sets RenderTypes that the device supports for displaying specific challenge user interfaces within the SDK.
+ * @property uiType UI Type
+ * @brief Sets the Interface type that the device supports for displaying specific challenge user interfaces within the SDK.
  * Default value is false.
  */
-@property (nonatomic, copy) CardinalSessionRenderTypeArray *renderType;
+@property (nonatomic, copy) CardinalUiTypeArray *uiType;
 
 /*!
  * @property uiCustomization UI Customization of Challenge Views
@@ -179,13 +184,6 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
 @property (nonatomic, strong) UiCustomization *darkUiCustomization;
 
 /*!
- * @property enableDFSync Synchronize Setup Task with Lasso
- * @brief Enable synchronize setup task.
- * Default value is true.
- */
-@property (nonatomic) BOOL enableDFSync;
-
-/*!
  * @property threeDSRequestorAppURL Three DS Requester APP URL
  * @brief Merchant app declaring their URL within the CReq message so that the Authentication app can call the Merchant app after OOB authentication has occurred. Each transaction would require a unique Transaction ID by using the SDK Transaction ID.
  */
@@ -197,6 +195,30 @@ extern NSUInteger const CardinalSessionTimeoutDEFAULT;
  * Default value is true.
  */
 @property (nonatomic) BOOL collectLogs;
+
+/*!
+ * @property cardBrand Card Brand
+ * @brief Retrieve certificates with the card brand the merchant submits.
+ */
+@property (nonatomic) NSString* cardBrand;
+
+/*!
+ * @property messageVersion Message Version
+ * @brief Protocol version identifier This shall be the Protocol Version Number of the specification utilised by the system creating this message.
+ */
+@property (nonatomic) NSString* messageVersion;
+
+/*!
+ * @property ephemeralKeyPair Ephemeral Key
+ * @brief Public key component of the ephemeral key pair generated by the ACS and used to establish session keys between the 3DS SDK and the ACS.
+ */
+@property (nonatomic) NSString* ephemeralKeyPair;
+
+/*!
+ * @property cardinalDatacenter CCA Database
+ * @brief Cardinal urls and Visa DC urls
+ */
+@property (nonatomic, assign) CardinalDatacenter cardinalDatacenter;
 @end
 
 NS_ASSUME_NONNULL_END

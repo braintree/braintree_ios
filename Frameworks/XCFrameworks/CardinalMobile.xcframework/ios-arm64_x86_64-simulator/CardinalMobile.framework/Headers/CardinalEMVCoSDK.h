@@ -15,7 +15,7 @@
 #import <CardinalMobile/CardinalThreeDS2ServiceImpl.h>
 #import <CardinalMobile/CardinalTransaction.h>
 #import <CardinalMobile/ProgressDialog.h>
-#import <CardinalMobile/ChallengeStatusReceiver.h>
+#import <CardinalMobile/EMVCOChallengeStatusReceiver.h>
 #import <CardinalMobile/ChallengeParameters.h>
 #import <CardinalMobile/CompletionEvent.h>
 #import <CardinalMobile/RuntimeErrorEvent.h>

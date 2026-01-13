@@ -1,14 +1,16 @@
 //
-//  Transaction.h
-//  CardinalEMVCoSDK
+//  ChallengeStatusReceiver.h
+//  CardinalMobile
 //
-//  Copyright © 2018 Cardinal Commerce. All rights reserved.
+//  Created by Praveen Rao on 4/4/23.
+//  Copyright © 2023 Cardinal Commerce. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <CardinalMobile/CompletionEvent.h>
-#import <CardinalMobile/RuntimeErrorEvent.h>
-#import <CardinalMobile/ProtocolErrorEvent.h>
+#import "ChallengeResponse.h"
+#import "CompletionEvent.h"
+#import "RuntimeErrorEvent.h"
+#import "ProtocolErrorEvent.h"
 
 /**
  * A callback object that confrotnts to ChallengeStatusReceiver protocol
@@ -23,30 +25,30 @@
  * When a transaction is completed, a transaction status shall be available.
  * @param completionEvent Information about completion of the challenge process.
  */
-- (void) challengeStatusReceiverCompleted: (CompletionEvent *) completionEvent;
+- (void) completed: (CompletionEvent *) completionEvent;
 
 
 /**
  * Called when the Cardholder selects the option to cancel the transaction on the challenge screen.
  */
-- (void) challengeStatusReceiverCancelled;
+- (void) cancelled;
 
 /**
  * Called when the challenge process reaches or exceeds the timeout interval that is specified during the doChallenge call on the 3DS SDK.
  */
-- (void) challengeStatusReceiverTimedout;
+- (void) timedout;
 
 /**
  * Called when the 3DS SDK receives an EMV 3-D Secure protocol-defined error message from the ACS.
  * @param protocolErrorEvent Error code and details.
  */
-- (void) challengeStatusReceiverProtocolError: (ProtocolErrorEvent *) protocolErrorEvent;
+- (void) protocolError: (ProtocolErrorEvent *) protocolErrorEvent;
 
 /**
  * Called when the 3DS SDK encounters errors during the challenge process
  * These errors include all errors except those covered by the protocolError method.
  * @param runtimeErrorEvent Error code and details.
  */
-- (void) challengeStatusReceiverRuntimeError: (RuntimeErrorEvent *) runtimeErrorEvent;
+- (void) runtimeError: (RuntimeErrorEvent *) runtimeErrorEvent;
 
 @end

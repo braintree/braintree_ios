@@ -6,10 +6,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CardinalMobile/AuthenticationRequestParameters.h>
-#import <CardinalMobile/ProgressDialog.h>
-#import <CardinalMobile/ChallengeStatusReceiver.h>
-#import <CardinalMobile/ChallengeParameters.h>
+#import "AuthenticationRequestParameters.h"
+#import "ProgressDialog.h"
+#import "EMVCOChallengeStatusReceiver.h"
+#import "ChallengeParameters.h"
 
 /**
  * An object that confronts to Transaction protocol hold parameters that the 3DS Server requires to create AReq messages and to perform the Challenge Flow.
@@ -30,7 +30,7 @@
  * @param error Reference to NSError for exception handling
  */
 - (BOOL) doChallengeWithChallengeParameters: (ChallengeParameters *_Nonnull) challengeParameters
-                    challengeStatusReceiver: (id<ChallengeStatusReceiver>_Nonnull) challengeStatusReceiver
+                    challengeStatusReceiver: (id<EMVCOChallengeStatusReceiver>_Nonnull) challengeStatusReceiver
                                     timeOut: (int) timeOut
                                       error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(doChallenge(_:challengeStatusReceiver:timeOut:));
 

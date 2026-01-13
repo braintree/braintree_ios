@@ -5,7 +5,7 @@
 //  Copyright © 2018 Cardinal Commerce. All rights reserved.
 //
 
-#import <CardinalMobile/Customization.h>
+#import "Customization.h"
 
 /**
  * The LabelCustomization class provides methods for the 3DS Requestor App to pass label customization parameters to the 3DS SDK.
