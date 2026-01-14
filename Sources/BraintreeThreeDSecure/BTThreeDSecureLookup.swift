@@ -37,6 +37,20 @@ import BraintreeCore
     /// Indicates that a 3DS challenge is required.
     public var requiresUserAuthentication: Bool = false
 
+    // MARK: - 3DS 2.x / Cardinal v3 Properties
+
+    /// The 3DS Server Transaction ID (3DS 2.x)
+    public var threeDSServerTransactionID: String?
+
+    /// The ACS Transaction ID (3DS 2.x)
+    public var acsTransactionID: String?
+
+    /// The ACS Reference Number (3DS 2.x)
+    public var acsRefNumber: String?
+
+    /// The ACS Signed Content (3DS 2.x)
+    public var acsSignedContent: String?
+
     // MARK: - Initializer
 
     init(json: BTJSON) {
@@ -48,5 +62,11 @@ import BraintreeCore
         isThreeDSecureVersion2 = threeDSecureVersion?.hasPrefix("2.") ?? false
         transactionID = json["transactionId"].asString()
         requiresUserAuthentication = acsURL != nil
+
+        // Cardinal v3 / 3DS 2.x fields
+        threeDSServerTransactionID = json["threeDSServerTransactionID"].asString()
+        acsTransactionID = json["acsTransactionID"].asString()
+        acsRefNumber = json["acsRefNumber"].asString()
+        acsSignedContent = json["acsSignedContent"].asString()
     }
 }

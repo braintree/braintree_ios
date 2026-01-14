@@ -2,16 +2,17 @@ import Foundation
 
 /// The POST body for `v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup`
 struct ThreeDSecurePOSTBody: Encodable {
-    
+
     let accountType: String?
     let additionalInfo: AdditionalInfo
     let amount: String
     let cardAdd: Bool?
+    let cardinalEncryptedDeviceData: String?
     let challengeRequested: Bool
     let customFields: [String: String]?
     let customer: Customer
     let dataOnlyRequested: Bool
-    let dfReferenceID: String?
+    let deviceChannel: String = "SDK"
     let exemptionRequested: Bool
     let requestedExemptionType: String?
     let requestedThreeDSecureVersion: String = "2"
@@ -19,12 +20,13 @@ struct ThreeDSecurePOSTBody: Encodable {
     init(request: BTThreeDSecureRequest) {
         self.requestedExemptionType = request.requestedExemptionType.stringValue
         self.accountType = request.accountType.stringValue
-        self.dfReferenceID = request.dfReferenceID
+        // Cardinal v3 migration: Use CardinalEncryptedDeviceData instead of dfReferenceId
+        self.cardinalEncryptedDeviceData = request.dfReferenceID
         self.dataOnlyRequested = request.dataOnlyRequested
         self.challengeRequested = request.challengeRequested
         self.amount = request.amount
         self.exemptionRequested = request.exemptionRequested
-        
+
         self.customFields = request.customFields
         self.cardAdd = request.cardAddChallengeRequested ? true : nil
 
@@ -38,11 +40,13 @@ struct ThreeDSecurePOSTBody: Encodable {
         case additionalInfo
         case amount
         case cardAdd
+        // Cardinal v3 migration: Use CardinalEncryptedDeviceData instead of dfReferenceId
+        case cardinalEncryptedDeviceData
         case challengeRequested
         case customFields
         case customer
         case dataOnlyRequested
-        case dfReferenceID = "dfReferenceId"
+        case deviceChannel = "DeviceChannel"
         case exemptionRequested
         case requestedExemptionType
         case requestedThreeDSecureVersion

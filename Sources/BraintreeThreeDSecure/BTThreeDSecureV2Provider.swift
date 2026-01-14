@@ -14,6 +14,8 @@ class BTThreeDSecureV2Provider {
 
     var lookupResult: BTThreeDSecureResult?
     var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
+    var sdkTransactionId: String?
+    var threeDSRequestorAppURL: String?
 
     // MARK: - Initializer
 
@@ -26,6 +28,9 @@ class BTThreeDSecureV2Provider {
     ) {
         self.apiClient = apiClient
         self.cardinalSession = cardinalSession
+
+        // Store threeDSRequestorAppURL for use in challenge parameters
+        self.threeDSRequestorAppURL = request.requestorAppURL
 
         let cardinalConfiguration = CardinalSessionConfiguration()
 
@@ -51,6 +56,10 @@ class BTThreeDSecureV2Provider {
             cardinalConfiguration.threeDSRequestorAppURL = requestorAppURL
         }
 
+        // Set 3DS message version for Cardinal v3
+        // This tells Cardinal to use 3DS 2.x protocol
+        cardinalConfiguration.messageVersion = "2.1.0"
+
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
             completion(nil)
             return
@@ -60,9 +69,20 @@ class BTThreeDSecureV2Provider {
         cardinalSession.jwtInitialize(
             jwtString: cardinalAuthenticationJWT,
             configParameters: cardinalConfiguration,
-            success: { consumerSessionID in
-                completion(["dfReferenceId": consumerSessionID])
-            }, error: { _ in
+            success: { sdkTransactionId in
+                // Store sdkTransactionId for use in challenge parameters
+                self.sdkTransactionId = sdkTransactionId
+
+                // Get the encrypted device data using getAuthentication()
+                // For v3, we need to pass cardBrand - using empty string for general initialization
+                let encryptedData = cardinalSession.getAuthentication(cardBrand: "", messageVersion: "2.1.0", error: nil)
+
+                // Return CardinalEncryptedDeviceData instead of dfReferenceId (v2 field)
+                completion(["CardinalEncryptedDeviceData": encryptedData])
+            }, error: { error in
+                // Cardinal SDK initialization failed
+                // This can happen if the JWT is invalid or incompatible with the SDK version
+                print("CardinalMobile initialization error: \(error?.errorDescription ?? "Unknown error")")
                 completion([:])
             }
         )
@@ -76,11 +96,19 @@ class BTThreeDSecureV2Provider {
     ) {
         self.lookupResult = lookupResult
         completionHandler = completion
-        
-        // TODO: I don't think all of this is the right thing
+
+        // Cardinal v3: Use CardinalChallengeParameters with 3DS 2.x fields
         let challengeParameters = CardinalChallengeParameters()
-        challengeParameters.transactionId = lookupResult.lookup?.transactionID ?? ""
-        challengeParameters.acsReferenceNumber = lookupResult.lookup?.paReq ?? ""
+        challengeParameters.threeDSServerTransactionId = lookupResult.lookup?.threeDSServerTransactionID ?? ""
+        challengeParameters.acsTransactionId = lookupResult.lookup?.acsTransactionID ?? ""
+        challengeParameters.acsReferenceNumber = lookupResult.lookup?.acsRefNumber ?? ""
+        challengeParameters.acsSignedContent = lookupResult.lookup?.acsSignedContent ?? ""
+
+        // Set sdkTransactionId from jwtInitialize success callback
+        challengeParameters.sdkTransactionId = sdkTransactionId ?? ""
+
+        // Set threeDSRequestorAppURL from the request
+        challengeParameters.threeDSRequestorAppURL = threeDSRequestorAppURL ?? ""
 
         cardinalSession.doChallengewithChallengeParameters(
             challengeParameters: challengeParameters,
@@ -113,8 +141,9 @@ class BTThreeDSecureV2Provider {
 // MARK: - CardinalValidationDelegate Protocol Conformance
 
 // TODO: we still need to set lookupResult back to nil in here
+
 extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
-    func completed(_ completionEvent: CompletionEvent!) {
+    func completed(_ completionEvent: CompletionEvent?) {
         // TODO: find out what this is now
 //    case .success, .noAction, .failure:
 //        if validateResponse.actionCode == .failure {
@@ -122,6 +151,11 @@ extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
 //        } else {
 //            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
 //        }
+
+        guard let completionEvent = completionEvent else {
+            completionHandler(nil, BTThreeDSecureError.unknown)
+            return
+        }
 
         BTThreeDSecureAuthenticateJWT.authenticate(
             jwt: completionEvent.sdkTransactionID,
@@ -139,9 +173,10 @@ extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
         completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
     }
     
-    func protocolError(_ protocolErrorEvent: ProtocolErrorEvent!) {
-        let errorUserInfo = [NSLocalizedDescriptionKey: protocolErrorEvent.errorMessage]
-        var errorCode: Int = BTThreeDSecureError.unknown.errorCode
+    func protocolError(_ protocolErrorEvent: ProtocolErrorEvent?) {
+        let errorMessage = protocolErrorEvent?.errorMessage
+        let errorUserInfo = [NSLocalizedDescriptionKey: errorMessage]
+        let errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
         // TODO: what is this now?
 //        if validateResponse.errorNumber == 1050 {
@@ -151,8 +186,9 @@ extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
         completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
     }
     
-    func runtimeError(_ runtimeErrorEvent: RuntimeErrorEvent!) {
-        let errorUserInfo = [NSLocalizedDescriptionKey: runtimeErrorEvent.errorMessage]
+    func runtimeError(_ runtimeErrorEvent: RuntimeErrorEvent?) {
+        let errorMessage = runtimeErrorEvent?.errorMessage ?? "Unknown runtime error"
+        let errorUserInfo = [NSLocalizedDescriptionKey: errorMessage]
         var errorCode: Int = BTThreeDSecureError.unknown.errorCode
 
         // TODO: what is this now?

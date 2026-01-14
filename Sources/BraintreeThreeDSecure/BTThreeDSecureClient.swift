@@ -124,8 +124,9 @@ import BraintreeCore
                 "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
             ]
 
-            if let dfReferenceID = request.dfReferenceID {
-                requestParameters["dfReferenceId"] = dfReferenceID
+            // Cardinal v3 migration: Use CardinalEncryptedDeviceData instead of dfReferenceId
+            if let cardinalEncryptedData = request.dfReferenceID {
+                requestParameters["cardinalEncryptedDeviceData"] = cardinalEncryptedData
             }
 
             let clientMetadata: [String: String?] = [
@@ -251,16 +252,20 @@ import BraintreeCore
                     request: request,
                     cardinalSession: cardinalSession
                 ) { lookupParameters in
-                    guard let dfReferenceID = lookupParameters?["dfReferenceId"], !dfReferenceID.isEmpty else {
+                    // Cardinal v3 migration: Use CardinalEncryptedDeviceData instead of dfReferenceId
+                    guard
+                        let cardinalEncryptedData = lookupParameters?["cardinalEncryptedDeviceData"],
+                        !cardinalEncryptedData.isEmpty else {
                         completion(
                             BTThreeDSecureError.failedLookup(
-                                [NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]
+                                [NSLocalizedDescriptionKey: "There was an error retrieving the CardinalEncryptedDeviceData."]
                             )
                         )
                         return
                     }
 
-                    request.dfReferenceID = dfReferenceID
+                    // Store in dfReferenceID property for backwards compatibility (will be sent as CardinalEncryptedDeviceData)
+                    request.dfReferenceID = cardinalEncryptedData
                     completion(nil)
                 }
             } else {
