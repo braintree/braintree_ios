@@ -908,7 +908,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "va")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
-        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "fundingSource")
         XCTAssertEqual(urlComponents?.queryItems?[5].value, "paypal")
     }
 
@@ -1030,7 +1030,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
-        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "fundingSource")
         XCTAssertEqual(urlComponents?.queryItems?[5].value, "paypal")
     }
     
@@ -1074,7 +1074,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
-        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "fundingSource")
         XCTAssertEqual(urlComponents?.queryItems?[5].value, "credit")
     }
     
@@ -1118,7 +1118,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
-        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "fundingSource")
         XCTAssertEqual(urlComponents?.queryItems?[5].value, "paylater")
     }
     

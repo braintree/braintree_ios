@@ -558,7 +558,7 @@ import BraintreeDataCollector
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
             URLQueryItem(name: "merchant", value: merchantID ?? "unknown"),
-            URLQueryItem(name: "funding_source", value: fundingSource?.rawValue ?? BTPayPalFundingSource.payPal.rawValue)
+            URLQueryItem(name: "fundingSource", value: fundingSource?.rawValue ?? BTPayPalFundingSource.payPal.rawValue)
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
