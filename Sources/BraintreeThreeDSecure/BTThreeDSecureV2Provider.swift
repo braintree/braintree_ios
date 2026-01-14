@@ -16,6 +16,7 @@ class BTThreeDSecureV2Provider {
     var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
     var sdkTransactionId: String?
     var threeDSRequestorAppURL: String?
+    var cardBrand: String?
 
     // MARK: - Initializer
 
@@ -56,16 +57,23 @@ class BTThreeDSecureV2Provider {
             cardinalConfiguration.threeDSRequestorAppURL = requestorAppURL
         }
 
-        // Set 3DS message version for Cardinal v3
-        // This tells Cardinal to use 3DS 2.x protocol
-        cardinalConfiguration.messageVersion = "2.1.0"
+        print("DEBUG: Authorization type: \(apiClient.authorization)")
+        print("DEBUG: cardinalAuthenticationJWT exists: \(configuration.cardinalAuthenticationJWT != nil)")
 
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
+            print("DEBUG: No cardinalAuthenticationJWT found - returning nil")
             completion(nil)
             return
         }
 
+        print("DEBUG: JWT value: \(String(cardinalAuthenticationJWT.prefix(50)))...")
+
         cardinalConfiguration.deploymentEnvironment = cardinalEnvironment
+
+        // TEST: Hardcode cardBrand to see if it prevents the crash
+        cardinalConfiguration.cardBrand = "VISA"
+        cardinalConfiguration.messageVersion = "2.1.0"
+
         cardinalSession.jwtInitialize(
             jwtString: cardinalAuthenticationJWT,
             configParameters: cardinalConfiguration,
@@ -73,17 +81,21 @@ class BTThreeDSecureV2Provider {
                 // Store sdkTransactionId for use in challenge parameters
                 self.sdkTransactionId = sdkTransactionId
 
-                // Get the encrypted device data using getAuthentication()
-                // For v3, we need to pass cardBrand - using empty string for general initialization
-                let encryptedData = cardinalSession.getAuthentication(cardBrand: "", messageVersion: "2.1.0", error: nil)
+                // Validate SDK integrity and check for security warnings
+                let warnings = cardinalSession.getWarnings()
+                if !warnings.isEmpty {
+                    print("Cardinal SDK warnings: \(warnings)")
+                }
 
-                // Return CardinalEncryptedDeviceData instead of dfReferenceId (v2 field)
-                completion(["CardinalEncryptedDeviceData": encryptedData])
-            }, error: { error in
+                // For v3, we return the sdkTransactionId which will be sent in the lookup request
+                // The encrypted device data is obtained AFTER the lookup, when we know the cardBrand
+                completion(["sdkTransactionId": sdkTransactionId])
+            },
+            error: { error in
                 // Cardinal SDK initialization failed
                 // This can happen if the JWT is invalid or incompatible with the SDK version
                 print("CardinalMobile initialization error: \(error?.errorDescription ?? "Unknown error")")
-                completion([:])
+                completion(nil)
             }
         )
     }
@@ -96,6 +108,11 @@ class BTThreeDSecureV2Provider {
     ) {
         self.lookupResult = lookupResult
         completionHandler = completion
+
+        // Store card brand from lookup response
+        if let brand = lookupResult.lookup?.cardBrand {
+            self.cardBrand = brand
+        }
 
         // Cardinal v3: Use CardinalChallengeParameters with 3DS 2.x fields
         let challengeParameters = CardinalChallengeParameters()
@@ -110,10 +127,15 @@ class BTThreeDSecureV2Provider {
         // Set threeDSRequestorAppURL from the request
         challengeParameters.threeDSRequestorAppURL = threeDSRequestorAppURL ?? ""
 
+        // Set transactionId (preferred identifier per Cardinal docs)
+        challengeParameters.transactionId = lookupResult.lookup?.transactionID ?? ""
+
+        // Set timeout to 5 minutes (300000 ms) as recommended by Cardinal (5-10 minutes)
+        let timeoutInSeconds = 5 * 60  // 5 minutes
         cardinalSession.doChallengewithChallengeParameters(
             challengeParameters: challengeParameters,
             challengeStatusReceiver: self,
-            timeOut: 1000000,
+            timeOut: Int32(timeoutInSeconds),
             error: nil
         )
     }

@@ -51,6 +51,9 @@ import BraintreeCore
     /// The ACS Signed Content (3DS 2.x)
     public var acsSignedContent: String?
 
+    /// The card brand/network (e.g., "VISA", "MASTERCARD", "AMEX")
+    public var cardBrand: String?
+
     // MARK: - Initializer
 
     init(json: BTJSON) {
@@ -68,5 +71,6 @@ import BraintreeCore
         acsTransactionID = json["acsTransactionID"].asString()
         acsRefNumber = json["acsRefNumber"].asString()
         acsSignedContent = json["acsSignedContent"].asString()
+        cardBrand = json["cardBrand"].asString() ?? json["cardType"].asString()
     }
 }
