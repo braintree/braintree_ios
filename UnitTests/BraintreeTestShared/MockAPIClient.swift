@@ -27,6 +27,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedDidPayPalServerAttemptAppSwitch: Bool? = nil
     public var postedErrorDescription: String? = nil
     public var postedContextType: String? = nil
+    public var postedFundingSource: String? = nil
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -89,10 +90,11 @@ public class MockAPIClient: BTAPIClient {
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
-        merchantExperiment experiment: String? = nil,
+        fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
+        merchantExperiment experiment: String? = nil,
         pageType: String? = nil,
         shopperSessionID: String? = nil
     ) {
@@ -110,7 +112,8 @@ public class MockAPIClient: BTAPIClient {
         postedDidPayPalServerAttemptAppSwitch = didPayPalServerAttemptAppSwitch
         postedErrorDescription = errorDescription
         postedContextType = contextType
-
+        postedFundingSource = fundingSource
+        
         postedAnalyticsEvents.append(eventName)
     }
 

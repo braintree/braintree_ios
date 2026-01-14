@@ -218,10 +218,11 @@ import UIKit
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
-        merchantExperiment: String? = nil,
+        fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
+        merchantExperiment: String? = nil,
         pageType: String? = nil,
         shopperSessionID: String? = nil
     ) {
@@ -238,6 +239,7 @@ import UIKit
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 errorDescription: errorDescription,
                 eventName: eventName,
+                fundingSource: fundingSource,
                 isConfigFromCache: isConfigFromCache,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,

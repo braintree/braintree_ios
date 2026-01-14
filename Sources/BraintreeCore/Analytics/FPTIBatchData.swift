@@ -74,6 +74,7 @@ struct FPTIBatchData: Codable {
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
         let tenantName: String = "Braintree"
+        let fundingSource: String?
         
         init(
             applicationState: String? = nil,
@@ -90,6 +91,7 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            fundingSource: String? = nil,
             isConfigFromCache: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
@@ -121,6 +123,7 @@ struct FPTIBatchData: Codable {
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.startTime = startTime
+            self.fundingSource = fundingSource
         }
 
         enum CodingKeys: String, CodingKey {
@@ -148,6 +151,7 @@ struct FPTIBatchData: Codable {
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
+            case fundingSource = "funding_source"
         }
     }
     
