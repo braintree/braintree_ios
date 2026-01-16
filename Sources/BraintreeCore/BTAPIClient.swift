@@ -348,16 +348,13 @@ import UIKit
     }
 }
 
-// MARK: - Private Methods
-
 private extension BTAPIClient {
     
     private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
             graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             graphQLHTTP?.networkTimingDelegate = self
-        }
-        
+        }        
         if payPalHTTP == nil {
             let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
             
@@ -398,3 +395,4 @@ private extension BTAPIClient {
         }
     }
 }
+
