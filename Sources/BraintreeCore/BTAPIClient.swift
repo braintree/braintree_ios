@@ -53,7 +53,6 @@ import UIKit
         }
     }
 
-
     // MARK: - Deinit
 
     deinit {
@@ -100,10 +99,6 @@ import UIKit
         } catch {
             throw error
         }
-    }
-    
-    @MainActor func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig()
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -164,11 +159,14 @@ import UIKit
         
         let configuration = try await fetchOrReturnRemoteConfiguration()
         
-        return try await http(for: httpType)?.get(
+        guard let http = http(for: httpType) else {
+            throw BTHTTPError.deallocated(httpType.description)
+        }
+        return try await http.get(
             path,
             configuration: configuration,
             parameters: parameters
-        ) ?? (nil, nil)
+        )
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -241,12 +239,15 @@ import UIKit
 
         let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
         
-        return try await http(for: httpType)?.post(
+        guard let http = http(for: httpType) else {
+            throw BTHTTPError.deallocated(httpType.description)
+        }
+        return try await http.post(
             path,
             configuration: configuration,
             parameters: postParameters,
             headers: headers
-        ) ?? (nil, nil)
+        )
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.

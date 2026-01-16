@@ -103,7 +103,7 @@ public class MockAPIClient: BTAPIClient {
         completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
     }
     
-    public override func fetchConfiguration() async throws -> BTConfiguration {
+    public override func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
         guard let responseBody = cannedConfigurationResponseBody else {
             throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
         }
