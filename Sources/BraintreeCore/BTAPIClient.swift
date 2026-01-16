@@ -1,5 +1,6 @@
 import UIKit
 
+// swiftlint:disable type_body_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -321,34 +322,8 @@ import UIKit
             return payPalHTTP
         }
     }
-
-    // MARK: BTAPITimingDelegate conformance
-
-    func fetchAPITiming(path: String, connectionStartTime: Int?, requestStartTime: Int?, startTime: Int, endTime: Int) {
-        var cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
-        cleanedPath = cleanedPath.replacingOccurrences(
-            of: "payment_methods/.*/three_d_secure",
-            with: "payment_methods/three_d_secure",
-            options: .regularExpression
-        )
-        
-        if cleanedPath != "/v1/tracking/batch/events" {
-            analyticsService?.sendAnalyticsEvent(
-                FPTIBatchData.Event(
-                    connectionStartTime: connectionStartTime,
-                    endpoint: cleanedPath,
-                    endTime: endTime,
-                    eventName: BTCoreAnalytics.apiRequestLatency,
-                    requestStartTime: requestStartTime,
-                    startTime: startTime
-                ),
-                sendImmediately: false
-            )
-        }
-    }
-}
-
-private extension BTAPIClient {
+    
+    // MARK: Private Helpers
     
     private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
@@ -392,6 +367,31 @@ private extension BTAPIClient {
             }
         case .invalidAuthorization:
             return InvalidAuthorization(authorization)
+        }
+    }
+
+    // MARK: BTAPITimingDelegate conformance
+
+    func fetchAPITiming(path: String, connectionStartTime: Int?, requestStartTime: Int?, startTime: Int, endTime: Int) {
+        var cleanedPath = path.replacingOccurrences(of: "/merchants/([A-Za-z0-9]+)/client_api", with: "", options: .regularExpression)
+        cleanedPath = cleanedPath.replacingOccurrences(
+            of: "payment_methods/.*/three_d_secure",
+            with: "payment_methods/three_d_secure",
+            options: .regularExpression
+        )
+        
+        if cleanedPath != "/v1/tracking/batch/events" {
+            analyticsService?.sendAnalyticsEvent(
+                FPTIBatchData.Event(
+                    connectionStartTime: connectionStartTime,
+                    endpoint: cleanedPath,
+                    endTime: endTime,
+                    eventName: BTCoreAnalytics.apiRequestLatency,
+                    requestStartTime: requestStartTime,
+                    startTime: startTime
+                ),
+                sendImmediately: false
+            )
         }
     }
 }
