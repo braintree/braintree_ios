@@ -57,22 +57,12 @@ class BTThreeDSecureV2Provider {
             cardinalConfiguration.threeDSRequestorAppURL = requestorAppURL
         }
 
-        print("DEBUG: Authorization type: \(apiClient.authorization)")
-        print("DEBUG: cardinalAuthenticationJWT exists: \(configuration.cardinalAuthenticationJWT != nil)")
-
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
-            print("DEBUG: No cardinalAuthenticationJWT found - returning nil")
             completion(nil)
             return
         }
 
-        print("DEBUG: JWT value: \(String(cardinalAuthenticationJWT.prefix(50)))...")
-
         cardinalConfiguration.deploymentEnvironment = cardinalEnvironment
-
-        // TEST: Hardcode cardBrand to see if it prevents the crash
-        cardinalConfiguration.cardBrand = "VISA"
-        cardinalConfiguration.messageVersion = "2.1.0"
 
         cardinalSession.jwtInitialize(
             jwtString: cardinalAuthenticationJWT,
@@ -87,9 +77,11 @@ class BTThreeDSecureV2Provider {
                     print("Cardinal SDK warnings: \(warnings)")
                 }
 
-                // For v3, we return the sdkTransactionId which will be sent in the lookup request
-                // The encrypted device data is obtained AFTER the lookup, when we know the cardBrand
-                completion(["sdkTransactionId": sdkTransactionId])
+                // Cardinal v3: Return sdkTransactionId as cardinalEncryptedDeviceData
+                // We skip calling getAuthentication() because we don't have cardBrand yet
+                // (cardBrand comes from lookup response, but getAuthentication() must be called before lookup)
+                // Braintree's backend may handle device data collection differently for v3
+                completion(["cardinalEncryptedDeviceData": sdkTransactionId])
             },
             error: { error in
                 // Cardinal SDK initialization failed
@@ -139,25 +131,6 @@ class BTThreeDSecureV2Provider {
             error: nil
         )
     }
-
-    private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
-        switch actionCode {
-        case .success:
-            return "completed"
-        case .noAction:
-            return "noaction"
-        case .failure:
-            return "failure"
-        case .error:
-            return "failed"
-        case .cancel:
-            return "canceled"
-        case .timeout:
-            return "timeout"
-        @unknown default:
-            return ""
-        }
-    }
 }
 
 // MARK: - CardinalValidationDelegate Protocol Conformance
@@ -165,6 +138,7 @@ class BTThreeDSecureV2Provider {
 // TODO: we still need to set lookupResult back to nil in here
 
 extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
+
     func completed(_ completionEvent: CompletionEvent?) {
         // TODO: find out what this is now
 //    case .success, .noAction, .failure:
@@ -174,7 +148,7 @@ extension BTThreeDSecureV2Provider: ChallengeStatusReceiver {
 //            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
 //        }
 
-        guard let completionEvent = completionEvent else {
+        guard let completionEvent else {
             completionHandler(nil, BTThreeDSecureError.unknown)
             return
         }
