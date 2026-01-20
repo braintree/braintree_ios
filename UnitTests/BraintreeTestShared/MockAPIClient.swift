@@ -79,12 +79,12 @@ public class MockAPIClient: BTAPIClient {
 
     public override func post(
         _ path: String,
-        parameters: Encodable,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
         lastPOSTPath = path
-        lastPOSTParameters = try? parameters.toDictionary()
+        lastPOSTParameters = try? parameters?.toDictionary()
         lastPOSTAPIClientHTTPType = httpType
         lastPOSTAdditionalHeaders = headers
         

@@ -225,7 +225,7 @@ import UIKit
     @_documentation(visibility: private)
     public func post(
         _ path: String,
-        parameters: Encodable,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
