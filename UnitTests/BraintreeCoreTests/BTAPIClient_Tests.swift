@@ -192,7 +192,7 @@ class BTAPIClient_Tests: XCTestCase {
 
         _ = try await apiClient.post("/", parameters: nil, httpType: .graphQLAPI)
 
-        let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+        let metaParameters = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: Any]
         XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
         XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
         XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
@@ -232,7 +232,7 @@ class BTAPIClient_Tests: XCTestCase {
         let postParameters = FakeRequest(testValue: "fake-value")
         _ = try await apiClient.post("/", parameters: postParameters, httpType: .graphQLAPI)
 
-        let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+        let metaParameters = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: Any]
         XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
         XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
         XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
@@ -278,8 +278,6 @@ class BTAPIClient_Tests: XCTestCase {
         waitForExpectations(timeout: 5)
 
     }
-    
-
     
     func testGET_withAsyncAwait_returnFetchConfigErrors() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
