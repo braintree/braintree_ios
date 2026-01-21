@@ -27,7 +27,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         XCTAssertEqual(lastGetParameters["paymentMethodNonce"] as! String, "fake-nonce")
     }
     
-    func testGetRewardsBalance_returnsSendsAnalyticsEventOnSuccess() {
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnSuccess() async throws {
         let responseBody = [
             "conversionRate": "0.0070",
             "currencyAmount": "316795.03",
@@ -37,81 +37,61 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             "rewardsUnit": "Points",
             ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        
-        let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(rewardsBalance)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2, handler: nil)
-        
+
+        let rewardsBalance = try await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD")
+        XCTAssertNotNil(rewardsBalance)
+
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:succeeded")
     }
     
-    func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() {
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() async {
         mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: [NSLocalizedDescriptionKey:"Fake description"])
 
-        let expectation = self.expectation(description: "Amex rewards balance response")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
-            
-            if let error = error as NSError? {
-                XCTAssertEqual(error.code, 100)
-                XCTAssertEqual(error.localizedDescription, "Fake description")
-                XCTAssertEqual(error.domain, "foo")
-            }
-            
-            XCTAssertNil(rewardsBalance)
-            expectation.fulfill()
+        do {
+            _ = try await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, 100)
+            XCTAssertEqual(error.localizedDescription, "Fake description")
+            XCTAssertEqual(error.domain, "foo")
         }
-        waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:failed")
     }
     
-    func testGetRewardsBalance_returnsSendsAnalyticsEventOnNilAPIResponse() {
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnNilAPIResponse() async {
         mockAPIClient.cannedResponseBody = nil
 
-        let expectation = self.expectation(description: "Amex rewards balance response was nil")
-        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { rewardsBalance, error in
-            
-            if let error = error as NSError? {
-                XCTAssertEqual(error.code, BTAmericanExpressError.noRewardsData.errorCode)
-                XCTAssertEqual(error.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
-                XCTAssertEqual(error.domain, BTAmericanExpressError.errorDomain)
-            }
-            
-            XCTAssertNil(rewardsBalance)
-            expectation.fulfill()
+        do {
+            _ = try await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, BTAmericanExpressError.noRewardsData.errorCode)
+            XCTAssertEqual(error.localizedDescription, "No American Express Rewards data was returned. Please contact support.")
+            XCTAssertEqual(error.domain, BTAmericanExpressError.errorDomain)
         }
-        waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:failed")
     }
     
-    func testGetRewardsBalance_withInvalidAuthorization_returnsError() {
+    func testGetRewardsBalance_withInvalidAuthorization_returnsError() async {
         amexClient = BTAmericanExpressClient(authorization: "badAuth")
         mockAPIClient.cannedResponseError = NSError(
             domain: BTAPIClientError.errorDomain,
             code: BTAPIClientError.invalidAuthorization("").errorCode,
             userInfo: [NSLocalizedDescriptionKey: BTAPIClientError.invalidAuthorization("").errorDescription ?? ""]
         )
-        
-        let expectation = expectation(description: "Amex reward balance should return invalid authorization error")
-        amexClient?.getRewardsBalance(forNonce: "", currencyISOCode: "") { rewardsBalance, error in
-            XCTAssertNil(rewardsBalance)
-            if let error = error as NSError? {
-                XCTAssertEqual(error.code, BTAPIClientError.invalidAuthorization("").errorCode)
-                XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth. See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info.")
-                XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
-            }
-            
-            expectation.fulfill()
+
+        do {
+            _ = try await amexClient?.getRewardsBalance(forNonce: "", currencyISOCode: "")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, BTAPIClientError.invalidAuthorization("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth. See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info.")
+            XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
         }
-        
-        waitForExpectations(timeout: 2)
     }
 }
