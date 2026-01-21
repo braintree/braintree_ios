@@ -109,7 +109,7 @@ final class BTAnalyticsService: AnalyticsSendable {
     /// Exposed to be able to execute this function synchronously in unit tests
     func sendAnalyticEvent(_ event: FPTIBatchData.Event, apiClient: BTAPIClient) async {
         do {
-            let configuration = try await apiClient.fetchConfiguration()
+            let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
             try await postAnalyticsEvents(
                 configuration: configuration,
                 sessionID: apiClient.metadata.sessionID,
@@ -126,7 +126,7 @@ final class BTAnalyticsService: AnalyticsSendable {
         guard await !events.isEmpty, let apiClient else { return }
         
         do {
-            let configuration = try await apiClient.fetchConfiguration()
+            let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
             
             for (sessionID, eventsPerSessionID) in await events.allValues {
                 try await postAnalyticsEvents(

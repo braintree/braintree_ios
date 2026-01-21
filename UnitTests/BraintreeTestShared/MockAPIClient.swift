@@ -51,6 +51,21 @@ public class MockAPIClient: BTAPIClient {
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
+    public override func get(
+        _ path: String,
+        parameters: Encodable?,
+        httpType: BTAPIClientHTTPService
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        lastGETPath = path
+        lastGETParameters = try? parameters?.toDictionary()
+        lastGETAPIClientHTTPType = httpType
+        
+        if let error = cannedResponseError {
+            throw error
+        }
+        return (cannedResponseBody, cannedHTTPURLResponse)
+    }
+    
     public override func post(_ path: String, parameters: Encodable? = nil, headers: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = try? parameters?.toDictionary()
@@ -62,6 +77,24 @@ public class MockAPIClient: BTAPIClient {
         }
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
+
+    public override func post(
+        _ path: String,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        lastPOSTPath = path
+        lastPOSTParameters = try? parameters?.toDictionary()
+        lastPOSTAPIClientHTTPType = httpType
+        lastPOSTAdditionalHeaders = headers
+        
+        if let error = cannedResponseError {
+            throw error
+        }
+        
+        return (cannedResponseBody, cannedHTTPURLResponse)
+    }
     
     public override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
         guard let responseBody = cannedConfigurationResponseBody else {
@@ -71,7 +104,7 @@ public class MockAPIClient: BTAPIClient {
         completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
     }
     
-    public override func fetchConfiguration() async throws -> BTConfiguration {
+    public override func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
         guard let responseBody = cannedConfigurationResponseBody else {
             throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
         }

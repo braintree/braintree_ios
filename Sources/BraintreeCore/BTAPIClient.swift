@@ -1,5 +1,6 @@
 import UIKit
 
+// swiftlint:disable type_body_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -51,7 +52,6 @@ import UIKit
         }
     }
 
-
     // MARK: - Deinit
 
     deinit {
@@ -78,7 +78,7 @@ import UIKit
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // TODO: - Consider updating all feature clients to use async version of this method?
+        // TODO: - Consider updating all feature clients to use async version of this method and remove this method once done
         Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
@@ -90,8 +90,14 @@ import UIKit
         }
     }
     
-    @MainActor func fetchConfiguration() async throws -> BTConfiguration {
-        try await configurationLoader.getConfig()
+    public func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
+        do {
+            let configuration = try await configurationLoader.getConfig()
+            setupHTTPCredentials(configuration)
+            return configuration
+        } catch {
+            throw error
+        }
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -130,6 +136,36 @@ import UIKit
 
             http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
         }
+    }
+    
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
+    /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
+    /// - Parameters:
+    ///   - path: The endpoint URI path.
+    ///   - parameters: Optional set of query parameters to be encoded with the request.
+    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
+    /// - Returns: On success, `(BTJSON?, HTTPURLResponse?)` will contain the JSON body response and the HTTP response.
+    @_documentation(visibility: private)
+    public func get(
+        _ path: String,
+        parameters: Encodable? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        if authorization.type == .invalidAuthorization {
+            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
+        }
+        
+        let configuration = try await fetchOrReturnRemoteConfiguration()
+        
+        guard let http = http(for: httpType) else {
+            throw BTHTTPError.deallocated(httpType.description)
+        }
+        return try await http.get(
+            path,
+            configuration: configuration,
+            parameters: parameters
+        )
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -189,19 +225,28 @@ import UIKit
     @_documentation(visibility: private)
     public func post(
         _ path: String,
-        parameters: Encodable,
+        parameters: Encodable? = nil,
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        try await withCheckedThrowingContinuation { continuation in
-            post(path, parameters: parameters, headers: headers, httpType: httpType) { json, httpResponse, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume(returning: (json, httpResponse))
-                }
-            }
+        if authorization.type == .invalidAuthorization {
+            throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
         }
+
+        let configuration = try await configurationLoader.getConfig()
+        setupHTTPCredentials(configuration)
+
+        let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
+        
+        guard let http = http(for: httpType) else {
+            throw BTHTTPError.deallocated(httpType.description)
+        }
+        return try await http.post(
+            path,
+            configuration: configuration,
+            parameters: postParameters,
+            headers: headers
+        )
     }
 
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -280,14 +325,13 @@ import UIKit
         }
     }
     
-    // MARK: - Private Methods
+    // MARK: Private Helpers
     
     private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
             graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
             graphQLHTTP?.networkTimingDelegate = self
         }
-        
         if payPalHTTP == nil {
             let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
             

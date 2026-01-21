@@ -11,4 +11,15 @@ public enum BTAPIClientHTTPService: Int {
     
     /// Use the PayPal API
     case payPalAPI
+    
+    var description: String {
+        switch self {
+        case .gateway:
+            return "gateway"
+        case .graphQLAPI:
+            return "graphQLAPI"
+        case .payPalAPI:
+            return "payPalAPI"
+        }
+    }
 }
