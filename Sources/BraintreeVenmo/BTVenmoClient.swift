@@ -327,7 +327,7 @@ import BraintreeCore
         }
     }
     
-    func handleOpenNew(_ url: URL) {
+    func handleOpen(_ url: URL) async throws {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             contextID: contextID,
