@@ -133,8 +133,11 @@ import BraintreeCore
             magnesSource: .BRAINTREE
         )
 
-        let result = MagnesSDK.shared().collect()
-        return result.getPayPalClientMetaDataId()
+        let result = try? MagnesSDK.shared().collect(
+            withPayPalClientMetadataId: clientMetadataID ?? "",
+            withAdditionalData: data ?? [:]
+        )
+        return result?.getPayPalClientMetaDataId() ?? ""
     }
 
     private func deviceIdentifier() -> String {
