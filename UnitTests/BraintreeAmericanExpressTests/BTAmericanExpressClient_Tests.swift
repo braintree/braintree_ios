@@ -40,7 +40,6 @@ class BTAmericanExpressClient_Tests: XCTestCase {
 
         let rewardsBalance = try await amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD")
         XCTAssertNotNil(rewardsBalance)
-
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "amex:rewards-balance:started")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "amex:rewards-balance:succeeded")
     }
