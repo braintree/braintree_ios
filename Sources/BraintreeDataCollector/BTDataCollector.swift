@@ -61,8 +61,17 @@ import BraintreeCore
             _ = try? MagnesSDK.shared().collectAndSubmit(
                 withPayPalClientMetadataId: clientMetadataID,
                 withAdditionalData: [:]
-            ) { _, _ in
-                completion(deviceData, nil)
+            ) { submitStatus, _ in
+                switch submitStatus {
+                case .success:
+                    completion(deviceData, nil)
+                case .error:
+                    completion(nil, BTDataCollectorError.magnesSubmitError)
+                case .timeout:
+                    completion(nil, BTDataCollectorError.magnesSubmitTimeout)
+                @unknown default:
+                    completion(nil, BTDataCollectorError.unknown)
+                }
             }
         }
     }
