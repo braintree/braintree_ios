@@ -44,7 +44,7 @@ import BraintreeCore
                 return
             }
 
-            let clientMetadataID: String = self.collectClientMetadataID(with: configuration)
+            let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
             let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
             guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
@@ -58,7 +58,10 @@ import BraintreeCore
             }
 
             // Only invoke completion after Magnes collectAndSubmit internal callback finishes
-            self.submitToMagnes(clientMetadataID: clientMetadataID, configuration: configuration) { _, _ in
+            _ = try? MagnesSDK.shared().collectAndSubmit(
+                withPayPalClientMetadataId: clientMetadataID,
+                withAdditionalData: [:]
+            ) { _, _ in
                 completion(deviceData, nil)
             }
         }
@@ -130,43 +133,10 @@ import BraintreeCore
             magnesSource: .BRAINTREE
         )
 
-        let result = try? MagnesSDK.shared().collectAndSubmit(
-            withPayPalClientMetadataId: clientMetadataID ?? "",
-            withAdditionalData: data ?? [:]
-        )
-
-        return result?.getPayPalClientMetaDataId() ?? ""
-    }
-
-    func collectClientMetadataID(with configuration: BTConfiguration) -> String {
-        config = configuration
-        let mangnesEnvironment = getMagnesEnvironment(from: config)
-
-        try? MagnesSDK.shared().setUp(
-            setEnviroment: mangnesEnvironment,
-            setOptionalAppGuid: deviceIdentifier(),
-            disableRemoteConfiguration: false,
-            disableBeacon: false,
-            magnesSource: .BRAINTREE
-        )
-
         let result = MagnesSDK.shared().collect()
         return result.getPayPalClientMetaDataId()
     }
 
-    func submitToMagnes(
-        clientMetadataID: String,
-        configuration: BTConfiguration,
-        completion: @escaping (MagnesSDK.MagnesSubmitStatus, String?) -> Void
-    ) {
-        _ = try? MagnesSDK.shared().collectAndSubmit(
-            withPayPalClientMetadataId: clientMetadataID,
-            withAdditionalData: [:]
-        ) { submitStatus, debugId in
-            completion(submitStatus, debugId)
-        }
-    }
-    
     private func deviceIdentifier() -> String {
         // See if we already have an identifier in the keychain
         var query: [String: Any] = [
