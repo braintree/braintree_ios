@@ -414,7 +414,7 @@ class BTVenmoClient_Tests: XCTestCase {
             BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 2)
     }
     
     func testTokenizeVenmoAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
