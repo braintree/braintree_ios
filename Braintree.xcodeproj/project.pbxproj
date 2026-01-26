@@ -30,6 +30,9 @@
 		081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
 		081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
 		082CBCF62F281A070072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
+		082CBCF72F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
+		082CBCF82F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
+		082CBCF92F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
 		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
 		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
 		084135432ED0CBAD00884FE9 /* UIComponents+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */; };
@@ -3771,6 +3774,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BE8FFFC29EDDAF500869166 /* BTLocalPaymentAnalytics_Tests.swift in Sources */,
+				082CBCF82F281B2D0072F35D /* MockBTDataCollector.swift in Sources */,
 				A91E1E9F24FEDD96007540E5 /* BTLocalPaymentClient_UnitTests.swift in Sources */,
 				A9E80AA324FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift in Sources */,
 			);
@@ -3883,6 +3887,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E5C1A924FD5B7F00EE691F /* BTDataCollector_Tests.swift in Sources */,
+				082CBCF72F281B2D0072F35D /* MockBTDataCollector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3895,6 +3900,7 @@
 				427F329025D1A7B900435294 /* BTPayPalVaultRequest_Tests.swift in Sources */,
 				BECB10C62B5999EE008D398E /* BTPayPalLineItem_Tests.swift in Sources */,
 				3B7A261429C35BD00087059D /* BTPayPalAnalytics_Tests.swift in Sources */,
+				082CBCF92F281B2D0072F35D /* MockBTDataCollector.swift in Sources */,
 				A95229C724FD949D006F7D25 /* BTConfiguration+PayPal_Tests.swift in Sources */,
 				BEBA590F2BB1B5B9005FA8A2 /* BTPayPalReturnURL_Tests.swift in Sources */,
 			);
