@@ -96,7 +96,7 @@ import BraintreeCore
     ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     ///  calling it when the customer initiates checkout is also fine.
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
-    /// - Parameter riskCorrelationID: Optional risk correlation ID to associate with this collection. If not provided, one will be generated.
+    /// - Parameter riskCorrelationID: Optional. A risk correlation ID to associate with this collection. If not provided, one will be generated.
     /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
     /// - Throws: An `Error` describing the failure
     public func collectDeviceData(riskCorrelationID: String? = nil) async throws -> String {
