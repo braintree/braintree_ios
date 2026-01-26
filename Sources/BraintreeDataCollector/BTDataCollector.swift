@@ -53,12 +53,7 @@ import BraintreeCore
                 return
             }
 
-            let clientMetadataID: String
-            if let riskCorrelationID {
-                clientMetadataID = riskCorrelationID
-            } else {
-                clientMetadataID = self.generateClientMetadataID(with: configuration)
-            }
+            let clientMetadataID = riskCorrelationID ?? self.generateClientMetadataID(with: configuration)
 
             let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
