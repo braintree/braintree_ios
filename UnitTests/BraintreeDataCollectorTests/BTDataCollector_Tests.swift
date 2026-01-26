@@ -63,15 +63,17 @@ class BTDataCollector_Tests: XCTestCase {
         let config: [String : Any] = [
             "environment":"sandbox"
         ]
-        
+
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let pairingID = "random pairing id"
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
+        // swiftlint:disable:next deprecated_declarations
         XCTAssertEqual(pairingID, dataCollector.clientMetadataID(pairingID))
         XCTAssertNotEqual(pairingID, dataCollector.generateClientMetadataID(with: configuration))
+        // swiftlint:disable:next deprecated_declarations
         XCTAssertNotEqual(pairingID, dataCollector.clientMetadataID(nil))
     }
 
@@ -79,13 +81,14 @@ class BTDataCollector_Tests: XCTestCase {
         let config: [String : Any] = [
             "environment":"sandbox"
         ]
-        
+
         let configuration = BTConfiguration(json: BTJSON(value: config))
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let dataCollector = BTDataCollector(authorization: authorization)
         dataCollector.apiClient = mockAPIClient
 
         let clientMetaDataID = dataCollector.generateClientMetadataID(with: configuration)
+        // swiftlint:disable:next deprecated_declarations
         let clientMetaDataID2 = dataCollector.clientMetadataID("some pairing id")
         XCTAssertNotEqual(clientMetaDataID, clientMetaDataID2)
     }
