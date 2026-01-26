@@ -43,11 +43,14 @@ struct PayPalVaultPOSTBody: Encodable {
         self.merchantAccountID = payPalRequest.merchantAccountID
         self.riskCorrelationID = payPalRequest.riskCorrelationID
         self.lineItems = payPalRequest.lineItems?.isEmpty == false ? payPalRequest.lineItems : nil
-        self.userAuthenticationEmail = payPalRequest.userAuthenticationEmail
         self.userPhoneNumber = payPalRequest.userPhoneNumber
         self.returnURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)success"
         self.cancelURL = BTCoreConstants.callbackURLScheme + "://\(PayPalRequestConstants.callbackURLHostAndPath)cancel"
         self.experienceProfile = PayPalExperienceProfile(payPalRequest: payPalRequest, configuration: configuration)
+        
+        if let userAuthenticationEmail = payPalRequest.userAuthenticationEmail, !userAuthenticationEmail.isEmpty {
+            self.userAuthenticationEmail = userAuthenticationEmail
+        }
         
         if let universalLink, payPalRequest.enablePayPalAppSwitch, isPayPalAppInstalled {
             self.enablePayPalAppSwitch = payPalRequest.enablePayPalAppSwitch
