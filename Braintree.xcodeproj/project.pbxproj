@@ -33,6 +33,7 @@
 		082CBCF72F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
 		082CBCF82F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
 		082CBCF92F281B2D0072F35D /* MockBTDataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082CBCF52F281A070072F35D /* MockBTDataCollector.swift */; };
+		082CBCFC2F281CC60072F35D /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
 		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
 		084135432ED0CBAD00884FE9 /* UIComponents+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */; };
@@ -453,6 +454,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2D941D371B59C76A0016EFB4;
 			remoteInfo = BraintreePayPal;
+		};
+		082CBCFA2F281CB00072F35D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
 		};
 		804698432B27C5530090878E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1314,6 +1322,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				082CBCFC2F281CC60072F35D /* BraintreeDataCollector.framework in Frameworks */,
 				BEED3B8C291C56B900BA114B /* BraintreeCore.framework in Frameworks */,
 				A903E1B624F9D37B00C314E1 /* XCTest.framework in Frameworks */,
 			);
@@ -2713,6 +2722,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				082CBCFB2F281CB00072F35D /* PBXTargetDependency */,
 				BEED3B8F291C56B900BA114B /* PBXTargetDependency */,
 			);
 			name = BraintreeTestShared;
@@ -4037,6 +4047,11 @@
 			isa = PBXTargetDependency;
 			target = 2D941D371B59C76A0016EFB4 /* BraintreePayPal */;
 			targetProxy = 045241722EC6AD0D00C25EA6 /* PBXContainerItemProxy */;
+		};
+		082CBCFB2F281CB00072F35D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = 082CBCFA2F281CB00072F35D /* PBXContainerItemProxy */;
 		};
 		804698442B27C5530090878E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
