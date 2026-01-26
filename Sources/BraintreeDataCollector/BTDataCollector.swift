@@ -27,6 +27,10 @@ import BraintreeCore
     /// - Parameter pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
     /// - Returns: A client metadata ID to send as a header
     /// - Note: This returns a raw client metadata ID, which is not the correct format for device data when creating a transaction. Instead, it is recommended to use `collectDeviceData`.
+    @available(
+        *, deprecated,
+        message: "clientMetadataID is deprecated and will be removed in the future. Use collectDeviceData(riskCorrelationID:completion:)."
+    )
     @objc public func clientMetadataID(_ pairingID: String?) -> String {
         generateClientMetadataID(pairingID, disableBeacon: false, configuration: nil, data: nil)
     }
@@ -36,15 +40,26 @@ import BraintreeCore
     ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     ///  calling it when the customer initiates checkout is also fine.
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
-    ///  - Parameter completion:  A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale`, or an error with the failure reason.
-    @objc public func collectDeviceData(_ completion: @escaping (String?, Error?) -> Void) {
+    ///  - Parameters:
+    ///    - riskCorrelationID: Optional risk correlation ID to associate with this collection. If not provided, one will be generated.
+    ///    - completion: A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale`, or an error with the failure reason.
+    @objc public func collectDeviceData(
+        riskCorrelationID: String? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) {
         fetchConfiguration { configuration, error in
             guard let configuration = configuration else {
                 completion(nil, error)
                 return
             }
 
-            let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
+            let clientMetadataID: String
+            if let riskCorrelationID {
+                clientMetadataID = riskCorrelationID
+            } else {
+                clientMetadataID = self.generateClientMetadataID(with: configuration)
+            }
+
             let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
             guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
@@ -66,9 +81,9 @@ import BraintreeCore
                 case .success:
                     completion(deviceData, nil)
                 case .error:
-                    completion(nil, BTDataCollectorError.magnesSubmitError)
+                    completion(nil, BTDataCollectorError.callbackSubmitError)
                 case .timeout:
-                    completion(nil, BTDataCollectorError.magnesSubmitTimeout)
+                    completion(nil, BTDataCollectorError.callbackSubmitTimeout)
                 @unknown default:
                     completion(nil, BTDataCollectorError.unknown)
                 }
@@ -81,11 +96,12 @@ import BraintreeCore
     ///  We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
     ///  calling it when the customer initiates checkout is also fine.
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
+    /// - Parameter riskCorrelationID: Optional risk correlation ID to associate with this collection. If not provided, one will be generated.
     /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
     /// - Throws: An `Error` describing the failure
-    public func collectDeviceData() async throws -> String {
+    public func collectDeviceData(riskCorrelationID: String? = nil) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
-            collectDeviceData { deviceData, error in
+            collectDeviceData(riskCorrelationID: riskCorrelationID) { deviceData, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let deviceData {

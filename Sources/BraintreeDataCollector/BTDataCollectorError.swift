@@ -13,10 +13,10 @@ public enum BTDataCollectorError: Int, Error, CustomNSError, LocalizedError, Equ
     case encodingFailure
 
     /// 3. Magnes SDK failed to submit device data.
-    case magnesSubmitError
+    case callbackSubmitError
 
     /// 4. Magnes SDK timed out while submitting device data.
-    case magnesSubmitTimeout
+    case callbackSubmitTimeout
 
     public static var errorDomain: String {
         "com.braintreepayments.BTDataCollectorErrorDomain"
@@ -37,11 +37,11 @@ public enum BTDataCollectorError: Int, Error, CustomNSError, LocalizedError, Equ
         case .encodingFailure:
             return "The device data could not be encoded."
 
-        case .magnesSubmitError:
-            return "Magnes SDK failed to submit device data."
+        case .callbackSubmitError:
+            return "Failed to submit device data."
 
-        case .magnesSubmitTimeout:
-            return "Magnes SDK timed out while submitting device data."
+        case .callbackSubmitTimeout:
+            return "Timed out while submitting device data."
         }
     }
 }

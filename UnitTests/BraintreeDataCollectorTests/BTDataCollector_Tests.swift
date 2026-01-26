@@ -180,7 +180,7 @@ class BTDataCollector_Tests: XCTestCase {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
         let mockDataCollector = MockBTDataCollector(authorization: authorization)
         mockDataCollector.apiClient = mockAPIClient
-        
+
         mockDataCollector.cannedDataCollectorError = BTDataCollectorError.encodingFailure
 
         let expectation = self.expectation(description: "Returns error")
@@ -192,6 +192,59 @@ class BTDataCollector_Tests: XCTestCase {
                 expectation.fulfill()
             } else {
                 XCTFail("We Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testCollectDeviceData_withRiskCorrelationID_usesProvidedID() {
+        let config: [String: Any] = ["environment": "sandbox"]
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+
+        let expectation = self.expectation(description: "Returns device data with custom correlation ID")
+        let customCorrelationID = "custom-risk-correlation-id-12345"
+
+        dataCollector.collectDeviceData(riskCorrelationID: customCorrelationID) { deviceData, error in
+            XCTAssertNil(error)
+            if let deviceData {
+                let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+                XCTAssertEqual(json["correlation_id"].asString(), customCorrelationID)
+                expectation.fulfill()
+            } else {
+                XCTFail("Expected device data to be returned")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testCollectDeviceData_withoutRiskCorrelationID_generatesID() {
+        let config: [String: Any] = ["environment": "sandbox"]
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+
+        let expectation = self.expectation(description: "Returns device data with generated correlation ID")
+
+        dataCollector.collectDeviceData { deviceData, error in
+            XCTAssertNil(error)
+            if let deviceData {
+                let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+                let correlationID = json["correlation_id"].asString()
+                XCTAssertNotNil(correlationID)
+                XCTAssertTrue(correlationID!.count > 0)
+                expectation.fulfill()
+            } else {
+                XCTFail("Expected device data to be returned")
             }
         }
 

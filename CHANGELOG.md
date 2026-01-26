@@ -4,6 +4,7 @@
 
 * BraintreeDataCollector
   * Update PPRiskMagnes to 5.6.0 with internal completion handler to ensure device data is not returned until Magnes SDK completes data submission
+  * Deprecate `BTDataCollector.clientMetadataID`
 
 * BraintreePayPal
     * Pass `fundingSource` to the app switch url link and to analytics events. 
