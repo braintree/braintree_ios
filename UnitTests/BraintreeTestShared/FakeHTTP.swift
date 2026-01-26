@@ -119,4 +119,11 @@ import Foundation
         lastRequestParameters = try? parameters?.toDictionary()
         completion?(self.cannedConfiguration, nil, nil)
     }
+
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+        POSTRequestCount += 1
+        lastRequestParameters = try? parameters?.toDictionary()
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: 200, httpVersion: nil, headerFields: nil)
+        return (self.cannedConfiguration, httpResponse)
+    }
 }
