@@ -482,7 +482,7 @@ import BraintreeDataCollector
 
                 let dataCollector = self.dataCollector ?? BTDataCollector(authorization: self.apiClient.authorization.originalValue)
                 dataCollector.collectDeviceData(
-                    riskCorrelationID: self.payPalRequest?.riskCorrelationID
+                    riskCorrelationID: self.payPalRequest?.riskCorrelationID ?? self.contextID
                 ) { deviceData, error in
                     if let error {
                         self.notifyFailure(with: error, completion: completion)
