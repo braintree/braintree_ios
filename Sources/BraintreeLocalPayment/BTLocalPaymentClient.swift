@@ -24,7 +24,10 @@ import BraintreeDataCollector
     
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
-    
+
+    /// Exposed for testing to inject mock data collector
+    var dataCollector: BTDataCollector?
+
     // MARK: - Private Properties
 
     private var request: BTLocalPaymentRequest?
@@ -68,28 +71,38 @@ import BraintreeDataCollector
                 return
             }
 
-            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-            request.correlationID = dataCollector.clientMetadataID(nil)
-
             guard let configuration else {
                 self.notifyFailure(with: BTLocalPaymentError.fetchConfigurationFailed, completion: completion)
                 return
             }
 
-            if !configuration.isLocalPaymentEnabled {
-                NSLog(
-                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
-                return
-            } else if request.localPaymentFlowDelegate == nil {
-                NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
-            }
+            let dataCollector = self.dataCollector ?? BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+            dataCollector.collectDeviceData(riskCorrelationID: nil) { deviceData, error in
+                if let error {
+                    self.notifyFailure(with: error, completion: completion)
+                    return
+                }
 
-            self.start(request: request, configuration: configuration)
+                if let deviceData, let data = deviceData.data(using: .utf8) {
+                    let json = BTJSON(data: data)
+                    request.correlationID = json["correlation_id"].asString()
+                }
+
+                if !configuration.isLocalPaymentEnabled {
+                    NSLog(
+                        "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                        BTLogLevelDescription.string(for: .critical)
+                    )
+                    self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
+                    return
+                } else if request.localPaymentFlowDelegate == nil {
+                    NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                    self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
+                    return
+                }
+
+                self.start(request: request, configuration: configuration)
+            }
         }
     }
     

@@ -17,6 +17,9 @@ import BraintreeDataCollector
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
 
+    /// Exposed for testing to inject mock data collector
+    var dataCollector: BTDataCollector?
+
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     nonisolated(unsafe) var application: URLOpener = UIApplication.shared
@@ -474,31 +477,42 @@ import BraintreeDataCollector
                 }
                 
                 self.contextID = approvalURL.baToken ?? approvalURL.ecToken
-                
+
                 self.experiment = approvalURL.experiment
 
-                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-                let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
-                
-                if let contextID = self.contextID {
-                    self.clientMetadataIDs[contextID] = correlationID
-                }
-                
-                switch approvalURL.redirectType {
-                case .payPalApp(let url):
-                    self.didPayPalServerAttemptAppSwitch = true
-                    guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
-                        self.notifyFailure(
-                            with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
-                            completion: completion
-                        )
+                let dataCollector = self.dataCollector ?? BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+                dataCollector.collectDeviceData(
+                    riskCorrelationID: self.payPalRequest?.riskCorrelationID
+                ) { deviceData, error in
+                    if let error {
+                        self.notifyFailure(with: error, completion: completion)
                         return
                     }
-                    let merchantID = json["merchantId"].asString()
-                    self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
-                case .webBrowser(let url):
-                    self.didPayPalServerAttemptAppSwitch = false
-                    self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+
+                    if
+                        let contextID = self.contextID,
+                        let deviceData,
+                        let data = deviceData.data(using: .utf8) {
+                        let json = BTJSON(data: data)
+                        self.clientMetadataIDs[contextID] = json["correlation_id"].asString()
+                    }
+
+                    switch approvalURL.redirectType {
+                    case .payPalApp(let url):
+                        self.didPayPalServerAttemptAppSwitch = true
+                        guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
+                            self.notifyFailure(
+                                with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
+                                completion: completion
+                            )
+                            return
+                        }
+                        let merchantID = json["merchantId"].asString()
+                        self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
+                    case .webBrowser(let url):
+                        self.didPayPalServerAttemptAppSwitch = false
+                        self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
+                    }
                 }
             }
         }

@@ -22,7 +22,8 @@ import BraintreeCore
     }
     
     // MARK: Public methods
-    
+
+    // NEXT_MAJOR_VERSION: remove this deprecated method and replace all usages with collectDeviceData(riskCorrelationID:completion:)
     /// Returns a client metadata ID.
     /// - Parameter pairingID: A pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
     /// - Returns: A client metadata ID to send as a header

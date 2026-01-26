@@ -21,10 +21,17 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         mockAPIClient = MockAPIClient(authorization: tempClientToken)
     }
+
+    func setupMockDataCollector(for client: BTLocalPaymentClient) {
+        let mockDataCollector = MockBTDataCollector(authorization: tempClientToken)
+        mockDataCollector.cannedDeviceData = "{\"correlation_id\":\"test-correlation-id\"}"
+        client.dataCollector = mockDataCollector
+    }
     
     func testStartPayment_returnsErrorWhenConfigurationNil() {
         mockAPIClient.cannedConfigurationResponseBody = nil
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         let expectation = expectation(description: "Start payment fails with error")
 
@@ -41,6 +48,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_returnsErrorWhenLocalPaymentsNotEnabled() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": false ])
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         let expectation = expectation(description: "Start payment fails with error")
 
@@ -57,6 +65,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_returnsErrorWhenLocalPaymentDelegateIsNil() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["paypalEnabled": true])
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         
         let expectation = expectation(description: "Start payment fails with error")
@@ -77,6 +86,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
 
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -96,7 +106,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             postalCode: "2585 GJ",
             region: "CA"
         )
-        
+
         let paymentRequest = BTLocalPaymentRequest(
             paymentType: "ideal",
             amount: "1.01",
@@ -113,8 +123,11 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             bic: "111222333"
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
-        
+        mockLocalPaymentRequestDelegate.idExpectation = expectation(description: "Received payment ID")
+
         client.start(paymentRequest) { _, _ in }
+
+        waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
@@ -153,6 +166,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         mockAPIClient.cannedResponseBody = BTJSON(value: ["paymentResource": ["paymentToken": "123aaa-123-543-777"]])
         let expectation = expectation(description: "Start payment fails with error")
@@ -171,6 +185,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -196,6 +211,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -231,6 +247,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = mockWebAuthenticationSession
         client.start(localPaymentRequest) { _, _ in }
@@ -254,6 +271,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = mockWebAuthenticationSession
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -285,6 +303,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = mockWebAuthenticationSession
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -305,6 +324,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
 
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -329,6 +349,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
 
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -351,6 +372,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
 
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -370,6 +392,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
     func testStartPayment_cancelResult_callsCompletionBlock() {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -392,6 +415,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -412,6 +436,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     
     func testHandleOpenURL_postAllLocalPaymentPayPalAccountsParameters() {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         client.apiClient = mockAPIClient
         
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -461,6 +486,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     
     func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
+        setupMockDataCollector(for: client)
         let expectation = self.expectation(description: "Calls onPaymentComplete with result")
 
         mockAPIClient.cannedResponseBody = nil

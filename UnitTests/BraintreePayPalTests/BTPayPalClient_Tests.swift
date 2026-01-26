@@ -23,6 +23,11 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
         payPalClient = BTPayPalClient(authorization: authorization, universalLink: URL(string: "https://www.paypal.com")!)
         payPalClient.apiClient = mockAPIClient
+
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.cannedDeviceData = "{\"correlation_id\":\"test-correlation-id\"}"
+        payPalClient.dataCollector = mockDataCollector
+
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
@@ -258,7 +263,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedContextID, "BA-Random-Value")
         XCTAssertEqual(mockAPIClient.postedDidEnablePayPalAppSwitch, true)
         XCTAssertEqual(mockAPIClient.postedDidPayPalServerAttemptAppSwitch, true)
-        XCTAssertEqual(payPalClient.clientMetadataIDs["BA-Random-Value"], "BA-Random-Value")
+        XCTAssertEqual(payPalClient.clientMetadataIDs["BA-Random-Value"], "test-correlation-id")
     }
 
     func testTokenize_whenApprovalURLDoesNotContainContextID_doesNotSendContextIDInAnalytics() {
