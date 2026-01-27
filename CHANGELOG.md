@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 
+
 ## 7.2.0 (2026-01-05)
 * BraintreeCore
   * Add `BTSessionIDManager` to manage the persisting of Session ID throughout a single checkout session
