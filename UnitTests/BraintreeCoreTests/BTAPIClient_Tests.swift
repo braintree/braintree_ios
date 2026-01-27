@@ -160,7 +160,7 @@ class BTAPIClient_Tests: XCTestCase {
 
     // MARK: - Client SDK Metadata
 
-    func testPOST_whenUsingGateway_includesMetadata() {
+    func testPOST_whenUsingGateway_includesMetadata() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
         let metadata = apiClient.metadata
@@ -169,20 +169,16 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
+        
+        _ = try await apiClient.post("/", parameters: nil, httpType: .gateway)
 
-        let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: nil, httpType: .gateway) { _, _, _ in
-            let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
-            XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
-            XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
-            XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+        XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
+        XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
+        XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
 
-    func testPOST_whenUsingGraphQLAPI_includesMetadata() {
+    func testPOST_whenUsingGraphQLAPI_includesMetadata() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockGraphQLHTTP = FakeGraphQLHTTP.fakeHTTP()
         let mockHTTP = FakeHTTP.fakeHTTP()
@@ -194,19 +190,15 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
 
-        let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: nil, httpType: .graphQLAPI) { _, _, _ in
-            let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
-            XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata.integration.stringValue)
-            XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata.source.stringValue)
-            XCTAssertEqual(clientSdkMetadata?["sessionId"] as? String, metadata.sessionID)
-            expectation.fulfill()
-        }
+        _ = try await apiClient.post("/", parameters: nil, httpType: .graphQLAPI)
 
-        waitForExpectations(timeout: 2)
+        let metaParameters = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: Any]
+        XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
+        XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
+        XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
     
-    func testPOST_withEncodableParams_whenUsingGateway_includesMetadata() {
+    func testPOST_withEncodableParams_whenUsingGateway_includesMetadata() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
         let metadata = apiClient.metadata
@@ -217,22 +209,15 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
         
         let postParameters = FakeRequest(testValue: "fake-value")
+        _ = try await apiClient.post("/", parameters: postParameters, httpType: .gateway)
 
-        let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: postParameters, httpType: .gateway) { _, _, _ in
-            XCTAssertEqual(mockHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
-            
-            let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
-            XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
-            XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
-            XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
+        XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
+        XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
+        XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
 
-    func testPOST_withEncodableParams_whenUsingGraphQLAPI_includesMetadata() {
+    func testPOST_withEncodableParams_whenUsingGraphQLAPI_includesMetadata() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockGraphQLHTTP = FakeGraphQLHTTP.fakeHTTP()
         let mockHTTP = FakeHTTP.fakeHTTP()
@@ -245,19 +230,12 @@ class BTAPIClient_Tests: XCTestCase {
         mockHTTP.cannedStatusCode = 200
         
         let postParameters = FakeRequest(testValue: "fake-value")
+        _ = try await apiClient.post("/", parameters: postParameters, httpType: .graphQLAPI)
 
-        let expectation = expectation(description: "POST callback")
-        apiClient.post("/", parameters: postParameters, httpType: .graphQLAPI) { _, _, _ in
-            XCTAssertEqual(mockGraphQLHTTP.lastRequestParameters?["testValue"] as? String, "fake-value")
-            
-            let clientSdkMetadata = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: String]
-            XCTAssertEqual(clientSdkMetadata?["integration"] as? String, metadata.integration.stringValue)
-            XCTAssertEqual(clientSdkMetadata?["source"] as? String, metadata.source.stringValue)
-            XCTAssertEqual(clientSdkMetadata?["sessionId"] as? String, metadata.sessionID)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let metaParameters = mockGraphQLHTTP.lastRequestParameters?["clientSdkMetadata"] as? [String: Any]
+        XCTAssertEqual(metaParameters?["integration"] as? String, metadata.integration.stringValue)
+        XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
+        XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
 
     // MARK: - Timeouts
@@ -299,5 +277,43 @@ class BTAPIClient_Tests: XCTestCase {
         }
         waitForExpectations(timeout: 5)
 
+    }
+    
+    func testGET_withAsyncAwait_returnFetchConfigErrors() async throws {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
+        apiClient.http = mockHTTP
+        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
+        
+        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
+
+        do {
+            let _ = try await apiClient.get("/example", parameters: nil)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, mockError.domain)
+            XCTAssertEqual(nsError.code, mockError.code)
+        }
+    }
+        
+    func testPOST_withAsyncAwait_returnFetchConfigErrors() async throws {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
+        apiClient.http = mockHTTP
+        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
+        
+        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
+        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
+        
+        do {
+            let _ = try await apiClient.post("/example", parameters: nil)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, mockError.domain)
+            XCTAssertEqual(nsError.code, mockError.code)
+        }
     }
 }

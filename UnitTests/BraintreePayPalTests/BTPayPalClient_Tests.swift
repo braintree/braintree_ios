@@ -908,6 +908,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "va")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].value, "paypal")
     }
 
     func testTokenizeVaultAccount_whenPayPalAppApprovalURLMissingBAToken_returnsError() {
@@ -1028,6 +1030,96 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
         XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
         XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].value, "paypal")
+    }
+    
+    func testTokenizeCheckoutAccount_withOfferCredit_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.some-url.com/some-path?token=value1",
+                "launchPayPalApp": true
+            ]
+        ])
+        
+        let checkoutRequest = BTPayPalCheckoutRequest(
+            amount: "10.00",
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: "fake-pp@gmail.com",
+            offerCredit: true
+        )
+        
+        await payPalClient.tokenize(checkoutRequest) { _, _ in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        
+        let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
+        XCTAssertEqual(urlComponents?.host, "www.some-url.com")
+        XCTAssertEqual(urlComponents?.path, "/some-path")
+        
+        XCTAssertEqual(urlComponents?.queryItems?[0].name, "token")
+        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
+        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
+        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
+        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
+        if let urlTimestamp = urlComponents?.queryItems?[2].value {
+            XCTAssertNotNil(urlTimestamp)
+        } else {
+            XCTFail("Expected integer value for query param `switch_initiated_time`")
+        }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].value, "credit")
+    }
+    
+    func testTokenizeCheckoutAccount_withOfferPayLater_whenPayPalAppApprovalURLPresent_attemptsAppSwitchWithParameters() async {
+        let fakeApplication = FakeApplication()
+        payPalClient.application = fakeApplication
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.some-url.com/some-path?token=value1",
+                "launchPayPalApp": true
+            ]
+        ])
+        
+        let checkoutRequest = BTPayPalCheckoutRequest(
+            amount: "10.00",
+            enablePayPalAppSwitch: true,
+            userAuthenticationEmail: "fake-pp@gmail.com",
+            offerPayLater: true
+        )
+        
+        await payPalClient.tokenize(checkoutRequest) { _, _ in }
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        
+        let urlComponents = URLComponents(url: fakeApplication.lastOpenURL!, resolvingAgainstBaseURL: true)
+        XCTAssertEqual(urlComponents?.host, "www.some-url.com")
+        XCTAssertEqual(urlComponents?.path, "/some-path")
+        
+        XCTAssertEqual(urlComponents?.queryItems?[0].name, "token")
+        XCTAssertEqual(urlComponents?.queryItems?[0].value, "value1")
+        XCTAssertEqual(urlComponents?.queryItems?[1].name, "source")
+        XCTAssertEqual(urlComponents?.queryItems?[1].value, "braintree_sdk")
+        XCTAssertEqual(urlComponents?.queryItems?[2].name, "switch_initiated_time")
+        if let urlTimestamp = urlComponents?.queryItems?[2].value {
+            XCTAssertNotNil(urlTimestamp)
+        } else {
+            XCTFail("Expected integer value for query param `switch_initiated_time`")
+        }
+        XCTAssertEqual(urlComponents?.queryItems?[3].name, "flow_type")
+        XCTAssertEqual(urlComponents?.queryItems?[3].value, "ecs")
+        XCTAssertEqual(urlComponents?.queryItems?[4].name, "merchant")
+        XCTAssertEqual(urlComponents?.queryItems?[4].value, "testMerchantId")
+        XCTAssertEqual(urlComponents?.queryItems?[5].name, "funding_source")
+        XCTAssertEqual(urlComponents?.queryItems?[5].value, "paylater")
     }
     
     func testTokenizeCheckoutAccount_whenPayPalAppApprovalURLMissingECToken_returnsError() {
@@ -1382,6 +1474,17 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
+    }
+    
+    func testTokenize_whenVaultCreditRequest_setsVaultAnalyticsTags() async {
+        let vaultRequest = BTPayPalVaultRequest(offerCredit: true)
+
+        let _ = try? await payPalClient.tokenize(vaultRequest)
+
+        XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() async {
@@ -1391,6 +1494,27 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
+    }
+    
+    func testTokenize_whenCheckoutCreditRequest_setsCorrectAnalyticsTags() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", offerCredit: true)
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
+    }
+    
+    func testTokenize_whenCheckoutPayLaterRequest_setsCorrectAnalyticsTags() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", offerPayLater: true)
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paylater")
     }
     
     func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {

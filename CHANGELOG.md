@@ -1,8 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+
 * BraintreePayPal
-  * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 
+    * Pass `fundingSource` to the app switch url link and to analytics events. 
+    * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 
 
 ## 7.2.0 (2026-01-05)
 * BraintreeCore
@@ -11,6 +13,10 @@
   * Add BraintreeUIComponents module
   * Add `PayPalButton(authorization:universalLink:fallbackURLScheme:request:color:width:completion:)` to generate a PayPal-branded button for launching PayPal flow
   * Add `VenmoButton(authorization:universalLink:request:color:width:completion:)` to generate a Venmo-branded button for launching Venmo flow
+* BraintreePayPal
+  * Add optional `fallbackURLScheme` parameter to `BTPayPalClient` to support custom URL scheme fallback in PayPal App Switch flow
+
+## 6.41.0 (2025-12-18)
 * BraintreePayPal
   * Add optional `fallbackURLScheme` parameter to `BTPayPalClient` to support custom URL scheme fallback in PayPal App Switch flow
 

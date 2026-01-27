@@ -78,6 +78,9 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
+    
+    /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
+    private var fundingSource: BTPayPalFundingSource?
 
     // MARK: - Initializer
 
@@ -135,6 +138,7 @@ import BraintreeDataCollector
     ) {
         isVaultRequest = true
         contextType = "BA-TOKEN"
+        fundingSource = getFundingSource(from: request)
         tokenize(request: request, completion: completion)
     }
 
@@ -179,6 +183,7 @@ import BraintreeDataCollector
     ) {
         isVaultRequest = false
         contextType = "EC-TOKEN"
+        fundingSource = getFundingSource(from: request)
         tokenize(request: request, completion: completion)
     }
 
@@ -224,6 +229,7 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -307,6 +313,7 @@ import BraintreeDataCollector
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                fundingSource: fundingSource?.rawValue,
                 isVaultRequest: isVaultRequest
             )
             BTPayPalClient.payPalClient = self
@@ -320,6 +327,7 @@ import BraintreeDataCollector
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                fundingSource: fundingSource?.rawValue,
                 isVaultRequest: isVaultRequest
             )
             
@@ -336,6 +344,7 @@ import BraintreeDataCollector
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -360,6 +369,7 @@ import BraintreeDataCollector
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest
         )
 
@@ -410,6 +420,7 @@ import BraintreeDataCollector
             applicationState: UIApplication.shared.applicationStateString,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -492,6 +503,15 @@ import BraintreeDataCollector
             }
         }
     }
+    
+    private func getFundingSource(from request: BTPayPalRequest) -> BTPayPalFundingSource {
+        if let checkoutRequest = request as? BTPayPalCheckoutRequest {
+            if checkoutRequest.offerCredit { return .credit }
+            if checkoutRequest.offerPayLater { return .payLater }
+        }
+        if let vaultRequest = request as? BTPayPalVaultRequest, vaultRequest.offerCredit { return .credit }
+        return .payPal
+    }
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
@@ -508,6 +528,7 @@ import BraintreeDataCollector
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                fundingSource: fundingSource?.rawValue,
                 isVaultRequest: isVaultRequest,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
@@ -526,6 +547,7 @@ import BraintreeDataCollector
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -535,7 +557,8 @@ import BraintreeDataCollector
             URLQueryItem(name: "source", value: "braintree_sdk"),
             URLQueryItem(name: "switch_initiated_time", value: String(Int(round(Date().timeIntervalSince1970 * 1000)))),
             URLQueryItem(name: "flow_type", value: isVaultRequest ? "va" : "ecs"),
-            URLQueryItem(name: "merchant", value: merchantID ?? "unknown")
+            URLQueryItem(name: "merchant", value: merchantID ?? "unknown"),
+            URLQueryItem(name: "funding_source", value: fundingSource?.rawValue ?? BTPayPalFundingSource.payPal.rawValue)
         ]
         
         urlComponents?.queryItems?.append(contentsOf: additionalQueryItems)
@@ -564,6 +587,7 @@ import BraintreeDataCollector
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -614,6 +638,7 @@ import BraintreeDataCollector
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                    fundingSource: fundingSource?.rawValue,
                     isConfigFromCache: isConfigFromCache,
                     isVaultRequest: isVaultRequest,
                     shopperSessionID: payPalRequest?.shopperSessionID
@@ -627,6 +652,7 @@ import BraintreeDataCollector
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                    fundingSource: fundingSource?.rawValue,
                     isVaultRequest: isVaultRequest,
                     shopperSessionID: payPalRequest?.shopperSessionID
                 )
@@ -644,6 +670,7 @@ import BraintreeDataCollector
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                    fundingSource: fundingSource?.rawValue,
                     isVaultRequest: isVaultRequest
                 )
             }
@@ -663,6 +690,7 @@ import BraintreeDataCollector
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+                fundingSource: fundingSource?.rawValue,
                 isVaultRequest: isVaultRequest,
                 shopperSessionID: payPalRequest?.shopperSessionID
             )
@@ -699,6 +727,7 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -715,6 +744,7 @@ import BraintreeDataCollector
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             errorDescription: error.localizedDescription,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
@@ -729,6 +759,7 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
