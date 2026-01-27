@@ -4,6 +4,7 @@
 
 * BraintreePayPal
     * Pass `fundingSource` to the app switch url link and to analytics events. 
+    * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 
 
 ## 7.2.0 (2026-01-05)
 * BraintreeCore
