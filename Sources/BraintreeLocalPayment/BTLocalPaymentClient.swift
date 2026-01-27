@@ -76,6 +76,19 @@ import BraintreeDataCollector
                 return
             }
 
+            if !configuration.isLocalPaymentEnabled {
+                NSLog(
+                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                    BTLogLevelDescription.string(for: .critical)
+                )
+                self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
+                return
+            } else if request.localPaymentFlowDelegate == nil {
+                NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
+                return
+            }
+
             let dataCollector = self.dataCollector ?? BTDataCollector(authorization: self.apiClient.authorization.originalValue)
             dataCollector.collectDeviceData(riskCorrelationID: nil) { deviceData, error in
                 if let error {
@@ -86,19 +99,6 @@ import BraintreeDataCollector
                 if let deviceData, let data = deviceData.data(using: .utf8) {
                     let json = BTJSON(data: data)
                     request.correlationID = json["correlation_id"].asString()
-                }
-
-                if !configuration.isLocalPaymentEnabled {
-                    NSLog(
-                        "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
-                        BTLogLevelDescription.string(for: .critical)
-                    )
-                    self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
-                    return
-                } else if request.localPaymentFlowDelegate == nil {
-                    NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                    self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                    return
                 }
 
                 self.start(request: request, configuration: configuration)
