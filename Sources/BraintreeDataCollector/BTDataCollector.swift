@@ -154,10 +154,10 @@ import BraintreeCore
             magnesSource: .BRAINTREE
         )
 
-        let result = try? MagnesSDK.shared().collect(
+        let result = try? MagnesSDK.shared().collectAndSubmit(
             withPayPalClientMetadataId: clientMetadataID ?? "",
             withAdditionalData: data ?? [:]
-        )
+        ) { _,_ in }
         return result?.getPayPalClientMetaDataId() ?? ""
     }
 
