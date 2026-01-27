@@ -31,28 +31,13 @@ import BraintreeCore
         currencyISOCode: String,
         completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
     ) {
-        let parameters = BTAmexRewardsBalanceRequest(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
-        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
-
-        apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters) { [weak self] body, _, error in
-            guard let self else {
-                completion(nil, BTAmericanExpressError.deallocated)
-                return
+        Task {
+            do {
+                let rewardsBalance = try await getRewardsBalance(forNonce: nonce, currencyISOCode: currencyISOCode)
+                completion(rewardsBalance, nil)
+            } catch {
+                completion(nil, error)
             }
-
-            if let error {
-                notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let body else {
-                notifyFailure(with: BTAmericanExpressError.noRewardsData, completion: completion)
-                return
-            }
-
-            let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
-            notifySuccess(with: rewardsBalance, completion: completion)
-            return
         }
     }
 
@@ -63,32 +48,38 @@ import BraintreeCore
     /// - Returns: A `BTAmericanExpressRewardsBalance` object with information about the rewards balance
     /// - Throws: An `Error` describing the failure
     public func getRewardsBalance(forNonce nonce: String, currencyISOCode: String) async throws -> BTAmericanExpressRewardsBalance {
-        try await withCheckedThrowingContinuation { continuation in
-            getRewardsBalance(forNonce: nonce, currencyISOCode: currencyISOCode) { rewardsBalance, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let rewardsBalance {
-                    continuation.resume(returning: rewardsBalance)
-                }
+        let parameters = BTAmexRewardsBalanceRequest(currencyIsoCode: currencyISOCode, paymentMethodNonce: nonce)
+        apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.started)
+
+        do {
+            let (body, _) = try await apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters)
+
+            guard let body else {
+                try notifyFailure(with: BTAmericanExpressError.noRewardsData)
             }
+
+            let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
+            return notifySuccess(with: rewardsBalance)
+        } catch let error as BTAmericanExpressError {
+            // Analytics already sent for BTAmericanExpressError (from guard above)
+            throw error
+        } catch {
+            try notifyFailure(with: error)
         }
     }
-    
+
     // MARK: - Analytics Helper Methods
-    
-    private func notifySuccess(
-        with result: BTAmericanExpressRewardsBalance,
-        completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
-    ) {
+
+    private func notifySuccess(with result: BTAmericanExpressRewardsBalance) -> BTAmericanExpressRewardsBalance {
         apiClient.sendAnalyticsEvent(BTAmericanExpressAnalytics.succeeded)
-        completion(result, nil)
+        return result
     }
 
-    private func notifyFailure(with error: Error, completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void) {
+    private func notifyFailure(with error: Error) throws -> Never {
         apiClient.sendAnalyticsEvent(
             BTAmericanExpressAnalytics.failed,
             errorDescription: error.localizedDescription
         )
-        completion(nil, error)
+        throw error
     }
 }
