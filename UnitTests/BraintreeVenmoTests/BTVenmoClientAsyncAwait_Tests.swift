@@ -5,8 +5,8 @@ import UIKit
 @testable import BraintreeTestShared
 
 final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
-    var mockAPIClient: MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
-    var venmoRequest: BTVenmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
+    var mockAPIClient: MockAPIClient!
+    var venmoRequest: BTVenmoRequest!
     var venmoClient: BTVenmoClient!
 
     override func setUp() {
@@ -30,6 +30,7 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
             ]
         ])
 
+        venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoClient = BTVenmoClient(
             authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
             universalLink: URL(string: "https://mywebsite.com/braintree-payments")!
@@ -39,18 +40,34 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
     }
 
+    override func tearDown() {
+        mockAPIClient = nil
+        venmoRequest = nil
+        venmoClient = nil
+        super.tearDown()
+    }
+
     // MARK: - tokenize async
 
     func testTokenizeAsync_success_returnsNonce() async throws {
         let expectedNonce = "fake-nonce"
         let expectedUsername = "fake-username"
 
-        let venmoAccountNonce = try await venmoClient.tokenize(venmoRequest)
+        // Start tokenization in a task
+        let tokenizeTask = Task {
+            try await venmoClient.tokenize(venmoRequest)
+        }
 
-        // simulate app switch return
-        DispatchQueue.main.async {
+        // Give the tokenize call time to set up its continuation
+        try await Task.sleep(nanoseconds: 100_000_000) // 100ms
+
+        // Simulate app switch return on main thread
+        await MainActor.run {
             BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=\(expectedNonce)&username=\(expectedUsername)")!)
         }
+
+        // Wait for result
+        let venmoAccountNonce = try await tokenizeTask.value
 
         XCTAssertEqual(venmoAccountNonce.nonce, expectedNonce)
         XCTAssertEqual(venmoAccountNonce.username, expectedUsername)
@@ -79,17 +96,26 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
     }
 
     func testTokenizeAsync_vaultTrue_setsShouldVaultAndVaults() async throws {
-        // use client token for vaulting path
+        // Use client token for vaulting path
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         venmoRequest.vault = true
 
-        let venmoAccountNonce = try await venmoClient.tokenize(venmoRequest)
+        // Start tokenization in a task
+        let tokenizeTask = Task {
+            try await venmoClient.tokenize(venmoRequest)
+        }
 
-        DispatchQueue.main.async {
+        // Give time for continuation setup
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        // Simulate app switch return
+        await MainActor.run {
             BTVenmoClient.handleReturnURL(
                 URL(string: "scheme://x-callback-url/vzero/auth/venmo/succeeded_with_payment_context?paymentContextId=some-resource-id")!
             )
         }
+
+        let venmoAccountNonce = try await tokenizeTask.value
 
         XCTAssertTrue(venmoClient.shouldVault)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
@@ -120,14 +146,22 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
         let appSwitchURL = URL(string: "https://venmo.example/link")!
         venmoClient.shouldVault = false
 
-       let venmoAccountNonce = try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
+        // Start flow in a task
+        let flowTask = Task {
+            try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
+        }
 
-        // simulate successful return
-        DispatchQueue.main.async {
+        // Give time for continuation setup
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        // Simulate successful return
+        await MainActor.run {
             BTVenmoClient.handleReturnURL(
                 URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!
             )
         }
+
+        let venmoAccountNonce = try await flowTask.value
 
         XCTAssertEqual(venmoAccountNonce.nonce, "fake-nonce")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.appSwitchSucceeded)
@@ -157,25 +191,47 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         venmoClient.shouldVault = true
 
-        // Call handleOpen async after setting a continuation by starting flow
         let appSwitchURL = URL(string: "https://venmo.example/link")!
-        let venmoAccountNonce = try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: true)
+        
+        // Start flow in a task
+        let flowTask = Task {
+            try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: true)
+        }
+
+        // Give time for continuation setup
+        try await Task.sleep(nanoseconds: 100_000_000)
 
         // Now invoke async handleOpen
         try await venmoClient.handleOpen(
             URL(string: "scheme://x-callback-url/vzero/auth/venmo/succeeded_with_payment_context?paymentContextId=some-resource-id")!
         )
 
+        let venmoAccountNonce = try await flowTask.value
+
         XCTAssertNotNil(venmoAccountNonce.nonce)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
     }
 
     func testHandleOpenAsync_canceled_throwsCanceled() async {
-        // Prepare continuation by starting flow
         let appSwitchURL = URL(string: "https://venmo.example/link")!
 
+        // Start flow in a task
+        let flowTask = Task {
+            try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
+        }
+
+        // Give time for continuation setup
+        try? await Task.sleep(nanoseconds: 100_000_000)
+
+        // Simulate cancellation by handling a cancel URL
+        await MainActor.run {
+            BTVenmoClient.handleReturnURL(
+                URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!
+            )
+        }
+
         do {
-            _ = try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
+            _ = try await flowTask.value
             XCTFail("Expected canceled error")
         } catch let error as NSError {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
@@ -185,5 +241,3 @@ final class BTVenmoClientAsyncAwait_Tests: XCTestCase {
         }
     }
 }
-
-
