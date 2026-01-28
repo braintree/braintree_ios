@@ -23,6 +23,11 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
         payPalClient = BTPayPalClient(authorization: authorization, universalLink: URL(string: "https://www.paypal.com")!)
         payPalClient.apiClient = mockAPIClient
+
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.cannedDeviceData = "{\"correlation_id\":\"test-correlation-id\"}"
+        payPalClient.dataCollector = mockDataCollector
+
         mockWebAuthenticationSession = MockWebAuthenticationSession()
         payPalClient.webAuthenticationSession = mockWebAuthenticationSession
     }
