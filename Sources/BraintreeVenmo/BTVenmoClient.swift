@@ -33,6 +33,8 @@ import BraintreeCore
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
     
+    /// Used for bridging app switch callbacks to async/await
+    /// Note: Only one async tokenization can be in progress at a time
     var appSwitchContinuation: CheckedContinuation<BTVenmoAccountNonce, Error>?
 
     /// Used for linking events from the client to server side request
@@ -176,6 +178,7 @@ import BraintreeCore
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
     /// - Throws: An `Error` describing the failure. If the user cancels out of the flow, the error code will be `.canceled`.
+    /// - Note: Only one async tokenization can be in progress at a time.
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
         
@@ -241,6 +244,7 @@ import BraintreeCore
             throw BTVenmoError.invalidRedirectURL(errorMessage ?? defaultErrorMessage)
         }
     }
+    
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
         application.open(appStoreURL, options: [:], completionHandler: nil)
@@ -248,14 +252,59 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
-    // swiftlint:disable:next function_body_length
+    /// Routes the return URL to the appropriate handler based on whether async or completion-based flow is active
     func handleOpen(_ url: URL) {
+        if appSwitchContinuation != nil {
+            handleOpenAsync(url)
+        } else {
+            handleOpenWithCompletion(url)
+        }
+    }
+    
+    /// Handles app switch return for async/await flow
+    private func handleOpenAsync(_ url: URL) {
+        guard let continuation = appSwitchContinuation else { return }
+        
+        // Clear continuation immediately to prevent double-resume
+        appSwitchContinuation = nil
+        
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             contextID: contextID,
             isVaultRequest: shouldVault,
             linkType: linkType
         )
+        
+        guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
+            continuation.resume(throwing: BTVenmoError.invalidReturnURL(url.absoluteString))
+            return
+        }
+
+        guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
+            continuation.resume(throwing: BTVenmoError.invalidReturnURL(cleanedURL.absoluteString))
+            return
+        }
+
+        Task {
+            do {
+                let nonce = try await processReturnURL(returnURL)
+                continuation.resume(returning: nonce)
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+    
+    /// Handles app switch return for completion handler flow
+    // swiftlint:disable:next function_body_length
+    private func handleOpenWithCompletion(_ url: URL) {
+        apiClient.sendAnalyticsEvent(
+            BTVenmoAnalytics.handleReturnStarted,
+            contextID: contextID,
+            isVaultRequest: shouldVault,
+            linkType: linkType
+        )
+        
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
             notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
             return
@@ -326,39 +375,8 @@ import BraintreeCore
             break
         }
     }
-    
-    func handleOpen(_ url: URL) async throws {
-        apiClient.sendAnalyticsEvent(
-            BTVenmoAnalytics.handleReturnStarted,
-            contextID: contextID,
-            isVaultRequest: shouldVault,
-            linkType: linkType
-        )
-        
-        guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
-            appSwitchContinuation?.resume(throwing: BTVenmoError.invalidReturnURL(url.absoluteString))
-            appSwitchContinuation = nil
-            return
-        }
 
-        guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
-            appSwitchContinuation?.resume(throwing: BTVenmoError.invalidReturnURL(cleanedURL.absoluteString))
-            appSwitchContinuation = nil
-            return
-        }
-
-        Task {
-            do {
-                let nonce = try await processReturnURL(returnURL)
-                appSwitchContinuation?.resume(returning: nonce)
-                appSwitchContinuation = nil
-            } catch {
-                appSwitchContinuation?.resume(throwing: error)
-                appSwitchContinuation = nil
-            }
-        }
-    }
-
+    /// Processes the return URL and returns the appropriate BTVenmoAccountNonce or throws an error
     private func processReturnURL(_ returnURL: BTVenmoAppSwitchReturnURL) async throws -> BTVenmoAccountNonce {
         switch returnURL.state {
         case .succeededWithPaymentContext:
@@ -406,6 +424,7 @@ import BraintreeCore
         }
     }
 
+    /// Starts Venmo flow with completion handler
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchStarted,
@@ -418,6 +437,7 @@ import BraintreeCore
         }
     }
     
+    /// Opens a URL asynchronously
     private func openURL(
         _ url: URL,
         options: [UIApplication.OpenExternalURLOptionsKey: Any]
@@ -429,6 +449,7 @@ import BraintreeCore
         }
     }
     
+    /// Starts Venmo flow with async/await
     func startVenmoFlow(with appSwitchURL: URL, shouldVault vault: Bool) async throws -> BTVenmoAccountNonce {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchStarted,
@@ -441,6 +462,7 @@ import BraintreeCore
         return try await invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL)
     }
 
+    /// Handles the result of opening the app switch URL (completion handler version)
     func invokedOpenURLSuccessfully(
         _ success: Bool,
         shouldVault vault: Bool,
@@ -471,6 +493,7 @@ import BraintreeCore
         }
     }
     
+    /// Handles the result of opening the app switch URL (async/await version)
     func invokedOpenURLSuccessfully(
         _ success: Bool,
         shouldVault vault: Bool,
@@ -506,6 +529,7 @@ import BraintreeCore
 
     // MARK: - Vaulting Methods
 
+    /// Vaults a Venmo nonce (completion handler version)
     func vault(_ nonce: String) {
         let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
@@ -533,6 +557,7 @@ import BraintreeCore
         }
     }
     
+    /// Vaults a Venmo nonce (async/await version)
     func vault(_ nonce: String) async throws -> BTVenmoAccountNonce {
         let parameters = VenmoAccountsPOSTBody(nonce: nonce)
 
@@ -551,7 +576,7 @@ import BraintreeCore
         return BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
     }
 
-    // MARK: - App Switch Methods
+    // MARK: - Verification Methods
 
     func verifyAppSwitch(with configuration: BTConfiguration) throws -> Bool {
         if !configuration.isVenmoEnabled {
@@ -606,13 +631,16 @@ import BraintreeCore
 
 extension BTVenmoClient: BTAppContextSwitchClient {
     
+    /// Handles return URL from Venmo app switch
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
         venmoClient?.handleOpen(url)
+        // Always clear the static reference after handling
         BTVenmoClient.venmoClient = nil
     }
     
+    /// Determines if this client can handle the given return URL
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {

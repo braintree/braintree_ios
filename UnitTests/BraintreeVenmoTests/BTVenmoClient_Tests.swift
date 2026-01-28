@@ -38,51 +38,56 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.apiClient = mockAPIClient
     }
 
-    func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+    func testTokenize_whenRemoteConfigurationFetchFails_throwsConfigurationError() async {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
-        let expectation = expectation(description: "Tokenize fails with error")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
-            expectation.fulfill()
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as NSError, mockAPIClient.cannedConfigurationResponseError!)
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenVenmoConfigurationDisabled_callsBackWithError() {
+    func testTokenizeVenmoAccount_whenVenmoConfigurationDisabled_throwsError() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
 
-        let expectation = expectation(description: "tokenization callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let error = error as NSError? else {return}
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            guard let error = error as NSError? else {
+                XCTFail("Error should be NSError")
+                return
+            }
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.disabled.errorCode)
-            expectation.fulfill()
         }
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenVenmoConfigurationMissing_callsBackWithError() {
+    func testTokenizeVenmoAccount_whenVenmoConfigurationMissing_throwsError() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any?])
 
-        let expectation = expectation(description: "tokenization callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let error = error as NSError? else {return}
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            guard let error = error as NSError? else {
+                XCTFail("Error should be NSError")
+                return
+            }
             XCTAssertEqual(error.domain, BTVenmoError.errorDomain)
             XCTAssertEqual(error.code, BTVenmoError.disabled.errorCode)
-            expectation.fulfill()
         }
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() {
+    func testTokenizeVenmoAccount_whenPaymentMethodUsageSet_createsPaymentContext() async {
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse, displayName: "app-display-name")
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
@@ -96,12 +101,12 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
 
-    func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() {
+    func testTokenizeVenmoAccount_whenDisplayNameNotSet_createsPaymentContextWithoutDisplayName() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
@@ -114,7 +119,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenizeVenmoAccount_whenEnrichedCustomerDataDisabled_doesNotAllowCollectingAddresses() {
+    func testTokenizeVenmoAccount_whenEnrichedCustomerDataDisabled_doesNotAllowCollectingAddresses() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
                 "environment": "sandbox",
@@ -132,18 +137,20 @@ class BTVenmoClient_Tests: XCTestCase {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
-        let expectation = expectation(description: "Tokenize fails with error")
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let error = error as NSError? else {return}
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            guard let error = error as NSError? else {
+                XCTFail("Error should be NSError")
+                return
+            }
             XCTAssertEqual(error.code, BTVenmoError.enrichedCustomerDataDisabled.errorCode)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenCollectAddressFlagsSet_createsPaymentContextWithTheRightFlags() {
+    func testTokenizeVenmoAccount_whenCollectAddressFlagsSet_createsPaymentContextWithTheRightFlags() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
                 "environment": "sandbox",
@@ -163,7 +170,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
         
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         
@@ -180,7 +187,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() {
+    func testTokenizeVenmoAccount_withAmountsAndLineItemsSet_createsPaymentContext() async {
         let lineItem = BTVenmoLineItem(
             quantity: 1,
             unitAmount: "9",
@@ -206,7 +213,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
         
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         
@@ -241,12 +248,12 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() {
+    func testTokenize_withoutLineItems_createsPaymentContextWithoutTransactionDetails() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
         
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         
@@ -259,12 +266,12 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertNil(paysheetDetails["transactionDetails"])
     }
 
-    func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() {
+    func testTokenizeVenmoAccount_opensVenmoURLWithPaymentContextID() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
 
@@ -279,55 +286,56 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_access_token", value: "venmo-access-token")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "resource_id", value: "some-resource-id")))
-
     }
 
-    func testTokenizeVenmoAccount_whenCannotParsePaymentContextID_callsBackWithError() {
+    func testTokenizeVenmoAccount_whenCannotParsePaymentContextID_throwsError() async {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["random":["lady_gaga":"poker_face"]])
 
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(venmoAccount)
-            guard let error = error as NSError? else {return}
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            guard let error = error as NSError? else {
+                XCTFail("Error should be NSError")
+                return
+            }
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
             XCTAssertEqual(error.code, BTVenmoError.invalidRedirectURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support.")
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenFetchPaymentContextIDFails_callsBackWithError() {
+    func testTokenizeVenmoAccount_whenFetchPaymentContextIDFails_throwsError() async {
         mockAPIClient.cannedResponseError = NSError(domain: "Venmo Error", code: 100, userInfo: nil)
 
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(venmoAccount)
-            guard let error = error as NSError? else {return}
+        do {
+            let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            guard let error = error as NSError? else {
+                XCTFail("Error should be NSError")
+                return
+            }
             XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
             XCTAssertEqual(error.code, BTVenmoError.invalidRedirectURL("").errorCode)
             XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURLWithParams() {
+    func testTokenizeVenmoAccount_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURLWithParams() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _,_  -> Void in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
 
@@ -343,16 +351,18 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertTrue(queryItems.contains(URLQueryItem(name: "braintree_environment", value: "sandbox")))
     }
 
-    func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_getsResultFromPaymentContext() {
+    func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_getsResultFromPaymentContext() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(error)
-            XCTAssertEqual(venmoAccount?.nonce, "fake-venmo-nonce")
-            XCTAssertEqual(venmoAccount?.username, "fake-venmo-username")
-            expectation.fulfill()
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.nonce, "fake-venmo-nonce")
+                XCTAssertEqual(venmoAccount.username, "fake-venmo-username")
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -364,160 +374,177 @@ class BTVenmoClient_Tests: XCTestCase {
             ]
         ])
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
-        }
-
-        waitForExpectations(timeout: 1)
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_andFetchPaymentContextFails_returnsError() {
+    func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_andFetchPaymentContextFails_throwsError() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(venmoAccount?.nonce)
-            XCTAssertNil(venmoAccount?.username)
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTFail("Expected error to be thrown")
+            } catch {
+                XCTAssertNotNil(error)
+            }
         }
 
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "some-domain", code: 1, userInfo: nil)
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
-        }
-
-        waitForExpectations(timeout: 1)
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
+    func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let venmoAccount = venmoAccount else {
-                XCTFail("Received an error: \(String(describing: error))")
-                return
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
+                XCTAssertEqual(venmoAccount.username, "fake-username")
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
             }
-
-            XCTAssertNil(error)
-            XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
-            XCTAssertEqual(venmoAccount.username, "fake-username")
-            expectation.fulfill()
         }
         
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
-
-        waitForExpectations(timeout: 2)
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
     
-    func testTokenizeVenmoAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
+    func testTokenizeVenmoAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() async {
         // Test setup sets up mockAPIClient with a tokenization key, we want a client token
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 2))
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
-        let expectation = expectation(description: "Callback")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            guard let venmoAccount = venmoAccount else {
-                XCTFail("Received an error: \(String(describing: error))")
-                return
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
+                XCTAssertEqual(venmoAccount.username, "fake-username")
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
             }
-            
-            XCTAssertNil(error)
-            XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
-            XCTAssertEqual(venmoAccount.username, "fake-username")
-            expectation.fulfill()
         }
         
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testTokenizeVenmoAccount_whenAppSwitchFails_callsBackWithError() {
+    func testTokenizeVenmoAccount_whenAppSwitchFails_throwsError() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(venmoAccount)
-            guard let error = error as NSError? else {return}
-            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTFail("Expected error to be thrown")
+            } catch {
+                guard let error = error as NSError? else {
+                    XCTFail("Error should be NSError")
+                    return
+                }
+                XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
+            }
         }
         
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
-        }
-
-        waitForExpectations(timeout: 2)
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testTokenizeVenmoAccount_vaultTrue_setsShouldVaultProperty() {
+    func testTokenizeVenmoAccount_vaultTrue_setsShouldVaultProperty() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-
-        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertTrue(self.venmoClient.shouldVault)
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertTrue(venmoClient.shouldVault)
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testTokenizeVenmoAccount_vaultFalse_setsVaultToFalse() {
+    func testTokenizeVenmoAccount_vaultFalse_setsVaultToFalse() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
         
-        let expectation = expectation(description: "Callback invoked")
-        
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertFalse(self.venmoClient.shouldVault)
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertFalse(venmoClient.shouldVault)
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
         
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
     
-    func testTokenizeVenmoAccount_vaultTrue_callsBackWithNonce() {
+    func testTokenizeVenmoAccount_vaultTrue_returnsNonce() async {
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
-        
-        let expectation = expectation(description: "Callback invoked")
 
         venmoRequest.vault = true
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(error)
-            
-            XCTAssertEqual(venmoAccount?.username, "venmojoe")
-            XCTAssertEqual(venmoAccount?.nonce, "abcd-venmo-nonce")
-            XCTAssertTrue(venmoAccount!.isDefault)
-            
-            expectation.fulfill()
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.username, "venmojoe")
+                XCTAssertEqual(venmoAccount.nonce, "abcd-venmo-nonce")
+                XCTAssertTrue(venmoAccount.isDefault)
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -534,31 +561,32 @@ class BTVenmoClient_Tests: XCTestCase {
             ] as [String: Any]]
         ])
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
     }
     
-    func testTokenizeVenmoAccount_vaultTrue_sendsSucessAnalyticsEvent() {
+    func testTokenizeVenmoAccount_vaultTrue_sendsSucessAnalyticsEvent() async {
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
 
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-
         venmoRequest.vault = true
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(error)
-
-            XCTAssertEqual(venmoAccount?.username, "venmojoe")
-            XCTAssertEqual(venmoAccount?.nonce, "abcd-venmo-nonce")
-            XCTAssertTrue(venmoAccount!.isDefault)
-
-            expectation.fulfill()
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.username, "venmojoe")
+                XCTAssertEqual(venmoAccount.nonce, "abcd-venmo-nonce")
+                XCTAssertTrue(venmoAccount.isDefault)
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
 
         mockAPIClient.cannedResponseBody = BTJSON(value: [
@@ -575,71 +603,78 @@ class BTVenmoClient_Tests: XCTestCase {
             ] as [String: Any]]
         ])
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
         XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
     }
 
-    func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() {
+    func testTokenizeVenmoAccount_vaultTrue_sendsFailureAnalyticsEvent() async {
         mockAPIClient.authorization = try! BTClientToken(clientToken: TestClientTokenFactory.validClientToken)
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-
         venmoRequest.vault = true
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTFail("Expected error to be thrown")
+            } catch {
+                XCTAssertNotNil(error)
+            }
         }
 
         mockAPIClient.cannedResponseError = NSError(domain: "Fake Error", code: 400, userInfo: nil)
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeFailed)
         XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
     }
 
-    func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
+    func testTokenizeVenmoAccount_whenAppSwitchCanceled_throwsCancelError() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(venmoAccount)
-            XCTAssertNotNil(error)
-            
-            let error = error! as NSError
-            XCTAssertEqual(error.localizedDescription, BTVenmoError.canceled.localizedDescription)
-            XCTAssertEqual(error.code, 9)
-            
-            expectation.fulfill()
+        Task {
+            do {
+                let _ = try await venmoClient.tokenize(venmoRequest)
+                XCTFail("Expected error to be thrown")
+            } catch {
+                let error = error as NSError
+                XCTAssertEqual(error.localizedDescription, BTVenmoError.canceled.localizedDescription)
+                XCTAssertEqual(error.code, 9)
+            }
         }
         
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
-        }
-
-        waitForExpectations(timeout: 2)
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/cancel")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
     }
 
-    func testAuthorizeAccountWithProfileID_withNilProfileID_usesDefaultProfileIDAndAccessTokenFromConfiguration() {
+    func testAuthorizeAccountWithProfileID_withNilProfileID_usesDefaultProfileIDAndAccessTokenFromConfiguration() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
@@ -647,14 +682,14 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
 
-    func testAuthorizeAccountWithProfileID_withProfileID_usesProfileIDToAppSwitch() {
+    func testAuthorizeAccountWithProfileID_withProfileID_usesProfileIDToAppSwitch() async {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
 
         venmoRequest.profileID = "second_venmo_merchant_id"
 
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "https")
@@ -662,7 +697,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
     }
 
-    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsTrue_createsPaymentContext() {
+    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsTrue_createsPaymentContext() async {
         venmoRequest.displayName = "app-display-name"
 
         let fakeApplication = FakeApplication()
@@ -670,7 +705,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
 
         venmoRequest.isFinalAmount = true
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
@@ -680,7 +715,7 @@ class BTVenmoClient_Tests: XCTestCase {
         }
     }
 
-    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsFalse_createsPaymentContext() {
+    func testTokenizeVenmoAccount_whenIsFinalAmountSetAsFalse_createsPaymentContext() async {
         venmoRequest.displayName = "app-display-name"
 
         let fakeApplication = FakeApplication()
@@ -688,7 +723,7 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
 
         venmoRequest.isFinalAmount = false
-        venmoClient.tokenize(venmoRequest) { _, _ in }
+        let _ = try? await venmoClient.tokenize(venmoRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
@@ -710,7 +745,7 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(venmoClient.apiClient.metadata.integration, BTClientMetadataIntegration.custom)
     }
 
-    func testTokenize_whenConfigurationIsInvalid_returnsError() async {
+    func testTokenize_whenConfigurationIsInvalid_throwsError() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
@@ -718,6 +753,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         do {
             let _ = try await venmoClient.tokenize(venmoRequest)
+            XCTFail("Expected error to be thrown")
         } catch {
             let error = error as NSError
             XCTAssertNotNil(error)
@@ -786,29 +822,31 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertFalse(BTVenmoClient.canHandleReturnURL(URL(string: "fake-scheme://")!))
     }
 
-    func testAuthorizeAccountWithTokenizationKey_vaultTrue_willNotAttemptToVault() {
+    func testAuthorizeAccountWithTokenizationKey_vaultTrue_willNotAttemptToVault() async {
         venmoClient.application = FakeApplication()
         venmoClient.bundle = FakeBundle()
 
-        let expectation = expectation(description: "Callback invoked")
         let venmoRequest = BTVenmoRequest(paymentMethodUsage: .multiUse)
         venmoRequest.vault = true
 
-        venmoClient.tokenize(venmoRequest) { venmoAccount, error in
-            XCTAssertNil(error)
-
-            XCTAssertEqual(venmoAccount?.username, "venmotim")
-            XCTAssertEqual(venmoAccount?.nonce, "lmnop-venmo-nonce")
-            XCTAssertFalse(venmoAccount!.isDefault)
-
-            expectation.fulfill()
+        Task {
+            do {
+                let venmoAccount = try await venmoClient.tokenize(venmoRequest)
+                XCTAssertEqual(venmoAccount.username, "venmotim")
+                XCTAssertEqual(venmoAccount.nonce, "lmnop-venmo-nonce")
+                XCTAssertFalse(venmoAccount.isDefault)
+            } catch {
+                XCTFail("Expected success, got error: \(error)")
+            }
         }
 
-        DispatchQueue.main.async {
-            BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
-        }
+        // Wait a bit for the tokenize to initiate
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
-        waitForExpectations(timeout: 2)
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=lmnop-venmo-nonce&username=venmotim")!)
+        
+        // Wait for async operations to complete
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.tokenizeSucceeded)
         XCTAssertEqual(mockAPIClient.postedContextID, "some-resource-id")
