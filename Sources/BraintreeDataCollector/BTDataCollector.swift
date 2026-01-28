@@ -49,40 +49,35 @@ import BraintreeCore
         completion: @escaping (String?, Error?) -> Void
     ) {
         fetchConfiguration { configuration, error in
-            guard let configuration = configuration else {
+            guard let configuration else {
                 completion(nil, error)
                 return
             }
 
-            let clientMetadataID = riskCorrelationID ?? self.generateClientMetadataID(with: configuration)
-
-            let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
-
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                completion(nil, BTDataCollectorError.jsonSerializationFailure)
-                return
-            }
-
-            guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                completion(nil, BTDataCollectorError.encodingFailure)
-                return
-            }
-
-            // Only invoke completion after Magnes collectAndSubmit internal callback finishes
-            _ = try? MagnesSDK.shared().collectAndSubmit(
-                withPayPalClientMetadataId: clientMetadataID,
-                withAdditionalData: [:]
-            ) { submitStatus, _ in
-                switch submitStatus {
-                case .success:
-                    completion(deviceData, nil)
-                case .error:
-                    completion(nil, BTDataCollectorError.callbackSubmitError)
-                case .timeout:
-                    completion(nil, BTDataCollectorError.callbackSubmitTimeout)
-                @unknown default:
-                    completion(nil, BTDataCollectorError.unknown)
+            self.generateClientMetadataID(
+                riskCorrelationID,
+                disableBeacon: false,
+                configuration: configuration,
+                data: nil
+            ) { clientMetadataID, error in
+                guard let clientMetadataID else {
+                    completion(nil, error)
+                    return
                 }
+
+                let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
+
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
+                    completion(nil, BTDataCollectorError.jsonSerializationFailure)
+                    return
+                }
+
+                guard let deviceData = String(data: jsonData, encoding: .utf8) else {
+                    completion(nil, BTDataCollectorError.encodingFailure)
+                    return
+                }
+
+                completion(deviceData, nil)
             }
         }
     }
@@ -130,6 +125,7 @@ import BraintreeCore
         generateClientMetadataID("", disableBeacon: false, configuration: configuration, data: nil)
     }
 
+    // Synchronous version for backward compatibility (deprecated method)
     func generateClientMetadataID(
         _ clientMetadataID: String?,
         disableBeacon: Bool,
@@ -158,7 +154,54 @@ import BraintreeCore
             withPayPalClientMetadataId: clientMetadataID ?? "",
             withAdditionalData: data ?? [:]
         ) { _, _ in }
+
         return result?.getPayPalClientMetaDataId() ?? ""
+    }
+
+    // Asynchronous version that waits for collectAndSubmit callback
+    func generateClientMetadataID(
+        _ clientMetadataID: String?,
+        disableBeacon: Bool,
+        configuration: BTConfiguration?,
+        data: [String: String]?,
+        completion: @escaping (String?, Error?) -> Void
+    ) {
+        if configuration != nil {
+            config = configuration
+        } else {
+            fetchConfiguration { configuration, _ in
+                self.config = configuration
+            }
+        }
+
+        let mangnesEnvironment = getMagnesEnvironment(from: config)
+
+        try? MagnesSDK.shared().setUp(
+            setEnviroment: mangnesEnvironment,
+            setOptionalAppGuid: deviceIdentifier(),
+            disableRemoteConfiguration: false,
+            disableBeacon: disableBeacon,
+            magnesSource: .BRAINTREE
+        )
+
+        // Call collectAndSubmit and wait for callback before invoking completion
+        var magnesResult: MagnesResult?
+        magnesResult = try? MagnesSDK.shared().collectAndSubmit(
+            withPayPalClientMetadataId: clientMetadataID ?? "",
+            withAdditionalData: data ?? [:]
+        ) { submitStatus, _ in
+            let metadataID = magnesResult?.getPayPalClientMetaDataId() ?? ""
+            switch submitStatus {
+            case .success:
+                completion(metadataID, nil)
+            case .error:
+                completion(nil, BTDataCollectorError.callbackSubmitError)
+            case .timeout:
+                completion(nil, BTDataCollectorError.callbackSubmitTimeout)
+            @unknown default:
+                completion(nil, BTDataCollectorError.unknown)
+            }
+        }
     }
 
     private func deviceIdentifier() -> String {
