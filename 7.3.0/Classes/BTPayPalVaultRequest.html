@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BTPayPalVaultRequest Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/BTPayPalVaultRequest" class="dashAnchor"></a>
+
+    <a title="BTPayPalVaultRequest Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          Braintree 7.3.0 Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/braintree/braintree_ios">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">Braintree</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      <a class="breadcrumb" href="../Classes.html">Classes</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      BraintreePayPal.BTPayPalVaultRequest Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAPIClient.html">BTAPIClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAmericanExpressClient.html">BTAmericanExpressClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAmericanExpressRewardsBalance.html">BTAmericanExpressRewardsBalance</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAppContextSwitcher.html">BTAppContextSwitcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTApplePayCardNonce.html">BTApplePayCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTApplePayClient.html">BTApplePayClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTAuthenticationInsight.html">BTAuthenticationInsight</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTBinData.html">BTBinData</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCard.html">BTCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardClient.html">BTCardClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTCardNonce.html">BTCardNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTDataCollector.html">BTDataCollector</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLocalPaymentClient.html">BTLocalPaymentClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLocalPaymentRequest.html">BTLocalPaymentRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTLocalPaymentResult.html">BTLocalPaymentResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalAccountNonce.html">BTPayPalAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCheckoutRequest.html">BTPayPalCheckoutRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalClient.html">BTPayPalClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancing.html">BTPayPalCreditFinancing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalCreditFinancingAmount.html">BTPayPalCreditFinancingAmount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalLineItem.html">BTPayPalLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalMessagingView.html">BTPayPalMessagingView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalMessagingView/Representable.html">– Representable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPayPalVaultRequest.html">BTPayPalVaultRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPaymentMethodNonce.html">BTPaymentMethodNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPostalAddress.html">BTPostalAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTPresentmentDetails.html">BTPresentmentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTSEPADirectDebitClient.html">BTSEPADirectDebitClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTSEPADirectDebitNonce.html">BTSEPADirectDebitNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTSEPADirectDebitRequest.html">BTSEPADirectDebitRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTShopperInsightsClient.html">BTShopperInsightsClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTShopperInsightsClientV2.html">BTShopperInsightsClientV2</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureAdditionalInformation.html">BTThreeDSecureAdditionalInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureClient.html">BTThreeDSecureClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureInfo.html">BTThreeDSecureInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureLookup.html">BTThreeDSecureLookup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecurePostalAddress.html">BTThreeDSecurePostalAddress</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureRenderType.html">BTThreeDSecureRenderType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureRequest.html">BTThreeDSecureRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureResult.html">BTThreeDSecureResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2BaseCustomization.html">BTThreeDSecureV2BaseCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2ButtonCustomization.html">BTThreeDSecureV2ButtonCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2LabelCustomization.html">BTThreeDSecureV2LabelCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2TextBoxCustomization.html">BTThreeDSecureV2TextBoxCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2ToolbarCustomization.html">BTThreeDSecureV2ToolbarCustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTThreeDSecureV2UICustomization.html">BTThreeDSecureV2UICustomization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoAccountNonce.html">BTVenmoAccountNonce</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoClient.html">BTVenmoClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoLineItem.html">BTVenmoLineItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BTVenmoRequest.html">BTVenmoRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAPIClientError.html">BTAPIClientError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAmericanExpressError.html">BTAmericanExpressError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTAnalyticsServiceError.html">BTAnalyticsServiceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTApplePayError.html">BTApplePayError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTButtonOrder.html">BTButtonOrder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTButtonType.html">BTButtonType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTCardError.html">BTCardError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTCardNetwork.html">BTCardNetwork</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTClientTokenError.html">BTClientTokenError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTContactPreference.html">BTContactPreference</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTDataCollectorError.html">BTDataCollectorError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTExperimentType.html">BTExperimentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTHTTPError.html">BTHTTPError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTJSONError.html">BTJSONError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTLocalPaymentError.html">BTLocalPaymentError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPageType.html">BTPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalError.html">BTPayPalError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLineItemKind.html">BTPayPalLineItemKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLineItemUPCType.html">BTPayPalLineItemUPCType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalLocaleCode.html">BTPayPalLocaleCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingColor.html">BTPayPalMessagingColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingError.html">BTPayPalMessagingError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingLogoType.html">BTPayPalMessagingLogoType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingOfferType.html">BTPayPalMessagingOfferType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingPageType.html">BTPayPalMessagingPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalMessagingTextAlignment.html">BTPayPalMessagingTextAlignment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRecurringBillingPlanType.html">BTPayPalRecurringBillingPlanType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestIntent.html">BTPayPalRequestIntent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestLandingPageType.html">BTPayPalRequestLandingPageType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTPayPalRequestUserAction.html">BTPayPalRequestUserAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTSEPADirectDebitError.html">BTSEPADirectDebitError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTSEPADirectDebitMandateType.html">BTSEPADirectDebitMandateType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTShopperInsightsError.html">BTShopperInsightsError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureAccountType.html">BTThreeDSecureAccountType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureError.html">BTThreeDSecureError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureRequestedExemptionType.html">BTThreeDSecureRequestedExemptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureShippingMethod.html">BTThreeDSecureShippingMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureUIType.html">BTThreeDSecureUIType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTThreeDSecureV2ButtonType.html">BTThreeDSecureV2ButtonType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoAppSwitchError.html">BTVenmoAppSwitchError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoError.html">BTVenmoError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoLineItemKind.html">BTVenmoLineItemKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BTVenmoPaymentMethodUsage.html">BTVenmoPaymentMethodUsage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PayPalButtonColor.html">PayPalButtonColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TokenizationKeyError.html">TokenizationKeyError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/VenmoButtonColor.html">VenmoButtonColor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions.html#/AppKit">AppKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/BTThreeDSecureV2Provider.html">BTThreeDSecureV2Provider</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/UIApplication.html">UIApplication</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTGraphQLEncodableBody.html">BTGraphQLEncodableBody</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTLocalPaymentRequestDelegate.html">BTLocalPaymentRequestDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTPayPalMessagingDelegate.html">BTPayPalMessagingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BTThreeDSecureRequestDelegate.html">BTThreeDSecureRequestDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTAmountBreakdown.html">BTAmountBreakdown</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTContactInformation.html">BTContactInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTCustomerRecommendationsResult.html">BTCustomerRecommendationsResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTCustomerSessionRequest.html">BTCustomerSessionRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingCycle.html">BTPayPalBillingCycle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingCycle/BillingInterval.html">– BillingInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingPricing.html">BTPayPalBillingPricing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalBillingPricing/PricingModel.html">– PricingModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalMessagingRequest.html">BTPayPalMessagingRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalPhoneNumber.html">BTPayPalPhoneNumber</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPayPalRecurringBillingDetails.html">BTPayPalRecurringBillingDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPaymentOptions.html">BTPaymentOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTPurchaseUnit.html">BTPurchaseUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTShopperInsightsRequest.html">BTShopperInsightsRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BTShopperInsightsResult.html">BTShopperInsightsResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PayPalButton.html">PayPalButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Phone.html">Phone</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/VenmoButton.html">VenmoButton</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>BTPayPalVaultRequest</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">@objcMembers</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">BTPayPalVaultRequest</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">BTPayPalRequest</span></code></pre>
+
+                </div>
+              </div>
+            <p>Options for the PayPal Vault flow.</p>
+
+              <div class="slightly-smaller">
+                <a href="https://github.com/braintree/braintree_ios/tree/7.3.0/Sources/BraintreePayPal/BTPayPalVaultRequest.swift#L8-L134">Show on GitHub</a>
+              </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializer"></a>
+                <a name="//apple_ref/swift/Section/Initializer" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Initializer"></a>
+                  <h3 class="section-name"><span>Initializer</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@BraintreePayPal@objc(cs)BTPayPalVaultRequest(im)initWithEnablePayPalAppSwitch:userAuthenticationEmail:offerCredit:"></a>
+                    <a name="//apple_ref/swift/Method/init(enablePayPalAppSwitch:userAuthenticationEmail:offerCredit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@BraintreePayPal@objc(cs)BTPayPalVaultRequest(im)initWithEnablePayPalAppSwitch:userAuthenticationEmail:offerCredit:">init(enablePayPalAppSwitch:<wbr>userAuthenticationEmail:<wbr>offerCredit:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a PayPal Vault request for the PayPal App Switch flow</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
+
+</div><div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    The PayPal App Switch flow currently only supports the production environment.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span>
+    <span class="nv">enablePayPalAppSwitch</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span>
+    <span class="nv">userAuthenticationEmail</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">offerCredit</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>enablePayPalAppSwitch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Required: Used to determine if the customer will use the PayPal app switch flow.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userAuthenticationEmail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>offerCredit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Offers PayPal Credit if the customer qualifies. Defaults to <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/7.3.0/Sources/BraintreePayPal/BTPayPalVaultRequest.swift#L43-L53">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:15BraintreePayPal05BTPayC12VaultRequestC06enablebC9AppSwitch11offerCredit27billingAgreementDescription11displayName25isShippingAddressEditable0qrS8Required15landingPageType9lineItems10localeCode17merchantAccountID23recurringBillingDetails020recurringBillingPlanX017riskCorrelationID08shippingS8Override16shopperSessionID10userAction23userAuthenticationEmail15userPhoneNumberACSb_SbSSSgAVS2bAA0dcf7LandingwX0OSayAA0dC8LineItemCGSgAA0dC10LocaleCodeOAvA0dC23RecurringBillingDetailsVSgAA0dc20RecurringBillingPlanX0OSgAV0A4Core08BTPostalS0CSgAvA0dcF10UserActionOAvA0dC11PhoneNumberVSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(enablePayPalAppSwitch:offerCredit:billingAgreementDescription:displayName:isShippingAddressEditable:isShippingAddressRequired:landingPageType:lineItems:localeCode:merchantAccountID:recurringBillingDetails:recurringBillingPlanType:riskCorrelationID:shippingAddressOverride:shopperSessionID:userAction:userAuthenticationEmail:userPhoneNumber:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:15BraintreePayPal05BTPayC12VaultRequestC06enablebC9AppSwitch11offerCredit27billingAgreementDescription11displayName25isShippingAddressEditable0qrS8Required15landingPageType9lineItems10localeCode17merchantAccountID23recurringBillingDetails020recurringBillingPlanX017riskCorrelationID08shippingS8Override16shopperSessionID10userAction23userAuthenticationEmail15userPhoneNumberACSb_SbSSSgAVS2bAA0dcf7LandingwX0OSayAA0dC8LineItemCGSgAA0dC10LocaleCodeOAvA0dC23RecurringBillingDetailsVSgAA0dc20RecurringBillingPlanX0OSgAV0A4Core08BTPostalS0CSgAvA0dcF10UserActionOAvA0dC11PhoneNumberVSgtcfc">init(enablePayPalAppSwitch:<wbr>offerCredit:<wbr>billingAgreementDescription:<wbr>displayName:<wbr>isShippingAddressEditable:<wbr>isShippingAddressRequired:<wbr>landingPageType:<wbr>lineItems:<wbr>localeCode:<wbr>merchantAccountID:<wbr>recurringBillingDetails:<wbr>recurringBillingPlanType:<wbr>riskCorrelationID:<wbr>shippingAddressOverride:<wbr>shopperSessionID:<wbr>userAction:<wbr>userAuthenticationEmail:<wbr>userPhoneNumber:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a PayPal Vault request</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+    <span class="nv">enablePayPalAppSwitch</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">offerCredit</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">billingAgreementDescription</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">displayName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">isShippingAddressEditable</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">isShippingAddressRequired</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">landingPageType</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTPayPalRequestLandingPageType.html">BTPayPalRequestLandingPageType</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
+    <span class="nv">lineItems</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/BTPayPalLineItem.html">BTPayPalLineItem</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">localeCode</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTPayPalLocaleCode.html">BTPayPalLocaleCode</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
+    <span class="nv">merchantAccountID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">recurringBillingDetails</span><span class="p">:</span> <span class="kt"><a href="../Structs/BTPayPalRecurringBillingDetails.html">BTPayPalRecurringBillingDetails</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">recurringBillingPlanType</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTPayPalRecurringBillingPlanType.html">BTPayPalRecurringBillingPlanType</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">riskCorrelationID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">shippingAddressOverride</span><span class="p">:</span> <span class="kt"><a href="../Classes/BTPostalAddress.html">BTPostalAddress</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">shopperSessionID</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">userAction</span><span class="p">:</span> <span class="kt"><a href="../Enums/BTPayPalRequestUserAction.html">BTPayPalRequestUserAction</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
+    <span class="nv">userAuthenticationEmail</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">userPhoneNumber</span><span class="p">:</span> <span class="kt"><a href="../Structs/BTPayPalPhoneNumber.html">BTPayPalPhoneNumber</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
+<span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>enablePayPalAppSwitch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Required: Used to determine if the customer will use the PayPal app switch flow. Defaults to <code>false</code>. This property is currently in beta and may change or be removed in future releases.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>offerCredit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Offers PayPal Credit if the customer qualifies. Defaults to <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>billingAgreementDescription</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Display a custom description to the user for a billing agreement. For Checkout with Vault flows, you must also set.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>displayName</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isShippingAddressEditable</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defaults to false. Set to true to enable user editing of the shipping address.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isShippingAddressRequired</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Defaults to false. When set to true, the shipping address selector will be displayed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>landingPageType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Landing page type. Defaults to <code>.none</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lineItems</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: The line items for this transaction. It can include up to 249 line items.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>localeCode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: A locale code to use for the transaction.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>merchantAccountID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: A non-default merchant account to use for tokenization.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>recurringBillingDetails</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Recurring billing product details.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>recurringBillingPlanType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Recurring billing plan type, or charge pattern.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>riskCorrelationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: A risk correlation ID created with Set Transaction Context on your server.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>shippingAddressOverride</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>shopperSessionID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: The shopper session ID returned from your shopper insights server SDK integration.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userAction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: Changes the call-to-action in the PayPal Vault flow. Defaults to <code>.none</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userAuthenticationEmail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>userPhoneNumber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional: A user&rsquo;s phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account identified with the same phone number.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/braintree/braintree_ios/tree/7.3.0/Sources/BraintreePayPal/BTPayPalVaultRequest.swift#L78-L116">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2026 <a class="link" href="http://braintreepayments.com" target="_blank" rel="external noopener">Braintree</a>. All rights reserved. (Last updated: 2026-01-29)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>
