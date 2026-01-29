@@ -179,8 +179,6 @@ import BraintreeCore
     // MARK: - Analytics Helper Methods
 
     private func notifySuccess() {
-        print("*******************")
-        print(BTCardAnalytics.cardTokenizeSucceeded)
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
     }
 
