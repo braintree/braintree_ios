@@ -32,7 +32,7 @@ import BraintreeCore
     ///    `tokenize` will contain a nonce and `error` will be `nil`; if it fails, `tokenize` will be `nil` and `error`will describe the failure.
     @objc(tokenizeCard:completion:)
     public func tokenize(_ card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let cardNonce = try await tokenize(card)
                 completion(cardNonce, nil)
@@ -60,17 +60,17 @@ import BraintreeCore
                 let parameters = card.graphQLParameters()
 
                 do {
-                    let (body, response) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
+                    let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
 
                     let cardJSON: BTJSON = body?["data"]["tokenizeCreditCard"] ?? BTJSON()
 
                     if let cardJSONError = cardJSON.asError() {
-                        apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: cardJSONError.localizedDescription)
+                        notifyFailure(with: cardJSONError)
                         throw cardJSONError
                     }
 
                     let cardNonce = BTCardNonce(graphQLJSON: cardJSON)
-                    apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
+                    notifySuccess()
                     return cardNonce
                 } catch {
                     let nsError = error as NSError
@@ -81,24 +81,24 @@ import BraintreeCore
                         callbackError = constructCallbackError(with: nsError.userInfo, error: nsError) ?? error
                     }
 
-                    apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: callbackError.localizedDescription)
+                    notifyFailure(with: callbackError)
                     throw callbackError
                 }
             } else {
                 let parameters = card.parameters(apiClient: apiClient)
 
                 do {
-                    let (body, response) = try await apiClient.post("v1/payment_methods/credit_cards", parameters: parameters)
+                    let (body, _) = try await apiClient.post("v1/payment_methods/credit_cards", parameters: parameters)
 
                     let cardJSON: BTJSON = body?["creditCards"][0] ?? BTJSON()
 
                     if let cardJSONError = cardJSON.asError() {
-                        apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: cardJSONError.localizedDescription)
+                        notifyFailure(with: cardJSONError)
                         throw cardJSONError
                     }
 
                     let cardNonce = BTCardNonce(json: cardJSON)
-                    apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
+                    notifySuccess()
                     return cardNonce
                 } catch {
                     let nsError = error as NSError
@@ -109,12 +109,12 @@ import BraintreeCore
                         callbackError = constructCallbackError(with: nsError.userInfo, error: nsError) ?? error
                     }
 
-                    apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: callbackError.localizedDescription)
+                    notifyFailure(with: callbackError)
                     throw callbackError
                 }
             }
         } catch {
-            apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: error.localizedDescription)
+            notifyFailure(with: error)
             throw error
         }
     }
@@ -174,5 +174,17 @@ import BraintreeCore
         }
 
         return callbackError
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifySuccess() {
+        print("*******************")
+        print(BTCardAnalytics.cardTokenizeSucceeded)
+        apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeSucceeded)
+    }
+
+    private func notifyFailure(with error: Error) {
+        apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: error.localizedDescription)
     }
 }
