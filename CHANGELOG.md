@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.3.0 (2026-01-29)
 
 * BraintreePayPal
     * Pass `fundingSource` to the app switch url link and to analytics events. 
