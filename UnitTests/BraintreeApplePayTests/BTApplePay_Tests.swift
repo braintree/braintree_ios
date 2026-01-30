@@ -344,7 +344,7 @@ class BTApplePay_Tests: XCTestCase {
             XCTAssertEqual(tokenizedPayment!.binData.issuingBank, "US")
             XCTAssertEqual(tokenizedPayment!.binData.countryOfIssuance, "Something")
             XCTAssertEqual(tokenizedPayment!.binData.productID, "123")
-            XCTAssertEqual(mockClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
+            XCTAssertEqual(self.mockClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
             expectation.fulfill()
         }
 
