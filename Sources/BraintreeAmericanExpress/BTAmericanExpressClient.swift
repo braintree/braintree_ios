@@ -55,7 +55,8 @@ import BraintreeCore
             let (body, _) = try await apiClient.get("v1/payment_methods/amex_rewards_balance", parameters: parameters)
 
             guard let body else {
-                try notifyFailure(with: BTAmericanExpressError.noRewardsData)
+                sendFailureAnalytics(with: BTAmericanExpressError.noRewardsData)
+                throw BTAmericanExpressError.noRewardsData
             }
 
             let rewardsBalance = BTAmericanExpressRewardsBalance(json: body)
@@ -64,7 +65,8 @@ import BraintreeCore
             // Analytics already sent for BTAmericanExpressError (from guard above)
             throw error
         } catch {
-            try notifyFailure(with: error)
+            sendFailureAnalytics(with: error)
+            throw error
         }
     }
 
@@ -75,11 +77,10 @@ import BraintreeCore
         return result
     }
 
-    private func notifyFailure(with error: Error) throws -> Never {
+    private func sendFailureAnalytics(with error: Error) {
         apiClient.sendAnalyticsEvent(
             BTAmericanExpressAnalytics.failed,
             errorDescription: error.localizedDescription
         )
-        throw error
     }
 }
