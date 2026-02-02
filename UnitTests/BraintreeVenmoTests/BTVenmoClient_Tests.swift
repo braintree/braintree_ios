@@ -711,7 +711,7 @@ class BTVenmoClient_Tests: XCTestCase {
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
         if let inputDict = params?["variables"] as? NSDictionary,
            let input = inputDict["input"] as? [String:Any] {
-            XCTAssertEqual("some_risk_correlation_id", input["riskCorrelationId"] as? String)
+            XCTAssertEqual("some_risk_correlation_id", input["venmoRiskCorrelationId"] as? String)
         }
     }
 
