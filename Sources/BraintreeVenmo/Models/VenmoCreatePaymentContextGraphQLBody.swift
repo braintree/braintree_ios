@@ -24,6 +24,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
         init(request: BTVenmoRequest, merchantProfileID: String?) {
             self.input = InputParameters(
                 paymentMethodUsage: request.paymentMethodUsage.stringValue,
+                riskCorrelationID: request.riskCorrelationID,
                 merchantProfileID: merchantProfileID,
                 customerClient: "MOBILE_APP",
                 intent: "CONTINUE",
@@ -36,6 +37,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
         struct InputParameters: Encodable {
             
             var paymentMethodUsage: String?
+            var riskCorrelationID: String?
             var merchantProfileID: String?
             var customerClient: String = "MOBILE_APP"
             var intent: String = "CONTINUE"
@@ -45,6 +47,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
             
             enum CodingKeys: String, CodingKey {
                 case paymentMethodUsage
+                case riskCorrelationID = "riskCorrelationId"
                 case merchantProfileID = "merchantProfileId"
                 case customerClient
                 case intent
