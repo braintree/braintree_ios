@@ -47,7 +47,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
             
             enum CodingKeys: String, CodingKey {
                 case paymentMethodUsage
-                case riskCorrelationID = "riskCorrelationId"
+                case riskCorrelationID = "venmoRiskCorrelationId"
                 case merchantProfileID = "merchantProfileId"
                 case customerClient
                 case intent
