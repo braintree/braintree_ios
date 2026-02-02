@@ -1,7 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-## 7.3.0 (2026-01-29)
+## unreleased
+* BraintreeVenmo
+    * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
 
+## 7.3.0 (2026-01-29)
 * BraintreePayPal
     * Pass `fundingSource` to the app switch url link and to analytics events. 
     * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 

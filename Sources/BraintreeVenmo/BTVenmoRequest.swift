@@ -58,8 +58,8 @@ import Foundation
     ///   - shippingAmount: Optional: The shipping amount for the transaction to be displayed on the paysheet. If this value is set, `totalAmount` must also be set.
     ///   - totalAmount: Optional: The grand total amount on the transaction that should be displayed on the paysheet.
     ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items. If this value is set, `totalAmount` must also be set.
-    @objc(initWithPaymentMethodUsage:riskCorrelationID:profileID:vault:displayName:collectCustomerBillingAddress:collectCustomerShippingAddress:
-    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:)
+    @objc(initWithPaymentMethodUsage:riskCorrelationID:profileID:vault:displayName:collectCustomerBillingAddress:
+    collectCustomerShippingAddress:isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:)
     public init(
         paymentMethodUsage: BTVenmoPaymentMethodUsage,
         riskCorrelationID: String? = nil,
