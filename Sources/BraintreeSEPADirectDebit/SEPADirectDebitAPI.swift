@@ -13,41 +13,32 @@ class SEPADirectDebitAPI {
     }
 
     func createMandate(
-        sepaDirectDebitRequest: BTSEPADirectDebitRequest,
-        completion: @escaping (CreateMandateResult?, Error?) -> Void
-    ) {
+        sepaDirectDebitRequest: BTSEPADirectDebitRequest
+    ) async throws -> CreateMandateResult {
         let sepaDebitRequest = SEPADebitRequest(sepaDirectDebitRequest: sepaDirectDebitRequest)
-        apiClient.post("v1/sepa_debit", parameters: sepaDebitRequest) { body, _, error in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-
-            guard let body = body else {
-                completion(nil, BTSEPADirectDebitError.noBodyReturned)
-                return
-            }
-
-            let result = CreateMandateResult(json: body)
-            completion(result, nil)
+        
+        let (body, _) = try await apiClient.post("v1/sepa_debit", parameters: sepaDebitRequest)
+        
+        guard let body = body else {
+            throw BTSEPADirectDebitError.noBodyReturned
         }
+        
+        let result = CreateMandateResult(json: body)
+        return result
     }
 
-    func tokenize(createMandateResult: CreateMandateResult, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
+    func tokenize(createMandateResult: CreateMandateResult) async throws -> BTSEPADirectDebitNonce {
         let sepaDebitAccountsRequest = SEPADebitAccountsRequest(createMandateResult: createMandateResult)
-        apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: sepaDebitAccountsRequest) { body, _, error in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-
-            guard let body = body else {
-                completion(nil, BTSEPADirectDebitError.noBodyReturned)
-                return
-            }
-
-            let result = BTSEPADirectDebitNonce(json: body)
-            completion(result, nil)
+        
+        let (body, _) = try await apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: sepaDebitAccountsRequest)
+        
+        guard let body = body else {
+            throw BTSEPADirectDebitError.noBodyReturned
         }
+        
+        guard let result = BTSEPADirectDebitNonce(json: body) else {
+            throw BTSEPADirectDebitError.failedToCreateNonce
+        }
+        return result
     }
 }

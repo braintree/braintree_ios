@@ -49,44 +49,15 @@ import BraintreeCore
         _ request: BTSEPADirectDebitRequest,
         completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeStarted)
-        createMandate(request: request) { createMandateResult, error in
-            if let error {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let createMandateResult = createMandateResult else {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.notifyFailure(with: BTSEPADirectDebitError.resultReturnedNil, completion: completion)
-                return
-            }
-            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
-            if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
-                self.tokenize(createMandateResult: createMandateResult, completion: completion)
-                return
-            } else if let url = URL(string: createMandateResult.approvalURL) {
-                self.startAuthenticationSession(url: url, context: self) { success, error in
-                    switch success {
-                    case true:
-                        self.tokenize(createMandateResult: createMandateResult, completion: completion)
-                        return
-                    case false:
-                        if let error {
-                            self.notifyFailure(with: error, completion: completion)
-                            return
-                        }
-                    }
-                }
-            } else {
-                self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                self.notifyFailure(with: BTSEPADirectDebitError.approvalURLInvalid, completion: completion)
+        Task {
+            do {
+                let createMandateResult = try await tokenize(request)
+                completion(createMandateResult, nil)
+            } catch {
+                completion(nil, error)
             }
         }
     }
-
 
     /// Initiates an `ASWebAuthenticationSession` to display a mandate to the user. Upon successful mandate creation, tokenizes the payment method and returns a result
     /// - Parameter request: a `BTSEPADebitRequest`
@@ -98,21 +69,28 @@ import BraintreeCore
         do {
             let createMandateResult = try await createMandate(request: request)
             
-            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
-            if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
-                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
-                return try await tokenize(createMandateResult: createMandateResult)
-            } else if let url = URL(string: createMandateResult.approvalURL) {
-                let success = try await startAuthenticationSession(url: url, context: self)
-                if success {
+            // If the approval URL is invalid, fail early
+            guard createMandateResult.approvalURL != CreateMandateResult.mandateAlreadyApprovedURLString,
+                  let url = URL(string: createMandateResult.approvalURL) else {
+                // Mandate already approved, skip authentication
+                if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
+                    apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
                     return try await tokenize(createMandateResult: createMandateResult)
-                } else {
-                    throw BTSEPADirectDebitError.webFlowCanceled
                 }
-            } else {
+                // Invalid approval URL
                 apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
                 throw BTSEPADirectDebitError.approvalURLInvalid
             }
+            
+            // Authenticate and tokenize
+            let success = try await startAuthenticationSession(url: url, context: self)
+            guard success else {
+                throw BTSEPADirectDebitError.webFlowCanceled
+            }
+            
+            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
+            return try await tokenize(createMandateResult: createMandateResult)
+            
         } catch {
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
             apiClient.sendAnalyticsEvent(
@@ -122,20 +100,7 @@ import BraintreeCore
             throw error
         }
     }
-
     // MARK: - Internal Methods
-    
-    /// Calls `SEPADirectDebitAPI.createMandate` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
-    /// that is used to display the mandate to the user during the web flow.
-    func createMandate(
-        request: BTSEPADirectDebitRequest,
-        completion: @escaping (CreateMandateResult?, Error?) -> Void
-    ) {
-        apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateChallengeRequired)
-        sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request) { result, error in
-            completion(result, error)
-        }
-    }
     
     /// Calls `SEPADirectDebitAPI.createMandate` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
     /// that is used to display the mandate to the user during the web flow.
@@ -144,35 +109,11 @@ import BraintreeCore
     /// - Throws: An `Error` describing the failure
     func createMandate(request: BTSEPADirectDebitRequest) async throws -> CreateMandateResult {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateChallengeRequired)
-        return try await withCheckedThrowingContinuation { continuation in
-            createMandate(request: request) { result, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let result {
-                    continuation.resume(returning: result)
-                } else {
-                    continuation.resume(throwing: BTSEPADirectDebitError.resultReturnedNil)
-                }
-            }
-        }
-    }
-    
-    func tokenize(
-        createMandateResult: CreateMandateResult,
-        completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
-    ) {
-        self.sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult) { sepaDirectDebitNonce, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let sepaDirectDebitNonce else {
-                self.notifyFailure(with: BTSEPADirectDebitError.failedToCreateNonce, completion: completion)
-                return
-            }
-
-            self.notifySuccess(with: sepaDirectDebitNonce, completion: completion)
+        do {
+            let createMandateResult = try await sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request)
+            return createMandateResult
+        } catch {
+            throw error
         }
     }
     
@@ -181,16 +122,12 @@ import BraintreeCore
     /// - Returns: A `BTSEPADirectDebitNonce` if successful
     /// - Throws: An `Error` describing the failure
     func tokenize(createMandateResult: CreateMandateResult) async throws -> BTSEPADirectDebitNonce {
-        try await withCheckedThrowingContinuation { continuation in
-            tokenize(createMandateResult: createMandateResult) { nonce, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let nonce {
-                    continuation.resume(returning: nonce)
-                } else {
-                    continuation.resume(throwing: BTSEPADirectDebitError.failedToCreateNonce)
-                }
-            }
+        do {
+            let sepaDirectDebitNonce = try await sepaDirectDebitAPI.tokenize(createMandateResult: createMandateResult)
+            return notifySuccess(with: sepaDirectDebitNonce)
+        } catch {
+            notifyFailure(with: error)
+            throw error
         }
     }
     
@@ -280,20 +217,16 @@ import BraintreeCore
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(
-        with result: BTSEPADirectDebitNonce,
-        completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
-    ) {
+    private func notifySuccess(with result: BTSEPADirectDebitNonce) -> BTSEPADirectDebitNonce {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeSucceeded)
-        completion(result, nil)
+        return result
     }
-
-    private func notifyFailure(with error: Error, completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
+    
+    private func notifyFailure(with error: Error) {
         apiClient.sendAnalyticsEvent(
             BTSEPADirectAnalytics.tokenizeFailed,
             errorDescription: error.localizedDescription
         )
-        completion(nil, error)
     }
 
     private func notifyCancel(completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
