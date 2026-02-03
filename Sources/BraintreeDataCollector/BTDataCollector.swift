@@ -56,7 +56,6 @@ import BraintreeCore
                 completion(nil, BTDataCollectorError.encodingFailure)
                 return
             }
-            
             completion(deviceData, nil)
         }
     }
@@ -105,7 +104,6 @@ import BraintreeCore
             }
 
             self.config = configuration
-
             let magnesEnvironment = self.getMagnesEnvironment(from: self.config)
 
             try? MagnesSDK.shared().setUp(
@@ -128,7 +126,7 @@ import BraintreeCore
                     }
 
                     let data: [String: String] = ["correlation_id": clientMetadataID]
-
+                    
                     guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else {
                         completion(nil, BTDataCollectorError.jsonSerializationFailure)
                         return
@@ -138,15 +136,12 @@ import BraintreeCore
                         completion(nil, BTDataCollectorError.encodingFailure)
                         return
                     }
-
                     completion(deviceData, nil)
 
                 case .error:
                     completion(nil, BTDataCollectorError.callbackSubmitError)
-
                 case .timeout:
                     completion(nil, BTDataCollectorError.callbackSubmitTimeout)
-
                 @unknown default:
                     completion(nil, BTDataCollectorError.unknown)
                 }
