@@ -71,7 +71,7 @@ import BraintreeCore
             
             // If the approval URL is invalid, fail early
             guard createMandateResult.approvalURL != CreateMandateResult.mandateAlreadyApprovedURLString,
-                  let url = URL(string: createMandateResult.approvalURL) else {
+                let url = URL(string: createMandateResult.approvalURL) else {
                 // Mandate already approved, skip authentication
                 if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                     apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
@@ -90,7 +90,6 @@ import BraintreeCore
             
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
             return try await tokenize(createMandateResult: createMandateResult)
-            
         } catch {
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
             apiClient.sendAnalyticsEvent(
@@ -221,7 +220,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeSucceeded)
         return result
     }
-    
+
     private func notifyFailure(with error: Error) {
         apiClient.sendAnalyticsEvent(
             BTSEPADirectAnalytics.tokenizeFailed,

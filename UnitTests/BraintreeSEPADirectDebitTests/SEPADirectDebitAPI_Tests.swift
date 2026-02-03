@@ -8,7 +8,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     var billingAddress: BTPostalAddress!
     var sepaDirectDebitRequest: BTSEPADirectDebitRequest!
     var successApprovalURL: String = ""
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
+    var mockAPIClient: MockAPIClient = MockAPIClient(authorization: "development_client_key")
     let authorization: String = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
     var mockCreateMandateResult = CreateMandateResult(json:
         BTJSON(
@@ -52,14 +52,14 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         """
     }
     
-    func testCreateMandate_properlyFormatsPOSTURL() {
+    func testCreateMandate_properlyFormatsPOSTURL() async throws {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
-        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
+        _ = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/sepa_debit")
     }
 
-    func testCreateMandate_properlyFormatsPOSTBody() {
+    func testCreateMandate_properlyFormatsPOSTBody() async throws {
         let billingAddress = BTPostalAddress(
             streetAddress: "fake-street-addres",
             extendedAddress: "fake-extended-address",
@@ -79,7 +79,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         )
 
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
-        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { _, _ in }
+        _ = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
         
         let lastPOSTParameters = mockAPIClient.lastPOSTParameters!
         XCTAssertEqual(lastPOSTParameters["merchant_account_id"] as! String, "fake-account-id")
@@ -102,7 +102,7 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         XCTAssertEqual(billingAddressFields["country_code"], "fake-country-code")
     }
     
-    func testCreateMandate_onSuccessfulHttpResponse_returnsCreateMandateResult() {
+    func testCreateMandate_onSuccessfulHttpResponse_returnsCreateMandateResult() async throws {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -120,35 +120,30 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
             ]
         )
         
-        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
-            if error != nil {
-                XCTFail("This request should be successful.")
-            } else if result != nil {
-                XCTAssertEqual(result?.ibanLastFour, "2313")
-                XCTAssertEqual(result?.approvalURL, self.successApprovalURL)
-                XCTAssertEqual(result?.bankReferenceToken, "QkEtWDZDQkpCUU5TWENDVw")
-                XCTAssertEqual(result?.customerID, "A0E243A0A200491D929D")
-                XCTAssertEqual(result?.mandateType, BTSEPADirectDebitMandateType.oneOff.description)
-            }
-        }
+        let result = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
+        
+        XCTAssertEqual(result.ibanLastFour, "2313")
+        XCTAssertEqual(result.approvalURL, successApprovalURL)
+        XCTAssertEqual(result.bankReferenceToken, "QkEtWDZDQkpCUU5TWENDVw")
+        XCTAssertEqual(result.customerID, "A0E243A0A200491D929D")
+        XCTAssertEqual(result.mandateType, BTSEPADirectDebitMandateType.oneOff.description)
     }
     
-    func testCreateMandate_onNoBodyReturned_returnsError() {
+    func testCreateMandate_onNoBodyReturned_throwsError() async throws {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         mockAPIClient.cannedResponseError = BTSEPADirectDebitError.noBodyReturned as NSError
         
-        api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest) { result, error in
-            if error != nil, let error = error as NSError? {
-                XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
-                XCTAssertEqual(error.code, BTSEPADirectDebitError.noBodyReturned.errorCode)
-                XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.noBodyReturned.localizedDescription)
-            } else if result != nil {
-                XCTFail("This request should fail.")
-            }
+        do {
+            _ = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, BTSEPADirectDebitError.errorDomain)
+            XCTAssertEqual(error.code, BTSEPADirectDebitError.noBodyReturned.errorCode)
+            XCTAssertEqual(error.localizedDescription, BTSEPADirectDebitError.noBodyReturned.localizedDescription)
         }
     }
     
-    func testTokenize_onSuccessfulHttpResponse_returnsSEPADirectDebitNonce() {
+    func testTokenize_onSuccessfulHttpResponse_returnsSEPADirectDebitNonce() async throws {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
         
         let json = BTJSON(
@@ -164,15 +159,11 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         
         mockAPIClient.cannedResponseBody = json
         
-        api.tokenize(createMandateResult: mockCreateMandateResult) { nonce, error in
-            if error != nil {
-                XCTFail("This request should be successful.")
-            } else if nonce != nil {
-                XCTAssertEqual(nonce?.nonce, "a-fake-payment-method-nonce")
-                XCTAssertEqual(nonce?.ibanLastFour, "1234")
-                XCTAssertEqual(nonce?.customerID, "a-customer-id")
-                XCTAssertEqual(nonce?.mandateType?.description, "RECURRENT")
-            }
-        }
+        let nonce = try await api.tokenize(createMandateResult: mockCreateMandateResult)
+        
+        XCTAssertEqual(nonce.nonce, "a-fake-payment-method-nonce")
+        XCTAssertEqual(nonce.ibanLastFour, "1234")
+        XCTAssertEqual(nonce.customerID, "a-customer-id")
+        XCTAssertEqual(nonce.mandateType?.description, "RECURRENT")
     }
 }
