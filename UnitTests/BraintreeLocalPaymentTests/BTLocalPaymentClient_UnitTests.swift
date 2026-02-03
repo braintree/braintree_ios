@@ -21,37 +21,35 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         localPaymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         mockAPIClient = MockAPIClient(authorization: tempClientToken)
     }
-    
-    func testStartPayment_returnsErrorWhenConfigurationNil() {
+
+    @MainActor
+    func testStartPayment_returnsErrorWhenConfigurationNil() async {
         mockAPIClient.cannedConfigurationResponseBody = nil
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        let expectation = expectation(description: "Start payment fails with error")
 
-        client.start(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await client.start(localPaymentRequest)
+            XCTFail("This request should throw an error.")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.fetchConfigurationFailed.errorCode)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testStartPayment_returnsErrorWhenLocalPaymentsNotEnabled() {
+    @MainActor
+    func testStartPayment_returnsErrorWhenLocalPaymentsNotEnabled() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": false ])
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        let expectation = expectation(description: "Start payment fails with error")
 
-        client.start(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await client.start(localPaymentRequest)
+            XCTFail("This request should throw an error.")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.disabled.errorCode)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
     func testStartPayment_returnsErrorWhenLocalPaymentDelegateIsNil() {
@@ -114,9 +112,14 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         
-        client.start(paymentRequest) { _, _ in }
+        let expectation = expectation(description: "Start payment completes")
+        client.start(paymentRequest) { _, _ in
+            expectation.fulfill()
+        }
 
-        XCTAssertEqual(mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
+        waitForExpectations(timeout: 2)
+
+        XCTAssertEqual(mockAPIClient.lastPOSTParameters?["merchant_account_id"] as? String, "customer-nl-merchant-account")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["payment_type_country_code"] as? String, "NL")
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["currency_iso_code"] as? String, "EUR")
@@ -239,7 +242,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserPresentationSucceeded))
     }
 
-    func testStartPayment_browser_cancel_sendsAnalyticEvent() {
+    @MainActor
+    func testStartPayment_browser_cancel_sendsAnalyticEvent() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedSessionDidDisplay = true
@@ -265,12 +269,16 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.start(localPaymentRequest) { _, _ in }
-
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserLoginAlertCanceled))
+        do {
+            _ = try await client.start(localPaymentRequest)
+            XCTFail("This request should throw an error.")
+        }  catch {
+            XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserLoginAlertCanceled))
+        }
     }
 
-    func testStartPayment_failure_sendsAnalyticsEvents() {
+    @MainActor
+    func testStartPayment_throwsError_sendsAnalyticsEvents() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedSessionDidDisplay = false
@@ -296,12 +304,17 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        client.start(localPaymentRequest) { _, _ in }
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.paymentFailed))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserPresentationFailed))
+        do {
+            _ = try await client.start(localPaymentRequest)
+            XCTFail("This request should throw an error.")
+        } catch {
+            XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.paymentFailed))
+            XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTLocalPaymentAnalytics.browserPresentationFailed))
+        }
     }
 
-    func testStartPayment_successfulResult_callsCompletionBlock() {
+    @MainActor
+    func testStartPayment_successfulResult_callsCompletionBlock() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
@@ -318,14 +331,15 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         client.start(localPaymentRequest) { _, _ in }
 
-        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
+        await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
         XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
         XCTAssertEqual(self.mockAPIClient.postedContextID, "123aaa-123-543-777")
     }
 
-    func testStartPayment_whenPaymentResourceContextID_sendsContextIDInAnalytics() {
+    @MainActor
+    func testStartPayment_whenPaymentResourceContextID_sendsContextIDInAnalytics() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
@@ -342,12 +356,13 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         client.start(localPaymentRequest) { _, _ in }
 
-        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
+        await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
         XCTAssertEqual(mockAPIClient.postedContextID, "123aaa-123-543-777")
     }
 
-    func testStartPayment_whenPaymentResourceDoesNotContainContextID_doesNotSendContextIDInAnalytics() {
+    @MainActor
+    func testStartPayment_whenPaymentResourceDoesNotContainContextID_doesNotSendContextIDInAnalytics() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
@@ -363,14 +378,15 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         client.start(localPaymentRequest) { _, _ in }
 
-        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
+        await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
 
         XCTAssertNil(mockAPIClient.postedContextID)
     }
 
-    func testStartPayment_cancelResult_callsCompletionBlock() {
+    @MainActor
+    func testStartPayment_cancelResult_callsCompletionBlock() async {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
-
+        
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -380,14 +396,16 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
                 ]
             ]
         )
-        
-        client.start(localPaymentRequest) { _, error in
-            guard let error = error as NSError? else { return }
+
+        do {
+            _ = try await client.start(localPaymentRequest)
+            XCTFail("Completion handler called with error")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
             XCTAssertEqual(error.code, BTLocalPaymentError.canceled("flow-type").errorCode)
         }
 
-        client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
+        await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")!)
     }
 
     func testStartPayment_callsCompletionBlock_withError_tokenizationFailure() {
@@ -409,8 +427,9 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         
         mockAPIClient.cannedResponseBody = nil
     }
-    
-    func testHandleOpenURL_postAllLocalPaymentPayPalAccountsParameters() {
+
+    @MainActor
+    func testHandleOpenURL_postAllLocalPaymentPayPalAccountsParameters() async {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
         
@@ -430,9 +449,14 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
 
-        client.start(paymentRequest) { _, _ in }
+        let expectation = self.expectation(description: "Start payment completes")
+        client.start(paymentRequest) { _, _ in
+            expectation.fulfill()
+        }
+        
+        await fulfillment(of: [expectation], timeout: 2)
 
-        client.handleOpen(
+        await client.handleOpen(
             URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!
         )
 
@@ -458,14 +482,15 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         XCTAssertFalse(options["validate"] as! Bool)
         XCTAssertEqual(response["webURL"] as? String, "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")
     }
-    
-    func testHandleOpenURL_whenMissingAccountsResponse_returnsError() {
+
+    @MainActor
+    func testHandleOpenURL_whenMissingAccountsResponse_returnsError() async {
         let client = BTLocalPaymentClient(authorization: tempClientToken)
-        let expectation = self.expectation(description: "Calls onPaymentComplete with result")
+        let expectation = self.expectation(description: "Merchant completion called with error")
 
         mockAPIClient.cannedResponseBody = nil
         client.apiClient = mockAPIClient
-        
+
         client.merchantCompletion = { _, error in
             guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
@@ -473,8 +498,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             expectation.fulfill()
         }
         
-        client.handleOpen(URL(string: "www.fake.com")!)
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
+        await client.handleOpen(URL(string: "www.fake.com")!)
     }
 }
