@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* BraintreeDataCollector
+  * Update PPRiskMagnes to 5.6.0 
+  * Add `collectDeviceDataOnSuccess` method that ensures Magnes SDK completes data submission prior to return response.
+
 ## 7.3.0 (2026-01-29)
 
 * BraintreePayPal
