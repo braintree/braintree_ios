@@ -24,36 +24,36 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
         init(request: BTVenmoRequest, merchantProfileID: String?) {
             self.input = InputParameters(
                 paymentMethodUsage: request.paymentMethodUsage.stringValue,
-                riskCorrelationID: request.riskCorrelationID,
                 merchantProfileID: merchantProfileID,
                 customerClient: "MOBILE_APP",
                 intent: "CONTINUE",
                 isFinalAmount: request.isFinalAmount.description,
                 displayName: request.displayName,
-                paysheetDetails: InputParameters.PaysheetDetails(request: request)
+                paysheetDetails: InputParameters.PaysheetDetails(request: request),
+                riskCorrelationID: request.riskCorrelationID
             )
         }
         
         struct InputParameters: Encodable {
             
             var paymentMethodUsage: String?
-            var riskCorrelationID: String?
             var merchantProfileID: String?
             var customerClient: String = "MOBILE_APP"
             var intent: String = "CONTINUE"
             var isFinalAmount: String?
             var displayName: String?
             var paysheetDetails: PaysheetDetails?
+            var riskCorrelationID: String?
             
             enum CodingKeys: String, CodingKey {
                 case paymentMethodUsage
-                case riskCorrelationID = "venmoRiskCorrelationId"
                 case merchantProfileID = "merchantProfileId"
                 case customerClient
                 case intent
                 case isFinalAmount
                 case displayName
                 case paysheetDetails
+                case riskCorrelationID = "venmoRiskCorrelationId"
             }
             
             struct PaysheetDetails: Encodable {

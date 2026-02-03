@@ -44,7 +44,6 @@ import Foundation
     /// Initialize a `BTVenmoRequest`
     /// - Parameters:
     ///   - paymentMethodUsage: Required: A `BTVenmoPaymentMethodUsage` that determines the usage type of a tokenized Venmo account.
-    ///   - riskCorrelationID: Optional: A unique identifier that is used to correlate risk information for this payment. This ID must be unique for each payment attempt.
     ///   - profileID: Optional: The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile. Venmo profile IDs can be found in the Braintree Control Panel. Leaving this `nil` will use the default Venmo profile.
     ///   - vault: Optional: Whether to automatically vault the Venmo account on the client. For client-side vaulting, you must initialize BTAPIClient with a client token that was created with a customer ID.
     ///     Also, `paymentMethodUsage` on the BTVenmoRequest must be set to `.multiUse`. If this property is set to `false`, you can still vault the Venmo account on your server, provided that `paymentMethodUsage` is not set to `.singleUse`.
@@ -58,11 +57,11 @@ import Foundation
     ///   - shippingAmount: Optional: The shipping amount for the transaction to be displayed on the paysheet. If this value is set, `totalAmount` must also be set.
     ///   - totalAmount: Optional: The grand total amount on the transaction that should be displayed on the paysheet.
     ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items. If this value is set, `totalAmount` must also be set.
-    @objc(initWithPaymentMethodUsage:riskCorrelationID:profileID:vault:displayName:collectCustomerBillingAddress:
-    collectCustomerShippingAddress:isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:)
+    ///   - riskCorrelationID: Optional: A unique identifier that is used to correlate risk information for this payment. This ID must be unique for each payment attempt.
+    @objc(initWithPaymentMethodUsage:profileID:vault:displayName:collectCustomerBillingAddress:collectCustomerShippingAddress:
+    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:riskCorrelationID:)
     public init(
         paymentMethodUsage: BTVenmoPaymentMethodUsage,
-        riskCorrelationID: String? = nil,
         profileID: String? = nil,
         vault: Bool = false,
         displayName: String? = nil,
@@ -74,10 +73,10 @@ import Foundation
         taxAmount: String? = nil,
         shippingAmount: String? = nil,
         totalAmount: String? = nil,
-        lineItems: [BTVenmoLineItem]? = []
+        lineItems: [BTVenmoLineItem]? = [],
+        riskCorrelationID: String? = nil
     ) {
         self.paymentMethodUsage = paymentMethodUsage
-        self.riskCorrelationID = riskCorrelationID
         self.profileID = profileID
         self.vault = vault
         self.displayName = displayName
@@ -90,5 +89,6 @@ import Foundation
         self.shippingAmount = shippingAmount
         self.totalAmount = totalAmount
         self.lineItems = lineItems
+        self.riskCorrelationID = riskCorrelationID
     }
 }
