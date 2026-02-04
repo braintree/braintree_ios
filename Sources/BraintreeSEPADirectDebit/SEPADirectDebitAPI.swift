@@ -19,7 +19,7 @@ class SEPADirectDebitAPI {
         
         let (body, _) = try await apiClient.post("v1/sepa_debit", parameters: sepaDebitRequest)
         
-        guard let body = body else {
+        guard let body else {
             throw BTSEPADirectDebitError.noBodyReturned
         }
         
@@ -32,7 +32,7 @@ class SEPADirectDebitAPI {
         
         let (body, _) = try await apiClient.post("v1/payment_methods/sepa_debit_accounts", parameters: sepaDebitAccountsRequest)
         
-        guard let body = body else {
+        guard let body else {
             throw BTSEPADirectDebitError.noBodyReturned
         }
         

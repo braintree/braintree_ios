@@ -69,27 +69,21 @@ import BraintreeCore
         do {
             let createMandateResult = try await createMandate(request: request)
             
-            // If the approval URL is invalid, fail early
-            guard createMandateResult.approvalURL != CreateMandateResult.mandateAlreadyApprovedURLString,
-                let url = URL(string: createMandateResult.approvalURL) else {
-                // Mandate already approved, skip authentication
-                if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
-                    apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
+            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
+            if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
+                return try await tokenize(createMandateResult: createMandateResult)
+            } else if let url = URL(string: createMandateResult.approvalURL) {
+                let success = try await startAuthenticationSession(url: url, context: self)
+                if success {
                     return try await tokenize(createMandateResult: createMandateResult)
+                } else {
+                    throw BTSEPADirectDebitError.approvalURLInvalid
                 }
-                // Invalid approval URL
+            } else {
                 apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
                 throw BTSEPADirectDebitError.approvalURLInvalid
             }
-            
-            // Authenticate and tokenize
-            let success = try await startAuthenticationSession(url: url, context: self)
-            guard success else {
-                throw BTSEPADirectDebitError.webFlowCanceled
-            }
-            
-            apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
-            return try await tokenize(createMandateResult: createMandateResult)
         } catch {
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
             apiClient.sendAnalyticsEvent(
