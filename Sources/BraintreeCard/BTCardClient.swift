@@ -73,12 +73,12 @@ import BraintreeCore
                     let cardNonce = BTCardNonce(graphQLJSON: cardJSON)
                     return notifySuccess(with: cardNonce)
                 } catch {
-                    let nsError = error as NSError
-                    let response: HTTPURLResponse? = nsError.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
+                    let error = error as NSError
+                    let response: HTTPURLResponse? = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
                     var callbackError: Error = error
 
                     if response?.statusCode == 422 {
-                        callbackError = constructCallbackError(with: nsError.userInfo, error: nsError) ?? error
+                        callbackError = constructCallbackError(with: error.userInfo, error: error) ?? error
                     }
 
                     notifyFailure(with: callbackError)
