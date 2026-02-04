@@ -60,8 +60,7 @@ import BraintreeCore
             paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier ?? ""
             paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks ?? []
 
-            notifyPaymentRequestSuccess()
-            return paymentRequest
+            return notifyPaymentRequestSuccess(with: paymentRequest)
         } catch {
             sendPaymentRequestFailureAnalytics(with: error)
             throw error
@@ -134,8 +133,7 @@ import BraintreeCore
                 throw BTApplePayError.failedToCreateNonce
             }
 
-            notifyTokenizeSuccess()
-            return applePayNonce
+            return notifyTokenizeSuccess(with: applePayNonce)
         } catch {
             sendTokenizeFailureAnalytics(with: error)
             throw error
@@ -144,16 +142,18 @@ import BraintreeCore
     
     // MARK: - Analytics Helper Methods
 
-    private func notifyTokenizeSuccess() {
+    private func notifyTokenizeSuccess(with result: BTApplePayCardNonce) -> BTApplePayCardNonce {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeSucceeded)
+        return result
     }
 
     private func sendTokenizeFailureAnalytics(with error: Error) {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.tokenizeFailed, errorDescription: error.localizedDescription)
     }
 
-    private func notifyPaymentRequestSuccess() {
+    private func notifyPaymentRequestSuccess(with result: PKPaymentRequest) -> PKPaymentRequest {
         apiClient.sendAnalyticsEvent(BTApplePayAnalytics.paymentRequestSucceeded)
+        return result
     }
 
     private func sendPaymentRequestFailureAnalytics(with error: Error) {
