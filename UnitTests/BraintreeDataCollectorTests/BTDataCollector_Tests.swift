@@ -245,7 +245,7 @@ class BTDataCollector_Tests: XCTestCase {
 
         XCTAssertNotNil(deviceData)
         let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
-        XCTAssertNotNil(json["correlation_id"])
+        XCTAssertEqual(riskCorrelationID, json["correlation_id"].asString())
     }
 
     func testCollectDeviceDataOnSuccess_fetchConfigurationReturnsError_returnError() {

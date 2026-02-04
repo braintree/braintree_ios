@@ -4,7 +4,7 @@
 
 * BraintreeDataCollector
   * Update PPRiskMagnes to 5.6.0 
-  * Add `collectDeviceDataOnSuccess` method that ensures Magnes SDK completes data submission prior to return response.
+  * Add `collectDeviceDataOnSuccess(riskCorrelationID: completion:)` method that ensures Magnes SDK completes data submission prior to returning device data.
 
 ## 7.3.0 (2026-01-29)
 

@@ -11,7 +11,7 @@ class MockBTDataCollector: BTDataCollector {
     }
 
     override func collectDeviceDataOnSuccess(
-        riskCorrelationID: String,
+        riskCorrelationID: String? = nil,
         _ completion: @escaping (String?, Error?) -> Void
     ) {
         completion(cannedDeviceData, cannedDataCollectorError)
