@@ -56,6 +56,7 @@ import BraintreeCore
                 completion(nil, BTDataCollectorError.encodingFailure)
                 return
             }
+            
             completion(deviceData, nil)
         }
     }
@@ -122,7 +123,6 @@ import BraintreeCore
                 switch status {
                 case .success:
                     let clientMetadataID = magnesResult?.getPayPalClientMetaDataId() ?? ""
-
                     let data: [String: String] = ["correlation_id": clientMetadataID]
 
                     guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else {
@@ -134,6 +134,7 @@ import BraintreeCore
                         completion(nil, BTDataCollectorError.encodingFailure)
                         return
                     }
+                    
                     completion(deviceData, nil)
 
                 case .error:
