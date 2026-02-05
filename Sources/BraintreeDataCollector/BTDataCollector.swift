@@ -159,11 +159,9 @@ import BraintreeCore
     ///
     /// Use the return value on your server, e.g. with `Transaction.sale`. or in
     /// client side requests such as PayPal, Venmo, or Local Payment Methods.
-    /// - Parameters:
-    ///  - completion: A completion block that returns either a device data string or an error with the failure reason. Retries are recommended on failure.
-    ///  - riskCorrelationID: Optional: A risk correlation ID to associate with this device data collection
+    /// - Parameter riskCorrelationID: Optional: A risk correlation ID to associate with this device data collection.
     /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
-    /// - Throws: An `Error` describing the failure or timeout. Merchants should retry on error to ensure coverage.
+    /// - Throws: An `Error` describing the failure or timeout. Retries are recommended on failure to ensure coverage.
     public func collectDeviceDataOnSuccess(riskCorrelationID: String? = nil) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
             collectDeviceDataOnSuccess(riskCorrelationID: riskCorrelationID) { deviceData, error in
