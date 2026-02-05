@@ -65,34 +65,38 @@ import BraintreeCore
     /// - Throws: An `Error` describing the failure
     public func tokenize(_ request: BTSEPADirectDebitRequest) async throws -> BTSEPADirectDebitNonce {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.tokenizeStarted)
-        
         do {
             let createMandateResult = try await createMandate(request: request)
             
-            // if the SEPADirectDebitAPI.tokenize API calls returns a "null" URL, the URL has already been approved.
+            // mandate already approved
             if createMandateResult.approvalURL == CreateMandateResult.mandateAlreadyApprovedURLString {
                 apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
                 return try await tokenize(createMandateResult: createMandateResult)
-            } else if let url = URL(string: createMandateResult.approvalURL) {
-                let success = try await startAuthenticationSession(url: url, context: self)
-                if success {
-                    return try await tokenize(createMandateResult: createMandateResult)
-                } else {
-                    throw BTSEPADirectDebitError.approvalURLInvalid
-                }
-            } else {
+            }
+            
+            // validate approval URL
+            guard let url = URL(string: createMandateResult.approvalURL) else {
                 apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
                 throw BTSEPADirectDebitError.approvalURLInvalid
             }
+            
+            // authenticate
+            let authSuccess = try await startAuthenticationSession(url: url, context: self)
+            
+            if authSuccess {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateSucceeded)
+                return try await tokenize(createMandateResult: createMandateResult)
+            } else {
+                apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
+                throw BTSEPADirectDebitError.authenticationResultNil
+            }
         } catch {
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-            apiClient.sendAnalyticsEvent(
-                BTSEPADirectAnalytics.tokenizeFailed,
-                errorDescription: error.localizedDescription
-            )
+            notifyFailure(with: error)
             throw error
         }
     }
+    
     // MARK: - Internal Methods
     
     /// Calls `SEPADirectDebitAPI.createMandate` to create the mandate and returns the `approvalURL` in the `CreateMandateResult`
