@@ -54,6 +54,8 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
     
     func testCreateMandate_properlyFormatsPOSTURL() async throws {
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["message": ["body": ["sepaDebitAccount": [:]]]])
+        
         _ = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/sepa_debit")
@@ -79,6 +81,9 @@ class SEPADirectDebitAPI_Tests: XCTestCase {
         )
 
         let api = SEPADirectDebitAPI(apiClient: mockAPIClient)
+        
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["message": ["body": ["sepaDebitAccount": [:]]]])
+        
         _ = try await api.createMandate(sepaDirectDebitRequest: sepaDirectDebitRequest)
         
         let lastPOSTParameters = mockAPIClient.lastPOSTParameters!

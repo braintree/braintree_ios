@@ -88,7 +88,7 @@ import BraintreeCore
                 return try await tokenize(createMandateResult: createMandateResult)
             } else {
                 apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
-                throw BTSEPADirectDebitError.authenticationResultNil
+                throw BTSEPADirectDebitError.approvalURLInvalid
             }
         } catch {
             apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateFailed)
