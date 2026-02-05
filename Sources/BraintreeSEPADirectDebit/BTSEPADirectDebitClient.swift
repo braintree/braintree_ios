@@ -107,8 +107,7 @@ import BraintreeCore
     func createMandate(request: BTSEPADirectDebitRequest) async throws -> CreateMandateResult {
         apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.createMandateChallengeRequired)
         do {
-            let createMandateResult = try await sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request)
-            return createMandateResult
+            return try await sepaDirectDebitAPI.createMandate(sepaDirectDebitRequest: request)
         } catch {
             throw error
         }

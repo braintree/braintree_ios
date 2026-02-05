@@ -220,6 +220,60 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
     }
     
     @MainActor
+    func testTokenizeWithPresentationContext_callsTokenizeWithAlreadyApprovedMandate_returnsSuccess_andSendsAnalytics() async {
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        let mockCreateMandateResult = BTJSON(
+            value: [
+                "message": [
+                    "body": [
+                        "sepaDebitAccount": [
+                            "approvalUrl": "null",
+                            "last4": "1234",
+                            "merchantOrPartnerCustomerId": "a-customer-id",
+                            "bankReferenceToken": "a-bank-reference-token",
+                            "mandateType": "ONE_OFF"
+                        ]
+                    ]
+                ]
+            ]
+        )
+
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization,
+            webAuthenticationSession: mockWebAuthenticationSession,
+            sepaDirectDebitAPI: mockSepaDirectDebitAPI
+        )
+        
+        sepaDirectDebitClient.apiClient = mockAPIClient
+
+        let mockTokenizeResponse = BTJSON(
+            value: [
+                "nonce": "a-fake-payment-method-nonce",
+                "details": [
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
+                    "mandateType": "RECURRENT"
+                ]
+            ] as [String: Any]
+        )
+
+        mockAPIClient.cannedResponseBody = mockCreateMandateResult
+        mockAPIClient.cannedResponseBody = mockTokenizeResponse
+        
+        do {
+            let nonce = try await sepaDirectDebitClient.tokenize(sepaDirectDebitRequest)
+            XCTAssertEqual(nonce.nonce, "a-fake-payment-method-nonce")
+            XCTAssertEqual(nonce.ibanLastFour, "1234")
+            XCTAssertEqual(nonce.customerID, "a-customer-id")
+            XCTAssertEqual(nonce.mandateType?.description, "RECURRENT")
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTSEPADirectAnalytics.tokenizeSucceeded))
+        } catch let error as NSError {
+            XCTFail("This request should be successful.")
+        }
+    }
+    
+    @MainActor
     func testTokenize_callsTokenizeWithAlreadyApprovedMandate_returnsSuccess_andSendsAnalytics() async {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
