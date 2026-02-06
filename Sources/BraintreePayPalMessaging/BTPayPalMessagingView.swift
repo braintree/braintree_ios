@@ -43,42 +43,39 @@ public class BTPayPalMessagingView: UIView {
         )
         
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error)
-                return
-            }
 
-            guard let configuration else {
-                self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
-                return
-            }
+        Task {
+            do {
+                let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+                
+                guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
+                    self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
+                    return
+                }
 
-            guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
-                return
-            }
-
-            let messageData = PayPalMessageData(
-                clientID: clientID,
-                environment: configuration.environment == "production" ? .live : .sandbox,
-                amount: request.amount,
-                pageType: request.pageType?.pageTypeRawValue,
-                offerType: request.offerType?.offerTypeRawValue
-            )
-
-            messageData.buyerCountry = request.buyerCountry
-
-            let messageConfig = PayPalMessageConfig(
-                data: messageData,
-                style: PayPalMessageStyle(
-                    logoType: request.logoType.logoTypeRawValue,
-                    color: request.color.messageColorRawValue,
-                    textAlign: request.textAlignment.textAlignmentRawValue
+                let messageData = PayPalMessageData(
+                    clientID: clientID,
+                    environment: configuration.environment == "production" ? .live : .sandbox,
+                    amount: request.amount,
+                    pageType: request.pageType?.pageTypeRawValue,
+                    offerType: request.offerType?.offerTypeRawValue
                 )
-            )
 
-            self.setupMessageView(with: messageConfig)
+                messageData.buyerCountry = request.buyerCountry
+
+                let messageConfig = PayPalMessageConfig(
+                    data: messageData,
+                    style: PayPalMessageStyle(
+                        logoType: request.logoType.logoTypeRawValue,
+                        color: request.color.messageColorRawValue,
+                        textAlign: request.textAlignment.textAlignmentRawValue
+                    )
+                )
+
+                self.setupMessageView(with: messageConfig)
+            } catch {
+                self.notifyFailure(with: error)
+            }
         }
     }
     
