@@ -22,7 +22,7 @@ public class BTPayPalMessagingView: UIView {
     ///  Initializes a `BTPayPalMessagingView`.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     public init(authorization: String) {
-        self.apiClient = BTAPIClient(authorization: authorization)
+        apiClient = BTAPIClient(authorization: authorization)
 
         super.init(frame: .zero)
     }
@@ -49,7 +49,7 @@ public class BTPayPalMessagingView: UIView {
                 let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
                 
                 guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                    self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
+                    notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
                     return
                 }
 
@@ -72,9 +72,9 @@ public class BTPayPalMessagingView: UIView {
                     )
                 )
 
-                self.setupMessageView(with: messageConfig)
+                setupMessageView(with: messageConfig)
             } catch {
-                self.notifyFailure(with: error)
+                notifyFailure(with: error)
             }
         }
     }
@@ -126,7 +126,7 @@ public extension BTPayPalMessagingView {
             request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(),
             delegate: BTPayPalMessagingDelegate? = nil
         ) {
-            self.apiClient = BTAPIClient(authorization: authorization)
+            apiClient = BTAPIClient(authorization: authorization)
             self.request = request
             self.delegate = delegate
         }
