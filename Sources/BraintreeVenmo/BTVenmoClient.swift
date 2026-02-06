@@ -229,7 +229,14 @@ import BraintreeCore
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
 
                 if self.shouldVault && self.apiClient.authorization.type == .clientToken {
-                    self.vault(venmoAccountNonce.nonce)
+                    Task {
+                        do {
+                            let vaultedNonce = try await self.vault(venmoAccountNonce.nonce)
+                            self.notifySuccess(with: vaultedNonce, completion: self.appSwitchCompletion)
+                        } catch {
+                            self.notifyFailure(with: error, completion: self.appSwitchCompletion)
+                        }
+                    }
                 } else {
                     self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
                     return
@@ -248,7 +255,14 @@ import BraintreeCore
             }
 
             if shouldVault && apiClient.authorization.type == .clientToken {
-                vault(nonce)
+                Task {
+                    do {
+                        let vaultedNonce = try await vault(nonce)
+                        notifySuccess(with: vaultedNonce, completion: appSwitchCompletion)
+                    } catch {
+                        notifyFailure(with: error, completion: appSwitchCompletion)
+                    }
+                }
             } else {
                 let detailsDictionary: [String: String?] = ["username": returnURL.username]
                 let json = BTJSON(value: ["nonce": nonce, "details": detailsDictionary, "description": username] as [String: Any])
@@ -315,32 +329,23 @@ import BraintreeCore
     }
 
     // MARK: - Vaulting Methods
-
-    func vault(_ nonce: String) {
+    
+    func vault(_ nonce: String) async throws -> BTVenmoAccountNonce {
         let parameters = VenmoAccountsPOSTBody(nonce: nonce)
-
-        apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters) { body, _, error in
-            if let error {
-                self.notifyFailure(with: error, completion: self.appSwitchCompletion)
-                return
-            }
-            
-            guard let body else {
-                self.notifyFailure(with: BTVenmoError.invalidBodyReturned, completion: self.appSwitchCompletion)
-                return
-            }
-            
-            let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
-
-            if let venmoJSONError = venmoAccountJSON.asError() {
-                self.notifyFailure(with: venmoJSONError, completion: self.appSwitchCompletion)
-                return
-            }
-
-            let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
-            self.notifySuccess(with: venmoAccountNonce, completion: self.appSwitchCompletion)
-            return
+        
+        let (body, _) = try await apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters)
+        
+        guard let body else {
+            throw BTVenmoError.invalidBodyReturned
         }
+        
+        let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
+        
+        if let venmoJSONError = venmoAccountJSON.asError() {
+            throw venmoJSONError
+        }
+        
+        return BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
     }
 
     // MARK: - App Switch Methods
