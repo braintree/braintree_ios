@@ -74,8 +74,14 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_postsAllCreationParameters() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        mockWebAuthenticationSession.cannedSessionDidDisplay = true
+        mockWebAuthenticationSession.cannedResponseURL = nil
+        mockWebAuthenticationSession.cannedErrorResponse = nil
+
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
+        client.webAuthenticationSession = mockWebAuthenticationSession
 
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -112,11 +118,12 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
         
+        client.start(paymentRequest) { _, _ in }
+
         let expectation = expectation(description: "Start payment completes")
-        client.start(paymentRequest) { _, _ in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             expectation.fulfill()
         }
-
         waitForExpectations(timeout: 2)
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters?["merchant_account_id"] as? String, "customer-nl-merchant-account")
@@ -325,14 +332,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_successfulResult_callsCompletionBlock() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
-        let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        mockWebAuthenticationSession.cannedSessionDidDisplay = true
-        mockWebAuthenticationSession.cannedResponseURL = nil  // Don't auto-complete, we'll call handleOpen manually
-        mockWebAuthenticationSession.cannedErrorResponse = nil
-
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        client.webAuthenticationSession = mockWebAuthenticationSession
 
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -348,26 +349,16 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             expectation.fulfill()
         }
 
-        // Don't wait here - the expectation will be fulfilled by handleOpen's completion
-
-        // Set the response body for the tokenization POST call
-        mockAPIClient.cannedResponseBody = BTJSON(
-            value: [
-                "paypalAccounts": [
-                    [
-                        "nonce": "fake-nonce",
-                        "description": "fake-description",
-                        "details": [:]
-                    ]
-                ]
-            ]
-        )
+        try? await Task.sleep(nanoseconds: 100_000_000)
 
         await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")!)
 
         await fulfillment(of: [expectation], timeout: 2)
 
-        let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as! [String:Any]
+        guard let paypalAccount = mockAPIClient.lastPOSTParameters?["paypal_account"] as? [String:Any] else {
+            XCTFail("lastPOSTParameters or paypal_account is nil")
+            return
+        }
         XCTAssertNotNil(paypalAccount["correlation_id"] as? String)
         XCTAssertEqual(self.mockAPIClient.postedContextID, "123aaa-123-543-777")
     }
@@ -376,14 +367,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     func testStartPayment_whenPaymentResourceContextID_sendsContextIDInAnalytics() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
 
-        let mockWebAuthenticationSession = MockWebAuthenticationSession()
-        mockWebAuthenticationSession.cannedSessionDidDisplay = true
-        mockWebAuthenticationSession.cannedResponseURL = nil  // Don't auto-complete, we'll call handleOpen manually
-        mockWebAuthenticationSession.cannedErrorResponse = nil
-
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        client.webAuthenticationSession = mockWebAuthenticationSession
 
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
@@ -398,21 +383,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.start(localPaymentRequest) { _, _ in
             expectation.fulfill()
         }
-        
-        // Don't wait here - the expectation will be fulfilled by handleOpen's completion
-        
-        // Set the response body for the tokenization POST call
-        mockAPIClient.cannedResponseBody = BTJSON(
-            value: [
-                "paypalAccounts": [
-                    [
-                        "nonce": "fake-nonce",
-                        "description": "fake-description",
-                        "details": [:]
-                    ]
-                ]
-            ]
-        )
+
+        try? await Task.sleep(nanoseconds: 100_000_000)
 
         await client.handleOpen(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!)
         
@@ -519,12 +491,20 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         )
         paymentRequest.localPaymentFlowDelegate = mockLocalPaymentRequestDelegate
 
-        let expectation = self.expectation(description: "Start payment completes")
+        let startExpectation = self.expectation(description: "Start payment completes")
+        let tokenizeExpectation = self.expectation(description: "Tokenization completes")
+
+        var startCompleted = false
         client.start(paymentRequest) { _, _ in
-            expectation.fulfill()
+            if startCompleted {
+                tokenizeExpectation.fulfill()
+            } else {
+                startCompleted = true
+                startExpectation.fulfill()
+            }
         }
-        
-        await fulfillment(of: [expectation], timeout: 2)
+
+        await fulfillment(of: [startExpectation], timeout: 2)
 
         // Set the response body for the tokenization POST call
         mockAPIClient.cannedResponseBody = BTJSON(
@@ -543,10 +523,16 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")!
         )
 
+        // Wait for tokenization to complete
+        await fulfillment(of: [tokenizeExpectation], timeout: 2)
+
+        // Wait for POST to completes
+        try? await Task.sleep(nanoseconds: 50_000_000)
+
         guard
             let payPalAccount = mockAPIClient.lastPOSTParameters!["paypal_account"] as? [String: Any],
             let meta = mockAPIClient.lastPOSTParameters!["_meta"] as? [String: Any] else {
-            XCTFail()
+            XCTFail("lastPOSTParameters, paypal_account, or _meta is nil")
             return
         }
 
@@ -561,7 +547,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             XCTFail()
             return
         }
-        
+
         XCTAssertFalse(options["validate"] as! Bool)
         XCTAssertEqual(response["webURL"] as? String, "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")
     }
