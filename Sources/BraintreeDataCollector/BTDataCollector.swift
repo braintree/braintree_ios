@@ -103,7 +103,7 @@ import BraintreeCore
         configuration: BTConfiguration?,
         data: [String: String]?
     ) -> String {
-        if let configuration = configuration {
+        if let configuration {
             config = configuration
         }
 
