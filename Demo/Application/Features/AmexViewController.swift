@@ -27,18 +27,24 @@ class AmexViewController: PaymentButtonBaseViewController {
     }
 
     @objc func tappedValidCard() {
-        getRewards(for: "371260714673002")
+        Task {
+            await getRewards(for: "371260714673002")
+        }
     }
 
     @objc func tappedInsufficientPointsCard() {
-        getRewards(for: "371544868764018")
+        Task {
+            await getRewards(for: "371544868764018")
+        }
     }
 
     @objc func tappedIneligibleCard() {
-        getRewards(for: "378267515471109")
+        Task {
+            await getRewards(for: "378267515471109")
+        }
     }
 
-    private func getRewards(for cardNumber: String) {
+    private func getRewards(for cardNumber: String) async {
         let card = BTCard(
             number: cardNumber,
             expirationMonth: "12",
@@ -47,31 +53,27 @@ class AmexViewController: PaymentButtonBaseViewController {
         )
 
         progressBlock("Tokenizing Card")
-
-        cardClient.tokenize(card) { tokenizedCard, error in
-            guard let tokenizedCard else {
-                self.progressBlock(error?.localizedDescription)
+        
+        do {
+            let tokenizedCard = try await cardClient.tokenize(card)
+            progressBlock("Amex - getting rewards balance")
+            
+            let rewardsBalance = try await amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD")
+            
+            if let errorMessage = rewardsBalance.errorMessage {
+                progressBlock("Error: \(errorMessage)")
                 return
             }
-
-            self.progressBlock("Amex - getting rewards balance")
-
-            self.amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD") { rewardsBalance, error in
-                guard let rewardsBalance else {
-                    self.progressBlock(error?.localizedDescription)
-                    return
-                }
-
-                if let errorCode = rewardsBalance.errorCode, let errorMessage = rewardsBalance.errorMessage {
-                    self.progressBlock("\(errorCode): \(errorMessage)")
-                } else if
-                    let rewardsAmount = rewardsBalance.rewardsAmount,
-                    let rewardsUnit = rewardsBalance.rewardsUnit,
-                    let currencyAmount = rewardsBalance.currencyAmount,
-                    let currencyIsoCode = rewardsBalance.currencyIsoCode {
-                    self.progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
-                }
+            
+            if
+                let rewardsAmount = rewardsBalance.rewardsAmount,
+                let rewardsUnit = rewardsBalance.rewardsUnit,
+                let currencyAmount = rewardsBalance.currencyAmount,
+                let currencyIsoCode = rewardsBalance.currencyIsoCode {
+                progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
             }
+        } catch {
+            progressBlock(error.localizedDescription)
         }
     }
 }
