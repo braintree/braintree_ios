@@ -38,26 +38,17 @@ import BraintreeCore
     ///  Use the return value on your server, e.g. with `Transaction.sale`.
     ///  - Parameter completion:  A completion block that returns either a device data string that should be passed into server-side calls, such as `Transaction.sale`, or an error with the failure reason.
     @objc public func collectDeviceData(_ completion: @escaping (String?, Error?) -> Void) {
-        fetchConfiguration { configuration, error in
-            guard let configuration = configuration else {
-                completion(nil, error)
-                return
+        Task {
+            do {
+                let deviceData = try await collectDeviceData()
+                await MainActor.run {
+                    completion(deviceData, nil)
+                }
+            } catch {
+                await MainActor.run {
+                    completion(nil, error)
+                }
             }
-            
-            let clientMetadataID: String = self.generateClientMetadataID(with: configuration)
-            let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
-            
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
-                completion(nil, BTDataCollectorError.jsonSerializationFailure)
-                return
-            }
-            
-            guard let deviceData = String(data: jsonData, encoding: .utf8) else {
-                completion(nil, BTDataCollectorError.encodingFailure)
-                return
-            }
-            
-            completion(deviceData, nil)
         }
     }
 
@@ -69,23 +60,26 @@ import BraintreeCore
     /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
     /// - Throws: An `Error` describing the failure
     public func collectDeviceData() async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            collectDeviceData { deviceData, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let deviceData {
-                    continuation.resume(returning: deviceData)
-                }
-            }
+        let configuration = try await fetchConfiguration()
+
+        let clientMetadataID: String = generateClientMetadataID(with: configuration)
+        let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
+            throw BTDataCollectorError.jsonSerializationFailure
         }
+
+        guard let deviceData = String(data: jsonData, encoding: .utf8) else {
+            throw BTDataCollectorError.encodingFailure
+        }
+
+        return deviceData
     }
     
     // MARK: Internal methods
-    
-    func fetchConfiguration(completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            completion(configuration, error)
-        }
+
+    func fetchConfiguration() async throws -> BTConfiguration {
+        try await apiClient.fetchOrReturnRemoteConfiguration()
     }
 
     func getMagnesEnvironment(from configuration: BTConfiguration?) -> MagnesSDK.Environment {
@@ -109,12 +103,8 @@ import BraintreeCore
         configuration: BTConfiguration?,
         data: [String: String]?
     ) -> String {
-        if configuration != nil {
+        if let configuration = configuration {
             config = configuration
-        } else {
-            fetchConfiguration { configuration, _ in
-                self.config = configuration
-            }
         }
 
         let mangnesEnvironment = getMagnesEnvironment(from: config)
