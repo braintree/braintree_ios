@@ -76,6 +76,9 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
     
+    /// Used for analytics purpose to determine if user selected billing with purchase
+    private var billingWithPurchase: Bool?
+    
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
     
@@ -139,6 +142,7 @@ import BraintreeDataCollector
         isVaultRequest = true
         contextType = "BA-TOKEN"
         fundingSource = getFundingSource(from: request)
+        billingWithPurchase = false
         tokenize(request: request, completion: completion)
     }
 
@@ -184,6 +188,7 @@ import BraintreeDataCollector
         isVaultRequest = false
         contextType = "EC-TOKEN"
         fundingSource = getFundingSource(from: request)
+        billingWithPurchase = request.requestBillingAgreement
         tokenize(request: request, completion: completion)
     }
 
@@ -224,6 +229,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.handleReturnStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -309,6 +315,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchSucceeded,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                billingWithPurchase: billingWithPurchase,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -323,6 +330,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchFailed,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                billingWithPurchase: billingWithPurchase,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -340,6 +348,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.defaultBrowserStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -365,6 +374,7 @@ import BraintreeDataCollector
             eventName,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -418,6 +428,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
             applicationState: UIApplication.shared.applicationStateString,
+            billingWithPurchase: billingWithPurchase,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             fundingSource: fundingSource?.rawValue,
@@ -524,6 +535,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: payPalAppRedirectURL,
+                billingWithPurchase: billingWithPurchase,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -543,6 +555,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.appSwitchStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: payPalAppRedirectURL,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -583,6 +596,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.browserPresentationStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: appSwitchURL,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -634,6 +648,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserPresentationSucceeded,
                     applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    billingWithPurchase: billingWithPurchase,
                     contextID: contextID,
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -648,6 +663,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserPresentationFailed,
                     applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    billingWithPurchase: billingWithPurchase,
                     contextID: contextID,
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -666,6 +682,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.browserLoginAlertCanceled,
                     applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    billingWithPurchase: billingWithPurchase,
                     contextID: contextID,
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -686,6 +703,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: appSwitchURL,
+                billingWithPurchase: billingWithPurchase,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -722,6 +740,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
             applicationState: UIApplication.shared.applicationStateString,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -738,6 +757,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             applicationState: UIApplication.shared.applicationStateString,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -754,6 +774,7 @@ import BraintreeDataCollector
     private func notifyCancel(completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
+            billingWithPurchase: billingWithPurchase,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },

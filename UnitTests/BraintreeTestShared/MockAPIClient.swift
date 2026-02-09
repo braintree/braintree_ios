@@ -115,6 +115,7 @@ public class MockAPIClient: BTAPIClient {
         _ eventName: String,
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
+        billingWithPurchase: Bool? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,

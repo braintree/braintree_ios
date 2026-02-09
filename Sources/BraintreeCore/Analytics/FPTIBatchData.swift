@@ -33,6 +33,7 @@ struct FPTIBatchData: Codable {
         let applicationState: String?
 
         let appSwitchURL: String?
+        let billingWithPurchase: Bool?
         /// The order or ranking in which payment buttons appear.
         let buttonOrder: String?
         /// The type of button displayed or presented
@@ -79,6 +80,7 @@ struct FPTIBatchData: Codable {
         init(
             applicationState: String? = nil,
             appSwitchURL: URL? = nil,
+            billingWithPurchase: Bool? = nil,
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
@@ -103,6 +105,7 @@ struct FPTIBatchData: Codable {
         ) {
             self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString
+            self.billingWithPurchase = billingWithPurchase
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
@@ -129,6 +132,7 @@ struct FPTIBatchData: Codable {
         enum CodingKeys: String, CodingKey {
             case applicationState = "application_state"
             case appSwitchURL = "url"
+            case billingWithPurchase = "billing_with_purchase"
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
