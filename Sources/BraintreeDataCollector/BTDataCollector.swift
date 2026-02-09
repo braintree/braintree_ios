@@ -75,7 +75,102 @@ import BraintreeCore
 
         return deviceData
     }
-    
+
+    /// This method should be used for markets where high coverage of device data
+    /// is needed (ex: Predictions Market). Collects device data based on
+    /// your merchant configuration.
+    ///
+    /// We recommend that you call this method as early as possible, e.g. at app
+    /// launch. If that's too early, calling it when the customer initiates checkout
+    /// is also fine. When using this method you should only proceed if a success is
+    /// returned. In cases where an error is returned, retrying this method is recommended.
+    ///
+    /// Use the return value on your server, e.g. with `Transaction.sale`. or in
+    /// client side requests such as PayPal, Venmo, or Local Payment Methods.
+    /// - Parameters:
+    ///   - riskCorrelationID: Optional: A risk correlation ID to associate with this device data collection
+    ///   - completion: A completion block that returns either a device data string or an error with the failure reason. Retries are recommended on failure.
+    @objc public func collectDeviceDataOnSuccess(
+        riskCorrelationID: String? = nil,
+        _ completion: @escaping (String?, Error?) -> Void
+    ) {
+        Task {
+            do {
+                let configuration = try await fetchConfiguration()
+
+                self.config = configuration
+                let magnesEnvironment = self.getMagnesEnvironment(from: self.config)
+
+                try? MagnesSDK.shared().setUp(
+                    setEnviroment: magnesEnvironment,
+                    setOptionalAppGuid: self.deviceIdentifier(),
+                    disableRemoteConfiguration: false,
+                    disableBeacon: false,
+                    magnesSource: .BRAINTREE
+                )
+
+                var magnesResult: MagnesResult?
+                magnesResult = try? MagnesSDK.shared().collectAndSubmit(
+                    withPayPalClientMetadataId: riskCorrelationID ?? "",
+                    withAdditionalData: [:]
+                ) { status, _ in
+                    switch status {
+                    case .success:
+                        let clientMetadataID = magnesResult?.getPayPalClientMetaDataId() ?? ""
+                        let data: [String: String] = ["correlation_id": clientMetadataID]
+
+                        guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else {
+                            completion(nil, BTDataCollectorError.jsonSerializationFailure)
+                            return
+                        }
+
+                        guard let deviceData = String(data: jsonData, encoding: .utf8) else {
+                            completion(nil, BTDataCollectorError.encodingFailure)
+                            return
+                        }
+
+                        completion(deviceData, nil)
+
+                    case .error:
+                        completion(nil, BTDataCollectorError.callbackSubmitError)
+                    case .timeout:
+                        completion(nil, BTDataCollectorError.callbackSubmitTimeout)
+                    @unknown default:
+                        completion(nil, BTDataCollectorError.unknown)
+                    }
+                }
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+
+    /// This method should be used for markets where high coverage of device data
+    /// is needed (ex: Predictions Market). Collects device data based on
+    /// your merchant configuration.
+    ///
+    /// We recommend that you call this method as early as possible, e.g. at app
+    /// launch. If that's too early, calling it when the customer initiates checkout
+    /// is also fine. When using this method you should only proceed if a success is
+    /// returned. In cases where an error is returned, retrying this method is recommended.
+    ///
+    /// Use the return value on your server, e.g. with `Transaction.sale`. or in
+    /// client side requests such as PayPal, Venmo, or Local Payment Methods.
+    /// - Parameter riskCorrelationID: Optional: A risk correlation ID to associate with this device data collection.
+    /// - Returns: A device data string that should be passed into server-side calls, such as `Transaction.sale`.
+    /// - Throws: An `Error` describing the failure or timeout. Retries are recommended on failure to ensure coverage.
+    public func collectDeviceDataOnSuccess(riskCorrelationID: String? = nil) async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            collectDeviceDataOnSuccess(riskCorrelationID: riskCorrelationID) { deviceData, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let deviceData {
+                    continuation.resume(returning: deviceData)
+                }
+            }
+        }
+    }
+
     // MARK: Internal methods
 
     func fetchConfiguration() async throws -> BTConfiguration {
