@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)
-// swift-module-flags: -target arm64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name PPRiskMagnes
-// swift-module-flags-ignorable: -enable-bare-slash-regex
+// swift-compiler-version: Apple Swift version 6.1.2 effective-5.10 (swiftlang-6.1.2.1.2 clang-1700.0.13.5)
+// swift-module-flags: -target arm64-apple-ios15.6-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name PPRiskMagnes
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -interface-compiler-version 6.1.2
 import SystemConfiguration.CaptiveNetwork
 import CoreLocation
 import CoreMotion
@@ -40,6 +40,19 @@ import _SwiftConcurrencyShims
       get
     }
   }
+  @objc public enum MagnesSubmitStatus : Swift.Int {
+    case success
+    case error
+    case timeout
+    public var description: Swift.String {
+      get
+    }
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
   @objc public enum MagnesErrors : Swift.Int, Swift.Error {
     case invalidInputError = 100
     public init?(rawValue: Swift.Int)
@@ -58,7 +71,9 @@ import _SwiftConcurrencyShims
   @objc public func collect() -> PPRiskMagnes.MagnesResult
   @objc public func collect(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
   @objc public func collectAndSubmit() -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit(onSubmitComplete: @escaping (_ submitStatus: PPRiskMagnes.MagnesSDK.MagnesSubmitStatus, _ debugId: Swift.String?) -> Swift.Void) -> PPRiskMagnes.MagnesResult
   @objc public func collectAndSubmit(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:]) throws -> PPRiskMagnes.MagnesResult
+  @objc public func collectAndSubmit(withPayPalClientMetadataId cmid: Swift.String = "", withAdditionalData additionalData: [Swift.String : Swift.String] = [:], onSubmitComplete: @escaping (_ submitStatus: PPRiskMagnes.MagnesSDK.MagnesSubmitStatus, _ debugId: Swift.String?) -> Swift.Void) throws -> PPRiskMagnes.MagnesResult
   @objc public func registerTelemetry(on textField: UIKit.UITextField, withViewId viewId: Swift.String, withPayPalClientMetadataId cmid: Swift.String)
   @objc public func unregisterTelemetry(on textField: UIKit.UITextField)
   @objc public func collectTelemetryData(textField: UIKit.UITextField, range: Foundation.NSRange, replacementString: Swift.String)
@@ -76,6 +91,9 @@ extension PPRiskMagnes.MagnesSDK.MagnesSource : Swift.RawRepresentable {}
 extension PPRiskMagnes.MagnesSDK.Environment : Swift.Equatable {}
 extension PPRiskMagnes.MagnesSDK.Environment : Swift.Hashable {}
 extension PPRiskMagnes.MagnesSDK.Environment : Swift.RawRepresentable {}
+extension PPRiskMagnes.MagnesSDK.MagnesSubmitStatus : Swift.Equatable {}
+extension PPRiskMagnes.MagnesSDK.MagnesSubmitStatus : Swift.Hashable {}
+extension PPRiskMagnes.MagnesSDK.MagnesSubmitStatus : Swift.RawRepresentable {}
 extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.Equatable {}
 extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.Hashable {}
 extension PPRiskMagnes.MagnesSDK.MagnesErrors : Swift.RawRepresentable {}
