@@ -1,6 +1,7 @@
 import UIKit
 
 // swiftlint:disable type_body_length
+// swiftlint:disable file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
