@@ -14,6 +14,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents: [String] = []
     public var postedApplicationState: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
+    public var postedBillingWithPurchase: Bool? = nil
     public var postedButtonOrder: String? = nil
     public var postedButtonType: String? = nil
     public var postedIsVaultRequest = false
@@ -133,6 +134,7 @@ public class MockAPIClient: BTAPIClient {
         shopperSessionID: String? = nil
     ) {
         postedApplicationState = applicationState
+        postedBillingWithPurchase = billingWithPurchase
         postedButtonType = buttonType
         postedButtonOrder = buttonOrder
         postedPageType = pageType
