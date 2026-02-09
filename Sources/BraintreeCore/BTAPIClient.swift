@@ -276,6 +276,7 @@ import UIKit
             FPTIBatchData.Event(
                 applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
+                billingWithPurchase: billingWithPurchase,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
                 contextID: contextID,
