@@ -136,10 +136,14 @@ import BraintreeDataCollector
         _ request: BTPayPalVaultRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        isVaultRequest = true
-        contextType = "BA-TOKEN"
-        fundingSource = getFundingSource(from: request)
-        tokenize(request: request, completion: completion)
+        Task { @MainActor in
+            do {
+                let nonce = try await tokenize(request)
+                completion(nonce, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Vault flow.
@@ -154,15 +158,10 @@ import BraintreeDataCollector
     /// - Returns: A `BTPayPalAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
     public func tokenize(_ request: BTPayPalVaultRequest) async throws -> BTPayPalAccountNonce {
-        try await withCheckedThrowingContinuation { continuation in
-            tokenize(request) { nonce, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let nonce {
-                    continuation.resume(returning: nonce)
-                }
-            }
-        }
+        isVaultRequest = true
+        contextType = "BA-TOKEN"
+        fundingSource = getFundingSource(from: request)
+        return try await tokenize(request: request)
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
@@ -181,10 +180,14 @@ import BraintreeDataCollector
         _ request: BTPayPalCheckoutRequest,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
-        isVaultRequest = false
-        contextType = "EC-TOKEN"
-        fundingSource = getFundingSource(from: request)
-        tokenize(request: request, completion: completion)
+        Task { @MainActor in
+            do {
+                let nonce = try await tokenize(request)
+                completion(nonce, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
     }
 
     /// Tokenize a PayPal request to be used with the PayPal Checkout or Pay Later flow.
@@ -199,15 +202,10 @@ import BraintreeDataCollector
     /// - Returns: A `BTPayPalAccountNonce` if successful
     /// - Throws: An `Error` describing the failure
     public func tokenize(_ request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
-        try await withCheckedThrowingContinuation { continuation in
-            tokenize(request) { nonce, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let nonce {
-                    continuation.resume(returning: nonce)
-                }
-            }
-        }
+        isVaultRequest = false
+        contextType = "EC-TOKEN"
+        fundingSource = getFundingSource(from: request)
+        return try await tokenize(request: request)
     }
 
     // MARK: - Internal Methods
@@ -290,6 +288,15 @@ import BraintreeDataCollector
         hasOpenedURL = false
     }
     
+    func handlePayPalRequest(with url: URL, paymentType: BTPayPalPaymentType) async throws -> BTPayPalAccountNonce {
+        // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
+        if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
+            notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
+            throw BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme)
+        }
+        return try await performSwitchRequest(appSwitchURL: url, paymentType: paymentType)
+    }
+
     func handlePayPalRequest(
         with url: URL,
         paymentType: BTPayPalPaymentType,
@@ -409,10 +416,7 @@ import BraintreeDataCollector
 
     // MARK: - Private Methods
 
-    private func tokenize(
-        request: BTPayPalRequest,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
-    ) {
+    private func tokenize(request: BTPayPalRequest) async throws -> BTPayPalAccountNonce {
         self.payPalRequest = request
 
         apiClient.sendAnalyticsEvent(
@@ -424,83 +428,81 @@ import BraintreeDataCollector
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
+
+        let configuration: BTConfiguration
+        do {
+            configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        } catch {
+            notifyFailure(with: BTPayPalError.fetchConfigurationFailed)
+            throw BTPayPalError.fetchConfigurationFailed
+        }
+
+        guard let json = configuration.json else {
+            notifyFailure(with: BTPayPalError.fetchConfigurationFailed)
+            throw BTPayPalError.fetchConfigurationFailed
+        }
+
+        self.isConfigFromCache = configuration.isFromCache
+
+        guard configuration.isPayPalEnabled else {
+            notifyFailure(with: BTPayPalError.disabled)
+            throw BTPayPalError.disabled
+        }
+
+        self.payPalRequest = request
+
+        let parameters = request.encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+            universalLink: self.universalLink,
+            fallbackURLScheme: self.fallbackURLScheme
+        )
+
+        do {
+            let (body, _) = try await self.apiClient.post(request.hermesPath, parameters: parameters)
+
+            guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
+                notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."))
+                throw BTPayPalError.invalidURL("Missing approval URL in gateway response.")
             }
 
-            guard let configuration, let json = configuration.json else {
-                self.notifyFailure(with: BTPayPalError.fetchConfigurationFailed, completion: completion)
-                return
+            self.contextID = approvalURL.baToken ?? approvalURL.ecToken
+
+            self.experiment = approvalURL.experiment
+
+            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+            let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
+
+            if let contextID = self.contextID {
+                self.clientMetadataIDs[contextID] = correlationID
             }
-            
-            self.isConfigFromCache = configuration.isFromCache
 
-            guard configuration.isPayPalEnabled else {
-                self.notifyFailure(with: BTPayPalError.disabled, completion: completion)
-                return
+            switch approvalURL.redirectType {
+            case .payPalApp(let url):
+                self.didPayPalServerAttemptAppSwitch = true
+                guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
+                    let error = self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken
+                    notifyFailure(with: error)
+                    throw error
+                }
+                let merchantID = json["merchantId"].asString()
+                return try await self.launchPayPalApp(with: url, merchantID: merchantID)
+            case .webBrowser(let url):
+                self.didPayPalServerAttemptAppSwitch = false
+                return try await self.handlePayPalRequest(with: url, paymentType: request.paymentType)
+            }
+        } catch let error as NSError {
+            guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
+                notifyFailure(with: error)
+                throw error
             }
 
-            self.payPalRequest = request
-            
-            let parameters = request.encodedPostBodyWith(
-                configuration: configuration,
-                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
-                universalLink: self.universalLink,
-                fallbackURLScheme: self.fallbackURLScheme
-            )
-            
-            self.apiClient.post(
-                request.hermesPath,
-                parameters: parameters
-            ) { body, _, error in
-                if let error = error as? NSError {
-                    guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                        self.notifyFailure(with: error, completion: completion)
-                        return
-                    }
-
-                    let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"]["issue"].asString()
-                    var dictionary = error.userInfo
-                    dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
-                    self.notifyFailure(with: BTPayPalError.httpPostRequestError(dictionary), completion: completion)
-                    return
-                }
-                
-                guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
-                    self.notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."), completion: completion)
-                    return
-                }
-                
-                self.contextID = approvalURL.baToken ?? approvalURL.ecToken
-                
-                self.experiment = approvalURL.experiment
-
-                let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-                let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
-                
-                if let contextID = self.contextID {
-                    self.clientMetadataIDs[contextID] = correlationID
-                }
-                
-                switch approvalURL.redirectType {
-                case .payPalApp(let url):
-                    self.didPayPalServerAttemptAppSwitch = true
-                    guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
-                        self.notifyFailure(
-                            with: self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken,
-                            completion: completion
-                        )
-                        return
-                    }
-                    let merchantID = json["merchantId"].asString()
-                    self.launchPayPalApp(with: url, merchantID: merchantID, completion: completion)
-                case .webBrowser(let url):
-                    self.didPayPalServerAttemptAppSwitch = false
-                    self.handlePayPalRequest(with: url, paymentType: request.paymentType, completion: completion)
-                }
-            }
+            let errorDetailsIssue = jsonResponseBody["paymentResource"]["errorDetails"]["issue"].asString()
+            var dictionary = error.userInfo
+            dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue
+            let httpError = BTPayPalError.httpPostRequestError(dictionary)
+            notifyFailure(with: httpError)
+            throw httpError
         }
     }
     
@@ -511,6 +513,18 @@ import BraintreeDataCollector
         }
         if let vaultRequest = request as? BTPayPalVaultRequest, vaultRequest.offerCredit { return .credit }
         return .payPal
+    }
+
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, merchantID: String? = nil) async throws -> BTPayPalAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            launchPayPalApp(with: payPalAppRedirectURL, merchantID: merchantID) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
+        }
     }
 
     private func launchPayPalApp(
@@ -571,6 +585,18 @@ import BraintreeDataCollector
 
         application.open(redirectURL, options: [.universalLinksOnly: NSNumber(value: true)]) { success in
             self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
+        }
+    }
+
+    private func performSwitchRequest(appSwitchURL: URL, paymentType: BTPayPalPaymentType) async throws -> BTPayPalAccountNonce {
+        try await withCheckedThrowingContinuation { continuation in
+            performSwitchRequest(appSwitchURL: appSwitchURL, paymentType: paymentType) { nonce, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                } else if let nonce {
+                    continuation.resume(returning: nonce)
+                }
+            }
         }
     }
 
@@ -715,6 +741,22 @@ import BraintreeDataCollector
 
     // MARK: - Analytics Helper Methods
 
+    private func notifySuccess(with result: BTPayPalAccountNonce) -> BTPayPalAccountNonce {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.tokenizeSucceeded,
+            applicationState: UIApplication.shared.applicationStateString,
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            fundingSource: fundingSource?.rawValue,
+            isVaultRequest: isVaultRequest,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
+        return result
+    }
+
     private func notifySuccess(
         with result: BTPayPalAccountNonce,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -732,6 +774,22 @@ import BraintreeDataCollector
             shopperSessionID: payPalRequest?.shopperSessionID
         )
         completion(result, nil)
+    }
+
+    private func notifyFailure(with error: Error) {
+        apiClient.sendAnalyticsEvent(
+            BTPayPalAnalytics.tokenizeFailed,
+            applicationState: UIApplication.shared.applicationStateString,
+            contextID: contextID,
+            contextType: contextType,
+            correlationID: contextID.flatMap { clientMetadataIDs[$0] },
+            didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
+            didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
+            errorDescription: error.localizedDescription,
+            fundingSource: fundingSource?.rawValue,
+            isVaultRequest: isVaultRequest,
+            shopperSessionID: payPalRequest?.shopperSessionID
+        )
     }
 
     private func notifyFailure(with error: Error, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
