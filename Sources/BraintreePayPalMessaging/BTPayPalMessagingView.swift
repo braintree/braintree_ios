@@ -22,7 +22,7 @@ public class BTPayPalMessagingView: UIView {
     ///  Initializes a `BTPayPalMessagingView`.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     public init(authorization: String) {
-        apiClient = BTAPIClient(authorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
 
         super.init(frame: .zero)
     }
@@ -43,39 +43,42 @@ public class BTPayPalMessagingView: UIView {
         )
         
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
-
-        Task { @MainActor in
-            do {
-                let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
-                
-                guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
-                    notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
-                    return
-                }
-
-                let messageData = PayPalMessageData(
-                    clientID: clientID,
-                    environment: configuration.environment == "production" ? .live : .sandbox,
-                    amount: request.amount,
-                    pageType: request.pageType?.pageTypeRawValue,
-                    offerType: request.offerType?.offerTypeRawValue
-                )
-
-                messageData.buyerCountry = request.buyerCountry
-
-                let messageConfig = PayPalMessageConfig(
-                    data: messageData,
-                    style: PayPalMessageStyle(
-                        logoType: request.logoType.logoTypeRawValue,
-                        color: request.color.messageColorRawValue,
-                        textAlign: request.textAlignment.textAlignmentRawValue
-                    )
-                )
-
-                setupMessageView(with: messageConfig)
-            } catch {
-                notifyFailure(with: error)
+        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
+            if let error {
+                self.notifyFailure(with: error)
+                return
             }
+
+            guard let configuration else {
+                self.notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
+                return
+            }
+
+            guard let clientID = configuration.json?["paypal"]["clientId"].asString() else {
+                self.notifyFailure(with: BTPayPalMessagingError.payPalClientIDNotFound)
+                return
+            }
+
+            let messageData = PayPalMessageData(
+                clientID: clientID,
+                environment: configuration.environment == "production" ? .live : .sandbox,
+                amount: request.amount,
+                pageType: request.pageType?.pageTypeRawValue,
+                offerType: request.offerType?.offerTypeRawValue
+            )
+
+            messageData.buyerCountry = request.buyerCountry
+
+            let messageConfig = PayPalMessageConfig(
+                data: messageData,
+                style: PayPalMessageStyle(
+                    logoType: request.logoType.logoTypeRawValue,
+                    color: request.color.messageColorRawValue,
+                    textAlign: request.textAlignment.textAlignmentRawValue
+                )
+            )
+
+            self.setupMessageView(with: messageConfig)
         }
     }
     
@@ -126,7 +129,7 @@ public extension BTPayPalMessagingView {
             request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(),
             delegate: BTPayPalMessagingDelegate? = nil
         ) {
-            apiClient = BTAPIClient(authorization: authorization)
+            self.apiClient = BTAPIClient(authorization: authorization)
             self.request = request
             self.delegate = delegate
         }
