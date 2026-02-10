@@ -1548,9 +1548,8 @@ class BTPayPalClient_Tests: XCTestCase {
         }
     }
     
-    func testTokenize_whenCheckoutBillingWithPurchaseRequest_setsVaultAnalyticsTags() async {
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00",
-                                                      requestBillingAgreement: true)
+    func testTokenize_whenCheckoutRequestBillingAgreementTrue_setsBillingWithPurchaseAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", requestBillingAgreement: true)
 
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 

@@ -5,7 +5,6 @@
 * BraintreeDataCollector
   * Update PPRiskMagnes to 5.6.0 
   * Add `collectDeviceDataOnSuccess(riskCorrelationID: completion:)` method that ensures Magnes SDK completes data submission prior to returning device data.
-
 * BraintreePayPal
     * Pass `billing_with_purchase` to analytics events. 
 
