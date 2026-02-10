@@ -197,4 +197,141 @@ class BTDataCollector_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2)
     }
+
+    // MARK: - collectDeviceDataOnSuccess Tests
+
+    func testCollectDeviceDataOnSuccess_returnsDeviceDataWithCorrelationID() {
+        let config: [String: Any] = ["environment": "sandbox"]
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+
+        let expectation = self.expectation(description: "Returns device data on success")
+        let riskCorrelationID = "test-risk-correlation-id"
+
+        dataCollector.collectDeviceDataOnSuccess(riskCorrelationID: riskCorrelationID) { deviceData, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(deviceData)
+
+            if let deviceData = deviceData {
+                let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+                XCTAssertNotNil(json["correlation_id"])
+                if let correlationID = json["correlation_id"].asString() {
+                    XCTAssert(correlationID.count > 0)
+                }
+                expectation.fulfill()
+            } else {
+                XCTFail("Should return device data on success")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testCollectDeviceDataOnSuccess_asyncAwait_returnsDeviceData() async throws {
+        let config: [String: Any] = ["environment": "sandbox"]
+
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = BTDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+
+        let riskCorrelationID = "test-risk-correlation-id"
+        let deviceData = try await dataCollector.collectDeviceDataOnSuccess(riskCorrelationID: riskCorrelationID)
+
+        XCTAssertNotNil(deviceData)
+        let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+        XCTAssertEqual(riskCorrelationID, json["correlation_id"].asString())
+    }
+
+    func testCollectDeviceDataOnSuccess_fetchConfigurationReturnsError_returnError() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        let mockDataCollector = MockBTDataCollector(authorization: authorization)
+        mockDataCollector.apiClient = mockAPIClient
+
+        mockDataCollector.cannedDataCollectorError = NSError(domain: "FakeConfigError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Fake description"])
+
+        let expectation = self.expectation(description: "Returns error")
+        mockDataCollector.collectDeviceDataOnSuccess(riskCorrelationID: "test-id") { deviceData, error in
+            XCTAssertNil(deviceData)
+            if let error = error as NSError? {
+                XCTAssertEqual(error.domain, "FakeConfigError")
+                XCTAssertEqual(error.code, 1)
+                XCTAssertEqual(error.localizedDescription, "Fake description")
+                expectation.fulfill()
+            } else {
+                XCTFail("Should have received an error")
+            }
+        }
+
+        waitForExpectations(timeout: 2)
+    }
+
+    func testBTDataCollectorError_magnesCollectionFailure_hasCorrectDescription() {
+        let error = BTDataCollectorError.callbackSubmitError
+        XCTAssertEqual(error.errorDescription, "Failed to submit device data.")
+        XCTAssertEqual(error.errorCode, 3)
+    }
+
+    func testBTDataCollectorError_magnesCollectionTimeout_hasCorrectDescription() {
+        let error = BTDataCollectorError.callbackSubmitTimeout
+        XCTAssertEqual(error.errorDescription, "Timed out while submitting device data.")
+        XCTAssertEqual(error.errorCode, 4)
+    }
+    
+    // MARK: - Async/Await Tests
+
+        func testCollectDeviceData_asyncAwait_collectsAllData() async throws {
+            let config: [String: Any] = ["environment": "development"]
+
+            let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+            mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+            let dataCollector = BTDataCollector(authorization: authorization)
+            dataCollector.apiClient = mockAPIClient
+
+            let deviceData = try await dataCollector.collectDeviceData()
+            let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+            XCTAssertNil(json["fraud_merchant_id"].asString())
+            XCTAssertNil(json["device_session_id"].asString())
+            XCTAssertNotNil(json["correlation_id"].asString())
+            if let correlationID = json["correlation_id"].asString() {
+                XCTAssert(correlationID.count > 0)
+            }
+        }
+
+        func testCollectDeviceData_asyncAwait_containsCorrelationId() async throws {
+            let config: [String: Any] = ["environment": "sandbox"]
+
+            let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+            mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+            let dataCollector = BTDataCollector(authorization: authorization)
+            dataCollector.apiClient = mockAPIClient
+
+            let deviceData = try await dataCollector.collectDeviceData()
+            let json = BTJSON(data: deviceData.data(using: String.Encoding.utf8)!)
+            XCTAssertNotNil(json["correlation_id"])
+        }
+
+        func testCollectDeviceData_asyncAwait_fetchConfigurationReturnsError_throwsError() async {
+            let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+            mockAPIClient.cannedConfigurationResponseError = NSError(domain: "FakeConfigError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Fake description"])
+
+            let dataCollector = BTDataCollector(authorization: authorization)
+            dataCollector.apiClient = mockAPIClient
+
+            do {
+                _ = try await dataCollector.collectDeviceData()
+                XCTFail("Should have thrown an error")
+            } catch let error as NSError {
+                XCTAssertEqual(error.domain, "FakeConfigError")
+                XCTAssertEqual(error.code, 1)
+                XCTAssertEqual(error.localizedDescription, "Fake description")
+            }
+        }
 }
