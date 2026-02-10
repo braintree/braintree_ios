@@ -1475,7 +1475,13 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertFalse(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertFalse(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
+
     }
     
     func testTokenize_whenVaultCreditRequest_setsVaultAnalyticsTags() async {
@@ -1486,7 +1492,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
-        XCTAssertFalse(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertFalse(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() async {
@@ -1497,7 +1508,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertFalse(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertFalse(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
     }
     
     func testTokenize_whenCheckoutCreditRequest_setsCorrectAnalyticsTags() async {
@@ -1508,7 +1524,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
-        XCTAssertFalse(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertFalse(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
     }
     
     func testTokenize_whenCheckoutPayLaterRequest_setsCorrectAnalyticsTags() async {
@@ -1519,7 +1540,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paylater")
-        XCTAssertFalse(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertFalse(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
     }
     
     func testTokenize_whenCheckoutBillingWithPurchaseRequest_setsVaultAnalyticsTags() async {
@@ -1531,7 +1557,12 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertTrue(mockAPIClient.postedBillingWithPurchase!)
+        do {
+            let postedBillingWithPurchase = try XCTUnwrap(mockAPIClient.postedBillingWithPurchase)
+            XCTAssertTrue(postedBillingWithPurchase)
+        } catch {
+            XCTFail("Billing with purchase should not be nil")
+        }
     }
     
     func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {
