@@ -41,7 +41,9 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
 
         await fulfillment(of: [expectation], timeout: 2)
 
-        XCTAssertNotNil(mockDelegate.error)
+        XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Failed to fetch Braintree configuration.")
+        XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.fetchConfigurationFailed)
+        XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorCode, 0)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.failed))
     }
