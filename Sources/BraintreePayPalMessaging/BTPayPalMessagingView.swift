@@ -44,7 +44,7 @@ public class BTPayPalMessagingView: UIView {
         
         apiClient.sendAnalyticsEvent(BTPayPalMessagingAnalytics.started)
 
-        Task {
+        Task { @MainActor in
             do {
                 let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
                 
