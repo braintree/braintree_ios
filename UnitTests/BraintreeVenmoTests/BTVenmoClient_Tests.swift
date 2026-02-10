@@ -739,26 +739,26 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.handleReturnStarted)
     }
     
-    func testStartVenmoFlow_sendsAppSwitchStartedEvent() async throws {
+    func testStartVenmoFlow_sendsAppSwitchStartedEvent() {
         let appSwitchURL = URL(string: "some-url")!
-        let _ = try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
+        venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.appSwitchStarted)
     }
     
-    func testInvokedOpenURLSuccessfully_whenSuccess_sendsAppSwitchSucceeded_withAppSwitchURL() async throws {
+    func testInvokedOpenURLSuccessfully_whenSuccess_sendsAppSwitchSucceeded_withAppSwitchURL() {
         let eventName = BTVenmoAnalytics.appSwitchSucceeded
         let appSwitchURL = URL(string: "some-url")!
-        let _ = try await venmoClient.invokedOpenURLSuccessfully(true, shouldVault: true, appSwitchURL: appSwitchURL)
+        venmoClient.invokedOpenURLSuccessfully(true, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, eventName)
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
     }
     
-    func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailed_withAppSwitchURL() async throws {
+    func testInvokedOpenURLSuccessfully_whenFailure_sendsAppSwitchFailed_withAppSwitchURL() {
         let eventName = BTVenmoAnalytics.appSwitchFailed
         let appSwitchURL = URL(string: "some-url")!
-        let _ = try await venmoClient.invokedOpenURLSuccessfully(true, shouldVault: true, appSwitchURL: appSwitchURL)
+        venmoClient.invokedOpenURLSuccessfully(false, shouldVault: true, appSwitchURL: appSwitchURL) { _, _ in }
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first!, eventName)
         XCTAssertEqual(mockAPIClient.postedAppSwitchURL[eventName], appSwitchURL.absoluteString)
