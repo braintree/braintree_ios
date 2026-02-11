@@ -9,32 +9,47 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
     var mockDelegate = MockBTPayPalMessagingDelegate()
     let mockTokenizationKey = "development_tokenization_key"
 
-    func testStart_withConfigurationError_callsDelegateWithError() {
+    @MainActor
+    func testStart_withConfigurationError_callsDelegateWithError() async {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "SomeError", code: 999)
 
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.apiClient = mockAPIClient
         payPalMessageView.delegate = mockDelegate
+
+        let expectation = expectation(description: "Delegate receives error")
+        mockDelegate.didReceiveErrorExpectation = expectation
+
         payPalMessageView.start()
+
+        await fulfillment(of: [expectation], timeout: 2)
 
         XCTAssertEqual((mockDelegate.error as? NSError)?.domain, "SomeError")
         XCTAssertEqual((mockDelegate.error as? NSError)?.code, 999)
     }
 
-    func testStart_withNilConfiguration_callsDelegateWithErrorAndSendsAnalytics() {
+    @MainActor
+    func testStart_withNilConfiguration_callsDelegateWithErrorAndSendsAnalytics() async {
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.apiClient = mockAPIClient
+
+        let expectation = expectation(description: "Delegate receives error")
+        mockDelegate.didReceiveErrorExpectation = expectation
+
         payPalMessageView.start()
 
+        await fulfillment(of: [expectation], timeout: 2)
+
+        XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Failed to fetch Braintree configuration.")
         XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.fetchConfigurationFailed)
         XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorCode, 0)
-        XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Failed to fetch Braintree configuration.")
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.failed))
     }
 
-    func testStart_withNoClientID_callsDelegateWithError() {
+    @MainActor
+    func testStart_withNoClientID_callsDelegateWithError() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypal": ["clientId": nil]
@@ -44,7 +59,13 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.apiClient = mockAPIClient
+
+        let expectation = expectation(description: "Delegate receives error")
+        mockDelegate.didReceiveErrorExpectation = expectation
+
         payPalMessageView.start()
+
+        await fulfillment(of: [expectation], timeout: 2)
 
         XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.payPalClientIDNotFound)
         XCTAssertEqual((mockDelegate.error as? NSError)?.domain, "com.braintreepayments.BTPayPalMessagingErrorDomain")
@@ -52,7 +73,8 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorDescription, "Could not find PayPal client ID in Braintree configuration.")
     }
 
-    func testStart_withClientID_firesWillAppearAndSendsAnalytics() {
+    @MainActor
+    func testStart_withClientID_firesWillAppearAndSendsAnalytics() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypal": ["clientId": "a-fake-client-id"]
@@ -62,32 +84,44 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.apiClient = mockAPIClient
+
+        let expectation = expectation(description: "Delegate will appear")
+        mockDelegate.willAppearExpectation = expectation
+
         payPalMessageView.start()
+
+        await fulfillment(of: [expectation], timeout: 2)
 
         XCTAssertTrue(mockDelegate.willAppear)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
     }
     
-    func testStart_withClientID_callingMultipleTimes_doesNotIncreaseNumberOfSubviews() {
+    @MainActor
+    func testStart_withClientID_callingMultipleTimes_doesNotIncreaseNumberOfSubviews() async {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(
             value: [
                 "paypal": ["clientId": "a-fake-client-id"]
             ] as [String: Any?]
         )
-        
+
         let payPalMessageView = BTPayPalMessagingView(authorization: mockTokenizationKey)
         payPalMessageView.delegate = mockDelegate
         payPalMessageView.apiClient = mockAPIClient
         XCTAssertEqual(payPalMessageView.subviews.count, 0)
-        
+
+        let expectation = expectation(description: "First delegate will appear")
+        mockDelegate.willAppearExpectation = expectation
+
         payPalMessageView.start()
-        
+
+        await fulfillment(of: [expectation], timeout: 2)
+
         XCTAssertTrue(mockDelegate.willAppear)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
         XCTAssertEqual(payPalMessageView.subviews.count, 1)
 
         payPalMessageView.start()
-        
+
         XCTAssertTrue(mockDelegate.willAppear)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalMessagingAnalytics.started))
         XCTAssertEqual(payPalMessageView.subviews.count, 1)

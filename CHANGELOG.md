@@ -3,6 +3,9 @@
 ## unreleased
 * BraintreeVenmo
     * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
+* BraintreeDataCollector
+  * Update PPRiskMagnes to 5.6.0 
+  * Add `collectDeviceDataOnSuccess(riskCorrelationID: completion:)` method that ensures Magnes SDK completes data submission prior to returning device data.
 
 ## 7.3.0 (2026-01-29)
 * BraintreePayPal
