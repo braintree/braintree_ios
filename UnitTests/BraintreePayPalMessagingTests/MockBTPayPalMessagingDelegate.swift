@@ -1,12 +1,9 @@
-import XCTest
 import BraintreePayPalMessaging
 
 class MockBTPayPalMessagingDelegate: BTPayPalMessagingDelegate {
 
     var willAppear: Bool = false
     var error: Error?
-    var willAppearExpectation: XCTestExpectation?
-    var didReceiveErrorExpectation: XCTestExpectation?
 
     func didSelect(_ payPalMessagingView: BTPayPalMessagingView) {
         // not unit testable
@@ -18,7 +15,6 @@ class MockBTPayPalMessagingDelegate: BTPayPalMessagingDelegate {
     
     func willAppear(_ payPalMessagingView: BTPayPalMessagingView) {
         willAppear = true
-        willAppearExpectation?.fulfill()
     }
     
     func didAppear(_ payPalMessagingView: BTPayPalMessagingView) {
@@ -27,6 +23,5 @@ class MockBTPayPalMessagingDelegate: BTPayPalMessagingDelegate {
     
     func onError(_ payPalMessagingView: BTPayPalMessagingView, error: Error) {
         self.error = error
-        didReceiveErrorExpectation?.fulfill()
     }
 }
