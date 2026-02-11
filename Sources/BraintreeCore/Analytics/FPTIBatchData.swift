@@ -33,6 +33,7 @@ struct FPTIBatchData: Codable {
         let applicationState: String?
 
         let appSwitchURL: String?
+        /// Recurring billing plan type, or charge pattern.
         let billingPlanType: String?
         /// The order or ranking in which payment buttons appear.
         let buttonOrder: String?
@@ -51,11 +52,12 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
+        let isBillingAgreement: Bool?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
-        let isBillingAgreement: Bool?
         let isConfigFromCache: Bool?
-        /// True if amount > 0
+        /// Whether or not there's a purchase as part of the transaction. True if amount > 0
         let isPurchase: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
