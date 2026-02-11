@@ -14,9 +14,11 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents: [String] = []
     public var postedApplicationState: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
-    public var postedBillingWithPurchase: Bool? = nil
+    public var postedBillingPlanType: String? = nil
     public var postedButtonOrder: String? = nil
     public var postedButtonType: String? = nil
+    public var postedIsBillingAgreement = false
+    public var postedIsPurchase = false
     public var postedIsVaultRequest = false
     public var postedLinkType: LinkType? = nil
     public var postedMerchantExperiment: String? = nil
@@ -116,7 +118,7 @@ public class MockAPIClient: BTAPIClient {
         _ eventName: String,
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
-        billingWithPurchase: Bool? = nil,
+        billingPlanType: String? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,
@@ -126,22 +128,26 @@ public class MockAPIClient: BTAPIClient {
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
         fundingSource: String? = nil,
+        isBillingAgreement: Bool? = nil,
         isConfigFromCache: Bool? = nil,
+        isPurchase: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
-        merchantExperiment experiment: String? = nil,
+        merchantExperiment: String? = nil,
         pageType: String? = nil,
         shopperSessionID: String? = nil
     ) {
         postedApplicationState = applicationState
-        postedBillingWithPurchase = billingWithPurchase
+        postedBillingPlanType = billingPlanType
         postedButtonType = buttonType
         postedButtonOrder = buttonOrder
         postedPageType = pageType
         postedContextID = contextID
         postedLinkType = linkType
+        postedIsPurchase = isPurchase ?? false
+        postedIsBillingAgreement = isBillingAgreement ?? false
         postedIsVaultRequest = isVaultRequest ?? false
-        postedMerchantExperiment = experiment
+        postedMerchantExperiment = merchantExperiment
         postedAppSwitchURL[eventName] = appSwitchURL?.absoluteString
         postedShopperSessionID = shopperSessionID
         postedDidEnablePayPalAppSwitch = didEnablePayPalAppSwitch

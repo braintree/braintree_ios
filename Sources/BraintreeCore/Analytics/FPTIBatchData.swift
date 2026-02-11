@@ -33,7 +33,7 @@ struct FPTIBatchData: Codable {
         let applicationState: String?
 
         let appSwitchURL: String?
-        let billingWithPurchase: Bool?
+        let billingPlanType: String?
         /// The order or ranking in which payment buttons appear.
         let buttonOrder: String?
         /// The type of button displayed or presented
@@ -53,7 +53,10 @@ struct FPTIBatchData: Codable {
         let eventName: String
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
+        let isBillingAgreement: Bool?
         let isConfigFromCache: Bool?
+        /// True if amount > 0
+        let isPurchase: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -80,7 +83,7 @@ struct FPTIBatchData: Codable {
         init(
             applicationState: String? = nil,
             appSwitchURL: URL? = nil,
-            billingWithPurchase: Bool? = nil,
+            billingPlanType: String? = nil,
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
@@ -94,7 +97,9 @@ struct FPTIBatchData: Codable {
             errorDescription: String? = nil,
             eventName: String,
             fundingSource: String? = nil,
+            isBillingAgreement: Bool? = nil,
             isConfigFromCache: Bool? = nil,
+            isPurchase: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
@@ -105,7 +110,7 @@ struct FPTIBatchData: Codable {
         ) {
             self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString
-            self.billingWithPurchase = billingWithPurchase
+            self.billingPlanType = billingPlanType
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
@@ -118,7 +123,9 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.isBillingAgreement = isBillingAgreement
             self.isConfigFromCache = isConfigFromCache
+            self.isPurchase = isPurchase
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
@@ -132,7 +139,7 @@ struct FPTIBatchData: Codable {
         enum CodingKeys: String, CodingKey {
             case applicationState = "application_state"
             case appSwitchURL = "url"
-            case billingWithPurchase = "billing_with_purchase"
+            case billingPlanType = "billing_plan_type"
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
@@ -143,7 +150,9 @@ struct FPTIBatchData: Codable {
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case isBillingAgreement = "is_billing_agreement"
             case isConfigFromCache = "config_cached"
+            case isPurchase = "is_purchase"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
