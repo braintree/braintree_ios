@@ -67,13 +67,18 @@ class BTPayPalClient_Tests: XCTestCase {
 
     // MARK: - POST request to Hermes endpoint
 
+    @MainActor
     func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
         checkoutRequest.intent = .sale
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -84,13 +89,18 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
+    @MainActor
     func testTokenizePayPalAccount_vault_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let vaultRequest = BTPayPalVaultRequest()
         vaultRequest.billingAgreementDescription = "description"
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -136,6 +146,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     // MARK: - PayPal approval URL to present in browser
 
+    @MainActor
     func testTokenizePayPalAccount_checkout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -144,13 +155,18 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
 
+    @MainActor
     func testTokenizePayPalAccount_vault_whenUserActionIsNotSet_approvalUrlIsNotModified() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": [
@@ -159,13 +175,18 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalVaultRequest()
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("https://checkout.paypal.com/one-touch-login-sandbox", payPalClient.approvalURL?.absoluteString)
     }
 
+    @MainActor
     func testTokenizePayPalAccount_whenUserActionIsSetToDefault_approvalUrlIsNotModified() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -176,9 +197,13 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(amount: "1")
         request.userAction = BTPayPalRequestUserAction.none
 
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("https://www.paypal.com/checkout?EC-Token=EC-Random-Value", payPalClient.approvalURL?.absoluteString)
     }
@@ -284,6 +309,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(payPalClient.clientMetadataIDs["BA-Random-Value"], "BA-Random-Value")
     }
 
+    @MainActor
     func testTokenize_whenApprovalURLDoesNotContainContextID_doesNotSendContextIDInAnalytics() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
@@ -292,9 +318,13 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
 
         let request = BTPayPalCheckoutRequest(amount: "1")
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertNil(mockAPIClient.postedContextID)
     }
@@ -440,9 +470,13 @@ class BTPayPalClient_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.offerPayLater = true
 
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
 
@@ -464,9 +498,13 @@ class BTPayPalClient_Tests: XCTestCase {
         let request = BTPayPalVaultRequest()
         request.offerCredit = true
 
-        payPalClient.tokenize(request) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(request) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertNotNil(payPalClient.webAuthenticationSession)
 
@@ -1394,9 +1432,13 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -1423,9 +1465,13 @@ class BTPayPalClient_Tests: XCTestCase {
             ]
         ])
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
@@ -1526,9 +1572,13 @@ class BTPayPalClient_Tests: XCTestCase {
 
         let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true)
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.openCallCount, 2)
@@ -1609,9 +1659,13 @@ class BTPayPalClient_Tests: XCTestCase {
             userAuthenticationEmail: "fake-pp@gmail.com"
         )
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.openCallCount, 2)
@@ -1654,9 +1708,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenVaultRequest_setsVaultAnalyticsTags() {
         let vaultRequest = BTPayPalVaultRequest()
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
@@ -1666,9 +1724,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenVaultCreditRequest_setsVaultAnalyticsTags() {
         let vaultRequest = BTPayPalVaultRequest(offerCredit: true)
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
@@ -1678,9 +1740,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
@@ -1690,9 +1756,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenCheckoutCreditRequest_setsCorrectAnalyticsTags() {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", offerCredit: true)
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
@@ -1702,9 +1772,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenCheckoutPayLaterRequest_setsCorrectAnalyticsTags() {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", offerPayLater: true)
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
@@ -1715,9 +1789,13 @@ class BTPayPalClient_Tests: XCTestCase {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00")
         checkoutRequest.shopperSessionID = "fake-shopper-session-id"
 
-        payPalClient.tokenize(checkoutRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual(mockAPIClient.postedShopperSessionID, "fake-shopper-session-id")
     }
@@ -1725,9 +1803,13 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenize_whenSuccess_sendsApplicationStateInAnalytics() {
         let vaultRequest = BTPayPalVaultRequest()
 
-        payPalClient.tokenize(vaultRequest) { _, _ in }
+        let expectation = expectation(description: "Tokenize started")
 
-        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.01))
+        payPalClient.tokenize(vaultRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual(mockAPIClient.postedApplicationState, "active")
     }
