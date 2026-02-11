@@ -78,11 +78,11 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine if user opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
     private var isBillingAgreement: Bool?
+    
     /// Used for analytics purpose to determine if there's a purchase as part of the transaction. True if amount > 0
-    
     private var isPurchase: Bool?
-    /// Used for analytics purpose to determine if there is a recurring billing plan type, or charge pattern.
     
+    /// Used for analytics purpose to determine if there is a recurring billing plan type, or charge pattern.
     private var billingPlanType: String?
     
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
