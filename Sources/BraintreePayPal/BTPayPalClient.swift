@@ -507,6 +507,7 @@ import BraintreeDataCollector
                 }
                 
                 self.contextID = approvalURL.baToken ?? approvalURL.ecToken
+                
                 self.experiment = approvalURL.experiment
 
                 let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
