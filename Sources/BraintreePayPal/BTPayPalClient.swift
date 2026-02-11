@@ -76,9 +76,13 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
     
-    /// Used for analytics purpose to determine if user selected billing with purchase
+    /// Used for analytics purpose to determine if user opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
     private var isBillingAgreement: Bool?
+    /// Used for analytics purpose to determine if there's a purchase as part of the transaction. True if amount > 0
+    
     private var isPurchase: Bool?
+    /// Used for analytics purpose to determine if there is a recurring billing plan type, or charge pattern.
+    
     private var billingPlanType: String?
     
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
@@ -503,7 +507,6 @@ import BraintreeDataCollector
                 }
                 
                 self.contextID = approvalURL.baToken ?? approvalURL.ecToken
-                print("contextID \(self.contextID)")
                 self.experiment = approvalURL.experiment
 
                 let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
