@@ -21,6 +21,7 @@ import BraintreeDataCollector
 
     /// exposed for testing
     var merchantCompletion: ((BTLocalPaymentResult?, Error?) -> Void) = { _, _ in }
+    private var continuation: CheckedContinuation<BTLocalPaymentResult, Error>?
     
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
@@ -59,37 +60,13 @@ import BraintreeDataCollector
     public func start(_ request: BTLocalPaymentRequest, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
 
-        self.request = request
-        self.merchantCompletion = completion
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
+        Task { @MainActor in
+            do {
+                let result = try await start(request)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
             }
-
-            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-            request.correlationID = dataCollector.clientMetadataID(nil)
-
-            guard let configuration else {
-                self.notifyFailure(with: BTLocalPaymentError.fetchConfigurationFailed, completion: completion)
-                return
-            }
-
-            if !configuration.isLocalPaymentEnabled {
-                NSLog(
-                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                self.notifyFailure(with: BTLocalPaymentError.disabled, completion: completion)
-                return
-            } else if request.localPaymentFlowDelegate == nil {
-                NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
-                self.notifyFailure(with: BTLocalPaymentError.integration, completion: completion)
-                return
-            }
-
-            self.start(request: request, configuration: configuration)
         }
     }
     
@@ -98,12 +75,40 @@ import BraintreeDataCollector
     /// - Returns: A `BTLocalPaymentResult` if successful
     /// - Throws: An `Error` describing the failure
     public func start(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
-        try await withCheckedThrowingContinuation { continuation in
-            start(request) { result, error in
-                if let error {
+        apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
+        self.request = request
+        
+        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<BTLocalPaymentResult, Error>) in
+
+            self.continuation = continuation
+
+            Task {
+                do {
+                    let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+                    let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+                    request.correlationID = dataCollector.clientMetadataID(nil)
+
+                    if !configuration.isLocalPaymentEnabled {
+                        NSLog(
+                            "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                            BTLogLevelDescription.string(for: .critical)
+                        )
+                        let error = BTLocalPaymentError.disabled
+                        self.notifyFailure(with: error)
+                        continuation.resume(throwing: error)
+                        return
+                    } else if request.localPaymentFlowDelegate == nil {
+                        NSLog("%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.", BTLogLevelDescription.string(for: .critical))
+                        let error = BTLocalPaymentError.integration
+                        self.notifyFailure(with: error)
+                        continuation.resume(throwing: error)
+                        return
+                    }
+
+                    self.start(request: request, configuration: configuration)
+                } catch {
+                    self.notifyFailure(with: error)
                     continuation.resume(throwing: error)
-                } else if let result {
-                    continuation.resume(returning: result)
                 }
             }
         }
@@ -118,7 +123,7 @@ import BraintreeDataCollector
     func handleOpen(_ url: URL) async {
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             let canceledError = BTLocalPaymentError.canceled(request?.paymentType ?? "unknown")
-            notifyFailure(with: canceledError, completion: merchantCompletion)
+            notifyFailure(with: canceledError)
             return
         }
 
@@ -135,17 +140,17 @@ import BraintreeDataCollector
                 )
                 
                 guard let body else {
-                    notifyFailure(with: BTLocalPaymentError.noAccountData, completion: merchantCompletion)
+                    notifyFailure(with: BTLocalPaymentError.noAccountData)
                     return
                 }
                 
                 guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
-                    notifyFailure(with: BTLocalPaymentError.failedToCreateNonce, completion: merchantCompletion)
+                    notifyFailure(with: BTLocalPaymentError.failedToCreateNonce)
                     return
                 }
-                notifySuccess(with: tokenizedLocalPayment, completion: merchantCompletion)
+                notifySuccess(with: tokenizedLocalPayment)
             } catch {
-                notifyFailure(with: error, completion: merchantCompletion)
+                notifyFailure(with: error)
                 return
             }
         }
@@ -177,11 +182,11 @@ import BraintreeDataCollector
                         "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
                         BTLogLevelDescription.string(for: .critical)
                     )
-                    notifyFailure(with: BTLocalPaymentError.appSwitchFailed, completion: merchantCompletion)
+                    notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
                     return
                 }
             } catch {
-                notifyFailure(with: error, completion: merchantCompletion)
+                notifyFailure(with: error)
                 return
             }
         }
@@ -189,12 +194,12 @@ import BraintreeDataCollector
 
     private func onPayment(with url: URL?, error: Error?) {
         if let error {
-            notifyFailure(with: error, completion: merchantCompletion)
+            notifyFailure(with: error)
             return
         }
 
         guard let url else {
-            notifyFailure(with: BTLocalPaymentError.missingRedirectURL, completion: merchantCompletion)
+            notifyFailure(with: BTLocalPaymentError.missingRedirectURL)
             return
         }
 
@@ -242,17 +247,15 @@ import BraintreeDataCollector
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(with result: BTLocalPaymentResult, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+    private func notifySuccess(with result: BTLocalPaymentResult) {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded, contextID: contextID)
-        completion(result, nil)
     }
 
-    private func notifyFailure(with error: Error, completion: @escaping (BTLocalPaymentResult?, Error?) -> Void) {
+    private func notifyFailure(with error: Error) {
         apiClient.sendAnalyticsEvent(
             BTLocalPaymentAnalytics.paymentFailed,
             contextID: contextID,
             errorDescription: error.localizedDescription
         )
-        completion(nil, error)
     }
 }
