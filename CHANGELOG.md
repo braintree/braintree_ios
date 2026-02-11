@@ -1,13 +1,13 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-
+* BraintreeVenmo
+    * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
 * BraintreeDataCollector
   * Update PPRiskMagnes to 5.6.0 
   * Add `collectDeviceDataOnSuccess(riskCorrelationID: completion:)` method that ensures Magnes SDK completes data submission prior to returning device data.
 
 ## 7.3.0 (2026-01-29)
-
 * BraintreePayPal
     * Pass `fundingSource` to the app switch url link and to analytics events. 
     * Fix bug where setting an empty `BTPayPalVaultRequest.userAuthenticationEmail` resulted in an error 
