@@ -739,9 +739,9 @@ class BTVenmoClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.handleReturnStarted)
     }
     
-    func testStartVenmoFlow_sendsAppSwitchStartedEvent() {
+    func testStartVenmoFlow_sendsAppSwitchStartedEvent() async throws {
         let appSwitchURL = URL(string: "some-url")!
-        venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false) { _, _ in }
+        _ = try await venmoClient.startVenmoFlow(with: appSwitchURL, shouldVault: false)
         
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, BTVenmoAnalytics.appSwitchStarted)
     }
