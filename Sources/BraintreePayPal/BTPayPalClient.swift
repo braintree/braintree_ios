@@ -270,8 +270,7 @@ import BraintreeDataCollector
             throw BTPayPalError.failedToCreateNonce
         }
 
-        notifySuccess(with: tokenizedAccount)
-        return tokenizedAccount
+        return notifySuccess(with: tokenizedAccount)
     }
     
     @objc func applicationDidBecomeActive(notification: Notification) {
@@ -736,7 +735,7 @@ import BraintreeDataCollector
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(with result: BTPayPalAccountNonce) {
+    private func notifySuccess(with result: BTPayPalAccountNonce) -> BTPayPalAccountNonce {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
             applicationState: UIApplication.shared.applicationStateString,
@@ -749,6 +748,7 @@ import BraintreeDataCollector
             isVaultRequest: isVaultRequest,
             shopperSessionID: payPalRequest?.shopperSessionID
         )
+        return result
     }
 
     private func notifyFailure(with error: Error) {

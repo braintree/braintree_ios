@@ -10,104 +10,63 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
 
     // MARK: - Checkout Flow Tests
     
-    func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() {        
+    @MainActor
+    func testCheckoutFlow_withTokenizationKey_tokenizesPayPalAccount() async throws {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
-        let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
+
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
-        
-        payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
-            guard let nonce = tokenizedPayPalAccount?.nonce else {
-                XCTFail("Failed to tokenize account.")
-                return
-            }
-            
-            XCTAssertTrue(nonce.isValidNonce)
-            XCTAssertNil(error)
-            tokenizationExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5)
+
+        let tokenizedPayPalAccount = try await payPalClient.handleReturn(returnURL, paymentType: .checkout)
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isValidNonce)
     }
     
-    func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() {
+    @MainActor
+    func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() async throws {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
-        let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
-        
-        payPalClient.handleReturn(returnURL,paymentType: .checkout) { tokenizedPayPalAccount, error in
-            guard let nonce = tokenizedPayPalAccount?.nonce else {
-                XCTFail("Failed to tokenize account.")
-                return
-            }
-            
-            XCTAssertTrue(nonce.isValidNonce)
-            XCTAssertNil(error)
-            tokenizationExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5)
+
+        let tokenizedPayPalAccount = try await payPalClient.handleReturn(returnURL, paymentType: .checkout)
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isValidNonce)
     }
     
-    func testCheckoutFlow_withoutPayPalRequest_returnsError() {
+    @MainActor
+    func testCheckoutFlow_withoutPayPalRequest_returnsError() async {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
 
-        let tokenizationExpectation = expectation(description: "Tokenize one-time payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
-        
-        payPalClient.handleReturn(returnURL, paymentType: .checkout) { tokenizedPayPalAccount, error in
-            XCTAssertNotNil(error)
-            XCTAssertEqual(error?.localizedDescription, "The PayPal Request was missing or invalid.")
-            tokenizationExpectation.fulfill()
-        }
 
-        waitForExpectations(timeout: 5)
+        do {
+            _ = try await payPalClient.handleReturn(returnURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error.localizedDescription, "The PayPal Request was missing or invalid.")
+        }
     }
     
     // MARK: - Vault Flow Tests
     
-    func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() {
+    @MainActor
+    func testVaultFlow_withTokenizationKey_tokenizesPayPalAccount() async throws {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
-        let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
-        
-        payPalClient.handleReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
-            guard let nonce = tokenizedPayPalAccount?.nonce else {
-                XCTFail("Failed to tokenize account.")
-                return
-            }
-            
-            XCTAssertTrue(nonce.isValidNonce)
-            XCTAssertNil(error)
-            tokenizationExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5)
+
+        let tokenizedPayPalAccount = try await payPalClient.handleReturn(returnURL, paymentType: .vault)
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isValidNonce)
     }
     
-    func testVaultFlow_withClientToken_tokenizedPayPalAccount() {
+    @MainActor
+    func testVaultFlow_withClientToken_tokenizedPayPalAccount() async throws {
         let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
-        
-        let tokenizationExpectation = expectation(description: "Tokenize billing agreement payment")
+
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
 
-        payPalClient.handleReturn(returnURL, paymentType: .vault) { tokenizedPayPalAccount, error in
-            guard let nonce = tokenizedPayPalAccount?.nonce else {
-                XCTFail("Failed to tokenize account.")
-                return
-            }
-
-            XCTAssertTrue(nonce.isValidNonce)
-            XCTAssertNil(error)
-            tokenizationExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 10)
+        let tokenizedPayPalAccount = try await payPalClient.handleReturn(returnURL, paymentType: .vault)
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isValidNonce)
     }
 }
