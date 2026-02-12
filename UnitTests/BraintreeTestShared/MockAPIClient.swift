@@ -101,12 +101,12 @@ public class MockAPIClient: BTAPIClient {
             completionBlock(nil, cannedConfigurationResponseError)
             return
         }
-        completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
+        completionBlock(BTConfiguration(json: responseBody), nil)
     }
     
     public override func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
         guard let responseBody = cannedConfigurationResponseBody else {
-            throw cannedConfigurationResponseError ?? NSError(domain: "com.example.error", code: -1, userInfo: nil)
+            throw cannedConfigurationResponseError ?? NSError(domain: "com.braintreepayments.BTLocalPaymentErrorDomain", code: 7, userInfo: nil)
         }
         return BTConfiguration(json: responseBody)
     }
