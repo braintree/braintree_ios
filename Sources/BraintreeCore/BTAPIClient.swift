@@ -1,6 +1,6 @@
 import UIKit
 
-// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -255,6 +255,7 @@ import UIKit
         _ eventName: String,
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
+        billingPlanType: String? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,
@@ -264,7 +265,9 @@ import UIKit
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
         fundingSource: String? = nil,
+        isBillingAgreement: Bool? = nil,
         isConfigFromCache: Bool? = nil,
+        isPurchase: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
@@ -275,6 +278,7 @@ import UIKit
             FPTIBatchData.Event(
                 applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
+                billingPlanType: billingPlanType,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
                 contextID: contextID,
@@ -285,7 +289,9 @@ import UIKit
                 errorDescription: errorDescription,
                 eventName: eventName,
                 fundingSource: fundingSource,
+                isBillingAgreement: isBillingAgreement,
                 isConfigFromCache: isConfigFromCache,
+                isPurchase: isPurchase,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
