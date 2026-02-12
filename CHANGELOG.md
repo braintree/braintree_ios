@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.4.0 (2026-02-12)
 * BraintreeVenmo
     * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
 * BraintreeDataCollector
