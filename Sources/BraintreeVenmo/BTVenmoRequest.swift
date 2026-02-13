@@ -25,6 +25,7 @@ import Foundation
     // MARK: - Internal Properties
     
     var paymentMethodUsage: BTVenmoPaymentMethodUsage
+    var riskCorrelationID: String?
     var profileID: String?
     var vault: Bool = false
     var displayName: String?
@@ -56,8 +57,9 @@ import Foundation
     ///   - shippingAmount: Optional: The shipping amount for the transaction to be displayed on the paysheet. If this value is set, `totalAmount` must also be set.
     ///   - totalAmount: Optional: The grand total amount on the transaction that should be displayed on the paysheet.
     ///   - lineItems: Optional: The line items for this transaction. It can include up to 249 line items. If this value is set, `totalAmount` must also be set.
+    ///   - riskCorrelationID: Optional: A unique identifier that is used to correlate risk information for this payment. This ID must be unique for each payment attempt.
     @objc(initWithPaymentMethodUsage:profileID:vault:displayName:collectCustomerBillingAddress:collectCustomerShippingAddress:
-    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:)
+    isFinalAmount:subTotalAmount:discountAmount:taxAmount:shippingAmount:totalAmount:lineItems:riskCorrelationID:)
     public init(
         paymentMethodUsage: BTVenmoPaymentMethodUsage,
         profileID: String? = nil,
@@ -71,7 +73,8 @@ import Foundation
         taxAmount: String? = nil,
         shippingAmount: String? = nil,
         totalAmount: String? = nil,
-        lineItems: [BTVenmoLineItem]? = []
+        lineItems: [BTVenmoLineItem]? = [],
+        riskCorrelationID: String? = nil
     ) {
         self.paymentMethodUsage = paymentMethodUsage
         self.profileID = profileID
@@ -86,5 +89,6 @@ import Foundation
         self.shippingAmount = shippingAmount
         self.totalAmount = totalAmount
         self.lineItems = lineItems
+        self.riskCorrelationID = riskCorrelationID
     }
 }

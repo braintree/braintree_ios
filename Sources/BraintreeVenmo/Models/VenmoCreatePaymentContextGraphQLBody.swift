@@ -29,7 +29,8 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 intent: "CONTINUE",
                 isFinalAmount: request.isFinalAmount.description,
                 displayName: request.displayName,
-                paysheetDetails: InputParameters.PaysheetDetails(request: request)
+                paysheetDetails: InputParameters.PaysheetDetails(request: request),
+                riskCorrelationID: request.riskCorrelationID
             )
         }
         
@@ -42,6 +43,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
             var isFinalAmount: String?
             var displayName: String?
             var paysheetDetails: PaysheetDetails?
+            var riskCorrelationID: String?
             
             enum CodingKeys: String, CodingKey {
                 case paymentMethodUsage
@@ -51,6 +53,7 @@ struct VenmoCreatePaymentContextGraphQLBody: BTGraphQLEncodableBody {
                 case isFinalAmount
                 case displayName
                 case paysheetDetails
+                case riskCorrelationID = "venmoRiskCorrelationId"
             }
             
             struct PaysheetDetails: Encodable {
