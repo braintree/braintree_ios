@@ -78,11 +78,10 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
         self.request = request
         
-        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<BTLocalPaymentResult, Error>) in
-
+        return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
 
-            Task {
+            Task { @MainActor in
                 do {
                     let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
                     let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
@@ -108,7 +107,7 @@ import BraintreeDataCollector
                         return
                     }
 
-                    await start(request: request, configuration: configuration)
+                    await self.start(request: request, configuration: configuration)
                 } catch {
                     self.notifyFailure(with: error)
                     continuation.resume(throwing: error)
@@ -165,9 +164,14 @@ import BraintreeDataCollector
             do {
                 let (body, _) = try await self.apiClient.post("v1/local_payments/create", parameters: localPaymentRequest)
 
+                guard let body else {
+                    notifyFailure(with: BTLocalPaymentError.noAccountData)
+                    return
+                }
+
                 if
-                    let paymentID = body?["paymentResource"]["paymentToken"].asString(),
-                    let approvalURLString = body?["paymentResource"]["redirectUrl"].asString(),
+                    let paymentID = body["paymentResource"]["paymentToken"].asString(),
+                    let approvalURLString = body["paymentResource"]["redirectUrl"].asString(),
                     let url = URL(string: approvalURLString) {
 
                     if !paymentID.isEmpty {
@@ -183,11 +187,11 @@ import BraintreeDataCollector
                         "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
                         BTLogLevelDescription.string(for: .critical)
                     )
-                    notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
+                    self.notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
                     return
                 }
             } catch {
-                notifyFailure(with: error)
+                self.notifyFailure(with: error)
                 return
         }
     }
