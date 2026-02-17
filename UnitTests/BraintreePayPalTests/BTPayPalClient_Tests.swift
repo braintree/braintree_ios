@@ -1520,7 +1520,7 @@ class BTPayPalClient_Tests: XCTestCase {
     }
     
     func testTokenize_whenCheckoutPayLaterRequest_setsCorrectAnalyticsTags() async {
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "2.00", offerPayLater: true)
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "100.00", offerPayLater: true)
 
         let _ = try? await payPalClient.tokenize(checkoutRequest)
 
@@ -1543,6 +1543,39 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedIsBillingAgreement)
         XCTAssertTrue(mockAPIClient.postedIsPurchase)
         XCTAssertEqual(mockAPIClient.postedBillingPlanType, "SUBSCRIPTION")
+    }
+    
+    func testTokenize_withZeroAmount_setsBillingWithPurchaseAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "0")
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
+        XCTAssertFalse(mockAPIClient.postedIsPurchase)
+    }
+    
+    func testTokenize_withInvalidAmount_setsBillingWithPurchaseAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "abcde")
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
+        XCTAssertFalse(mockAPIClient.postedIsPurchase)
+    }
+    
+    func testTokenize_withNegativeAmount_setsBillingWithPurchaseAnalytics() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "-111")
+
+        let _ = try? await payPalClient.tokenize(checkoutRequest)
+
+        XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
+        XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
+        XCTAssertFalse(mockAPIClient.postedIsPurchase)
     }
     
     func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {

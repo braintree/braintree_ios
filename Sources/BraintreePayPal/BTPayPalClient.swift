@@ -197,7 +197,7 @@ import BraintreeDataCollector
         contextType = "EC-TOKEN"
         fundingSource = getFundingSource(from: request)
         isBillingAgreement = request.requestBillingAgreement
-        isPurchase = !request.amount.isEmpty
+        isPurchase = Double(request.amount).map { $0 > 0 } ?? false
         billingPlanType = request.recurringBillingPlanType?.rawValue
         tokenize(request: request, completion: completion)
     }
