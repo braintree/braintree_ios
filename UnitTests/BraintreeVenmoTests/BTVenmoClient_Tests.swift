@@ -697,6 +697,23 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertEqual("false", input["isFinalAmount"] as? String)
         }
     }
+    
+    func testTokenizeVenmoAccount_withRiskCorrelationID_setsItOnThePaymentContext() {
+        venmoRequest.riskCorrelationID = "some_risk_correlation_id"
+        
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+        
+        venmoClient.tokenize(venmoRequest) { _, _ in }
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        let params = mockAPIClient.lastPOSTParameters as? NSDictionary
+        if let inputDict = params?["variables"] as? NSDictionary,
+           let input = inputDict["input"] as? [String:Any] {
+            XCTAssertEqual("some_risk_correlation_id", input["venmoRiskCorrelationId"] as? String)
+        }
+    }
 
     // MARK: - Analytics
     
