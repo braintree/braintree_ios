@@ -12,79 +12,72 @@ import BraintreeCore
 
     /// Exposed for mocking Cardinal
     var cardinalSession: CardinalSessionTestable = CardinalSession()
-    
+
     // MARK: - Private Properties
-    
+
     /// exposed for testing
     var apiClient: BTAPIClient
     private var request: BTThreeDSecureRequest?
     private var threeDSecureV2Provider: BTThreeDSecureV2Provider?
-    private var merchantCompletion: ((BTThreeDSecureResult?, Error?) -> Void) = { _, _ in }
 
     // MARK: - Initializer
-    
+
     /// Initialize a new BTThreeDSecureClient instance.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(authorization: authorization)
     }
-    
+
     // MARK: - Public Methods
-    
+
     /// Starts the 3DS flow using a BTThreeDSecureRequest.
     /// - Parameters:
     ///   - request: A BTThreeDSecureRequest request.
     ///   - completion: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
+    @objc(startRequest:completion:)
     public func start(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyStarted)
-        
-        self.request = request
-        self.merchantCompletion = completion
-        
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, BTThreeDSecureError.deallocated)
-                return
-            }
-
-            if let error {
-                notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            guard let configuration, configuration.cardinalAuthenticationJWT != nil else {
-                NSLog("%@ Missing the required Cardinal authentication JWT.", BTLogLevelDescription.string(for: .critical))
-                let error = BTThreeDSecureError.configuration("Missing the required Cardinal authentication JWT.")
-                notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            if request.amount.isEmpty {
-                NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
-                let error = BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN.")
-                notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            if request.threeDSecureRequestDelegate == nil {
-                let message = "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."
-                let error = BTThreeDSecureError.configuration(message)
-                notifyFailure(with: error, completion: completion)
-                return
-            }
-
-            prepareLookup(request: request) { error in
-                if let error {
-                    self.notifyFailure(with: error, completion: completion)
-                    return
-                }
-
-                self.start(request: request, configuration: configuration)
+        Task {
+            do {
+                let result = try await start(request)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
             }
         }
     }
-        
+
+    /// Starts the 3DS flow using a BTThreeDSecureRequest.
+    /// - Parameter request: A BTThreeDSecureRequest request.
+    /// - Returns: On success, you will receive an instance of `BTThreeDSecureResult`
+    /// - Throws: An `Error` describing the failure
+    public func start(_ request: BTThreeDSecureRequest) async throws -> BTThreeDSecureResult {
+        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyStarted)
+
+        self.request = request
+
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+
+        guard configuration.cardinalAuthenticationJWT != nil else {
+            NSLog("%@ Missing the required Cardinal authentication JWT.", BTLogLevelDescription.string(for: .critical))
+            throw notifyFailure(with: BTThreeDSecureError.configuration("Missing the required Cardinal authentication JWT."))
+        }
+
+        if request.amount.isEmpty {
+            NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
+            throw notifyFailure(with: BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN."))
+        }
+
+        if request.threeDSecureRequestDelegate == nil {
+            let message = "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."
+            throw notifyFailure(with: BTThreeDSecureError.configuration(message))
+        }
+
+        try await prepareLookup(request: request)
+
+        return try await start(request: request, configuration: configuration)
+    }
+
     /// Creates a stringified JSON object containing the information necessary to perform a lookup.
     /// - Parameters:
     ///   - request: The `BTThreeDSecureRequest` object where prepareLookup was called.
@@ -94,59 +87,13 @@ import BraintreeCore
         _ request: BTThreeDSecureRequest,
         completion: @escaping (String?, Error?) -> Void
     ) {
-        self.request = request
-        
-        guard apiClient.authorization.type == .clientToken else {
-            notifyFailure(
-                with: BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations."),
-                completion: completion
-            )
-            return
-        }
-
-        if request.nonce.isEmpty {
-            notifyFailure(
-                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce cannot be an empty string."),
-                completion: completion
-            )
-            return
-        }
-
-        prepareLookup(request: request) { error in
-            if let error {
-                self.notifyFailure(with: error, completion: completion)
-                return
+        Task {
+            do {
+                let jsonString = try await prepareLookup(request)
+                completion(jsonString, nil)
+            } catch {
+                completion(nil, error)
             }
-
-            var requestParameters: [String: Any?] = [
-                "nonce": request.nonce,
-                "authorizationFingerprint": self.apiClient.authorization.bearer,
-                "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
-            ]
-
-            if let dfReferenceID = request.dfReferenceID {
-                requestParameters["dfReferenceId"] = dfReferenceID
-            }
-
-            let clientMetadata: [String: String?] = [
-                "sdkVersion": "iOS/\(BTCoreConstants.braintreeSDKVersion)",
-                "requestedThreeDSecureVersion": "2"
-            ]
-
-            requestParameters["clientMetadata"] = clientMetadata
-
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: requestParameters) else {
-                self.notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
-                return
-            }
-
-            guard let jsonString = String(data: jsonData, encoding: .utf8) else {
-                self.notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure, completion: completion)
-                return
-            }
-
-            completion(jsonString, nil)
-            return
         }
     }
 
@@ -156,15 +103,48 @@ import BraintreeCore
     /// - Returns: On success, you will receive a client payload string
     /// - Throws: An `Error` describing the failure
     public func prepareLookup(_ request: BTThreeDSecureRequest) async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            prepareLookup(request) { jsonString, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let jsonString {
-                    continuation.resume(returning: jsonString)
-                }
-            }
+        self.request = request
+
+        guard apiClient.authorization.type == .clientToken else {
+            throw notifyFailure(
+                with: BTThreeDSecureError.configuration("A client token must be used for ThreeDSecure integrations.")
+            )
         }
+
+        if request.nonce.isEmpty {
+            throw notifyFailure(
+                with: BTThreeDSecureError.configuration("BTThreeDSecureRequest nonce cannot be an empty string.")
+            )
+        }
+
+        try await prepareLookup(request: request)
+
+        var requestParameters: [String: Any?] = [
+            "nonce": request.nonce,
+            "authorizationFingerprint": apiClient.authorization.bearer,
+            "braintreeLibraryVersion": "iOS-\(BTCoreConstants.braintreeSDKVersion)"
+        ]
+
+        if let dfReferenceID = request.dfReferenceID {
+            requestParameters["dfReferenceId"] = dfReferenceID
+        }
+
+        let clientMetadata: [String: String?] = [
+            "sdkVersion": "iOS/\(BTCoreConstants.braintreeSDKVersion)",
+            "requestedThreeDSecureVersion": "2"
+        ]
+
+        requestParameters["clientMetadata"] = clientMetadata
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestParameters) else {
+            throw notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure)
+        }
+
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            throw notifyFailure(with: BTThreeDSecureError.jsonSerializationFailure)
+        }
+
+        return jsonString
     }
 
     /// Initialize a challenge from a server side lookup call.
@@ -179,26 +159,13 @@ import BraintreeCore
         request: BTThreeDSecureRequest,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        self.merchantCompletion = completion
-        
-        guard let dataResponse = lookupResponse.data(using: .utf8) else {
-            merchantCompletion(
-                nil,
-                BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."])
-            )
-            return
-        }
-
-        let jsonResponse = BTJSON(data: dataResponse)
-        let lookupResult = BTThreeDSecureResult(json: jsonResponse)
-
-        apiClient.fetchOrReturnRemoteConfiguration { configuration, error in
-            guard let configuration, error == nil else {
-                self.merchantCompletion(nil, error)
-                return
+        Task {
+            do {
+                let result = try await initializeChallenge(lookupResponse: lookupResponse, request: request)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
             }
-
-            self.process(lookupResult: lookupResult, configuration: configuration)
         }
     }
 
@@ -212,230 +179,190 @@ import BraintreeCore
         lookupResponse: String,
         request: BTThreeDSecureRequest
     ) async throws -> BTThreeDSecureResult {
-        try await withCheckedThrowingContinuation { continuation in
-            initializeChallenge(lookupResponse: lookupResponse, request: request) { result, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let result {
-                    continuation.resume(returning: result)
-                }
-            }
+        guard let dataResponse = lookupResponse.data(using: .utf8) else {
+            throw BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."])
         }
+
+        let jsonResponse = BTJSON(data: dataResponse)
+        let lookupResult = BTThreeDSecureResult(json: jsonResponse)
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+
+        return try await process(lookupResult: lookupResult, configuration: configuration)
     }
-    
+
     // MARK: - Private Methods
-    
+
     /// Prepare for a 3DS 2.0 flow.
-    /// - Parameters:
-    ///   - apiClient: The API client.
-    ///   - completion: This completion will be invoked exactly once. If the error is nil then the preparation was successful.
-    private func prepareLookup(
-        request: BTThreeDSecureRequest,
-        completion: @escaping (Error?) -> Void
-    ) {
-        apiClient.fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(BTThreeDSecureError.deallocated)
-                return
-            }
+    /// - Parameter request: The BTThreeDSecureRequest to prepare.
+    /// - Throws: An `Error` if preparation fails.
+    private func prepareLookup(request: BTThreeDSecureRequest) async throws {
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
 
-            guard let configuration, error == nil else {
-                completion(error)
-                return
-            }
+        guard configuration.cardinalAuthenticationJWT != nil else {
+            throw BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2.")
+        }
 
-            if configuration.cardinalAuthenticationJWT != nil {
-                threeDSecureV2Provider = BTThreeDSecureV2Provider(
-                    configuration: configuration,
-                    apiClient: apiClient,
-                    request: request,
-                    cardinalSession: cardinalSession
-                ) { lookupParameters in
-                    guard let dfReferenceID = lookupParameters?["dfReferenceId"], !dfReferenceID.isEmpty else {
-                        completion(
-                            BTThreeDSecureError.failedLookup(
-                                [NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]
-                            )
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            threeDSecureV2Provider = BTThreeDSecureV2Provider(
+                configuration: configuration,
+                apiClient: apiClient,
+                request: request,
+                cardinalSession: cardinalSession
+            ) { lookupParameters in
+                guard let dfReferenceID = lookupParameters?["dfReferenceId"], !dfReferenceID.isEmpty else {
+                    continuation.resume(
+                        throwing: BTThreeDSecureError.failedLookup(
+                            [NSLocalizedDescriptionKey: "There was an error retrieving the dfReferenceId."]
                         )
-                        return
-                    }
-
-                    request.dfReferenceID = dfReferenceID
-                    completion(nil)
+                    )
+                    return
                 }
-            } else {
-                completion(BTThreeDSecureError.configuration("Merchant is not configured for 3SD 2."))
-                return
+                request.dfReferenceID = dfReferenceID
+                continuation.resume()
             }
         }
     }
+    
+    private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) async throws -> BTThreeDSecureResult {
+        let lookupResult = try await performThreeDSecureLookup(request)
         
-    private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) {
-        performThreeDSecureLookup(request) { lookupResult, error in
-            DispatchQueue.main.async {
+        // Use Task @MainActor instead of DispatchQueue.main.async to avoid
+        // a @Sendable closure, which would require BTThreeDSecureRequestDelegate to be Sendable.
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            Task { @MainActor in
+                guard let delegate = self.request?.threeDSecureRequestDelegate else {
+                    continuation.resume()
+                    return
+                }
+                delegate.onLookupComplete(request, lookupResult: lookupResult) {
+                    continuation.resume()
+                }
+            }
+        }
+        
+        let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
+        if requiresUserAuthentication {
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeRequired)
+        }
+        
+        return try await process(lookupResult: lookupResult, configuration: configuration)
+    }
+
+    private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) async throws -> BTThreeDSecureResult {
+        if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
+            return notifySuccess(with: lookupResult)
+        }
+
+        if lookupResult.lookup?.isThreeDSecureVersion2 == true {
+            return try await performV2Authentication(with: lookupResult)
+        } else {
+            throw notifyFailure(
+                with: BTThreeDSecureError.configuration(
+                    "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."
+                )
+            )
+        }
+    }
+
+    private func performV2Authentication(with lookupResult: BTThreeDSecureResult) async throws -> BTThreeDSecureResult {
+        try await withCheckedThrowingContinuation { continuation in
+            threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
                 if let error {
-                    self.notifyFailure(with: error, completion: self.merchantCompletion)
+                    if error as? BTThreeDSecureError == .canceled {
+                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
+                    }
+                    continuation.resume(throwing: self.notifyFailure(with: error))
                     return
                 }
 
-                guard let lookupResult else {
-                    self.notifyFailure(
-                        with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup result nil."]),
-                        completion: self.merchantCompletion
+                guard let result else {
+                    continuation.resume(
+                        throwing: self.notifyFailure(
+                            with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Process lookup result nil"])
+                        )
                     )
                     return
                 }
 
-                self.request?.threeDSecureRequestDelegate?.onLookupComplete(request, lookupResult: lookupResult) {
-                    let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
-                    if requiresUserAuthentication {
-                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeRequired)
-                    }
-                    self.process(lookupResult: lookupResult, configuration: configuration)
-                }
+                continuation.resume(returning: self.notifySuccess(with: result))
             }
         }
     }
-    
-    private func process(lookupResult: BTThreeDSecureResult, configuration: BTConfiguration) {
-        if lookupResult.lookup?.requiresUserAuthentication == false || lookupResult.lookup == nil {
-            notifySuccess(with: lookupResult, completion: merchantCompletion)
-            return
-        }
 
-        if lookupResult.lookup?.isThreeDSecureVersion2 == true {
-            performV2Authentication(with: lookupResult)
-        } else {
-            notifyFailure(
-                with: BTThreeDSecureError.configuration("3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information."),
-                completion: merchantCompletion
-            )
-        }
-    }
-    
-    private func performV2Authentication(with lookupResult: BTThreeDSecureResult) {
-        threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
-            if let error {
-                if error as? BTThreeDSecureError == .canceled {
-                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
-                }
-
-                self.notifyFailure(with: error, completion: self.merchantCompletion)
-                return
-            }
-
-            guard let result else {
-                self.notifyFailure(
-                    with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Process lookup result nil"]),
-                    completion: self.merchantCompletion
-                )
-                return
-            }
-
-            self.notifySuccess(with: result, completion: self.merchantCompletion)
-        }
-    }
-    
-    private func stringFor(_ boolean: Bool) -> String {
-        boolean ? "true" : "false"
-    }
-    
     // MARK: - Internal Methods
-    
-    func performThreeDSecureLookup(
-        _ request: BTThreeDSecureRequest,
-        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
-    ) {
-        apiClient.fetchOrReturnRemoteConfiguration { _, error in
-            if let error {
-                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                self.notifyFailure(with: error, completion: completion)
-                return
-            }
 
-            let requestParameters = ThreeDSecurePOSTBody(request: request)
-            guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                self.notifyFailure(
-                    with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."),
-                    completion: completion
-                )
-                return
-            }
+    func performThreeDSecureLookup(_ request: BTThreeDSecureRequest) async throws -> BTThreeDSecureResult {
+        do {
+            _ = try await apiClient.fetchOrReturnRemoteConfiguration()
+        } catch {
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+            throw notifyFailure(with: error)
+        }
 
-            self.apiClient.post(
+        let requestParameters = ThreeDSecurePOSTBody(request: request)
+
+        guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+            throw notifyFailure(with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
+        }
+
+        do {
+            let (body, _) = try await apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
                 parameters: requestParameters
-            ) { body, _, error in
-                if let error = error as NSError? {
-                    // Provide more context for card validation error when status code 422
-                    if error.domain == BTCoreConstants.httpErrorDomain,
-                        error as? BTHTTPError == .clientError([:]),
-                        let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
-                        urlResponseError.statusCode == 422 {
-                        var userInfo: [String: Any] = error.userInfo
-                        let errorBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+            )
 
-                        if let message = errorBody?["error"]["message"], message.isString {
-                            userInfo[NSLocalizedDescriptionKey] = message.asString()
-                        }
-
-                        if let threeDSecureInfo = errorBody?["threeDSecureInfo"], threeDSecureInfo.isObject {
-                            let infoKey = "com.braintreepayments.BTThreeDSecureFlowInfoKey"
-                            userInfo[infoKey] = threeDSecureInfo.asDictionary()
-                        }
-
-                        if let error = errorBody?["error"], error.isObject {
-                            let validationErrorsKey = "com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"
-                            userInfo[validationErrorsKey] = error.asDictionary()
-                        }
-
-                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                        self.notifyFailure(with: BTThreeDSecureError.failedLookup(userInfo), completion: completion)
-                        return
-                    }
-
-                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                    self.notifyFailure(with: error, completion: completion)
-                    return
-                }
-
-                guard let body else {
-                    self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                    self.notifyFailure(with: BTThreeDSecureError.noBodyReturned, completion: completion)
-                    return
-                }
-
-                self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
-                completion(BTThreeDSecureResult(json: body), nil)
-                return
+            guard let body else {
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+                throw notifyFailure(with: BTThreeDSecureError.noBodyReturned)
             }
+
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
+            return BTThreeDSecureResult(json: body)
+        } catch let error as NSError {
+            // Provide more context for card validation error when status code 422
+            if error.domain == BTCoreConstants.httpErrorDomain,
+                error as? BTHTTPError == .clientError([:]),
+                let urlResponseError = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse,
+                urlResponseError.statusCode == 422 {
+                var userInfo: [String: Any] = error.userInfo
+                let errorBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+
+                if let message = errorBody?["error"]["message"], message.isString {
+                    userInfo[NSLocalizedDescriptionKey] = message.asString()
+                }
+
+                if let threeDSecureInfo = errorBody?["threeDSecureInfo"], threeDSecureInfo.isObject {
+                    let infoKey = "com.braintreepayments.BTThreeDSecureFlowInfoKey"
+                    userInfo[infoKey] = threeDSecureInfo.asDictionary()
+                }
+
+                if let error = errorBody?["error"], error.isObject {
+                    let validationErrorsKey = "com.braintreepayments.BTThreeDSecureFlowValidationErrorsKey"
+                    userInfo[validationErrorsKey] = error.asDictionary()
+                }
+
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+                throw notifyFailure(with: BTThreeDSecureError.failedLookup(userInfo))
+            }
+
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+            throw notifyFailure(with: error)
         }
     }
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(
-        with result: BTThreeDSecureResult,
-        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
-    ) {
+    private func notifySuccess(with result: BTThreeDSecureResult) -> BTThreeDSecureResult {
         apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifySucceeded)
-        completion(result, nil)
+        return result
     }
 
-    private func notifyFailure(with error: Error, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
+    private func notifyFailure(with error: Error) -> Error {
         apiClient.sendAnalyticsEvent(
             BTThreeDSecureAnalytics.verifyFailed,
             errorDescription: error.localizedDescription
         )
-        completion(nil, error)
-    }
-
-    private func notifyFailure(with error: Error, completion: @escaping (String?, Error?) -> Void) {
-        apiClient.sendAnalyticsEvent(
-            BTThreeDSecureAnalytics.verifyFailed,
-            errorDescription: error.localizedDescription
-        )
-        completion(nil, error)
+        return error
     }
 }
