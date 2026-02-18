@@ -159,6 +159,7 @@ import BraintreeCore
 
     // MARK: - App Switch Methods
 
+    @MainActor
     func handleOpen(_ url: URL) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
@@ -255,27 +256,27 @@ import BraintreeCore
     }
     
     // MARK: - Private Helpers
-    
+
+    @MainActor
     private func handlePaymentContextSuccess(_ returnURL: BTVenmoAppSwitchReturnURL) {
-        Task { [weak self] in
-            guard let self else { return }
-            
+        Task {
             do {
                 let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
-                let (body, _) = try await self.apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
+                let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
                 
                 guard let body else {
-                    self.notifyFailure(with: BTVenmoError.invalidBodyReturned)
+                    notifyFailure(with: BTVenmoError.invalidBodyReturned)
                     return
                 }
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
-                await self.handleVaultingIfNeeded(for: venmoAccountNonce)
+                await handleVaultingIfNeeded(for: venmoAccountNonce)
             } catch {
-                self.notifyFailure(with: error)
+                notifyFailure(with: error)
             }
         }
     }
-    
+
+    @MainActor
     private func handleDirectSuccess(_ returnURL: BTVenmoAppSwitchReturnURL) {
         guard let nonce = returnURL.nonce else {
             notifyFailure(with: BTVenmoError.invalidReturnURL("nonce"))
@@ -288,14 +289,13 @@ import BraintreeCore
         }
         
         if shouldVault && apiClient.authorization.type == .clientToken {
-            Task { [weak self] in
-                guard let self else { return }
-                
+            Task {
                 do {
                     let vaultedNonce = try await vault(nonce)
-                    _ = self.notifySuccess(with: vaultedNonce)
+                    notifySuccess(with: vaultedNonce)
+                    appSwitchCompletion(vaultedNonce, nil)
                 } catch {
-                    self.notifyFailure(with: error)
+                    notifyFailure(with: error)
                 }
             }
         } else {
@@ -307,20 +307,24 @@ import BraintreeCore
             ] as [String: Any])
             
             let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: json)
-            _ = self.notifySuccess(with: venmoAccountNonce)
+            notifySuccess(with: venmoAccountNonce)
+            appSwitchCompletion(venmoAccountNonce, nil)
         }
     }
     
+    @MainActor
     private func handleVaultingIfNeeded(for venmoAccountNonce: BTVenmoAccountNonce) async {
         if shouldVault && apiClient.authorization.type == .clientToken {
             do {
                 let vaultedNonce = try await vault(venmoAccountNonce.nonce)
-                _ = notifySuccess(with: vaultedNonce)
+                notifySuccess(with: vaultedNonce)
+                appSwitchCompletion(vaultedNonce, nil)
             } catch {
                 notifyFailure(with: error)
             }
         } else {
-            _ = notifySuccess(with: venmoAccountNonce)
+            notifySuccess(with: venmoAccountNonce)
+            appSwitchCompletion(venmoAccountNonce, nil)
         }
     }
 
@@ -360,16 +364,13 @@ import BraintreeCore
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(with result: BTVenmoAccountNonce) -> BTVenmoAccountNonce {
+    private func notifySuccess(with result: BTVenmoAccountNonce) {
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
             contextID: contextID,
             isVaultRequest: shouldVault,
             linkType: linkType
         )
-        appSwitchCompletion(result, nil)
-        appSwitchCompletion = { _, _ in }
-        return result
     }
 
     private func notifyFailure(with error: Error) {
@@ -381,7 +382,6 @@ import BraintreeCore
             linkType: linkType
         )
         appSwitchCompletion(nil, error)
-        appSwitchCompletion = { _, _ in }
     }
 
     private func notifyCancel() {
@@ -393,7 +393,6 @@ import BraintreeCore
             linkType: linkType
         )
         appSwitchCompletion(nil, BTVenmoError.canceled)
-        appSwitchCompletion = { _, _ in }
     }
 }
 
@@ -404,8 +403,11 @@ extension BTVenmoClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
-        venmoClient?.handleOpen(url)
+        guard let client = venmoClient else { return }
         BTVenmoClient.venmoClient = nil
+        Task { @MainActor in
+            client.handleOpen(url)
+        }
     }
     
     /// :nodoc:
