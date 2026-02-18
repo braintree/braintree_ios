@@ -15,6 +15,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Validate version input
+        run: |
+          # Strict regex validation for version format: x.x.x or x.x.x-beta (or other pre-release identifiers)
+          if ! echo "${{ github.event.inputs.version }}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$'; then
+            echo "::error::Invalid version format. Must be x.x.x or x.x.x-prerelease (e.g., 5.0.0 or 5.0.0-beta)"
+            exit 1
+          fi
+          # Store validated version in environment variable
+          echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> "$GITHUB_ENV"
+
       - name: Use Xcode 16.4.0
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
@@ -35,24 +45,24 @@ jobs:
       - name: Update version
         run: |
           today=$(date +'%Y-%m-%d')
-          sed -i '' 's/## unreleased.*/## '"${{ github.event.inputs.version }}"' ('"$today"')/' CHANGELOG.md
-          sed -i '' 's/\(s\.version *= *\).*/\1"'"${{ github.event.inputs.version }}"'\"/' Braintree.podspec
-          sed -i '' 's/braintreeSDKVersion: String =.*/braintreeSDKVersion: String = "${{ github.event.inputs.version }}"/' Sources/BraintreeCore/BTCoreConstants.swift
-          plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
-          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
-          plutil -replace CFBundleVersion -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
-          plutil -replace CFBundleShortVersionString -string ${{ github.event.inputs.version }} -- 'Sources/BraintreeCore/Info.plist'
+          sed -i '' 's/## unreleased.*/## '"${RELEASE_VERSION}"' ('"$today"')/' CHANGELOG.md
+          sed -i '' 's/\(s\.version *= *\).*/\1"'"${RELEASE_VERSION}"'\"/' Braintree.podspec
+          sed -i '' 's/braintreeSDKVersion: String =.*/braintreeSDKVersion: String = "'"${RELEASE_VERSION}"'"/' Sources/BraintreeCore/BTCoreConstants.swift
+          plutil -replace CFBundleVersion -string "${RELEASE_VERSION}" -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
+          plutil -replace CFBundleShortVersionString -string "${RELEASE_VERSION}" -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
+          plutil -replace CFBundleVersion -string "${RELEASE_VERSION}" -- 'Sources/BraintreeCore/Info.plist'
+          plutil -replace CFBundleShortVersionString -string "${RELEASE_VERSION}" -- 'Sources/BraintreeCore/Info.plist'
 
           git add .
-          git commit -m 'Bump version to ${{ github.event.inputs.version }}'
-          git tag ${{ github.event.inputs.version }} -a -m 'Release ${{ github.event.inputs.version }}'
+          git commit -m "Bump version to ${RELEASE_VERSION}"
+          git tag "${RELEASE_VERSION}" -a -m "Release ${RELEASE_VERSION}"
 
       - name: Restore SPMTest app for development purposes
         run: |
           git revert $(git rev-parse HEAD^1) --no-edit
       
       - name: Push commits and tag
-        run: git push origin HEAD ${{ github.event.inputs.version }}
+        run: git push origin HEAD "${RELEASE_VERSION}"
 
       - name: Save changelog entries to a file
         run: |
@@ -64,8 +74,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ github.event.inputs.version }}
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: ${{ env.RELEASE_VERSION }}
           body_path: changelog_entries.md
           draft: false
           prerelease: false
@@ -155,13 +165,13 @@ jobs:
             --author Braintree \
             --author_url http://braintreepayments.com \
             --github_url https://github.com/braintree/braintree_ios \
-            --github-file-prefix https://github.com/braintree/braintree_ios/tree/${{ github.event.inputs.version }} \
+            --github-file-prefix "https://github.com/braintree/braintree_ios/tree/${RELEASE_VERSION}" \
             --theme fullwidth \
-            --output ${{ github.event.inputs.version }}
+            --output "${RELEASE_VERSION}"
           git checkout gh-pages
-          ln -sfn ${{ github.event.inputs.version }} current
-          git add current ${{ github.event.inputs.version }}
-          git commit -m "Publish ${{ github.event.inputs.version }} docs to github pages"
+          ln -sfn "${RELEASE_VERSION}" current
+          git add current "${RELEASE_VERSION}"
+          git commit -m "Publish ${RELEASE_VERSION} docs to github pages"
           git push
 
       - name: Publish to CocoaPods
@@ -169,5 +179,5 @@ jobs:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
           git stash
-          git checkout ${{ github.event.inputs.version }}
+          git checkout "${RELEASE_VERSION}"
           pod trunk push Braintree.podspec
