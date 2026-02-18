@@ -168,12 +168,16 @@ import BraintreeCore
             linkType: linkType
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
-            notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString))
+            let error = BTVenmoError.invalidReturnURL(url.absoluteString)
+            notifyFailure(with: error)
+            appSwitchCompletion(nil, error)
             return
         }
         
         guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
-            notifyFailure(with: BTVenmoError.invalidReturnURL(cleanedURL.absoluteString))
+            let error = BTVenmoError.invalidReturnURL(cleanedURL.absoluteString)
+            notifyFailure(with: error)
+            appSwitchCompletion(nil, error)
             return
         }
         
@@ -185,10 +189,13 @@ import BraintreeCore
             handleDirectSuccess(returnURL)
             
         case .failed:
-            notifyFailure(with: returnURL.error ?? BTVenmoError.unknown)
+            let error = returnURL.error ?? BTVenmoError.unknown
+            notifyFailure(with: error)
+            appSwitchCompletion(nil, error)
             
         case .canceled:
             notifyCancel()
+            appSwitchCompletion(nil, BTVenmoError.canceled)
             
         default:
             // should not happen
@@ -381,7 +388,6 @@ import BraintreeCore
             isVaultRequest: shouldVault,
             linkType: linkType
         )
-        appSwitchCompletion(nil, error)
     }
 
     private func notifyCancel() {
@@ -392,7 +398,6 @@ import BraintreeCore
             isVaultRequest: shouldVault,
             linkType: linkType
         )
-        appSwitchCompletion(nil, BTVenmoError.canceled)
     }
 }
 
