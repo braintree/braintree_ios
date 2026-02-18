@@ -16,14 +16,27 @@ jobs:
           fetch-depth: 0
 
       - name: Validate version input
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
         run: |
-          # Strict regex validation for version format: x.x.x or x.x.x-beta (or other pre-release identifiers)
-          if ! echo "${{ github.event.inputs.version }}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$'; then
-            echo "::error::Invalid version format. Must be x.x.x or x.x.x-prerelease (e.g., 5.0.0 or 5.0.0-beta)"
+          set -euo pipefail
+
+          # Validate version format: x.x.x or x.x.x-prerelease (e.g., 5.0.0, 5.0.0-beta, 5.0.0-rc.1)
+          if ! echo "${INPUT_VERSION}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$'; then
+            echo "::error::Invalid version format: ${INPUT_VERSION}"
+            echo "::error::Version must be x.x.x or x.x.x-prerelease (e.g., 5.0.0 or 5.0.0-beta)"
             exit 1
           fi
-          # Store validated version in environment variable
-          echo "RELEASE_VERSION=${{ github.event.inputs.version }}" >> "$GITHUB_ENV"
+
+          # Check length to prevent excessively long inputs
+          if [ ${#INPUT_VERSION} -gt 50 ]; then
+            echo "::error::Version string exceeds maximum length of 50 characters"
+            exit 1
+          fi
+
+          # Store validated version for use in subsequent steps
+          echo "RELEASE_VERSION=${INPUT_VERSION}" >> "$GITHUB_ENV"
+          echo "Version validated: ${INPUT_VERSION}"
 
       - name: Use Xcode 16.4.0
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
@@ -33,17 +46,20 @@ jobs:
 
       - name: Set git username and email
         run: |
+          set -euo pipefail
           git config user.name braintreeps
           git config user.email code@getbraintree.com
 
       - name: Remove SPMTest app to prevent Carthage timeout
         run: |
+          set -euo pipefail
           rm -rf SampleApps/SPMTest
           git add SampleApps/SPMTest
           git commit -m 'Remove SPMTest app to avoid Carthage timeout'
 
       - name: Update version
         run: |
+          set -euo pipefail
           today=$(date +'%Y-%m-%d')
           sed -i '' 's/## unreleased.*/## '"${RELEASE_VERSION}"' ('"$today"')/' CHANGELOG.md
           sed -i '' 's/\(s\.version *= *\).*/\1"'"${RELEASE_VERSION}"'\"/' Braintree.podspec
@@ -59,6 +75,7 @@ jobs:
 
       - name: Restore SPMTest app for development purposes
         run: |
+          set -euo pipefail
           git revert $(git rev-parse HEAD^1) --no-edit
       
       - name: Push commits and tag
@@ -66,6 +83,7 @@ jobs:
 
       - name: Save changelog entries to a file
         run: |
+          set -euo pipefail
           sed -e '1,/##/d' -e '/##/,$d' CHANGELOG.md > changelog_entries.md
 
       - name: Create GitHub release
@@ -82,6 +100,7 @@ jobs:
 
       - name: Create Carthage pre-built xcframeworks
         run: |
+          set -euo pipefail
           rm -rf SampleApps/SPMTest
           rm -rf Carthage
           carthage build --no-skip-current --use-xcframeworks
@@ -100,6 +119,7 @@ jobs:
 
       - name: Create static pre-built xcframeworks
         run: |
+          set -euo pipefail
           # 1) Set Build Setting MACH_O type
           sed -i '' '/buildSettings = {/a\
             MACH_O_TYPE = staticlib;' Braintree.xcodeproj/project.pbxproj
@@ -139,6 +159,7 @@ jobs:
 
       - name: Publish reference docs
         run: |
+          set -euo pipefail
           gem install jazzy
           brew install sourcekitten
 
@@ -168,16 +189,26 @@ jobs:
             --github-file-prefix "https://github.com/braintree/braintree_ios/tree/${RELEASE_VERSION}" \
             --theme fullwidth \
             --output "${RELEASE_VERSION}"
+
+          # Clean up JSON build artifacts before switching branches
+          rm -f braintree-*.json swiftDoc.json
+
+          # Store current branch to return to it later
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
           git checkout gh-pages
           ln -sfn "${RELEASE_VERSION}" current
           git add current "${RELEASE_VERSION}"
           git commit -m "Publish ${RELEASE_VERSION} docs to github pages"
           git push
 
+          # Return to original branch to avoid stashing in CocoaPods step
+          git checkout "${CURRENT_BRANCH}"
+
       - name: Publish to CocoaPods
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-          git stash
+          set -euo pipefail
           git checkout "${RELEASE_VERSION}"
           pod trunk push Braintree.podspec
