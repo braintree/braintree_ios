@@ -106,39 +106,36 @@ import BraintreeDataCollector
         webSessionReturned = true
     }
 
-    func handleOpen(_ url: URL) async {
+    func handleOpen(_ url: URL) async throws -> BTLocalPaymentResult {
         // canceled case
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             let canceledError = BTLocalPaymentError.canceled(request?.paymentType ?? "unknown")
             notifyFailure(with: canceledError)
-            return
+            throw canceledError
         }
 
-        do {
-            let localPaymentPayPalAccountRequest = LocalPaymentPayPalAccountsPOSTBody(
-                request: self.request,
-                clientMetadata: self.apiClient.metadata,
-                url: url
-            )
-            let (body, _) = try await self.apiClient.post(
-                "/v1/payment_methods/paypal_accounts",
-                parameters: localPaymentPayPalAccountRequest
-            )
+        let localPaymentPayPalAccountRequest = LocalPaymentPayPalAccountsPOSTBody(
+            request: self.request,
+            clientMetadata: self.apiClient.metadata,
+            url: url
+        )
 
-            guard let body else {
-                notifyFailure(with: BTLocalPaymentError.noAccountData)
-                return
-            }
-
-            guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
-                notifyFailure(with: BTLocalPaymentError.failedToCreateNonce)
-                return
-            }
-            notifySuccess(with: tokenizedLocalPayment)
-        } catch {
-            notifyFailure(with: error)
-            return
+        let (body, _) = try await self.apiClient.post(
+            "/v1/payment_methods/paypal_accounts",
+            parameters: localPaymentPayPalAccountRequest
+        )
+        
+        guard let body else {
+            notifyFailure(with: BTLocalPaymentError.noAccountData)
+            throw BTLocalPaymentError.noAccountData
         }
+        
+        guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
+            notifyFailure(with: BTLocalPaymentError.failedToCreateNonce)
+            throw BTLocalPaymentError.failedToCreateNonce
+        }
+        notifySuccess(with: tokenizedLocalPayment)
+        return tokenizedLocalPayment
     }
 
     // MARK: - Private Methods
@@ -160,7 +157,11 @@ import BraintreeDataCollector
                 let paymentID = body["paymentResource"]["paymentToken"].asString(),
                 let approvalURLString = body["paymentResource"]["redirectUrl"].asString(),
                 let url = URL(string: approvalURLString) else {
-                NSLog("%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.", BTLogLevelDescription.string(for: .critical))
+                NSLog(
+                    // swiftlint:disable:next line_length
+                    "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
+                    BTLogLevelDescription.string(for: .critical)
+                )
                 notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
                 throw BTLocalPaymentError.appSwitchFailed
             }
@@ -168,23 +169,15 @@ import BraintreeDataCollector
             if !paymentID.isEmpty {
                 self.contextID = paymentID
             }
-
-            let tokenizedResult = try await withCheckedThrowingContinuation { continuation in
-                request.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
-                    Task {
-                        do {
-                            let result = try await self.handleOpen(approvalURL)
-                            continuation.resume(returning: result)
-                        } catch {
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
-            }
-            return tokenizedResult
+            return try await self.onPayment(with: url)
         } catch {
             self.notifyFailure(with: error)
+            throw error
         }
+    }
+    
+    private func onPayment(with url: URL) async throws -> BTLocalPaymentResult {
+        return try await self.handleOpen(url)
     }
 
     private func onPayment(with url: URL?, error: Error?) {
@@ -217,7 +210,11 @@ import BraintreeDataCollector
                         NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
                         return
                     }
-                    await self.handleOpen(url)
+                    do {
+                        _ = try await self.handleOpen(url)
+                    } catch {
+                        self.notifyFailure(with: error)
+                    }
                 }
             } else {
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginFailed)
@@ -258,3 +255,4 @@ import BraintreeDataCollector
         )
     }
 }
+
