@@ -33,8 +33,6 @@ struct FPTIBatchData: Codable {
         let applicationState: String?
 
         let appSwitchURL: String?
-        /// Recurring billing plan type, or charge pattern.
-        let billingPlanType: String?
         /// The order or ranking in which payment buttons appear.
         let buttonOrder: String?
         /// The type of button displayed or presented
@@ -52,13 +50,9 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
-        /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
-        let isBillingAgreement: Bool?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
-        /// Whether or not there's a purchase as part of the transaction. True if amount > 0
-        let isPurchase: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -74,8 +68,12 @@ struct FPTIBatchData: Codable {
         let pageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
+        /// Recurring billing plan type, or charge pattern.
+        let recurringBillingPlanType: String?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
         let shopperSessionID: String?
+        /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
+        let shouldRequestBillingAgreement: Bool?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
@@ -85,7 +83,6 @@ struct FPTIBatchData: Codable {
         init(
             applicationState: String? = nil,
             appSwitchURL: URL? = nil,
-            billingPlanType: String? = nil,
             buttonOrder: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
@@ -99,20 +96,19 @@ struct FPTIBatchData: Codable {
             errorDescription: String? = nil,
             eventName: String,
             fundingSource: String? = nil,
-            isBillingAgreement: Bool? = nil,
             isConfigFromCache: Bool? = nil,
-            isPurchase: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
             pageType: String? = nil,
+            recurringBillingPlanType: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
+            shouldRequestBillingAgreement: Bool? = nil,
             startTime: Int? = nil
         ) {
             self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString
-            self.billingPlanType = billingPlanType
             self.buttonOrder = buttonOrder
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
@@ -125,15 +121,15 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
-            self.isBillingAgreement = isBillingAgreement
             self.isConfigFromCache = isConfigFromCache
-            self.isPurchase = isPurchase
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
             self.pageType = pageType
+            self.recurringBillingPlanType = recurringBillingPlanType
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
+            self.shouldRequestBillingAgreement = shouldRequestBillingAgreement
             self.startTime = startTime
             self.fundingSource = fundingSource
         }
@@ -141,7 +137,6 @@ struct FPTIBatchData: Codable {
         enum CodingKeys: String, CodingKey {
             case applicationState = "application_state"
             case appSwitchURL = "url"
-            case billingPlanType = "billing_plan_type"
             case buttonOrder = "button_position"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
@@ -152,17 +147,17 @@ struct FPTIBatchData: Codable {
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
-            case isBillingAgreement = "is_billing_agreement"
             case isConfigFromCache = "config_cached"
-            case isPurchase = "is_purchase"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
             case pageType = "page_type"
+            case recurringBillingPlanType = "billing_plan_type"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case shopperSessionID = "shopper_session_id"
+            case shouldRequestBillingAgreement = "is_billing_agreement"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"

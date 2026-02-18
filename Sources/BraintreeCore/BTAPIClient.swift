@@ -255,7 +255,6 @@ import UIKit
         _ eventName: String,
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
-        billingPlanType: String? = nil,
         buttonOrder: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,
@@ -265,20 +264,19 @@ import UIKit
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
         fundingSource: String? = nil,
-        isBillingAgreement: Bool? = nil,
         isConfigFromCache: Bool? = nil,
-        isPurchase: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
         pageType: String? = nil,
-        shopperSessionID: String? = nil
+        recurringBillingPlanType: String? = nil,
+        shopperSessionID: String? = nil,
+        shouldRequestBillingAgreement: Bool? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
-                billingPlanType: billingPlanType,
                 buttonOrder: buttonOrder,
                 buttonType: buttonType,
                 contextID: contextID,
@@ -289,14 +287,14 @@ import UIKit
                 errorDescription: errorDescription,
                 eventName: eventName,
                 fundingSource: fundingSource,
-                isBillingAgreement: isBillingAgreement,
                 isConfigFromCache: isConfigFromCache,
-                isPurchase: isPurchase,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                shopperSessionID: shopperSessionID
+                recurringBillingPlanType: recurringBillingPlanType,
+                shopperSessionID: shopperSessionID,
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
         )
     }
