@@ -23,16 +23,14 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         super.setUp()
         threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
         client = BTThreeDSecureClient(authorization: authorization)
-
         client.apiClient = mockAPIClient
-
         client.cardinalSession = mockCardinalSession
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
 
     // MARK: - performThreeDSecureLookup
 
-    func testPerformThreeDSecureLookup_sendsAllParameters() async {
+    func testPerformThreeDSecureLookup_sendsAllParameters() async throws {
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.givenName = "Joe"
         billingAddress.surname = "Guy"
@@ -62,6 +60,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         client.apiClient = mockAPIClient
 
+        // Swallowing the error here is intentional — we only care about the
+        // POST parameters that were sent, not the result of the lookup.
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["amount"] as! String, "9.97")
@@ -77,7 +77,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
         XCTAssertEqual(additionalInfo["email"], "tester@example.com")
         XCTAssertEqual(additionalInfo["shippingMethod"], "03")
-
         XCTAssertEqual(additionalInfo["billingGivenName"], "Joe")
         XCTAssertEqual(additionalInfo["billingSurname"], "Guy")
         XCTAssertEqual(additionalInfo["billingPhoneNumber"], "12345678")
@@ -130,7 +129,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
     }
 
-    func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() async {
+    func testPerformThreeDSecureLookup_whenSuccessful_callsBackWithResult() async throws {
         let responseBody =
             """
             {
@@ -152,13 +151,13 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             }
             """
 
-        mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
+        mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: .utf8)!)
 
-        let result = try? await client.performThreeDSecureLookup(threeDSecureRequest)
+        let result = try await client.performThreeDSecureLookup(threeDSecureRequest)
 
         XCTAssertNotNil(result)
-        XCTAssertNotNil(result?.lookup)
-        XCTAssertNotNil(result?.tokenizedCard)
+        XCTAssertNotNil(result.lookup)
+        XCTAssertNotNil(result.tokenizedCard)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.lookupSucceeded))
     }
 
@@ -189,7 +188,12 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPerformThreeDSecureLookup_whenLookupFailsWith422_callsBackWithError() async {
-        let response = HTTPURLResponse(url: URL(string: "www.example.com")!, statusCode: 422, httpVersion: nil, headerFields: nil)
+        let response = HTTPURLResponse(
+            url: URL(string: "www.example.com")!,
+            statusCode: 422,
+            httpVersion: nil,
+            headerFields: nil
+        )
 
         let errorBody =
             """
@@ -202,7 +206,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         let userInfo: [String: AnyObject] = [
             BTCoreConstants.urlResponseKey: response as AnyObject,
-            BTCoreConstants.jsonResponseBodyKey: BTJSON(data: errorBody.data(using: String.Encoding.utf8)!)
+            BTCoreConstants.jsonResponseBodyKey: BTJSON(data: errorBody.data(using: .utf8)!)
         ]
 
         mockAPIClient.cannedResponseError = BTHTTPError.clientError(userInfo) as NSError?
@@ -222,7 +226,11 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPerformThreeDSecureLookup_whenNetworkConnectionLost_sendsAnalytics() async {
-        mockAPIClient.cannedResponseError = NSError(domain: NSURLErrorDomain, code: -1005, userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."])
+        mockAPIClient.cannedResponseError = NSError(
+            domain: NSURLErrorDomain,
+            code: -1005,
+            userInfo: [NSLocalizedDescriptionKey: "The network connection was lost."]
+        )
 
         do {
             _ = try await client.performThreeDSecureLookup(threeDSecureRequest)
@@ -251,7 +259,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testStartPayment_whenNoBodyReturned_returnsAnError() async {
-        threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
@@ -288,7 +295,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
-    func testStartPayment_whenAuthenticationNotRequired_returnsResult() async {
+    func testStartPayment_whenAuthenticationNotRequired_returnsResult() async throws {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
@@ -311,22 +318,18 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String: Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        do {
-            let result = try await client.start(threeDSecureRequest)
-            guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
-            XCTAssertTrue(tokenizedCard.nonce.isANonce())
-            XCTAssertNotEqual(tokenizedCard.nonce, threeDSecureRequest.nonce)
-            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
-        } catch {
-            XCTFail("Expected success but got error: \(error)")
-        }
+        let result = try await client.start(threeDSecureRequest)
+        guard let tokenizedCard = result.tokenizedCard else { XCTFail(); return }
+        XCTAssertTrue(tokenizedCard.nonce.isANonce())
+        XCTAssertNotEqual(tokenizedCard.nonce, threeDSecureRequest.nonce)
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShifted)
+        XCTAssertFalse(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertTrue(tokenizedCard.threeDSecureInfo.wasVerified)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifySucceeded))
     }
 
-    func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() async {
+    func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() async throws {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
@@ -355,9 +358,16 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String: Any]
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        _ = try? await client.start(threeDSecureRequest)
 
-        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 1)
+        // Wait for the delegate callback first, then let start() finish or throw.
+        // Separating these ensures the expectation is registered before start()
+        // completes, preventing a race where the delegate fires before we await.
+        async let startResult: Void = {
+            _ = try? await client.start(threeDSecureRequest)
+        }()
+
+        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 5)
+        await startResult
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() async {
@@ -511,7 +521,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             }
             """
 
-        mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: String.Encoding.utf8)!)
+        mockAPIClient.cannedResponseBody = BTJSON(data: responseBody.data(using: .utf8)!)
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         do {
@@ -529,24 +539,23 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     // MARK: - prepareLookup
 
-    func testPrepareLookup_getsJsonString() async {
+    func testPrepareLookup_getsJsonString() async throws {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
         client.apiClient = mockAPIClient
 
-        let clientData = try? await client.prepareLookup(threeDSecureRequest)
+        let clientData = try await client.prepareLookup(threeDSecureRequest)
 
         XCTAssertNotNil(clientData)
-        if let data = clientData?.data(using: .utf8) {
-            let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            XCTAssertEqual(json!["dfReferenceId"] as! String, "fake-df-reference-id")
-            XCTAssertEqual(json!["nonce"] as! String, "fake-card-nonce")
-            XCTAssertNotNil(json!["braintreeLibraryVersion"] as! String)
-            XCTAssertNotNil(json!["authorizationFingerprint"] as! String)
-            let clientMetadata = json!["clientMetadata"] as! [String: Any]
-            XCTAssertEqual(clientMetadata["requestedThreeDSecureVersion"] as! String, "2")
-            XCTAssertEqual(clientMetadata["sdkVersion"] as! String, "iOS/\(BTCoreConstants.braintreeSDKVersion)")
-        }
+        let data = try XCTUnwrap(clientData.data(using: .utf8))
+        let json = try XCTUnwrap(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual(json["dfReferenceId"] as? String, "fake-df-reference-id")
+        XCTAssertEqual(json["nonce"] as? String, "fake-card-nonce")
+        XCTAssertNotNil(json["braintreeLibraryVersion"] as? String)
+        XCTAssertNotNil(json["authorizationFingerprint"] as? String)
+        let clientMetadata = try XCTUnwrap(json["clientMetadata"] as? [String: Any])
+        XCTAssertEqual(clientMetadata["requestedThreeDSecureVersion"] as? String, "2")
+        XCTAssertEqual(clientMetadata["sdkVersion"] as? String, "iOS/\(BTCoreConstants.braintreeSDKVersion)")
     }
 
     func testPrepareLookup_withTokenizationKey_throwsError() async {
