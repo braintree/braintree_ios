@@ -3,7 +3,9 @@
 ## unreleased
 * BraintreePayPal
     * Pass `is_billing_agreement` and `billing_plan_type` to analytics events in order to track the billing with purchase flows.
-    
+* BraintreeCore
+  * Make `BTPostalAddress` properties publicly accessible (fixes #1751)
+
 ## 7.4.0 (2026-02-12)
 * BraintreeVenmo
     * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
