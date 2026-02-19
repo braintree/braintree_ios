@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeCore
+  * Make `BTPostalAddress` properties publicly accessible (fixes #1751)
+
 ## 7.4.0 (2026-02-12)
 * BraintreeVenmo
     * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
