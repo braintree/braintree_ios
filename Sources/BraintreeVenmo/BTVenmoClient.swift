@@ -32,7 +32,7 @@ import BraintreeCore
     /// Used internally as a holder for the completion in methods that do not pass a completion such as `handleOpen`.
     /// This allows us to set and return a completion in our methods that otherwise cannot require a completion.
     var appSwitchCompletion: (BTVenmoAccountNonce?, Error?) -> Void = { _, _ in }
-    
+
     // MARK: - Private Properties
 
     /// Used for linking events from the client to server side request
@@ -86,55 +86,55 @@ import BraintreeCore
             }
         }
     }
-    
+
     /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
     /// - Throws: An `Error` describing the failure. If the user cancels out of the flow, the error code will be `.canceled`.
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
-        
+
         let configuration: BTConfiguration
-        
+
         do {
             configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
         } catch {
             notifyFailure(with: BTVenmoError.fetchConfigurationFailed)
             throw BTVenmoError.fetchConfigurationFailed
         }
-        
+
         _ = try verifyAppSwitch(with: configuration)
-        
+
         // Merchants are not allowed to collect user addresses unless ECD (Enriched Customer Data) is enabled on the BT Control Panel.
         if (request.collectCustomerShippingAddress || request.collectCustomerBillingAddress)
             && !configuration.isVenmoEnrichedCustomerDataEnabled {
             throw BTVenmoError.enrichedCustomerDataDisabled
         }
-        
+
         let merchantProfileID = request.profileID ?? configuration.venmoMerchantID
         let bundleDisplayName = bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-        
+
         let metadata = apiClient.metadata
         metadata.source = .venmoApp
-        
+
         let graphQLParameters = VenmoCreatePaymentContextGraphQLBody(
             request: request,
             merchantProfileID: merchantProfileID
         )
-        
+
         let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
-        
+
         guard let body else {
             throw BTVenmoError.invalidBodyReturned
         }
-        
+
         guard let paymentContextID = body["data"]["createVenmoPaymentContext"]["venmoPaymentContext"]["id"].asString() else {
             let message = "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."
             throw BTVenmoError.invalidRedirectURL(message)
         }
-        
+
         contextID = paymentContextID
-        
+
         let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
             paymentContextID: paymentContextID,
             metadata: metadata,
@@ -144,11 +144,11 @@ import BraintreeCore
             bundleDisplayName: bundleDisplayName,
             environment: configuration.venmoEnvironment
         )
-        
+
         guard let universalLinksURL = appSwitchURL.universalLinksURL() else {
             throw BTVenmoError.invalidReturnURL("Universal links URL cannot be nil")
         }
-        
+
         return try await startVenmoFlow(with: universalLinksURL, shouldVault: request.vault)
     }
 
@@ -173,30 +173,30 @@ import BraintreeCore
             appSwitchCompletion(nil, error)
             return
         }
-        
+
         guard let returnURL = BTVenmoAppSwitchReturnURL(url: cleanedURL) else {
             let error = BTVenmoError.invalidReturnURL(cleanedURL.absoluteString)
             notifyFailure(with: error)
             appSwitchCompletion(nil, error)
             return
         }
-        
+
         switch returnURL.state {
         case .succeededWithPaymentContext:
             handlePaymentContextSuccess(returnURL)
-            
+
         case .succeeded:
             handleDirectSuccess(returnURL)
-            
+
         case .failed:
             let error = returnURL.error ?? BTVenmoError.unknown
             notifyFailure(with: error)
             appSwitchCompletion(nil, error)
-            
+
         case .canceled:
             notifyCancel()
             appSwitchCompletion(nil, BTVenmoError.canceled)
-            
+
         default:
             // should not happen
             break
@@ -214,7 +214,7 @@ import BraintreeCore
             }
         }
     }
-    
+
     private func startVenmoFlow(
         with appSwitchURL: URL,
         shouldVault vault: Bool,
@@ -261,7 +261,7 @@ import BraintreeCore
             completion(nil, BTVenmoError.appSwitchFailed)
         }
     }
-    
+
     // MARK: - Private Helpers
 
     @MainActor
@@ -270,15 +270,19 @@ import BraintreeCore
             do {
                 let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
                 let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
-                
+
                 guard let body else {
-                    notifyFailure(with: BTVenmoError.invalidBodyReturned)
+                    let error = BTVenmoError.invalidBodyReturned
+                    notifyFailure(with: error)
+                    appSwitchCompletion(nil, error)
                     return
                 }
+
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
                 await handleVaultingIfNeeded(for: venmoAccountNonce)
             } catch {
                 notifyFailure(with: error)
+                appSwitchCompletion(nil, error)
             }
         }
     }
@@ -286,15 +290,19 @@ import BraintreeCore
     @MainActor
     private func handleDirectSuccess(_ returnURL: BTVenmoAppSwitchReturnURL) {
         guard let nonce = returnURL.nonce else {
-            notifyFailure(with: BTVenmoError.invalidReturnURL("nonce"))
+            let error = BTVenmoError.invalidReturnURL("nonce")
+            notifyFailure(with: error)
+            appSwitchCompletion(nil, error)
             return
         }
-        
+
         guard let username = returnURL.username else {
-            notifyFailure(with: BTVenmoError.invalidReturnURL("username"))
+            let error = BTVenmoError.invalidReturnURL("username")
+            notifyFailure(with: error)
+            appSwitchCompletion(nil, error)
             return
         }
-        
+
         if shouldVault && apiClient.authorization.type == .clientToken {
             Task {
                 do {
@@ -303,6 +311,7 @@ import BraintreeCore
                     appSwitchCompletion(vaultedNonce, nil)
                 } catch {
                     notifyFailure(with: error)
+                    appSwitchCompletion(nil, error)
                 }
             }
         } else {
@@ -312,13 +321,13 @@ import BraintreeCore
                 "details": detailsDictionary,
                 "description": username
             ] as [String: Any])
-            
+
             let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(with: json)
             notifySuccess(with: venmoAccountNonce)
             appSwitchCompletion(venmoAccountNonce, nil)
         }
     }
-    
+
     @MainActor
     private func handleVaultingIfNeeded(for venmoAccountNonce: BTVenmoAccountNonce) async {
         if shouldVault && apiClient.authorization.type == .clientToken {
@@ -328,6 +337,7 @@ import BraintreeCore
                 appSwitchCompletion(vaultedNonce, nil)
             } catch {
                 notifyFailure(with: error)
+                appSwitchCompletion(nil, error)
             }
         } else {
             notifySuccess(with: venmoAccountNonce)
@@ -336,22 +346,22 @@ import BraintreeCore
     }
 
     // MARK: - Vaulting Methods
- 
+
     func vault(_ nonce: String) async throws -> BTVenmoAccountNonce {
         let parameters = VenmoAccountsPOSTBody(nonce: nonce)
-        
+
         let (body, _) = try await apiClient.post("v1/payment_methods/venmo_accounts", parameters: parameters)
-        
+
         guard let body else {
             throw BTVenmoError.invalidBodyReturned
         }
-        
+
         let venmoAccountJSON: BTJSON = body["venmoAccounts"][0]
-        
+
         if let venmoJSONError = venmoAccountJSON.asError() {
             throw venmoJSONError
         }
-        
+
         return BTVenmoAccountNonce.venmoAccount(with: venmoAccountJSON)
     }
 
@@ -404,7 +414,7 @@ import BraintreeCore
 // MARK: - BTAppContextSwitchClient Protocol Conformance
 
 extension BTVenmoClient: BTAppContextSwitchClient {
-    
+
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
@@ -414,7 +424,7 @@ extension BTVenmoClient: BTAppContextSwitchClient {
             client.handleOpen(url)
         }
     }
-    
+
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func canHandleReturnURL(_ url: URL) -> Bool {
