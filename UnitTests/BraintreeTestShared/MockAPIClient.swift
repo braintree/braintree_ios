@@ -14,10 +14,10 @@ public class MockAPIClient: BTAPIClient {
     public var postedAnalyticsEvents: [String] = []
     public var postedApplicationState: String? = nil
     public var postedAppSwitchURL: [String: String?] = [:]
-    public var postedBillingPlanType: String? = nil
+    public var postedRecurringBillingPlanType: String? = nil
     public var postedButtonOrder: String? = nil
     public var postedButtonType: String? = nil
-    public var postedIsBillingAgreement = false
+    public var postedShouldRequestBillingAgreement = false
     public var postedIsVaultRequest = false
     public var postedLinkType: LinkType? = nil
     public var postedMerchantExperiment: String? = nil
@@ -136,13 +136,13 @@ public class MockAPIClient: BTAPIClient {
         shouldRequestBillingAgreement: Bool? = nil
     ) {
         postedApplicationState = applicationState
-        postedBillingPlanType = recurringBillingPlanType
+        postedRecurringBillingPlanType = recurringBillingPlanType
         postedButtonType = buttonType
         postedButtonOrder = buttonOrder
         postedPageType = pageType
         postedContextID = contextID
         postedLinkType = linkType
-        postedIsBillingAgreement = shouldRequestBillingAgreement ?? false
+        postedShouldRequestBillingAgreement = shouldRequestBillingAgreement ?? false
         postedIsVaultRequest = isVaultRequest ?? false
         postedMerchantExperiment = merchantExperiment
         postedAppSwitchURL[eventName] = appSwitchURL?.absoluteString

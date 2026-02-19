@@ -1475,8 +1475,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertFalse(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertNil(mockAPIClient.postedBillingPlanType)
+        XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
     }
     
     func testTokenize_whenVaultCreditRequest_setsVaultAnalyticsTags() async {
@@ -1487,8 +1487,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
-        XCTAssertFalse(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertNil(mockAPIClient.postedBillingPlanType)
+        XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
     }
 
     func testTokenize_whenCheckoutRequest_setsVaultAnalyticsTags() async {
@@ -1499,8 +1499,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertFalse(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertNil(mockAPIClient.postedBillingPlanType)
+        XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
     }
     
     func testTokenize_whenCheckoutCreditRequest_setsCorrectAnalyticsTags() async {
@@ -1511,8 +1511,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "credit")
-        XCTAssertFalse(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertNil(mockAPIClient.postedBillingPlanType)
+        XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
     }
     
     func testTokenize_whenCheckoutPayLaterRequest_setsCorrectAnalyticsTags() async {
@@ -1523,8 +1523,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paylater")
-        XCTAssertFalse(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertNil(mockAPIClient.postedBillingPlanType)
+        XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
     }
     
     func testTokenize_whenCheckoutRequestBillingAgreementTrue_setsBillingWithPurchaseAnalytics() async {
@@ -1535,8 +1535,8 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
-        XCTAssertTrue(mockAPIClient.postedIsBillingAgreement)
-        XCTAssertEqual(mockAPIClient.postedBillingPlanType, "SUBSCRIPTION")
+        XCTAssertTrue(mockAPIClient.postedShouldRequestBillingAgreement)
+        XCTAssertEqual(mockAPIClient.postedRecurringBillingPlanType, "SUBSCRIPTION")
     }
     
     func testTokenize_whenShopperSessionIDSetOnRequest_includesInAnalytics() async {
