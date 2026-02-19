@@ -1,13 +1,15 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+    * Pass `is_billing_agreement` and `billing_plan_type` to analytics events in order to track the billing with purchase flows.
+    
 ## 7.4.0 (2026-02-12)
 * BraintreeVenmo
     * Expose the `riskCorrelationID` property on `BTVenmoRequest` 
 * BraintreeDataCollector
   * Update PPRiskMagnes to 5.6.0 
   * Add `collectDeviceDataOnSuccess(riskCorrelationID: completion:)` method that ensures Magnes SDK completes data submission prior to returning device data.
-* BraintreePayPal
-    * Pass `is_billing_agreement`, `is_purchase`, and `billing_plan_type` to analytics events in order to track the billing with purchase flows.
 
 ## 7.3.0 (2026-01-29)
 * BraintreePayPal
