@@ -154,9 +154,7 @@ import BraintreeCore
 
     /// Switches to the App Store to download the Venmo application.
     @objc public func openVenmoAppPageInAppStore() {
-        Task { @MainActor in
-            application.open(appStoreURL, options: [:], completionHandler: nil)
-        }
+        application.open(appStoreURL, options: [:], completionHandler: nil)
     }
 
     // MARK: - App Switch Methods
