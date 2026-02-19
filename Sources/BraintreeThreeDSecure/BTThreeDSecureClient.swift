@@ -5,7 +5,7 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length
 @objcMembers public class BTThreeDSecureClient: NSObject {
 
     // MARK: - Internal Properties
