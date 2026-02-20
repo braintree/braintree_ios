@@ -328,9 +328,10 @@ class BTVenmoClient_Tests: XCTestCase {
         let expectation = expectation(description: "Callback invoked")
         venmoClient.tokenize(venmoRequest) { venmoAccount, error in
             XCTAssertNil(venmoAccount)
-            guard let error = error as NSError? else { return }
-            XCTAssertEqual(error.domain, "Venmo Error")
-            XCTAssertEqual(error.code, 100)
+            guard let error = error as? NSError else { return }
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoErrorDomain")
+            XCTAssertEqual(error.code, BTVenmoError.invalidRedirectURL("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "Failed to fetch a Venmo paymentContextID while constructing the requestURL.")
             expectation.fulfill()
         }
 
