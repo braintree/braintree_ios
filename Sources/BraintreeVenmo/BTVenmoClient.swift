@@ -122,7 +122,16 @@ import BraintreeCore
             merchantProfileID: merchantProfileID
         )
 
-        let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
+        let (body, _): (BTJSON?, URLResponse?)
+        do {
+            (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
+        } catch {
+            let nsError = error as NSError
+            let jsonResponse = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
+            let errorMessage = jsonResponse?["error"]["message"].asString()
+            let defaultMessage = "Failed to fetch a Venmo paymentContextID while constructing the requestURL."
+            throw BTVenmoError.invalidRedirectURL(errorMessage ?? defaultMessage)
+        }
 
         guard let body else {
             throw BTVenmoError.invalidBodyReturned
