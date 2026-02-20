@@ -37,7 +37,7 @@ import BraintreeCore
     ///   - completion: This completion will be invoked exactly once when the 3DS flow is complete or an error occurs.
     @objc(startRequest:completion:)
     public func start(_ request: BTThreeDSecureRequest, completion: @escaping (BTThreeDSecureResult?, Error?) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let result = try await start(request)
                 completion(result, nil)
@@ -87,7 +87,7 @@ import BraintreeCore
         _ request: BTThreeDSecureRequest,
         completion: @escaping (String?, Error?) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 let jsonString = try await prepareLookup(request)
                 completion(jsonString, nil)
@@ -159,7 +159,7 @@ import BraintreeCore
         request: BTThreeDSecureRequest,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 let result = try await initializeChallenge(lookupResponse: lookupResponse, request: request)
                 completion(result, nil)
@@ -226,8 +226,6 @@ import BraintreeCore
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) async throws -> BTThreeDSecureResult {
         let lookupResult = try await performThreeDSecureLookup(request)
         
-        // Use Task @MainActor instead of DispatchQueue.main.async to avoid
-        // a @Sendable closure, which would require BTThreeDSecureRequestDelegate to be Sendable.
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             Task { @MainActor in
                 guard let delegate = self.request?.threeDSecureRequestDelegate else {
