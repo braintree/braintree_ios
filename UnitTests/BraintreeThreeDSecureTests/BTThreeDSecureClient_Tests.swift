@@ -58,8 +58,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             shippingMethod: .priority
         )
 
-        client.apiClient = mockAPIClient
-
         // Swallowing the error here is intentional — we only care about the
         // POST parameters that were sent, not the result of the lookup.
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
@@ -73,7 +71,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.lastPOSTParameters!["dataOnlyRequested"] as! Bool)
         XCTAssertTrue(mockAPIClient.lastPOSTParameters!["cardAdd"] as! Bool)
 
-        let additionalInfo = mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
+        let additionalInfo = mockAPIClient.lastPOSTParameters!["additionalInfo"] as! [String: String]
         XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
         XCTAssertEqual(additionalInfo["email"], "tester@example.com")
         XCTAssertEqual(additionalInfo["shippingMethod"], "03")
@@ -91,7 +89,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenDefaultsArePassed_buildsRequestWithNilValues() async {
         let threeDSecureRequest = BTThreeDSecureRequest(amount: "9.99", nonce: "fake-card-nonce")
-        client.apiClient = mockAPIClient
 
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
@@ -121,8 +118,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             cardAddChallengeRequested: true,
             dfReferenceID: "df-reference-id"
         )
-
-        client.apiClient = mockAPIClient
 
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
@@ -359,15 +354,11 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
 
-        // Wait for the delegate callback first, then let start() finish or throw.
-        // Separating these ensures the expectation is registered before start()
-        // completes, preventing a race where the delegate fires before we await.
-        async let startResult: Void = {
-            _ = try? await client.start(threeDSecureRequest)
-        }()
+        // start() triggers the delegate callback synchronously before returning/throwing,
+        // so awaiting it (discarding any error) is sufficient — no race condition.
+        _ = try? await client.start(threeDSecureRequest)
 
-        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 5)
-        await startResult
+        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 1)
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() async {
@@ -385,6 +376,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
+
+    // MARK: - Helpers
 
     func getAuthRequiredLookupResponse() -> [String: Any] {
         return [
@@ -412,7 +405,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ]
     }
 
-    // MARK: - analytics events
+    // MARK: - Analytics events
 
     func testStartPayment_success_sendsAnalyticsEvents() async {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
@@ -542,7 +535,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPrepareLookup_getsJsonString() async throws {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
-        client.apiClient = mockAPIClient
 
         let clientData = try await client.prepareLookup(threeDSecureRequest)
 
@@ -559,8 +551,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPrepareLookup_withTokenizationKey_throwsError() async {
-        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
-
         let client = BTThreeDSecureClient(authorization: authorization)
         client.apiClient = MockAPIClient(authorization: authorization)
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
