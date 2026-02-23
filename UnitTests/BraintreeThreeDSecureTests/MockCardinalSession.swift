@@ -15,7 +15,9 @@ class MockCardinalSession: CardinalSessionTestable {
         completed didCompleteHandler: @escaping CardinalSessionSetupDidCompleteHandler,
         validated didValidateHandler: @escaping CardinalSessionSetupDidValidateHandler
     ) {
-        didCompleteHandler(dfReferenceID)
+        DispatchQueue.main.async {
+            didCompleteHandler(self.dfReferenceID)
+        }
     }
     
     func continueWith(transactionId: String, payload: String, validationDelegate: CardinalValidationDelegate) {
