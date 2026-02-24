@@ -22,7 +22,9 @@ jobs:
           set -euo pipefail
 
           # Validate version format: x.x.x or x.x.x-betax (e.g., 5.0.0, 5.0.0-beta1)
-          if ! echo "${INPUT_VERSION}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-beta[0-9]+)?$'; then
+          # Uses bash regex to avoid a grep subprocess and (0|[1-9][0-9]*) to prevent leading zeros.
+          PATTERN='^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-beta[0-9]+)?$'
+          if ! [[ "${INPUT_VERSION}" =~ $PATTERN ]]; then
             echo "::error::Invalid version format: ${INPUT_VERSION}"
             echo "::error::Version must be x.x.x or x.x.x-betax (e.g., 5.0.0 or 5.0.0-beta1)"
             exit 1
