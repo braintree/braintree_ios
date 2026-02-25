@@ -219,7 +219,6 @@ import BraintreeDataCollector
                         continuation.resume(throwing: error)
                     }
                 }
-
             } sessionDidAppear: { [weak self] didAppear in
                 guard let self else { return }
                 if didAppear {
