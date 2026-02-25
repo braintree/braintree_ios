@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.5.0 (2026-02-25)
 * BraintreePayPal
     * Pass `is_billing_agreement` and `billing_plan_type` to analytics events in order to track the billing with purchase flows.
 * BraintreeCore
