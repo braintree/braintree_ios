@@ -74,9 +74,7 @@ import BraintreeDataCollector
 
         do {
             let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
-            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-            request.correlationID = dataCollector.clientMetadataID(nil)
-
+            
             guard configuration.isLocalPaymentEnabled else {
                 NSLog(
                     "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
@@ -94,6 +92,9 @@ import BraintreeDataCollector
                 notifyFailure(with: BTLocalPaymentError.integration)
                 throw BTLocalPaymentError.integration
             }
+            
+            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+            request.correlationID = dataCollector.clientMetadataID(nil)
 
             return try await start(request: request, configuration: configuration)
         } catch {
@@ -144,41 +145,45 @@ import BraintreeDataCollector
     // MARK: - Private Methods
 
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) async throws -> BTLocalPaymentResult {
-        let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-        request.correlationID = dataCollector.clientMetadataID(nil)
         let localPaymentRequest = LocalPaymentPOSTBody(localPaymentRequest: request)
 
-        do {
-            let (body, _) = try await self.apiClient.post("v1/local_payments/create", parameters: localPaymentRequest)
+        let (body, _) = try await self.apiClient.post("v1/local_payments/create", parameters: localPaymentRequest)
 
-            guard let body else {
-                notifyFailure(with: BTLocalPaymentError.noAccountData)
-                throw BTLocalPaymentError.noAccountData
-            }
-
-            guard
-                let paymentID = body["paymentResource"]["paymentToken"].asString(),
-                let approvalURLString = body["paymentResource"]["redirectUrl"].asString(),
-                let url = URL(string: approvalURLString)
-            else {
-                NSLog(
-                    // swiftlint:disable:next line_length
-                    "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
-                throw BTLocalPaymentError.appSwitchFailed
-            }
-
-            if !paymentID.isEmpty {
-                self.contextID = paymentID
-            }
-
-            return try await launchWebSession(url: url)
-        } catch {
-            notifyFailure(with: error)
-            throw error
+        guard let body else {
+            NSLog(
+                "%@ Payment cannot be processed: response body is nil. Contact Braintree support if the error persists.",
+                BTLogLevelDescription.string(for: .critical)
+            )
+            notifyFailure(with: BTLocalPaymentError.noAccountData)
+            throw BTLocalPaymentError.noAccountData
         }
+
+        guard
+            let paymentID = body["paymentResource"]["paymentToken"].asString(),
+            let approvalURLString = body["paymentResource"]["redirectUrl"].asString(),
+            let url = URL(string: approvalURLString)
+        else {
+            NSLog(
+                // swiftlint:disable:next line_length
+                "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
+                BTLogLevelDescription.string(for: .critical)
+            )
+            notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
+            throw BTLocalPaymentError.appSwitchFailed
+        }
+
+        if !paymentID.isEmpty {
+            self.contextID = paymentID
+        }
+        
+        // Call delegate to inform payment has started
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            request.localPaymentFlowDelegate?.localPaymentStarted(request, paymentID: paymentID) {
+                continuation.resume()
+            }
+        }
+
+        return try await launchWebSession(url: url)
     }
 
     /// Launches the `BTWebAuthenticationSession` and suspends until the session completes,
@@ -207,12 +212,8 @@ import BraintreeDataCollector
                     return
                 }
 
-                Task { [weak self] in
-                    guard let self else {
-                        NSLog("%@ BTLocalPaymentClient has been deallocated.", BTLogLevelDescription.string(for: .critical))
-                        continuation.resume(throwing: BTLocalPaymentError.unknown)
-                        return
-                    }
+                // Use Task to handle the async handleOpen call
+                Task {
                     do {
                         let result = try await self.handleOpen(callbackURL)
                         continuation.resume(returning: result)

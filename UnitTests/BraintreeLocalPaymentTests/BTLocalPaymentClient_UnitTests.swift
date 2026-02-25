@@ -17,8 +17,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     // MARK: - Helpers
 
     /// Returns a `MockWebAuthenticationSession` stubbed to cancel immediately.
-    /// Use this whenever a test only cares about work that happens before or during
-    /// the web session launch (e.g. POST parameters, contextID), not the session result.
     private func makeCancelingWebSession() -> MockWebAuthenticationSession {
         let session = MockWebAuthenticationSession()
         session.cannedSessionDidDisplay = true
@@ -51,6 +49,10 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
     @MainActor
     func testStartPayment_returnsErrorWhenConfigurationNil() async {
         mockAPIClient.cannedConfigurationResponseBody = nil
+        mockAPIClient.cannedConfigurationResponseError = NSError(
+            domain: BTAPIClientError.errorDomain,
+            code: BTAPIClientError.configurationUnavailable.errorCode
+        )
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
 
@@ -58,8 +60,8 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             _ = try await client.start(localPaymentRequest)
             XCTFail("This request should throw an error.")
         } catch let error as NSError {
-            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
-            XCTAssertEqual(error.code, BTLocalPaymentError.fetchConfigurationFailed.errorCode)
+            XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
+            XCTAssertEqual(error.code, BTAPIClientError.configurationUnavailable.errorCode)
         }
     }
 
@@ -136,7 +138,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        // Session cancels immediately so start() returns — no timing dependency needed.
         client.webAuthenticationSession = makeCancelingWebSession()
 
         _ = try? await client.start(paymentRequest)
@@ -228,7 +229,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = makeCancelingWebSession()
 
-        // Fire-and-forget so the delegate callback can still be observed.
+        // Fire-and-forget so the delegate callback can be observed
         Task { _ = try? await client.start(localPaymentRequest) }
 
         await fulfillment(of: [mockLocalPaymentRequestDelegate.idExpectation!], timeout: 4)
@@ -249,7 +250,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         let client = BTLocalPaymentClient(authorization: tempClientToken)
         client.apiClient = mockAPIClient
-        // Session cancels immediately so start() returns — contextID is set before the throw.
         client.webAuthenticationSession = makeCancelingWebSession()
 
         _ = try? await client.start(localPaymentRequest)
@@ -381,11 +381,17 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
                 "paymentResource": [
                     "redirectUrl": "https://www.somebankurl.com",
                     "paymentToken": "123aaa-123-543-777",
-                ]
+                ],
+                "paypalAccounts": [[
+                    "nonce": "fake-nonce-123",
+                    "type": "PayPalAccount",
+                    "details": [
+                        "email": "test@example.com"
+                    ]
+                ]]
             ]
         )
 
-        // Session returns a success URL so the continuation resolves through handleOpen.
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedSessionDidDisplay = true
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success?PayerID=PCKXQCZ6J3YXU&paymentId=PAY-79C90584AX7152104LNY4OCY&token=EC-0A351828G20802249")
@@ -418,7 +424,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        // Session returns a cancel URL so handleOpen throws the canceled error.
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedSessionDidDisplay = true
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/cancel?paymentId=PAY-79C90584AX7152104LNY4OCY")
@@ -449,7 +454,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
             ]
         )
 
-        // Session returns a success URL, but the paypal_accounts POST body will be nil → noAccountData.
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
         mockWebAuthenticationSession.cannedSessionDidDisplay = true
         mockWebAuthenticationSession.cannedResponseURL = URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/local-payment/success")
@@ -459,7 +463,7 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = mockWebAuthenticationSession
 
-        // Nil out the response body before start() launches the session so handleOpen sees no data.
+        // Make the second POST (to paypal_accounts) return nil
         mockAPIClient.cannedResponseBody = nil
 
         do {
@@ -478,10 +482,13 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
-                "paymentResource": [
-                    "redirectUrl": "https://www.somebankurl.com",
-                    "paymentToken": "123aaa-123-543-777",
-                ]
+                "paypalAccounts": [[
+                    "nonce": "fake-nonce",
+                    "type": "PayPalAccount",
+                    "details": [
+                        "email": "test@example.com"
+                    ]
+                ]]
             ]
         )
 
