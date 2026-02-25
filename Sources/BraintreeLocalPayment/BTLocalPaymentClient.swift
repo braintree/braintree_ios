@@ -138,8 +138,7 @@ import BraintreeDataCollector
             throw BTLocalPaymentError.failedToCreateNonce
         }
 
-        notifySuccess(with: tokenizedLocalPayment)
-        return tokenizedLocalPayment
+        return notifySuccess(with: tokenizedLocalPayment)
     }
 
     // MARK: - Private Methods
@@ -242,8 +241,9 @@ import BraintreeDataCollector
 
     // MARK: - Analytics Helper Methods
 
-    private func notifySuccess(with result: BTLocalPaymentResult) {
+    private func notifySuccess(with result: BTLocalPaymentResult) -> BTLocalPaymentResult {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentSucceeded, contextID: contextID)
+        return result
     }
 
     private func notifyFailure(with error: Error) {
