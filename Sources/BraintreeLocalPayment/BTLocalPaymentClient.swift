@@ -80,7 +80,7 @@ import BraintreeDataCollector
                     "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
                     BTLogLevelDescription.string(for: .critical)
                 )
-                notifyFailure(with: BTLocalPaymentError.disabled)
+                sendFailureAnalytics(with: BTLocalPaymentError.disabled)
                 throw BTLocalPaymentError.disabled
             }
 
@@ -89,7 +89,7 @@ import BraintreeDataCollector
                     "%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.",
                     BTLogLevelDescription.string(for: .critical)
                 )
-                notifyFailure(with: BTLocalPaymentError.integration)
+                sendFailureAnalytics(with: BTLocalPaymentError.integration)
                 throw BTLocalPaymentError.integration
             }
             
@@ -98,7 +98,7 @@ import BraintreeDataCollector
 
             return try await start(request: request, configuration: configuration)
         } catch {
-            notifyFailure(with: error)
+            sendFailureAnalytics(with: error)
             throw error
         }
     }
@@ -113,7 +113,7 @@ import BraintreeDataCollector
         // canceled case
         if url.host == "x-callback-url" && url.path.hasPrefix("/braintree/local-payment/cancel") {
             let canceledError = BTLocalPaymentError.canceled(request?.paymentType ?? "unknown")
-            notifyFailure(with: canceledError)
+            sendFailureAnalytics(with: canceledError)
             throw canceledError
         }
 
@@ -129,12 +129,12 @@ import BraintreeDataCollector
         )
 
         guard let body else {
-            notifyFailure(with: BTLocalPaymentError.noAccountData)
+            sendFailureAnalytics(with: BTLocalPaymentError.noAccountData)
             throw BTLocalPaymentError.noAccountData
         }
 
         guard let tokenizedLocalPayment = BTLocalPaymentResult(json: body) else {
-            notifyFailure(with: BTLocalPaymentError.failedToCreateNonce)
+            sendFailureAnalytics(with: BTLocalPaymentError.failedToCreateNonce)
             throw BTLocalPaymentError.failedToCreateNonce
         }
 
@@ -153,7 +153,7 @@ import BraintreeDataCollector
                 "%@ Payment cannot be processed: response body is nil. Contact Braintree support if the error persists.",
                 BTLogLevelDescription.string(for: .critical)
             )
-            notifyFailure(with: BTLocalPaymentError.noAccountData)
+            sendFailureAnalytics(with: BTLocalPaymentError.noAccountData)
             throw BTLocalPaymentError.noAccountData
         }
 
@@ -163,11 +163,10 @@ import BraintreeDataCollector
             let url = URL(string: approvalURLString)
         else {
             NSLog(
-                // swiftlint:disable:next line_length
                 "%@ Payment cannot be processed: the redirectUrl or paymentToken is nil. Contact Braintree support if the error persists.",
                 BTLogLevelDescription.string(for: .critical)
             )
-            notifyFailure(with: BTLocalPaymentError.appSwitchFailed)
+            sendFailureAnalytics(with: BTLocalPaymentError.appSwitchFailed)
             throw BTLocalPaymentError.appSwitchFailed
         }
 
@@ -246,7 +245,7 @@ import BraintreeDataCollector
         return result
     }
 
-    private func notifyFailure(with error: Error) {
+    private func sendFailureAnalytics(with error: Error) {
         apiClient.sendAnalyticsEvent(
             BTLocalPaymentAnalytics.paymentFailed,
             contextID: contextID,
