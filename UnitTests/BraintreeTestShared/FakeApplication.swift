@@ -11,6 +11,7 @@ public class FakeApplication: @preconcurrency URLOpener {
     public var openCallCount = 0
     public var lastOpenOptions: [UIApplication.OpenExternalURLOptionsKey : Any]? = nil
     public var cannedOpenURLSuccessPerCall: [MockOpenURLOption: Bool] = [:]
+    public var onOpenURL: (() -> Void)?
 
     @MainActor public func open(
         _ url: URL,
@@ -21,6 +22,7 @@ public class FakeApplication: @preconcurrency URLOpener {
         lastOpenOptions = options
         openURLWasCalled = true
         openCallCount += 1
+        onOpenURL?()
 
         let success = options.isEmpty
         ? cannedOpenURLSuccessPerCall[.none]

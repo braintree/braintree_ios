@@ -1,6 +1,6 @@
 import UIKit
 
-// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
@@ -269,7 +269,9 @@ import UIKit
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
         pageType: String? = nil,
-        shopperSessionID: String? = nil
+        recurringBillingPlanType: String? = nil,
+        shopperSessionID: String? = nil,
+        shouldRequestBillingAgreement: Bool? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
@@ -290,7 +292,9 @@ import UIKit
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
                 pageType: pageType,
-                shopperSessionID: shopperSessionID
+                recurringBillingPlanType: recurringBillingPlanType,
+                shopperSessionID: shopperSessionID,
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
         )
     }

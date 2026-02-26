@@ -68,8 +68,12 @@ struct FPTIBatchData: Codable {
         let pageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
+        /// Recurring billing plan type, or charge pattern.
+        let recurringBillingPlanType: String?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
         let shopperSessionID: String?
+        /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
+        let shouldRequestBillingAgreement: Bool?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
@@ -97,8 +101,10 @@ struct FPTIBatchData: Codable {
             linkType: String? = nil,
             merchantExperiment: String? = nil,
             pageType: String? = nil,
+            recurringBillingPlanType: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
+            shouldRequestBillingAgreement: Bool? = nil,
             startTime: Int? = nil
         ) {
             self.applicationState = applicationState
@@ -120,8 +126,10 @@ struct FPTIBatchData: Codable {
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
             self.pageType = pageType
+            self.recurringBillingPlanType = recurringBillingPlanType
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
+            self.shouldRequestBillingAgreement = shouldRequestBillingAgreement
             self.startTime = startTime
             self.fundingSource = fundingSource
         }
@@ -144,10 +152,12 @@ struct FPTIBatchData: Codable {
             case linkType = "link_type"
             case merchantExperiment = "experiment"
             case pageType = "page_type"
+            case recurringBillingPlanType = "billing_plan_type"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case shopperSessionID = "shopper_session_id"
+            case shouldRequestBillingAgreement = "is_billing_agreement"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"
