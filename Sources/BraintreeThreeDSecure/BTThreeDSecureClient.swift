@@ -5,7 +5,6 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
-// swiftlint:disable type_body_length
 @objcMembers public class BTThreeDSecureClient: NSObject {
 
     // MARK: - Internal Properties
@@ -222,27 +221,24 @@ import BraintreeCore
             }
         }
     }
-    
+
+    @MainActor
     private func start(request: BTThreeDSecureRequest, configuration: BTConfiguration) async throws -> BTThreeDSecureResult {
         let lookupResult = try await performThreeDSecureLookup(request)
-        
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            Task { @MainActor in
-                guard let delegate = self.request?.threeDSecureRequestDelegate else {
-                    continuation.resume()
-                    return
-                }
+
+        if let delegate = self.request?.threeDSecureRequestDelegate {
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
                 delegate.onLookupComplete(request, lookupResult: lookupResult) {
                     continuation.resume()
                 }
             }
         }
-        
+
         let requiresUserAuthentication = lookupResult.lookup?.requiresUserAuthentication ?? false
         if requiresUserAuthentication {
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeRequired)
         }
-        
+
         return try await process(lookupResult: lookupResult, configuration: configuration)
     }
 

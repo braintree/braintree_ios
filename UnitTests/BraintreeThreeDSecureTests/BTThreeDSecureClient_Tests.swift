@@ -328,6 +328,8 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() async {
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+        let lookupExpectation = XCTestExpectation(description: "onLookupComplete called")
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = lookupExpectation
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
 
         let responseBody = [
@@ -357,7 +359,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
         _ = try? await client.start(threeDSecureRequest)
 
-        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 1)
+        await fulfillment(of: [lookupExpectation], timeout: 1)
     }
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() async {
