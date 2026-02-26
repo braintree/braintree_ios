@@ -23,9 +23,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         super.setUp()
         threeDSecureRequest = BTThreeDSecureRequest(amount: "10.00", nonce: "fake-card-nonce")
         client = BTThreeDSecureClient(authorization: authorization)
-
         client.apiClient = mockAPIClient
-
         client.cardinalSession = mockCardinalSession
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
@@ -60,8 +58,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             shippingMethod: .priority
         )
 
-        client.apiClient = mockAPIClient
-
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
         XCTAssertEqual(mockAPIClient.lastPOSTParameters!["amount"] as! String, "9.97")
@@ -77,7 +73,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
         XCTAssertEqual(additionalInfo["email"], "tester@example.com")
         XCTAssertEqual(additionalInfo["shippingMethod"], "03")
-
         XCTAssertEqual(additionalInfo["billingGivenName"], "Joe")
         XCTAssertEqual(additionalInfo["billingSurname"], "Guy")
         XCTAssertEqual(additionalInfo["billingPhoneNumber"], "12345678")
@@ -92,7 +87,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenDefaultsArePassed_buildsRequestWithNilValues() async {
         let threeDSecureRequest = BTThreeDSecureRequest(amount: "9.99", nonce: "fake-card-nonce")
-        client.apiClient = mockAPIClient
 
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
@@ -122,8 +116,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             cardAddChallengeRequested: true,
             dfReferenceID: "df-reference-id"
         )
-
-        client.apiClient = mockAPIClient
 
         _ = try? await client.performThreeDSecureLookup(threeDSecureRequest)
 
@@ -534,7 +526,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     func testPrepareLookup_getsJsonString() async {
         mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"
-        client.apiClient = mockAPIClient
 
         let clientData = try? await client.prepareLookup(threeDSecureRequest)
 
@@ -552,8 +543,6 @@ class BTThreeDSecureClient_Tests: XCTestCase {
     }
 
     func testPrepareLookup_withTokenizationKey_throwsError() async {
-        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
-
         let client = BTThreeDSecureClient(authorization: authorization)
         client.apiClient = MockAPIClient(authorization: authorization)
         threeDSecureRequest.dfReferenceID = "fake-df-reference-id"

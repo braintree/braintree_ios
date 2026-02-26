@@ -194,6 +194,7 @@ import BraintreeCore
     /// Prepare for a 3DS 2.0 flow.
     /// - Parameter request: The BTThreeDSecureRequest to prepare.
     /// - Throws: An `Error` if preparation fails.
+    @MainActor
     private func prepareLookup(request: BTThreeDSecureRequest) async throws {
         let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
 
