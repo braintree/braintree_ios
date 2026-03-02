@@ -61,6 +61,7 @@ class IdealViewController: PaymentButtonBaseViewController {
             amount: "1.01",
             currencyCode: "EUR",
             paymentTypeCountryCode: "NL",
+            merchantAccountID: "altpay_eur",
             address: postalAddress,
             email: "lingo-buyer@paypal.com",
             givenName: "Linh",
