@@ -193,14 +193,14 @@ import BraintreeDataCollector
                 }
 
                 if let error {
-                    apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
+                    sendFailureAnalytics(with: BTLocalPaymentError.webSessionError(error))
                     continuation.resume(throwing: BTLocalPaymentError.webSessionError(error))
                     return
                 }
 
                 guard let callbackURL else {
                     apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginFailed)
-                    apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentFailed)
+                    sendFailureAnalytics(with: BTLocalPaymentError.missingReturnURL)
                     continuation.resume(throwing: BTLocalPaymentError.missingReturnURL)
                     return
                 }
