@@ -71,38 +71,33 @@ import BraintreeDataCollector
     public func start(_ request: BTLocalPaymentRequest) async throws -> BTLocalPaymentResult {
         apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentStarted)
         self.request = request
-
-        do {
-            let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
-            
-            guard configuration.isLocalPaymentEnabled else {
-                NSLog(
-                    "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                sendFailureAnalytics(with: BTLocalPaymentError.disabled)
-                throw BTLocalPaymentError.disabled
-            }
-
-            guard request.localPaymentFlowDelegate != nil else {
-                NSLog(
-                    "%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.",
-                    BTLogLevelDescription.string(for: .critical)
-                )
-                sendFailureAnalytics(with: BTLocalPaymentError.integration)
-                throw BTLocalPaymentError.integration
-            }
-            
-            let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-            request.correlationID = dataCollector.clientMetadataID(nil)
-
-            return try await start(request: request, configuration: configuration)
-        } catch {
-            sendFailureAnalytics(with: error)
-            throw error
+        
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        
+        guard configuration.isLocalPaymentEnabled else {
+            NSLog(
+                "%@ Enable PayPal for this merchant in the Braintree Control Panel to use Local Payments.",
+                BTLogLevelDescription.string(for: .critical)
+            )
+            sendFailureAnalytics(with: BTLocalPaymentError.disabled)
+            throw BTLocalPaymentError.disabled
         }
+        
+        guard request.localPaymentFlowDelegate != nil else {
+            NSLog(
+                "%@ BTLocalPaymentRequest localPaymentFlowDelegate can not be nil.",
+                BTLogLevelDescription.string(for: .critical)
+            )
+            sendFailureAnalytics(with: BTLocalPaymentError.integration)
+            throw BTLocalPaymentError.integration
+        }
+        
+        let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
+        request.correlationID = dataCollector.clientMetadataID(nil)
+        
+        return try await start(request: request, configuration: configuration)
     }
-
+    
     // MARK: - Internal Methods
 
     func applicationDidBecomeActive(notification: Notification) {
