@@ -5,13 +5,13 @@ import BraintreeCore
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
-    var amexClient : BTAmericanExpressClient? = nil
+    var mockAPIClient : MockAPIClient!
+    var amexClient : BTAmericanExpressClient!
 
     override func setUp() {
         super.setUp()
-        amexClient = BTAmericanExpressClient(authorization: "development_tokenization_key")
-        amexClient?.apiClient = mockAPIClient
+        mockAPIClient = MockAPIClient(authorization: "development_client_key")
+        amexClient = BTAmericanExpressClient(btapiClient: mockAPIClient)
     }
     
     func testGetRewardsBalance_formatsGETRequest() async {
