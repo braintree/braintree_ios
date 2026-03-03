@@ -3,17 +3,31 @@ import Foundation
 ///  Generic postal address
 @objcMembers public class BTPostalAddress: NSObject, Encodable {
 
-    // MARK: - Internal Properties
-    
+    // MARK: - Public Properties
+
     // Property names follow the `Braintree_Address` convention as documented at:
     // https://developer.paypal.com/braintree/docs/reference/request/address/create
-    let recipientName: String?
-    let streetAddress: String?
-    let extendedAddress: String?
-    let locality: String?
-    let countryCodeAlpha2: String?
-    let postalCode: String?
-    let region: String?
+
+    /// Recipient name for shipping address
+    public let recipientName: String?
+
+    /// Line 1 of the Address (e.g. number, street, etc)
+    public let streetAddress: String?
+
+    /// Line 2 of the Address (e.g. suite, apt #, etc.)
+    public let extendedAddress: String?
+
+    /// City name
+    public let locality: String?
+
+    /// 2 letter country code
+    public let countryCodeAlpha2: String?
+
+    /// Zip code or equivalent
+    public let postalCode: String?
+
+    /// Either a two-letter state code (for the US), or an ISO-3166-2 country subdivision code of up to three letters
+    public let region: String?
     
     // MARK: - Initializer
     

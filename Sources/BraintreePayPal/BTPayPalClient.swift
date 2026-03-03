@@ -76,6 +76,12 @@ import BraintreeDataCollector
     /// Used for analytics purposes, to determine if browser-presentation event is associated with a locally cached, or remotely fetched `BTConfiguration`
     private var isConfigFromCache: Bool?
     
+    /// Used for analytics purpose to determine if user opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
+    private var shouldRequestBillingAgreement: Bool?
+    
+    /// Used for analytics purpose to determine if there is a recurring billing plan type, or charge pattern.
+    private var recurringBillingPlanType: String?
+    
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
     
@@ -161,6 +167,8 @@ import BraintreeDataCollector
         isVaultRequest = true
         contextType = "BA-TOKEN"
         fundingSource = getFundingSource(from: request)
+        shouldRequestBillingAgreement = false
+        recurringBillingPlanType = request.recurringBillingPlanType?.rawValue
         return try await tokenize(request: request)
     }
 
@@ -205,6 +213,8 @@ import BraintreeDataCollector
         isVaultRequest = false
         contextType = "EC-TOKEN"
         fundingSource = getFundingSource(from: request)
+        shouldRequestBillingAgreement = request.requestBillingAgreement
+        recurringBillingPlanType = request.recurringBillingPlanType?.rawValue
         return try await tokenize(request: request)
     }
 
@@ -228,7 +238,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
 
         guard
@@ -302,7 +314,9 @@ import BraintreeDataCollector
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 fundingSource: fundingSource?.rawValue,
-                isVaultRequest: isVaultRequest
+                isVaultRequest: isVaultRequest,
+                recurringBillingPlanType: recurringBillingPlanType,
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
             BTPayPalClient.payPalClient = self
             appSwitchCompletion = completion
@@ -316,7 +330,9 @@ import BraintreeDataCollector
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 fundingSource: fundingSource?.rawValue,
-                isVaultRequest: isVaultRequest
+                isVaultRequest: isVaultRequest,
+                recurringBillingPlanType: recurringBillingPlanType,
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
             
             openURLInDefaultBrowser(url, completion: completion)
@@ -334,7 +350,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
         
         application.open(url, options: [:]) { success in
@@ -358,7 +376,9 @@ import BraintreeDataCollector
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
-            isVaultRequest: isVaultRequest
+            isVaultRequest: isVaultRequest,
+            recurringBillingPlanType: recurringBillingPlanType,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
 
         if isSuccess {
@@ -422,7 +442,9 @@ import BraintreeDataCollector
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
 
         let configuration: BTConfiguration
@@ -537,7 +559,9 @@ import BraintreeDataCollector
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 fundingSource: fundingSource?.rawValue,
                 isVaultRequest: isVaultRequest,
-                shopperSessionID: payPalRequest?.shopperSessionID
+                recurringBillingPlanType: recurringBillingPlanType,
+                shopperSessionID: payPalRequest?.shopperSessionID,
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
 
             return
@@ -556,7 +580,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
 
         var urlComponents = URLComponents(url: payPalAppRedirectURL, resolvingAgainstBaseURL: true)
@@ -593,7 +619,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
 
         approvalURL = appSwitchURL
@@ -657,7 +685,9 @@ import BraintreeDataCollector
                         fundingSource: fundingSource?.rawValue,
                         isConfigFromCache: isConfigFromCache,
                         isVaultRequest: isVaultRequest,
-                        shopperSessionID: payPalRequest?.shopperSessionID
+                        recurringBillingPlanType: recurringBillingPlanType,
+                        shopperSessionID: payPalRequest?.shopperSessionID,
+                        shouldRequestBillingAgreement: shouldRequestBillingAgreement
                     )
                 } else {
                     apiClient.sendAnalyticsEvent(
@@ -670,7 +700,9 @@ import BraintreeDataCollector
                         didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                         fundingSource: fundingSource?.rawValue,
                         isVaultRequest: isVaultRequest,
-                        shopperSessionID: payPalRequest?.shopperSessionID
+                        recurringBillingPlanType: recurringBillingPlanType,
+                        shopperSessionID: payPalRequest?.shopperSessionID,
+                        shouldRequestBillingAgreement: shouldRequestBillingAgreement
                     )
                 }
             } sessionDidCancel: { [self] in
@@ -687,7 +719,9 @@ import BraintreeDataCollector
                         didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
                         didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                         fundingSource: fundingSource?.rawValue,
-                        isVaultRequest: isVaultRequest
+                        isVaultRequest: isVaultRequest,
+                        recurringBillingPlanType: recurringBillingPlanType,
+                        shouldRequestBillingAgreement: shouldRequestBillingAgreement
                     )
                 }
 
@@ -708,7 +742,9 @@ import BraintreeDataCollector
                     didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                     fundingSource: fundingSource?.rawValue,
                     isVaultRequest: isVaultRequest,
-                    shopperSessionID: payPalRequest?.shopperSessionID
+                    recurringBillingPlanType: recurringBillingPlanType,
+                    shopperSessionID: payPalRequest?.shopperSessionID,
+                    shouldRequestBillingAgreement: shouldRequestBillingAgreement
                 )
             }
         }
@@ -743,7 +779,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
         return result
     }
@@ -760,7 +798,9 @@ import BraintreeDataCollector
             errorDescription: error.localizedDescription,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
     }
 
@@ -774,7 +814,9 @@ import BraintreeDataCollector
             didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
             fundingSource: fundingSource?.rawValue,
             isVaultRequest: isVaultRequest,
-            shopperSessionID: payPalRequest?.shopperSessionID
+            recurringBillingPlanType: recurringBillingPlanType,
+            shopperSessionID: payPalRequest?.shopperSessionID,
+            shouldRequestBillingAgreement: shouldRequestBillingAgreement
         )
     }
 }
