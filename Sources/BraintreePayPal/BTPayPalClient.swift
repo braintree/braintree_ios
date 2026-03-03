@@ -429,8 +429,8 @@ import BraintreeDataCollector
         do {
             configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
         } catch {
-            notifyFailure(with: BTPayPalError.fetchConfigurationFailed)
-            throw BTPayPalError.fetchConfigurationFailed
+            notifyFailure(with: error)
+            throw error
         }
 
         guard let json = configuration.json else {
@@ -458,7 +458,6 @@ import BraintreeDataCollector
             let (body, _) = try await self.apiClient.post(request.hermesPath, parameters: parameters)
 
             guard let body, let approvalURL = BTPayPalApprovalURLParser(body: body) else {
-                notifyFailure(with: BTPayPalError.invalidURL("Missing approval URL in gateway response."))
                 throw BTPayPalError.invalidURL("Missing approval URL in gateway response.")
             }
 
@@ -477,9 +476,7 @@ import BraintreeDataCollector
             case .payPalApp(let url):
                 self.didPayPalServerAttemptAppSwitch = true
                 guard (self.isVaultRequest ? approvalURL.baToken : approvalURL.ecToken) != nil else {
-                    let error = self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken
-                    notifyFailure(with: error)
-                    throw error
+                    throw self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken
                 }
                 let merchantID = json["merchantId"].asString()
                 return try await self.launchPayPalApp(with: url, merchantID: merchantID)
