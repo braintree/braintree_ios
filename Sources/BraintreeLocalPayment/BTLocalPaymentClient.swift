@@ -223,11 +223,13 @@ import BraintreeDataCollector
                 }
             } sessionDidCancel: { [weak self] in
                 guard let self else { return }
+                let canceledError = BTLocalPaymentError.canceled(self.request?.paymentType ?? "")
                 if !webSessionReturned {
                     apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.browserLoginAlertCanceled)
                 }
                 apiClient.sendAnalyticsEvent(BTLocalPaymentAnalytics.paymentCanceled)
-                continuation.resume(throwing: BTLocalPaymentError.canceled(self.request?.paymentType ?? ""))
+                sendFailureAnalytics(with: canceledError)
+                continuation.resume(throwing: canceledError)
             }
         }
     }
