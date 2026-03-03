@@ -25,6 +25,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         client = BTThreeDSecureClient(authorization: authorization)
         client.apiClient = mockAPIClient
         client.cardinalSession = mockCardinalSession
+        mockAPIClient.cannedConfigurationResponseBody = mockConfiguration
         mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
 
@@ -156,6 +157,7 @@ class BTThreeDSecureClient_Tests: XCTestCase {
 
     func testPerformThreeDSecureLookup_whenFetchingConfigurationFails_callsBackWithConfigurationError() async {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
+        mockAPIClient.cannedConfigurationResponseBody = nil
 
         do {
             _ = try await client.performThreeDSecureLookup(threeDSecureRequest)
