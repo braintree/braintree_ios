@@ -5,13 +5,13 @@ import BraintreeCore
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")
-    var amexClient : BTAmericanExpressClient? = nil
+    var mockAPIClient : MockAPIClient!
+    var amexClient : BTAmericanExpressClient!
 
     override func setUp() {
         super.setUp()
-        amexClient = BTAmericanExpressClient(authorization: "development_tokenization_key")
-        amexClient?.apiClient = mockAPIClient
+        mockAPIClient = MockAPIClient(authorization: "development_client_key")
+        amexClient = BTAmericanExpressClient(btapiClient: mockAPIClient)
     }
     
     func testGetRewardsBalance_formatsGETRequest() async {
@@ -92,5 +92,11 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, "Invalid authorization provided: badAuth. See https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v6#initialization for more info.")
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
         }
+    }
+
+    override func tearDown() {
+        amexClient = nil
+        mockAPIClient = nil
+        super.tearDown()
     }
 }
