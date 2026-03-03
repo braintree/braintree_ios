@@ -93,4 +93,10 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
         }
     }
+
+    override func tearDown() {
+        amexClient = nil
+        mockAPIClient = nil
+        super.tearDown()
+    }
 }
