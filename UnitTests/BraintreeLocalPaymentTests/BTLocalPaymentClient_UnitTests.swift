@@ -229,7 +229,6 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = makeCancelingWebSession()
 
-        // Fire-and-forget so the delegate callback can be observed
         Task { _ = try? await client.start(localPaymentRequest) }
 
         await fulfillment(of: [mockLocalPaymentRequestDelegate.idExpectation!], timeout: 4)
@@ -252,7 +251,9 @@ class BTLocalPaymentClient_UnitTests: XCTestCase {
         client.apiClient = mockAPIClient
         client.webAuthenticationSession = makeCancelingWebSession()
 
-        _ = try? await client.start(localPaymentRequest)
+        Task {
+            _ = try? await client.start(localPaymentRequest)
+        }
 
         XCTAssertEqual(mockAPIClient.postedContextID, "123aaa-123-543-777")
     }

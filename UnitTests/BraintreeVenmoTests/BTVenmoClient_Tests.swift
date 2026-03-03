@@ -739,12 +739,15 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
         
+        let expectation = expectation(description: "tokenize initiates app switch")
         venmoClient.tokenize(venmoRequest) { _, _ in }
+        fakeApplication.onOpenURL = { expectation.fulfill() }
+        waitForExpectations(timeout: 2)
         
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
         let params = mockAPIClient.lastPOSTParameters as? NSDictionary
         if let inputDict = params?["variables"] as? NSDictionary,
-           let input = inputDict["input"] as? [String:Any] {
+           let input = inputDict["input"] as? [String: Any] {
             XCTAssertEqual("some_risk_correlation_id", input["venmoRiskCorrelationId"] as? String)
         }
     }
