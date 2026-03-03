@@ -5,6 +5,7 @@ import CardinalMobile
 import BraintreeCore
 #endif
 
+// swiftlint:disable type_body_length file_length
 @objcMembers public class BTThreeDSecureClient: NSObject {
 
     // MARK: - Internal Properties
@@ -74,7 +75,9 @@ import BraintreeCore
         }
 
         guard request.threeDSecureRequestDelegate != nil else {
-            throw notifyFailure(with: BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."))
+            throw notifyFailure(
+                with: BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2.")
+            )
         }
 
         try await prepareLookup(request: request)
