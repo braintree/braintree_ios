@@ -47,16 +47,13 @@ class ApplePayViewController: PaymentButtonBaseViewController {
             }
             paymentAuthorizationViewController.delegate = self
 
-            if #available(iOS 16.0, *) {
-                paymentRequest.recurringPaymentRequest = self.recurringPaymentRequest()
-            }
+            paymentRequest.recurringPaymentRequest = self.recurringPaymentRequest()
 
             self.progressBlock("Presenting Apple Pay Sheet")
             self.present(paymentAuthorizationViewController, animated: true)
         }
     }
 
-    @available(iOS 16.0, *)
     private func recurringPaymentRequest() -> PKRecurringPaymentRequest {
         let recurringPaymentRequest = PKRecurringPaymentRequest(
             paymentDescription: "Payment description.",
