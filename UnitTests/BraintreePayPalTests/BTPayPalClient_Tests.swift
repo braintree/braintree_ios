@@ -29,6 +29,7 @@ class BTPayPalClient_Tests: XCTestCase {
 
     func testTokenizePayPalAccount_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseBody = nil
+        mockAPIClient.cannedConfigurationResponseError = BTPayPalError.fetchConfigurationFailed as NSError
 
         let request = BTPayPalCheckoutRequest(amount: "1")
         let expectation = expectation(description: "Checkout fails with error")
