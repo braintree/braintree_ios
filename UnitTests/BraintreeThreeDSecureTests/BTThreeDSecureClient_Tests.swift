@@ -428,7 +428,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         ] as [String: Any]
 
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
-        _ = try? await client.start(threeDSecureRequest)
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = expectation(description: "Lookup completed successfully")
+        Task { _ = try? await client.start(threeDSecureRequest) }
+        await fulfillment(of: [mockThreeDSecureRequestDelegate.lookupCompleteExpectation!], timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyStarted))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.challengeRequired))
