@@ -55,21 +55,26 @@ import BraintreeCore
 
         self.request = request
 
-        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        let configuration: BTConfiguration
+
+        do {
+            configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        } catch {
+            throw notifyFailure(with: error)
+        }
 
         guard configuration.cardinalAuthenticationJWT != nil else {
             NSLog("%@ Missing the required Cardinal authentication JWT.", BTLogLevelDescription.string(for: .critical))
             throw notifyFailure(with: BTThreeDSecureError.configuration("Missing the required Cardinal authentication JWT."))
         }
 
-        if request.amount.isEmpty {
+        guard !request.amount.isEmpty else {
             NSLog("%@ BTThreeDSecureRequest amount cannot be an empty string.", BTLogLevelDescription.string(for: .critical))
             throw notifyFailure(with: BTThreeDSecureError.configuration("BTThreeDSecureRequest amount can not be nil or NaN."))
         }
 
-        if request.threeDSecureRequestDelegate == nil {
-            let message = "Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."
-            throw notifyFailure(with: BTThreeDSecureError.configuration(message))
+        guard request.threeDSecureRequestDelegate != nil else {
+            throw notifyFailure(with: BTThreeDSecureError.configuration("Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."))
         }
 
         try await prepareLookup(request: request)
@@ -294,26 +299,19 @@ import BraintreeCore
             throw notifyFailure(with: error)
         }
 
-        let requestParameters = ThreeDSecurePOSTBody(request: request)
-
         guard let urlSafeNonce = request.nonce.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
             throw notifyFailure(with: BTThreeDSecureError.failedAuthentication("Tokenized card nonce is required."))
         }
 
+        let requestParameters = ThreeDSecurePOSTBody(request: request)
+        let body: BTJSON?
+
         do {
-            let (body, _) = try await apiClient.post(
+            (body, _) = try await apiClient.post(
                 "v1/payment_methods/\(urlSafeNonce)/three_d_secure/lookup",
                 parameters: requestParameters
             )
-
-            guard let body else {
-                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
-                throw notifyFailure(with: BTThreeDSecureError.noBodyReturned)
-            }
-
-            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
-            return BTThreeDSecureResult(json: body)
         } catch let error as NSError {
             // Provide more context for card validation error when status code 422
             if error.domain == BTCoreConstants.httpErrorDomain,
@@ -344,6 +342,14 @@ import BraintreeCore
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
             throw notifyFailure(with: error)
         }
+
+        guard let body else {
+            apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupFailed)
+            throw notifyFailure(with: BTThreeDSecureError.noBodyReturned)
+        }
+
+        apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.lookupSucceeded)
+        return BTThreeDSecureResult(json: body)
     }
 
     // MARK: - Analytics Helper Methods
