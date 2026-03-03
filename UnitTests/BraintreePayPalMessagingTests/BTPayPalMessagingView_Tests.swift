@@ -24,8 +24,8 @@ final class BTPayPalMessagingView_Tests: XCTestCase {
 
         await fulfillment(of: [expectation], timeout: 2)
 
-        XCTAssertEqual((mockDelegate.error as? NSError)?.domain, "SomeError")
-        XCTAssertEqual((mockDelegate.error as? NSError)?.code, 999)
+        XCTAssertEqual(mockDelegate.error as? BTPayPalMessagingError, BTPayPalMessagingError.fetchConfigurationFailed)
+        XCTAssertEqual((mockDelegate.error as? BTPayPalMessagingError)?.errorCode, 0)
     }
 
     @MainActor

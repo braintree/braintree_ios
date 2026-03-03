@@ -74,7 +74,7 @@ public class BTPayPalMessagingView: UIView {
 
                 setupMessageView(with: messageConfig)
             } catch {
-                notifyFailure(with: error)
+                notifyFailure(with: BTPayPalMessagingError.fetchConfigurationFailed)
             }
         }
     }
