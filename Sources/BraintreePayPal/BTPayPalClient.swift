@@ -249,6 +249,7 @@ import BraintreeDataCollector
                 url: url,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch ?? false
             ) else {
+            notifyFailure(with: BTPayPalError.invalidURLAction)
             throw BTPayPalError.invalidURLAction
         }
 
@@ -258,6 +259,7 @@ import BraintreeDataCollector
         }
 
         guard let payPalRequest else {
+            notifyFailure(with: BTPayPalError.missingPayPalRequest)
             throw BTPayPalError.missingPayPalRequest
         }
 
@@ -504,8 +506,9 @@ import BraintreeDataCollector
             }
         } catch let error as NSError {
             guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                // ignore cancelled error since it is already triggered via notifyCancel()
-                if (error as? BTPayPalError) != .canceled {
+                // BTPayPalErrors analytic events already fired, ignore and only send unknown errors
+                let isPayPalError = (error as? BTPayPalError) != nil
+                if !isPayPalError {
                     notifyFailure(with: error)
                 }
                 throw error
