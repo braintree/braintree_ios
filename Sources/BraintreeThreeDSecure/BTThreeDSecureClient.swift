@@ -189,7 +189,9 @@ import BraintreeCore
         request: BTThreeDSecureRequest
     ) async throws -> BTThreeDSecureResult {
         guard let dataResponse = lookupResponse.data(using: .utf8) else {
-            throw BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."])
+            throw notifyFailure(
+                with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Lookup response cannot be converted to Data type."])
+            )
         }
 
         let jsonResponse = BTJSON(data: dataResponse)
