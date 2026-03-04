@@ -22,7 +22,7 @@ public class BTPayPalMessagingView: UIView {
     ///  Initializes a `BTPayPalMessagingView`.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     public init(authorization: String) {
-        apiClient = BTAPIClient(authorization: authorization)
+        self.apiClient = BTAPIClient(authorization: authorization)
 
         super.init(frame: .zero)
     }
@@ -126,7 +126,7 @@ public extension BTPayPalMessagingView {
             request: BTPayPalMessagingRequest = BTPayPalMessagingRequest(),
             delegate: BTPayPalMessagingDelegate? = nil
         ) {
-            apiClient = BTAPIClient(authorization: authorization)
+            self.apiClient = BTAPIClient(authorization: authorization)
             self.request = request
             self.delegate = delegate
         }
