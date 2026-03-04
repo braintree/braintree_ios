@@ -249,7 +249,6 @@ import BraintreeDataCollector
                 url: url,
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch ?? false
             ) else {
-            notifyFailure(with: BTPayPalError.invalidURLAction)
             throw BTPayPalError.invalidURLAction
         }
 
@@ -259,7 +258,6 @@ import BraintreeDataCollector
         }
 
         guard let payPalRequest else {
-            notifyFailure(with: BTPayPalError.missingPayPalRequest)
             throw BTPayPalError.missingPayPalRequest
         }
 
@@ -278,7 +276,6 @@ import BraintreeDataCollector
             let payPalAccount = body?["paypalAccounts"].asArray()?.first,
             let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount)
         else {
-            notifyFailure(with: BTPayPalError.failedToCreateNonce)
             throw BTPayPalError.failedToCreateNonce
         }
 
@@ -297,7 +294,6 @@ import BraintreeDataCollector
     func handlePayPalRequest(with url: URL, paymentType: BTPayPalPaymentType) async throws -> BTPayPalAccountNonce {
         // Defensive programming in case PayPal returns a non-HTTP URL so that ASWebAuthenticationSession doesn't crash
         if let scheme = url.scheme, !scheme.lowercased().hasPrefix("http") {
-            notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme))
             throw BTPayPalError.asWebAuthenticationSessionURLInvalid(scheme)
         }
         return try await performSwitchRequest(appSwitchURL: url, paymentType: paymentType)
@@ -508,7 +504,10 @@ import BraintreeDataCollector
             }
         } catch let error as NSError {
             guard let jsonResponseBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON else {
-                notifyFailure(with: error)
+                // ignore cancelled error since it is already triggered via notifyCancel()
+                if (error as? BTPayPalError) != .canceled {
+                    notifyFailure(with: error)
+                }
                 throw error
             }
 
@@ -639,13 +638,11 @@ import BraintreeDataCollector
                 }
 
                 if let error {
-                    notifyFailure(with: BTPayPalError.webSessionError(error))
                     continuation.resume(throwing: BTPayPalError.webSessionError(error))
                     return
                 }
 
                 guard let url, let returnURL = BTPayPalReturnURL(.webBrowser(url: url)) else {
-                    notifyFailure(with: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"))
                     continuation.resume(throwing: BTPayPalError.invalidURL("ASWebAuthenticationSession return URL cannot be nil"))
                     return
                 }
@@ -653,7 +650,6 @@ import BraintreeDataCollector
                 switch returnURL.state {
                 case .succeeded, .canceled:
                     guard let payPalRequest else {
-                        notifyFailure(with: BTPayPalError.missingPayPalRequest)
                         continuation.resume(throwing: BTPayPalError.missingPayPalRequest)
                         return
                     }
@@ -667,7 +663,6 @@ import BraintreeDataCollector
                         }
                     }
                 case .unknownPath:
-                    notifyFailure(with: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString))
                     continuation.resume(throwing: BTPayPalError.asWebAuthenticationSessionURLInvalid(url.absoluteString))
                 }
             } sessionDidAppear: { [self] didAppear in
