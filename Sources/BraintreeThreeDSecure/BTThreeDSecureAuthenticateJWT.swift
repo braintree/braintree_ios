@@ -12,9 +12,6 @@ enum BTThreeDSecureAuthenticateJWT {
         forResult lookupResult: BTThreeDSecureResult?,
         completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
     ) {
-        print("*****************************************")
-        print("in BTThreeDSecureAuthenticateJWT")
-        print("*****************************************")
         Task {
             do {
                 let result = try await authenticate(jwt: cardinalJWT, withAPIClient: apiClient, forResult: lookupResult)
