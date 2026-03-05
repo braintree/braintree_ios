@@ -754,7 +754,8 @@ import BraintreeDataCollector
 
         let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
         let ecToken = BTURLUtils.queryParameters(for: url)["token"]
-        return baToken ?? ecToken
+        let token = baToken ?? ecToken
+        return token?.isEmpty == true ? nil : token
     }
     
     private func configureSessionIfNeeded(for experiment: String? = nil) {
