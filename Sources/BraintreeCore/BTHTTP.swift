@@ -52,7 +52,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     var acceptLanguageString: String {
-        "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
+        "\(Locale.current.language.languageCode?.identifier ?? "en")-\(Locale.current.region?.identifier ?? "US")"
     }
     
     // MARK: - Internal Initializers
