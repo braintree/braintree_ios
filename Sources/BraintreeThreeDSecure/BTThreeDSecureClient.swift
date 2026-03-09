@@ -272,27 +272,18 @@ import BraintreeCore
     }
 
     private func performV2Authentication(with lookupResult: BTThreeDSecureResult) async throws -> BTThreeDSecureResult {
-        try await withCheckedThrowingContinuation { continuation in
-            threeDSecureV2Provider?.process(lookupResult: lookupResult) { result, error in
-                if let error {
-                    if error as? BTThreeDSecureError == .canceled {
-                        self.apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
-                    }
-                    continuation.resume(throwing: self.notifyFailure(with: error))
-                    return
-                }
-
-                guard let result else {
-                    continuation.resume(
-                        throwing: self.notifyFailure(
-                            with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Process lookup result nil"])
-                        )
-                    )
-                    return
-                }
-
-                continuation.resume(returning: self.notifySuccess(with: result))
+        do {
+            guard let result = try await threeDSecureV2Provider?.process(lookupResult: lookupResult) else {
+                throw notifyFailure(
+                    with: BTThreeDSecureError.failedLookup([NSLocalizedDescriptionKey: "Process lookup result nil"])
+                )
             }
+            return notifySuccess(with: result)
+        } catch {
+            if error as? BTThreeDSecureError == .canceled {
+                apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.verifyCanceled)
+            }
+            throw notifyFailure(with: error)
         }
     }
 
