@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 workspace 'Braintree.xcworkspace'
-platform :ios, '14.0'
+platform :ios, '16.0'
 use_frameworks!
 inhibit_all_warnings!
 
@@ -25,7 +25,7 @@ post_install do |installer|
   installer.generated_projects.each do |project|
     project.targets.each do |target|
       target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
       end
     end
   end

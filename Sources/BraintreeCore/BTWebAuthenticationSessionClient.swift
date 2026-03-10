@@ -6,8 +6,8 @@ import AuthenticationServices
 open class BTWebAuthenticationSessionClient: NSObject, ASWebAuthenticationPresentationContextProviding {
 
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        let window = firstScene?.windows.first { $0.isKeyWindow }
-        return window ?? ASPresentationAnchor()
+        let windowScene = UIApplication.shared.connectedScenes
+            .first { $0.activationState == .foregroundActive } as? UIWindowScene
+        return windowScene?.keyWindow ?? ASPresentationAnchor()
     }
 }
