@@ -400,7 +400,6 @@ import BraintreeDataCollector
         guard let returnURL = BTPayPalReturnURL(.payPalApp(url: url)) else {
             notifyFailure(with: BTPayPalError.invalidURL("App Switch return URL cannot be nil"))
             appSwitchCompletion(nil, BTPayPalError.invalidURL("App Switch return URL cannot be nil"))
-            BTPayPalClient.payPalClient = nil
             return
         }
 
@@ -409,7 +408,6 @@ import BraintreeDataCollector
             guard let payPalRequest else {
                 notifyFailure(with: BTPayPalError.missingPayPalRequest)
                 appSwitchCompletion(nil, BTPayPalError.missingPayPalRequest)
-                BTPayPalClient.payPalClient = nil
                 return
             }
 
@@ -420,12 +418,10 @@ import BraintreeDataCollector
                 } catch {
                     appSwitchCompletion(nil, error)
                 }
-                BTPayPalClient.payPalClient = nil
             }
         case .unknownPath:
             notifyFailure(with: BTPayPalError.appSwitchReturnURLPathInvalid)
             appSwitchCompletion(nil, BTPayPalError.appSwitchReturnURLPathInvalid)
-            BTPayPalClient.payPalClient = nil
         }
     }
 
@@ -824,7 +820,9 @@ extension BTPayPalClient: BTAppContextSwitchClient {
     /// :nodoc:
     @_documentation(visibility: private)
     @objc public static func handleReturnURL(_ url: URL) {
-        payPalClient?.handleReturnURL(url)
+        guard let client = payPalClient else { return }
+        payPalClient = nil
+        client.handleReturnURL(url)
     }
 
     /// :nodoc:
