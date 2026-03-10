@@ -39,9 +39,6 @@ import BraintreeCore
     /// In the Venmo flow this will be the payment context ID
     private var contextID: String?
 
-    /// Used for sending the type of flow, universal vs deeplink to FPTI
-    private var linkType: LinkType?
-
     private var universalLink: URL
 
     // MARK: - Static Properties
@@ -173,8 +170,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.handleReturnStarted,
             contextID: contextID,
-            isVaultRequest: shouldVault,
-            linkType: linkType
+            isVaultRequest: shouldVault
         )
         guard let cleanedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?")) else {
             let error = BTVenmoError.invalidReturnURL(url.absoluteString)
@@ -234,8 +230,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.appSwitchStarted,
             contextID: contextID,
-            isVaultRequest: shouldVault,
-            linkType: linkType
+            isVaultRequest: shouldVault
         )
         application.open(appSwitchURL, options: [:]) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, appSwitchURL: appSwitchURL, completion: completion)
@@ -255,8 +250,7 @@ import BraintreeCore
                 BTVenmoAnalytics.appSwitchSucceeded,
                 appSwitchURL: appSwitchURL,
                 contextID: contextID,
-                isVaultRequest: shouldVault,
-                linkType: linkType
+                isVaultRequest: shouldVault
             )
             BTVenmoClient.venmoClient = self
             self.appSwitchCompletion = completion
@@ -265,8 +259,7 @@ import BraintreeCore
                 BTVenmoAnalytics.appSwitchFailed,
                 appSwitchURL: appSwitchURL,
                 contextID: contextID,
-                isVaultRequest: shouldVault,
-                linkType: linkType
+                isVaultRequest: shouldVault
             )
             notifyFailure(with: BTVenmoError.appSwitchFailed)
             completion(nil, BTVenmoError.appSwitchFailed)
@@ -396,8 +389,7 @@ import BraintreeCore
         apiClient.sendAnalyticsEvent(
             BTVenmoAnalytics.tokenizeSucceeded,
             contextID: contextID,
-            isVaultRequest: shouldVault,
-            linkType: linkType
+            isVaultRequest: shouldVault
         )
     }
 
@@ -406,8 +398,7 @@ import BraintreeCore
             BTVenmoAnalytics.tokenizeFailed,
             contextID: contextID,
             errorDescription: error.localizedDescription,
-            isVaultRequest: shouldVault,
-            linkType: linkType
+            isVaultRequest: shouldVault
         )
     }
 
@@ -416,8 +407,7 @@ import BraintreeCore
             BTVenmoAnalytics.appSwitchCanceled,
             contextID: contextID,
             errorDescription: BTVenmoError.canceled.localizedDescription,
-            isVaultRequest: shouldVault,
-            linkType: linkType
+            isVaultRequest: shouldVault
         )
     }
 }
