@@ -278,6 +278,7 @@ import BraintreeDataCollector
             let payPalAccount = body?["paypalAccounts"].asArray()?.first,
             let tokenizedAccount = BTPayPalAccountNonce(json: payPalAccount)
         else {
+            notifyFailure(with: BTPayPalError.failedToCreateNonce)
             throw BTPayPalError.failedToCreateNonce
         }
 
@@ -464,8 +465,6 @@ import BraintreeDataCollector
             notifyFailure(with: BTPayPalError.disabled)
             throw BTPayPalError.disabled
         }
-
-        self.payPalRequest = request
 
         let parameters = request.encodedPostBodyWith(
             configuration: configuration,
