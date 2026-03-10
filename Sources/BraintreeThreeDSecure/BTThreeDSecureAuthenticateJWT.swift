@@ -9,6 +9,22 @@ enum BTThreeDSecureAuthenticateJWT {
     static func authenticate(
         jwt cardinalJWT: String,
         withAPIClient apiClient: BTAPIClient,
+        forResult lookupResult: BTThreeDSecureResult?,
+        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
+    ) {
+        Task {
+            do {
+                let result = try await authenticate(jwt: cardinalJWT, withAPIClient: apiClient, forResult: lookupResult)
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+
+    static func authenticate(
+        jwt cardinalJWT: String,
+        withAPIClient apiClient: BTAPIClient,
         forResult lookupResult: BTThreeDSecureResult?
     ) async throws -> BTThreeDSecureResult {
         guard let nonce = lookupResult?.tokenizedCard?.nonce else {

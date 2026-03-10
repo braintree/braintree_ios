@@ -22,8 +22,8 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
         let json = BTJSON(data: jsonString.data(using: String.Encoding.utf8)!)
         threeDSecureLookupResult = BTThreeDSecureResult(json: json)
     }
-    
-    func testThreeDSecureAuthenticateJWT_Success() {
+
+    func testThreeDSecureAuthenticateJWT_Success() async {
         let authenticateResponseBody = [
             "paymentMethod": [
                 "consumed": false,
@@ -44,23 +44,21 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: authenticateResponseBody)
 
-        let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
+        let result = try? await BTThreeDSecureAuthenticateJWT.authenticate(
+            jwt: "fake-jwt",
+            withAPIClient: mockAPIClient,
+            forResult: threeDSecureLookupResult
+        )
 
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult) { result, error in
-            XCTAssertNil(error)
-            guard let tokenizedCard = result?.tokenizedCard else { XCTFail(); return }
-            XCTAssertEqual(tokenizedCard.nonce, "fake-nonce-to-test")
-            XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShifted)
-            XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
-            XCTAssertNil(result?.errorMessage)
-            authenticateJwtExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 4, handler: nil)
+        guard let tokenizedCard = result?.tokenizedCard else { XCTFail(); return }
+        XCTAssertEqual(tokenizedCard.nonce, "fake-nonce-to-test")
+        XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertNil(result?.errorMessage)
         XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthSucceeded))
     }
 
-    func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce_withErrorMessage() {
+    func testThreeDSecureAuthenticateJWT_ReturnsLookupNonce_withErrorMessage() async {
         let authenticationResponseBody = [
             "errors" : [
                 [
@@ -71,31 +69,30 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         mockAPIClient.cannedResponseBody = BTJSON(value: authenticationResponseBody)
 
-        let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
+        let result = try? await BTThreeDSecureAuthenticateJWT.authenticate(
+            jwt: "fake-jwt",
+            withAPIClient: mockAPIClient,
+            forResult: threeDSecureLookupResult
+        )
 
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: threeDSecureLookupResult) { result, error in
-            XCTAssertNil(error)
-            XCTAssertEqual(result?.tokenizedCard, self.threeDSecureLookupResult.tokenizedCard)
-            XCTAssertEqual(result?.errorMessage, "test error")
-            authenticateJwtExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertEqual(result?.tokenizedCard, self.threeDSecureLookupResult.tokenizedCard)
+        XCTAssertEqual(result?.errorMessage, "test error")
         XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
 
-    func testThreeDSecureAuthenticateJWT_FailsWithNoNonce() {
-        let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
-
-        BTThreeDSecureAuthenticateJWT.authenticate(jwt: "fake-jwt", withAPIClient: mockAPIClient, forResult: BTThreeDSecureResult(json: BTJSON())) { result, error in
-            XCTAssertNil(result)
-
-            guard let error = error as NSError? else { XCTFail(); return }
-            XCTAssertEqual(error.localizedDescription, "Tokenized card nonce is required.")
-            authenticateJwtExpectation.fulfill()
+    func testThreeDSecureAuthenticateJWT_FailsWithNoNonce() async {
+        do {
+            _ = try await BTThreeDSecureAuthenticateJWT.authenticate(
+                jwt: "fake-jwt",
+                withAPIClient: mockAPIClient,
+                forResult: BTThreeDSecureResult(json: BTJSON())
+            )
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.localizedDescription, "Tokenized card nonce is required.")
         }
 
-        waitForExpectations(timeout: 4, handler: nil)
         XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.jwtAuthFailed))
     }
 }
