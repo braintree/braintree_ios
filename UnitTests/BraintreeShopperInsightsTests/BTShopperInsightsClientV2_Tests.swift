@@ -90,6 +90,54 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal")
     }
 
+    func testSendPayPalPayLaterPresentedEvent_whenExperimentTypeIsControl_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .control,
+            pageType: .about
+        )
+
+        sut.sendPresentedEvent(for: .payPalPayLater, presentmentDetails: presentmentDetails, sessionID: sessionID)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-presented")
+        XCTAssertEqual(mockAPIClient.postedButtonOrder, "1")
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal_Pay_Later")
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "control" }
+            ]
+        """)
+        XCTAssertEqual(mockAPIClient.postedPageType, "about")
+    }
+
+    func testSendPayPalPayLaterPresentedEvent_whenExperimentTypeIsTest_sendsAnalytic() {
+        let presentmentDetails = BTPresentmentDetails(
+            buttonOrder: .first,
+            experimentType: .test,
+            pageType: .about
+        )
+
+        sut.sendPresentedEvent(for: .payPalPayLater, presentmentDetails: presentmentDetails, sessionID: sessionID)
+
+        XCTAssertEqual(mockAPIClient.postedMerchantExperiment,
+        """
+            [
+                { "exp_name" : "PaymentReady" }
+                { "treatment_name" : "test" }
+            ]
+        """)
+    }
+
+    func testSendPayPalPayLaterSelectedEvent_sendsAnalytic() {
+        sut.sendSelectedEvent(for: .payPalPayLater, sessionID: sessionID)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, "shopper-insights:button-selected")
+        XCTAssertEqual(mockAPIClient.postedShopperSessionID, sessionID)
+        XCTAssertEqual(mockAPIClient.postedButtonType, "PayPal_Pay_Later")
+    }
+
     func testSendVenmoPresentedEvent_sendsAnalytic() {
         let presentmentDetails = BTPresentmentDetails(
             buttonOrder: .first,

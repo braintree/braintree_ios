@@ -7,6 +7,9 @@ public enum BTButtonType: String {
     /// PayPal button
     case payPal = "PayPal"
 
+    /// PayPal Pay Later button
+    case payPalPayLater = "PayPal_Pay_Later"
+
     /// Venmo button
     case venmo = "Venmo"
 
