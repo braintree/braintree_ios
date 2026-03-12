@@ -13,7 +13,7 @@ class BTThreeDSecureV2Provider {
     let apiClient: BTAPIClient
 
     var lookupResult: BTThreeDSecureResult?
-    var completionHandler: (BTThreeDSecureResult?, Error?) -> Void = { _, _ in }
+    private var authenticationContinuation: CheckedContinuation<BTThreeDSecureResult, Error>?
 
     // MARK: - Initializer
 
@@ -68,18 +68,18 @@ class BTThreeDSecureV2Provider {
 
     // MARK: - Internal Methods
 
-    func process(
-        lookupResult: BTThreeDSecureResult,
-        completion: @escaping (BTThreeDSecureResult?, Error?) -> Void
-    ) {
+    func process(lookupResult: BTThreeDSecureResult) async throws -> BTThreeDSecureResult {
         self.lookupResult = lookupResult
-        completionHandler = completion
 
-        cardinalSession.continueWith(
-            transactionId: lookupResult.lookup?.transactionID ?? "",
-            payload: lookupResult.lookup?.paReq ?? "",
-            validationDelegate: self
-        )
+        return try await withCheckedThrowingContinuation { continuation in
+            self.authenticationContinuation = continuation
+
+            cardinalSession.continueWith(
+                transactionId: lookupResult.lookup?.transactionID ?? "",
+                payload: lookupResult.lookup?.paReq ?? "",
+                validationDelegate: self
+            )
+        }
     }
 
     private func analyticsString(for actionCode: CardinalResponseActionCode) -> String {
@@ -113,6 +113,9 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
         serverJWT: String!
     ) {
         // swiftlint:enable implicitly_unwrapped_optional
+        guard let continuation = authenticationContinuation else { return }
+        authenticationContinuation = nil
+
         switch validateResponse.actionCode {
         case .success, .noAction, .failure:
             if validateResponse.actionCode == .failure {
@@ -121,12 +124,20 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeSucceeded)
             }
 
-            BTThreeDSecureAuthenticateJWT.authenticate(
-                jwt: serverJWT,
-                withAPIClient: apiClient,
-                forResult: lookupResult,
-                completion: completionHandler
-            )
+            Task {
+                do {
+                    let result = try await BTThreeDSecureAuthenticateJWT.authenticate(
+                        jwt: serverJWT,
+                        withAPIClient: apiClient,
+                        forResult: lookupResult
+                    )
+                    continuation.resume(returning: result)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+                lookupResult = nil
+            }
+
         case .error:
             let errorUserInfo = [NSLocalizedDescriptionKey: validateResponse.errorDescription]
             var errorCode: Int = BTThreeDSecureError.unknown.errorCode
@@ -135,15 +146,25 @@ extension BTThreeDSecureV2Provider: CardinalValidationDelegate {
                 errorCode = BTThreeDSecureError.failedAuthentication("").errorCode
             }
             apiClient.sendAnalyticsEvent(BTThreeDSecureAnalytics.challengeFailed)
-            completionHandler(nil, NSError(domain: BTThreeDSecureError.errorDomain, code: errorCode, userInfo: errorUserInfo))
+            continuation.resume(
+                throwing: NSError(
+                    domain: BTThreeDSecureError.errorDomain,
+                    code: errorCode,
+                    userInfo: errorUserInfo
+                )
+            )
+            lookupResult = nil
+
         case .timeout:
-            completionHandler(nil, BTThreeDSecureError.exceededTimeoutLimit)
+            continuation.resume(throwing: BTThreeDSecureError.exceededTimeoutLimit)
+            lookupResult = nil
+
         case .cancel:
-            completionHandler(nil, BTThreeDSecureError.canceled)
+            continuation.resume(throwing: BTThreeDSecureError.canceled)
+            lookupResult = nil
+
         default:
             break
         }
-
-        lookupResult = nil
     }
 }
