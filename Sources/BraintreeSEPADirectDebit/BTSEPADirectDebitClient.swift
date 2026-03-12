@@ -224,9 +224,4 @@ import BraintreeCore
             errorDescription: error.localizedDescription
         )
     }
-
-    private func notifyCancel(completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void) {
-        self.apiClient.sendAnalyticsEvent(BTSEPADirectAnalytics.challengeCanceled)
-        completion(nil, BTSEPADirectDebitError.webFlowCanceled)
-    }
 }
