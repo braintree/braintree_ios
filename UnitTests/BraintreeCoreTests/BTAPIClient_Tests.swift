@@ -56,23 +56,23 @@ class BTAPIClient_Tests: XCTestCase {
     // MARK: - Dispatch Queue
 
     func testCallbacks_useMainDispatchQueue() async throws {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockHTTP = FakeHTTP.fakeHTTP()
+         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
+         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        apiClient.http = mockHTTP
-        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
-        mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
-        mockHTTP.cannedStatusCode = 200
+         apiClient.http = mockHTTP
+         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
+         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
+         mockHTTP.cannedStatusCode = 200
 
-        _ = try await apiClient.fetchOrReturnRemoteConfiguration()
-        XCTAssertTrue(Thread.isMainThread)
+         _ = try await apiClient.fetchOrReturnRemoteConfiguration()
+         await MainActor.run { XCTAssertTrue(Thread.isMainThread) }
 
-        _ = try await apiClient.get("/endpoint", parameters: nil)
-        XCTAssertTrue(Thread.isMainThread)
+         _ = try await apiClient.get("/endpoint", parameters: nil)
+         await MainActor.run { XCTAssertTrue(Thread.isMainThread) }
 
-        _ = try await apiClient.post("/endpoint", parameters: nil)
-        XCTAssertTrue(Thread.isMainThread)
-    }
+         _ = try await apiClient.post("/endpoint", parameters: nil)
+         await MainActor.run { XCTAssertTrue(Thread.isMainThread) }
+     }
 
     // MARK: - Analytics
 

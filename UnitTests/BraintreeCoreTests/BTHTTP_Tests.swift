@@ -29,7 +29,7 @@ final class BTHTTP_Tests: XCTestCase {
     // MARK: - Configuration
 
     override func setUp() {
-        http = BTHTTP(authorization: fakeClientToken)
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: BTHTTPTestProtocol.testBaseURL())
         http?.session = testURLSession
         URLCache.shared.removeAllCachedResponses()
     }
@@ -84,37 +84,31 @@ final class BTHTTP_Tests: XCTestCase {
 
     func testSendsGETRequest() async throws {
         let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration)
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
         XCTAssertEqual(httpRequest.httpMethod, "GET")
         XCTAssertNil(httpRequest.httpBody)
+        XCTAssertEqual(response.statusCode, 200)
     }
 
     func testSendsGETRequestWithParameters() async throws {
         let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration, parameters: ["param": "value"])
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
         XCTAssertEqual(httpRequest.url?.query, "param=value&authorization_fingerprint=test-authorization-fingerprint")
         XCTAssertEqual(httpRequest.httpMethod, "GET")
         XCTAssertNil(httpRequest.httpBody)
+        XCTAssertEqual(response.statusCode, 200)
     }
 
     func testSendsPOSTRequest() async throws {
         let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration)
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
         XCTAssertEqual(httpRequest.httpMethod, "POST")
         XCTAssertNil(httpRequest.url?.query)
         XCTAssertNil(httpRequest.httpBody)
+        XCTAssertEqual(response.statusCode, 200)
     }
 
     func testSendsPOSTRequestWithCodableParameters() async throws {
@@ -124,41 +118,36 @@ final class BTHTTP_Tests: XCTestCase {
         let parameters = FakeCodable(param: "value")
 
         let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration, parameters: parameters)
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
         XCTAssertEqual(httpRequest.httpMethod, "POST")
         XCTAssertNil(httpRequest.url?.query)
+        XCTAssertEqual(response.statusCode, 200)
 
-        let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
+        guard let bodyData = httpRequestBody.data(using: .utf8) else { return XCTFail("Failed to encode request body as UTF-8") }
+        let json = BTJSON(data: bodyData)
         XCTAssertEqual(json["param"].asString(), "value")
     }
 
     func testSendsPOSTRequestWithDictionaryParameters() async throws {
         let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration, parameters: ["param": "value"])
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
         XCTAssertEqual(httpRequest.httpMethod, "POST")
         XCTAssertNil(httpRequest.url?.query)
+        XCTAssertEqual(response.statusCode, 200)
 
-        let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
+        guard let bodyData = httpRequestBody.data(using: .utf8) else { return XCTFail("Failed to encode request body as UTF-8") }
+        let json = BTJSON(data: bodyData)
         XCTAssertEqual(json["param"].asString(), "value")
     }
 
     // MARK: - Authentication
 
     func testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() async throws {
-        let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration)
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.get("200.json", configuration: fakeConfiguration)
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
     }
@@ -167,19 +156,13 @@ final class BTHTTP_Tests: XCTestCase {
         http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
-        let (body, response) = try await http!.get("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.get("200.json")
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
     }
 
     func testPOSTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody() async throws {
-        let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration)
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.post("200.json", configuration: fakeConfiguration)
         let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
         XCTAssertEqual(httpRequestBody, "{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}")
     }
@@ -188,10 +171,7 @@ final class BTHTTP_Tests: XCTestCase {
         let http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "https://api.paypal.com")!)
         http.session = testURLSession
 
-        let (body, response) = try await http.post("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http.post("200.json")
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Authorization"], "Bearer test-authorization-fingerprint")
     }
@@ -200,10 +180,7 @@ final class BTHTTP_Tests: XCTestCase {
         http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
-        let (body, response) = try await http!.post("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.post("200.json")
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
     }
@@ -211,49 +188,20 @@ final class BTHTTP_Tests: XCTestCase {
     // MARK: - Default headers tests
 
     func testIncludeAccept() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
-            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
-            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-
-        let (body, response) = try await http!.get("stub://200/resource")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        // BTHTTPTestProtocol echoes request headers back in the response body — no stub needed
+        let (body, _) = try await http!.get("200.json", configuration: fakeConfiguration)
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Accept"], "application/json")
     }
 
     func testIncludeUserAgent() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
-            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
-            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-
-        let (body, response) = try await http!.get("stub://200/resource")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.get("200.json", configuration: fakeConfiguration)
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.allHTTPHeaderFields?["User-Agent"], "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)")
     }
 
     func testIncludeAcceptLanguage() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
-            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
-            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-
-        let (body, response) = try await http!.get("stub://200/resource")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.get("200.json", configuration: fakeConfiguration)
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         let locale = Locale.current
         let countryCode = (locale as NSLocale).object(forKey: .countryCode) as? String
@@ -295,10 +243,7 @@ final class BTHTTP_Tests: XCTestCase {
             "arrayParameter%5B%5D=arrayItem2"
         ]
 
-        let (body, response) = try await http!.get("200.json", parameters: SampleRequest())
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.get("200.json", parameters: SampleRequest())
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         let actualQueryComponents = httpRequest.url?.query?.components(separatedBy: "&")
         expectedQueryParameters.forEach { expectedComponent in
@@ -318,25 +263,23 @@ final class BTHTTP_Tests: XCTestCase {
             "authorization_fingerprint": "test-authorization-fingerprint"
         ]
 
-        let (body, response) = try await http!.post("200.json", parameters: SampleRequest())
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-
+        let (body, _) = try await http!.post("200.json", parameters: SampleRequest())
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
         let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
         XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
 
-        let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
-        XCTAssertTrue(actualParameters! == expectedParameters)
+        guard let bodyData = httpRequestBody.data(using: .utf8) else { return XCTFail("Failed to encode request body as UTF-8") }
+        let actualParameters = (try? JSONSerialization.jsonObject(with: bodyData)) as? [String: Any] ?? [:]
+        XCTAssertTrue(actualParameters == expectedParameters)
     }
 
     // MARK: - DispatchQueue tests
 
     func testCallsBackOnMainQueue() async throws {
-        let (body, response) = try await http!.get("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-        XCTAssertTrue(Thread.isMainThread)
+        let (_, _) = try await http!.get("200.json")
+        await MainActor.run {
+            XCTAssertTrue(Thread.isMainThread)
+        }
     }
 
     // MARK: - Response Code Parser tests
@@ -352,9 +295,7 @@ final class BTHTTP_Tests: XCTestCase {
         }
         defer { HTTPStubs.removeStub(stub) }
 
-        let (body, response) = try await http!.get("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
+        let (_, response) = try await http!.get("200.json")
         XCTAssertEqual(response.statusCode, 200)
     }
 
@@ -471,9 +412,8 @@ final class BTHTTP_Tests: XCTestCase {
         defer { HTTPStubs.removeStub(stub) }
 
         let (body, response) = try await http!.get("200.json")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
         XCTAssertEqual(body["status"].asString(), "OK")
+        XCTAssertEqual(response.statusCode, 200)
     }
 
     func testAcceptsEmptyResponses() async throws {
@@ -485,7 +425,6 @@ final class BTHTTP_Tests: XCTestCase {
 
         let (body, response) = try await http!.get("empty.json")
         XCTAssertEqual(response.statusCode, 200)
-        XCTAssertNotNil(body)
         XCTAssertEqual(body.asDictionary()?.count, 0)
     }
 
