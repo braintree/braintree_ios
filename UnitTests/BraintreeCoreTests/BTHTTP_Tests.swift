@@ -15,17 +15,17 @@ final class BTHTTP_Tests: XCTestCase {
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
         return URLSession(configuration: testConfiguration)
     }
-    
+
     let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
     let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
-    
+
     var fakeConfiguration: BTConfiguration {
         let json = BTJSON(value: [
             "clientApiUrl": "https://fake-client-api-url.com/base/path"
         ])
         return BTConfiguration(json: json)
     }
-    
+
     // MARK: - Configuration
 
     override func setUp() {
@@ -40,324 +40,229 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     // MARK: - Base URL tests
-        
-    func testRequests_whenNoConfigurationSet_usesConfigURLOnAuthorization() {
+
+    func testRequests_whenNoConfigurationSet_usesConfigURLOnAuthorization() async throws {
         let http = BTHTTP(authorization: fakeTokenizationKey)
         http.session = testURLSession
-        let expectation = expectation(description: "GET callback")
 
-        http.httpRequest(method: .get, path: "200.json") { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.host, self.fakeTokenizationKey.configURL.host)
-            XCTAssertEqual(httpRequest.url?.path, self.fakeTokenizationKey.configURL.path)
-            XCTAssertEqual(httpRequest.url?.scheme, self.fakeTokenizationKey.configURL.scheme)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+        let (body, _) = try await http.httpRequest(method: .get, path: "200.json")
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.host, fakeTokenizationKey.configURL.host)
+        XCTAssertEqual(httpRequest.url?.path, fakeTokenizationKey.configURL.path)
+        XCTAssertEqual(httpRequest.url?.scheme, fakeTokenizationKey.configURL.scheme)
     }
-    
-    func testRequests_whenNoConfigurationSet_doesNotAppendPath() {
-        let expectation = expectation(description: "callback")
 
-        http?.httpRequest(method: .get, path: "/some-really-long-path") { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, self.fakeClientToken.configURL.path)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+    func testRequests_whenNoConfigurationSet_doesNotAppendPath() async throws {
+        let (body, _) = try await http!.httpRequest(method: .get, path: "/some-really-long-path")
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, fakeClientToken.configURL.path)
     }
-    
-    func testRequests_whenConfigurationSet_usesClientAPIURLOnConfig() {
+
+    func testRequests_whenConfigurationSet_usesClientAPIURLOnConfig() async throws {
         let http = BTHTTP(authorization: fakeTokenizationKey)
         http.session = testURLSession
-        let expectation = expectation(description: "callback")
 
-        http.httpRequest(method: .get, path: "", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.scheme, self.fakeConfiguration.clientAPIURL?.scheme)
-            XCTAssertEqual(httpRequest.url?.host, self.fakeConfiguration.clientAPIURL?.host)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+        let (body, _) = try await http.httpRequest(method: .get, path: "", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.scheme, fakeConfiguration.clientAPIURL?.scheme)
+        XCTAssertEqual(httpRequest.url?.host, fakeConfiguration.clientAPIURL?.host)
     }
-    
-    func testRequests_whenConfigurationSet_appendsPath() {
-        let expectation = expectation(description: "callback")
 
-        http?.httpRequest(method: .get, path: "/some-really-long-path", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url!.path, "\(self.fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
+    func testRequests_whenConfigurationSet_appendsPath() async throws {
+        let (body, _) = try await http!.httpRequest(method: .get, path: "/some-really-long-path", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "\(fakeConfiguration.clientAPIURL!.path)/some-really-long-path")
     }
-    
-    func testRequests_useTheSpecifiedURLScheme() {
-        let expectation = expectation(description: "GET callback")
 
-        http?.get("200.json") { body, _, error in
-            XCTAssertNil(error)
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.scheme, "bt-http-test")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+    func testRequests_useTheSpecifiedURLScheme() async throws {
+        let (body, _) = try await http!.get("200.json")
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.scheme, "bt-http-test")
     }
 
     // MARK: - HTTP Method tests
 
-    func testSendsGETRequest() {
-        let expectation = expectation(description: "GET request")
-        
-        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+    func testSendsGETRequest() async throws {
+        let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration)
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "GET")
-            XCTAssertNil(httpRequest.httpBody)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+        XCTAssertEqual(httpRequest.httpMethod, "GET")
+        XCTAssertNil(httpRequest.httpBody)
     }
 
-    func testSendsGETRequestWithParameters() {
-        let expectation = expectation(description: "GET request")
+    func testSendsGETRequestWithParameters() async throws {
+        let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration, parameters: ["param": "value"])
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        http?.get("200.json", configuration: fakeConfiguration, parameters: ["param": "value"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.url?.query, "param=value&authorization_fingerprint=test-authorization-fingerprint")
-            XCTAssertEqual(httpRequest.httpMethod, "GET")
-            XCTAssertNil(httpRequest.httpBody)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+        XCTAssertEqual(httpRequest.url?.query, "param=value&authorization_fingerprint=test-authorization-fingerprint")
+        XCTAssertEqual(httpRequest.httpMethod, "GET")
+        XCTAssertNil(httpRequest.httpBody)
     }
 
-    func testSendsPOSTRequest() {
-        let expectation = expectation(description: "POST request")
+    func testSendsPOSTRequest() async throws {
+        let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration)
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        http?.post("200.json", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "POST")
-            XCTAssertNil(httpRequest.url?.query)
-            XCTAssertNil(httpRequest.httpBody)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+        XCTAssertEqual(httpRequest.httpMethod, "POST")
+        XCTAssertNil(httpRequest.url?.query)
+        XCTAssertNil(httpRequest.httpBody)
     }
-    
-    func testSendsPOSTRequestWithCodableParameters() {
+
+    func testSendsPOSTRequestWithCodableParameters() async throws {
         struct FakeCodable: Codable {
             let param: String
         }
         let parameters = FakeCodable(param: "value")
-        
-        let expectation = expectation(description: "POST request")
 
-        http?.post("200.json", configuration: fakeConfiguration, parameters: parameters) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration, parameters: parameters)
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "POST")
-            XCTAssertNil(httpRequest.url?.query)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+        XCTAssertEqual(httpRequest.httpMethod, "POST")
+        XCTAssertNil(httpRequest.url?.query)
 
-            let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
-            XCTAssertEqual(json["param"].asString(), "value")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
+        XCTAssertEqual(json["param"].asString(), "value")
     }
 
-    func testSendsPOSTRequestWithDictionaryParameters() {
-        let expectation = expectation(description: "POST request")
+    func testSendsPOSTRequestWithDictionaryParameters() async throws {
+        let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration, parameters: ["param": "value"])
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        http?.post("200.json", configuration: fakeConfiguration, parameters: ["param": "value"]) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
+        XCTAssertEqual(httpRequest.httpMethod, "POST")
+        XCTAssertNil(httpRequest.url?.query)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.path, "/base/path/200.json")
-            XCTAssertEqual(httpRequest.httpMethod, "POST")
-            XCTAssertNil(httpRequest.url?.query)
-
-            let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
-            XCTAssertEqual(json["param"].asString(), "value")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let json = BTJSON(data: httpRequestBody.data(using: .utf8)!)
+        XCTAssertEqual(json["param"].asString(), "value")
     }
 
     // MARK: - Authentication
 
-    func testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() {
-        let expectation = expectation(description: "Request with authorization")
+    func testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams() async throws {
+        let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration)
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        http?.get("200.json", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url?.query, "authorization_fingerprint=test-authorization-fingerprint")
     }
 
-    func testGETRequests_whenBTHTTPInitializedWithTokenizationKey_sendTokenizationKeyInHeader() {
+    func testGETRequests_whenBTHTTPInitializedWithTokenizationKey_sendTokenizationKeyInHeader() async throws {
         http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
-        let expectation = expectation(description: "GET callback")
-        http?.get("200.json") {body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let (body, response) = try await http!.get("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
     }
 
-    func testPOSTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody() {
-        let expectation = expectation(description: "POST callback")
+    func testPOSTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody() async throws {
+        let (body, response) = try await http!.post("200.json", configuration: fakeConfiguration)
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        http?.post("200.json", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequestBody, "{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
+        XCTAssertEqual(httpRequestBody, "{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}")
     }
-    
-    func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_sendsAuthorizationInHeader() {
-        let expectation = expectation(description: "POST callback")
 
+    func testPOSTRequests_whenBTHTTPInitializedWithPayPalAPIURL_sendsAuthorizationInHeader() async throws {
         let http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "https://api.paypal.com")!)
         http.session = testURLSession
-        
-        http.post("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Authorization"], "Bearer test-authorization-fingerprint")
-            expectation.fulfill()
-        }
+        let (body, response) = try await http.post("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Authorization"], "Bearer test-authorization-fingerprint")
     }
 
-    func testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() {
+    func testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization() async throws {
         http = BTHTTP(authorization: fakeTokenizationKey)
         http?.session = testURLSession
 
-        let expectation = expectation(description: "POST callback")
-        http?.post("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let (body, response) = try await http!.post("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Client-Key"], "development_tokenization_key")
     }
 
     // MARK: - Default headers tests
 
-    func testIncludeAccept() {
-        withStub() {
-            http?.get("stub://200/resource") { body, response, error in
-                XCTAssertNotNil(body)
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-
-                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-                let requestHeaders = httpRequest.allHTTPHeaderFields
-                XCTAssertEqual(requestHeaders?["Accept"], "application/json")
-            }
+    func testIncludeAccept() async throws {
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
+            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
+            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
+
+        let (body, response) = try await http!.get("stub://200/resource")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Accept"], "application/json")
     }
 
-    func testIncludeUserAgent() {
-        withStub {
-            http?.get("stub://200/resource") { body, response, error in
-                XCTAssertNotNil(body)
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-
-                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-                let requestHeaders = httpRequest.allHTTPHeaderFields
-                XCTAssertEqual(requestHeaders?["User-Agent"], "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)")
-            }
+    func testIncludeUserAgent() async throws {
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
+            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
+            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
+
+        let (body, response) = try await http!.get("stub://200/resource")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["User-Agent"], "Braintree/iOS/\(BTCoreConstants.braintreeSDKVersion)")
     }
 
-    func testIncludeAcceptLanguage() {
-        withStub {
-            http?.get("stub://200/resource") { body, response, error in
-                XCTAssertNotNil(body)
-                XCTAssertNotNil(response)
-                XCTAssertNil(error)
-
-                let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-                let requestHeaders = httpRequest.allHTTPHeaderFields
-                let locale = Locale.current
-                let countryCode = (locale as NSLocale).object(forKey: .countryCode) as? String
-                let expectedLanguageString = "\(locale.language.languageCode?.identifier ?? "")-\(countryCode ?? "")"
-                XCTAssertEqual(requestHeaders?["Accept-Language"], expectedLanguageString)
-            }
+    func testIncludeAcceptLanguage() async throws {
+        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { request in
+            let jsonResponse = try! JSONSerialization.data(withJSONObject: ["requestHeaders": request.allHTTPHeaderFields], options: .prettyPrinted)
+            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
+
+        let (body, response) = try await http!.get("stub://200/resource")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let locale = Locale.current
+        let countryCode = (locale as NSLocale).object(forKey: .countryCode) as? String
+        let expectedLanguageString = "\(locale.language.languageCode?.identifier ?? "")-\(countryCode ?? "")"
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields?["Accept-Language"], expectedLanguageString)
     }
 
     // MARK: - Parameters tests
-    
+
     struct SampleRequest: Encodable {
         enum CodingKeys: String, CodingKey {
             case stringParameter
@@ -368,7 +273,7 @@ final class BTHTTP_Tests: XCTestCase {
             case dictionaryParameter
             case arrayParameter
         }
-        
+
         let stringParameter = "value"
         let crazyStringParameter = "crazy%20and&value"
         let numericParameter = 42
@@ -378,8 +283,7 @@ final class BTHTTP_Tests: XCTestCase {
         let arrayParameter = ["arrayItem1", "arrayItem2"]
     }
 
-    func testTransmitsTheParametersAsURLEncodedQueryParameters() {
-        let expectation = expectation(description: "GET request")
+    func testTransmitsTheParametersAsURLEncodedQueryParameters() async throws {
         let expectedQueryParameters = [
             "numericParameter=42",
             "falseBooleanParameter=0",
@@ -391,26 +295,18 @@ final class BTHTTP_Tests: XCTestCase {
             "arrayParameter%5B%5D=arrayItem2"
         ]
 
-        http?.get("200.json", parameters: SampleRequest()) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let (body, response) = try await http!.get("200.json", parameters: SampleRequest())
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let actualQueryComponents = httpRequest.url?.query?.components(separatedBy: "&")
-
-            expectedQueryParameters.forEach { expectedComponent in
-                XCTAssertTrue(actualQueryComponents!.contains(expectedComponent))
-            }
-
-            expectation.fulfill()
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let actualQueryComponents = httpRequest.url?.query?.components(separatedBy: "&")
+        expectedQueryParameters.forEach { expectedComponent in
+            XCTAssertTrue(actualQueryComponents!.contains(expectedComponent))
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testTransmitsTheParametersAsJSON() {
-        let expectation = expectation(description: "POST request")
+    func testTransmitsTheParametersAsJSON() async throws {
         let expectedParameters: [String: Any] = [
             "numericParameter": 42,
             "falseBooleanParameter": false,
@@ -418,343 +314,219 @@ final class BTHTTP_Tests: XCTestCase {
             "trueBooleanParameter": true,
             "stringParameter": "value",
             "crazyStringParameter[]": "crazy%20and&value",
-            "arrayParameter": [ "arrayItem1", "arrayItem2" ],
+            "arrayParameter": ["arrayItem1", "arrayItem2"],
             "authorization_fingerprint": "test-authorization-fingerprint"
         ]
 
-        http?.post("200.json", parameters: SampleRequest()) { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
+        let (body, response) = try await http!.post("200.json", parameters: SampleRequest())
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
 
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!)
-            XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let httpRequestBody = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.value(forHTTPHeaderField: "Content-Type"), "application/json; charset=utf-8")
 
-            let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
-            XCTAssertTrue(actualParameters! == expectedParameters)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let actualParameters = try? JSONSerialization.jsonObject(with: httpRequestBody.data(using: .utf8)!) as? [String: Any] ?? [:]
+        XCTAssertTrue(actualParameters! == expectedParameters)
     }
 
     // MARK: - DispatchQueue tests
 
-    func testCallsBackOnMainQueue() {
-        let expectation = expectation(description: "Receive callback")
-
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let name = __dispatch_queue_get_label(nil)
-            let currentQueue = String(cString: name, encoding: .utf8)
-            XCTAssertEqual(currentQueue, DispatchQueue.main.label)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testCallsBackOnSpecifiedQueue() {
-        let expectation = expectation(description: "Receive callback")
-        http?.dispatchQueue = DispatchQueue(label: "com.braintreepayments.BTHTTPSpec.callbackQueueTest")
-
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-
-            let name = __dispatch_queue_get_label(nil)
-            let currentQueue = String(cString: name, encoding: .utf8)
-            XCTAssertEqual(currentQueue, self.http?.dispatchQueue.label)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+    func testCallsBackOnMainQueue() async throws {
+        let (body, response) = try await http!.get("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+        XCTAssertTrue(Thread.isMainThread)
     }
 
     // MARK: - Response Code Parser tests
 
-    func testInterprets2xxAsACompletionWithSuccess() {
-        let expectation = expectation(description: "GET callback")
+    func testInterprets2xxAsACompletionWithSuccess() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: [] as [Any?], options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(response?.statusCode, 200)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, response) = try await http!.get("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+        XCTAssertEqual(response.statusCode, 200)
     }
 
-    func testResponseCodeParsing_whenStatusCodeIs4xx_returnsError() {
-        let expectation = expectation(description: "GET callback")
-        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
+    func testResponseCodeParsing_whenStatusCodeIs4xx_returnsError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: errorBody, options: .prettyPrinted),
                 statusCode: 403,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("403.json") { body, response, error in
-            XCTAssertEqual(body?.asDictionary(), errorBody as NSDictionary)
-            XCTAssertNotNil(response)
-
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("403.json")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
             XCTAssertEqual(error.code, BTHTTPError.clientError([:]).errorCode)
             XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
             XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError() {
-        let expectation = expectation(description: "GET callback")
+    func testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: [:] as [String: Any?], options: .prettyPrinted),
                 statusCode: 429,
                 headers: ["Content-Type": "application/json"]
-                )
+            )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("429.json") { body, response, error in
-            XCTAssertEqual(body?.asDictionary(), [:])
-            XCTAssertNotNil(response)
-
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("429.json")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
             XCTAssertEqual(error.code, BTHTTPError.rateLimitError([:]).errorCode)
             XCTAssertEqual(error.userInfo[NSLocalizedDescriptionKey] as! String, "You are being rate-limited.")
             XCTAssertEqual(error.userInfo[NSLocalizedRecoverySuggestionErrorKey] as! String, "Please try again in a few minutes.")
             XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testResponseCodeParsing_whenStatusCodeIs5xx_returnsError() {
-        let expectation = expectation(description: "GET callback")
-        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
+    func testResponseCodeParsing_whenStatusCodeIs5xx_returnsError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: errorBody, options: .prettyPrinted),
                 statusCode: 503,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("503.json") { body, response, error in
-            XCTAssertEqual(body?.asDictionary(), errorBody as NSDictionary)
-            XCTAssertNotNil(response)
-
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("503.json")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
             XCTAssertEqual(error.code, BTHTTPError.serverError([:]).errorCode)
             XCTAssertTrue(error.userInfo[BTCoreConstants.urlResponseKey] is HTTPURLResponse)
             XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
             XCTAssertEqual(error.localizedRecoverySuggestion, "Please try again later.")
             XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey])
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testInterpretsTheNetworkBeingDownAsAnError() {
-        let expectation = expectation(description: "GET callback")
+    func testInterpretsTheNetworkBeingDownAsAnError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: URLError.notConnectedToInternet.rawValue))
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: URLError.notConnectedToInternet.rawValue))
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("network-down") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("network-down")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, URLError.errorDomain)
             XCTAssertEqual(error.code, URLError.notConnectedToInternet.rawValue)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testInterpretsTheServerBeingUnavailableAsAnError() {
-        let expectation = expectation(description: "GET callback")
+    func testInterpretsTheServerBeingUnavailableAsAnError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: URLError.cannotConnectToHost.rawValue))
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: URLError.cannotConnectToHost.rawValue))
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("gateway-down") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("gateway-down")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, URLError.errorDomain)
             XCTAssertEqual(error.code, URLError.cannotConnectToHost.rawValue)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
     // MARK: - Response Body Parser tests
 
-    func testParsesAJSONResponseBody() {
-        let expectation = expectation(description: "GET callback")
+    func testParsesAJSONResponseBody() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(data: "{\"status\": \"OK\"}".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(data: "{\"status\": \"OK\"}".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("200.json") { body, response, error in
-            XCTAssertNotNil(body)
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssertEqual(body?["status"].asString(), "OK")
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, response) = try await http!.get("200.json")
+        XCTAssertNotNil(body)
+        XCTAssertNotNil(response)
+        XCTAssertEqual(body["status"].asString(), "OK")
     }
 
-    func testAcceptsEmptyResponses() {
-        let expectation = expectation(description: "GET callback")
+    func testAcceptsEmptyResponses() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(data: Data(), statusCode: 200, headers: ["Content-Type": "application/json"])
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(data: Data(), statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("empty.json") { body, response, error in
-            XCTAssertEqual(response?.statusCode, 200)
-            XCTAssertNotNil(body)
-            XCTAssertEqual(body?.asDictionary()?.count, 0)
-            XCTAssertNil(error)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, response) = try await http!.get("empty.json")
+        XCTAssertEqual(response.statusCode, 200)
+        XCTAssertNotNil(body)
+        XCTAssertEqual(body.asDictionary()?.count, 0)
     }
 
-    func testInterpretsInvalidJSONResponsesAsAJSONError() {
-        let expectation = expectation(description: "GET callback")
+    func testInterpretsInvalidJSONResponsesAsAJSONError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(data: "{ really invalid json ]".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(data: "{ really invalid json ]".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("invalid.json") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("invalid.json")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, NSCocoaErrorDomain)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testInterpretsNonJSONResponsesAsAContentTypeNotAcceptableError() {
-        let expectation = expectation(description: "GET callback")
+    func testInterpretsNonJSONResponsesAsAContentTypeNotAcceptableError() async throws {
         http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(data: "<html>response</html>".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "text/html"])
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(data: "<html>response</html>".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "text/html"])
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.get("200.html") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
-            guard let error = error as NSError? else { return }
+        do {
+            _ = try await http!.get("200.html")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
             XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
-            HTTPStubs.removeStub(stub)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testNoopsForANilCompletionBlock() {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-
-        http?.get("200.json") { body, response, error in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                // no-op
-            }
         }
     }
-    
+
+    // MARK: - URLSession metrics tests
+
     @available(iOS, deprecated: 13.0, message: "Required for mocking URLSessionTaskMetrics in tests")
     func testURLSessionTaskDidFinishCollectingMetrics() {
         let mockDelegate = MockNetworkTimingDelegate()
         http?.networkTimingDelegate = mockDelegate
-        
+
         var originalRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
         originalRequest.httpBody = """
             {
@@ -769,11 +541,11 @@ final class BTHTTP_Tests: XCTestCase {
         transactionMetrics.mockFetchStartDate = Date()
         transactionMetrics.mockResponseEndDate = Date().addingTimeInterval(1)
         transactionMetrics.mockRequest = URLRequest(url: URL(string: "https://example.com/graphql")!)
-        
+
         let metrics = MockURLSessionTaskMetrics(transactionMetrics: [transactionMetrics])
-        
+
         http?.urlSession(testURLSession, task: task, didFinishCollecting: metrics)
-        
+
         XCTAssertTrue(mockDelegate.didCallFetchAPITiming)
         XCTAssertEqual(mockDelegate.receivedPath, "mutation TestMutation")
         XCTAssertNotNil(mockDelegate.receivedConnectionStartTime)
@@ -781,126 +553,16 @@ final class BTHTTP_Tests: XCTestCase {
         XCTAssertNotNil(mockDelegate.receivedStartTime)
         XCTAssertNotNil(mockDelegate.receivedEndTime)
     }
-    
+
     func testURLSessionConfiguration_hasCustomTimeoutSettings() {
         let sut = BTHTTP(authorization: fakeTokenizationKey)
         XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
-        XCTAssertEqual(sut.session.configuration.timeoutIntervalForRequest, 30)
-    }
-    
-    // MARK: - Async Method Tests
-    
-    func testAsyncGetRequest_success() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: "{\"status\": \"OK\"}".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        let (body, response) = try await http!.get("200.json", configuration: fakeConfiguration)
-        print("DEBUG: BTJSON value =", String(describing: body?.value))
-        print("DEBUG: BTJSON asDictionary =", body?.asDictionary() ?? "nil")
-        XCTAssertNotNil(body)
-        XCTAssertNotNil(response)
-        XCTAssertEqual(body?["status"].asString(), "OK")
-        XCTAssertEqual(response?.statusCode, 200)
-    }
-    
-    func testAsyncGetRequest_4xxError() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: try! JSONSerialization.data(withJSONObject: errorBody, options: .prettyPrinted), statusCode: 403, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        do {
-            _ = try await http!.get("403.json", configuration: fakeConfiguration)
-            XCTFail("Expected error to be thrown")
-        } catch let error as NSError {
-            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error.code, BTHTTPError.clientError([:]).errorCode)
-            XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
-        }
-    }
-    
-    func testAsyncGetRequest_5xxError() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let errorBody: [String: Any] = ["error": ["message": "This is an error message from the gateway"]]
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: try! JSONSerialization.data(withJSONObject: errorBody, options: .prettyPrinted), statusCode: 503, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        do {
-            _ = try await http!.get("503.json", configuration: fakeConfiguration)
-            XCTFail("Expected error to be thrown")
-        } catch let error as NSError {
-            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error.code, BTHTTPError.serverError([:]).errorCode)
-            XCTAssertEqual(error.localizedDescription, "This is an error message from the gateway")
-        }
-    }
-    
-    func testAsyncGetRequest_emptyResponse() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: Data(), statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        let (body, response) = try await http!.get("empty.json", configuration: fakeConfiguration)
-        XCTAssertNotNil(body)
-        XCTAssertEqual(body?.asDictionary()?.count, 0)
-        XCTAssertEqual(response?.statusCode, 200)
-    }
-    
-    func testAsyncGetRequest_invalidJSON() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: "{ really invalid json ]".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        do {
-            _ = try await http!.get("invalid.json", configuration: fakeConfiguration)
-            XCTFail("Expected error to be thrown")
-        } catch let error as NSError {
-            XCTAssertEqual(error.domain, NSCocoaErrorDomain)
-        }
-    }
-    
-    func testAsyncGetRequest_nonJSONContentType() async throws {
-        http = BTHTTP(authorization: fakeClientToken, customBaseURL: URL(string: "stub://stub")!)
-        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
-            HTTPStubsResponse(data: "<html>response</html>".data(using: .utf8)!, statusCode: 200, headers: ["Content-Type": "text/html"])
-        }
-        defer { HTTPStubs.removeStub(stub) }
-        do {
-            _ = try await http!.get("200.html", configuration: fakeConfiguration)
-            XCTFail("Expected error to be thrown")
-        } catch let error as NSError {
-            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(error.code, BTHTTPError.responseContentTypeNotAcceptable([:]).errorCode)
-        }
-    }
-    
-    // MARK: - Helper Methods
-
-    func withStub(_ completion: () -> Void) {
-        let stub = HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            let jsonResponse: Data = try! JSONSerialization.data(
-                withJSONObject: ["requestHeaders": request.allHTTPHeaderFields],
-                options: .prettyPrinted
-            )
-
-            return HTTPStubsResponse(data: jsonResponse, statusCode: 200, headers: ["Content-Type": "application/json"])
-        }
-
-        HTTPStubs.removeStub(stub)
-        completion()
+        XCTAssertEqual(sut.session.configuration.timeoutIntervalForResource, 30)
     }
 }
 
 extension [String: Any] {
-    static func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
+    static func ==(lhs: [String: Any], rhs: [String: Any]) -> Bool {
         return NSDictionary(dictionary: lhs).isEqual(to: rhs)
     }
 }
