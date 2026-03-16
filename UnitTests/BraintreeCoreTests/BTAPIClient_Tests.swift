@@ -55,39 +55,23 @@ class BTAPIClient_Tests: XCTestCase {
 
     // MARK: - Dispatch Queue
 
-    func testCallbacks_useMainDispatchQueue() {
+    func testCallbacks_useMainDispatchQueue() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
 
-        // Override apiClient.http so that requests don't fail
         apiClient.http = mockHTTP
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
 
-        let expectation1 = expectation(description: "Fetch configuration")
-        apiClient.fetchOrReturnRemoteConfiguration() { _, _ in
-            XCTAssert(Thread.isMainThread)
-            expectation1.fulfill()
-        }
+        _ = try await apiClient.fetchOrReturnRemoteConfiguration()
+        XCTAssertTrue(Thread.isMainThread)
 
-        let expectation2 = expectation(description: "GET request")
-        apiClient.get("/endpoint", parameters: nil) { _, response, error in
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssert(Thread.isMainThread)
-            expectation2.fulfill()
-        }
+        _ = try await apiClient.get("/endpoint", parameters: nil)
+        XCTAssertTrue(Thread.isMainThread)
 
-        let expectation3 = expectation(description: "POST request")
-        apiClient.post("/endpoint", parameters: nil) { _, response, error in
-            XCTAssertNotNil(response)
-            XCTAssertNil(error)
-            XCTAssert(Thread.isMainThread)
-            expectation3.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        _ = try await apiClient.post("/endpoint", parameters: nil)
+        XCTAssertTrue(Thread.isMainThread)
     }
 
     // MARK: - Analytics
@@ -169,7 +153,7 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
-        
+
         _ = try await apiClient.post("/", parameters: nil, httpType: .gateway)
 
         let metaParameters = mockHTTP.lastRequestParameters?["_meta"] as? [String: Any]
@@ -183,7 +167,7 @@ class BTAPIClient_Tests: XCTestCase {
         let mockGraphQLHTTP = FakeGraphQLHTTP.fakeHTTP()
         let mockHTTP = FakeHTTP.fakeHTTP()
         let metadata = apiClient.metadata
-        
+
         apiClient.graphQLHTTP = mockGraphQLHTTP
         apiClient.http = mockHTTP
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
@@ -197,7 +181,7 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertEqual(metaParameters?["source"] as? String, metadata.source.stringValue)
         XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
-    
+
     func testPOST_withEncodableParams_whenUsingGateway_includesMetadata() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
         let mockHTTP = FakeHTTP.fakeHTTP()
@@ -207,7 +191,7 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
-        
+
         let postParameters = FakeRequest(testValue: "fake-value")
         _ = try await apiClient.post("/", parameters: postParameters, httpType: .gateway)
 
@@ -228,7 +212,7 @@ class BTAPIClient_Tests: XCTestCase {
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
         mockHTTP.cannedConfiguration = BTJSON(value: ["test": true])
         mockHTTP.cannedStatusCode = 200
-        
+
         let postParameters = FakeRequest(testValue: "fake-value")
         _ = try await apiClient.post("/", parameters: postParameters, httpType: .graphQLAPI)
 
@@ -238,58 +222,19 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertEqual(metaParameters?["sessionId"] as? String, metadata.sessionID)
     }
 
-    // MARK: - Timeouts
+    // MARK: - Config fetch errors
 
-    func testGETCallback_returnFetchConfigErrors() {
+    func testGET_returnsFetchConfigErrors() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
+        let mockHTTP = FakeHTTP.fakeHTTP()
         apiClient.http = mockHTTP
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
-        
-        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
-        let expectation = expectation(description: "GET request")
-        apiClient.get("/example", parameters: nil) { body, response, error in
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
-            XCTAssertEqual(mockError, error as NSError?)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 5)
-    }
-
-    func testPOSTCallback_returnFetchConfigErrors() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
-        apiClient.http = mockHTTP
-        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
-        
-        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
-        mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
-
-        let expectation = expectation(description: "GET request")
-        apiClient.post("/example", parameters: nil) { body, response, error in
-            XCTAssertNil(response)
-            XCTAssertNotNil(error)
-            XCTAssertEqual(mockError, error as NSError?)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 5)
-
-    }
-    
-    func testGET_withAsyncAwait_returnFetchConfigErrors() async throws {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
-        apiClient.http = mockHTTP
-        apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
-        
-        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
+        let mockError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
 
         do {
-            let _ = try await apiClient.get("/example", parameters: nil)
+            _ = try await apiClient.get("/example", parameters: nil)
             XCTFail("Expected error to be thrown")
         } catch {
             let nsError = error as NSError
@@ -297,18 +242,18 @@ class BTAPIClient_Tests: XCTestCase {
             XCTAssertEqual(nsError.code, mockError.code)
         }
     }
-        
-    func testPOST_withAsyncAwait_returnFetchConfigErrors() async throws {
+
+    func testPOST_returnsFetchConfigErrors() async throws {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")
-        let mockHTTP: FakeHTTP = FakeHTTP.fakeHTTP()
+        let mockHTTP = FakeHTTP.fakeHTTP()
         apiClient.http = mockHTTP
         apiClient.configurationLoader = MockConfigurationLoader(http: mockHTTP)
-        
-        let mockError: NSError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
+
+        let mockError = NSError(domain: NSURLErrorDomain, code: NSURLErrorCannotConnectToHost)
         mockHTTP.stubRequest(withMethod: "GET", toEndpoint: "/client_api/v1/configuration", respondWithError: mockError)
-        
+
         do {
-            let _ = try await apiClient.post("/example", parameters: nil)
+            _ = try await apiClient.post("/example", parameters: nil)
             XCTFail("Expected error to be thrown")
         } catch {
             let nsError = error as NSError
