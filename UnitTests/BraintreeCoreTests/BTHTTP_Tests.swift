@@ -53,9 +53,12 @@ final class BTHTTP_Tests: XCTestCase {
     }
 
     func testRequests_whenNoConfigurationSet_doesNotAppendPath() async throws {
-        let (body, _) = try await http!.httpRequest(method: .get, path: "/some-really-long-path")
+        let http = BTHTTP(authorization: fakeTokenizationKey)
+        http.session = testURLSession
+
+        let (body, _) = try await http.httpRequest(method: .get, path: "/some-really-long-path")
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
-        XCTAssertEqual(httpRequest.url?.path, fakeClientToken.configURL.path)
+        XCTAssertEqual(httpRequest.url?.path, fakeTokenizationKey.configURL.path)
     }
 
     func testRequests_whenConfigurationSet_usesClientAPIURLOnConfig() async throws {
