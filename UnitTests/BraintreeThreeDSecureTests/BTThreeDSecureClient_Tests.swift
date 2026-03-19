@@ -525,6 +525,115 @@ class BTThreeDSecureClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
     }
 
+    // MARK: - initializeChallenge
+
+    func testInitializeChallenge_whenFetchingConfigurationFails_throwsError() async {
+        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "BTError", code: 0, userInfo: nil)
+        mockAPIClient.cannedConfigurationResponseBody = nil
+
+        do {
+            _ = try await client.initializeChallenge(lookupResponse: "{}", request: threeDSecureRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as NSError, mockAPIClient.cannedConfigurationResponseError!)
+        }
+    }
+
+    func testInitializeChallenge_whenAuthenticationNotRequired_returnsResult() async {
+        let lookupResponse =
+            """
+            {
+                "paymentMethod": {
+                    "nonce": "a-nonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": true
+                    }
+                },
+                "threeDSecureInfo": {
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true
+                }
+            }
+            """
+
+        do {
+            let result = try await client.initializeChallenge(lookupResponse: lookupResponse, request: threeDSecureRequest)
+            XCTAssertNotNil(result)
+            XCTAssertNil(result.lookup)
+        } catch {
+            XCTFail("Expected success but got error: \(error)")
+        }
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifySucceeded))
+    }
+
+    func testInitializeChallenge_whenV1ReturnedInLookup_throwsError() async {
+        let lookupResponse =
+            """
+            {
+                "lookup": {
+                    "acsUrl": "http://www.someAcsUrl.com",
+                    "pareq": "somePareq",
+                    "termUrl": "http://www.someTermUrl.com",
+                    "threeDSecureVersion": "1.0.2"
+                },
+                "paymentMethod": {
+                    "nonce": "a-nonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
+
+        do {
+            _ = try await client.initializeChallenge(lookupResponse: lookupResponse, request: threeDSecureRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let e = error as NSError
+            XCTAssertEqual(e.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(e.code, BTThreeDSecureError.configuration("").errorCode)
+            XCTAssertEqual(e.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
+        }
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
+    }
+
+    func testInitializeChallenge_whenV2ChallengeRequired_throwsError() async {
+        let lookupResponse =
+            """
+            {
+                "lookup": {
+                    "acsUrl": "http://www.someAcsUrl.com",
+                    "pareq": "somePareq",
+                    "termUrl": "http://www.someTermUrl.com",
+                    "threeDSecureVersion": "2.1.0",
+                    "transactionId": "someTransactionId"
+                },
+                "paymentMethod": {
+                    "nonce": "a-nonce",
+                    "threeDSecureInfo": {
+                        "liabilityShiftPossible": true,
+                        "liabilityShifted": false
+                    }
+                }
+            }
+            """
+
+        do {
+            _ = try await client.initializeChallenge(lookupResponse: lookupResponse, request: threeDSecureRequest)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            let e = error as NSError
+            XCTAssertEqual(e.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(e.code, BTThreeDSecureError.failedLookup([:]).errorCode)
+        }
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
+    }
+
     // MARK: - prepareLookup
 
     func testPrepareLookup_getsJsonString() async {
