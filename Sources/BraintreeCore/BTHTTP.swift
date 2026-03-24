@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, URLSessionTaskDelegate {
 
