@@ -5,15 +5,10 @@ import Security
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, URLSessionTaskDelegate {
 
-    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
-
     // MARK: - Internal Properties
 
     /// An array of pinned certificates, each a Data instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [Data] = BTAPIPinnedCertificates.trustedCertificates()
-
-    /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
-    var dispatchQueue = DispatchQueue.main
     
     /// A URL set to override the URLs derived from the ClientAuthorization or BTConfiguration response
     let customBaseURL: URL?

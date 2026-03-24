@@ -4,10 +4,6 @@ import UIKit
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
 
-    /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    @_documentation(visibility: private)
-    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
-
     // MARK: - Public Properties
 
     /// The TokenizationKey or ClientToken used to authorize the APIClient
@@ -77,7 +73,6 @@ import UIKit
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // TODO: - Consider updating all feature clients to use async version of this method and remove this method once done
         Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
