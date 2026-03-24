@@ -47,7 +47,7 @@
 		08F6DB112F69FD27002FA6EE /* CVVFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB102F69FD27002FA6EE /* CVVFieldView.swift */; };
 		08F6DB142F69FD5E002FA6EE /* CardFieldsValidatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB132F69FD5E002FA6EE /* CardFieldsValidatorProtocol.swift */; };
 		08F6DB162F6AE18E002FA6EE /* CVVFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB152F6AE18E002FA6EE /* CVVFieldValidator.swift */; };
-		08F6DB182F6AE1F7002FA6EE /* ExpirationDaterFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB172F6AE1F7002FA6EE /* ExpirationDaterFieldValidator.swift */; };
+		08F6DB182F6AE1F7002FA6EE /* ExpirationDateFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB172F6AE1F7002FA6EE /* ExpirationDateFieldValidator.swift */; };
 		08F6DB1A2F6AE222002FA6EE /* CardNumberFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB192F6AE222002FA6EE /* CardNumberFieldValidator.swift */; };
 		08F6DB1E2F6AE2EA002FA6EE /* CardBrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB1D2F6AE2EA002FA6EE /* CardBrandView.swift */; };
 		08F6DB202F6AE3D5002FA6EE /* BTCardFieldsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB1F2F6AE3D5002FA6EE /* BTCardFieldsRequest.swift */; };
@@ -833,7 +833,7 @@
 		08F6DB102F69FD27002FA6EE /* CVVFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVFieldView.swift; sourceTree = "<group>"; };
 		08F6DB132F69FD5E002FA6EE /* CardFieldsValidatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsValidatorProtocol.swift; sourceTree = "<group>"; };
 		08F6DB152F6AE18E002FA6EE /* CVVFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVFieldValidator.swift; sourceTree = "<group>"; };
-		08F6DB172F6AE1F7002FA6EE /* ExpirationDaterFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDaterFieldValidator.swift; sourceTree = "<group>"; };
+		08F6DB172F6AE1F7002FA6EE /* ExpirationDateFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFieldValidator.swift; sourceTree = "<group>"; };
 		08F6DB192F6AE222002FA6EE /* CardNumberFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFieldValidator.swift; sourceTree = "<group>"; };
 		08F6DB1D2F6AE2EA002FA6EE /* CardBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrandView.swift; sourceTree = "<group>"; };
 		08F6DB1F2F6AE3D5002FA6EE /* BTCardFieldsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardFieldsRequest.swift; sourceTree = "<group>"; };
@@ -1577,7 +1577,7 @@
 			isa = PBXGroup;
 			children = (
 				08F6DB0D2F69FD0C002FA6EE /* ExpirationDateFieldView.swift */,
-				08F6DB172F6AE1F7002FA6EE /* ExpirationDaterFieldValidator.swift */,
+				08F6DB172F6AE1F7002FA6EE /* ExpirationDateFieldValidator.swift */,
 				08F6DB272F6AEC67002FA6EE /* ExpirationDateFieldViewModel.swift */,
 			);
 			path = ExpirationDateField;
@@ -3614,7 +3614,7 @@
 				046F007C2ED6406000F08512 /* PayPalButtonColor.swift in Sources */,
 				08F6DB142F69FD5E002FA6EE /* CardFieldsValidatorProtocol.swift in Sources */,
 				08A83F5D2EE096860076BD28 /* UIComponentsAnalytics.swift in Sources */,
-				08F6DB182F6AE1F7002FA6EE /* ExpirationDaterFieldValidator.swift in Sources */,
+				08F6DB182F6AE1F7002FA6EE /* ExpirationDateFieldValidator.swift in Sources */,
 				0452416C2EC4F80F00C25EA6 /* PayPalButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
