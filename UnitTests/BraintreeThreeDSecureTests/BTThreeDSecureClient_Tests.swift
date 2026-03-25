@@ -592,10 +592,10 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             _ = try await client.initializeChallenge(lookupResponse: lookupResponse, request: threeDSecureRequest)
             XCTFail("Expected error to be thrown")
         } catch {
-            let e = error as NSError
-            XCTAssertEqual(e.domain, BTThreeDSecureError.errorDomain)
-            XCTAssertEqual(e.code, BTThreeDSecureError.configuration("").errorCode)
-            XCTAssertEqual(e.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
+            let error = error as NSError
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.configuration("").errorCode)
+            XCTAssertEqual(error.localizedDescription, "3D Secure v1 is deprecated and no longer supported. See https://developer.paypal.com/braintree/docs/guides/3d-secure/client-side for more information.")
         }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
@@ -626,9 +626,9 @@ class BTThreeDSecureClient_Tests: XCTestCase {
             _ = try await client.initializeChallenge(lookupResponse: lookupResponse, request: threeDSecureRequest)
             XCTFail("Expected error to be thrown")
         } catch {
-            let e = error as NSError
-            XCTAssertEqual(e.domain, BTThreeDSecureError.errorDomain)
-            XCTAssertEqual(e.code, BTThreeDSecureError.failedLookup([:]).errorCode)
+            let error = error as NSError
+            XCTAssertEqual(error.domain, BTThreeDSecureError.errorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureError.failedLookup([:]).errorCode)
         }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTThreeDSecureAnalytics.verifyFailed))
