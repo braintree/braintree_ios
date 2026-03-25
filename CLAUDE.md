@@ -89,7 +89,7 @@ Implement the async version as the primary path; have the callback variant call 
 Tokenized payment data is represented as a `BTPaymentMethodNonce` subclass (e.g., `BTCardNonce`, `BTPayPalAccountNonce`). Nonces never expose raw card/account data — they are safe to pass to your server.
 
 ### Error Handling
-Each module defines its own error enum conforming to `CustomNSError`, `LocalizedError`, and `Equatable`:
+Each module defines its own error enum conforming to `CustomNSError`, `LocalizedError`, and `Equatable`
 
 ```swift
 enum BTCardError: Int, Error, CustomNSError, LocalizedError, Equatable {
