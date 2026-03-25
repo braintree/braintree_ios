@@ -1,13 +1,8 @@
 import UIKit
 
-// swiftlint:disable type_body_length file_length
 /// This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject, BTHTTPNetworkTiming {
-
-    /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    @_documentation(visibility: private)
-    public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
 
@@ -78,7 +73,6 @@ import UIKit
     /// cached on subsequent calls for better performance.
     @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
-        // TODO: - Consider updating all feature clients to use async version of this method and remove this method once done
         Task { @MainActor in
             do {
                 let configuration = try await configurationLoader.getConfig()
@@ -99,45 +93,7 @@ import UIKit
             throw error
         }
     }
-    
-    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    ///
-    /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
-    /// - Parameters:
-    ///   - path: The endpoint URI path.
-    ///   - parameters: Optional set of query parameters to be encoded with the request.
-    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
-    ///   - completion:  A block object to be executed when the request finishes.
-    ///   On success, `body` and `response` will contain the JSON body response and the
-    ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
-    ///   `nil` and `error` will contain the error that occurred.
-    @_documentation(visibility: private)
-    public func get(
-        _ path: String,
-        parameters: Encodable? = nil,
-        httpType: BTAPIClientHTTPService = .gateway,
-        completion: @escaping RequestCompletion
-    ) {
-        if authorization.type == .invalidAuthorization {
-            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
-            return
-        }
-
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            http(for: httpType)?.get(path, configuration: configuration, parameters: parameters, completion: completion)
-        }
-    }
-    
+       
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     ///
     /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
@@ -166,52 +122,6 @@ import UIKit
             configuration: configuration,
             parameters: parameters
         )
-    }
-    
-    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
-    ///
-    /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
-    /// - Parameters:
-    ///   - path: The endpoint URI path.
-    ///   - parameters: Optional set of query parameters to be encoded with the request.
-    ///   - httpType: The underlying `BTAPIClientHTTPService` of the HTTP request. Defaults to `.gateway`.
-    ///   - completion:  A block object to be executed when the request finishes.
-    ///   On success, `body` and `response` will contain the JSON body response and the
-    ///   HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
-    ///   `nil` and `error` will contain the error that occurred.
-    @_documentation(visibility: private)
-    public func post(
-        _ path: String,
-        parameters: Encodable? = nil,
-        headers: [String: String]? = nil,
-        httpType: BTAPIClientHTTPService = .gateway,
-        completion: @escaping RequestCompletion
-    ) {
-        if authorization.type == .invalidAuthorization {
-            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
-            return
-        }
-
-        fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else {
-                completion(nil, nil, BTAPIClientError.deallocated)
-                return
-            }
-
-            if let error {
-                completion(nil, nil, error)
-                return
-            }
-
-            let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
-            http(for: httpType)?.post(
-                path,
-                configuration: configuration,
-                parameters: postParameters,
-                headers: headers,
-                completion: completion
-            )
-        }
     }
     
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.

@@ -12,7 +12,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         testConfiguration.protocolClasses = [BTHTTPTestProtocol.self]
         return URLSession(configuration: testConfiguration)
     }
-    
+
     var fakeConfiguration: BTConfiguration {
         let json = BTJSON(value: [
             "clientApiUrl": "https://fake-client-api-url.com/path",
@@ -34,196 +34,130 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
 
     // MARK: - Basic request handling
 
-    func testRequests_usesGraphQLURLFromConfig() {
-        let expectation = expectation(description: "GET callback")
+    func testRequests_usesGraphQLURLFromConfig() async throws {
         http?.session = fakeSession
-
-        http?.post("", configuration: fakeConfiguration) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-
-            XCTAssertTrue(httpRequest.url!.absoluteString.contains("bt-http-test://base.example.com:1234/base/path"))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertTrue(httpRequest.url!.absoluteString.contains("bt-http-test://base.example.com:1234/base/path"))
     }
-    
-    func testRequests_whenNilConfig_throwsError() {
-        let expectation = expectation(description: "callback")
-        http?.session = fakeSession
 
-        http?.post("") { _, _, error in
-            let error = error! as NSError
+    func testRequests_whenNilConfig_throwsError() async {
+        http?.session = fakeSession
+        do {
+            _ = try await http!.post("")
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTHTTPErrorDomain")
             XCTAssertEqual(error.code, 4)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 1)
     }
-    
-    func testRequests_whenConfigMissingGraphQLURL_throwsError() {
+
+    func testRequests_whenConfigMissingGraphQLURL_throwsError() async {
         let json = BTJSON(value: [
             "clientApiUrl": "https://fake-client-api-url.com/path",
-            "graphQL": [ ]
+            "graphQL": []
         ])
         let fakeConfiguration = BTConfiguration(json: json)
-        
-        let expectation = expectation(description: "callback")
         http?.session = fakeSession
 
-        http?.post("", configuration: fakeConfiguration) { _, _, error in
-            let error = error! as NSError
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
             XCTAssertEqual(error.domain, "com.braintreepayments.BTHTTPErrorDomain")
             XCTAssertEqual(error.code, 4)
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 1)
     }
 
-    func testRequests_ignoreThePath() {
-        let expectation = expectation(description: "GET callback")
+    func testRequests_ignoreThePath() async throws {
         http?.session = fakeSession
-
-        http?.post("hey/go/here.html", configuration: fakeConfiguration) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-
-            XCTAssertEqual(httpRequest.url!.absoluteString, "bt-http-test://base.example.com:1234/base/path")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("hey/go/here.html", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.url!.absoluteString, "bt-http-test://base.example.com:1234/base/path")
     }
-    
+
     // MARK: - Unsupported requests
 
-    func testGETRequests_areUnsupported() {
-        let expectation = expectation(description: "GET callback")
-        http?.get("") { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-            XCTAssertEqual((error as? BTGraphQLHTTPError), BTGraphQLHTTPError.unsupportedOperation)
-            expectation.fulfill()
+    func testGETRequests_areUnsupported() async {
+        do {
+            _ = try await http!.get("")
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTGraphQLHTTPError, BTGraphQLHTTPError.unsupportedOperation)
         }
-        waitForExpectations(timeout: 2)
     }
 
     // MARK: - POST requests
-    
-    func testPOSTRequests_sendsParametersInBody() {
-        let expectation = expectation(description: "POST callback")
+
+    func testPOSTRequests_sendsParametersInBody() async throws {
         http?.session = fakeSession
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration, parameters: ["hey": "now"])
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        let bodyJSONData = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body).data(using: .utf8)
+        let bodyJSON = try? JSONSerialization.jsonObject(with: bodyJSONData!) as? [String: String] ?? [:]
 
-        http?.post("", configuration: fakeConfiguration, parameters: ["hey": "now"]) { body, _, error in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let bodyJSONData = BTHTTPTestProtocol.parseRequestBodyFromTestResponseBody(body!).data(using: .utf8)
-
-            let bodyJSON = try? JSONSerialization.jsonObject(with: bodyJSONData!) as? [String: String] ?? [:]
-
-            XCTAssertEqual(httpRequest.url!.absoluteString, "bt-http-test://base.example.com:1234/base/path")
-            XCTAssertEqual(bodyJSON, ["hey": "now"])
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        XCTAssertEqual(httpRequest.url!.absoluteString, "bt-http-test://base.example.com:1234/base/path")
+        XCTAssertEqual(bodyJSON, ["hey": "now"])
     }
 
-    func testPOSTRequests_whenSuccessful_returnsData() {
-        let expectation = expectation(description: "POST callback")
+    func testPOSTRequests_whenSuccessful_returnsData() async throws {
         let stubResponseData: [String: Any] = ["success": true]
-
-        HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubResponseData, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration, parameters: ["hey": "now"]) { body, _, _ in
-            XCTAssertEqual(body?.asDictionary(), stubResponseData as NSDictionary)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration, parameters: ["hey": "now"])
+        XCTAssertEqual(body.asDictionary(), stubResponseData as NSDictionary)
     }
 
     // MARK: - Headers
 
-    func testRequests_sendUserAgentHeader() {
-        let expectation = expectation(description: "POST callback")
+    func testRequests_sendUserAgentHeader() async throws {
         http?.session = fakeSession
-
-        http?.post("", configuration: fakeConfiguration, parameters: nil) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let requestHeaders = httpRequest.allHTTPHeaderFields
-            XCTAssertTrue((requestHeaders!["User-Agent"])!.matches("^Braintree/iOS/\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertTrue((httpRequest.allHTTPHeaderFields!["User-Agent"])!.matches("^Braintree/iOS/\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$"))
     }
 
-    func testRequests_sendBraintreeVersionHeader() {
-        let expectation = expectation(description: "POST callback")
+    func testRequests_sendBraintreeVersionHeader() async throws {
         http?.session = fakeSession
-
-        http?.post("", configuration: fakeConfiguration, parameters: nil) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let requestHeaders = httpRequest.allHTTPHeaderFields
-            XCTAssertEqual(requestHeaders!["Braintree-Version"], "2018-03-06")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields!["Braintree-Version"], "2018-03-06")
     }
 
-    func testRequests_whenUsingTokenizationKey_sendsItInHeaders() {
-        let expectation = expectation(description: "POST callback")
+    func testRequests_whenUsingTokenizationKey_sendsItInHeaders() async throws {
         let fakeTokenizationKey = try! TokenizationKey("development_testing_key")
         http = BTGraphQLHTTP(authorization: fakeTokenizationKey, customBaseURL: BTHTTPTestProtocol.testBaseURL())
         http?.session = fakeSession
 
-        http?.post("", parameters: nil) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let requestHeaders = httpRequest.allHTTPHeaderFields
-            XCTAssertEqual(requestHeaders!["Authorization"], "Bearer development_testing_key")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", parameters: nil)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields!["Authorization"], "Bearer development_testing_key")
     }
 
-    func testRequests_whenUsingAuthorizationFingerprint_sendsItInHeaders() {
-        let expectation = expectation(description: "POST callback")
+    func testRequests_whenUsingAuthorizationFingerprint_sendsItInHeaders() async throws {
         http?.session = fakeSession
-
-        http?.post("", configuration: fakeConfiguration, parameters: nil) { body, _, _ in
-            let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body!)
-            let requestHeaders = httpRequest.allHTTPHeaderFields
-            XCTAssertEqual(requestHeaders!["Authorization"], "Bearer test-authorization-fingerprint")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
+        let (body, _) = try await http!.post("", configuration: fakeConfiguration)
+        let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields!["Authorization"], "Bearer test-authorization-fingerprint")
     }
 
     // MARK: - Error handling
 
-    func testErrorResponse_whenErrorTypeIsUserError_containsExpectedError() {
-        let expectation = expectation(description: "POST callback")
+    func testErrorResponse_whenErrorTypeIsUserError_containsExpectedError() async {
         let stubGraphQLErrorResponse: [String: Any?] = [
             "data": ["tokenizeCreditCard": nil] as [String: Any?],
             "errors": [
                 [
                     "message": "Expiration month is invalid",
                     "path": ["tokenizeCreditCard"],
-                    "locations": [
-                        ["line": 1, "column": 66]
-                    ],
+                    "locations": [["line": 1, "column": 66]],
                     "extensions": [
                         "errorType": "user_error",
                         "legacyCode": "81712",
@@ -233,9 +167,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 [
                     "message": "Expiration year is invalid",
                     "path": ["tokenizeCreditCard"],
-                    "locations": [
-                        ["line": 1, "column": 66]
-                    ],
+                    "locations": [["line": 1, "column": 66]],
                     "extensions": [
                         "errorType": "user_error",
                         "legacyCode": "81713",
@@ -245,9 +177,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 [
                     "message": "CVV verification failed",
                     "path": ["tokenizeCreditCard"],
-                    "locations": [
-                        ["line": 1, "column": 66]
-                    ],
+                    "locations": [["line": 1, "column": 66]],
                     "extensions": [
                         "errorType": "user_error",
                         "legacyCode": "81736",
@@ -257,9 +187,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 [
                     "message": "Street address verification failed",
                     "path": ["tokenizeCreditCard"],
-                    "locations": [
-                        ["line": 1, "column": 66]
-                    ],
+                    "locations": [["line": 1, "column": 66]],
                     "extensions": [
                         "errorType": "user_error",
                         "legacyCode": "12345",
@@ -276,29 +204,13 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 [
                     "field": "creditCard",
                     "fieldErrors": [
-                        [
-                            "field": "expirationMonth",
-                            "code": "81712",
-                            "message": "Expiration month is invalid"
-                        ],
-                        [
-                            "field": "expirationYear",
-                            "code": "81713",
-                            "message": "Expiration year is invalid"
-                        ],
-                        [
-                            "field": "cvv",
-                            "code": "81736",
-                            "message": "CVV verification failed"
-                        ] as [String: Any],
+                        ["field": "expirationMonth", "code": "81712", "message": "Expiration month is invalid"],
+                        ["field": "expirationYear", "code": "81713", "message": "Expiration year is invalid"],
+                        ["field": "cvv", "code": "81736", "message": "CVV verification failed"] as [String: Any],
                         [
                             "field": "billingAddress",
                             "fieldErrors": [
-                                [
-                                    "field": "streetAddress",
-                                    "code": "12345",
-                                    "message": "Street address verification failed"
-                                ]
+                                ["field": "streetAddress", "code": "12345", "message": "Street address verification failed"]
                             ]
                         ]
                     ]
@@ -306,39 +218,36 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             ]
         ]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String: Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            XCTAssertEqual(error.code, BTHTTPError.clientError([:]).errorCode)
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response body in error userInfo")
             }
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testErrorResponse_whenErrorTypeIsNotUserError_containsExpectedError() {
-        let expectation = expectation(description: "POST callback")
+    func testErrorResponse_whenErrorTypeIsNotUserError_containsExpectedError() async {
         let stubGraphQLErrorResponse: [String: Any?] = [
             "data": ["tokenizeCard": nil] as [String: Any?],
             "errors": [
                 [
                     "message": "Validation is not supported for requests authorized with a tokenization key.",
-                    "locations": [
-                        ["line": 2, "column": 9]
-                    ],
+                    "locations": [["line": 2, "column": 9]],
                     "path": ["tokenizeCreditCard"],
                     "extensions": [
                         "errorType": "developer_error",
@@ -353,90 +262,80 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             "error": ["message": "Validation is not supported for requests authorized with a tokenization key."]
         ]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String : Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response body in error userInfo")
             }
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testErrorResponse_withNoErrorType_containsGenericMessage() {
-        let expectation = expectation(description: "POST callback")
+    func testErrorResponse_withNoErrorType_containsGenericMessage() async {
         let stubGraphQLErrorResponse: [String: Any] = [
             "data": NSNull(), "errors": [["message": "This is a bad error message"]]
         ]
-
         let expectedErrorBody = ["error": ["message": "An unexpected error occurred"]]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String: Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response body in error userInfo")
             }
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testErrorResponse_withGarbage_containsGenericMessage() {
-        let expectation = expectation(description: "POST callback")
-        let stubGraphQLErrorResponse = "something went wrong"
-
+    func testErrorResponse_withGarbage_containsGenericMessage() async {
         let expectedErrorBody = ["error": ["message": "An unexpected error occurred"]]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
-                data: stubGraphQLErrorResponse.data(using: .utf8)!,
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
+                data: "something went wrong".data(using: .utf8)!,
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String: Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response body in error userInfo")
             }
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testErrorResponse_correctlyMapsErrorTypeToStatusCode() {
+    func testErrorResponse_correctlyMapsErrorTypeToStatusCode() async {
         let errorTypes = ["user_error": 422, "developer_error": 403, "unknown_error": 500]
         let errorCodes: [String: Int] = [
             "user_error": BTHTTPError.clientError([:]).errorCode,
@@ -444,58 +343,38 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
             "unknown_error": BTHTTPError.serverError([:]).errorCode
         ]
 
-        for (errorType, _) in errorTypes {
+        for (errorType, expectedStatusCode) in errorTypes {
             HTTPStubs.removeAllStubs()
 
-            let expectedStatusCode = errorTypes[errorType]
-            let stubGraphQLErrorResponse = [
-                "errors": [
-                    [
-                        "extensions": ["errorType": errorType]
-                    ]
-                ]
-            ]
-
-            HTTPStubs.stubRequests { request in
-              return true
-            } withStubResponse: { request in
+            let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+                let body = ["errors": [["extensions": ["errorType": errorType]]]]
                 return HTTPStubsResponse(
-                    data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
+                    data: try! JSONSerialization.data(withJSONObject: body, options: .prettyPrinted),
                     statusCode: 200,
                     headers: ["Content-Type": "application/json"]
                 )
             }
+            defer { HTTPStubs.removeStub(stub) }
 
-            let expectation = expectation(description: "POST callback \(errorType)")
             let fakeClientToken = try! BTClientToken(clientToken: TestClientTokenFactory.stubbedURLClientToken)
             let testHttp = BTGraphQLHTTP(authorization: fakeClientToken)
 
-            testHttp.post("", configuration: fakeConfiguration) { body, _, error in
-                guard let error = error as NSError? else {
-                    XCTFail("Expected error but got nil for errorType: \(errorType)")
-                    expectation.fulfill()
-                    return
+            do {
+                _ = try await testHttp.post("", configuration: fakeConfiguration)
+                XCTFail("Expected error for errorType: \(errorType)")
+            } catch let error as NSError {
+                guard let urlResponse = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse else {
+                    XCTFail("Expected urlResponseKey in error.userInfo for errorType: \(errorType)")
+                    continue
                 }
-
-                guard let errorDictionary = error.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse else {
-                    XCTFail("Expected urlResponseKey in error.userInfo for errorType: \(errorType). Error: \(error), userInfo: \(error.userInfo)")
-                    expectation.fulfill()
-                    return
-                }
-
-                XCTAssertEqual(errorDictionary.statusCode, expectedStatusCode)
+                XCTAssertEqual(urlResponse.statusCode, expectedStatusCode, "Mismatch for errorType: \(errorType)")
                 XCTAssertEqual(error.domain, BTHTTPError.errorDomain)
                 XCTAssertEqual(error.code, errorCodes[errorType])
-
-                expectation.fulfill()
             }
-
-            waitForExpectations(timeout: 2)
         }
     }
 
-    func testErrorResponse_whenErrorIsMissingLegacyCode_doesNotSetCodeNumber() {
-        let expectation = expectation(description: "POST callback")
+    func testErrorResponse_whenErrorIsMissingLegacyCode_doesNotSetCodeNumber() async {
         let stubGraphQLErrorResponse: [String: Any?] = [
             "data": ["tokenizeCreditCard": nil] as [String: Any?],
             "errors": [
@@ -507,7 +386,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                         "inputPath": ["input", "creditCard", "expirationMonth"]
                     ] as [String: Any]
                 ] as [String: Any]
-            ],
+            ]
         ]
 
         let expectedErrorBody: [String: Any?] = [
@@ -516,249 +395,73 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
                 [
                     "field": "creditCard",
                     "fieldErrors": [
-                        [
-                            "field": "expirationMonth",
-                            "message": "Expiration month is invalid"
-                        ]
+                        ["field": "expirationMonth", "message": "Expiration month is invalid"]
                     ]
                 ] as [String: Any]
             ]
         ]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
+        defer { HTTPStubs.removeStub(stub) }
 
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String: Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
+        do {
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
+            } else {
+                XCTFail("Expected JSON response body in error userInfo")
             }
-            expectation.fulfill()
         }
-
-        waitForExpectations(timeout: 2)
     }
 
-    func testErrorResponse_withNoErrorTypeAndContainsExtension_sendsErrorMessage() {
-        let expectation = expectation(description: "POST callback")
+    func testErrorResponse_withNoErrorTypeAndContainsExtension_sendsErrorMessage() async {
         let stubGraphQLErrorResponse: [String: Any?] = [
             "errors": [["message": "Error message that is helpful"]],
             "extensions": ["requestId": "a-fake-request-id"]
         ]
-
         let expectedErrorBody = ["error": ["message": "Error message that is helpful"]]
 
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(
                 data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
             )
         }
-
-        http?.post("", configuration: fakeConfiguration) { body, _, error in
-            XCTAssertEqual(body?.asDictionary(), expectedErrorBody as NSDictionary)
-
-            let error = error as NSError?
-            if let errorDictionary = error?.userInfo[BTCoreConstants.jsonResponseBodyKey] as? [String: Any] {
-                XCTAssertEqual(errorDictionary as NSDictionary, expectedErrorBody as NSDictionary)
-            }
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    func testNetworkError_returnsError() {
-        let expectation = expectation(description: "POST callback")
-
-        HTTPStubs.stubRequests { request in
-          return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: -1002, userInfo: [:]))
-        }
-
-        http?.post("", configuration: fakeConfiguration) { body, response, error in
-            XCTAssertNil(body)
-            XCTAssertNil(response)
-
-            let error = error as NSError?
-            XCTAssertEqual(error?.domain, URLError.errorDomain)
-            XCTAssertEqual(error?.code, -1002)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 2)
-    }
-
-    // MARK: - Async/Await Tests
-
-    func testAsyncPost_whenSuccessful_returnsData() async throws {
-        let stubResponseData: [String: Any] = ["success": true]
-
-        HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
-                data: try! JSONSerialization.data(withJSONObject: stubResponseData, options: .prettyPrinted),
-                statusCode: 200,
-                headers: ["Content-Type": "application/json"]
-            )
-        }
-
-        let (body, response) = try await http!.post("", configuration: fakeConfiguration, parameters: ["hey": "now"])
-
-        XCTAssertEqual(body?.asDictionary(), stubResponseData as NSDictionary)
-        XCTAssertNotNil(response)
-    }
-
-    func testAsyncPost_whenNilConfig_throwsError() async {
-        do {
-            _ = try await http!.post("", configuration: nil, parameters: nil as Encodable?)
-            XCTFail("Should have thrown an error")
-        } catch {
-            let nsError = error as NSError
-            XCTAssertEqual(nsError.domain, "com.braintreepayments.BTHTTPErrorDomain")
-            XCTAssertEqual(nsError.code, 4)
-        }
-    }
-
-    func testAsyncPost_whenNetworkError_throwsError() async {
-        HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: -1002, userInfo: [:]))
-        }
+        defer { HTTPStubs.removeStub(stub) }
 
         do {
-            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
-            XCTFail("Should have thrown an error")
-        } catch {
-            let nsError = error as NSError
-            XCTAssertEqual(nsError.domain, URLError.errorDomain)
-            XCTAssertEqual(nsError.code, -1002)
-        }
-    }
-
-    func testAsyncPost_whenErrorTypeIsUserError_throwsErrorWithExpectedDetails() async {
-        let stubGraphQLErrorResponse: [String: Any?] = [
-            "data": ["tokenizeCreditCard": nil] as [String: Any?],
-            "errors": [
-                [
-                    "message": "Expiration month is invalid",
-                    "path": ["tokenizeCreditCard"],
-                    "locations": [
-                        ["line": 1, "column": 66]
-                    ],
-                    "extensions": [
-                        "errorType": "user_error",
-                        "legacyCode": "81712",
-                        "inputPath": ["input", "creditCard", "expirationMonth"]
-                    ] as [String: Any]
-                ] as [String: Any]
-            ]
-        ]
-
-        let expectedErrorBody: [String: Any] = [
-            "error": ["message": "Input is invalid"],
-            "fieldErrors": [
-                [
-                    "field": "creditCard",
-                    "fieldErrors": [
-                        [
-                            "field": "expirationMonth",
-                            "code": "81712",
-                            "message": "Expiration month is invalid"
-                        ]
-                    ]
-                ] as [String: Any]
-            ]
-        ]
-
-        HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
-                data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
-                statusCode: 200,
-                headers: ["Content-Type": "application/json"]
-            )
-        }
-
-        do {
-            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
-            XCTFail("Should have thrown an error")
-        } catch {
-            let nsError = error as NSError
-            XCTAssertEqual(nsError.domain, BTHTTPError.errorDomain)
-            XCTAssertEqual(nsError.code, BTHTTPError.clientError([:]).errorCode)
-
-            if let errorJSON = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON,
-               let errorDictionary = errorJSON.asDictionary() {
-                XCTAssertEqual(errorDictionary, expectedErrorBody as NSDictionary)
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            if let errorJSON = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON {
+                XCTAssertEqual(errorJSON.asDictionary(), expectedErrorBody as NSDictionary)
             } else {
-                XCTFail("Expected error user info to contain JSON response body")
+                XCTFail("Expected JSON response body in error userInfo")
             }
         }
     }
 
-    func testAsyncPost_whenErrorTypeIsDeveloperError_throwsErrorWithExpectedDetails() async {
-        let stubGraphQLErrorResponse: [String: Any?] = [
-            "data": ["tokenizeCard": nil] as [String: Any?],
-            "errors": [
-                [
-                    "message": "Validation is not supported for requests authorized with a tokenization key.",
-                    "locations": [
-                        ["line": 2, "column": 9]
-                    ],
-                    "path": ["tokenizeCreditCard"],
-                    "extensions": [
-                        "errorType": "developer_error",
-                        "legacyCode": "50000",
-                        "inputPath": ["input", "options", "validate"]
-                    ] as [String: Any]
-                ] as [String: Any]
-            ]
-        ]
-
-        let expectedErrorBody = [
-            "error": ["message": "Validation is not supported for requests authorized with a tokenization key."]
-        ]
-
-        HTTPStubs.stubRequests { request in
-            return true
-        } withStubResponse: { request in
-            return HTTPStubsResponse(
-                data: try! JSONSerialization.data(withJSONObject: stubGraphQLErrorResponse, options: .prettyPrinted),
-                statusCode: 200,
-                headers: ["Content-Type": "application/json"]
-            )
+    func testNetworkError_returnsError() async {
+        let stub = HTTPStubs.stubRequests { _ in true } withStubResponse: { _ in
+            HTTPStubsResponse(error: NSError(domain: URLError.errorDomain, code: -1002, userInfo: [:]))
         }
+        defer { HTTPStubs.removeStub(stub) }
 
         do {
-            _ = try await http!.post("", configuration: fakeConfiguration, parameters: nil as Encodable?)
-            XCTFail("Should have thrown an error")
-        } catch {
-            let nsError = error as NSError
-            XCTAssertEqual(nsError.domain, BTHTTPError.errorDomain)
-
-            if let errorJSON = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON,
-               let errorDictionary = errorJSON.asDictionary() {
-                XCTAssertEqual(errorDictionary, expectedErrorBody as NSDictionary)
-            } else {
-                XCTFail("Expected error user info to contain JSON response body")
-            }
+            _ = try await http!.post("", configuration: fakeConfiguration)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, URLError.errorDomain)
+            XCTAssertEqual(error.code, -1002)
         }
     }
 }
