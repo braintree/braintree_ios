@@ -1,6 +1,6 @@
 import Foundation
 
-class CVVFieldViewModel: CardFieldsViewModelProtocol {
+// TODO: have conform to CardFieldsViewModelProtocol
+class CVVFieldViewModel {
     
-    var state: String = ""
 }

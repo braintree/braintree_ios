@@ -2,8 +2,11 @@ import SwiftUI
 
 struct CardBrandView: View {
     
+    // TODO: Add logic to display correct card brand 
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RoundedRectangle(cornerRadius: 4)
+            .stroke(Color(.systemGray4), lineWidth: 1)
+            .frame(width: 44, height: 30)
     }
 }
 

@@ -1,6 +1,7 @@
 import Foundation
 
-class ExpirationDateFieldViewModel: CardFieldsViewModelProtocol {
+// TODO: have conform to CardFieldsViewModelProtocol
+class ExpirationDateFieldViewModel {
     
     var state: String = ""
 }
