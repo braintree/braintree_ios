@@ -11,26 +11,26 @@ struct Variables: Encodable {
     
     struct InputParameters: Encodable {
         
-    let sessionID: String?
-    let customer: Customer?
-    let purchaseUnits: [PurchaseUnit]?
-    let payPalCampaigns: [BTPayPalCampaign]?
+        let sessionID: String?
+        let customer: Customer?
+        let purchaseUnits: [PurchaseUnit]?
+        let payPalCampaigns: [BTPayPalCampaign]?
         
-    init(request: BTCustomerSessionRequest?, sessionID: String?) {
-        self.sessionID = sessionID
-        customer = Customer(request: request)
-        purchaseUnits = request?.purchaseUnits?.compactMap {
-            PurchaseUnit(purchaseUnit: $0)
+        init(request: BTCustomerSessionRequest?, sessionID: String?) {
+            self.sessionID = sessionID
+            customer = Customer(request: request)
+            purchaseUnits = request?.purchaseUnits?.compactMap {
+                PurchaseUnit(purchaseUnit: $0)
+            }
+            payPalCampaigns = request?.payPalCampaigns
         }
-        payPalCampaigns = request?.payPalCampaigns
-    }
         
-    enum CodingKeys: String, CodingKey {
-        case sessionID = "sessionId"
-        case customer
-        case purchaseUnits
-        case payPalCampaigns = "paypal_campaigns"
-    }
+        enum CodingKeys: String, CodingKey {
+            case sessionID = "sessionId"
+            case customer
+            case purchaseUnits
+            case payPalCampaigns = "paypal_campaigns"
+        }
         
         struct Customer: Encodable {
             
