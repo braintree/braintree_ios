@@ -63,9 +63,9 @@ struct CVVField<ViewModel: CVVFieldViewModel>: View {
                     .foregroundColor(Color(.secondaryLabel))
                     .font(.system(size: 16))
             }
-            .popover(isPresented: $showCVVHint, arrowEdge: .top) {
+            .popover(isPresented: $showCVVHint, arrowEdge: .bottom) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("What is a CVV?")
+                    Text("CVV")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color(.label))
 
