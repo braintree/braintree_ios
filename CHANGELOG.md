@@ -4,6 +4,10 @@
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
 * BraintreeShopperInsights
   * Add `payPalPayLater` case to `BTButtonType` enum
+    
+## 7.6.0 (2026-02-25)
+* BraintreeShopperInsights
+    * Added campaign id to be passed down to create/update session and recommendations endpoint.
 
 ## 7.5.0 (2026-02-25)
 * BraintreePayPal
