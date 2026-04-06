@@ -37,8 +37,7 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
 
                 let charIndex = i
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self,
-                          charIndex < self.characters.count else { return }
+                    guard let self, charIndex < self.characters.count else { return }
                     withAnimation(.easeInOut(duration: 0.3)) {
                         self.characters[charIndex].isMasked = true
                     }
