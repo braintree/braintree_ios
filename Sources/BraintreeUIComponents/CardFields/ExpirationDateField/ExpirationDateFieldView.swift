@@ -2,8 +2,13 @@ import SwiftUI
 
 struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
     
+    // MARK: - Internal Properties
+    
     @ObservedObject var viewModel: ViewModel
     var onAutoAdvance: (() -> Void)?
+    
+    // MARK: - Private Properties
+    
     @FocusState private var isFocused: Bool
     
     var body: some View {
@@ -31,12 +36,10 @@ struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
             
             Spacer()
         }
-        .frame(width: 179, height: 64)
-        // update `onChange(of:perform:)` signature once min deployment target is iOS 17
-        .onChange(of: isFocused) { focused in
+        .onChange(of: isFocused) { _, focused in
             viewModel.isFocused = focused
         }
-        .onChange(of: viewModel.shouldAutoAdvance) { shouldAutoAdance in
+        .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAutoAdance in
             if shouldAutoAdance { onAutoAdvance?() }
         }
     }
