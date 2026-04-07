@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CVVField<ViewModel: CVVFieldViewModel>: View {
+struct CVVFieldView<ViewModel: CVVFieldViewModel>: View {
 
     // MARK: - Internal Properties
 
@@ -92,6 +92,6 @@ struct CVVField<ViewModel: CVVFieldViewModel>: View {
 }
 
 #Preview {
-    CVVField(viewModel: CVVFieldViewModel())
+    CVVFieldView(viewModel: CVVFieldViewModel())
         .padding()
 }

@@ -19,7 +19,7 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
     /// Raw digits only — no masking, used for tokenization
     private(set) var rawValue: String = ""
 
-    // MARK: - CardFieldViewModelProtocol
+    // MARK: - CardFieldViewModelProtocol Conformance
 
     func updateValue(_ newValue: String) {
         let digits = String(newValue.filter { $0.isNumber }.prefix(4))
