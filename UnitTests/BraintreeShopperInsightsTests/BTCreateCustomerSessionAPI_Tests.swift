@@ -24,6 +24,9 @@ class BTCreateCustomerSessionAPI_Tests: XCTestCase {
                 amount: "20.00",
                 currencyCode: "USD"
             )
+        ],
+        payPalCampaigns: [
+            BTPayPalCampaign(id: "campaign-123")
         ]
     )
     
