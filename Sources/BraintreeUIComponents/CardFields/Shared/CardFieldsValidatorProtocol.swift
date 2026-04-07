@@ -1,5 +1,5 @@
 import Foundation
 
 protocol CardFieldsValidatorProtocol {
-    func isValid(_ subject: String) -> Bool
+    func isValid(_ subject: String) -> ValidationResult
 }
