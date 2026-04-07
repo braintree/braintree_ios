@@ -19,6 +19,10 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
                 amount: "12.00",
                 currencyCode: "USD"
             )
+        ],
+        payPalCampaigns: [
+            BTPayPalCampaign(id: "campaign-123"),
+            BTPayPalCampaign(id: "campaign-456")
         ]
     )
     let expectedQuery = """
@@ -47,12 +51,17 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
         let amount = purchaseUnits?.first?["amount"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+
         
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
         XCTAssertEqual(customer?["hashedEmail"] as? String, "test-hashed-email.com")
         XCTAssertEqual(customer?["paypalAppInstalled"] as? Bool, true)
         XCTAssertEqual(amount?["value"] as? String, "5.00")
+        XCTAssertEqual(payPalCampaigns?.count, 2)
+        XCTAssertEqual(payPalCampaigns?.first?["id"] as? String, "campaign-123")
+        XCTAssertEqual(payPalCampaigns?.last?["id"] as? String, "campaign-456")
     }
     
     func testEncodingGenerateCustomerRecommendationsGraphQLBodyWithNilData() {
@@ -74,11 +83,13 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
         
         XCTAssertNotNil(customer)
         XCTAssertNil(purchaseUnits)
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+        XCTAssertNil(payPalCampaigns)
     }
     
     func testEncodingGenerateCustomerRecommendationsGraphQLBodyWithEmptyData() {
