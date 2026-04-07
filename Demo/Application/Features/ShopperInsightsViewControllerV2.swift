@@ -53,6 +53,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         return view
     }()
     
+    lazy var campaignIds: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "Campaign Ids"
+        view.textField.placeholder = "Campaign Ids"
+        view.textField.text = "1,2,3,4"
+        return view
+    }()
+    
     private let recommendationsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +87,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     )
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView])
+        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView, campaignIds])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -135,7 +143,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
                 purchaseUnits: [
                     BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-                ]
+                ],
+                payPalCampaigns: parseCampaignIds()
             )
 
             do {
@@ -162,7 +171,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ],
+            payPalCampaigns: parseCampaignIds()
         )
 
         Task {
@@ -194,7 +204,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ], 
+            payPalCampaigns: parseCampaignIds()
         )
 
         Task {
@@ -257,6 +268,15 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let inputData = Data(input.utf8)
         let hashed = SHA256.hash(data: inputData)
         return hashed.map { String(format: "%02x", $0) }.joined()
+    }
+    
+    private func parseCampaignIds() -> [BTPayPalCampaign]? {
+        guard let text = campaignIds.textField.text, !text.isEmpty else {
+            return nil
+        }
+        return text
+            .split(separator: ",")
+            .map { BTPayPalCampaign(id: String($0).trimmingCharacters(in: .whitespaces)) }
     }
     
     private func togglePayPalVaultButton(enabled: Bool) {
@@ -366,7 +386,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 shopperInsightsInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                 shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
                 shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 200)
+                shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 250)
             ]
         )
         
