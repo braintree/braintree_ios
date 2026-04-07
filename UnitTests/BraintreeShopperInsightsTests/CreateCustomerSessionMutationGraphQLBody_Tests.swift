@@ -18,8 +18,14 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
                 amount: "20.00",
                 currencyCode: "USD"
             )
+        ],
+        payPalCampaigns: [
+            BTPayPalCampaign(id: "campaign-123"),
+            BTPayPalCampaign(id: "campaign-456")
         ]
     )
+    
+    
     let expectedQuery = """
             mutation CreateCustomerSession($input: CreateCustomerSessionInput!) {
                 createCustomerSession(input: $input) {
@@ -41,7 +47,11 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
         let amount = purchaseUnits?.first?["amount"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
         
+        XCTAssertEqual(payPalCampaigns?.count, 2)
+        XCTAssertEqual(payPalCampaigns?.first?["id"] as? String, "campaign-123")
+        XCTAssertEqual(payPalCampaigns?.last?["id"] as? String, "campaign-456")
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertEqual(customer?["hashedEmail"] as? String, "test-hashed-email.com")
         XCTAssertEqual(customer?["paypalAppInstalled"] as? Bool, true)
@@ -67,7 +77,9 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
         
+        XCTAssertNil(payPalCampaigns)
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertNotNil(customer)
         XCTAssertNil(purchaseUnits)
@@ -92,7 +104,9 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
-        
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+
+        XCTAssertNil(payPalCampaigns)
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertNotNil(customer)
         XCTAssertEqual(purchaseUnits?.count, 0)
