@@ -24,9 +24,9 @@ struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
                 TextField(
                     "",
                     text: Binding(
-                    get: { viewModel.value },
-                    set: { viewModel.updateValue($0) }
-                  )
+                        get: { viewModel.value },
+                        set: { viewModel.updateValue($0) }
+                    )
                 )
                 .keyboardType(.numberPad)
                 .focused($isFocused)
