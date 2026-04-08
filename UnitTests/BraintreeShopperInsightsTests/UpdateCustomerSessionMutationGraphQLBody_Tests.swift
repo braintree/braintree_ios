@@ -113,4 +113,58 @@ class UpdateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
         XCTAssertNil(payPalCampaigns)
     }
+    
+    func testEncodingUpdateCustomerSessionGraphQLBodyWithEmptyCampaigns() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: []
+        )
+        
+        let body = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertNotNil(payPalCampaigns)
+        XCTAssertEqual(payPalCampaigns?.count, 0)
+        XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+    }
+    
+    func testEncodingUpdateCustomerSessionGraphQLBodyWithSingleCampaign() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: [
+                BTPayPalCampaign(id: "single-campaign-999")
+            ]
+        )
+        
+        let body = UpdateCustomerSessionMutationGraphQLBody(request: request, sessionID: sessionID)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertEqual(payPalCampaigns?.count, 1)
+        XCTAssertEqual(payPalCampaigns?.first?["id"] as? String, "single-campaign-999")
+        XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+    }
 }

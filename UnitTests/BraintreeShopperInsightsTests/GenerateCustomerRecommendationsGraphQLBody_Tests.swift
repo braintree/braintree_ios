@@ -111,9 +111,65 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
         let input = variables?["input"] as? [String: Any]
         let customer = input?["customer"] as? [String: Any]
         let purchaseUnits = input?["purchaseUnits"] as? [[String: Any]]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
         
         XCTAssertNotNil(customer)
         XCTAssertEqual(purchaseUnits?.count, 0)
+        XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+        XCTAssertNil(payPalCampaigns)
+    }
+    
+    func testEncodingGenerateCustomerRecommendationsGraphQLBodyWithEmptyCampaigns() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: []
+        )
+        
+        let body = GenerateCustomerRecommendationsGraphQLBody(request: request, sessionID: sessionID)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertNotNil(payPalCampaigns)
+        XCTAssertEqual(payPalCampaigns?.count, 0)
+        XCTAssertEqual(input?["sessionId"] as? String, sessionID)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+    }
+    
+    func testEncodingGenerateCustomerRecommendationsGraphQLBodyWithSingleCampaign() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: [
+                BTPayPalCampaign(id: "single-campaign-555")
+            ]
+        )
+        
+        let body = GenerateCustomerRecommendationsGraphQLBody(request: request, sessionID: sessionID)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertEqual(payPalCampaigns?.count, 1)
+        XCTAssertEqual(payPalCampaigns?.first?["id"] as? String, "single-campaign-555")
         XCTAssertEqual(input?["sessionId"] as? String, sessionID)
         XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
     }

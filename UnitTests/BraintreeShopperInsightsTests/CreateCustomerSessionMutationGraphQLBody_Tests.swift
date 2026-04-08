@@ -111,4 +111,56 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         XCTAssertNotNil(customer)
         XCTAssertEqual(purchaseUnits?.count, 0)
     }
+    
+    func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyCampaigns() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: []
+        )
+        
+        let body = CreateCustomerSessionMutationGraphQLBody(request: request)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertNotNil(payPalCampaigns)
+        XCTAssertEqual(payPalCampaigns?.count, 0)
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+    }
+    
+    func testEncodingCreateCustomerSessionGraphQLBodyWithSingleCampaign() {
+        let request = BTCustomerSessionRequest(
+            hashedEmail: "test-hashed-email.com",
+            hashedPhoneNumber: nil,
+            payPalAppInstalled: true,
+            venmoAppInstalled: nil,
+            purchaseUnits: nil,
+            payPalCampaigns: [
+                BTPayPalCampaign(id: "single-campaign-789")
+            ]
+        )
+        
+        let body = CreateCustomerSessionMutationGraphQLBody(request: request)
+        guard let jsonObject = try? body.toDictionary() else {
+            XCTFail()
+            return
+        }
+        
+        let variables = jsonObject["variables"] as? [String: Any]
+        let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypal_campaigns"] as? [[String: Any]]
+        
+        XCTAssertEqual(payPalCampaigns?.count, 1)
+        XCTAssertEqual(payPalCampaigns?.first?["id"] as? String, "single-campaign-789")
+        XCTAssertEqual(jsonObject["query"] as? String, expectedQuery)
+    }
 }
