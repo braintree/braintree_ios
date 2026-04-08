@@ -1,6 +1,7 @@
 import Foundation
 
-final class CardFieldsViewModel: CardFieldsViewModelProtocol {
+// TODO: have conform to CardFieldsViewModelProtocol
+final class CardFieldsViewModel {
     
     var state: String = ""
 }
