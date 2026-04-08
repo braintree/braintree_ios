@@ -3,11 +3,11 @@ import XCTest
 
 final class CardNumberFieldValidatorTests: XCTestCase {
 
-    private var validator: CardNumberValidator!
+    private var validator: CardNumberFieldValidator!
 
     override func setUp() {
         super.setUp()
-        validator = CardNumberValidator()
+        validator = CardNumberFieldValidator()
     }
 
     override func tearDown() {
@@ -24,7 +24,7 @@ final class CardNumberFieldValidatorTests: XCTestCase {
     // MARK: - Non-Numeric Characters
 
     func testValidate_nonNumericCharacters_returnsInvalid() {
-        XCTAssertEqual(validator.validate("4111abcd11111111"), .invalid("Card number must contain numbers only"))
+        XCTAssertEqual(validator.validate("4111abcd11111111"), .invalid("Card number is invalid"))
     }
 
     func testValidate_spacesAllowed_doesNotReturnNonNumericError() {
@@ -39,7 +39,7 @@ final class CardNumberFieldValidatorTests: XCTestCase {
     }
 
     func testValidate_invalidLuhn_returnsInvalid() {
-        XCTAssertEqual(validator.validate("4111111111111112"), .invalid("Invalid card number"))
+        XCTAssertEqual(validator.validate("4111111111111112"), .invalid("Card number is invalid"))
     }
 
     // MARK: - Brand Detection
@@ -111,7 +111,7 @@ final class CardNumberFieldValidatorTests: XCTestCase {
     }
 
     func testValidate_amex16Digits_returnsInvalid() {
-        XCTAssertEqual(validator.validate("3782822463100055"), .invalid("Invalid card number length"))
+        XCTAssertEqual(validator.validate("3782822463100055"), .invalid("Card number is invalid"))
     }
 
     func testValidate_dinersClub14Digits_returnsValid() {
@@ -119,7 +119,7 @@ final class CardNumberFieldValidatorTests: XCTestCase {
     }
 
     func testValidate_cardTooLong_returnsInvalid() {
-        XCTAssertEqual(validator.validate("41111111111111111111"), .invalid("Card number is too long"))
+        XCTAssertEqual(validator.validate("41111111111111111111"), .invalid("Card number is invalid"))
     }
 
     func testValidate_incompleteNumber_returnsValid() {

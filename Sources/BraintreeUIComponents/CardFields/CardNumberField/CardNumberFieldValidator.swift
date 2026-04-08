@@ -1,6 +1,6 @@
 import Foundation
 
-struct CardNumberValidator: CardFieldValidatorProtocol {
+struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
 
     // MARK: - CardFieldValidatorProtocol
 
@@ -12,26 +12,25 @@ struct CardNumberValidator: CardFieldValidatorProtocol {
         }
 
         guard value.filter({ !$0.isNumber && $0 != " " }).isEmpty else {
-            return .invalid("Card number must contain numbers only")
+            return .invalid("Card number is invalid")
         }
 
         let brand = detectBrand(from: digits)
 
         guard digits.count >= brand.minLength else {
-            // Still typing — not invalid until we know they've finished
             return .valid
         }
 
         guard digits.count <= brand.maxLength else {
-            return .invalid("Card number is too long")
+            return .invalid("Card number is invalid")
         }
 
         guard brand.validLengths.contains(digits.count) else {
-            return .invalid("Invalid card number length")
+            return .invalid("Card number is invalid")
         }
 
         guard isLuhnValid(digits) else {
-            return .invalid("Invalid card number")
+            return .invalid("Card number is invalid")
         }
 
         return .valid
