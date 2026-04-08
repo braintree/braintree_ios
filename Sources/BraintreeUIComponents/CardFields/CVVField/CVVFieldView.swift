@@ -63,6 +63,8 @@ struct CVVFieldView<ViewModel: CVVFieldViewModel>: View {
                     .foregroundColor(Color(.secondaryLabel))
                     .font(.system(size: 16))
             }
+            .accessibilityLabel("CVV help")
+            .accessibilityHint("Tap for information about where to find your CVV")
             .popover(isPresented: $showCVVHint, arrowEdge: .bottom) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("CVV")
@@ -75,6 +77,8 @@ struct CVVFieldView<ViewModel: CVVFieldViewModel>: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(16)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("CVV help information")
                 .presentationCompactAdaptation(.popover)
             }
         }

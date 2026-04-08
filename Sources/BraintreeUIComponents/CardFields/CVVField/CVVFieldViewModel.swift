@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 class CVVFieldViewModel: CardFieldsViewModelProtocol {
 
     // MARK: - CardFieldViewModelProtocol
@@ -17,7 +18,7 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
     @Published private(set) var characters: [CVVCharacter] = []
 
     /// Raw digits only — no masking, used for tokenization
-    private(set) var rawValue: String = ""
+    @Published private(set) var rawValue: String = ""
 
     // MARK: - CardFieldViewModelProtocol Conformance
 
@@ -30,16 +31,18 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
         let newCount = digits.count
 
         if newCount > oldCount {
-            // fade transition animation for masking new characters
             for i in oldCount..<newCount {
                 let index = digits.index(digits.startIndex, offsetBy: i)
-                characters.append(CVVCharacter(value: digits[index]))
+                let newCharacter = CVVCharacter(value: digits[index])
+                characters.append(newCharacter)
 
-                let charIndex = i
+                // Capture the stable ID rather than the index
+                let characterID = newCharacter.id
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self, charIndex < self.characters.count else { return }
+                    guard let self,
+                          let characterIndex = self.characters.firstIndex(where: { $0.id == characterID }) else { return }
                     withAnimation(.easeInOut(duration: 0.3)) {
-                        self.characters[charIndex].isMasked = true
+                        self.characters[characterIndex].isMasked = true
                     }
                 }
             }
