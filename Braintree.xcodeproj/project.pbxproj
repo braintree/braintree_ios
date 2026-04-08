@@ -413,6 +413,7 @@
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
 		BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */; };
 		BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */; };
+		CA58E8CE2F86D0EC00F23295 /* BTPayPalCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA58E8CD2F86D0EC00F23295 /* BTPayPalCampaign.swift */; };
 		CE836AA02E4FDCE300AC7FCA /* UIApplication+ApplicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */; };
 /* End PBXBuildFile section */
 
@@ -1194,6 +1195,7 @@
 		BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockViewController.swift; sourceTree = "<group>"; };
 		BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardClient.swift; sourceTree = "<group>"; };
 		BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardError.swift; sourceTree = "<group>"; };
+		CA58E8CD2F86D0EC00F23295 /* BTPayPalCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCampaign.swift; sourceTree = "<group>"; };
 		CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ApplicationState.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2243,6 +2245,7 @@
 		BE5496EA2E313A4D003CCA60 /* V2 */ = {
 			isa = PBXGroup;
 			children = (
+				CA58E8CD2F86D0EC00F23295 /* BTPayPalCampaign.swift */,
 				62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */,
 				621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */,
 				455AA2752DEE0574008D99AB /* BTCustomerRecommendationsResult.swift */,
@@ -3655,6 +3658,7 @@
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 				624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */,
+				CA58E8CE2F86D0EC00F23295 /* BTPayPalCampaign.swift in Sources */,
 				455AA2762DEE0577008D99AB /* BTCustomerRecommendationsResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
