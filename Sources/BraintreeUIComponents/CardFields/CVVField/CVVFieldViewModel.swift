@@ -39,8 +39,7 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
                 // Capture the stable ID rather than the index
                 let characterID = newCharacter.id
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self,
-                          let characterIndex = self.characters.firstIndex(where: { $0.id == characterID }) else { return }
+                    guard let self, let characterIndex = self.characters.firstIndex(where: { $0.id == characterID }) else { return }
                     withAnimation(.easeInOut(duration: 0.3)) {
                         self.characters[characterIndex].isMasked = true
                     }
