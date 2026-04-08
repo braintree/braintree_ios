@@ -49,7 +49,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         let view = TextFieldWithLabel()
         view.label.text = "SessionID"
         view.textField.placeholder = "SessionID"
-        view.textField.text = "94f0b2db-5323-4d86-add3-paypalmsg000"
+        view.textField.text = ""
         return view
     }()
     
