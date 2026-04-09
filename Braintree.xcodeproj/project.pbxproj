@@ -41,9 +41,7 @@
 		0878313B2F7C2839003BB460 /* CardFieldsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */; };
 		0878313D2F83FBDA003BB460 /* CVVCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313C2F83FBDA003BB460 /* CVVCharacter.swift */; };
 		087CA76E2F0D72E80065D89B /* BTGraphQLHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */; };
-		08804D482F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */; };
 		08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */; };
-		08804D4A2F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */; };
 		0889DB142ED4C0350023AA64 /* PaymentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0889DB132ED4C0350023AA64 /* PaymentButtonStyle.swift */; };
 		08A83F5D2EE096860076BD28 /* UIComponentsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F5C2EE096860076BD28 /* UIComponentsAnalytics.swift */; };
 		08A83F672EE72F440076BD28 /* BTSessionIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F662EE72F440076BD28 /* BTSessionIDManager.swift */; };
@@ -3973,7 +3971,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A948D6D124FAB8BA00F4F178 /* BTAmericanExpressClient_Tests.swift in Sources */,
-				08804D4A2F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */,
 				A948D6D224FAB8BA00F4F178 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */,
 				BEDB820429B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift in Sources */,
 				3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */,
@@ -4068,7 +4065,6 @@
 				A95229C424FD8EEE006F7D25 /* BTURLUtils_Tests.swift in Sources */,
 				A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */,
 				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
-				08804D482F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */,
 				081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
