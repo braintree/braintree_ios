@@ -36,8 +36,6 @@
 		084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */; };
 		086D56D02F8566B500120B47 /* CardBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56CF2F8566B500120B47 /* CardBrand.swift */; };
 		086D56D62F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */; };
-		086D56D72F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */; };
-		086D56D82F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */; };
 		087831322F7B0359003BB460 /* BTCard+CardFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087831312F7B0359003BB460 /* BTCard+CardFields.swift */; };
 		087831332F7B09CE003BB460 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
 		087831392F7C1666003BB460 /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087831382F7C1666003BB460 /* ValidationResult.swift */; };
@@ -3970,7 +3968,6 @@
 			files = (
 				A948D6D124FAB8BA00F4F178 /* BTAmericanExpressClient_Tests.swift in Sources */,
 				A948D6D224FAB8BA00F4F178 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */,
-				086D56D82F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */,
 				BEDB820429B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift in Sources */,
 				3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */,
 			);
@@ -4069,7 +4066,6 @@
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
 				4585707C2C34B7B5009CEF7A /* MockConfigurationLoader.swift in Sources */,
 				80C10F832BE090AA00BFA2EE /* ConfigurationCache_Tests.swift in Sources */,
-				086D56D72F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */,
 				8087C10F2BFBACCA0020FC2E /* TokenizationKey_Tests.swift in Sources */,
 				45227FC72C33104100A15018 /* MockBTHTTPNetworkTiming.swift in Sources */,
 				454BCF752E1C5FAA0099E674 /* BTWebAuthenticationSession_Tests.swift in Sources */,
