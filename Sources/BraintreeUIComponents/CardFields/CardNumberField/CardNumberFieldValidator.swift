@@ -41,19 +41,15 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
     func detectBrand(from digits: String) -> CardBrand {
         // Pass 1: strict prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.prefixPatterns {
-                if matches(pattern: pattern, input: digits) {
-                    return brand
-                }
+            for pattern in brand.prefixPatterns where matches(pattern: pattern, input: digits) {
+                return brand
             }
         }
 
         // Pass 2: relaxed prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.relaxedPrefixPatterns {
-                if matches(pattern: pattern, input: digits) {
-                    return brand
-                }
+            for pattern in brand.relaxedPrefixPatterns where matches(pattern: pattern, input: digits) {
+                return brand
             }
         }
 
