@@ -1,11 +1,12 @@
 import Foundation
 
+@MainActor
 class CardNumberFieldViewModel: CardFieldsViewModelProtocol {
     
     @Published private(set) var value: String = ""
     @Published private(set) var validationState: ValidationResult = .valid
     @Published var isFocused: Bool = false
-    
+
     private let validator = CardNumberFieldValidator()
 
     // TODO: Implement auto-advance logic w/ state change
