@@ -2,7 +2,7 @@ import Foundation
 
 struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
 
-    // MARK: - CardFieldValidatorProtocol
+    // MARK: - CardFieldValidatorProtocol Conformance
 
     func validate(_ value: String) -> ValidationResult {
         let digits = value.filter { $0.isNumber }
@@ -38,9 +38,6 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
 
     // MARK: - Brand Detection
 
-    /// Two-pass detection mirroring the drop-in:
-    /// 1. Check strict prefixes across all brands
-    /// 2. If no match, check relaxed prefixes (Maestro only)
     func detectBrand(from digits: String) -> CardBrand {
         // Pass 1: strict prefixes
         for brand in CardBrand.allCases {
@@ -71,8 +68,7 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
         return regex.firstMatch(in: input, range: range) != nil
     }
 
-    /// Luhn algorithm ported from BTUIKUtil.m in braintree-ios-drop-in.
-    /// Processes digits right to left, doubling every second digit.
+    /// Luhn algorithm - Processes digits right to left, doubling every second digit.
     private func isLuhnValid(_ digits: String) -> Bool {
         let numbers = digits.compactMap { $0.wholeNumberValue }
         var isOdd = true
@@ -85,7 +81,7 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
             } else {
                 evenSum += digit / 5 + (2 * digit) % 10
             }
-            isOdd = !isOdd
+            isOdd.toggle()
         }
 
         return (oddSum + evenSum) % 10 == 0
