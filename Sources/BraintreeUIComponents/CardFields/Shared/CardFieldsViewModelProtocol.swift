@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 protocol CardFieldsViewModelProtocol: ObservableObject {
     
     var value: String { get }
