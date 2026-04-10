@@ -1,8 +1,9 @@
 import Foundation
 
 final class ExpirationDateFieldValidator: CardFieldsValidatorProtocol {
-    
-    func isValid(_ subject: String) -> Bool {
-        return false
+
+    func validate(_ value: String) -> ValidationResult {
+        // TODO: Implement MM/YY format and expiration date validation
+        return .valid
     }
 }
