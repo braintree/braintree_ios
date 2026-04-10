@@ -122,9 +122,9 @@ final class CardNumberFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate("41111111111111111111"), .invalid("Card number is invalid"))
     }
 
-    func testValidate_incompleteNumber_returnsValid() {
+    func testValidate_incompleteNumber_returnsValidating() {
         // Should not show invalid while still typing
-        XCTAssertEqual(validator.validate("4111"), .valid)
+        XCTAssertEqual(validator.validate("4111"), .validating)
     }
 
     // MARK: - Known Test Card Numbers

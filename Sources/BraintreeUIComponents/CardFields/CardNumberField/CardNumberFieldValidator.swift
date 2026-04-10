@@ -18,7 +18,7 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
         let brand = detectBrand(from: digits)
 
         guard digits.count >= brand.minLength else {
-            return .valid
+            return .validating
         }
 
         guard digits.count <= brand.maxLength else {
@@ -41,27 +41,19 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
     func detectBrand(from digits: String) -> CardBrand {
         // Pass 1: strict prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.prefixPatterns where matches(pattern: pattern, input: digits) {
+            for pattern in brand.prefixPatterns where digits.prefixMatch(of: pattern) != nil {
                 return brand
             }
         }
 
         // Pass 2: relaxed prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.relaxedPrefixPatterns where matches(pattern: pattern, input: digits) {
+            for pattern in brand.relaxedPrefixPatterns where digits.prefixMatch(of: pattern) != nil {
                 return brand
             }
         }
 
         return .unknown
-    }
-
-    // MARK: - Private
-
-    private func matches(pattern: String, input: String) -> Bool {
-        guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
-        let range = NSRange(input.startIndex..., in: input)
-        return regex.firstMatch(in: input, range: range) != nil
     }
 
     /// Luhn algorithm - Processes digits right to left, doubling every second digit.
