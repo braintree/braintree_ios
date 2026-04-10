@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class CardNumberFieldViewModel: CardFieldsViewModelProtocol {
     
     @Published private(set) var value: String = ""
