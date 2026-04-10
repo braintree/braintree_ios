@@ -35,18 +35,30 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
                 let index = digits.index(digits.startIndex, offsetBy: i)
                 let newCharacter = CVVCharacter(value: digits[index])
                 characters.append(newCharacter)
-
-                // Capture the stable ID rather than the index
-                let characterID = newCharacter.id
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let self, let characterIndex = self.characters.firstIndex(where: { $0.id == characterID }) else { return }
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        self.characters[characterIndex].isMasked = true
-                    }
-                }
+                scheduleMasking(for: newCharacter.id)
             }
         } else if newCount < oldCount {
             characters = Array(characters.prefix(newCount))
+        } else {
+            // Same length but different digits (e.g. paste over existing value)
+            for i in 0..<newCount {
+                let index = digits.index(digits.startIndex, offsetBy: i)
+                if characters[i].value != digits[index] {
+                    let newCharacter = CVVCharacter(value: digits[index])
+                    characters[i] = newCharacter
+                    scheduleMasking(for: newCharacter.id)
+                }
+            }
+        }
+    }
+
+    private func scheduleMasking(for characterID: UUID) {
+        Task {
+            try? await Task.sleep(for: .seconds(1))
+            guard let index = characters.firstIndex(where: { $0.id == characterID }) else { return }
+            withAnimation(.easeInOut(duration: 0.3)) {
+                characters[index].isMasked = true
+            }
         }
     }
 }

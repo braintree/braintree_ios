@@ -67,6 +67,13 @@ import XCTest
          viewModel.updateValue("12")
          XCTAssertFalse(viewModel.characters[1].isMasked)
      }
+     
+     func testUpdateValue_sameLength_differentDigits_updatesCharacters() {
+         viewModel.updateValue("123")
+         viewModel.updateValue("456")
+         XCTAssertEqual(viewModel.rawValue, "456")
+         XCTAssertEqual(viewModel.characters.map { $0.value }, ["4", "5", "6"])
+     }
 
      // MARK: - Masking Timer
 
