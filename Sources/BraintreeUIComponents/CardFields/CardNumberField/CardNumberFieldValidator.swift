@@ -11,7 +11,8 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
             return .invalid("Card number is required")
         }
 
-        guard value.filter({ !$0.isNumber && $0 != " " }).isEmpty else {
+        let invalidCharacters = value.filter { !$0.isNumber && $0 != " " }
+        guard invalidCharacters.isEmpty else {
             return .invalid("Card number is invalid")
         }
 
