@@ -18,7 +18,7 @@ struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
         ) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Expiration (MM/YY)")
-                    .font(.caption)
+                    .font(.system(size: 12))
                     .foregroundColor(Color(.secondaryLabel))
                 
                 TextField(
@@ -39,8 +39,8 @@ struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
         .onChange(of: isFocused) { _, focused in
             viewModel.isFocused = focused
         }
-        .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAutoAdance in
-            if shouldAutoAdance { onAutoAdvance?() }
+        .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAutoAdvance in
+            if shouldAutoAdvance { onAutoAdvance?() }
         }
     }
 }

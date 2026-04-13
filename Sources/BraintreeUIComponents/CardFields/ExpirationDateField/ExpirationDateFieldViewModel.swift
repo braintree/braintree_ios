@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class ExpirationDateFieldViewModel: CardFieldsViewModelProtocol {
     
     @Published private(set) var value: String = ""
@@ -9,7 +10,7 @@ class ExpirationDateFieldViewModel: CardFieldsViewModelProtocol {
     // TODO: Update auto-advance logic
     var shouldAutoAdvance: Bool { false }
     
-    // TODO: Implement expiration fiel validation and formatting checks
+    // TODO: Implement expiration field validation and formatting checks
     func updateValue(_ newValue: String) {
         value = newValue
     }
