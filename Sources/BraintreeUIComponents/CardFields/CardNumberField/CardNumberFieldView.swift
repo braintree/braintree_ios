@@ -12,7 +12,7 @@ struct CardNumberFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
             validationState: viewModel.validationState,
             isFocused: isFocused
         ) {
-            CardBrandView()
+            CardBrandView(brand: .unknown)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("Card number")
