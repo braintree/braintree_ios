@@ -11,6 +11,8 @@ public enum CardBrand {
     case unknown
     case visa
     
+    // TODO: Don't have images for diner's and a few others
+    
     var image: Image {
         switch self {
         case .amex:

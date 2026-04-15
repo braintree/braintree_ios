@@ -1,9 +1,7 @@
 import SwiftUI
 
 @MainActor
-class CVVFieldViewModel: CardFieldsViewModelProtocol {
-
-    // MARK: - CardFieldViewModelProtocol
+class CVVFieldViewModel: ObservableObject {
 
     @Published private(set) var value: String = ""
     @Published private(set) var validationState: ValidationResult = .valid
@@ -19,8 +17,6 @@ class CVVFieldViewModel: CardFieldsViewModelProtocol {
 
     /// Raw digits only — no masking, used for tokenization
     @Published private(set) var rawValue: String = ""
-
-    // MARK: - CardFieldViewModelProtocol Conformance
 
     func updateValue(_ newValue: String) {
         let digits = String(newValue.filter { $0.isNumber }.prefix(4))

@@ -1,18 +1,18 @@
 import SwiftUI
 
-struct CardNumberFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
-    
-    @ObservedObject var viewModel: ViewModel
+struct CardNumberFieldView: View {
+
+    @ObservedObject var viewModel: CardNumberFieldViewModel
     var onAutoAdvance: (() -> Void)?
     @FocusState private var isFocused: Bool
 
-    
+
     var body: some View {
         CardFieldsContainerView(
             validationState: viewModel.validationState,
             isFocused: isFocused
         ) {
-            CardBrandView(brand: .unknown)
+            CardBrandView(brand: viewModel.cardBrand)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("Card number")
