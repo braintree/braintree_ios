@@ -21,26 +21,26 @@ enum CardBrand: CaseIterable {
     var prefixPatterns: [Regex<Substring>] {
         switch self {
         case .visa:
-            return [#/^4\d*/#]
+            return [#/4\d*/#]
         case .mastercard:
-            return [#/^(?:5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[0-1]|2720)\d*/#]
+            return [#/(?:5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[0-1]|2720)\d*/#]
         case .amex:
-            return [#/^3[47]\d*/#]
+            return [#/3[47]\d*/#]
         case .discover:
-            // 622 prefix checked here before UnionPay's broader ^62 to handle co-branded range
-            return [#/^(?:6011|65|64[4-9]|622)\d*/#]
+            // 622 prefix checked here before UnionPay's broader 62 to handle co-branded range
+            return [#/(?:6011|65|64[4-9]|622)\d*/#]
         case .jcb:
-            return [#/^35\d*/#]
+            return [#/35\d*/#]
         case .dinersClub:
-            return [#/^(?:36|38|30[0-5])\d*/#]
+            return [#/(?:36|38|30[0-5])\d*/#]
         case .unionPay:
-            return [#/^62\d*/#]
+            return [#/62\d*/#]
         case .maestro:
-            return [#/^(?:5018|5020|5038|5[6-9]|6020|6304|6703|6759|676[1-3])\d*/#]
+            return [#/(?:5018|5020|5038|5[6-9]|6020|6304|6703|6759|676[1-3])\d*/#]
         case .hiper:
-            return [#/^637(?:095|568|599|609|612)\d*/#]
+            return [#/637(?:095|568|599|609|612)\d*/#]
         case .hipercard:
-            return [#/^606282\d*/#]
+            return [#/606282\d*/#]
         case .unknown:
             return []
         }
@@ -51,7 +51,7 @@ enum CardBrand: CaseIterable {
     var relaxedPrefixPatterns: [Regex<Substring>] {
         switch self {
         case .maestro:
-            return [#/^6\d*/#]
+            return [#/6\d*/#]
         default:
             return []
         }

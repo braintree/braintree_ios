@@ -96,8 +96,12 @@ final class CardNumberFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.detectBrand(from: "30011111111111"), .dinersClub)
     }
 
-    func testDetectBrand_maestroRelaxed_returnsMaestro() {
+    func testDetectBrand_maestroStrict_returnsMaestro() {
         XCTAssertEqual(validator.detectBrand(from: "6304000000000000"), .maestro)
+    }
+    
+    func testDetectBrand_maestroRelaxed_returnsMaestro() {
+        XCTAssertEqual(validator.detectBrand(from: "6700"), .maestro)
     }
 
     func testDetectBrand_unknown_returnsUnknown() {
