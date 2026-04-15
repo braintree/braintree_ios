@@ -72,7 +72,7 @@ import BraintreeCore
         
         
         
-        private func isEven(_ num: Int) -> Bool {
+        func isEven(_ num: Int) -> Bool {
             if num % 1 == 0 {
                 return false
             } else if num % 2 == 0 {
