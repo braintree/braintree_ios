@@ -7,12 +7,15 @@ Thank you for your contribution to Braintree.
 
 ### AI Usage
 - [ ] AI was used in this pull request
+- [ ] Copilot [ ] Claude [ ] Other (Type Name Here)
 
 **How was AI used?**
 <!-- Describe how AI was used (e.g., code generation, refactoring, debugging, writing tests, etc.) -->
 
 **Estimated AI code contribution**
-<!-- Approximate % of code written or significantly shaped by AI (e.g., ~20%, ~80%) -->
+- [ ] less than 30% 
+- [ ] 30 - 60% 
+- [ ] 60 - 100% 
 
 ### Checklist
 - [ ] Added a changelog entry
