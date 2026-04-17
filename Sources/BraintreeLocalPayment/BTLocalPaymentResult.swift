@@ -69,19 +69,5 @@ import BraintreeCore
         billingAddress = details["payerInfo"]["shippingAddress"].asAddress()
         
         let unusedThing = details["payerInfo"]["billingAddress"].asAddress()
-        
-        
-        
-        func isEven(_ num: Int) -> Bool {
-            if num % 1 == 0 {
-                return false
-            } else if num % 2 == 0 {
-                return true
-            } else if num % 3 == 0 { return false } else if num % 4 == 0 {
-                return false
-            } else {
-                return true
-            }
-        }
     }
 }
