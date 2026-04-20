@@ -17,15 +17,30 @@ brew install swiftlint
 Our Xcode workspace has a `Run Phase` which integrates in `SwiftLint` so the only prerequisite is installing via `Homebrew`.
 
 ## Git Hooks
-
-We use [`pre-commit`](https://pre-commit.com/) to enforce commit message formatting. After cloning the repo, run the following once to install the hooks:
-
+ 
+We use a `commit-msg` hook to enforce consistent commit message formatting.
+ 
+### Install (Manual — recommended)
+ 
+Run the following once from the repo root after cloning:
+ 
 ```
-brew install pre-commit
+mkdir -p .git/hooks
+cp scripts/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+ 
+### Install (via `pre-commit` framework)
+ 
+If you have `pre-commit` installed (or install it via `pip3 install pre-commit`):
+ 
+```
 pre-commit install --hook-type commit-msg
 ```
-
-Commits must follow the format `<type>: <description>` (or `<type>(scope): <description>`), where `<description>` starts lowercase. Allowed types:
+ 
+### Commit format
+ 
+Commits must follow `<type>: <description>` (or `<type>(scope): <description>`), where `<description>` starts lowercase. Allowed types:
  
 | Type | When to use |
 |------|-------------|
