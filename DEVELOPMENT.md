@@ -16,6 +16,27 @@ brew install swiftlint
 ```
 Our Xcode workspace has a `Run Phase` which integrates in `SwiftLint` so the only prerequisite is installing via `Homebrew`.
 
+## Git Hooks
+
+We use [`pre-commit`](https://pre-commit.com/) to enforce commit message formatting. After cloning the repo, run the following once to install the hooks:
+
+```
+brew install pre-commit
+pre-commit install --hook-type commit-msg
+```
+
+Commits must follow the format `<type>: <description>` (or `<type>(scope): <description>`), where `<description>` starts lowercase. Allowed types:
+ 
+| Type | When to use |
+|------|-------------|
+| `fix` | Patches a bug |
+| `feat` | Introduces a new feature |
+| `docs` | Documentation changes only |
+| `style` | Formatting changes that don't affect behavior |
+| `refactor` | Code restructuring that is neither a fix nor a feature |
+| `test` | Adding or updating tests |
+
+
 ## Style Guide
 While we use SwiftLint in the SDK to adhere to a general style, there are some guidelines that are not able to be captured by our linter rules. Those guidelines are defined in our [style guide](STYLE_GUIDE.md). Please refer to these when developing for the SDK.
 
