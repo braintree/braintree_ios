@@ -9,10 +9,10 @@ if echo "$COMMIT_MSG" | grep -qE "^Merge "; then
 fi
 
 # Allowed type prefixes
-TYPES="fix|feat|docs|style|refactor|test"
+TYPES="fix|feat|docs|style|refactor|test|pr-feedback"
 
-# Pattern: <type>[optional (scope)]: <lowercase description>
-PATTERN="^($TYPES)(\([a-zA-Z0-9_-]+\))?: [a-z].+"
+# Pattern: <type>[optional (scope)]: <description> (any case)
+PATTERN="^($TYPES)(\([a-zA-Z0-9_-]+\))?: .+"
 
 if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
   echo ""
@@ -22,15 +22,15 @@ if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
   echo "   With scope: <type>(scope): <description>"
   echo ""
   echo "   Examples:"
-  echo "     feat: add paypal vaulting support"
+  echo "     feature: add paypal vaulting support"
   echo "     fix(venmo): resolve null pointer on auth"
   echo "     docs: update README installation steps"
   echo "     style: reformat card module files"
   echo "     refactor(core): simplify token parsing logic"
   echo "     test: add unit tests for 3DS flow"
+  echo "     pr-feedback: rename method per review comments"
   echo ""
-  echo "   Allowed types: fix | feat | docs | style | refactor | test"
-  echo "   Rule: description must start lowercase after the colon"
+  echo "   Allowed types: fix | feature | docs | style | refactor | test | pr-feedback"
   echo ""
   echo "   Your message: \"$COMMIT_MSG\""
   echo ""
