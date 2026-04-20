@@ -40,16 +40,17 @@ pre-commit install --hook-type commit-msg
  
 ### Commit format
  
-Commits must follow `<type>: <description>` (or `<type>(scope): <description>`), where `<description>` starts lowercase. Allowed types:
+Commits must follow `<type>: <description>` (or `<type>(scope): <description>`), where `<description>` starts. Allowed types:
  
 | Type | When to use |
 |------|-------------|
 | `fix` | Patches a bug |
-| `feat` | Introduces a new feature |
+| `feature` | Introduces a new feature |
 | `docs` | Documentation changes only |
 | `style` | Formatting changes that don't affect behavior |
 | `refactor` | Code restructuring that is neither a fix nor a feature |
 | `test` | Adding or updating tests |
+| `pr-feedback` | Address PR feedback
 
 
 ## Style Guide
