@@ -1,0 +1,46 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip merge commits
+if echo "$COMMIT_MSG" | grep -qE "^Merge "; then
+  exit 0
+fi
+
+# Allowed type prefixes
+TYPES="fix|feat|docs|style|refactor|test|pr-feedback"
+
+# Pattern: <type>[optional (scope)]: <description> (any case)
+PATTERN="^($TYPES)(\([a-zA-Z0-9_-]+\))?: .+"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "❌ Invalid commit message format."
+  echo ""
+  echo "   Expected:   <type>: <description>"
+  echo "   With scope: <type>(scope): <description>"
+  echo ""
+  echo "   Examples:"
+  echo "     feature: add paypal vaulting support"
+  echo "     fix(venmo): resolve null pointer on auth"
+  echo "     docs: update README installation steps"
+  echo "     style: reformat card module files"
+  echo "     refactor(core): simplify token parsing logic"
+  echo "     test: add unit tests for 3DS flow"
+  echo "     pr-feedback: rename method per review comments"
+  echo ""
+  echo "   Allowed types: fix | feature | docs | style | refactor | test | pr-feedback"
+  echo ""
+  echo "   Your message: \"$COMMIT_MSG\""
+  echo ""
+  exit 1
+fi
+
+# Warn about vague descriptions
+VAGUE_TERMS="cleanup|fix stuff|update|changes|misc|wip|temp"
+if echo "$COMMIT_MSG" | grep -qiE ": ($VAGUE_TERMS)$"; then
+  echo "⚠️  Warning: commit description looks vague. Consider being more specific."
+fi
+
+exit 0

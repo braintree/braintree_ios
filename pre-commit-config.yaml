@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: commit-msg-format
+        name: Validate commit message
+        language: script
+        entry: scripts/commit-msg
+        stages: [commit-msg]

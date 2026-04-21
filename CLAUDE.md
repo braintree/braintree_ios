@@ -1,4 +1,4 @@
-# Braintree iOS SDK — Claude Code Context
+# Braintree iOS SDK — Claude Code Context 
 
 ## Project Overview
 
