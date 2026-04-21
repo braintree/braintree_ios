@@ -19,10 +19,16 @@ final class CVVFieldValidator: CardFieldsValidatorProtocol {
         }
 
         if let expectedLength {
+            if value.count < expectedLength {
+                return .validating
+            }
             guard value.count == expectedLength else {
                 return .invalid("CVV is invalid")
             }
         } else {
+            if value.count < 3 {
+                return .validating
+            }
             guard value.count == 3 || value.count == 4 else {
                 return .invalid("CVV is invalid")
             }

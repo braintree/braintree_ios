@@ -25,9 +25,9 @@ final class CVVFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate("1234"), .valid)
     }
 
-    func testValidate_twoDigits_noBrand_returnsInvalid() {
+    func testValidate_twoDigits_noBrand_returnsValidating() {
         let validator = CVVFieldValidator()
-        XCTAssertEqual(validator.validate("12"), .invalid("CVV is invalid"))
+        XCTAssertEqual(validator.validate("12"), .validating)
     }
 
     // MARK: - Known brand: 3-digit CVV
@@ -42,9 +42,9 @@ final class CVVFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate("1234"), .invalid("CVV is invalid"))
     }
 
-    func testValidate_twoDigits_expectedLengthThree_returnsInvalid() {
+    func testValidate_twoDigits_expectedLengthThree_returnsValidating() {
         let validator = CVVFieldValidator(expectedLength: 3)
-        XCTAssertEqual(validator.validate("12"), .invalid("CVV is invalid"))
+        XCTAssertEqual(validator.validate("12"), .validating)
     }
 
     // MARK: - Known brand: 4-digit CVV (Amex)
@@ -54,9 +54,9 @@ final class CVVFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate("1234"), .valid)
     }
 
-    func testValidate_threeDigits_expectedLengthFour_returnsInvalid() {
+    func testValidate_threeDigits_expectedLengthFour_returnsValidating() {
         let validator = CVVFieldValidator(expectedLength: 4)
-        XCTAssertEqual(validator.validate("123"), .invalid("CVV is invalid"))
+        XCTAssertEqual(validator.validate("123"), .validating)
     }
 
     func testValidate_fiveDigits_expectedLengthFour_returnsInvalid() {
