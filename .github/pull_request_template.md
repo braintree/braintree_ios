@@ -2,11 +2,13 @@ Thank you for your contribution to Braintree.
 
 > Before submitting this PR, note we cannot accept language translation PRs. We support the same languages that are supported by PayPal, and have a dedicated localization team to provide the translations. If there is an error in a specific translation, you may open an issue and we will escalate it to the localization team.
 
-### Summary of changes
+### 📋 Summary Of Changes
 - 
 
-### AI Usage
+### 🎫 Jira Ticket
+- 
 
+### 🤖 AI Usage
 **Which AI Agent Was Used?**
 - [ ] Copilot 
 - [ ] Claude 
@@ -20,10 +22,10 @@ Thank you for your contribution to Braintree.
 - [ ] 30 - 60% 
 - [ ] 60 - 100% 
 
-### Checklist
+### ✅ Checklist
 - [ ] Added a changelog entry
 - [ ] Tested and confirmed payment flows affected by this change are functioning as expected
 
-### Authors
+### 👥 Authors
 > List GitHub usernames for everyone who contributed to this pull request.
 -
