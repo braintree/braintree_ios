@@ -20,7 +20,7 @@ Please include the following in your report:
 * Step-by-step instructions to reproduce the issue
 * Impact of the issue and how an attacker might exploit it
 
-## Supported Versions
+## Supported Security Updates
 
 ### Security Issues
 
@@ -42,8 +42,7 @@ For details on supported platform versions, see our [deprecation policy](https:/
 
 We are committed to working with security researchers in good faith. To support responsible disclosure, our team will:
 
-- Acknowledge your report within **2 business days**
-- Provide a triage update within **5 business days**
+- Acknowledge your report in a timely manner
 - Keep you informed of our progress toward a fix
 - Notify you before any public disclosure
 
