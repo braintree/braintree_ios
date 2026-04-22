@@ -22,31 +22,21 @@ Please include the following in your report:
 
 ## Supported Versions
 
-### New Features
-
-New features are only added to the latest major release and will not be backported to older versions.
-
-### Bug Fixes
-
-Only the latest release series receives bug fixes. When enough bugs are fixed and a new release is warranted, it is cut from the main branch.
-
 ### Security Issues
 
-Only the latest release series receives patches and new versions in the case of a security issue.
+Only the latest release series receives patches and new versions in the case of a security issue. See our [deprecation policy](https://developer.paypal.com/braintree/docs/guides/client-sdk/deprecation-policy/ios/v7/) for details.
 
 ### Severe Security Issues
 
 For severe security issues, we will provide new versions as above. Additionally, the last major release series may receive patches at our discretion. Severity classification is determined by the Braintree SDK team.
 
-### Unsupported Release Series
-
-When a release series is no longer supported, it is your responsibility to manage bugs and security issues. If you are not comfortable maintaining your own versions, we strongly recommend upgrading to a supported release.
-
 ### Platform Support
 
-| Platform | Supported Versions      |
-| -------- | ----------------------- |
-| iOS      | Latest 2 major versions |
+| Platform | Supported Versions                          |
+| -------- | ------------------------------------------- |
+| iOS      | Most recent version and 2 previous versions |
+
+For details on supported platform versions, see our [deprecation policy](https://developer.paypal.com/braintree/docs/guides/client-sdk/deprecation-policy/ios/v7/).
 
 ## Disclosure Policy
 
