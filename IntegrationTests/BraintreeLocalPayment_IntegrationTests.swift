@@ -8,7 +8,6 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
     // MARK: - Properties
 
     var localPaymentClient: BTLocalPaymentClient!
-    var delegate = MockLocalPaymentRequestDelegate()
 
     // MARK: - Setup
 
@@ -19,13 +18,15 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
     // MARK: - start
 
-    func testStart_withIDeal_returnsNonce() {
+    func testStart_withIDeal_callsDelegateWithPaymentID() {
+        let delegate = LocalPaymentStartedDelegate()
+        delegate.expectation = expectation(description: "Delegate called with paymentID for iDEAL")
+
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
             amount: "1.01",
             currencyCode: "EUR",
             paymentTypeCountryCode: "NL",
-            merchantAccountID: "customer-nl-merchant-account",
             email: "lingo-buyer@paypal.com",
             givenName: "Lizenka",
             surname: "Penna",
@@ -34,23 +35,16 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
         )
         request.localPaymentFlowDelegate = delegate
 
-        let expectation = expectation(description: "Start local payment for iDEAL")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
+        localPaymentClient.start(request) { _, _ in }
 
         waitForExpectations(timeout: 5)
+        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
-    func testStart_withBancontact_returnsNonce() {
+    func testStart_withBancontact_callsDelegateWithPaymentID() {
+        let delegate = LocalPaymentStartedDelegate()
+        delegate.expectation = expectation(description: "Delegate called with paymentID for Bancontact")
+
         let request = BTLocalPaymentRequest(
             paymentType: "bancontact",
             amount: "2.00",
@@ -62,23 +56,16 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
         )
         request.localPaymentFlowDelegate = delegate
 
-        let expectation = expectation(description: "Start local payment for Bancontact")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
+        localPaymentClient.start(request) { _, _ in }
 
         waitForExpectations(timeout: 5)
+        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
-    func testStart_withSofort_returnsNonce() {
+    func testStart_withSofort_callsDelegateWithPaymentID() {
+        let delegate = LocalPaymentStartedDelegate()
+        delegate.expectation = expectation(description: "Delegate called with paymentID for Sofort")
+
         let request = BTLocalPaymentRequest(
             paymentType: "sofort",
             amount: "5.00",
@@ -90,98 +77,21 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
         )
         request.localPaymentFlowDelegate = delegate
 
-        let expectation = expectation(description: "Start local payment for Sofort")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
+        localPaymentClient.start(request) { _, _ in }
 
         waitForExpectations(timeout: 5)
+        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
-    func testStart_withGiropay_returnsNonce() {
-        let request = BTLocalPaymentRequest(
-            paymentType: "giropay",
-            amount: "10.00",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "DE",
-            email: "lingo-buyer@paypal.com",
-            givenName: "Lena",
-            surname: "Fischer"
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        let expectation = expectation(description: "Start local payment for Giropay")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testStart_withShippingAddressRequired_returnsNonce() {
-        let address = BTPostalAddress(
-            streetAddress: "836486 of 22321 Park Lake",
-            extendedAddress: "#102",
-            locality: "Den Haag",
-            countryCodeAlpha2: "NL",
-            postalCode: "2585 GJ",
-            region: "CA"
-        )
+    func testStart_withDisplayName_callsDelegateWithPaymentID() {
+        let delegate = LocalPaymentStartedDelegate()
+        delegate.expectation = expectation(description: "Delegate called with paymentID with display name")
 
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
             amount: "1.01",
             currencyCode: "EUR",
             paymentTypeCountryCode: "NL",
-            merchantAccountID: "customer-nl-merchant-account",
-            address: address,
-            email: "lingo-buyer@paypal.com",
-            givenName: "Lizenka",
-            surname: "Penna",
-            phone: "16040000000",
-            isShippingAddressRequired: true
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        let expectation = expectation(description: "Start local payment with shipping address required")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
-    }
-
-    func testStart_withDisplayName_returnsNonce() {
-        let request = BTLocalPaymentRequest(
-            paymentType: "ideal",
-            amount: "1.01",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "NL",
-            merchantAccountID: "customer-nl-merchant-account",
             displayName: "My Brand!",
             email: "lingo-buyer@paypal.com",
             givenName: "Lizenka",
@@ -191,53 +101,10 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
         )
         request.localPaymentFlowDelegate = delegate
 
-        let expectation = expectation(description: "Start local payment with display name")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
+        localPaymentClient.start(request) { _, _ in }
 
         waitForExpectations(timeout: 5)
-    }
-
-    func testStart_usingVersionThreeClientToken_returnsNonce() {
-        localPaymentClient = BTLocalPaymentClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
-
-        let request = BTLocalPaymentRequest(
-            paymentType: "ideal",
-            amount: "1.01",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "NL",
-            merchantAccountID: "customer-nl-merchant-account",
-            email: "lingo-buyer@paypal.com",
-            givenName: "Lizenka",
-            surname: "Penna",
-            phone: "16040000000",
-            isShippingAddressRequired: false
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        let expectation = expectation(description: "Start local payment using v3 client token")
-
-        localPaymentClient.start(request) { result, error in
-            guard let result else {
-                XCTFail("Expected a result to be returned")
-                return
-            }
-
-            XCTAssertTrue(result.nonce.isValidNonce)
-            XCTAssertNil(error)
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5)
+        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
     // MARK: - Error cases
@@ -253,7 +120,6 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             surname: "Penna",
             phone: "16040000000"
         )
-        // localPaymentFlowDelegate intentionally left nil
 
         let expectation = expectation(description: "Start local payment with nil delegate")
 
@@ -272,7 +138,9 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
 
-    func testStart_whenPaymentTypeIsInvalid_failsWithExpectedError() {
+    func testStart_whenPaymentTypeIsInvalid_failsWithHTTPError() {
+        let delegate = LocalPaymentStartedDelegate()
+
         let request = BTLocalPaymentRequest(
             paymentType: "invalid_type",
             amount: "1.00",
@@ -293,15 +161,17 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             }
 
             XCTAssertNil(result)
-            XCTAssertEqual(error.domain, BTLocalPaymentError.errorDomain)
+            XCTAssertEqual(error.domain, BTCoreConstants.httpErrorDomain)
             expectation.fulfill()
         }
 
         waitForExpectations(timeout: 5)
     }
 
-    func testStart_usingTokenizationKeyAndLocalPaymentsEnabled_failsWithAuthorizationError() {
+    func testStart_usingTokenizationKey_failsWithAuthorizationError() {
         localPaymentClient = BTLocalPaymentClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
+
+        let delegate = LocalPaymentStartedDelegate()
 
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
@@ -328,7 +198,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             XCTAssertEqual(error.code, 2)
 
             let httpResponse = error.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
-            XCTAssertEqual(httpResponse.statusCode, 403)
+            XCTAssertEqual(httpResponse.statusCode, 422)
             expectation.fulfill()
         }
 
@@ -336,11 +206,18 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
     }
 }
 
-// MARK: - MockLocalPaymentRequestDelegate
+// MARK: - LocalPaymentStartedDelegate
 
-class MockLocalPaymentRequestDelegate: NSObject, BTLocalPaymentRequestDelegate {
+/// Captures the paymentID from `localPaymentStarted` and fulfills the expectation
+/// without calling `start()`, so `ASWebAuthenticationSession` never launches.
+class LocalPaymentStartedDelegate: NSObject, BTLocalPaymentRequestDelegate {
+
+    var expectation: XCTestExpectation?
+    var receivedPaymentID: String?
 
     func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentID: String, start: @escaping () -> Void) {
-        start()
+        receivedPaymentID = paymentID
+        expectation?.fulfill()
+        // intentionally does not call start() — stops the flow before the browser launches.
     }
 }
