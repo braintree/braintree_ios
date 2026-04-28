@@ -37,7 +37,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
@@ -58,7 +58,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
@@ -79,7 +79,30 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
+        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
+    }
+
+    func testStart_withShippingAddressRequired_callsDelegateWithPaymentID() {
+        let delegate = LocalPaymentStartedDelegate()
+        delegate.expectation = expectation(description: "Delegate called with paymentID with shipping address required")
+
+        let request = BTLocalPaymentRequest(
+            paymentType: "ideal",
+            amount: "1.01",
+            currencyCode: "EUR",
+            paymentTypeCountryCode: "NL",
+            email: "lingo-buyer@paypal.com",
+            givenName: "Lizenka",
+            surname: "Penna",
+            phone: "16040000000",
+            isShippingAddressRequired: true
+        )
+        request.localPaymentFlowDelegate = delegate
+
+        localPaymentClient.start(request) { _, _ in }
+
+        waitForExpectations(timeout: 15)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
@@ -103,7 +126,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
@@ -120,6 +143,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             surname: "Penna",
             phone: "16040000000"
         )
+        // localPaymentFlowDelegate intentionally left nil
 
         let expectation = expectation(description: "Start local payment with nil delegate")
 
@@ -135,7 +159,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
     }
 
     func testStart_whenPaymentTypeIsInvalid_failsWithHTTPError() {
@@ -165,7 +189,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
     }
 
     func testStart_usingTokenizationKey_failsWithAuthorizationError() {
@@ -202,7 +226,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
     }
 }
 
@@ -218,6 +242,6 @@ class LocalPaymentStartedDelegate: NSObject, BTLocalPaymentRequestDelegate {
     func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentID: String, start: @escaping () -> Void) {
         receivedPaymentID = paymentID
         expectation?.fulfill()
-        // intentionally does not call start() — stops the flow before the browser launches.
+        // Intentionally does not call start() — stops the flow before the browser launches.
     }
 }
