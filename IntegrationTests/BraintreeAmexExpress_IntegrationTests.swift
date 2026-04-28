@@ -22,7 +22,6 @@ class BTAmericanExpressClient_IntegrationTests: XCTestCase {
     // MARK: - getRewardsBalance
     
     func testGetRewardsBalance_returnsResult() async {
-        let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         let amexClient = BTAmericanExpressClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
         
         let card = BTCard(
@@ -107,48 +106,6 @@ class BTAmericanExpressClient_IntegrationTests: XCTestCase {
             let httpResponse = error.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
             XCTAssertEqual(httpResponse.statusCode, 403)
             expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5)
-    }
-    
-    func testGetRewardsBalance_usingVersionThreeClientToken_returnsRewardsBalance() {
-        americanExpressClient = BTAmericanExpressClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
-        cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
-        
-        let cardExpectation = expectation(description: "Tokenize Amex card using v3 client token")
-        var amexNonce: String?
-        
-        let card = BTCard(
-            number: "378282246310005",
-            expirationMonth: "12",
-            expirationYear: Helpers.shared.futureYear(),
-            cvv: "1234"
-        )
-        
-        cardClient.tokenize(card) { tokenizedCard, error in
-            guard let tokenizedCard else {
-                XCTFail("Expected a nonce to be returned")
-                return
-            }
-            
-            amexNonce = tokenizedCard.nonce
-            cardExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5)
-        
-        guard let nonce = amexNonce else {
-            XCTFail("Amex nonce was not set")
-            return
-        }
-        
-        let rewardsExpectation = expectation(description: "Get rewards balance using v3 client token")
-        
-        americanExpressClient.getRewardsBalance(forNonce: nonce, currencyISOCode: "USD") { rewardsBalance, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(rewardsBalance)
-            rewardsExpectation.fulfill()
         }
         
         waitForExpectations(timeout: 5)
