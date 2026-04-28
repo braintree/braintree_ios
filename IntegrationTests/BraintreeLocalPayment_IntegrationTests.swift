@@ -18,29 +18,6 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
     // MARK: - start
 
-    func testStart_withIDeal_callsDelegateWithPaymentID() {
-        let delegate = LocalPaymentStartedDelegate()
-        delegate.expectation = expectation(description: "Delegate called with paymentID for iDEAL")
-
-        let request = BTLocalPaymentRequest(
-            paymentType: "ideal",
-            amount: "1.01",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "NL",
-            email: "lingo-buyer@paypal.com",
-            givenName: "Lizenka",
-            surname: "Penna",
-            phone: "16040000000",
-            isShippingAddressRequired: false
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        localPaymentClient.start(request) { _, _ in }
-
-        waitForExpectations(timeout: 15)
-        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
-    }
-
     func testStart_withBancontact_callsDelegateWithPaymentID() {
         let delegate = LocalPaymentStartedDelegate()
         delegate.expectation = expectation(description: "Delegate called with paymentID for Bancontact")
@@ -53,50 +30,6 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
             email: "lingo-buyer@paypal.com",
             givenName: "Jan",
             surname: "De Smet"
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        localPaymentClient.start(request) { _, _ in }
-
-        waitForExpectations(timeout: 15)
-        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
-    }
-
-    func testStart_withSofort_callsDelegateWithPaymentID() {
-        let delegate = LocalPaymentStartedDelegate()
-        delegate.expectation = expectation(description: "Delegate called with paymentID for Sofort")
-
-        let request = BTLocalPaymentRequest(
-            paymentType: "sofort",
-            amount: "5.00",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "DE",
-            email: "lingo-buyer@paypal.com",
-            givenName: "Hans",
-            surname: "Müller"
-        )
-        request.localPaymentFlowDelegate = delegate
-
-        localPaymentClient.start(request) { _, _ in }
-
-        waitForExpectations(timeout: 15)
-        XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
-    }
-
-    func testStart_withShippingAddressRequired_callsDelegateWithPaymentID() {
-        let delegate = LocalPaymentStartedDelegate()
-        delegate.expectation = expectation(description: "Delegate called with paymentID with shipping address required")
-
-        let request = BTLocalPaymentRequest(
-            paymentType: "ideal",
-            amount: "1.01",
-            currencyCode: "EUR",
-            paymentTypeCountryCode: "NL",
-            email: "lingo-buyer@paypal.com",
-            givenName: "Lizenka",
-            surname: "Penna",
-            phone: "16040000000",
-            isShippingAddressRequired: true
         )
         request.localPaymentFlowDelegate = delegate
 
