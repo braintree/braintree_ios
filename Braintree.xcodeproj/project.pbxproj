@@ -454,6 +454,13 @@
 			remoteGlobalIDString = 2D941D371B59C76A0016EFB4;
 			remoteInfo = BraintreePayPal;
 		};
+		622160F32FA103570072377B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BEF3F17227CE9EC600072467;
+			remoteInfo = BraintreeSEPADirectDebit;
+		};
 		804698432B27C5530090878E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -2656,6 +2663,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				622160F42FA103570072377B /* PBXTargetDependency */,
 				A9C4E08224EC2F8B002F6FF2 /* PBXTargetDependency */,
 				A9C4E08424EC2F8B002F6FF2 /* PBXTargetDependency */,
 				A9C4E08624EC2F8B002F6FF2 /* PBXTargetDependency */,
@@ -4043,6 +4051,11 @@
 			isa = PBXTargetDependency;
 			target = 2D941D371B59C76A0016EFB4 /* BraintreePayPal */;
 			targetProxy = 045241722EC6AD0D00C25EA6 /* PBXContainerItemProxy */;
+		};
+		622160F42FA103570072377B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BEF3F17227CE9EC600072467 /* BraintreeSEPADirectDebit */;
+			targetProxy = 622160F32FA103570072377B /* PBXContainerItemProxy */;
 		};
 		804698442B27C5530090878E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
