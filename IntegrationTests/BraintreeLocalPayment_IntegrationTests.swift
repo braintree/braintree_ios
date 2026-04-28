@@ -242,6 +242,6 @@ class LocalPaymentStartedDelegate: NSObject, BTLocalPaymentRequestDelegate {
     func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentID: String, start: @escaping () -> Void) {
         receivedPaymentID = paymentID
         expectation?.fulfill()
-        // Intentionally does not call start() — stops the flow before the browser launches.
+        start()
     }
 }
