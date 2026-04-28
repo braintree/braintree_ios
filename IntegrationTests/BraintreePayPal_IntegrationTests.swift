@@ -23,7 +23,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     
     @MainActor
     func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() async throws {
-        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
+        let payPalClient = BTPayPalClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
         let returnURL = URL(string: oneTouchCoreAppSwitchSuccessURLFixture)
