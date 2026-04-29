@@ -63,6 +63,7 @@ import BraintreeCore
         let configuration = try await fetchConfiguration()
 
         let clientMetadataID: String = generateClientMetadataID(with: configuration)
+        print(clientMetadataID)
         let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
