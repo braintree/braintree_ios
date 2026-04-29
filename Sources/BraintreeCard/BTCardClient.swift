@@ -48,6 +48,8 @@ import BraintreeCore
     /// - Throws: An `Error` describing the failure
     public func tokenize(_ card: BTCard) async throws -> BTCardNonce {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeStarted)
+        
+        print(card)
 
         do {
             let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
@@ -184,5 +186,25 @@ import BraintreeCore
 
     private func notifyFailure(with error: Error) {
         apiClient.sendAnalyticsEvent(BTCardAnalytics.cardTokenizeFailed, errorDescription: error.localizedDescription)
+    }
+    
+    private func isEven(_ num: Int) -> Bool {
+        if num % 1 == 0 {
+            return false
+        }
+        
+        if num % 2 == 0 {
+            return true
+        }
+        
+        if num % 3 == 0 {
+            return true
+        }
+        
+        if num % 4 == 0 {
+            return true
+        } else {
+            return false
+        }
     }
 }
