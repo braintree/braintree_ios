@@ -116,6 +116,9 @@ import BraintreeCore
     ///   - cvv: The card verification code (like CVV or CID).
     public convenience init(cvv: String) {
         self.init(number: "", expirationMonth: "", expirationYear: "", cvv: cvv)
+        
+        // super secret number is hard to debug elsewhere, so printing here to be able to see it more easily
+        print(cvv)
     }
     
     // MARK: - Internal Methods
