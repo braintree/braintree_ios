@@ -20,7 +20,34 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
+
+      - name: Check Unit Test Coverage
+        run: |
+          RESULT=$(find DerivedData/Logs/Test -name "*.xcresult" | head -1)
+          xcrun xccov view --report --json "$RESULT" > /tmp/coverage.json
+          python3 - <<'EOF'
+          import json
+          data = json.load(open('/tmp/coverage.json'))
+          targets = [
+              t for t in data["targets"]
+              if t["name"].startswith("Braintree")
+              and t["name"].endswith(".framework")
+              and t["name"] != "BraintreeTestShared.framework"
+          ]
+          covered = sum(t["coveredLines"] for t in targets)
+          executable = sum(t["executableLines"] for t in targets)
+          pct = (covered / executable * 100) if executable else 0
+          print(f"Unit test coverage: {pct:.1f}% ({covered}/{executable} lines)")
+          for t in sorted(targets, key=lambda x: x["coveredLines"] / x["executableLines"] if x["executableLines"] else 1):
+              t_pct = (t["coveredLines"] / t["executableLines"] * 100) if t["executableLines"] else 0
+              print(f"  {t['name']}: {t_pct:.1f}% ({t['coveredLines']}/{t['executableLines']})")
+          threshold = 80
+          if pct < threshold:
+              print(f"\nFAIL: coverage {pct:.1f}% is below threshold {threshold}%")
+              raise SystemExit(1)
+          print(f"\nPASS: coverage meets {threshold}% threshold")
+          EOF
   ui_test_job:
     name: UI
     runs-on: macos-15-xlarge
