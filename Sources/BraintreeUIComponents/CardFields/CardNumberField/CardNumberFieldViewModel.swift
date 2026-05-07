@@ -20,7 +20,7 @@ class CardNumberFieldViewModel: ObservableObject {
         // TODO: call updateCardBrand based off of value changes from validator (handled w/ state change ticket)
     }
     
-    private func updateCardBrand(_ brand: CardBrand) {
+    private func updateCardBrand(with brand: CardBrand) {
         self.cardBrand = brand
     }
 }

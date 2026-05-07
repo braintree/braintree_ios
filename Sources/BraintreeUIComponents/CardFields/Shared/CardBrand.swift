@@ -92,7 +92,6 @@ enum CardBrand: CaseIterable {
 
     // MARK: - Image
 
-    // TODO: No images yet for maestro, hiper, hipercard — falls back to generic card logo
     var image: Image {
         switch self {
         case .amex:
