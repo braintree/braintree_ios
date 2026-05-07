@@ -63,10 +63,10 @@ final class ExpirationDateFieldValidator: CardFieldsValidatorProtocol {
             return false
         }
 
-        guard let farFuture = calendar.date(byAdding: .year, value: Self.maxFutureYears, to: currentDate) else {
+        guard let farFutureDate = calendar.date(byAdding: .year, value: Self.maxFutureYears, to: currentDate) else {
             return false
         }
 
-        return expiryDate <= farFuture
+        return expiryDate <= farFutureDate
     }
 }
