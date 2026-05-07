@@ -9,5 +9,8 @@ final class BTVenmoAnalytics_Tests: XCTestCase {
         XCTAssertEqual(BTVenmoAnalytics.appSwitchSucceeded, "venmo:tokenize:app-switch:succeeded")
         XCTAssertEqual(BTVenmoAnalytics.appSwitchFailed, "venmo:tokenize:app-switch:failed")
         XCTAssertEqual(BTVenmoAnalytics.appSwitchCanceled, "venmo:tokenize:app-switch:canceled")
+        XCTAssertEqual(BTVenmoAnalytics.createPaymentContextStarted, "venmo:create-payment-context:started")
+        XCTAssertEqual(BTVenmoAnalytics.createPaymentContextSucceeded, "venmo:create-payment-context:succeeded")
+        XCTAssertEqual(BTVenmoAnalytics.createPaymentContextfailed, "venmo:create-payment-context:failed")
     }
 }
