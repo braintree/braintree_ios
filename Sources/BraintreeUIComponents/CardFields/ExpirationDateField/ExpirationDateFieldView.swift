@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct ExpirationDateFieldView<ViewModel: CardFieldsViewModelProtocol>: View {
-    
+struct ExpirationDateFieldView: View {
+
     // MARK: - Internal Properties
-    
-    @ObservedObject var viewModel: ViewModel
+
+    @ObservedObject var viewModel: ExpirationDateFieldViewModel
     var onAutoAdvance: (() -> Void)?
     
     // MARK: - Private Properties

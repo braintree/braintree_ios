@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct CVVFieldView<ViewModel: CVVFieldViewModel>: View {
+struct CVVFieldView: View {
 
     // MARK: - Internal Properties
 
-    @ObservedObject var viewModel: ViewModel
+    @ObservedObject var viewModel: CVVFieldViewModel
     var onAutoAdvance: (() -> Void)?
 
     // MARK: - Private Properties

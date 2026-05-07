@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 enum CardBrand: CaseIterable {
     case visa
@@ -88,5 +88,28 @@ enum CardBrand: CaseIterable {
 
     var cvvLength: Int {
         self == .amex ? 4 : 3
+    }
+
+    // MARK: - Image
+
+    var image: Image {
+        switch self {
+        case .amex:
+            Image("AmericanExpressLogo", bundle: .uiComponents)
+        case .dinersClub:
+            Image("CreditCardLogo", bundle: .uiComponents)
+        case .discover:
+            Image("DiscoverLogo", bundle: .uiComponents)
+        case .jcb:
+            Image("JCBLogo", bundle: .uiComponents)
+        case .mastercard:
+            Image("MastercardLogo", bundle: .uiComponents)
+        case .unionPay:
+            Image("UnionPayLogo", bundle: .uiComponents)
+        case .visa:
+            Image("VisaLogo", bundle: .uiComponents)
+        default:
+            Image("CreditCardLogo", bundle: .uiComponents)
+        }
     }
 }
