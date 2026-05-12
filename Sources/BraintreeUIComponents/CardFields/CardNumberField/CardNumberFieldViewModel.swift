@@ -2,25 +2,39 @@ import Foundation
 
 @MainActor
 class CardNumberFieldViewModel: ObservableObject {
-    
+
     @Published private(set) var value: String = ""
     @Published private(set) var validationState: ValidationResult = .valid
     @Published private(set) var cardBrand: CardBrand = .unknown
-    @Published var isFocused: Bool = false
+    @Published var isFocused: Bool = false {
+        didSet {
+            // Show validation errors only after the user leaves the field
+            if !isFocused {
+                validationState = validator.validate(value)
+            }
+        }
+    }
 
-    private let validator = CardNumberFieldValidator()
+    var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
+    var maxLength: Int { cardBrand.maxLength }
 
-    // TODO: Implement auto-advance logic w/ state change
-    var shouldAutoAdvance: Bool { false }
+    // MARK: - Private Properties
 
-    // TODO: Implement validation and formatting w/ state change
+    private let validator: CardNumberFieldValidator
+
+    init(validator: CardNumberFieldValidator = CardNumberFieldValidator()) {
+        self.validator = validator
+    }
+
+    // MARK: - Internal Methods
+
     func updateValue(_ newValue: String) {
         value = newValue
-        
-        // TODO: call updateCardBrand based off of value changes from validator (handled w/ state change ticket)
-    }
-    
-    private func updateCardBrand(with brand: CardBrand) {
-        self.cardBrand = brand
+        cardBrand = validator.detectBrand(from: newValue)
+
+        let result = validator.validate(newValue)
+        if result == .valid {
+            validationState = .valid
+        }
     }
 }
