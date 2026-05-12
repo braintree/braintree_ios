@@ -23,7 +23,7 @@ struct CardFieldsContainerView<Content: View>: View {
             if case .invalid(let message) = validationState {
                 Text(message)
                     .font(.caption)
-                    .foregroundColor(.red)
+                    .foregroundColor(.cardFieldErrorBorder)
                     .padding(.horizontal, 4)
             }
         }
@@ -31,7 +31,7 @@ struct CardFieldsContainerView<Content: View>: View {
     
     private var borderColor: Color {
         if case .invalid = validationState {
-            return .red
+            return .cardFieldErrorBorder
         }
         return isFocused ? Color(.systemBlue) : Color(.systemGray4)
     }

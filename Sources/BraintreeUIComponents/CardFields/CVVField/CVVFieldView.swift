@@ -11,6 +11,7 @@ struct CVVFieldView: View {
 
     @FocusState private var isFocused: Bool
     @State private var showCVVHint: Bool = false
+    @State private var textFieldText: String = ""
 
     // MARK: - View
 
@@ -25,15 +26,19 @@ struct CVVFieldView: View {
                     .foregroundColor(Color(.secondaryLabel))
 
                 ZStack(alignment: .leading) {
-                    TextField("", text: Binding(
-                        get: { viewModel.rawValue },
-                        set: { viewModel.updateValue($0) }
-                    ))
+                    TextField("", text: $textFieldText)
                     .keyboardType(.numberPad)
                     .focused($isFocused)
                     .foregroundColor(.clear)
                     .tint(Color(.label))
                     .font(.system(size: 16))
+                    .onChange(of: textFieldText) { _, newValue in
+                        let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
+                        if digits != textFieldText {
+                            textFieldText = digits
+                        }
+                        viewModel.updateValue(digits)
+                    }
 
                     if viewModel.characters.isEmpty {
                         Text("•••")

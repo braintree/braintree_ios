@@ -5,10 +5,18 @@ class CVVFieldViewModel: ObservableObject {
 
     @Published private(set) var value: String = ""
     @Published private(set) var validationState: ValidationResult = .valid
-    @Published var isFocused: Bool = false
+    @Published var isFocused: Bool = false {
+        didSet {
+            // Show validation errors only after the user leaves the field
+            if !isFocused {
+                validationState = validator.validate(rawValue)
+            }
+        }
+    }
 
-    // TODO: Implement auto-advance logic with state changes
-    var shouldAutoAdvance: Bool { false }
+    var shouldAutoAdvance: Bool { validationState == .valid && !rawValue.isEmpty }
+
+    var maxLength: Int { validator.expectedLength ?? 4 }
 
     // MARK: - Internal Properties
 
@@ -18,10 +26,25 @@ class CVVFieldViewModel: ObservableObject {
     /// Raw digits only — no masking, used for tokenization
     @Published private(set) var rawValue: String = ""
 
+    // MARK: - Private Properties
+
+    private let validator: CVVFieldValidator
+
+    init(validator: CVVFieldValidator = CVVFieldValidator()) {
+        self.validator = validator
+    }
+
+    // MARK: - Internal Methods
+
     func updateValue(_ newValue: String) {
         let digits = String(newValue.filter { $0.isNumber }.prefix(4))
         rawValue = digits
         value = digits
+
+        let result = validator.validate(digits)
+        if result == .valid {
+            validationState = .valid
+        }
 
         let oldCount = characters.count
         let newCount = digits.count
@@ -47,6 +70,8 @@ class CVVFieldViewModel: ObservableObject {
             }
         }
     }
+
+    // MARK: - Private Methods
 
     private func scheduleMasking(for characterID: UUID) {
         Task {
