@@ -130,7 +130,7 @@ import BraintreeCore
             let jsonResponse = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             let errorMessage = jsonResponse?["error"]["message"].asString()
             let defaultMessage = "Failed to fetch a Venmo paymentContextID while constructing the requestURL."
-            throw BTVenmoError.invalidRedirectURL(errorMessage ?? defaultMessage)      
+            throw BTVenmoError.invalidRedirectURL(errorMessage ?? defaultMessage)
         }
 
         guard let body else {
