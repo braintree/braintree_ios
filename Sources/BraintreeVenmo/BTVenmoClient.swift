@@ -114,7 +114,7 @@ import BraintreeCore
         let metadata = apiClient.metadata
         metadata.source = .venmoApp
 
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextStarted)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextStarted, isVaultRequest: shouldVault)
         
         let graphQLParameters = VenmoCreatePaymentContextGraphQLBody(
             request: request,
@@ -125,7 +125,7 @@ import BraintreeCore
         do {
             (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
         } catch {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextfailed)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextfailed, isVaultRequest: shouldVault)
             let nsError = error as NSError
             let jsonResponse = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             let errorMessage = jsonResponse?["error"]["message"].asString()
@@ -142,7 +142,7 @@ import BraintreeCore
             throw BTVenmoError.invalidRedirectURL(message)
         }
         
-        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextSucceeded)
+        apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextSucceeded, isVaultRequest: shouldVault)
 
         contextID = paymentContextID
 
