@@ -125,7 +125,7 @@ import BraintreeCore
         do {
             (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
         } catch {
-            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextfailed, isVaultRequest: shouldVault)
+            apiClient.sendAnalyticsEvent(BTVenmoAnalytics.createPaymentContextFailed, isVaultRequest: shouldVault)
             let nsError = error as NSError
             let jsonResponse = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             let errorMessage = jsonResponse?["error"]["message"].asString()

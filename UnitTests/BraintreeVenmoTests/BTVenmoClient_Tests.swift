@@ -672,7 +672,7 @@ class BTVenmoClient_Tests: XCTestCase {
 
         wait(for: [callbackExpectation], timeout: 2)
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.createPaymentContextfailed))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.createPaymentContextFailed))
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {
