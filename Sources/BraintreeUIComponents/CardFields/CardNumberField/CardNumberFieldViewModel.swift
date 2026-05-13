@@ -31,9 +31,9 @@ class CardNumberFieldViewModel: ObservableObject {
     func formatted(digits: String) -> String {
         var result = ""
         var index = digits.startIndex
-        for (i, groupSize) in cardBrand.digitGroups.enumerated() {
+        for (groupIndex, groupSize) in cardBrand.digitGroups.enumerated() {
             guard index < digits.endIndex else { break }
-            if i > 0 { result += " " }
+            if groupIndex > 0 { result += " " }
             let end = digits.index(index, offsetBy: groupSize, limitedBy: digits.endIndex) ?? digits.endIndex
             result += digits[index..<end]
             index = end
@@ -45,8 +45,7 @@ class CardNumberFieldViewModel: ObservableObject {
         value = newValue
         cardBrand = validator.detectBrand(from: newValue)
 
-        let result = validator.validate(newValue)
-        if result == .valid {
+        if case .valid = validator.validate(newValue) {
             validationState = .valid
         }
     }
