@@ -5,7 +5,7 @@ struct CardNumberFieldView: View {
     @ObservedObject var viewModel: CardNumberFieldViewModel
     var onAutoAdvance: (() -> Void)?
     @FocusState private var isFocused: Bool
-
+    @State private var textFieldText: String = ""
 
     var body: some View {
         CardFieldsContainerView(
@@ -19,14 +19,19 @@ struct CardNumberFieldView: View {
                     .font(.system(size: 12))
                     .foregroundColor(Color(.secondaryLabel))
 
-                TextField("", text: Binding(
-                    get: { viewModel.value },
-                    set: { viewModel.updateValue($0) }
-                ))
-                .keyboardType(.numberPad)
-                .focused($isFocused)
-                .font(.system(size: 16))
-                .foregroundColor(Color(.label))
+                TextField("", text: $textFieldText)
+                    .keyboardType(.numberPad)
+                    .focused($isFocused)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(.label))
+                    .onChange(of: textFieldText) { _, newValue in
+                        let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
+                        let formatted = viewModel.formatted(digits: digits)
+                        if formatted != textFieldText {
+                            textFieldText = formatted
+                        }
+                        viewModel.updateValue(digits)
+                    }
             }
 
             Spacer()

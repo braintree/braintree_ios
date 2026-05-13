@@ -84,6 +84,19 @@ enum CardBrand: CaseIterable {
         validLengths.max() ?? 16
     }
 
+    // MARK: - Digit Groups
+
+    var digitGroups: [Int] {
+        switch self {
+        case .amex:
+            return [4, 6, 5]
+        case .dinersClub:
+            return [4, 6, 4]
+        default:
+            return [4, 4, 4, 4]
+        }
+    }
+
     // MARK: - CVV
 
     var cvvLength: Int {
