@@ -6,6 +6,8 @@
   * Add `payPalPayLater` case to `BTButtonType` enum
 * BraintreeVenmo
   * Add analytics tracking for `createPaymentContext` GraphQL call
+* BraintreeCard
+  * Make `number` field optional in `BTCard`
 
 ## 7.5.0 (2026-02-25)
 * BraintreePayPal
