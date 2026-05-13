@@ -4,7 +4,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length file_length function_body_length
 /// Used to process Venmo payments
 @objc public class BTVenmoClient: NSObject {
 
@@ -88,7 +88,6 @@ import BraintreeCore
     /// - Parameter request: A `BTVenmoRequest`
     /// - Returns: On success, you will receive an instance of `BTVenmoAccountNonce`
     /// - Throws: An `Error` describing the failure. If the user cancels out of the flow, the error code will be `.canceled`.
-    // swiftlint:disable function_body_length
     public func tokenize(_ request: BTVenmoRequest) async throws -> BTVenmoAccountNonce {
         apiClient.sendAnalyticsEvent(BTVenmoAnalytics.tokenizeStarted, isVaultRequest: shouldVault)
 
