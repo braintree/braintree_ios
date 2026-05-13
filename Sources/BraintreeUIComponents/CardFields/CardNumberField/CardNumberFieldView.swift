@@ -26,8 +26,9 @@ struct CardNumberFieldView: View {
                     .foregroundColor(Color(.label))
                     .onChange(of: textFieldText) { _, newValue in
                         let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
-                        if digits != textFieldText {
-                            textFieldText = digits
+                        let formatted = viewModel.formatted(digits: digits)
+                        if formatted != textFieldText {
+                            textFieldText = formatted
                         }
                         viewModel.updateValue(digits)
                     }

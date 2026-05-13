@@ -28,6 +28,19 @@ class CardNumberFieldViewModel: ObservableObject {
 
     // MARK: - Internal Methods
 
+    func formatted(digits: String) -> String {
+        var result = ""
+        var index = digits.startIndex
+        for (i, groupSize) in cardBrand.digitGroups.enumerated() {
+            guard index < digits.endIndex else { break }
+            if i > 0 { result += " " }
+            let end = digits.index(index, offsetBy: groupSize, limitedBy: digits.endIndex) ?? digits.endIndex
+            result += digits[index..<end]
+            index = end
+        }
+        return result
+    }
+
     func updateValue(_ newValue: String) {
         value = newValue
         cardBrand = validator.detectBrand(from: newValue)
