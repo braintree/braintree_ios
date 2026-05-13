@@ -15,7 +15,7 @@ class ExpirationDateFieldViewModel: ObservableObject {
     }
 
     var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
-    var maxLength: Int { 4 }
+    let maxLength = 4
 
     // MARK: - Private Properties
 
