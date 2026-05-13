@@ -10,7 +10,7 @@ import BraintreeCore
 
     // MARK: - Internal Properties
 
-    let number: String
+    let number: String?
     let expirationMonth: String
     let expirationYear: String
     let cvv: String
@@ -35,7 +35,7 @@ import BraintreeCore
     
     /// Creates a Card
     /// - Parameters:
-    ///   - number: Required: The card number.
+    ///   - number: Optional: The card number. If omitted, only the provided fields (e.g. expiration date and CVV) will be tokenized.
     ///   - expirationMonth: Required: The expiration month as a one or two-digit number on the Gregorian calendar.
     ///   - expirationYear: Required: The expiration year as a two or four-digit number on the Gregorian calendar.
     ///   - cvv: Required: The card verification code (like CVV or CID).
@@ -65,7 +65,7 @@ import BraintreeCore
     ///   - authenticationInsightRequested: Optional: If authentication insight is requested. If this property is set to `true`, a `merchantAccountID` must be provided. Defaults to `false`.
     ///   - merchantAccountID: Optional: The merchant account ID.
     public init(
-        number: String,
+        number: String? = nil,
         expirationMonth: String,
         expirationYear: String,
         cvv: String,
@@ -115,7 +115,7 @@ import BraintreeCore
     /// - Parameters:
     ///   - cvv: The card verification code (like CVV or CID).
     public convenience init(cvv: String) {
-        self.init(number: "", expirationMonth: "", expirationYear: "", cvv: cvv)
+        self.init(number: nil, expirationMonth: "", expirationYear: "", cvv: cvv)
     }
     
     // MARK: - Internal Methods
