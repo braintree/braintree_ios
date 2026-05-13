@@ -408,6 +408,7 @@ class BTVenmoClient_Tests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertNil(venmoAccount?.nonce)
             XCTAssertNil(venmoAccount?.username)
+            XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.queryPaymentContextFailed))
             callbackExpectation.fulfill()
         }
 
@@ -418,8 +419,6 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
         wait(for: [callbackExpectation], timeout: 2)
-        
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.queryPaymentContextFailed))
     }
 
     func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
