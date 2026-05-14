@@ -391,6 +391,8 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
         wait(for: [callbackExpectation], timeout: 2)
+        
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.queryPaymentContextSucceeded))
     }
 
     func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_andFetchPaymentContextFails_returnsError() {
@@ -416,6 +418,8 @@ class BTVenmoClient_Tests: XCTestCase {
         BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
 
         wait(for: [callbackExpectation], timeout: 2)
+        
+        XCTAssertTrue(self.mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.queryPaymentContextFailed))
     }
 
     func testTokenizeVenmoAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
@@ -673,6 +677,36 @@ class BTVenmoClient_Tests: XCTestCase {
         wait(for: [callbackExpectation], timeout: 2)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.createPaymentContextFailed))
+    }
+    
+    func testTokenizeVenmoAccount_whenReturnURLContainsPaymentContextID_sendsQueryPaymentContextStartedAnalyticsEvent() {
+        let fakeApplication = FakeApplication()
+        venmoClient.application = fakeApplication
+        venmoClient.bundle = FakeBundle()
+
+        let appSwitchExpectation = expectation(description: "App switch initiated")
+        fakeApplication.onOpenURL = { appSwitchExpectation.fulfill() }
+
+        let callbackExpectation = expectation(description: "Callback")
+        venmoClient.tokenize(venmoRequest) { _, _ in
+            callbackExpectation.fulfill()
+        }
+
+        wait(for: [appSwitchExpectation], timeout: 1)
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "node": [
+                    "paymentMethodId": "fake-venmo-nonce",
+                    "userName": "fake-venmo-username"
+                ]
+            ]
+        ])
+        BTVenmoClient.handleReturnURL(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?resource_id=12345")!)
+
+        wait(for: [callbackExpectation], timeout: 2)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTVenmoAnalytics.queryPaymentContextStarted))
     }
 
     func testTokenizeVenmoAccount_whenAppSwitchCanceled_callsBackWithCancelError() {

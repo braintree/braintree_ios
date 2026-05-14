@@ -6,6 +6,7 @@
   * Add `payPalPayLater` case to `BTButtonType` enum
 * BraintreeVenmo
   * Add analytics tracking for `createPaymentContext` GraphQL call
+  * Add analytics tracking for `queryPaymentContext` GraphQL call
 
 ## 7.5.0 (2026-02-25)
 * BraintreePayPal

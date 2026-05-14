@@ -24,4 +24,10 @@ enum BTVenmoAnalytics {
     static let createPaymentContextStarted = "venmo:create-payment-context:started"
     static let createPaymentContextSucceeded = "venmo:create-payment-context:succeeded"
     static let createPaymentContextFailed = "venmo:create-payment-context:failed"
+    
+    // MARK: - Query Payment Context Events
+    
+    static let queryPaymentContextStarted = "venmo:query-payment-context:started"
+    static let queryPaymentContextSucceeded = "venmo:query-payment-context:succeeded"
+    static let queryPaymentContextFailed = "venmo:query-payment-context:failed"
 }
