@@ -5,13 +5,33 @@ class ExpirationDateFieldViewModel: ObservableObject {
 
     @Published private(set) var value: String = ""
     @Published private(set) var validationState: ValidationResult = .valid
-    @Published var isFocused: Bool = false
+    @Published var isFocused: Bool = false {
+        didSet {
+            // Show validation errors only after the user leaves the field
+            if !isFocused {
+                validationState = validator.validate(value)
+            }
+        }
+    }
 
-    // TODO: Update auto-advance logic
-    var shouldAutoAdvance: Bool { false }
+    var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
+    let maxLength = 4
 
-    // TODO: Implement expiration field validation and formatting checks
+    // MARK: - Private Properties
+
+    private let validator: ExpirationDateFieldValidator
+
+    init(validator: ExpirationDateFieldValidator = ExpirationDateFieldValidator()) {
+        self.validator = validator
+    }
+
+    // MARK: - Internal Methods
+
     func updateValue(_ newValue: String) {
         value = newValue
+        
+        if case .valid = validator.validate(value) {
+            validationState = .valid
+        }
     }
 }

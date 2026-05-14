@@ -8,9 +8,10 @@ struct ExpirationDateFieldView: View {
     var onAutoAdvance: (() -> Void)?
     
     // MARK: - Private Properties
-    
+
     @FocusState private var isFocused: Bool
-    
+    @State private var textFieldText: String = ""
+
     var body: some View {
         CardFieldsContainerView(
             validationState: viewModel.validationState,
@@ -20,20 +21,24 @@ struct ExpirationDateFieldView: View {
                 Text("Expiration (MM/YY)")
                     .font(.system(size: 12))
                     .foregroundColor(Color(.secondaryLabel))
-                
-                TextField(
-                    "",
-                    text: Binding(
-                        get: { viewModel.value },
-                        set: { viewModel.updateValue($0) }
-                    )
-                )
-                .keyboardType(.numberPad)
-                .focused($isFocused)
-                .font(.body)
-                .foregroundColor(Color(.label))
+
+                TextField("", text: $textFieldText)
+                    .keyboardType(.numberPad)
+                    .focused($isFocused)
+                    .font(.body)
+                    .foregroundColor(Color(.label))
+                    .onChange(of: textFieldText) { _, newValue in
+                        let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
+                        let formatted = digits.count > 2
+                            ? "\(digits.prefix(2))/\(digits.dropFirst(2))"
+                            : String(digits)
+                        if formatted != textFieldText {
+                            textFieldText = formatted
+                        }
+                        viewModel.updateValue(formatted)
+                    }
             }
-            
+
             Spacer()
         }
         .onChange(of: isFocused) { _, focused in
