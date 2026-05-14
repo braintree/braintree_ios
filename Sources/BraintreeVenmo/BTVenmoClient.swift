@@ -302,12 +302,6 @@ import BraintreeCore
                     let error = BTVenmoError.invalidBodyReturned
                     notifyFailure(with: error)
                     appSwitchCompletion(nil, error)
-                    apiClient.sendAnalyticsEvent(
-                        BTVenmoAnalytics.queryPaymentContextFailed,
-                        contextID: contextID,
-                        errorDescription: error.localizedDescription,
-                        isVaultRequest: shouldVault
-                    )
                     return
                 }
                 
@@ -320,6 +314,12 @@ import BraintreeCore
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
                 await handleVaultingIfNeeded(for: venmoAccountNonce)
             } catch {
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextFailed,
+                    contextID: contextID,
+                    errorDescription: error.localizedDescription,
+                    isVaultRequest: shouldVault
+                )
                 notifyFailure(with: error)
                 appSwitchCompletion(nil, error)
             }
