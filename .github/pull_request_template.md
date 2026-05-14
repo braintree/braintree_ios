@@ -1,7 +1,3 @@
-Thank you for your contribution to Braintree. 
-
-> Before submitting this PR, note we cannot accept language translation PRs. We support the same languages that are supported by PayPal, and have a dedicated localization team to provide the translations. If there is an error in a specific translation, you may open an issue and we will escalate it to the localization team.
-
 ### Summary of changes
 - 
 
@@ -27,3 +23,21 @@ Thank you for your contribution to Braintree.
 ### Authors
 > List GitHub usernames for everyone who contributed to this pull request.
 -
+
+----
+### Inner Source Process
+Internal to PayPal contributors should fill out this section. All others can delete.
+
+PR should follow these steps before codeowners review will begin:
+1. PR should be opened in a draft state with the "do not review" label
+2. PR should be reviewed by and approved by your teams technical lead, we do not allow LGTM reviews, there should be comments and feedback provided on all PR reviews
+3. Once the above steps are completed, the PR can be moved to ready to review with the label removed
+4. PR comments must be addressed within 24 hours, if you are unable to address within this timeframe, move the PR back to a draft state so our team knows not to review
+
+### Inner Source Checklist
+- [ ] Add label `inner source` to the PR
+- [ ] Provide steps to test the flows changed, if applicable
+- [ ] Demo of the functionality, if applicable
+- [ ] Inner source team Tech Lead provided review and feedback on changes, add tag `tech lead review required` when opening the PR; this tag should be removed and this box checked once review is provided
+- [ ] All upstream dependencies are merged in and this PR can be released at any time
+- [ ] Unit tests and builds have been run locally and pass/compile as expected
