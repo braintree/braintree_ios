@@ -29,9 +29,8 @@ class ExpirationDateFieldViewModel: ObservableObject {
 
     func updateValue(_ newValue: String) {
         value = newValue
-
-        let result = validator.validate(newValue)
-        if result == .valid {
+        
+        if case .valid = validator.validate(value) {
             validationState = .valid
         }
     }
