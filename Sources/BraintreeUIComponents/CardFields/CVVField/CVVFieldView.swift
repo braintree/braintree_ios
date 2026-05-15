@@ -80,6 +80,8 @@ struct CVVFieldView: View {
                         .font(.system(size: 14))
                         .foregroundColor(Color(.secondaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
+                    // width fixed 261, height Hug 104
+                    // border radius 12
                 }
                 .padding(16)
                 .accessibilityElement(children: .combine)
