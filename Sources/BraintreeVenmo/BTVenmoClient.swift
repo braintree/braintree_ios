@@ -290,6 +290,11 @@ import BraintreeCore
     private func handlePaymentContextSuccess(_ returnURL: BTVenmoAppSwitchReturnURL) {
         Task {
             do {
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextStarted,
+                    contextID: contextID,
+                    isVaultRequest: shouldVault
+                )
                 let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
                 let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
 
@@ -299,10 +304,22 @@ import BraintreeCore
                     appSwitchCompletion(nil, error)
                     return
                 }
-
+                
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextSucceeded,
+                    contextID: contextID,
+                    isVaultRequest: shouldVault
+                )
+                
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
                 await handleVaultingIfNeeded(for: venmoAccountNonce)
             } catch {
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextFailed,
+                    contextID: contextID,
+                    errorDescription: error.localizedDescription,
+                    isVaultRequest: shouldVault
+                )
                 notifyFailure(with: error)
                 appSwitchCompletion(nil, error)
             }
