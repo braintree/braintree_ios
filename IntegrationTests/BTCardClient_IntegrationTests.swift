@@ -162,7 +162,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
 
     func testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully() {
         let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientTokenVersion3)
-        
+
         let card = BTCard(
             number: "4111111111111111",
             expirationMonth: "12",
@@ -186,5 +186,81 @@ class BTCardClient_IntegrationTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5)
+    }
+
+    func testVerifyCard_withSavedPaymentMethodToken_cvvOnlyTokenizesSuccessfully() {
+        let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
+
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "123",
+            shouldValidate: true
+        )
+
+        let expectation = expectation(description: "Verify vaulted card with CVV-only nonce")
+
+        cardClient.tokenize(card) { tokenizedCard, error in
+            guard let tokenizedCard else {
+                XCTFail("Expected a payment method nonce to be returned from initial tokenization")
+                return
+            }
+
+            XCTAssertTrue(tokenizedCard.nonce.isValidNonce)
+            XCTAssertNil(error)
+
+            let cvvCard = BTCard(cvv: "123")
+            cardClient.tokenize(cvvCard) { cvvNonce, cvvError in
+                guard let cvvNonce else {
+                    XCTFail("Expected a CVV nonce to be returned")
+                    return
+                }
+
+                XCTAssertTrue(cvvNonce.nonce.isValidNonce)
+                XCTAssertNil(cvvError)
+                expectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testVerifyCard_withSavedPaymentMethodToken_cvvAndExpirationDateTokenizesSuccessfully() {
+        let cardClient = BTCardClient(authorization: BTIntegrationTestsConstants.sandboxClientToken)
+
+        let card = BTCard(
+            number: "4111111111111111",
+            expirationMonth: "12",
+            expirationYear: Helpers.shared.futureYear(),
+            cvv: "123",
+            shouldValidate: true
+        )
+
+        let expectation = expectation(description: "Verify vaulted card with CVV and expiration date nonce")
+
+        cardClient.tokenize(card) { tokenizedCard, error in
+            guard let tokenizedCard else {
+                XCTFail("Expected a payment method nonce to be returned from initial tokenization")
+                return
+            }
+
+            XCTAssertTrue(tokenizedCard.nonce.isValidNonce)
+            XCTAssertNil(error)
+
+            let cvvAndExpCard = BTCard(expirationMonth: "12", expirationYear: Helpers.shared.futureYear(), cvv: "123")
+            cardClient.tokenize(cvvAndExpCard) { cvvAndExpNonce, cvvAndExpError in
+                guard let cvvAndExpNonce else {
+                    XCTFail("Expected a CVV and expiration date nonce to be returned")
+                    return
+                }
+
+                XCTAssertTrue(cvvAndExpNonce.nonce.isValidNonce)
+                XCTAssertNil(cvvAndExpError)
+                expectation.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: 10)
     }
 }
