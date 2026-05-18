@@ -179,7 +179,7 @@ class BTCard_Tests: XCTestCase {
         let optionsDict = inputDict["options"] as! [String: Any]
 
         XCTAssertEqual(creditCardDict["cvv"] as? String, "321")
-        XCTAssertEqual(creditCardDict["number"] as? String, "")
+        XCTAssertNil(creditCardDict["number"])
         XCTAssertNil(creditCardDict["cardholderName"])
 
         let billingDict = creditCardDict["billingAddress"] as? [String: Any]
@@ -188,6 +188,23 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(optionsDict["validate"] as? Bool, false)
     }
     
+    func testGraphQLParameters_whenDoingExpiryAndCVVOnly_omitsNumberFromPayload() {
+        let card = BTCard(expirationMonth: "12", expirationYear: "2038", cvv: "321")
+
+        let params = try! card.graphQLParameters().toDictionary()
+
+        let variablesDict = params["variables"] as! [String: Any]
+        let inputDict = variablesDict["input"] as! [String: Any]
+        let creditCardDict = inputDict["creditCard"] as! [String: Any]
+        let optionsDict = inputDict["options"] as! [String: Any]
+
+        XCTAssertNil(creditCardDict["number"])
+        XCTAssertEqual(creditCardDict["expirationMonth"] as? String, "12")
+        XCTAssertEqual(creditCardDict["expirationYear"] as? String, "2038")
+        XCTAssertEqual(creditCardDict["cvv"] as? String, "321")
+        XCTAssertEqual(optionsDict["validate"] as? Bool, false)
+    }
+
     func testGraphQLParameters_whenMerchantAccountIDIsPresent_andAuthInsightRequestedIsTrue_requestsAuthInsight() {
         let card = BTCard(
             number: "5111111111111111",
