@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.6.0 (2026-05-18)
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
 * BraintreeShopperInsights
   * Add `payPalPayLater` case to `BTButtonType` enum
