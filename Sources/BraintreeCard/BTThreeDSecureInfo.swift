@@ -18,7 +18,7 @@ import BraintreeCore
     /// On authentication, provides additional information as to why the transaction status has the specific value.
     public var authenticationTransactionStatusReason: String?
 
-    /// Cardholder authentication verification value or "CAVV" is the main encrypted message issuers and card networks use to verify authentication has occured.
+    /// Cardholder authentication verification value or "CAVV" is the main encrypted message issuers and card networks use to verify authentication has occurred.
     /// Mastercard uses an "AVV" message which will also be returned in the cavv parameter.
     public var cavv: String?
 

@@ -64,7 +64,7 @@ struct FPTIBatchData: Codable {
         let didPayPalServerAttemptAppSwitch: Bool?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
-        /// The type of page where the payment button is displayed or where an event occured.
+        /// The type of page where the payment button is displayed or where an event occurred.
         let pageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
