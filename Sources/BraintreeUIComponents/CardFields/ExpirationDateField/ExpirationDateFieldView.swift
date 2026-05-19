@@ -47,6 +47,9 @@ struct ExpirationDateFieldView: View {
         .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAutoAdvance in
             if shouldAutoAdvance { onAutoAdvance?() }
         }
+        .onChange(of: viewModel.isFocused) { _, focused in
+            if focused { isFocused = true }
+        }
     }
 }
 

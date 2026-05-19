@@ -6,10 +6,6 @@ struct CardFieldsView: View {
 
     @StateObject private var viewModel = CardFieldsViewModel()
 
-    // TODO: Programmatic focus transfer between fields requires the individual field views
-    // to share a container-level @FocusState. Currently each field owns its @FocusState
-    // internally. Auto-advance callbacks are wired up but focus movement is a follow-up task.
-
     // MARK: - View
 
     var body: some View {
@@ -17,7 +13,11 @@ struct CardFieldsView: View {
             CardNumberFieldView(
                 viewModel: viewModel.cardNumberViewModel,
                 onAutoAdvance: {
-                    // TODO: Move focus to expiration date field
+                    viewModel.expirationDateViewModel.isFocused = true
+                },
+                onBrandChanged: { brand in
+                    let length: Int? = brand == .unknown ? nil : brand.cvvLength
+                    viewModel.cvvViewModel.updateExpectedLength(length)
                 }
             )
 
@@ -25,7 +25,7 @@ struct CardFieldsView: View {
                 ExpirationDateFieldView(
                     viewModel: viewModel.expirationDateViewModel,
                     onAutoAdvance: {
-                        // TODO: Move focus to CVV field
+                        viewModel.cvvViewModel.isFocused = true
                     }
                 )
 

@@ -9,7 +9,8 @@ class CVVFieldViewModel: ObservableObject {
         didSet {
             // Show validation errors only after the user leaves the field
             if !isFocused {
-                validationState = validator.validate(rawValue)
+                let result = validator.validate(rawValue)
+                validationState = result == .validating ? .invalid("CVV is invalid") : result
             }
         }
     }
@@ -36,14 +37,20 @@ class CVVFieldViewModel: ObservableObject {
 
     // MARK: - Internal Methods
 
+    func updateExpectedLength(_ length: Int?) {
+        validator.expectedLength = length
+    }
+
     func updateValue(_ newValue: String) {
-        let digits = String(newValue.filter { $0.isNumber }.prefix(4))
+        let digits = String(newValue.filter { $0.isNumber }.prefix(maxLength))
         rawValue = digits
         value = digits
 
         let result = validator.validate(digits)
         if result == .valid {
             validationState = .valid
+        } else if validationState == .valid {
+            validationState = .validating
         }
 
         let oldCount = characters.count

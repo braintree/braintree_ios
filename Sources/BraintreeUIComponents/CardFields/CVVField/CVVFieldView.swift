@@ -95,6 +95,9 @@ struct CVVFieldView: View {
         .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAdvance in
             if shouldAdvance { onAutoAdvance?() }
         }
+        .onChange(of: viewModel.isFocused) { _, focused in
+            if focused { isFocused = true }
+        }
         .contentShape(Rectangle())
         .onTapGesture {
             isFocused = true

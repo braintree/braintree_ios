@@ -4,6 +4,7 @@ struct CardNumberFieldView: View {
 
     @ObservedObject var viewModel: CardNumberFieldViewModel
     var onAutoAdvance: (() -> Void)?
+    var onBrandChanged: ((CardBrand) -> Void)?
     @FocusState private var isFocused: Bool
     @State private var textFieldText: String = ""
 
@@ -42,6 +43,9 @@ struct CardNumberFieldView: View {
         }
         .onChange(of: viewModel.shouldAutoAdvance) { shouldAdvance in
             if shouldAdvance { onAutoAdvance?() }
+        }
+        .onChange(of: viewModel.cardBrand) { _, brand in
+            onBrandChanged?(brand)
         }
     }
 }

@@ -9,7 +9,8 @@ class ExpirationDateFieldViewModel: ObservableObject {
         didSet {
             // Show validation errors only after the user leaves the field
             if !isFocused {
-                validationState = validator.validate(value)
+                let result = validator.validate(value)
+                validationState = result == .validating ? .invalid("Expiration date is invalid") : result
             }
         }
     }
@@ -30,8 +31,11 @@ class ExpirationDateFieldViewModel: ObservableObject {
     func updateValue(_ newValue: String) {
         value = newValue
 
-        if case .valid = validator.validate(value) {
+        let result = validator.validate(value)
+        if case .valid = result {
             validationState = .valid
+        } else if validationState == .valid {
+            validationState = .validating
         }
     }
 }
