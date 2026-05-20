@@ -62,7 +62,7 @@ import BraintreeCore
     public func collectDeviceData() async throws -> String {
         let configuration = try await fetchConfiguration()
 
-        // MagnesSDK.setUp accesses UIPasteboard internally, which requires the main thread.
+        // MagnesSDK.shared().setUp accesses UIPasteboard internally, which requires the main thread.
         let clientMetadataID: String = await MainActor.run {
             generateClientMetadataID(with: configuration)
         }
