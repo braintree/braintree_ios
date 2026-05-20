@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+
+* BraintreeDataCollector
+  * Fix intermittent crash in `collectDeviceData` caused by an internal SDK component accessing `UIPasteboard` off the main thread
+
 ## 7.6.0 (2026-05-18)
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
 * BraintreeShopperInsights
