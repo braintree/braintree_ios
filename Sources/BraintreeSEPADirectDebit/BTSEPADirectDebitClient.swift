@@ -49,7 +49,7 @@ import BraintreeCore
         _ request: BTSEPADirectDebitRequest,
         completion: @escaping (BTSEPADirectDebitNonce?, Error?) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 let createMandateResult = try await tokenize(request)
                 completion(createMandateResult, nil)
