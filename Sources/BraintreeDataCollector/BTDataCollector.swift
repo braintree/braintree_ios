@@ -62,7 +62,10 @@ import BraintreeCore
     public func collectDeviceData() async throws -> String {
         let configuration = try await fetchConfiguration()
 
-        let clientMetadataID: String = generateClientMetadataID(with: configuration)
+        // MagnesSDK.setUp accesses UIPasteboard internally, which requires the main thread.
+        let clientMetadataID: String = await MainActor.run {
+            generateClientMetadataID(with: configuration)
+        }
         let dataDictionary: [String: String] = ["correlation_id": clientMetadataID]
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dataDictionary) else {
@@ -101,13 +104,16 @@ import BraintreeCore
                 self.config = configuration
                 let magnesEnvironment = self.getMagnesEnvironment(from: self.config)
 
-                try? MagnesSDK.shared().setUp(
-                    setEnviroment: magnesEnvironment,
-                    setOptionalAppGuid: self.deviceIdentifier(),
-                    disableRemoteConfiguration: false,
-                    disableBeacon: false,
-                    magnesSource: .BRAINTREE
-                )
+                // MagnesSDK.setUp accesses UIPasteboard internally, which requires the main thread.
+                await MainActor.run {
+                    try? MagnesSDK.shared().setUp(
+                        setEnviroment: magnesEnvironment,
+                        setOptionalAppGuid: self.deviceIdentifier(),
+                        disableRemoteConfiguration: false,
+                        disableBeacon: false,
+                        magnesSource: .BRAINTREE
+                    )
+                }
 
                 var magnesResult: MagnesResult?
                 magnesResult = try? MagnesSDK.shared().collectAndSubmit(
