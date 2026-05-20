@@ -22,9 +22,12 @@ struct CardFields: View {
             )
 
             HStack(spacing: 12) {
-                ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
-                    viewModel.cvvViewModel.isFocused = true
-                }
+                ExpirationDateFieldView(
+                    viewModel: viewModel.expirationDateViewModel,
+                    onAutoAdvance: {
+                        viewModel.cvvViewModel.isFocused = true
+                    }
+                )
 
                 CVVFieldView(viewModel: viewModel.cvvViewModel)
             }
