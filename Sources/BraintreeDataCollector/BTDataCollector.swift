@@ -104,7 +104,7 @@ import BraintreeCore
                 self.config = configuration
                 let magnesEnvironment = self.getMagnesEnvironment(from: self.config)
 
-                // MagnesSDK.setUp accesses UIPasteboard internally, which requires the main thread.
+                // MagnesSDK.shared().setUp accesses UIPasteboard internally, which requires the main thread.
                 await MainActor.run {
                     try? MagnesSDK.shared().setUp(
                         setEnviroment: magnesEnvironment,
