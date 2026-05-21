@@ -93,7 +93,7 @@ import BraintreeDataCollector
         }
         
         let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-        request.correlationID = dataCollector.clientMetadataID(nil)
+        request.correlationID = await MainActor.run { dataCollector.clientMetadataID(nil) }
         
         return try await start(request: request, configuration: configuration)
     }

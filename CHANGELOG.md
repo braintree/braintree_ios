@@ -5,6 +5,8 @@
   * Fix `getRewardsBalance(forNonce:currencyISOCode:completion:)` completion handler not being called on the main thread (fixes #1801)
 * BraintreeSEPADirectDebit
   * Fix `tokenize(_:completion:)` completion handler not being called on the main thread (fixes #1801)
+* BraintreeDataCollector
+  * Fix intermittent crash in `collectDeviceData` caused by an internal SDK component accessing `UIPasteboard` off the main thread
 
 ## 7.6.0 (2026-05-18)
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
