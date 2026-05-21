@@ -49,7 +49,7 @@ class CVVFieldViewModel: ObservableObject {
         case .invalid:
             break // preserve existing state — don't regress from .invalid
         case .validating:
-            if case .invalid(_) = validationState { } else {
+            if case .invalid = validationState { } else {
                 validationState = .validating
             }
         }
