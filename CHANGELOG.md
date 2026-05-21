@@ -1,7 +1,10 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-
+* BraintreeAmericanExpress
+  * Fix `getRewardsBalance(forNonce:currencyISOCode:completion:)` completion handler not being called on the main thread (fixes #1801)
+* BraintreeSEPADirectDebit
+  * Fix `tokenize(_:completion:)` completion handler not being called on the main thread (fixes #1801)
 * BraintreeDataCollector
   * Fix intermittent crash in `collectDeviceData` caused by an internal SDK component accessing `UIPasteboard` off the main thread
 

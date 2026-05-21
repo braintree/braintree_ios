@@ -430,6 +430,57 @@ class BTSEPADirectDebitClient_Tests: XCTestCase {
         }
     }
     
+    func testTokenize_completionInvokedOnMainThread_onSuccess() {
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "nonce": "a-fake-payment-method-nonce",
+                "details": [
+                    "ibanLastChars": "1234",
+                    "merchantOrPartnerCustomerId": "a-customer-id",
+                    "mandateType": "ONE_OFF"
+                ]
+            ] as [String: Any]
+        )
+
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(
+            authorization: authorization,
+            webAuthenticationSession: mockWebAuthenticationSession,
+            sepaDirectDebitAPI: mockSepaDirectDebitAPI
+        )
+        sepaDirectDebitClient.apiClient = mockAPIClient
+
+        let expectation = self.expectation(description: "Completion called on main thread")
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { _, _ in
+            XCTAssertTrue(Thread.isMainThread)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testTokenize_completionInvokedOnMainThread_onFailure() {
+        let mockWebAuthenticationSession = MockWebAuthenticationSession()
+        let mockSepaDirectDebitAPI = SEPADirectDebitAPI(apiClient: mockAPIClient)
+
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1, userInfo: nil)
+
+        let sepaDirectDebitClient = BTSEPADirectDebitClient(
+            authorization: authorization,
+            webAuthenticationSession: mockWebAuthenticationSession,
+            sepaDirectDebitAPI: mockSepaDirectDebitAPI
+        )
+        sepaDirectDebitClient.apiClient = mockAPIClient
+
+        let expectation = self.expectation(description: "Completion called on main thread")
+        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { _, _ in
+            XCTAssertTrue(Thread.isMainThread)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
     @MainActor
     func testTokenize_callsTokenize_throwsError_andSendsAnalytics() async {
         let mockWebAuthenticationSession = MockWebAuthenticationSession()
