@@ -20,39 +20,39 @@ import XCTest
 
      func testUpdateValue_singleDigit_appendsCharacter() {
          viewModel.updateValue("1")
-         XCTAssertEqual(viewModel.rawValue, "1")
+         XCTAssertEqual(viewModel.value, "1")
          XCTAssertEqual(viewModel.characters.count, 1)
      }
 
      func testUpdateValue_multipleDigits_appendsAllCharacters() {
          viewModel.updateValue("123")
-         XCTAssertEqual(viewModel.rawValue, "123")
+         XCTAssertEqual(viewModel.value, "123")
          XCTAssertEqual(viewModel.characters.count, 3)
      }
 
      func testUpdateValue_exceedsMaxLength_capsAtFourDigits() {
          viewModel.updateValue("12345")
-         XCTAssertEqual(viewModel.rawValue, "1234")
+         XCTAssertEqual(viewModel.value, "1234")
          XCTAssertEqual(viewModel.characters.count, 4)
      }
 
      func testUpdateValue_nonNumericCharacters_areStripped() {
          viewModel.updateValue("1a2b")
-         XCTAssertEqual(viewModel.rawValue, "12")
+         XCTAssertEqual(viewModel.value, "12")
          XCTAssertEqual(viewModel.characters.count, 2)
      }
 
      func testUpdateValue_deletion_removesCharactersFromEnd() {
          viewModel.updateValue("123")
          viewModel.updateValue("12")
-         XCTAssertEqual(viewModel.rawValue, "12")
+         XCTAssertEqual(viewModel.value, "12")
          XCTAssertEqual(viewModel.characters.count, 2)
      }
 
      func testUpdateValue_deleteAll_emptiesCharacters() {
          viewModel.updateValue("123")
          viewModel.updateValue("")
-         XCTAssertEqual(viewModel.rawValue, "")
+         XCTAssertEqual(viewModel.value, "")
          XCTAssertTrue(viewModel.characters.isEmpty)
      }
 
@@ -71,7 +71,7 @@ import XCTest
      func testUpdateValue_sameLength_differentDigits_updatesCharacters() {
          viewModel.updateValue("123")
          viewModel.updateValue("456")
-         XCTAssertEqual(viewModel.rawValue, "456")
+         XCTAssertEqual(viewModel.value, "456")
          XCTAssertEqual(viewModel.characters.map { $0.value }, ["4", "5", "6"])
      }
 

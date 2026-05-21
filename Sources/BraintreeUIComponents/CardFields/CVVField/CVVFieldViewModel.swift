@@ -9,13 +9,13 @@ class CVVFieldViewModel: ObservableObject {
         didSet {
             // Show validation errors only after the user leaves the field
             if !isFocused {
-                let result = validator.validate(rawValue)
+                let result = validator.validate(value)
                 validationState = result == .validating ? .invalid("CVV is invalid") : result
             }
         }
     }
 
-    var shouldAutoAdvance: Bool { validationState == .valid && !rawValue.isEmpty }
+    var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
 
     var maxLength: Int { validator.expectedLength ?? 4 }
 
@@ -23,9 +23,6 @@ class CVVFieldViewModel: ObservableObject {
 
     /// Individual characters with their masking state — drives the custom display
     @Published private(set) var characters: [CVVCharacter] = []
-
-    /// Raw digits only — no masking, used for tokenization
-    @Published private(set) var rawValue: String = ""
 
     // MARK: - Private Properties
 
@@ -43,14 +40,18 @@ class CVVFieldViewModel: ObservableObject {
 
     func updateValue(_ newValue: String) {
         let digits = String(newValue.filter { $0.isNumber }.prefix(maxLength))
-        rawValue = digits
         value = digits
 
         let result = validator.validate(digits)
-        if result == .valid {
+        switch result {
+        case .valid:
             validationState = .valid
-        } else if validationState == .valid {
-            validationState = .validating
+        case .invalid:
+            break // preserve existing state — don't regress from .invalid
+        case .validating:
+            if case .invalid(_) = validationState { } else {
+                validationState = .validating
+            }
         }
 
         let oldCount = characters.count
