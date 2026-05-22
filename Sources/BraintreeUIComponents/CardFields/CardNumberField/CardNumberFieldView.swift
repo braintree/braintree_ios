@@ -51,5 +51,5 @@ struct CardNumberFieldView: View {
 }
 
 #Preview {
-    CardNumberFieldView(viewModel: CardNumberFieldViewModel(), onBrandChanged: { _ in })
+    CardNumberFieldView(viewModel: CardNumberFieldViewModel()) { _ in }
 }
