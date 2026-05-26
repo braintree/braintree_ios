@@ -94,7 +94,6 @@ struct CardFieldsContainerView<Content: View>: View {
                 }
                 Spacer()
             }
-
         }
         .padding()
     }
