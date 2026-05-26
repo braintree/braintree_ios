@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct CardFieldsContainerView<Content: View>: View {
-    
+
     let validationState: ValidationResult
     let isFocused: Bool
     @ViewBuilder let content: () -> Content
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 12) {
@@ -19,10 +19,10 @@ struct CardFieldsContainerView<Content: View>: View {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(borderColor, lineWidth: 1)
             )
-            
+  
             if case .invalid(let message) = validationState {
-                HStack(alignment: .center, spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
+                HStack(alignment: .center, spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 14))
                         .foregroundColor(.cardFieldErrorBorder)
                     Text(message)

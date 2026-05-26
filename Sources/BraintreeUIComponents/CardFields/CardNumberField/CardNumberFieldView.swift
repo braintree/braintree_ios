@@ -5,7 +5,6 @@ struct CardNumberFieldView: View {
     @ObservedObject var viewModel: CardNumberFieldViewModel
     var onAutoAdvance: (() -> Void)?
     var onBrandChanged: (CardBrand) -> Void
-
     @FocusState private var isFocused: Bool
     @State private var textFieldText: String = ""
 
