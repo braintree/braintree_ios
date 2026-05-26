@@ -71,7 +71,7 @@ struct CVVFieldView: View {
             .accessibilityLabel("CVV help")
             .accessibilityHint("Tap for information about where to find your CVV")
             .popover(isPresented: $showCVVHint, arrowEdge: .bottom) {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 12) {
                     Text("CVV")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color(.label))
@@ -81,6 +81,7 @@ struct CVVFieldView: View {
                         .foregroundColor(Color(.secondaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(width: 261)
                 .padding(16)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("CVV help information")
@@ -92,6 +93,9 @@ struct CVVFieldView: View {
         }
         .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAdvance in
             if shouldAdvance { onAutoAdvance?() }
+        }
+        .onChange(of: viewModel.isFocused) { _, focused in
+            if focused { isFocused = true }
         }
         .contentShape(Rectangle())
         .onTapGesture {

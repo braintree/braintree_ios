@@ -10,7 +10,8 @@ class CardNumberFieldViewModel: ObservableObject {
         didSet {
             // Show validation errors only after the user leaves the field
             if !isFocused {
-                validationState = validator.validate(value)
+                let result = validator.validate(value)
+                validationState = result == .validating ? .invalid("Card number is invalid") : result
             }
         }
     }
@@ -45,8 +46,11 @@ class CardNumberFieldViewModel: ObservableObject {
         value = newValue
         cardBrand = validator.detectBrand(from: newValue)
 
-        if case .valid = validator.validate(newValue) {
+        let result = validator.validate(newValue)
+        if case .valid = result {
             validationState = .valid
+        } else if validationState == .valid {
+            validationState = .validating
         }
     }
 }
