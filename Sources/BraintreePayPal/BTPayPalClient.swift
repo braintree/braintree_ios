@@ -481,7 +481,8 @@ import BraintreeDataCollector
             self.experiment = approvalURL.experiment
 
             let dataCollector = BTDataCollector(authorization: self.apiClient.authorization.originalValue)
-            let correlationID = self.payPalRequest?.riskCorrelationID ?? dataCollector.clientMetadataID(self.contextID)
+            let metadataID = await MainActor.run { dataCollector.clientMetadataID(self.contextID) }
+            let correlationID = self.payPalRequest?.riskCorrelationID ?? metadataID
 
             if let contextID = self.contextID {
                 self.clientMetadataIDs[contextID] = correlationID
