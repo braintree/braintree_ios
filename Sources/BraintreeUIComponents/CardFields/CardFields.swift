@@ -1,5 +1,9 @@
 import SwiftUI
 
+
+/// A SwiftUI view that renders a complete card entry form, including fields for card number,
+/// expiration date, and CVV. It handles input validation, card brand detection, and focus
+/// advancement between fields automatically.
 struct CardFields: View {
 
     // MARK: - Private Properties
