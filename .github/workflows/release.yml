@@ -6,8 +6,28 @@ on:
         description: "Version to release"
         required: true
 jobs:
+  unit_tests:
+    name: Unit Tests
+    runs-on: macos-15-xlarge
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Xcode 16.4.0
+        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      - name: Install Package dependencies
+        run: swift package resolve
+
+      - name: Install CocoaPod dependencies
+        run: pod install
+
+      - name: Run Unit Tests
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+
   release:
     name: Release
+    needs: [unit_tests]
     runs-on: macos-15-xlarge
     steps:
       - name: Check out repository
