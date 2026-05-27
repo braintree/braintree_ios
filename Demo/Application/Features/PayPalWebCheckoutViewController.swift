@@ -3,7 +3,7 @@ import UIKit
 import BraintreePayPal
 import BraintreeCore
 
-// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length file_length
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
