@@ -78,7 +78,11 @@ struct PayPalAccount: Encodable {
     let correlationID: String?
     let options: Options?
     let client: Client
+
+    /// The web response returned by the PayPal browser flow.
     let response: PayPalResponse?
+
+    /// The billing agreement token used to tokenize a pending PayPal app switch session.
     let billingAgreementToken: String?
 
     init(
@@ -98,6 +102,7 @@ struct PayPalAccount: Encodable {
         self.billingAgreementToken = nil
     }
 
+    /// Initializes a PayPal account payload for tokenizing a pending app switch billing agreement token.
     init(baToken: String, correlationID: String?) {
         self.responseType = "web"
         self.correlationID = correlationID

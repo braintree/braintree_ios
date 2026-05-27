@@ -52,18 +52,16 @@ import BraintreeDataCollector
     // MARK: - Static Properties
 
     /// This static instance of `BTPayPalClient` is used during the app switch process.
-    /// We require a static reference of to call `handleReturnURL` and return to the app.
+    /// We require a static reference of the client to call `handleReturnURL` and return to the app.
     static var payPalClient: BTPayPalClient?
 
     /// Shared across all instances so only one pending session exists at a time.
     /// Mirrors the same pattern as `payPalClient`. Exposed for testing.
     static var pendingStore: BTPayPalPendingStoreProtocol = BTPayPalInMemoryPendingStore()
 
-    // MARK: - Private Properties (auto-link)
+    // MARK: - Private Properties
 
     private var isAutoTokenizing = false
-
-    // MARK: - Private Properties
 
     private var universalLink: URL?
     
