@@ -28,7 +28,7 @@ import BraintreeDataCollector
     /// Used in POST body for FPTI analytics & `/paypal_account` fetch.
     /// The key is the PayPal context ID (e.g., BA or EC token), and the value is the corresponding client metadata ID.
     var clientMetadataIDs: [String: String] = [:]
-    
+
     /// Exposed for testing the intent associated with this request
     var payPalRequest: BTPayPalRequest?
     
@@ -748,9 +748,20 @@ import BraintreeDataCollector
     private func extractToken(from url: URL?) -> String? {
         guard let url else { return nil }
 
-        let baToken = BTURLUtils.queryParameters(for: url)["ba_token"]
-        let ecToken = BTURLUtils.queryParameters(for: url)["token"]
-        let token = baToken ?? ecToken
+        let params = BTURLUtils.queryParameters(for: url)
+        let baToken = params["ba_token"]
+        let ecToken = params["token"]
+
+        // For checkout+requestBillingAgreement, the return URL contains both an EC token and a newly-minted
+        // BA token. The CMID was stored under the EC token (from the approval URL), so we must look up by
+        // ecToken here rather than defaulting to baToken.
+        let token: String?
+        if payPalRequest?.paymentType == .checkout && shouldRequestBillingAgreement == true {
+            token = ecToken
+        } else {
+            token = baToken ?? ecToken
+        }
+
         return token?.isEmpty == true ? nil : token
     }
     
