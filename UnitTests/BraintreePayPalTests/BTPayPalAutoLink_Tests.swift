@@ -8,6 +8,7 @@ class BTPayPalAutoLink_Tests: XCTestCase {
     var mockAPIClient: MockAPIClient!
     var payPalClient: BTPayPalClient!
     var mockPendingStore: MockPendingStore!
+    var mockWebAuthenticationSession: MockWebAuthenticationSession!
     var fakeApplication: FakeApplication!
     let authorization = "development_testing_integration_merchant_id"
 
@@ -31,6 +32,9 @@ class BTPayPalAutoLink_Tests: XCTestCase {
 
         payPalClient = BTPayPalClient(authorization: authorization, universalLink: URL(string: "https://www.paypal.com")!)
         payPalClient.apiClient = mockAPIClient
+
+        mockWebAuthenticationSession = MockWebAuthenticationSession()
+        payPalClient.webAuthenticationSession = mockWebAuthenticationSession
 
         mockPendingStore = MockPendingStore()
         BTPayPalClient.pendingStore = mockPendingStore
@@ -98,13 +102,15 @@ class BTPayPalAutoLink_Tests: XCTestCase {
     }
 
     func testLaunchPayPalApp_storedSession_containsCorrectCorrelationID() {
-        payPalClient.clientMetadataIDs = ["BA-ABC": "fake-correlation-id"]
-
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "agreementSetup": ["paypalAppApprovalUrl": "https://paypal.com/some-path?ba_token=BA-ABC"]
         ] as [String: Any])
 
-        let vaultRequest = BTPayPalVaultRequest(enablePayPalAppSwitch: true, userAuthenticationEmail: "user@test.com")
+        let vaultRequest = BTPayPalVaultRequest(
+            enablePayPalAppSwitch: true,
+            riskCorrelationID: "fake-correlation-id",
+            userAuthenticationEmail: "user@test.com"
+        )
         let expectation = expectation(description: "tokenize called")
         expectation.isInverted = true
 
@@ -190,22 +196,57 @@ class BTPayPalAutoLink_Tests: XCTestCase {
         XCTAssertNil(mockPendingStore.storedSession)
     }
 
-    func testApplicationDidBecomeActive_whenValidSession_andBTGWFails_deliversAutoLinkFailedError() {
+    func testApplicationDidBecomeActive_whenValidSession_andBTGWFails_doesNotCompleteAndKeepsPendingStore() {
         BTPayPalClient.payPalClient = payPalClient
         mockPendingStore.storedSession = makeValidSession()
         mockAPIClient.cannedResponseError = NSError(domain: "com.test", code: 1)
 
-        let expectation = expectation(description: "AutoLinkFailed error delivered")
-        payPalClient.appSwitchCompletion = { nonce, error in
-            XCTAssertNil(nonce)
-            guard let error = error as? BTPayPalError else { XCTFail(); return }
-            XCTAssertEqual(error, BTPayPalError.autoLinkFailed)
+        let expectation = expectation(description: "Auto-link failure should not complete merchant callback")
+        expectation.isInverted = true
+        payPalClient.appSwitchCompletion = { _, _ in
             expectation.fulfill()
         }
 
         payPalClient.applicationDidBecomeActive(notification: Notification(name: UIApplication.didBecomeActiveNotification))
 
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertNotNil(mockPendingStore.storedSession)
+        XCTAssertEqual(mockPendingStore.clearCallCount, 0)
+    }
+
+    func testApplicationDidBecomeActive_whenBTGWFails_thenSucceedsOnNextForeground_deliversNonce() {
+        BTPayPalClient.payPalClient = payPalClient
+        mockPendingStore.storedSession = makeValidSession()
+        mockAPIClient.cannedResponseError = NSError(domain: "com.test", code: 1)
+
+        let firstAttemptExpectation = expectation(description: "First auto-link failure should not complete merchant callback")
+        firstAttemptExpectation.isInverted = true
+        payPalClient.appSwitchCompletion = { _, _ in
+            firstAttemptExpectation.fulfill()
+        }
+
+        payPalClient.applicationDidBecomeActive(notification: Notification(name: UIApplication.didBecomeActiveNotification))
+
+        wait(for: [firstAttemptExpectation], timeout: 0.5)
+
+        XCTAssertNotNil(mockPendingStore.storedSession)
+
+        mockAPIClient.cannedResponseError = nil
+        mockAPIClient.cannedResponseBody = nonceResponseBody
+
+        let secondAttemptExpectation = expectation(description: "Second auto-link attempt succeeds")
+        payPalClient.appSwitchCompletion = { nonce, error in
+            XCTAssertNotNil(nonce)
+            XCTAssertNil(error)
+            secondAttemptExpectation.fulfill()
+        }
+
+        payPalClient.applicationDidBecomeActive(notification: Notification(name: UIApplication.didBecomeActiveNotification))
+
+        wait(for: [secondAttemptExpectation], timeout: 2)
+
+        XCTAssertNil(mockPendingStore.storedSession)
     }
 
     func testApplicationDidBecomeActive_whenAlreadyAutoTokenizing_doesNotDuplicateRequest() {
@@ -261,12 +302,13 @@ class BTPayPalAutoLink_Tests: XCTestCase {
         mockPendingStore.storedSession = makeValidSession()
         mockAPIClient.cannedResponseError = NSError(domain: "com.test", code: 1)
 
-        let expectation = expectation(description: "Auto-link fails")
+        let expectation = expectation(description: "Auto-link failure should not complete merchant callback")
+        expectation.isInverted = true
         payPalClient.appSwitchCompletion = { _, _ in expectation.fulfill() }
 
         payPalClient.applicationDidBecomeActive(notification: Notification(name: UIApplication.didBecomeActiveNotification))
 
-        waitForExpectations(timeout: 2)
+        waitForExpectations(timeout: 0.5)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.autoLinkFailed))
     }
@@ -386,15 +428,23 @@ class BTPayPalAutoLink_Tests: XCTestCase {
         BTPayPalClient.payPalClient = payPalClient
         mockPendingStore.storedSession = makeValidSession()
         mockAPIClient.cannedResponseBody = nonceResponseBody
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+
+        let handleReturnExpectation = expectation(description: "Handle return completes")
+        payPalClient.appSwitchCompletion = { _, _ in handleReturnExpectation.fulfill() }
+
+        payPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
+
+        wait(for: [handleReturnExpectation], timeout: 2)
 
         let autoLinkExpectation = expectation(description: "Auto-link should NOT fire")
         autoLinkExpectation.isInverted = true
         payPalClient.appSwitchCompletion = { _, _ in autoLinkExpectation.fulfill() }
 
-        payPalClient.handleReturnURL(URL(string: "https://mycoolwebsite.com/braintree-payments/success")!)
-
         payPalClient.applicationDidBecomeActive(notification: Notification(name: UIApplication.didBecomeActiveNotification))
 
-        waitForExpectations(timeout: 0.5)
+        wait(for: [autoLinkExpectation], timeout: 0.5)
+
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.autoLinkStarted))
     }
 }

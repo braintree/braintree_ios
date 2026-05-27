@@ -580,7 +580,6 @@ import BraintreeDataCollector
                 errorDescription: error.localizedDescription,
                 isVaultRequest: isVaultRequest
             )
-            appSwitchCompletion(nil, BTPayPalError.autoLinkFailed)
         }
     }
 
