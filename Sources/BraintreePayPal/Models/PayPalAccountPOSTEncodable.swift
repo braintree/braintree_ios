@@ -24,7 +24,7 @@ struct PayPalAccountPOSTEncodable: Encodable {
             integration: metadata.integration.stringValue,
             source: BTClientMetadataSource.payPalBrowser.stringValue
         )
-        
+
         self.payPalAccount = PayPalAccount(
             request: request,
             client: client,
@@ -36,6 +36,21 @@ struct PayPalAccountPOSTEncodable: Encodable {
         self.merchantAccountID = request.merchantAccountID
     }
 
+    init(
+        metadata: BTClientMetadata,
+        merchantAccountID: String?,
+        baToken: String,
+        correlationID: String?
+    ) {
+        self.meta = Meta(
+            sessionID: metadata.sessionID,
+            integration: metadata.integration.stringValue,
+            source: BTClientMetadataSource.payPalBrowser.stringValue
+        )
+        self.payPalAccount = PayPalAccount(baToken: baToken, correlationID: correlationID)
+        self.merchantAccountID = merchantAccountID
+    }
+
     enum CodingKeys: String, CodingKey {
         case meta = "_meta"
         case payPalAccount = "paypal_account"
@@ -44,11 +59,11 @@ struct PayPalAccountPOSTEncodable: Encodable {
 }
 
 struct Meta: Encodable {
-    
+
     let sessionID: String
     let integration: String
     let source: String
-    
+
     enum CodingKeys: String, CodingKey {
         case sessionID = "sessionId"
         case integration
@@ -63,7 +78,8 @@ struct PayPalAccount: Encodable {
     let correlationID: String?
     let options: Options?
     let client: Client
-    let response: PayPalResponse
+    let response: PayPalResponse?
+    let billingAgreementToken: String?
 
     init(
         request: BTPayPalRequest,
@@ -75,12 +91,21 @@ struct PayPalAccount: Encodable {
     ) {
         self.responseType = responseType
         self.correlationID = correlationID
-
         options = paymentType == .checkout ? Options(validate: false) : nil
         intent  = paymentType == .checkout ? (request as? BTPayPalCheckoutRequest)?.intent.stringValue : nil
-        
         self.client = Client()
         self.response = PayPalResponse(webURL: url?.absoluteString ?? "")
+        self.billingAgreementToken = nil
+    }
+
+    init(baToken: String, correlationID: String?) {
+        self.responseType = "web"
+        self.correlationID = correlationID
+        self.options = nil
+        self.intent = nil
+        self.client = Client()
+        self.response = nil
+        self.billingAgreementToken = baToken
     }
 
     enum CodingKeys: String, CodingKey {
@@ -90,6 +115,7 @@ struct PayPalAccount: Encodable {
         case options
         case client
         case response
+        case billingAgreementToken = "billing_agreement_token"
     }
 }
 

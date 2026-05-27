@@ -48,6 +48,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 14. Missing EC Token for App Switch
     case missingECToken
 
+    /// 15. Auto-link tokenization attempt failed
+    case autoLinkFailed
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -84,6 +87,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 13
         case .missingECToken:
             return 14
+        case .autoLinkFailed:
+            return 15
         }
     }
 
@@ -121,6 +126,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "The PayPal Request was missing or invalid."
         case .missingECToken:
             return "Missing EC Token for PayPal App Switch."
+        case .autoLinkFailed:
+            return "Auto-link tokenization failed. The billing agreement may not have been approved yet."
         }
     }
 
