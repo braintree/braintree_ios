@@ -1,6 +1,6 @@
 import Foundation
 
-/// The type of page where the payment button is displayed or where an event occured.
+/// The type of page where the payment button is displayed or where an event occurred.
 /// - Warning: This module is in beta. It's public API may change or be removed in future releases.
 public enum BTPageType: String {
 

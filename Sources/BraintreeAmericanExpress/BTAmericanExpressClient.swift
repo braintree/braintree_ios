@@ -31,7 +31,7 @@ import BraintreeCore
         currencyISOCode: String,
         completion: @escaping (BTAmericanExpressRewardsBalance?, Error?) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 let rewardsBalance = try await getRewardsBalance(forNonce: nonce, currencyISOCode: currencyISOCode)
                 completion(rewardsBalance, nil)
