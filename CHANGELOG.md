@@ -4,6 +4,9 @@
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
 * BraintreeShopperInsights
   * Add `payPalPayLater` case to `BTButtonType` enum
+* BraintreePayPal
+  * Add support for auto-linking PayPal accounts after manual return from app switch flows.
+  * Fix PayPal auto-link error handling to continue listening for foreground events.
 
 ## 7.5.0 (2026-02-25)
 * BraintreePayPal
