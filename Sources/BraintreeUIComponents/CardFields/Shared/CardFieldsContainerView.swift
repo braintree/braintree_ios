@@ -21,10 +21,16 @@ struct CardFieldsContainerView<Content: View>: View {
             )
 
             if case .invalid(let message) = validationState {
-                Text(message)
-                    .font(.caption)
-                    .foregroundColor(.cardFieldErrorBorder)
-                    .padding(.horizontal, 4)
+                HStack(alignment: .center, spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.system(size: 14))
+                        .foregroundColor(.cardFieldErrorBorder)
+                    Text(message)
+                        .font(.caption)
+                        .foregroundColor(.cardFieldErrorBorder)
+                        .padding(.horizontal, 4)
+                }
+                .padding(.horizontal, 4)
             }
         }
     }
