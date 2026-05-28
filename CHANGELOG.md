@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.7.0 (2026-05-28)
 * BraintreeAmericanExpress
   * Fix `getRewardsBalance(forNonce:currencyISOCode:completion:)` completion handler not being called on the main thread (fixes #1801)
 * BraintreeSEPADirectDebit
