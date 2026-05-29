@@ -12,7 +12,7 @@ jobs:
     # Only fires on PR comments (not plain issues) containing the slash command
     if: >
       github.event.issue.pull_request != null &&
-      contains(github.event.comment.body, '/add inner source')
+      contains(github.event.comment.body, '/inner source')
     runs-on: ubuntu-latest
     steps:
       - name: Acknowledge command
@@ -41,7 +41,7 @@ jobs:
     # Only fires on PR comments containing the slash command
     if: >
       github.event.issue.pull_request != null &&
-      contains(github.event.comment.body, '/remove tech lead review required')
+      contains(github.event.comment.body, '/ready')
     runs-on: ubuntu-latest
     steps:
       - name: Acknowledge command
