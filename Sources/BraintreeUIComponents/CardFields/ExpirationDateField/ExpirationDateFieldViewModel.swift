@@ -18,6 +18,16 @@ class ExpirationDateFieldViewModel: ObservableObject {
     var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
     let maxLength = 4
 
+    var expirationMonth: String {
+        String(value.split(separator: "/", omittingEmptySubsequences: false).first ?? "")
+    }
+
+    var expirationYear: String {
+        let parts = value.split(separator: "/", omittingEmptySubsequences: false)
+        guard parts.count == 2 else { return "" }
+        return "20\(parts[1])"
+    }
+
     // MARK: - Private Properties
 
     private let validator: ExpirationDateFieldValidator

@@ -1,6 +1,4 @@
-#if canImport(BraintreeCard)
 import BraintreeCard
-#endif
 
 extension BTCard {
 

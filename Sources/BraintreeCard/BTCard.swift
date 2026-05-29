@@ -118,6 +118,41 @@ import BraintreeCore
         self.init(number: "", expirationMonth: "", expirationYear: "", cvv: cvv)
     }
     
+    // MARK: - Public Methods
+
+    /// Creates a new `BTCard` by combining the merchant-supplied metadata on this instance
+    /// with card field values collected by `CardFields`.
+    /// - Parameters:
+    ///   - cardNumber: The card number collected from the card number field.
+    ///   - expirationMonth: The expiration month collected from the expiration date field.
+    ///   - expirationYear: The expiration year collected from the expiration date field.
+    ///   - cvv: The CVV collected from the CVV field.
+    /// - Returns: A fully populated `BTCard` ready for tokenization.
+    public func merging(cardNumber: String, expirationMonth: String, expirationYear: String, cvv: String) -> BTCard {
+        BTCard(
+            number: cardNumber,
+            expirationMonth: expirationMonth,
+            expirationYear: expirationYear,
+            cvv: cvv,
+            postalCode: postalCode,
+            cardholderName: cardholderName,
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric,
+            shouldValidate: shouldValidate,
+            authenticationInsightRequested: authenticationInsightRequested,
+            merchantAccountID: merchantAccountID
+        )
+    }
+
     // MARK: - Internal Methods
 
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
