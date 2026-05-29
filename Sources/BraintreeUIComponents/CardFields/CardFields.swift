@@ -50,12 +50,9 @@ public struct CardFields: View {
             )
 
             HStack(spacing: 12) {
-                ExpirationDateFieldView(
-                    viewModel: viewModel.expirationDateViewModel,
-                    onAutoAdvance: {
-                        viewModel.cvvViewModel.isFocused = true
-                    }
-                )
+                ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
+                    viewModel.cvvViewModel.isFocused = true
+                }
 
                 CVVFieldView(viewModel: viewModel.cvvViewModel)
             }
@@ -89,15 +86,14 @@ public struct CardFields: View {
     VStack {
         CardFields(
             authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
-            card: BTCard(),
-            completion: { nonce, error in
-                if let nonce {
-                    print("Tokenization succeeded: \(nonce.nonce)")
-                } else if let error {
-                    print("Tokenization failed: \(error.localizedDescription)")
-                }
+            card: BTCard()
+        ) { nonce, error in
+            if let nonce {
+                print("Tokenization succeeded: \(nonce.nonce)")
+            } else if let error {
+                print("Tokenization failed: \(error.localizedDescription)")
             }
-        )
+        }
         .onValidityChange { valid, tokenize in
             isValid = valid
             submit = tokenize
