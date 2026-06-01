@@ -28,7 +28,7 @@ public struct CardFields: View {
         self._viewModel = StateObject(
             wrappedValue: CardFieldsViewModel(
                 authorization: authorization,
-                cardDetails: card,
+                card: card,
                 completion: completion
             )
         )

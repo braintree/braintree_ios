@@ -1,19 +1,14 @@
 import Foundation
 import Security
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length
 /// Performs HTTP methods on the Braintree Client API
 class BTHTTP: NSObject, URLSessionTaskDelegate {
-
-    typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Internal Properties
 
     /// An array of pinned certificates, each a Data instance consisting of DER encoded x509 certificates
     let pinnedCertificates: [Data] = BTAPIPinnedCertificates.trustedCertificates()
-
-    /// DispatchQueue on which asynchronous code will be executed. Defaults to `DispatchQueue.main`.
-    var dispatchQueue = DispatchQueue.main
     
     /// A URL set to override the URLs derived from the ClientAuthorization or BTConfiguration response
     let customBaseURL: URL?
@@ -67,16 +62,12 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     // MARK: - HTTP Methods
-
-    func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: @escaping RequestCompletion) {
-        httpRequest(method: .get, path: path, configuration: configuration, parameters: parameters, completion: completion)
-    }
     
     func get(
         _ path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         try await httpRequest(
             method: .get,
             path: path,
@@ -89,30 +80,8 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         _ path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
-        headers: [String: String]? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        if authorization.type == .invalidAuthorization {
-            completion(nil, nil, BTAPIClientError.invalidAuthorization(authorization.originalValue))
-            return
-        }
-        
-        httpRequest(
-            method: .post,
-            path: path,
-            configuration: configuration,
-            parameters: parameters,
-            headers: headers,
-            completion: completion
-        )
-    }
-    
-    func post(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
         headers: [String: String]? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         try await httpRequest(
             method: .post,
             path: path,
@@ -123,52 +92,6 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
     }
 
     // MARK: - HTTP Method Helpers
-
-    // TODO: Remove once code calling completion handler version is removed.
-    func httpRequest(
-        method: BTHTTPMethod,
-        path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
-        headers: [String: String]? = nil,
-        completion: RequestCompletion?
-    ) {
-        guard let completion else { return }
-
-        Task { [weak self] in
-            guard let self else {
-                completion(nil, nil, BTHTTPError.deallocated("BTHTTP"))
-                return
-            }
-
-            do {
-                let (json, httpResponse) = try await httpRequest(
-                    method: method,
-                    path: path,
-                    configuration: configuration,
-                    parameters: parameters,
-                    headers: headers
-                )
-                let jsonDict = json.asDictionary() as? [String: Any]
-                let jsonValue = json.value
-                let capturedResponse = httpResponse
-                self.dispatchQueue.async {
-                    let reconstructedJSON = jsonDict.map { BTJSON(value: $0) } ?? BTJSON(value: jsonValue)
-                    completion(reconstructedJSON, capturedResponse, nil)
-                }
-            } catch {
-                let bodyFromError = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
-                let bodyDict = bodyFromError?.asDictionary() as? [String: Any]
-                let response = (error as NSError).userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
-                let capturedError = error
-
-                self.dispatchQueue.async {
-                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
-                    completion(reconstructedBody, response, capturedError)
-                }
-            }
-        }
-    }
     
     func httpRequest(
         method: BTHTTPMethod,

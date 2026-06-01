@@ -3,7 +3,7 @@ import UIKit
 import BraintreePayPal
 import BraintreeCore
 
-// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length file_length
 class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
     lazy var payPalClient = BTPayPalClient(
@@ -78,6 +78,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
     let contactInformationToggle = Toggle(title: "Add Contact Information")
     let amountBreakdownToggle = Toggle(title: "Amount Breakdown")
+    let requestBillingAgreementToggle = Toggle(title: "Request Billing Agreement")
 
     override func viewDidLoad() {
         super.heightConstraint = 500
@@ -112,6 +113,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         let oneTimeCheckoutStackView = buttonsStackView(label: "1-Time Checkout", views: [
             contactInformationToggle,
             amountBreakdownToggle,
+            requestBillingAgreementToggle,
             payPalCheckoutButton,
             payPalAppSwitchForCheckoutButton,
             payPalAppSwitchForCheckoutPayLaterButton,
@@ -180,6 +182,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             contactInformation: contactInformationToggle.isOn ? contactInformation : nil,
             contactPreference: .updateContactInformation,
             lineItems: [lineItem],
+            requestBillingAgreement: requestBillingAgreementToggle.isOn,
             userAuthenticationEmail: emailTextField.text,
             userPhoneNumber: BTPayPalPhoneNumber(
                 countryCode: countryCodeTextField.text ?? "",
@@ -243,9 +246,9 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
-    
+
     // MARK: - Vault Flows
-    
+
     @objc func tappedPayPalVault(_ sender: UIButton) {
         progressBlock("Tapped PayPal - Vault using BTPayPalClient")
         sender.setTitle("Processing...", for: .disabled)
@@ -302,7 +305,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             self.completionBlock(nonce)
         }
     }
-    
+
     @objc func tappedPayPalAppSwitchForCheckout(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
@@ -317,12 +320,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
-            
+
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            
+
             self.completionBlock(nonce)
         }
     }
@@ -341,12 +344,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
-            
+
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            
+
             self.completionBlock(nonce)
         }
     }
@@ -362,16 +365,16 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
-            
+
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            
+
             self.completionBlock(nonce)
         }
     }
-    
+
     @objc func tappedPayLaterForCheckout(_ sender: UIButton) {
         sender.setTitle("Processing...", for: .disabled)
         sender.isEnabled = false
@@ -387,12 +390,12 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
         payPalClient.tokenize(request) { nonce, error in
             sender.isEnabled = true
-            
+
             guard let nonce else {
                 self.progressBlock(error?.localizedDescription)
                 return
             }
-            
+
             self.completionBlock(nonce)
         }
     }

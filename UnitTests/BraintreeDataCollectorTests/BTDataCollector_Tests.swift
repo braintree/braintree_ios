@@ -283,6 +283,36 @@ class BTDataCollector_Tests: XCTestCase {
         XCTAssertEqual(error.errorCode, 4)
     }
     
+    // MARK: - Main Thread Safety Test
+
+    func testCollectDeviceData_invokesGenerateClientMetadataIDOnMainThread() async throws {
+        class ThreadCapturingDataCollector: BTDataCollector {
+            var capturedIsMainThread: Bool?
+
+            override func generateClientMetadataID(with configuration: BTConfiguration) -> String {
+                capturedIsMainThread = Thread.isMainThread
+                return "fake-client-metadata-id"
+            }
+        }
+
+        let config: [String: Any] = ["environment": "sandbox"]
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: config)
+
+        let dataCollector = ThreadCapturingDataCollector(authorization: authorization)
+        dataCollector.apiClient = mockAPIClient
+
+        _ = try await Task.detached {
+            try await dataCollector.collectDeviceData()
+        }.value
+
+        XCTAssertEqual(
+            dataCollector.capturedIsMainThread,
+            true,
+            "generateClientMetadataID must run on the main thread: MagnesSDK.setUp accesses UIPasteboard internally"
+        )
+    }
+
     // MARK: - Async/Await Tests
 
         func testCollectDeviceData_asyncAwait_collectsAllData() async throws {

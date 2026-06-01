@@ -16,15 +16,15 @@ final class CardFieldsViewModel: ObservableObject {
     // MARK: - Private Properties
 
     private let cardClient: BTCardClient
-    private let cardDetails: BTCard
+    private let card: BTCard
     private let completion: (BTCardNonce?, Error?) -> Void
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializer
 
-    init(authorization: String, cardDetails: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
+    init(authorization: String, card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
         self.cardClient = BTCardClient(authorization: authorization)
-        self.cardDetails = cardDetails
+        self.card = card
         self.completion = completion
 
         let cardValid = cardNumberViewModel.$validationState.map { $0 == .valid }
@@ -41,7 +41,7 @@ final class CardFieldsViewModel: ObservableObject {
     func tokenize() {
         guard isFormValid else { return }
 
-        let card = cardDetails.merging(
+        let card = card.merging(
             cardNumber: cardNumberViewModel.value,
             expirationMonth: expirationDateViewModel.expirationMonth,
             expirationYear: expirationDateViewModel.expirationYear,
