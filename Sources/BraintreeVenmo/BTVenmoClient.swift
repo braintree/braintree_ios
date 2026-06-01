@@ -4,7 +4,7 @@ import UIKit
 import BraintreeCore
 #endif
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length file_length function_body_length
 /// Used to process Venmo payments
 @objc public class BTVenmoClient: NSObject {
 
@@ -114,6 +114,12 @@ import BraintreeCore
         let metadata = apiClient.metadata
         metadata.source = .venmoApp
 
+        apiClient.sendAnalyticsEvent(
+            BTVenmoAnalytics.createPaymentContextStarted,
+            contextID: contextID,
+            isVaultRequest: shouldVault
+        )
+        
         let graphQLParameters = VenmoCreatePaymentContextGraphQLBody(
             request: request,
             merchantProfileID: merchantProfileID
@@ -123,6 +129,12 @@ import BraintreeCore
         do {
             (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
         } catch {
+            apiClient.sendAnalyticsEvent(
+                BTVenmoAnalytics.createPaymentContextFailed,
+                contextID: contextID,
+                errorDescription: error.localizedDescription,
+                isVaultRequest: shouldVault
+            )
             let nsError = error as NSError
             let jsonResponse = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
             let errorMessage = jsonResponse?["error"]["message"].asString()
@@ -138,6 +150,12 @@ import BraintreeCore
             let message = "Failed to parse a Venmo paymentContextID while constructing the requestURL. Please contact support."
             throw BTVenmoError.invalidRedirectURL(message)
         }
+        
+        apiClient.sendAnalyticsEvent(
+            BTVenmoAnalytics.createPaymentContextSucceeded,
+            contextID: contextID,
+            isVaultRequest: shouldVault
+        )
 
         contextID = paymentContextID
 
@@ -272,6 +290,11 @@ import BraintreeCore
     private func handlePaymentContextSuccess(_ returnURL: BTVenmoAppSwitchReturnURL) {
         Task {
             do {
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextStarted,
+                    contextID: contextID,
+                    isVaultRequest: shouldVault
+                )
                 let graphQLParameters = VenmoQueryPaymentContextGraphQLBody(paymentContextID: returnURL.paymentContextID)
                 let (body, _) = try await apiClient.post("", parameters: graphQLParameters, httpType: .graphQLAPI)
 
@@ -281,10 +304,22 @@ import BraintreeCore
                     appSwitchCompletion(nil, error)
                     return
                 }
-
+                
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextSucceeded,
+                    contextID: contextID,
+                    isVaultRequest: shouldVault
+                )
+                
                 let venmoAccountNonce = BTVenmoAccountNonce(with: body)
                 await handleVaultingIfNeeded(for: venmoAccountNonce)
             } catch {
+                apiClient.sendAnalyticsEvent(
+                    BTVenmoAnalytics.queryPaymentContextFailed,
+                    contextID: contextID,
+                    errorDescription: error.localizedDescription,
+                    isVaultRequest: shouldVault
+                )
                 notifyFailure(with: error)
                 appSwitchCompletion(nil, error)
             }

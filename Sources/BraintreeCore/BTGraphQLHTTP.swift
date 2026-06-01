@@ -4,53 +4,12 @@ class BTGraphQLHTTP: BTHTTP {
 
     // MARK: - Overrides
     
-    // TODO: Remove this version of get once BTAPIClient converted to async/await
-    override func get(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        dispatchQueue.async {
-            completion(nil, nil, BTGraphQLHTTPError.unsupportedOperation)
-        }
-    }
-    
     override func get(
         _ path: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         throw BTGraphQLHTTPError.unsupportedOperation
-    }
-
-    // TODO: Remove this version of post once BTAPIClient converted to async/await
-    override func post(
-        _ path: String,
-        configuration: BTConfiguration? = nil,
-        parameters: Encodable? = nil,
-        headers: [String: String]? = nil,
-        completion: @escaping RequestCompletion
-    ) {
-        Task { [self] in
-            do {
-                let (body, response) = try await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
-                let bodyDict = body?.asDictionary() as? [String: Any]
-                dispatchQueue.async {
-                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
-                    completion(reconstructedBody, response, nil)
-                }
-            } catch {
-                let bodyFromError = (error as NSError).userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
-                let bodyDict = bodyFromError?.asDictionary() as? [String: Any]
-                let response = (error as NSError).userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
-                let capturedError = error
-                dispatchQueue.async {
-                    let reconstructedBody = bodyDict.map { BTJSON(value: $0) }
-                    completion(reconstructedBody, response, capturedError)
-                }
-            }
-        }
     }
 
     override func post(
@@ -58,7 +17,7 @@ class BTGraphQLHTTP: BTHTTP {
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil,
         headers: [String: String]? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         try await httpRequest(method: "POST", configuration: configuration, parameters: parameters)
     }
 
@@ -68,7 +27,7 @@ class BTGraphQLHTTP: BTHTTP {
         method: String,
         configuration: BTConfiguration? = nil,
         parameters: Encodable? = nil
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+    ) async throws -> (BTJSON, HTTPURLResponse) {
         var errorUserInfo: [String: Any] = [:]
 
         guard

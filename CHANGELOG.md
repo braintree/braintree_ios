@@ -1,9 +1,25 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.7.0 (2026-05-28)
+* BraintreeAmericanExpress
+  * Fix `getRewardsBalance(forNonce:currencyISOCode:completion:)` completion handler not being called on the main thread (fixes #1801)
+* BraintreeSEPADirectDebit
+  * Fix `tokenize(_:completion:)` completion handler not being called on the main thread (fixes #1801)
+* BraintreeDataCollector
+  * Fix intermittent crash in `collectDeviceData` caused by an internal SDK component accessing `UIPasteboard` off the main thread
+* BraintreePayPal
+  * Fix `BTPayPalAccountNonce.clientMetadataID` returning `nil` caused by `clientMetadataID` being generated off the main thread
+  * Fix `BTPayPalAccountNonce.clientMetadataID` returning `nil` for checkout flows with `requestBillingAgreement` enabled
+
+## 7.6.0 (2026-05-18)
 * Fix inconsistency in minimum deployment target, which is now consistently iOS 16 (fixes #1757)
 * BraintreeShopperInsights
   * Add `payPalPayLater` case to `BTButtonType` enum
+* BraintreeVenmo
+  * Add analytics tracking for `createPaymentContext` GraphQL call
+  * Add analytics tracking for `queryPaymentContext` GraphQL call
+* BraintreeCard
+  * Add `BTCard(expirationMonth:expirationYear:cvv:)` to allow expiration date and cvv only tokenization
 
 ## 7.5.0 (2026-02-25)
 * BraintreePayPal

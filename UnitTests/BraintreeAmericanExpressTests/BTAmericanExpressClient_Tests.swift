@@ -93,4 +93,33 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, BTAPIClientError.errorDomain)
         }
     }
+
+    func testGetRewardsBalance_completionInvokedOnMainThread_onSuccess() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "conversionRate": "0.0070",
+            "currencyAmount": "316795.03",
+            "currencyIsoCode": "USD",
+            "requestId": "715f4712-8690-49ed-8cc5-d7fb1c2d",
+            "rewardsAmount": "45256433",
+            "rewardsUnit": "Points"
+        ] as [String: Any])
+
+        let expectation = self.expectation(description: "Completion called on main thread")
+        amexClient?.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { _, _ in
+            XCTAssertTrue(Thread.isMainThread)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testGetRewardsBalance_completionInvokedOnMainThread_onFailure() {
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1, userInfo: nil)
+
+        let expectation = self.expectation(description: "Completion called on main thread")
+        amexClient?.getRewardsBalance(forNonce: "fake-nonce", currencyISOCode: "USD") { _, _ in
+            XCTAssertTrue(Thread.isMainThread)
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
 }

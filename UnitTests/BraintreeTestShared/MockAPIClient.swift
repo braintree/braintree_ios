@@ -41,17 +41,6 @@ public class MockAPIClient: BTAPIClient {
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
-
-    public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        lastGETPath = path
-        lastGETParameters = try? parameters?.toDictionary()
-        lastGETAPIClientHTTPType = httpType
-        
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
-    }
     
     public override func get(
         _ path: String,
@@ -66,18 +55,6 @@ public class MockAPIClient: BTAPIClient {
             throw error
         }
         return (cannedResponseBody, cannedHTTPURLResponse)
-    }
-    
-    public override func post(_ path: String, parameters: Encodable? = nil, headers: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        lastPOSTPath = path
-        lastPOSTParameters = try? parameters?.toDictionary()
-        lastPOSTAPIClientHTTPType = httpType
-        lastPOSTAdditionalHeaders = headers
-        
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
 
     public override func post(

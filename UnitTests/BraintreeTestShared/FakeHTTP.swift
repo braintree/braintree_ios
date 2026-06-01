@@ -10,8 +10,8 @@ import Foundation
     @objc public nonisolated(unsafe) var lastRequestParameters: [String: Any]?
     nonisolated(unsafe) var stubMethod: String?
     nonisolated(unsafe) var stubEndpoint: String?
-    public nonisolated(unsafe) var cannedResponse: BTJSON?
-    @objc public nonisolated(unsafe) var cannedConfiguration: BTJSON?
+    public nonisolated(unsafe) var cannedResponse: BTJSON = BTJSON(value: [:])
+    @objc public nonisolated(unsafe) var cannedConfiguration: BTJSON = BTJSON(value: [:])
     @objc public nonisolated(unsafe) var cannedStatusCode: Int = 0
     public nonisolated(unsafe) var cannedError: Error?
 
@@ -33,29 +33,7 @@ import Foundation
         cannedError = error
     }
     
-    public override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, completion: BTHTTP.RequestCompletion?) {
-        GETRequestCount += 1
-        lastRequestEndpoint = path
-        lastRequestParameters = try? parameters?.toDictionary()
-        lastRequestMethod = "GET"
-
-        if cannedError != nil {
-            dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
-            }
-        } else {
-            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
-            dispatchQueue.async {
-                if path.contains("v1/configuration") {
-                    completion?(self.cannedConfiguration, httpResponse, nil)
-                } else {
-                    completion?(self.cannedResponse, httpResponse, nil)
-                }
-            }
-        }
-    }
-
-    public override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+    public override func get(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil) async throws -> (BTJSON, HTTPURLResponse) {
         GETRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = try? parameters?.toDictionary()
@@ -64,33 +42,15 @@ import Foundation
         if let error = cannedError {
             throw error
         }
-        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)!
         if path.contains("v1/configuration") {
             return (cannedConfiguration, httpResponse)
         } else {
             return (cannedResponse, httpResponse)
         }
     }
-
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        POSTRequestCount += 1
-        lastRequestEndpoint = path
-        lastRequestParameters = try? parameters?.toDictionary()
-        lastRequestMethod = "POST"
-        lastPOSTRequestHeaders = headers
-        if cannedError != nil {
-            dispatchQueue.async {
-                completion?(nil, nil, self.cannedError)
-            }
-        } else {
-            let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
-            dispatchQueue.async {
-                completion?(self.cannedResponse, httpResponse, nil)
-            }
-        }
-    }
     
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON, HTTPURLResponse) {
         POSTRequestCount += 1
         lastRequestEndpoint = path
         lastRequestParameters = try? parameters?.toDictionary()
@@ -99,7 +59,7 @@ import Foundation
         if let error = cannedError {
             throw error
         }
-        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: cannedStatusCode, httpVersion: nil, headerFields: nil)!
         return (cannedResponse, httpResponse)
     }
 }
@@ -113,16 +73,12 @@ import Foundation
         let fakeTokenizationKey = try! TokenizationKey("development_tokenization_key")
         return self.init(authorization: fakeTokenizationKey, customBaseURL: URL(string: "http://fake.com")!)
     }
-
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil, completion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        POSTRequestCount += 1
-        lastRequestParameters = try? parameters?.toDictionary()
-        completion?(self.cannedConfiguration, nil, nil)
-    }
     
-    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON?, HTTPURLResponse?) {
+    public override func post(_ path: String, configuration: BTConfiguration? = nil, parameters: Encodable? = nil, headers: [String: String]? = nil) async throws -> (BTJSON, HTTPURLResponse) {
         POSTRequestCount += 1
         lastRequestParameters = try? parameters?.toDictionary()
-        return (self.cannedConfiguration, nil)
+        let httpResponse = HTTPURLResponse(url: URL(string: path)!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        return (self.cannedConfiguration ?? BTJSON(value: [:]), httpResponse)
     }
 }
+
