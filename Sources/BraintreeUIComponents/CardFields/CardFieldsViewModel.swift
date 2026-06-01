@@ -22,7 +22,11 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Initializer
 
-    init(authorization: String, card: BTCard, completion: @escaping (BTCardNonce?, Error?) -> Void) {
+    init(
+        authorization: String,
+        card: BTCard,
+        completion: @escaping (BTCardNonce?, Error?) -> Void
+    ) {
         self.cardClient = BTCardClient(authorization: authorization)
         self.card = card
         self.completion = completion
