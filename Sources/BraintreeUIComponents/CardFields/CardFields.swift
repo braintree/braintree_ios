@@ -18,7 +18,8 @@ public struct CardFields: View {
     ///   - authorization: A valid tokenization key or client token.
     ///   - card: A `BTCard` created using the `CardFields` convenience initializer, used to supply
     ///     additional fields such as cardholder name or billing address. Card number, expiration date,
-    ///     and CVV are managed by the form and should not be set here.
+    ///     and CVV are managed by the form — if set on the `BTCard`, they will be overwritten by
+    ///     the values entered in the form.
     ///   - completion: Called with the resulting `BTCardNonce` on success, or an `Error` on failure.
     public init(
         authorization: String,
@@ -69,6 +70,10 @@ public struct CardFields: View {
     // MARK: - Public Methods
 
     /// Registers a handler that is called whenever the form's overall validity changes.
+    ///
+    /// Use the `isValid` parameter to enable or disable your submit button. When the user taps
+    /// submit, call the provided `submit` closure to tokenize the card. The merchant is responsible
+    /// for providing and managing the submit button — `CardFields` does not include one.
     /// - Parameter handler: A closure receiving the current validity state and a `submit` closure
     ///   the merchant should call when their submit button is tapped.
     /// - Returns: A modified `CardFields` view.

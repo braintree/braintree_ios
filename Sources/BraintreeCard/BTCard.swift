@@ -177,7 +177,6 @@ import BraintreeCore
         self.init(number: nil, expirationMonth: "", expirationYear: "", cvv: cvv)
     }
 
-
     /// Creates a `BTCard` with only optional metadata fields, omitting card number, expiration date,
     /// and CVV. Use this when passing a `BTCard` to `CardFields`, which manages those fields internally.
     public convenience init(
