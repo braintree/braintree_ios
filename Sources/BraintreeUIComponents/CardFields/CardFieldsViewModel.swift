@@ -1,3 +1,4 @@
+import BraintreeCard
 import Combine
 import Foundation
 
@@ -14,11 +15,22 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
+    private let cardClient: BTCardClient
+    private let card: BTCard
+    private let completion: (BTCardNonce?, Error?) -> Void
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializer
 
-    init() {
+    init(
+        authorization: String,
+        card: BTCard,
+        completion: @escaping (BTCardNonce?, Error?) -> Void
+    ) {
+        self.cardClient = BTCardClient(authorization: authorization)
+        self.card = card
+        self.completion = completion
+
         let cardValid = cardNumberViewModel.$validationState.map { $0 == .valid }
         let expValid = expirationDateViewModel.$validationState.map { $0 == .valid }
         let cvvValid = cvvViewModel.$validationState.map { $0 == .valid }
@@ -26,5 +38,27 @@ final class CardFieldsViewModel: ObservableObject {
         Publishers.CombineLatest3(cardValid, expValid, cvvValid)
             .map { $0 && $1 && $2 }
             .assign(to: &$isFormValid)
+    }
+
+    // MARK: - Internal Methods
+
+    func tokenize() {
+        guard isFormValid else { return }
+
+        let card = card.merging(
+            cardNumber: cardNumberViewModel.value,
+            expirationMonth: expirationDateViewModel.expirationMonth,
+            expirationYear: expirationDateViewModel.expirationYear,
+            cvv: cvvViewModel.value
+        )
+
+        Task {
+            do {
+                let nonce = try await cardClient.tokenize(card)
+                completion(nonce, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
     }
 }

@@ -28,7 +28,10 @@ struct ExpirationDateFieldView: View {
                     .font(.body)
                     .foregroundColor(Color(.label))
                     .onChange(of: textFieldText) { _, newValue in
-                        let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
+                        var digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
+                        if digits.count == 1, let digit = digits.first?.wholeNumberValue, digit >= 2 {
+                            digits = "0\(digits)"
+                        }
                         let formatted = digits.count > 2
                             ? "\(digits.prefix(2))/\(digits.dropFirst(2))"
                             : String(digits)

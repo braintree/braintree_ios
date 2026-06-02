@@ -35,6 +35,7 @@
 		084135452ED0CBAD00884FE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0841353E2ED0CBAD00884FE9 /* Assets.xcassets */; };
 		084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */; };
 		0848260C2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0848260B2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift */; };
+		FDCDC009DA7E4809AA4BCE98 /* ExpirationDateFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */; };
 		086D56D02F8566B500120B47 /* CardBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56CF2F8566B500120B47 /* CardBrand.swift */; };
 		086D56D62F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */; };
 		087831332F7B09CE003BB460 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
@@ -852,6 +853,7 @@
 		084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButtonColor.swift; sourceTree = "<group>"; };
 		084135462ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonColorProtocol.swift; sourceTree = "<group>"; };
 		0848260B2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFieldValidatorTests.swift; sourceTree = "<group>"; };
+		C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFieldViewModelTests.swift; sourceTree = "<group>"; };
 		086D56CF2F8566B500120B47 /* CardBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrand.swift; sourceTree = "<group>"; };
 		086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFieldValidatorTests.swift; sourceTree = "<group>"; };
 		087831382F7C1666003BB460 /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
@@ -1561,6 +1563,7 @@
 				2863A507CC454374A3E14E6A /* CardNumberFieldViewModelTests.swift */,
 				08804D482F86D61E005ED3AC /* CVVFieldValidatorTests.swift */,
 				0848260B2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift */,
+				C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */,
 			);
 			path = BraintreeUIComponentsTests;
 			sourceTree = "<group>";
@@ -3678,6 +3681,7 @@
 				086D56D62F8568BB00120B47 /* CardNumberFieldValidatorTests.swift in Sources */,
 				081F74712EF09793002D53EA /* PayPalButton_Tests.swift in Sources */,
 				0848260C2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift in Sources */,
+				FDCDC009DA7E4809AA4BCE98 /* ExpirationDateFieldViewModelTests.swift in Sources */,
 				081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */,
 				2863A507CC454374A3E14E6B /* CardNumberFieldViewModelTests.swift in Sources */,

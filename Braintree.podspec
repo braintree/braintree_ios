@@ -102,6 +102,7 @@ Pod::Spec.new do |s|
   s.subspec "UIComponents" do |s|
     s.source_files = "Sources/BraintreeUIComponents/*.swift"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/Card"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
     s.resource_bundle = {
