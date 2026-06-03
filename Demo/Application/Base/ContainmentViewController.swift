@@ -229,6 +229,8 @@ class ContainmentViewController: UIViewController {
             return ApplePayViewController(authorization: authorization)
         case "CardTokenizationViewController":
             return CardTokenizationViewController(authorization: authorization)
+        case "CardFieldsViewController":
+            return CardFieldsViewController(authorization: authorization)
         case "DataCollectorViewController":
             return DataCollectorViewController(authorization: authorization)
         case "IdealViewController":
