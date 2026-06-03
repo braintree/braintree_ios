@@ -229,8 +229,6 @@ class ContainmentViewController: UIViewController {
             return ApplePayViewController(authorization: authorization)
         case "CardTokenizationViewController":
             return CardTokenizationViewController(authorization: authorization)
-        case "CardFieldsViewController":
-            return CardFieldsViewController(authorization: authorization)
         case "DataCollectorViewController":
             return DataCollectorViewController(authorization: authorization)
         case "IdealViewController":
@@ -247,8 +245,8 @@ class ContainmentViewController: UIViewController {
             return ThreeDSecureViewController(authorization: authorization)
         case "VenmoViewController":
             return VenmoViewController(authorization: authorization)
-        case "PaymentButtonViewController":
-            return PaymentButtonViewController(authorization: authorization)
+        case "UIComponentsViewController":
+            return UIComponentsViewController(authorization: authorization)
         case "PayPalMessagingViewController":
             return PayPalMessagingViewController(authorization: authorization)
         default:

@@ -9,7 +9,7 @@ final class PayPalButton_UITests: XCTestCase {
         continueAfterFailure = false
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-MockedPayPalTokenizationKey")
-        app.launchArguments.append("-Integration:PaymentButtonViewController")
+        app.launchArguments.append("-Integration:UIComponentsViewController")
 
         app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"
         app.launch()

@@ -19,9 +19,8 @@
 			<array>
 				<string>PayPal - Web Checkout</string>
 				<string>Credit Card Tokenization</string>
-				<string>Card Fields</string>
 				<string>Venmo - Custom Button</string>
-				<string>Payment Buttons</string>
+				<string>UI Components</string>
 				<string>Apple Pay - PassKit</string>
 				<string>3D Secure Payment Flow</string>
 				<string>Fraud Protection - BTDataCollector</string>
@@ -36,9 +35,8 @@
 			<array>
 				<string>PayPalWebCheckoutViewController</string>
 				<string>CardTokenizationViewController</string>
-				<string>CardFieldsViewController</string>
 				<string>VenmoViewController</string>
-				<string>PaymentButtonViewController</string>
+				<string>UIComponentsViewController</string>
 				<string>ApplePayViewController</string>
 				<string>ThreeDSecureViewController</string>
 				<string>DataCollectorViewController</string>

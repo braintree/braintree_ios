@@ -11,7 +11,7 @@
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */; };
+		08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */; };
 		08A83F6A2EE9AB5A0076BD28 /* VenmoButton_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */; };
 		08A83F6C2EE9CC730076BD28 /* PayPalButton_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */; };
 		42456E3E25474B620018374E /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42456E3C25474B620018374E /* BTUITest.swift */; };
@@ -83,7 +83,6 @@
 		BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */; };
 		BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */; };
-		073657ED8C684E118D97F5F8 /* CardFieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C6F5549A3B4C97825C45BA /* CardFieldsViewController.swift */; };
 		BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,7 +132,7 @@
 
 /* Begin PBXFileReference section */
 		04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonHelper.swift; sourceTree = "<group>"; };
-		08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonViewController.swift; sourceTree = "<group>"; };
+		08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsViewController.swift; sourceTree = "<group>"; };
 		08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton_UITests.swift; sourceTree = "<group>"; };
 		08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalButton_UITests.swift; sourceTree = "<group>"; };
@@ -207,7 +206,6 @@
 		BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalWebCheckoutViewController.swift; sourceTree = "<group>"; };
 		BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollectorViewController.swift; sourceTree = "<group>"; };
 		BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationViewController.swift; sourceTree = "<group>"; };
-		F4C6F5549A3B4C97825C45BA /* CardFieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsViewController.swift; sourceTree = "<group>"; };
 		BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalMessaging_UITests.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -370,10 +368,9 @@
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
-				F4C6F5549A3B4C97825C45BA /* CardFieldsViewController.swift */,
 				BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */,
 				BEAAAA332A98E5E6001ECA63 /* IdealViewController.swift */,
-				08A83F582EDE268E0076BD28 /* PaymentButtonViewController.swift */,
+				08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */,
 				BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
@@ -671,9 +668,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -713,10 +714,9 @@
 				BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
-				073657ED8C684E118D97F5F8 /* CardFieldsViewController.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
-				08A83F592EDE268E0076BD28 /* PaymentButtonViewController.swift in Sources */,
+				08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */,
 				80D36DEE2A7967F20035380E /* VenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */,
 				BEBD52832AAB62FB005D6687 /* ApplePayViewController.swift in Sources */,
