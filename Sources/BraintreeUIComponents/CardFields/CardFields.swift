@@ -9,7 +9,20 @@ public struct CardFields: View {
     // MARK: - Private Properties
 
     @StateObject private var viewModel: CardFieldsViewModel
+    @State private var containerWidth: CGFloat = 280
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
+
+    private var useHorizontalLayout: Bool { containerWidth >= 260 }
+
+    private var expirationField: some View {
+        ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
+            viewModel.cvvViewModel.isFocused = true
+        }
+    }
+
+    private var cvvField: some View {
+        CVVFieldView(viewModel: viewModel.cvvViewModel, containerWidth: containerWidth)
+    }
 
     // MARK: - Initializer
 
@@ -50,15 +63,26 @@ public struct CardFields: View {
                 }
             )
 
-            HStack(spacing: 12) {
-                ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
-                    viewModel.cvvViewModel.isFocused = true
+            if useHorizontalLayout {
+                HStack(alignment: .top, spacing: 12) {
+                    expirationField
+                    cvvField
                 }
-
-                CVVFieldView(viewModel: viewModel.cvvViewModel)
+            } else {
+                VStack(spacing: 12) {
+                    expirationField
+                    cvvField
+                }
             }
         }
         .padding()
+        .background(
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { containerWidth = geo.size.width }
+                    .onChange(of: geo.size.width) { _, newWidth in containerWidth = newWidth }
+            }
+        )
         .onAppear {
             onValidityChange?(viewModel.isFormValid, viewModel.tokenize)
         }

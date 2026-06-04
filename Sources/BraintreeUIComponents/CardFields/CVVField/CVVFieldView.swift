@@ -5,6 +5,7 @@ struct CVVFieldView: View {
     // MARK: - Internal Properties
 
     @ObservedObject var viewModel: CVVFieldViewModel
+    var containerWidth: CGFloat = 280
     var onAutoAdvance: (() -> Void)?
 
     // MARK: - Private Properties
@@ -81,7 +82,7 @@ struct CVVFieldView: View {
                         .foregroundColor(Color(.secondaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .frame(width: 261)
+                .frame(width: min(max(220, containerWidth - 32), 300))
                 .padding(16)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("CVV help information")
