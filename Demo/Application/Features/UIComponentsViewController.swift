@@ -6,23 +6,11 @@ import BraintreeUIComponents
 import BraintreeVenmo
 import BraintreePayPal
 
-class UIComponentsViewController: BaseViewController {
-
-    private let authorization: String
-
-    override init(authorization: String) {
-        self.authorization = authorization
-        super.init(authorization: authorization)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+class UIComponentsViewController: PaymentButtonBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "UI Components"
-        view.backgroundColor = .systemBackground
 
         let demoView = UIComponentsDemoView(
             authorization: authorization,
@@ -120,6 +108,14 @@ private struct UIComponentsDemoView: View {
                     submit = tokenize
                 }
 
+                // Pay button for card fields
+                Button("Pay") {
+                    onProgress("Tokenizing card...")
+                    submit?()
+                }
+                .disabled(!isFormValid)
+                .frame(maxWidth: .infinity, alignment: .center)
+
                 // Venmo + PayPal buttons side by side
                 GeometryReader { geo in
                     let buttonWidth = (geo.size.width - 12) / 2
@@ -167,14 +163,6 @@ private struct UIComponentsDemoView: View {
                     }
                 }
                 .frame(height: 48)
-
-                // Pay button for card fields
-                Button("Pay") {
-                    onProgress("Tokenizing card...")
-                    submit?()
-                }
-                .disabled(!isFormValid)
-                .frame(maxWidth: .infinity, alignment: .center)
             }
             .padding()
         }
