@@ -131,6 +131,18 @@ final class CardNumberFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate("4111"), .validating)
     }
 
+    // MARK: - UnionPay Luhn Exemption
+
+    func testValidate_unionPayCardFailingLuhn_returnsValid() {
+        // UnionPay does not follow the Luhn algorithm, so a card that fails Luhn should still be valid
+        XCTAssertEqual(validator.validate("6200000000000000"), .valid)
+    }
+
+    func testValidate_nonUnionPayCardFailingLuhn_returnsInvalid() {
+        // Non-UnionPay cards must still pass Luhn
+        XCTAssertEqual(validator.validate("4111111111111112"), .invalid("Card number is invalid"))
+    }
+
     // MARK: - Known Test Card Numbers
 
     func testValidate_knownVisaTestCard_returnsValid() {

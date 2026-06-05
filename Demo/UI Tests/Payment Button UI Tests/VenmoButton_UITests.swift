@@ -10,7 +10,7 @@ final class VenmoButton_UITests: XCTestCase {
         continueAfterFailure = false
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-ClientToken")
-        app.launchArguments.append("-Integration:PaymentButtonViewController")
+        app.launchArguments.append("-Integration:UIComponentsViewController")
 
         // Disable animations for more reliable tests
         app.launchEnvironment["UITEST_DISABLE_ANIMATIONS"] = "YES"

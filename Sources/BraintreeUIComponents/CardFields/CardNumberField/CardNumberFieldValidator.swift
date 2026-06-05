@@ -30,8 +30,11 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
             return .invalid("Card number is invalid")
         }
 
-        guard isLuhnValid(digits) else {
-            return .invalid("Card number is invalid")
+        // UnionPay does not follow the Luhn algorithm
+        if brand != .unionPay {
+            guard isLuhnValid(digits) else {
+                return .invalid("Card number is invalid")
+            }
         }
 
         return .valid
