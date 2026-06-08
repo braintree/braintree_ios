@@ -1,4 +1,5 @@
 import BraintreeCard
+import BraintreeCore
 import SwiftUI
 
 /// A SwiftUI view that renders a complete card entry form, including fields for card number,
@@ -60,6 +61,7 @@ public struct CardFields: View {
         }
         .padding()
         .onAppear {
+            viewModel.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
             onValidityChange?(viewModel.isFormValid, viewModel.tokenize)
         }
         .onChange(of: viewModel.isFormValid) { _, isValid in
