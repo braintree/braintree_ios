@@ -9,10 +9,10 @@ public struct CardFields: View {
     // MARK: - Private Properties
 
     @StateObject private var viewModel: CardFieldsViewModel
-    @State private var containerWidth: CGFloat = 280
+    @State private var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
 
-    private var useHorizontalLayout: Bool { containerWidth >= 260 }
+    private var useHorizontalLayout: Bool { containerWidth >= CardFieldsConstants.horizontalLayoutThreshold }
 
     private var expirationField: some View {
         ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
@@ -64,18 +64,17 @@ public struct CardFields: View {
             )
 
             if useHorizontalLayout {
-                HStack(alignment: .top, spacing: 12) {
+                HStack(alignment: .top, spacing: CardFieldsConstants.fieldSpacing) {
                     expirationField
                     cvvField
                 }
             } else {
-                VStack(spacing: 12) {
+                VStack(spacing: CardFieldsConstants.fieldSpacing) {
                     expirationField
                     cvvField
                 }
             }
         }
-        .padding()
         .background(
             GeometryReader { geo in
                 Color.clear
