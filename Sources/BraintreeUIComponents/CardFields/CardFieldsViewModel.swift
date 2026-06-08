@@ -34,9 +34,12 @@ final class CardFieldsViewModel: ObservableObject {
         self.card = card
         self.completion = completion
 
-        let cardValid = cardNumberViewModel.$validationState.map { $0 == .valid }
-        let expValid = expirationDateViewModel.$validationState.map { $0 == .valid }
-        let cvvValid = cvvViewModel.$validationState.map { $0 == .valid }
+        let cardValid = Publishers.CombineLatest(cardNumberViewModel.$validationState, cardNumberViewModel.$value)
+            .map { state, value in state == .valid && !value.isEmpty }
+        let expValid = Publishers.CombineLatest(expirationDateViewModel.$validationState, expirationDateViewModel.$value)
+            .map { state, value in state == .valid && !value.isEmpty }
+        let cvvValid = Publishers.CombineLatest(cvvViewModel.$validationState, cvvViewModel.$value)
+            .map { state, value in state == .valid && !value.isEmpty }
 
         Publishers.CombineLatest3(cardValid, expValid, cvvValid)
             .map { $0 && $1 && $2 }
