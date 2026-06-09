@@ -32,6 +32,10 @@ final class CardFieldsViewModelTests: XCTestCase {
     }
 
     func testTokenize_whenFormIsValid_postsSubmittedEvent() {
+        viewModel.cardNumberViewModel.updateValue("4111111111111111")
+        viewModel.expirationDateViewModel.updateValue("12/45")
+        viewModel.cvvViewModel.updateValue("123")
+
         viewModel.tokenize()
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(UIComponentsAnalytics.cardFieldsSelected))
