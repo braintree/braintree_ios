@@ -8,10 +8,7 @@ import BraintreeCore
 final class CardFieldsViewModelTests: XCTestCase {
 
     private var mockAPIClient = MockAPIClient(authorization: "development_testing_tokenization_key_sandbox")
-    private var viewModel = CardFieldsViewModel(
-        authorization: "development_testing_tokenization_key_sandbox",
-        card: BTCard()
-    ) { _, _ in }
+    private var viewModel: CardFieldsViewModel!
 
     override func setUp() {
         super.setUp()

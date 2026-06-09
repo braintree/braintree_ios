@@ -7,6 +7,9 @@ import Foundation
 final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Internal Properties
+    
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
 
     let cardNumberViewModel = CardNumberFieldViewModel()
     let expirationDateViewModel = ExpirationDateFieldViewModel()
@@ -16,7 +19,6 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
-    var apiClient: BTAPIClient
     private let cardClient: BTCardClient
     private let card: BTCard
     private let completion: (BTCardNonce?, Error?) -> Void
@@ -55,7 +57,7 @@ final class CardFieldsViewModel: ObservableObject {
     func tokenize() {
         guard isFormValid else { return }
 
-        sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsSelected)
+        apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsSelected)
 
         let card = card.merging(
             cardNumber: cardNumberViewModel.value,
