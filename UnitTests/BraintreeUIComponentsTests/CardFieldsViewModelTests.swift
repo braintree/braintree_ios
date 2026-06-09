@@ -15,9 +15,9 @@ final class CardFieldsViewModelTests: XCTestCase {
         mockAPIClient = MockAPIClient(authorization: "development_testing_tokenization_key_sandbox")
         viewModel = CardFieldsViewModel(
             authorization: "development_testing_tokenization_key_sandbox",
+            apiClient: mockAPIClient,
             card: BTCard()
         ) { _, _ in }
-        viewModel.apiClient = mockAPIClient
     }
 
     // MARK: - Analytics

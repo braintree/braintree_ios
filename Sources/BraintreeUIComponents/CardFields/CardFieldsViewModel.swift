@@ -7,9 +7,6 @@ import Foundation
 final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Internal Properties
-    
-    /// Exposed for testing to get the instance of BTAPIClient
-    var apiClient: BTAPIClient
 
     let cardNumberViewModel = CardNumberFieldViewModel()
     let expirationDateViewModel = ExpirationDateFieldViewModel()
@@ -19,6 +16,7 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
+    private let apiClient: BTAPIClient
     private let cardClient: BTCardClient
     private let card: BTCard
     private let completion: (BTCardNonce?, Error?) -> Void
@@ -28,10 +26,11 @@ final class CardFieldsViewModel: ObservableObject {
 
     init(
         authorization: String,
+        apiClient: BTAPIClient,
         card: BTCard,
         completion: @escaping (BTCardNonce?, Error?) -> Void
     ) {
-        self.apiClient = BTAPIClient(authorization: authorization)
+        self.apiClient = apiClient
         self.cardClient = BTCardClient(authorization: authorization)
         self.card = card
         self.completion = completion

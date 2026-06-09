@@ -30,6 +30,7 @@ public struct CardFields: View {
         self._viewModel = StateObject(
             wrappedValue: CardFieldsViewModel(
                 authorization: authorization,
+                apiClient: BTAPIClient(authorization: authorization),
                 card: card,
                 completion: completion
             )
