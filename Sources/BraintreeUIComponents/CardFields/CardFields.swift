@@ -12,7 +12,9 @@ public struct CardFields: View {
     @State private var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
 
-    private var useHorizontalLayout: Bool { containerWidth >= CardFieldsConstants.horizontalLayoutThreshold }
+    private var useHorizontalLayout: Bool {
+        containerWidth >= CardFieldsConstants.horizontalLayoutThreshold
+    }
 
     private var expirationField: some View {
         ExpirationDateFieldView(viewModel: viewModel.expirationDateViewModel) {
