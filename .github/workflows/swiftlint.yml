@@ -13,6 +13,17 @@ jobs:
       - name: Use Xcode 15.0.1
         run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
       - name: Install SwiftLint
-        run: brew install swiftlint
+        # Pinned to 0.55.1 (the version documented in .swiftlint.yml / CLAUDE.md)
+        # via the official release binary. An unpinned `brew install` pulls the
+        # latest SwiftLint, which breaks `--strict` lint on unrelated PRs, and
+        # current Homebrew refuses to install a formula from a loose file path.
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/swiftlint.zip" \
+            https://github.com/realm/SwiftLint/releases/download/0.55.1/portable_swiftlint.zip
+          unzip -o "$RUNNER_TEMP/swiftlint.zip" -d "$RUNNER_TEMP/swiftlint" >/dev/null
+          chmod +x "$RUNNER_TEMP/swiftlint/swiftlint"
+          echo "$RUNNER_TEMP/swiftlint" >> "$GITHUB_PATH"
       - name: Run SwiftLint
-        run: swiftlint --strict
+        run: |
+          swiftlint version
+          swiftlint --strict
