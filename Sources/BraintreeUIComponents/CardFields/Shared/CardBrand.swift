@@ -103,6 +103,24 @@ enum CardBrand: CaseIterable {
         self == .amex ? 4 : 3
     }
 
+    // MARK: - Display
+
+    var displayName: String {
+        switch self {
+        case .visa: return "Visa"
+        case .mastercard: return "Mastercard"
+        case .amex: return "American Express"
+        case .discover: return "Discover"
+        case .jcb: return "JCB"
+        case .dinersClub: return "Diners Club"
+        case .unionPay: return "UnionPay"
+        case .maestro: return "Maestro"
+        case .hiper: return "Hiper"
+        case .hipercard: return "Hipercard"
+        case .unknown: return "Credit card"
+        }
+    }
+
     // MARK: - Image
 
     var image: Image {

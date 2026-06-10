@@ -32,6 +32,7 @@ struct CVVFieldView: View {
                     .foregroundColor(.clear)
                     .tint(Color(.label))
                     .font(.system(size: 16))
+                    .accessibilityLabel("CVV")
                     .onChange(of: textFieldText) { _, newValue in
                         let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
                         if digits != textFieldText {
