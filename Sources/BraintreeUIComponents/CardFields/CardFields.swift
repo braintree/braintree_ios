@@ -44,7 +44,6 @@ public struct CardFields: View {
     private var submitAction: () -> Void {
         {
             apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsValidated)
-            print("888888888-analyticsent00000000")
             viewModel.tokenize()
         }
     }

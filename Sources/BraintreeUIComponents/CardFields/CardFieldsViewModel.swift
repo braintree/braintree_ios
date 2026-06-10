@@ -1,5 +1,4 @@
 import BraintreeCard
-import BraintreeCore
 import Combine
 import Foundation
 
