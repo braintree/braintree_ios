@@ -11,6 +11,7 @@ public struct CardFields: View {
 
     @StateObject private var viewModel: CardFieldsViewModel
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
+    private var apiClient: BTAPIClient
 
     // MARK: - Initializer
 
@@ -30,14 +31,23 @@ public struct CardFields: View {
         self._viewModel = StateObject(
             wrappedValue: CardFieldsViewModel(
                 authorization: authorization,
-                apiClient: BTAPIClient(authorization: authorization),
                 card: card,
                 completion: completion
             )
         )
+        
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     // MARK: - View
+
+    private var submitAction: () -> Void {
+        {
+            apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsValidated)
+            print("888888888-analyticsent00000000")
+            viewModel.tokenize()
+        }
+    }
 
     public var body: some View {
         VStack(spacing: 12) {
@@ -62,11 +72,11 @@ public struct CardFields: View {
         }
         .padding()
         .onAppear {
-            viewModel.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
-            onValidityChange?(viewModel.isFormValid, viewModel.tokenize)
+            apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
+            onValidityChange?(viewModel.isFormValid, submitAction)
         }
         .onChange(of: viewModel.isFormValid) { _, isValid in
-            onValidityChange?(isValid, viewModel.tokenize)
+            onValidityChange?(isValid, submitAction)
         }
     }
 

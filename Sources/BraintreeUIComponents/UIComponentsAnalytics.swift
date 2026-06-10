@@ -5,7 +5,7 @@ enum UIComponentsAnalytics {
     // MARK: - Card Fields Events
 
     static let cardFieldsPresented = "ui-components:card-fields:presented"
-    static let cardFieldsSelected = "ui-components:card-fields:selected"
+    static let cardFieldsValidated = "ui-components:card-fields:validated"
 
     // MARK: - PayPal Button Events
 

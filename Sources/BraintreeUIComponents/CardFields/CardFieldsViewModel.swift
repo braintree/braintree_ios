@@ -16,7 +16,6 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
-    private let apiClient: BTAPIClient
     private let cardClient: BTCardClient
     private let card: BTCard
     private let completion: (BTCardNonce?, Error?) -> Void
@@ -26,11 +25,9 @@ final class CardFieldsViewModel: ObservableObject {
 
     init(
         authorization: String,
-        apiClient: BTAPIClient,
         card: BTCard,
         completion: @escaping (BTCardNonce?, Error?) -> Void
     ) {
-        self.apiClient = apiClient
         self.cardClient = BTCardClient(authorization: authorization)
         self.card = card
         self.completion = completion
@@ -49,14 +46,8 @@ final class CardFieldsViewModel: ObservableObject {
 
     // MARK: - Internal Methods
 
-    func sendAnalyticsEvent(_ event: String) {
-        apiClient.sendAnalyticsEvent(event)
-    }
-
     func tokenize() {
         guard isFormValid else { return }
-
-        apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsSelected)
 
         let card = card.merging(
             cardNumber: cardNumberViewModel.value,

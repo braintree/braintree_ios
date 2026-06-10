@@ -161,7 +161,6 @@
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
 		701D2C1EC8604C8EBCB24E9A /* BraintreeShopperInsights_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743B93AD5C7644ABAC2D5436 /* BraintreeShopperInsights_IntegrationTests.swift */; };
-		7D23803B4E27445996D398A9 /* CardFieldsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86EB7865AE0445228D4BF677 /* CardFieldsViewModelTests.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
 		800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */; };
 		800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */; };
@@ -1058,7 +1057,6 @@
 		842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAPIClient_Tests.swift; sourceTree = "<group>"; };
 		844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDataCollector_Tests.swift; sourceTree = "<group>"; };
 		85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		86EB7865AE0445228D4BF677 /* CardFieldsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsViewModelTests.swift; sourceTree = "<group>"; };
 		9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_BraintreeCoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		95BE4D272F10173D003C139D /* BTPayPalFundingSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalFundingSource.swift; sourceTree = "<group>"; };
 		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:XEZPTDFLAS:changching chi"; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
@@ -1562,7 +1560,6 @@
 				081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */,
 				086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */,
 				08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */,
-				86EB7865AE0445228D4BF677 /* CardFieldsViewModelTests.swift */,
 				2863A507CC454374A3E14E6A /* CardNumberFieldViewModelTests.swift */,
 				08804D482F86D61E005ED3AC /* CVVFieldValidatorTests.swift */,
 				0848260B2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift */,
@@ -3687,7 +3684,6 @@
 				FDCDC009DA7E4809AA4BCE98 /* ExpirationDateFieldViewModelTests.swift in Sources */,
 				081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */,
-				7D23803B4E27445996D398A9 /* CardFieldsViewModelTests.swift in Sources */,
 				2863A507CC454374A3E14E6B /* CardNumberFieldViewModelTests.swift in Sources */,
 				08804D4A2F86D61E005ED3AC /* CVVFieldValidatorTests.swift in Sources */,
 			);
