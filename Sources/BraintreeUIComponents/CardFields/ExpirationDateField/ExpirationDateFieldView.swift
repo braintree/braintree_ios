@@ -27,6 +27,8 @@ struct ExpirationDateFieldView: View {
                     .focused($isFocused)
                     .font(.body)
                     .foregroundColor(Color(.label))
+                    .accessibilityLabel("Expiration Date")
+                    .accessibilityHint("Enter in MM/YY format")
                     .onChange(of: textFieldText) { _, newValue in
                         var digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
                         if digits.count == 1, let digit = digits.first?.wholeNumberValue, digit >= 2 {

@@ -13,6 +13,7 @@ struct CardBrandView: View {
                 brand.image
                     .resizable()
                     .scaledToFit()
+                    .accessibilityLabel(brand.displayName)
             }
     }
 }

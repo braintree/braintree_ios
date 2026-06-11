@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
+		084C2C6E2FD85A960018BB01 /* CardFields_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */; };
 		086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */; };
@@ -132,6 +133,7 @@
 
 /* Begin PBXFileReference section */
 		04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonHelper.swift; sourceTree = "<group>"; };
+		084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFields_UITests.swift; sourceTree = "<group>"; };
 		08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsViewController.swift; sourceTree = "<group>"; };
 		08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton_UITests.swift; sourceTree = "<group>"; };
@@ -252,6 +254,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		084C2C6C2FD85A740018BB01 /* CardFields UI Tests */ = {
+			isa = PBXGroup;
+			children = (
+				084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */,
+			);
+			path = "CardFields UI Tests";
+			sourceTree = "<group>";
+		};
 		08A83F682EE8D0F10076BD28 /* Payment Button UI Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +431,7 @@
 		A9B5ABDF24EB2A2200A4E1C8 /* UI Tests */ = {
 			isa = PBXGroup;
 			children = (
+				084C2C6C2FD85A740018BB01 /* CardFields UI Tests */,
 				08A83F682EE8D0F10076BD28 /* Payment Button UI Tests */,
 				42456E3B25474B620018374E /* Helpers */,
 				A9B5ABE224EB2A2200A4E1C8 /* Info.plist */,
@@ -732,6 +743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				084C2C6E2FD85A960018BB01 /* CardFields_UITests.swift in Sources */,
 				A9C4E07F24EC2A0C002F6FF2 /* ThreeDSecure_UITests_Extensions.swift in Sources */,
 				42456E3F25474B620018374E /* DateGenerator.swift in Sources */,
 				08A83F6A2EE9AB5A0076BD28 /* VenmoButton_UITests.swift in Sources */,

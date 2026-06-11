@@ -25,6 +25,7 @@ struct CardNumberFieldView: View {
                     .focused($isFocused)
                     .font(.system(size: 16))
                     .foregroundColor(Color(.label))
+                    .accessibilityLabel("Card Number")
                     .onChange(of: textFieldText) { _, newValue in
                         let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
                         let formatted = viewModel.formatted(digits: digits)
