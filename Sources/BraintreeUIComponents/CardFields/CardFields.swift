@@ -1,4 +1,5 @@
 import BraintreeCard
+import BraintreeCore
 import SwiftUI
 
 /// A SwiftUI view that renders a complete card entry form, including fields for card number,
@@ -11,6 +12,7 @@ public struct CardFields: View {
     @StateObject private var viewModel: CardFieldsViewModel
     @State private var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
+    private var apiClient: BTAPIClient
 
     private var useHorizontalLayout: Bool {
         containerWidth >= CardFieldsConstants.horizontalLayoutThreshold
@@ -48,9 +50,18 @@ public struct CardFields: View {
                 completion: completion
             )
         )
+        
+        self.apiClient = BTAPIClient(authorization: authorization)
     }
 
     // MARK: - View
+
+    private var submitAction: () -> Void {
+        {
+            apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsValidated)
+            viewModel.tokenize()
+        }
+    }
 
     public var body: some View {
         VStack(spacing: 12) {
@@ -85,10 +96,11 @@ public struct CardFields: View {
             }
         )
         .onAppear {
-            onValidityChange?(viewModel.isFormValid, viewModel.tokenize)
+            apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
+            onValidityChange?(viewModel.isFormValid, submitAction)
         }
         .onChange(of: viewModel.isFormValid) { _, isValid in
-            onValidityChange?(isValid, viewModel.tokenize)
+            onValidityChange?(isValid, submitAction)
         }
     }
 
