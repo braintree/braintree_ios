@@ -29,9 +29,9 @@
 Internal to PayPal contributors should fill out this section. All others can delete.
 
 PR should follow these steps before codeowners review will begin:
-1. PR should be opened in a draft state with the `tech lead review required`, and `inner source` label
+1. Comment `/inner source` on this PR — this will automatically add the `inner source` and `tech lead review required` labels. Open the PR in a draft state.
 2. PR should be reviewed by and approved by your team's technical lead, we do not allow LGTM reviews, there should be comments and feedback provided on all PR reviews
-3. Once the above steps are completed, the PR can be moved to ready to review with the `tech lead review required` label removed
+3. Once the above steps are completed, comment `/ready` on this PR — this will automatically remove the `tech lead review required` label. Move the PR to ready to review.
 4. PR comments must be addressed within 24 hours, if you are unable to address within this timeframe, move the PR back to a draft state so our team knows not to review
 
 ### Inner Source Checklist
