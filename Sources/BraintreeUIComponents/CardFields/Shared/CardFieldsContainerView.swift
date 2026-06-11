@@ -8,15 +8,15 @@ struct CardFieldsContainerView<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 12) {
+            HStack(spacing: CardFieldsConstants.fieldSpacing) {
                 content()
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
+            .padding(.horizontal, CardFieldsConstants.fieldHorizontalPadding)
+            .padding(.vertical, CardFieldsConstants.fieldVerticalPadding)
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: CardFieldsConstants.cornerRadius))
             .overlay(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: CardFieldsConstants.cornerRadius)
                     .stroke(borderColor, lineWidth: 1)
             )
 

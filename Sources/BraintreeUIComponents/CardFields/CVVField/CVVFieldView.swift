@@ -5,6 +5,7 @@ struct CVVFieldView: View {
     // MARK: - Internal Properties
 
     @ObservedObject var viewModel: CVVFieldViewModel
+    var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
     var onAutoAdvance: (() -> Void)?
 
     // MARK: - Private Properties
@@ -12,6 +13,11 @@ struct CVVFieldView: View {
     @FocusState private var isFocused: Bool
     @State private var showCVVHint: Bool = false
     @State private var textFieldText: String = ""
+
+    private var popoverWidth: CGFloat {
+        let preferred = containerWidth - CardFieldsConstants.popoverWidthPadding
+        return min(max(CardFieldsConstants.popoverMinWidth, preferred), CardFieldsConstants.popoverMaxWidth)
+    }
 
     // MARK: - View
 
@@ -82,8 +88,8 @@ struct CVVFieldView: View {
                         .foregroundColor(Color(.secondaryLabel))
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .frame(width: 261)
-                .padding(16)
+                .frame(width: popoverWidth)
+                .padding(CardFieldsConstants.popoverPadding)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("CVV help information")
                 .presentationCompactAdaptation(.popover)

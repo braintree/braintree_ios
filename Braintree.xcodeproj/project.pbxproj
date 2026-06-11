@@ -41,6 +41,7 @@
 		087831332F7B09CE003BB460 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
 		087831392F7C1666003BB460 /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087831382F7C1666003BB460 /* ValidationResult.swift */; };
 		0878313B2F7C2839003BB460 /* CardFieldsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */; };
+		6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */; };
 		0878313D2F83FBDA003BB460 /* CVVCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313C2F83FBDA003BB460 /* CVVCharacter.swift */; };
 		087CA76E2F0D72E80065D89B /* BTGraphQLHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */; };
 		08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */; };
@@ -858,6 +859,7 @@
 		086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFieldValidatorTests.swift; sourceTree = "<group>"; };
 		087831382F7C1666003BB460 /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsContainerView.swift; sourceTree = "<group>"; };
+		802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsConstants.swift; sourceTree = "<group>"; };
 		0878313C2F83FBDA003BB460 /* CVVCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVCharacter.swift; sourceTree = "<group>"; };
 		087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTPError.swift; sourceTree = "<group>"; };
 		08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVFieldViewModelTests.swift; sourceTree = "<group>"; };
@@ -1648,6 +1650,7 @@
 				086D56CF2F8566B500120B47 /* CardBrand.swift */,
 				087831382F7C1666003BB460 /* ValidationResult.swift */,
 				0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */,
+				802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -3646,6 +3649,7 @@
 			files = (
 				0889DB142ED4C0350023AA64 /* PaymentButtonStyle.swift in Sources */,
 				0878313B2F7C2839003BB460 /* CardFieldsContainerView.swift in Sources */,
+				6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */,
 				084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */,
 				08F6DB282F6AEC67002FA6EE /* ExpirationDateFieldViewModel.swift in Sources */,
 				086D56D02F8566B500120B47 /* CardBrand.swift in Sources */,

@@ -1,0 +1,75 @@
+name: Inner Source Labels
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  add-inner-source-labels:
+    # Only fires on PR comments (not plain issues) containing the slash command
+    if: >
+      github.event.issue.pull_request != null &&
+      contains(github.event.comment.body, '/inner source')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge command
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'eyes'
+            });
+
+      - name: Add inner source labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['inner source', 'tech lead review required']
+            });
+
+  remove-tech-lead-label:
+    # Only fires on PR comments containing the slash command
+    if: >
+      github.event.issue.pull_request != null &&
+      contains(github.event.comment.body, '/ready')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge command
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'eyes'
+            });
+
+      - name: Remove tech lead review required label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'tech lead review required'
+              });
+            } catch (e) {
+              // 404 means the label wasn't on the PR — that's fine
+              if (e.status !== 404) throw e;
+            }
