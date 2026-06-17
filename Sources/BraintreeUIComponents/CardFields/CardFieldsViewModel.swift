@@ -13,6 +13,13 @@ final class CardFieldsViewModel: ObservableObject {
 
     @Published private(set) var isFormValid: Bool = false
 
+    // Debounced so rapid delete+retype coalesces — never delivers an intermediate invalid state.
+    lazy var formValidityPublisher: AnyPublisher<Bool, Never> = $isFormValid
+        .dropFirst()
+        .removeDuplicates()
+        .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
+        .eraseToAnyPublisher()
+
     // MARK: - Private Properties
 
     private let cardClient: BTCardClient
@@ -40,6 +47,7 @@ final class CardFieldsViewModel: ObservableObject {
 
         Publishers.CombineLatest3(cardValid, expValid, cvvValid)
             .map { $0 && $1 && $2 }
+            .removeDuplicates()
             .assign(to: &$isFormValid)
     }
 

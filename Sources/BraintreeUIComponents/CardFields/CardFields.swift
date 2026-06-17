@@ -99,7 +99,7 @@ public struct CardFields: View {
             apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
             onValidityChange?(viewModel.isFormValid, submitAction)
         }
-        .onChange(of: viewModel.isFormValid) { _, isValid in
+        .onReceive(viewModel.formValidityPublisher) { isValid in
             onValidityChange?(isValid, submitAction)
         }
     }

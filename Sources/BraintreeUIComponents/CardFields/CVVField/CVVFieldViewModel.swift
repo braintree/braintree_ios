@@ -36,6 +36,10 @@ class CVVFieldViewModel: ObservableObject {
 
     func updateExpectedLength(_ length: Int?) {
         validator.expectedLength = length
+        guard !value.isEmpty else { return }
+
+        let result = validator.validate(value)
+        validationState = result == .validating ? .invalid("CVV is invalid") : result
     }
 
     func updateValue(_ newValue: String) {
@@ -85,9 +89,7 @@ class CVVFieldViewModel: ObservableObject {
         Task {
             try? await Task.sleep(for: .seconds(1))
             guard let index = characters.firstIndex(where: { $0.id == characterID }) else { return }
-            withAnimation(.easeInOut(duration: 0.3)) {
-                characters[index].isMasked = true
-            }
+            characters[index].isMasked = true
         }
     }
 }

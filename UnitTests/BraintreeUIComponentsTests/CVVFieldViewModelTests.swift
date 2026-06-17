@@ -75,6 +75,39 @@ import XCTest
          XCTAssertEqual(viewModel.characters.map { $0.value }, ["4", "5", "6"])
      }
 
+
+     // MARK: - updateExpectedLength
+
+     func testUpdateExpectedLength_validCVVBecomesTooShort_showsError() {
+         viewModel.updateExpectedLength(3)
+         viewModel.updateValue("123")
+         XCTAssertEqual(viewModel.validationState, .valid)
+
+         viewModel.updateExpectedLength(4)
+
+         XCTAssertEqual(viewModel.validationState, .invalid("CVV is invalid"))
+     }
+
+     func testUpdateExpectedLength_invalidCVVBecomesValid_clearsError() {
+         viewModel.updateValue("1234")
+         XCTAssertEqual(viewModel.validationState, .valid)
+
+         viewModel.updateExpectedLength(3)
+         XCTAssertEqual(viewModel.validationState, .invalid("CVV is invalid"))
+
+         viewModel.updateExpectedLength(4)
+
+         XCTAssertEqual(viewModel.validationState, .valid)
+     }
+
+     func testUpdateExpectedLength_emptyField_doesNotShowError() {
+         XCTAssertEqual(viewModel.value, "")
+
+         viewModel.updateExpectedLength(3)
+
+         XCTAssertEqual(viewModel.validationState, .valid)
+     }
+
      // MARK: - Masking Timer
 
      func testMaskingTimer_characterMasksAfterDelay() {
