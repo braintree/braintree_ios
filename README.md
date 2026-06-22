@@ -161,11 +161,11 @@ let paypalButtonView = PayPalButton(
 
 ## Card Fields
 
-The Braintree iOS SDK provides a `CardFields` SwiftUI view that renders a complete card entry form with fields for card number, expiration date, and CVV. It handles input validation, card brand detection, and focus advancement between fields automatically, so you can offer a polished card entry experience without building the form from scratch.
+The Braintree iOS SDK provides a `CardFields` view that renders a complete card entry form with fields for card number, expiration date, and CVV. It handles input validation, card brand detection, and focus advancement between fields automatically.
 
 *Note:* Ensure you include the `BraintreeUIComponents` module in your project to use this feature.
 
-To integrate `CardFields` into your SwiftUI checkout view:
+To integrate `CardFields` into your checkout view:
 
 ```swift
 import BraintreeCard
