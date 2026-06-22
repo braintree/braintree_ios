@@ -201,7 +201,7 @@ struct CheckoutView: View {
 }
 ```
 
-The `onValidityChange` modifier delivers the form's validity state and a `submit` closure whenever validity changes. Use `isValid` to enable or disable your submit button, then call `submit` when the user taps it to tokenize the card and receive a nonce in the completion handler.
+The `onValidityChange` modifier delivers the form's validity state and a `submit` closure whenever validity changes. Use `isValid` to enable or disable your submit button, then call `submit` when the user taps it to tokenize the card and receive a nonce on success or error on failure in the completion handler.
 
 ## Contributing
 
