@@ -159,6 +159,50 @@ let paypalButtonView = PayPalButton(
 }
 ```
 
+## Card Fields
+
+The Braintree iOS SDK provides a `CardFields` view that renders a complete card entry form with fields for card number, expiration date, and CVV. It handles input validation, card brand detection, and focus advancement between fields automatically.
+
+*Note:* Ensure you include the `BraintreeUIComponents` module in your project to use this feature.
+
+To integrate `CardFields` into your checkout view:
+
+```swift
+import BraintreeCard
+import BraintreeUIComponents
+
+struct CheckoutView: View {
+    @State private var isFormValid = false
+    @State private var submit: (() -> Void)?
+
+    var body: some View {
+        VStack {
+            CardFields(
+                authorization: "<YOUR_TOKENIZATION_KEY_OR_CLIENT_TOKEN>",
+                card: BTCard()
+            ) { nonce, error in
+                if let nonce {
+                    // send nonce.nonce to your server to complete the transaction
+                } else if let error {
+                    // handle card tokenization error
+                }
+            }
+            .onValidityChange { isValid, tokenize in
+                isFormValid = isValid
+                submit = tokenize
+            }
+
+            Button("Pay") {
+                submit?()
+            }
+            .disabled(!isFormValid)
+        }
+    }
+}
+```
+
+The `onValidityChange` modifier delivers the form's validity state and a `submit` closure whenever validity changes. Use `isValid` to enable or disable your submit button, then call `submit` when the user taps it to tokenize the card and receive a nonce on success or error on failure in the completion handler.
+
 ## Contributing
 
 We welcome PRs to this repo. See our [development doc](https://github.com/braintree/braintree_ios/blob/main/DEVELOPMENT.md).
