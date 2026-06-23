@@ -23,7 +23,7 @@ import UIKit
     weak var analyticsService: AnalyticsSendable? = BTAnalyticsService.shared
 
     // MARK: - Initializers
-   
+
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     /// Initialize a new API client.
     /// - Parameter authorization: Your tokenization key or client token.
@@ -31,11 +31,11 @@ import UIKit
     public init(authorization: String) {
         self.authorization = Self.authorization(from: authorization)
         self.metadata = BTClientMetadata()
-                
+
         let btHTTP = BTHTTP(authorization: self.authorization)
         http = btHTTP
         configurationLoader = ConfigurationLoader(http: btHTTP)
-        
+
         super.init()
 
         analyticsService?.setAPIClient(self)
@@ -50,13 +50,9 @@ import UIKit
     // MARK: - Deinit
 
     deinit {
-        if http != nil && http?.session != nil {
-            http?.session.finishTasksAndInvalidate()
-        }
-
-        if graphQLHTTP != nil && graphQLHTTP?.session != nil {
-            graphQLHTTP?.session.finishTasksAndInvalidate()
-        }
+        http?.session.finishTasksAndInvalidate()
+        graphQLHTTP?.session.finishTasksAndInvalidate()
+        payPalHTTP?.session.finishTasksAndInvalidate()
     }
 
     // MARK: - Public Methods
@@ -85,13 +81,9 @@ import UIKit
     }
     
     public func fetchOrReturnRemoteConfiguration() async throws -> BTConfiguration {
-        do {
-            let configuration = try await configurationLoader.getConfig()
-            setupHTTPCredentials(configuration)
-            return configuration
-        } catch {
-            throw error
-        }
+        let configuration = try await configurationLoader.getConfig()
+        await MainActor.run { setupHTTPCredentials(configuration) }
+        return configuration
     }
        
     /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
@@ -143,8 +135,7 @@ import UIKit
             throw BTAPIClientError.invalidAuthorization(authorization.originalValue)
         }
 
-        let configuration = try await configurationLoader.getConfig()
-        setupHTTPCredentials(configuration)
+        let configuration = try await fetchOrReturnRemoteConfiguration()
 
         let postParameters = BTAPIRequest(requestBody: parameters, metadata: metadata, httpType: httpType)
         
@@ -241,6 +232,9 @@ import UIKit
     
     // MARK: Private Helpers
     
+    // @MainActor serializes writes to graphQLHTTP and payPalHTTP, preventing a data race
+    // where concurrent callers on different executors could each observe nil and race to set them.
+    @MainActor
     private func setupHTTPCredentials(_ configuration: BTConfiguration?) {
         if graphQLHTTP == nil {
             graphQLHTTP = BTGraphQLHTTP(authorization: authorization)
@@ -248,7 +242,7 @@ import UIKit
         }
         if payPalHTTP == nil {
             let paypalBaseURL: URL? = payPalAPIURL(forEnvironment: configuration?.environment ?? "")
-            
+
             if authorization.type == .clientToken {
                 payPalHTTP = BTHTTP(authorization: authorization, customBaseURL: paypalBaseURL)
                 payPalHTTP?.networkTimingDelegate = self
