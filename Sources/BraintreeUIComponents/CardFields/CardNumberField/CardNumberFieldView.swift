@@ -38,7 +38,7 @@ struct CardNumberFieldView: View {
 
             Spacer()
         }
-        // TODO: update to new onChange when minimum target moved to iOS 17.0
+        // NEXT_MAJOR_VERSION: update to new onChange when minimum target moved to iOS 17.0
         .onChange(of: isFocused) { focused in
             viewModel.isFocused = focused
         }
