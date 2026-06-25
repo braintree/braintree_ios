@@ -1,0 +1,51 @@
+import Foundation
+
+@MainActor
+class ExpirationDateFieldViewModel: ObservableObject {
+
+    @Published private(set) var value: String = ""
+    @Published private(set) var validationState: ValidationResult = .valid
+    @Published var isFocused: Bool = false {
+        didSet {
+            // Show validation errors only after the user leaves the field
+            if !isFocused {
+                let result = validator.validate(value)
+                validationState = result == .validating ? .invalid("Expiration date is invalid") : result
+            }
+        }
+    }
+
+    var shouldAutoAdvance: Bool { validationState == .valid && !value.isEmpty }
+    let maxLength = 4
+
+    var expirationMonth: String {
+        String(value.split(separator: "/", omittingEmptySubsequences: false).first ?? "")
+    }
+
+    var expirationYear: String {
+        let parts = value.split(separator: "/", omittingEmptySubsequences: false)
+        guard parts.count == 2 else { return "" }
+        return "20\(parts[1])"
+    }
+
+    // MARK: - Private Properties
+
+    private let validator: ExpirationDateFieldValidator
+
+    init(validator: ExpirationDateFieldValidator = ExpirationDateFieldValidator()) {
+        self.validator = validator
+    }
+
+    // MARK: - Internal Methods
+
+    func updateValue(_ newValue: String) {
+        value = newValue
+
+        let result = validator.validate(value)
+        if case .valid = result {
+            validationState = .valid
+        } else if validationState == .valid {
+            validationState = .validating
+        }
+    }
+}

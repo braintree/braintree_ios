@@ -2,6 +2,11 @@ import Foundation
 
 enum UIComponentsAnalytics {
 
+    // MARK: - Card Fields Events
+
+    static let cardFieldsPresented = "ui-components:card-fields:presented"
+    static let cardFieldsValidated = "ui-components:card-fields:validated"
+
     // MARK: - PayPal Button Events
 
     static let payPalButtonPresented = "ui-components:paypal-button:presented"

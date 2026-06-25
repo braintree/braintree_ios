@@ -176,7 +176,88 @@ import BraintreeCore
     public convenience init(cvv: String) {
         self.init(number: nil, expirationMonth: "", expirationYear: "", cvv: cvv)
     }
-    
+
+    /// Creates a `BTCard` with only optional metadata fields, omitting card number, expiration date,
+    /// and CVV. Use this when passing a `BTCard` to `CardFields`, which manages those fields internally.
+    public convenience init(
+        cardholderName: String? = nil,
+        firstName: String? = nil,
+        lastName: String? = nil,
+        company: String? = nil,
+        postalCode: String? = nil,
+        streetAddress: String? = nil,
+        extendedAddress: String? = nil,
+        locality: String? = nil,
+        region: String? = nil,
+        countryName: String? = nil,
+        countryCodeAlpha2: String? = nil,
+        countryCodeAlpha3: String? = nil,
+        countryCodeNumeric: String? = nil,
+        shouldValidate: Bool = false,
+        authenticationInsightRequested: Bool = false,
+        merchantAccountID: String? = nil
+    ) {
+        self.init(
+            number: nil,
+            expirationMonth: "",
+            expirationYear: "",
+            cvv: "",
+            postalCode: postalCode,
+            cardholderName: cardholderName,
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric,
+            shouldValidate: shouldValidate,
+            authenticationInsightRequested: authenticationInsightRequested,
+            merchantAccountID: merchantAccountID
+        )
+    }
+
+    // MARK: - Public Methods
+
+    /// Returns a new `BTCard` by merging the card number, expiration date, and CVV collected by
+    /// `CardFields` with the metadata fields (e.g. cardholder name, billing address) from this instance.
+    ///
+    /// - Warning: This method is intended for internal use by `CardFields` only and is not part of
+    ///   the public merchant-facing API. Do not call this method directly.
+    public func merging(
+        cardNumber: String,
+        expirationMonth: String,
+        expirationYear: String,
+        cvv: String
+    ) -> BTCard {
+        BTCard(
+            number: cardNumber,
+            expirationMonth: expirationMonth,
+            expirationYear: expirationYear,
+            cvv: cvv,
+            postalCode: postalCode,
+            cardholderName: cardholderName,
+            firstName: firstName,
+            lastName: lastName,
+            company: company,
+            streetAddress: streetAddress,
+            extendedAddress: extendedAddress,
+            locality: locality,
+            region: region,
+            countryName: countryName,
+            countryCodeAlpha2: countryCodeAlpha2,
+            countryCodeAlpha3: countryCodeAlpha3,
+            countryCodeNumeric: countryCodeNumeric,
+            shouldValidate: shouldValidate,
+            authenticationInsightRequested: authenticationInsightRequested,
+            merchantAccountID: merchantAccountID
+        )
+    }
+
     // MARK: - Internal Methods
 
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
