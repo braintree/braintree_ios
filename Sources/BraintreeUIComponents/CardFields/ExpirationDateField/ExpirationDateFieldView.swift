@@ -29,7 +29,7 @@ struct ExpirationDateFieldView: View {
                     .foregroundColor(Color(.label))
                     .accessibilityLabel("Expiration Date")
                     .accessibilityHint("Enter in MM/YY format")
-                    .onChange(of: textFieldText) { _, newValue in
+                    .onChange(of: textFieldText) { newValue in
                         var digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
                         if digits.count == 1, let digit = digits.first?.wholeNumberValue, digit >= 2 {
                             digits = "0\(digits)"
@@ -46,13 +46,13 @@ struct ExpirationDateFieldView: View {
 
             Spacer()
         }
-        .onChange(of: isFocused) { _, focused in
+        .onChange(of: isFocused) { focused in
             viewModel.isFocused = focused
         }
-        .onChange(of: viewModel.shouldAutoAdvance) { _, shouldAutoAdvance in
+        .onChange(of: viewModel.shouldAutoAdvance) { shouldAutoAdvance in
             if shouldAutoAdvance { onAutoAdvance?() }
         }
-        .onChange(of: viewModel.isFocused) { _, focused in
+        .onChange(of: viewModel.isFocused) { focused in
             if focused { isFocused = true }
         }
     }

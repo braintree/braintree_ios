@@ -114,7 +114,13 @@ private struct UIComponentsDemoView: View {
                     submit?()
                 }
                 .disabled(!isFormValid)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(isFormValid ? Color.black : Color.black.opacity(0.3))
+                .clipShape(Capsule())
+                .padding(.horizontal, 8)
 
                 // Venmo + PayPal buttons side by side
                 GeometryReader { geo in

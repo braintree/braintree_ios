@@ -20,4 +20,10 @@ enum CardFieldsConstants {
     static let popoverMaxWidth: CGFloat = 300
     static let popoverWidthPadding: CGFloat = 32
     static let popoverPadding: CGFloat = 16
+
+    // MARK: - Card Field Height
+
+    /// Approximate rendered height of a single card field (label + input + vertical padding).
+    /// Used to position the custom CVV hint card above the CVV field on iOS < 16.4.
+    static let cardFieldHeight: CGFloat = 66
 }

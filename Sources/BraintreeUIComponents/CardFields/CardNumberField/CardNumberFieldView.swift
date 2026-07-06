@@ -26,7 +26,7 @@ struct CardNumberFieldView: View {
                     .font(.system(size: 16))
                     .foregroundColor(Color(.label))
                     .accessibilityLabel("Card Number")
-                    .onChange(of: textFieldText) { _, newValue in
+                    .onChange(of: textFieldText) { newValue in
                         let digits = String(newValue.filter { $0.isNumber }.prefix(viewModel.maxLength))
                         let formatted = viewModel.formatted(digits: digits)
                         if formatted != textFieldText {
@@ -45,7 +45,7 @@ struct CardNumberFieldView: View {
         .onChange(of: viewModel.shouldAutoAdvance) { shouldAdvance in
             if shouldAdvance { onAutoAdvance?() }
         }
-        .onChange(of: viewModel.cardBrand) { _, brand in
+        .onChange(of: viewModel.cardBrand) { brand in
             onBrandChanged(brand)
         }
     }
