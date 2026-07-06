@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreeUIComponents
+  * Fix minimum target version to 16.0 to match all other modules
+
 ## 7.8.0 (2026-06-30)
 * BraintreeCore
   * Fix crash caused by a data race on `BTAPIClient` HTTP properties when multiple clients are initialized concurrently (fixes #1818)
