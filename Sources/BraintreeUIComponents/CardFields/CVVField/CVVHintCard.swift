@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Floating hint card shown on iPhone iOS 16.0–16.3 as a replacement for the native `.popover`,
 /// which degrades to a full-screen sheet on those OS versions.
+// NEXT_MAJOR_VERSION: delete this file when minimum target moved to iOS 16.4 or higher
 struct CVVHintCard: View {
 
     let width: CGFloat

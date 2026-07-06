@@ -25,5 +25,6 @@ enum CardFieldsConstants {
 
     /// Approximate rendered height of a single card field (label + input + vertical padding).
     /// Used to position the custom CVV hint card above the CVV field on iOS < 16.4.
+    // NEXT_MAJOR_VERSION: remove when minimum target moved to iOS 16.4 or higher and CVVHintCard is deleted
     static let cardFieldHeight: CGFloat = 66
 }

@@ -19,6 +19,8 @@ public struct CardFields: View {
     /// `.presentationCompactAdaptation` degrades to a full-screen sheet.
     /// On those devices `CVVFieldView` suppresses the native popover and this view shows
     /// a custom floating hint card instead.
+    // NEXT_MAJOR_VERSION: remove useCustomHint, showCVVHint overlay, and CVVHintCard entirely
+    // when minimum target moved to iOS 16.4 or higher — the native popover will always be used
     private var useCustomHint: Bool {
         guard UIDevice.current.userInterfaceIdiom == .phone else { return false }
         if #available(iOS 16.4, *) { return false }
@@ -123,6 +125,7 @@ public struct CardFields: View {
             // Custom CVV hint card for iPhone running iOS 16.0–16.3.
             // On those versions `.popover` degrades to a sheet, so we render our own
             // floating card anchored above the CVV field's help button.
+            // NEXT_MAJOR_VERSION: remove this block when minimum target moved to iOS 16.4 or higher
             if showCVVHint && useCustomHint {
                 Color.clear
                     .contentShape(Rectangle())
