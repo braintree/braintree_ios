@@ -19,10 +19,10 @@ struct CVVFieldView: View {
         return min(max(CardFieldsConstants.popoverMinWidth, preferred), CardFieldsConstants.popoverMaxWidth)
     }
 
+    // NEXT_MAJOR_VERSION: remove this and always return $showCVVHint when minimum target moved to iOS 16.4 or higher
     /// Returns the real binding on iOS 16.4+ and iPad where `.popover` works correctly.
     /// On iPhone < iOS 16.4, `.popover` degrades to a full-screen sheet — suppress it here
     /// so `CardFields` can show the custom floating hint card instead.
-    // NEXT_MAJOR_VERSION: remove this and always return $showCVVHint when minimum target moved to iOS 16.4 or higher
     private var nativeHintBinding: Binding<Bool> {
         if #available(iOS 16.4, *) {
             return $showCVVHint
@@ -130,10 +130,10 @@ struct CVVFieldView: View {
 
 private extension View {
     
-    /// Applies `.presentationCompactAdaptation(.popover)` on iOS 16.4+, keeping the `.popover`
-    /// modifier from degrading to a full-screen sheet on iPhone compact size class.
     // NEXT_MAJOR_VERSION: remove this and call .presentationCompactAdaptation(.popover) directly
     // when minimum target moved to iOS 16.4 or higher
+    /// Applies `.presentationCompactAdaptation(.popover)` on iOS 16.4+, keeping the `.popover`
+    /// modifier from degrading to a full-screen sheet on iPhone compact size class.
     @ViewBuilder
     func presentationCompactAdaptationIfAvailable() -> some View {
         if #available(iOS 16.4, *) {
