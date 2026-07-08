@@ -12,19 +12,19 @@ public struct CardFields: View {
     @StateObject private var viewModel: CardFieldsViewModel
     @State private var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
     @State private var showCVVHint = false
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
     private var apiClient: BTAPIClient
 
     // NEXT_MAJOR_VERSION: remove useCustomHint, showCVVHint overlay, and CVVHintCard entirely
     // when minimum target moved to iOS 16.4 or higher — the native popover will always be used
-    /// True on iPhone running iOS 16.0–16.3, where `.popover` without
-    /// `.presentationCompactAdaptation` degrades to a full-screen sheet.
-    /// On those devices `CVVFieldView` suppresses the native popover and this view shows
-    /// a custom floating hint card instead.
+    /// True below iOS 16.4 on a compact horizontal size class (iPhone, or iPad in Slide Over /
+    /// narrow Split View), where `.popover` without `.presentationCompactAdaptation` degrades to
+    /// a full-screen sheet. On those layouts `CVVFieldView` suppresses the native popover and
+    /// this view shows a custom floating hint card instead.
     private var useCustomHint: Bool {
-        guard UIDevice.current.userInterfaceIdiom == .phone else { return false }
         if #available(iOS 16.4, *) { return false }
-        return true
+        return horizontalSizeClass == .compact
     }
 
     private var cvvPopoverWidth: CGFloat {

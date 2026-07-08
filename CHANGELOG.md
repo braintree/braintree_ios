@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreeUIComponents
-  * Fix minimum target version to 16.0 to match all other modules
+  * Fix minimum target version to iOS 16.0 to match all other modules
 
 ## 7.8.0 (2026-06-30)
 * BraintreeCore

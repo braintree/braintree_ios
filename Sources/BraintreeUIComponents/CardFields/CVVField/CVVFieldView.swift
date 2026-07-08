@@ -13,6 +13,7 @@ struct CVVFieldView: View {
 
     @FocusState private var isFocused: Bool
     @State private var textFieldText: String = ""
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var popoverWidth: CGFloat {
         let preferred = containerWidth - CardFieldsConstants.popoverWidthPadding
@@ -20,14 +21,15 @@ struct CVVFieldView: View {
     }
 
     // NEXT_MAJOR_VERSION: remove this and always return $showCVVHint when minimum target moved to iOS 16.4 or higher
-    /// Returns the real binding on iOS 16.4+ and iPad where `.popover` works correctly.
-    /// On iPhone < iOS 16.4, `.popover` degrades to a full-screen sheet — suppress it here
-    /// so `CardFields` can show the custom floating hint card instead.
+    /// Returns the real binding on iOS 16.4+ and regular horizontal size class, where `.popover`
+    /// works correctly. On a compact size class (iPhone, or iPad in Slide Over / narrow Split
+    /// View), `.popover` degrades to a full-screen sheet pre-16.4 — suppress it here so
+    /// `CardFields` can show the custom floating hint card instead.
     private var nativeHintBinding: Binding<Bool> {
         if #available(iOS 16.4, *) {
             return $showCVVHint
         }
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if horizontalSizeClass == .regular {
             return $showCVVHint
         }
         return .constant(false)
