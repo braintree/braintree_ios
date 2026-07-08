@@ -11,8 +11,26 @@ public struct CardFields: View {
 
     @StateObject private var viewModel: CardFieldsViewModel
     @State private var containerWidth: CGFloat = CardFieldsConstants.defaultContainerWidth
+    @State private var showCVVHint = false
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     private var onValidityChange: ((Bool, @escaping () -> Void) -> Void)?
     private var apiClient: BTAPIClient
+
+    // NEXT_MAJOR_VERSION: remove useCustomHint, showCVVHint overlay, and CVVHintCard entirely
+    // when minimum target moved to iOS 16.4 or higher — the native popover will always be used
+    /// True below iOS 16.4 on a compact horizontal size class (iPhone, or iPad in Slide Over /
+    /// narrow Split View), where `.popover` without `.presentationCompactAdaptation` degrades to
+    /// a full-screen sheet. On those layouts `CVVFieldView` suppresses the native popover and
+    /// this view shows a custom floating hint card instead.
+    private var useCustomHint: Bool {
+        if #available(iOS 16.4, *) { return false }
+        return horizontalSizeClass == .compact
+    }
+
+    private var cvvPopoverWidth: CGFloat {
+        let preferred = containerWidth - CardFieldsConstants.popoverWidthPadding
+        return min(max(CardFieldsConstants.popoverMinWidth, preferred), CardFieldsConstants.popoverMaxWidth)
+    }
 
     private var useHorizontalLayout: Bool {
         containerWidth >= CardFieldsConstants.horizontalLayoutThreshold
@@ -25,7 +43,7 @@ public struct CardFields: View {
     }
 
     private var cvvField: some View {
-        CVVFieldView(viewModel: viewModel.cvvViewModel, containerWidth: containerWidth)
+        CVVFieldView(viewModel: viewModel.cvvViewModel, showCVVHint: $showCVVHint, containerWidth: containerWidth)
     }
 
     // MARK: - Initializer
@@ -64,43 +82,62 @@ public struct CardFields: View {
     }
 
     public var body: some View {
-        VStack(spacing: 12) {
-            CardNumberFieldView(
-                viewModel: viewModel.cardNumberViewModel,
-                onAutoAdvance: {
-                    viewModel.expirationDateViewModel.isFocused = true
-                },
-                onBrandChanged: { brand in
-                    let length: Int? = brand == .unknown ? nil : brand.cvvLength
-                    viewModel.cvvViewModel.updateExpectedLength(length)
+        ZStack {
+            VStack(spacing: 12) {
+                CardNumberFieldView(
+                    viewModel: viewModel.cardNumberViewModel,
+                    onAutoAdvance: {
+                        viewModel.expirationDateViewModel.isFocused = true
+                    },
+                    onBrandChanged: { brand in
+                        let length: Int? = brand == .unknown ? nil : brand.cvvLength
+                        viewModel.cvvViewModel.updateExpectedLength(length)
+                    }
+                )
+
+                if useHorizontalLayout {
+                    HStack(alignment: .top, spacing: CardFieldsConstants.fieldSpacing) {
+                        expirationField
+                        cvvField
+                    }
+                } else {
+                    VStack(spacing: CardFieldsConstants.fieldSpacing) {
+                        expirationField
+                        cvvField
+                    }
+                }
+            }
+            .background(
+                GeometryReader { geo in
+                    Color.clear
+                        .onAppear { containerWidth = geo.size.width }
+                        .onChange(of: geo.size.width) { newWidth in containerWidth = newWidth }
                 }
             )
+            .onAppear {
+                apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
+                onValidityChange?(viewModel.isFormValid, submitAction)
+            }
+            .onReceive(viewModel.formValidityPublisher) { isValid in
+                onValidityChange?(isValid, submitAction)
+            }
 
-            if useHorizontalLayout {
-                HStack(alignment: .top, spacing: CardFieldsConstants.fieldSpacing) {
-                    expirationField
-                    cvvField
-                }
-            } else {
-                VStack(spacing: CardFieldsConstants.fieldSpacing) {
-                    expirationField
-                    cvvField
-                }
-            }
-        }
-        .background(
-            GeometryReader { geo in
+            // Custom CVV hint card for iPhone running iOS 16.0–16.3.
+            // On those versions `.popover` degrades to a sheet, so we render our own
+            // floating card anchored above the CVV field's help button.
+            // NEXT_MAJOR_VERSION: remove this block when minimum target moved to iOS 16.4 or higher
+            if showCVVHint && useCustomHint {
                 Color.clear
-                    .onAppear { containerWidth = geo.size.width }
-                    .onChange(of: geo.size.width) { _, newWidth in containerWidth = newWidth }
+                    .contentShape(Rectangle())
+                    .onTapGesture { showCVVHint = false }
+
+                CVVHintCard(width: cvvPopoverWidth)
+                    .padding(
+                        .bottom,
+                        CardFieldsConstants.cardFieldHeight + CardFieldsConstants.fieldSpacing
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             }
-        )
-        .onAppear {
-            apiClient.sendAnalyticsEvent(UIComponentsAnalytics.cardFieldsPresented)
-            onValidityChange?(viewModel.isFormValid, submitAction)
-        }
-        .onReceive(viewModel.formValidityPublisher) { isValid in
-            onValidityChange?(isValid, submitAction)
         }
     }
 
@@ -122,29 +159,35 @@ public struct CardFields: View {
 }
 
 #Preview {
-    @Previewable @State var isValid = false
-    @Previewable @State var submit: (() -> Void)?
+    struct PreviewWrapper: View {
+        
+        @State private var isValid = false
+        @State private var submit: (() -> Void)?
 
-    VStack {
-        CardFields(
-            authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
-            card: BTCard()
-        ) { nonce, error in
-            if let nonce {
-                print("Tokenization succeeded: \(nonce.nonce)")
-            } else if let error {
-                print("Tokenization failed: \(error.localizedDescription)")
+        var body: some View {
+            VStack {
+                CardFields(
+                    authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn",
+                    card: BTCard()
+                ) { nonce, error in
+                    if let nonce {
+                        print("Tokenization succeeded: \(nonce.nonce)")
+                    } else if let error {
+                        print("Tokenization failed: \(error.localizedDescription)")
+                    }
+                }
+                .onValidityChange { valid, tokenize in
+                    isValid = valid
+                    submit = tokenize
+                }
+
+                Button("Pay") {
+                    submit?()
+                }
+                .disabled(!isValid)
+                .padding()
             }
         }
-        .onValidityChange { valid, tokenize in
-            isValid = valid
-            submit = tokenize
-        }
-
-        Button("Pay") {
-            submit?()
-        }
-        .disabled(!isValid)
-        .padding()
     }
+    return PreviewWrapper()
 }
