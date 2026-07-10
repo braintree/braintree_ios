@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */; };
 		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
+		0827D165300131C100D26DC4 /* SEPADirectDebitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */; };
 		084C2C6E2FD85A960018BB01 /* CardFields_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */; };
 		086561662EF1D4EF00B16439 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; };
 		086561672EF1D4EF00B16439 /* BraintreeUIComponents.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -133,6 +134,7 @@
 
 /* Begin PBXFileReference section */
 		04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonHelper.swift; sourceTree = "<group>"; };
+		0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitView.swift; sourceTree = "<group>"; };
 		084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFields_UITests.swift; sourceTree = "<group>"; };
 		08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsViewController.swift; sourceTree = "<group>"; };
 		08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeUIComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -384,6 +386,7 @@
 				BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
+				0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */,
 				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
 				B88F9CCD2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift */,
 				BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */,
@@ -725,6 +728,7 @@
 				BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
+				0827D165300131C100D26DC4 /* SEPADirectDebitView.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
 				08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */,
