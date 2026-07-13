@@ -1,11 +1,3 @@
-//
-//  SEPADirectDebitView.swift
-//  Demo
-//
-//  Created by Brent Busby on 7/10/26.
-//  Copyright © 2026 braintree. All rights reserved.
-//
-
 import SwiftUI
 import AuthenticationServices
 import BraintreeCore
@@ -30,7 +22,11 @@ struct SEPADirectDebitView: View {
 
     var body: some View {
         VStack {
-            Button(action: requestTokenization) {
+            Button {
+                Task {
+                    await requestTokenization()
+                }
+            } label: {
                 Text("SEPA Direct Debit")
                     .frame(maxWidth: .infinity)
             }
@@ -41,7 +37,7 @@ struct SEPADirectDebitView: View {
         }
     }
 
-    private func requestTokenization() {
+    private func requestTokenization() async {
         onProgress("Tapped SEPA Direct Debit")
 
         let billingAddress = BTPostalAddress(
@@ -62,15 +58,14 @@ struct SEPADirectDebitView: View {
             merchantAccountID: "EUR-sepa-direct-debit"
         )
 
-        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-            if let sepaDirectDebitNonce {
-                onComplete(sepaDirectDebitNonce)
-            } else if let error {
-                if error as? BTSEPADirectDebitError == .webFlowCanceled {
-                    onProgress("Canceled")
-                } else {
-                    onProgress(error.localizedDescription)
-                }
+        do {
+            let sepaDirectDebitNonce = try await sepaDirectDebitClient.tokenize(sepaDirectDebitRequest)
+            onComplete(sepaDirectDebitNonce)
+        } catch {
+            if error as? BTSEPADirectDebitError == .webFlowCanceled {
+                onProgress("Canceled")
+            } else {
+                onProgress(error.localizedDescription)
             }
         }
     }
