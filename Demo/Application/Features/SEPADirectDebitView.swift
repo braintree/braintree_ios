@@ -10,11 +10,11 @@ struct SEPADirectDebitView: View {
     let onComplete: (BTPaymentMethodNonce?) -> Void
 
     init(
-        authorization: String,
+        client: BTSEPADirectDebitClient,
         onProgress: @escaping (String?) -> Void = { _ in },
         onComplete: @escaping (BTPaymentMethodNonce?) -> Void = { _ in }
     ) {
-        self.sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
+        self.sepaDirectDebitClient = client
         self.onProgress = onProgress
         self.onComplete = onComplete
     }
@@ -76,5 +76,5 @@ struct SEPADirectDebitView: View {
 }
 
 #Preview {
-    SEPADirectDebitView(authorization: "")
+    SEPADirectDebitView(client: BTSEPADirectDebitClient(authorization: ""))
 }
