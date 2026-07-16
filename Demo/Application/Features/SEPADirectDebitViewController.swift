@@ -5,55 +5,24 @@ import BraintreeSEPADirectDebit
 
 class SEPADirectDebitViewController: PaymentButtonBaseViewController {
 
-    lazy var sepaDirectDebitClient = BTSEPADirectDebitClient(authorization: authorization)
-
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "SEPA Direct Debit"
+
+        let demoView = SEPADirectDebitView(
+            client: BTSEPADirectDebitClient(authorization: authorization),
+            onProgress: progressBlock,
+            onComplete: completionBlock
+        )
+
+        embed(demoView)
     }
 
+    // TODO: Remove or change createPaymentButton during full SwiftUI migration
+    // This is to suppress Constraint warnings when the payment button is not overriden. The actual Payment Button is within the SwiftUI view
     override func createPaymentButton() -> UIView {
-        let sepaDirectDebitButton = createButton(title: "SEPA Direct Debit", action: #selector(sepaDirectDebitButtonTapped))
-        return sepaDirectDebitButton
-    }
-
-    // MARK: - SEPA Direct Debit implementation
-    
-    @objc func sepaDirectDebitButtonTapped() {
-        self.progressBlock("Tapped SEPA Direct Debit")
-
-        let billingAddress = BTPostalAddress(
-            streetAddress: "Kantstraße 70",
-            extendedAddress: "#170",
-            locality: "Freistaat Sachsen",
-            countryCodeAlpha2: "FR",
-            postalCode: "09456",
-            region: "Annaberg-buchholz"
-        )
-
-        let sepaDirectDebitRequest = BTSEPADirectDebitRequest(
-            accountHolderName: "John Doe",
-            iban: BTSEPADirectDebitTestHelper.generateValidSandboxIBAN(),
-            customerID: generateRandomCustomerID(),
-            billingAddress: billingAddress,
-            mandateType: .oneOff,
-            merchantAccountID: "EUR-sepa-direct-debit"
-        )
-
-        sepaDirectDebitClient.tokenize(sepaDirectDebitRequest) { sepaDirectDebitNonce, error in
-            if let sepaDirectDebitNonce {
-                self.completionBlock(sepaDirectDebitNonce)
-            } else if let error {
-                if error as? BTSEPADirectDebitError == .webFlowCanceled {
-                    self.progressBlock("Canceled")
-                } else {
-                    self.progressBlock(error.localizedDescription)
-                }
-            }
-        }
-    }
-
-    private func generateRandomCustomerID() -> String {
-        String(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(20))
+        let placeholderView = UIView()
+        placeholderView.translatesAutoresizingMaskIntoConstraints = false
+        return placeholderView
     }
 }
