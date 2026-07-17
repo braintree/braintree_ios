@@ -25,7 +25,7 @@ struct IdealView: View {
             Button {
                 flowCoordinator.paymentID = nil
                 Task {
-                    await startPaymentWithBaknk()
+                    await startPaymentWithBank()
                 }
             } label: {
                 Text("Pay with iDEAL")
@@ -42,17 +42,15 @@ struct IdealView: View {
             }
         }
     }
-    
-    private func startPaymentWithBaknk() async {
+
+    private func startPaymentWithBank() async {
         onProgress("Loading iDEAL Merchant Account...")
         
         let postalAddress = BTPostalAddress(
-            streetAddress: "1 Infinite Loop",
-            extendedAddress: "Suite 1000",
-            locality: "Cupertino",
-            countryCodeAlpha2: "US",
-            postalCode: "95014",
-            region: "CA"
+            streetAddress: "836486 of 22321 Park Lake",
+            locality: "Den Haag",
+            countryCodeAlpha2: "NL",
+            postalCode: "2585 GJ"
         )
         
         let request = BTLocalPaymentRequest(
@@ -87,7 +85,7 @@ struct IdealView: View {
 final class LocalPaymentFlowCoordinator: NSObject, ObservableObject, BTLocalPaymentRequestDelegate {
     
     @Published var paymentID: String?
-    
+
     nonisolated func localPaymentStarted(
         _ request: BTLocalPaymentRequest,
         paymentID: String,
@@ -101,5 +99,5 @@ final class LocalPaymentFlowCoordinator: NSObject, ObservableObject, BTLocalPaym
 }
 
 #Preview {
-    IdealView(client: BTLocalPaymentClient(authorization: ""))
+    IdealView(client: BTLocalPaymentClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg"))
 }
