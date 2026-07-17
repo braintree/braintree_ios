@@ -26,6 +26,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var merchantAccountID: String?
     private var osType: String?
     private var osVersion: String?
+    private var payPalCampaigns: [BTPayPalCampaign]?
     private var recipientPhoneNumber: BTPayPalPhoneNumber?
     private var recipientEmail: String?
     private var recurringBillingDetails: BTPayPalRecurringBillingDetails?
@@ -63,6 +64,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.offerPayLater = payPalRequest.offerPayLater
         self.offerCredit = payPalRequest.offerCredit
         self.amountBreakdown = payPalRequest.amountBreakdown
+
+        let validPayPalCampaigns = payPalRequest.payPalCampaigns.filter {
+            !$0.id.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+        if !validPayPalCampaigns.isEmpty {
+            self.payPalCampaigns = validPayPalCampaigns
+        }
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode
         
@@ -169,6 +177,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case offerCredit = "offer_paypal_credit"
         case osType = "os_type"
         case osVersion = "os_version"
+        case payPalCampaigns = "paypal_campaigns"
         case recipientPhoneNumber = "international_phone"
         case recipientEmail = "recipient_email"
         case recurringBillingDetails = "plan_metadata"

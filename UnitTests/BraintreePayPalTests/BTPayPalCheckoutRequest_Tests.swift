@@ -86,6 +86,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"
+        request.payPalCampaigns = [BTPayPalCampaign(id: "campaign-123-id")]
         request.userAction = .payNow
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
@@ -112,6 +113,14 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["offer_pay_later"] as? Bool, true)
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, true)
         XCTAssertEqual(parameters["currency_iso_code"] as? String, "currency-code")
+
+        guard let payPalCampaigns = parameters["paypal_campaigns"] as? [[String: Any]] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalCampaigns.count, 1)
+        XCTAssertEqual(payPalCampaigns.first?["id"] as? String, "campaign-123-id")
         XCTAssertEqual(parameters["line1"] as? String, "123 Main")
         XCTAssertEqual(parameters["line2"] as? String, "Unit 1")
         XCTAssertEqual(parameters["city"] as? String, "Chicago")
@@ -152,6 +161,83 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["amount"] as? String, "1")
         XCTAssertEqual(parameters["offer_pay_later"] as? Bool, false)
         XCTAssertEqual(parameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertNil(parameters["paypal_campaigns"])
+    }
+
+    func testParametersWithConfiguration_whenPayPalCampaignsAreSet_returnsPayPalCampaigns() {
+        let request = BTPayPalCheckoutRequest(
+            amount: "1",
+            payPalCampaigns: [
+                BTPayPalCampaign(id: "campaign-123-id"),
+                BTPayPalCampaign(id: "campaign-456-id")
+            ]
+        )
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary(),
+              let payPalCampaigns = parameters["paypal_campaigns"] as? [[String: Any]] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalCampaigns.count, 2)
+        XCTAssertEqual(payPalCampaigns[0]["id"] as? String, "campaign-123-id")
+        XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
+    }
+
+    func testParametersWithConfiguration_whenPayPalCampaignIDsAreEmpty_doesNotReturnPayPalCampaigns() {
+        let request = BTPayPalCheckoutRequest(
+            amount: "1",
+            payPalCampaigns: [
+                BTPayPalCampaign(id: ""),
+                BTPayPalCampaign(id: "   ")
+            ]
+        )
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertNil(parameters["paypal_campaigns"])
+    }
+
+    func testParametersWithConfiguration_whenSomePayPalCampaignIDsAreEmpty_returnsOnlyValidPayPalCampaignsInOrder() {
+        let request = BTPayPalCheckoutRequest(
+            amount: "1",
+            payPalCampaigns: [
+                BTPayPalCampaign(id: "campaign-123-id"),
+                BTPayPalCampaign(id: ""),
+                BTPayPalCampaign(id: "campaign-456-id"),
+                BTPayPalCampaign(id: "   ")
+            ]
+        )
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary(),
+              let payPalCampaigns = parameters["paypal_campaigns"] as? [[String: Any]] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalCampaigns.count, 2)
+        XCTAssertEqual(payPalCampaigns[0]["id"] as? String, "campaign-123-id")
+        XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
+    }
+
+    func testParametersWithConfiguration_whenAppSwitchRequestHasPayPalCampaigns_returnsPayPalCampaigns() {
+        let request = BTPayPalCheckoutRequest(
+            amount: "1",
+            enablePayPalAppSwitch: true,
+            payPalCampaigns: [BTPayPalCampaign(id: "campaign-123-id")]
+        )
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary(),
+              let payPalCampaigns = parameters["paypal_campaigns"] as? [[String: Any]] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalCampaigns.count, 1)
+        XCTAssertEqual(payPalCampaigns.first?["id"] as? String, "campaign-123-id")
     }
 
     func testParametersWithConfiguration_whenCurrencyCodeNotSet_usesConfigCurrencyCode() {
