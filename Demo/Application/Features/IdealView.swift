@@ -83,17 +83,19 @@ struct IdealView: View {
     }
 }
 
-@MainActor
+
 final class LocalPaymentFlowCoordinator: NSObject, ObservableObject, BTLocalPaymentRequestDelegate {
     
     @Published var paymentID: String?
     
-    func localPaymentStarted(
+    nonisolated func localPaymentStarted(
         _ request: BTLocalPaymentRequest,
         paymentID: String,
         start: @escaping () -> Void
     ) {
-        self.paymentID = paymentID
+        Task { @MainActor in
+            self.paymentID = paymentID
+        }
         start()
     }
 }
