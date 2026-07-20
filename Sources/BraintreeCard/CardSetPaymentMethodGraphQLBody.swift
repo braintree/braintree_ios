@@ -86,6 +86,10 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
                 acsUrl
                 challengePayload
               }
+              selectedPaymentMethod {
+                paymentMethodId
+                usage
+              }
             }
           }
         }

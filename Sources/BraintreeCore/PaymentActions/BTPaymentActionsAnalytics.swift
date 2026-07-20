@@ -1,5 +1,6 @@
 import Foundation
 
+// TODO: These analytic constants are still under review and are subject to change.
 enum BTPaymentActionsAnalytics {
     static let setPaymentMethodStarted = "payment-actions:set-payment-method:started"
     static let setPaymentMethodSucceeded = "payment-actions:set-payment-method:succeeded"

@@ -8,6 +8,7 @@ public enum BTPaymentActionStatus {
     case canceled
     case expired
     case requiresCustomerAction //(3DS) lands in M4
+    case processing
     case unknown
     
     public init(rawValue: String) {
@@ -19,6 +20,7 @@ public enum BTPaymentActionStatus {
         case "CANCELED": self = .canceled
         case "EXPIRED": self = .expired
         case "REQUIRES_CUSTOMER_ACTION": self = .requiresCustomerAction
+        case "PROCESSING": self = .processing
         default: self = .unknown
         }
     }
