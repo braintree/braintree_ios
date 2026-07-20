@@ -4,6 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
+/// The POST body for the graphQL `setPaymentActionPaymentMethod` mutation.
 struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
     var variables: Variables
@@ -12,11 +13,12 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
     init(card: BTCard) {
         self.variables = Variables(card: card)
-        self.query = Self.setPaymentMethodGraphQLMutation()
-        self.operationName = "SetPaymentMethodPaymentAction"
+        self.query = Self.setPaymentActionPaymentMethodMutation()
+        self.operationName = "SetPaymentActionPaymentMethod"
     }
     
     struct Variables: Encodable {
+        
         var input: Input
         
         init(card: BTCard) {
@@ -24,57 +26,56 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
         }
         
         struct Input: Encodable {
-            var number: String?
-            var expirationMonth: String?
-            var expirationYear: String?
-            var cvv: String?
-            var billingAddress: BillingAddress?
+            
+            var paymentMethod: PaymentMethod
             
             init(card: BTCard) {
-                self.number = card.number
-                self.expirationMonth = card.expirationMonth
-                self.expirationYear = card.expirationYear
-                self.cvv = card.cvv
-                self.billingAddress = BillingAddress(card)
+                self.paymentMethod = PaymentMethod(card: card)
             }
             
-            struct BillingAddress: Encodable {
-                var postalCode: String?
-                var streetAddress: String?
-                var extendedAddress: String?
-                var locality: String?
-                var region: String?
-                var countryName: String?
+            struct PaymentMethod: Encodable {
                 
-                init?(_ card: BTCard) {
-                    let billingAddressProperties = [
-                        card.postalCode,
-                        card.streetAddress,
-                        card.extendedAddress,
-                        card.locality,
-                        card.region,
-                        card.countryName
-                    ]
-
-                    if billingAddressProperties.allSatisfy({ $0?.isEmpty ?? true }) {
-                        return nil
+                var paymentMethodDetails: PaymentMethodDetails
+                
+                init(card: BTCard) {
+                    self.paymentMethodDetails = PaymentMethodDetails(card: card)
+                }
+                
+                struct PaymentMethodDetails: Encodable {
+                    var card: Card
+                    
+                    init(card: BTCard) {
+                        self.card = Card(card: card)
                     }
-
-                    self.postalCode = card.postalCode
-                    self.streetAddress = card.streetAddress
-                    self.extendedAddress = card.extendedAddress
-                    self.locality = card.locality
-                    self.region = card.region
-                    self.countryName = card.countryName
+                    
+                    struct Card: Encodable {
+                        var number: String?
+                        var expirationMonth: String?
+                        var expirationYear: String?
+                        var cvv: String?
+                        var cardholderName: String?
+                        var billingAddress: BillingAddress?
+                        
+                        typealias BillingAddress = CreditCardGraphQLBody.Variables.Input.CreditCard.BillingAddress
+                        
+                        init(card: BTCard) {
+                            self.number = card.number
+                            self.expirationMonth = card.expirationMonth
+                            self.expirationYear = card.expirationYear
+                            self.cvv = card.cvv
+                            self.cardholderName = card.cardholderName
+                            self.billingAddress = BillingAddress(card: card)
+                        }
+                    }
                 }
             }
         }
     }
     
-    static func setPaymentMethodGraphQLMutation() -> String {
+    static func setPaymentActionPaymentMethodMutation() -> String {
         """
-        mutation SetPaymentMethodPaymentAction($input: SetPaymentMethodInput!) {
-          setPaymentMethodPaymentAction(input: $input) {
+        mutation SetPaymentActionPaymentMethod($input: SetPaymentActionPaymentMethodInput!) {
+          setPaymentActionPaymentMethod(input: $input) {
             paymentAction {
               id
               status
@@ -85,6 +86,7 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
                 bin
                 acsUrl
                 challengePayload
+                redirectUrl
               }
               selectedPaymentMethod {
                 paymentMethodId

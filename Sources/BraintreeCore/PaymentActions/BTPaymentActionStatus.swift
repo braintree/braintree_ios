@@ -1,5 +1,6 @@
 import Foundation
 
+/// The lifecycle status of a Payment Action. 
 public enum BTPaymentActionStatus {
     case requiresPaymentMethod
     case readyForConfirmation
@@ -7,7 +8,7 @@ public enum BTPaymentActionStatus {
     case requiresCapture
     case canceled
     case expired
-    case requiresCustomerAction //(3DS) lands in M4
+    case requiresCustomerAction
     case processing
     case unknown
     
