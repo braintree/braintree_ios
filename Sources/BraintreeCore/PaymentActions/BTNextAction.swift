@@ -7,6 +7,7 @@ enum BTNextAction {
     
     case provideCVV
     case redirect(url: String)
+    // swiftlint:disable:next enum_case_associated_values_count
     case threeDSecure(
         songbirdURL: String?,
         cardinalAuthenticationJWT: String?,
@@ -16,4 +17,3 @@ enum BTNextAction {
     )
     case unknown
 }
-

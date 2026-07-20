@@ -3,6 +3,7 @@ import Foundation
 /// Reflects the `selectedPaymentMethod` field on a `PaymentAction`.
 @_documentation(visibility: private)
 public struct BTPaymentActionSelectedPaymentMethod {
+    
     public let paymentMethodID: String?
     public let usage: String?
     public let details: BTPaymentActionSelectedPaymentMethodDetails
@@ -13,6 +14,7 @@ public struct BTPaymentActionSelectedPaymentMethod {
 @_documentation(visibility: private)
 public enum BTPaymentActionSelectedPaymentMethodDetails {
     
+    // swiftlint:disable:next enum_case_associated_values_count
     case creditCard(
         last4: String,
         bin: String,

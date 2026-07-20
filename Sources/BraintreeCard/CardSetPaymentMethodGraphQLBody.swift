@@ -4,6 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
+// swiftlint:disable nesting
 /// The POST body for the graphQL `setPaymentActionPaymentMethod` mutation.
 struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
@@ -98,4 +99,3 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
         """.replacingOccurrences(of: "\n", with: "")
     }
 }
-
