@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -40,7 +40,6 @@
 		087831332F7B09CE003BB460 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; platformFilter = ios; };
 		087831392F7C1666003BB460 /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087831382F7C1666003BB460 /* ValidationResult.swift */; };
 		0878313B2F7C2839003BB460 /* CardFieldsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */; };
-		6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */; };
 		0878313D2F83FBDA003BB460 /* CVVCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0878313C2F83FBDA003BB460 /* CVVCharacter.swift */; };
 		087CA76E2F0D72E80065D89B /* BTGraphQLHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */; };
 		08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */; };
@@ -148,6 +147,8 @@
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
 		625010722F9FF5E000EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */; };
 		625719C52F0DBAF6008D019E /* BTHTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */; };
+		628A992430093EC1009301F9 /* CardSetPaymentMethodGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628A992330093EB5009301F9 /* CardSetPaymentMethodGraphQLBody.swift */; };
+		628A992630093ECF009301F9 /* BTCardPaymentActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628A992530093EC5009301F9 /* BTCardPaymentActionResult.swift */; };
 		62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */; };
 		6298A1992B91010600E46EDF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */; };
 		62A659A42B98CB23008DFD67 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */; };
@@ -161,6 +162,7 @@
 		62D5754A2D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D575492D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift */; };
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
+		6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */; };
 		701D2C1EC8604C8EBCB24E9A /* BraintreeShopperInsights_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743B93AD5C7644ABAC2D5436 /* BraintreeShopperInsights_IntegrationTests.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
 		800ED7832B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */; };
@@ -858,7 +860,6 @@
 		086D56D52F8568BB00120B47 /* CardNumberFieldValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFieldValidatorTests.swift; sourceTree = "<group>"; };
 		087831382F7C1666003BB460 /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
 		0878313A2F7C2839003BB460 /* CardFieldsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsContainerView.swift; sourceTree = "<group>"; };
-		802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsConstants.swift; sourceTree = "<group>"; };
 		0878313C2F83FBDA003BB460 /* CVVCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVCharacter.swift; sourceTree = "<group>"; };
 		087CA76D2F0D72E80065D89B /* BTGraphQLHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLHTTPError.swift; sourceTree = "<group>"; };
 		08804D472F86D61E005ED3AC /* CVVFieldViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVFieldViewModelTests.swift; sourceTree = "<group>"; };
@@ -984,6 +985,8 @@
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
 		625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient_IntegrationTests.swift; sourceTree = "<group>"; };
 		625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPMethod.swift; sourceTree = "<group>"; };
+		628A992330093EB5009301F9 /* CardSetPaymentMethodGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSetPaymentMethodGraphQLBody.swift; sourceTree = "<group>"; };
+		628A992530093EC5009301F9 /* BTCardPaymentActionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCardPaymentActionResult.swift; sourceTree = "<group>"; };
 		62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics_Tests.swift; sourceTree = "<group>"; };
 		6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1004,6 +1007,7 @@
 		800FC543257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayCardNonce_Tests.swift; sourceTree = "<group>"; };
 		8014221B2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalApprovalURLParser.swift; sourceTree = "<group>"; };
 		802055212CDC29FE000BE30F /* BraintreeAmexExpress_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeAmexExpress_IntegrationTests.swift; sourceTree = "<group>"; };
+		802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFieldsConstants.swift; sourceTree = "<group>"; };
 		8037BFAF2B2CCC130017072C /* BTShopperInsightsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics.swift; sourceTree = "<group>"; };
 		804326BE2B1A5C5B0044E90B /* BTApplePaymentTokensRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePaymentTokensRequest.swift; sourceTree = "<group>"; };
 		804698302B27C5340090878E /* BraintreeShopperInsights.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeShopperInsights.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1271,6 +1275,10 @@
 		C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFieldViewModelTests.swift; sourceTree = "<group>"; };
 		CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ApplicationState.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		628A991430093E46009301F9 /* PaymentActions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PaymentActions; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		03502C801E9C0A1700F15EE6 /* Frameworks */ = {
@@ -1710,6 +1718,7 @@
 		570B93AE285397D20041BAFE /* BraintreeCore */ = {
 			isa = PBXGroup;
 			children = (
+				628A991430093E46009301F9 /* PaymentActions */,
 				80F4F4D529F8A628003EACB1 /* Analytics */,
 				80B207342BF6D3B000787E37 /* Authorization */,
 				80482BD82C484ADC00C71D03 /* Configuration */,
@@ -2146,6 +2155,8 @@
 		A7C889911B5F043B007A0E9C /* BraintreeCard */ = {
 			isa = PBXGroup;
 			children = (
+				628A992530093EC5009301F9 /* BTCardPaymentActionResult.swift */,
+				628A992330093EB5009301F9 /* CardSetPaymentMethodGraphQLBody.swift */,
 				BE80C00429C54F2000793A6C /* BTAuthenticationInsight.swift */,
 				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
 				BE01A82A29CCB22E000DFA24 /* BTCardAnalytics.swift */,
@@ -2699,6 +2710,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				628A991430093E46009301F9 /* PaymentActions */,
 			);
 			name = BraintreeCore;
 			productName = BraintreeCore;
@@ -3910,6 +3924,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				628A992430093EC1009301F9 /* CardSetPaymentMethodGraphQLBody.swift in Sources */,
 				BE01A82B29CCB22E000DFA24 /* BTCardAnalytics.swift in Sources */,
 				BE80C00B29C66F4800793A6C /* BTCardNonce.swift in Sources */,
 				BE80C00D29C8B4B900793A6C /* BTCard.swift in Sources */,
@@ -3917,6 +3932,7 @@
 				B8F870152D48435D000FCE3C /* CreditCardPOSTBody.swift in Sources */,
 				B8F870162D48435D000FCE3C /* CreditCardGraphQLBody.swift in Sources */,
 				BE80C00729C5516E00793A6C /* BTThreeDSecureInfo.swift in Sources */,
+				628A992630093ECF009301F9 /* BTCardPaymentActionResult.swift in Sources */,
 				BEFE9A3D29C8ECAA00BF69AB /* BTCardError.swift in Sources */,
 				BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */,
 			);
