@@ -6,13 +6,9 @@
 
 ![GitHub Actions Tests](https://github.com/braintree/braintree_ios/workflows/Tests/badge.svg)
 
-Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
+Welcome to Braintree's iOS SDK. This library will help you accept card, alternative payments, and display streamlined UI in your iOS app.
 
 **The Braintree iOS SDK permits a deployment target of iOS 16.0 or higher**. It requires Xcode 16.2+ and Swift 5.10+.
-
-## 📣 Announcements
-
-- **Upgrade your integration to continue accepting Braintree payments** 📣 The SSL certificates for previous iOS SDK versions (v5 and v6) are set to expire by March 30, 2026. Upgrade to v5.26.0+ and v6.17.0+, respectively, to continue using the Braintree SDK. [Click here for more details](https://github.com/braintree/braintree_ios/issues/1277). All versions of iOS v7 include the updated certificates.
 
 ## Supported Payment Methods & Features
 
@@ -27,6 +23,10 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 - [Shopper Insights](https://developer.paypal.com/braintree/docs/guides/shopper-insights/)
 - [ThreeDSecure](https://developer.paypal.com/braintree/docs/guides/3d-secure/overview)
 - [SEPA Direct Debit](https://developer.paypal.com/braintree/docs/guides/sepa-direct-debit/overview/)
+- UI Components
+    - [PayPal Button](https://developer.paypal.com/braintree/docs/guides/paypal/client-side/ios/v7/#using-our-payment-buttons)
+    - [Venmo Button](https://developer.paypal.com/braintree/docs/guides/venmo/client-side/ios/v7/#use-our-payment-buttons)
+    - [Credit Card Fields](#card-fields)
 
 ## Installation
 
@@ -57,6 +57,7 @@ pod 'Braintree'
 pod 'Braintree/DataCollector'
 pod 'Braintree/Venmo'
 ```
+*Note:* [CocoaPods will no longer be supported in late 2026](https://blog.cocoapods.org/CocoaPods-Specs-Repo/) - please migrate to SPM or Carthage as we will be removing CocoaPods support in late 2026.
 
 ### Carthage
 Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
@@ -64,12 +65,6 @@ Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option w
 Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 *Note:* Long term support for Carthage is not guaranteed. Please update to SPM, if possible. If there are concerns, please comment on [this Discussion thread](https://github.com/braintree/braintree_ios/discussions/705).
-
-## Documentation
-
-Start with [**'Hello, Client!'**](https://developer.paypal.com/braintree/docs/start/hello-client/ios/v6) for instructions on basic setup and usage.
-
-Next, read the [**full documentation**](https://developer.paypal.com/braintree/docs/guides/payment-method-types-overview) for information about integrating with additional payment methods, such as PayPal and Venmo, as well as explore our pre-built [Drop-In UI offering](https://developer.paypal.com/braintree/docs/guides/drop-in/overview).
 
 ## Upgrade Your SDK Version
 
@@ -218,7 +213,7 @@ Here are a few ways to get in touch:
 
 ## Help
 
-* [Read the Braintree docs](https://developer.paypal.com/braintree/docs/guides/client-sdk/setup/ios/v5)
+* [Read the Braintree docs](https://developer.paypal.com/braintree/docs/)
 * [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
 * Want to contribute? [Check out contributing guidelines](https://github.com/braintree/braintree_ios/blob/main/CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
