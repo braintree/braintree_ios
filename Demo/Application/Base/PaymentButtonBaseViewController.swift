@@ -6,7 +6,10 @@ class PaymentButtonBaseViewController: BaseViewController {
     let authorization: String
 
     var heightConstraint: CGFloat?
+    var usesIntrinsicContentHeight = false
 
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private var paymentButton = UIView()
 
     override init(authorization: String) {
@@ -25,14 +28,61 @@ class PaymentButtonBaseViewController: BaseViewController {
         view.backgroundColor = .systemBackground
 
         paymentButton = createPaymentButton()
-        view.addSubview(paymentButton)
+        paymentButton.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            paymentButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            paymentButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            paymentButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            paymentButton.heightAnchor.constraint(equalToConstant: heightConstraint ?? 100)
-        ])
+        scrollView.keyboardDismissMode = .interactive
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(paymentButton)
+
+        let contentViewEqualHeightConstraint = contentView.heightAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.heightAnchor
+        )
+        contentViewEqualHeightConstraint.priority = .defaultLow
+
+        let paymentButtonTopConstraint = paymentButton.topAnchor.constraint(
+            equalTo: contentView.topAnchor,
+            constant: 20
+        )
+        paymentButtonTopConstraint.priority = .defaultHigh
+
+        let paymentButtonBottomConstraint = paymentButton.bottomAnchor.constraint(
+            equalTo: contentView.bottomAnchor,
+            constant: -20
+        )
+        paymentButtonBottomConstraint.priority = .defaultHigh
+
+        var constraints = [
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
+            contentViewEqualHeightConstraint,
+
+            paymentButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            paymentButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            paymentButton.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 20),
+            paymentButton.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -20),
+            paymentButtonTopConstraint,
+            paymentButtonBottomConstraint,
+            paymentButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ]
+
+        if !usesIntrinsicContentHeight {
+            constraints.append(paymentButton.heightAnchor.constraint(equalToConstant: heightConstraint ?? 100))
+        }
+
+        NSLayoutConstraint.activate(constraints)
     }
 
     /// A factory method that subclasses must implement to return a payment button view.
