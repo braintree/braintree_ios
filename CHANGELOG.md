@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 7.9.0 (2026-07-21)
+## unreleased
 * BraintreeUIComponents
   * Fix minimum target version to iOS 16.0 to match all other modules
 
