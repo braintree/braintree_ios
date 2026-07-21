@@ -86,7 +86,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"
-        request.payPalCampaigns = [BTPayPalCampaign(id: "campaign-123-id")]
+        request.campaigns = [BTPayPalCampaign(id: "campaign-123-id")]
         request.userAction = .payNow
         request.userAuthenticationEmail = "fake@email.com"
         request.userPhoneNumber = BTPayPalPhoneNumber(countryCode: "1", nationalNumber: "4087463271")
@@ -167,7 +167,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_whenPayPalCampaignsAreSet_returnsPayPalCampaigns() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
-            payPalCampaigns: [
+            campaigns: [
                 BTPayPalCampaign(id: "campaign-123-id"),
                 BTPayPalCampaign(id: "campaign-456-id")
             ]
@@ -187,7 +187,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_whenPayPalCampaignIDsAreEmpty_doesNotReturnPayPalCampaigns() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
-            payPalCampaigns: [
+            campaigns: [
                 BTPayPalCampaign(id: ""),
                 BTPayPalCampaign(id: "   ")
             ]
@@ -204,7 +204,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     func testParametersWithConfiguration_whenSomePayPalCampaignIDsAreEmpty_returnsOnlyValidPayPalCampaignsInOrder() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
-            payPalCampaigns: [
+            campaigns: [
                 BTPayPalCampaign(id: "campaign-123-id"),
                 BTPayPalCampaign(id: ""),
                 BTPayPalCampaign(id: "campaign-456-id"),
@@ -227,7 +227,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
             enablePayPalAppSwitch: true,
-            payPalCampaigns: [BTPayPalCampaign(id: "campaign-123-id")]
+            campaigns: [BTPayPalCampaign(id: "campaign-123-id")]
         )
 
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary(),

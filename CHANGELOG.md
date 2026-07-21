@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add `payPalCampaigns` to `BTPayPalCheckoutRequest` and pass them as `paypal_campaigns` in PayPal checkout requests.
+  * Add `campaigns` to `BTPayPalCheckoutRequest` and pass them as `paypal_campaigns` in PayPal checkout requests.
 * BraintreeUIComponents
   * Fix minimum target version to iOS 16.0 to match all other modules
 

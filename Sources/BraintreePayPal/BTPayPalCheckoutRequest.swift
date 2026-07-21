@@ -59,7 +59,7 @@ import BraintreeCore
     var lineItems: [BTPayPalLineItem]?
     var localeCode: BTPayPalLocaleCode?
     var merchantAccountID: String?
-    var payPalCampaigns: [BTPayPalCampaign]
+    var campaigns: [BTPayPalCampaign]
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var requestBillingAgreement: Bool
@@ -128,7 +128,7 @@ import BraintreeCore
     ///   during checkout. Defaults to `false`.
     ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    ///   - payPalCampaigns: Optional: PayPal campaigns applied to the transaction.
+    ///   - campaigns: Optional: PayPal campaigns applied to the transaction.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
     public convenience init(
@@ -142,7 +142,7 @@ import BraintreeCore
         requestBillingAgreement: Bool = false,
         contactPreference: BTContactPreference = .none,
         offerCredit: Bool = false,
-        payPalCampaigns: [BTPayPalCampaign]
+        campaigns: [BTPayPalCampaign]
     ) {
         self.init(
             amount: amount,
@@ -155,7 +155,7 @@ import BraintreeCore
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail,
             offerCredit: offerCredit,
-            payPalCampaigns: payPalCampaigns
+            campaigns: campaigns
         )
     }
 
@@ -194,7 +194,7 @@ import BraintreeCore
     ///   - userPhoneNumber: Optional: A user's phone number to initiate a quicker authentication flow in the scenario where the user has a PayPal account
     ///   identified with the same phone number.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    ///   - payPalCampaigns: Optional: PayPal campaigns applied to the transaction.
+    ///   - campaigns: Optional: PayPal campaigns applied to the transaction.
     public init(
         amount: String,
         intent: BTPayPalRequestIntent = .authorize,
@@ -223,7 +223,7 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
         offerCredit: Bool = false,
-        payPalCampaigns: [BTPayPalCampaign] = []
+        campaigns: [BTPayPalCampaign] = []
     ) {
         self.amount = amount
         self.intent = intent
@@ -246,7 +246,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.localeCode = localeCode
         self.merchantAccountID = merchantAccountID
-        self.payPalCampaigns = payPalCampaigns
+        self.campaigns = campaigns
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.requestBillingAgreement = requestBillingAgreement

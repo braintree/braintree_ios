@@ -72,7 +72,7 @@ class BTPayPalClient_Tests: XCTestCase {
     func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let checkoutRequest = BTPayPalCheckoutRequest(
             amount: "1",
-            payPalCampaigns: [
+            campaigns: [
                 BTPayPalCampaign(id: "campaign-123-id"),
                 BTPayPalCampaign(id: "campaign-456-id")
             ]
