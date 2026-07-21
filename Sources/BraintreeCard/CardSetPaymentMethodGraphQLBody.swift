@@ -43,6 +43,7 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
                 }
                 
                 struct PaymentMethodDetails: Encodable {
+                    
                     var card: Card
                     
                     init(card: BTCard) {
@@ -50,6 +51,7 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
                     }
                     
                     struct Card: Encodable {
+                        
                         var number: String?
                         var expirationMonth: String?
                         var expirationYear: String?
@@ -74,6 +76,7 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     }
     
     static func setPaymentActionPaymentMethodMutation() -> String {
+        // swiftlint:disable indentation_width
         """
         mutation SetPaymentActionPaymentMethod($input: SetPaymentActionPaymentMethodInput!) {
           setPaymentActionPaymentMethod(input: $input) {
