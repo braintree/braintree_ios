@@ -14,8 +14,8 @@ public struct BTPaymentActionSelectedPaymentMethod {
 @_documentation(visibility: private)
 public enum BTPaymentActionSelectedPaymentMethodDetails {
     
-    // swiftlint:disable:next enum_case_associated_values_count
     // TODO: Confirm the required fields per the finalized ADR
+    // swiftlint:disable:next enum_case_associated_values_count
     case creditCard(
         last4: String,
         bin: String,
