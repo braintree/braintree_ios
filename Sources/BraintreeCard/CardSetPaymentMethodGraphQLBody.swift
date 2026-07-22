@@ -83,19 +83,6 @@ struct CardSetPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
             paymentAction {
               id
               status
-              nextAction {
-                type
-                songbirdUrl
-                cardinalAuthenticationJwt
-                bin
-                acsUrl
-                challengePayload
-                redirectUrl
-              }
-              selectedPaymentMethod {
-                paymentMethodId
-                usage
-              }
             }
           }
         }
