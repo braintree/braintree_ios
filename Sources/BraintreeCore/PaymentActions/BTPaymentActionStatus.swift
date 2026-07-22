@@ -1,7 +1,7 @@
 import Foundation
 
 /// The lifecycle status of a Payment Action. 
-public enum BTPaymentActionStatus {
+@objc public enum BTPaymentActionStatus: Int {
     case requiresPaymentMethod
     case readyForConfirmation
     case succeeded
@@ -12,17 +12,17 @@ public enum BTPaymentActionStatus {
     case processing
     case unknown
     
-    public init(rawValue: String) {
+    static func status(from rawValue: String) -> BTPaymentActionStatus {
         switch rawValue {
-        case "REQUIRES_PAYMENT_METHOD": self = .requiresPaymentMethod
-        case "READY_FOR_CONFIRMATION": self = .readyForConfirmation
-        case "SUCCEEDED": self = .succeeded
-        case "REQUIRES_CAPTURE": self = .requiresCapture
-        case "CANCELED": self = .canceled
-        case "EXPIRED": self = .expired
-        case "REQUIRES_CUSTOMER_ACTION": self = .requiresCustomerAction
-        case "PROCESSING": self = .processing
-        default: self = .unknown
+        case "REQUIRES_PAYMENT_METHOD": return .requiresPaymentMethod
+        case "READY_FOR_CONFIRMATION": return .readyForConfirmation
+        case "SUCCEEDED": return .succeeded
+        case "REQUIRES_CAPTURE": return .requiresCapture
+        case "CANCELED": return .canceled
+        case "EXPIRED": return .expired
+        case "REQUIRES_CUSTOMER_ACTION": return .requiresCustomerAction
+        case "PROCESSING": return .processing
+        default: return .unknown
         }
     }
 }

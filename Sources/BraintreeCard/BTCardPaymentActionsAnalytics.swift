@@ -1,7 +1,7 @@
 import Foundation
 
 // TODO: These keys are currently placeholder values that must be changed when we get the official values.
-enum BTPaymentActionsAnalytics {
+enum BTCardPaymentActionsAnalytics {
     static let setPaymentMethodStarted = "payment-actions:set-payment-method:started"
     static let setPaymentMethodSucceeded = "payment-actions:set-payment-method:succeeded"
     static let setPaymentMethodFailed = "payment-actions:set-payment-method:failed"
