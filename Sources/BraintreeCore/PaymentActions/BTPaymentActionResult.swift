@@ -8,4 +8,3 @@ struct BTPaymentActionResult {
     public let nextAction: BTJSON?
     public let selectedPaymentMethod: BTPaymentActionSelectedPaymentMethod?
 }
-
