@@ -1,9 +1,8 @@
 import Foundation
 
-// TODO: These keys are currently placeholder values that must be changed when we get the official values.
+// TODO: The analytic constants below are currently placeholder values that may be changed when the final values are determined.
 enum BTCardPaymentActionsAnalytics {
-    static let setPaymentMethodStarted = "payment-actions:set-payment-method:started"
-    static let setPaymentMethodSucceeded = "payment-actions:set-payment-method:succeeded"
-    static let setPaymentMethodFailed = "payment-actions:set-payment-method:failed"
-    static let readyForConfirmation = "payment-actions:ready-for-confirmation"
+    static let paymentActionsSetPaymentMethodStarted = "card:payment-actions:set-payment-method:started"
+    static let paymentActionsSetPaymentMethodSucceeded = "card:payment-actions:set-payment-method:succeeded"
+    static let paymentActionsSetPaymentMethodFailed = "card:payment-actions:set-payment-method:failed"
 }
