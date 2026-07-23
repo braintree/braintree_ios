@@ -20,7 +20,7 @@ import BraintreeCore
     ///  - Parameters:
     ///      - id: The Payment Action ID.
     ///      - status: The lifecycle status of the Payment Action.
-    public init(id: String, status: BTPaymentActionStatus) {
+    init(id: String, status: BTPaymentActionStatus) {
         self.id = id
         self.status = status
     }
