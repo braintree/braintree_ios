@@ -18,7 +18,7 @@ import Foundation
     /// The status returned by the server could not be mapped to a known case.
     case unknown
     
-    var descprition: String {
+    var description: String {
         switch self {
         case .requiresPaymentMethod: return "REQUIRES_PAYMENT_METHOD"
         case .readyForConfirmation: return "READY_FOR_CONFIRMATION"
@@ -30,13 +30,13 @@ import Foundation
     
     static func status(from rawValue: String) -> BTPaymentActionStatus {
         switch rawValue {
-        case BTPaymentActionStatus.requiresPaymentMethod.descprition:
+        case BTPaymentActionStatus.requiresPaymentMethod.description:
             return .requiresPaymentMethod
-        case BTPaymentActionStatus.readyForConfirmation.descprition:
+        case BTPaymentActionStatus.readyForConfirmation.description:
             return .readyForConfirmation
-        case BTPaymentActionStatus.succeeded.descprition:
+        case BTPaymentActionStatus.succeeded.description:
             return .succeeded
-        case BTPaymentActionStatus.requiresCapture.descprition:
+        case BTPaymentActionStatus.requiresCapture.description:
             return .requiresCapture
         default:
             return .unknown
