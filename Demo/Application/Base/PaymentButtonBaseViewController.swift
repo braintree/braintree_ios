@@ -34,9 +34,9 @@ class PaymentButtonBaseViewController: BaseViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
         contentView.addSubview(paymentButton)
+        scrollView.addSubview(contentView)
+        view.addSubview(scrollView)
 
         let contentViewEqualHeightConstraint = contentView.heightAnchor.constraint(
             equalTo: scrollView.frameLayoutGuide.heightAnchor
