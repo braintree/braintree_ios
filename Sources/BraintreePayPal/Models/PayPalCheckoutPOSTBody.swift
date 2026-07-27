@@ -65,8 +65,9 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.offerCredit = payPalRequest.offerCredit
         self.amountBreakdown = payPalRequest.amountBreakdown
 
-        let validPayPalCampaigns = payPalRequest.campaigns.filter {
-            !$0.id.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let validPayPalCampaigns = payPalRequest.campaigns.compactMap {
+            let trimmedID = $0.id.trimmingCharacters(in: .whitespacesAndNewlines)
+            return trimmedID.isEmpty ? nil : BTPayPalCampaign(id: trimmedID)
         }
         if !validPayPalCampaigns.isEmpty {
             self.payPalCampaigns = validPayPalCampaigns
