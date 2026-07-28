@@ -10,7 +10,7 @@ import Foundation
     // MARK: - Public Initializer
 
     /// Initializes a PayPal campaign.
-    /// - Parameter id: The PayPal campaign ID.
+    /// - Parameter id: Required. The PayPal campaign ID.
     public init(id: String) {
         self.id = id
     }
