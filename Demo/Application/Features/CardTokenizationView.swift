@@ -93,8 +93,8 @@ struct CardTokenizationView: View {
         guard !cardNumber.isEmpty, !cvv.isEmpty else { return nil }
         
         let parts = expirationDate.split(separator: "/")
-        guard parts.count == 2, let month = parts.first,let year = parts.last,
-              !month.isEmpty, !year.isEmpty else {
+        guard parts.count == 2,let month = parts.first,let year = parts.last,
+            !month.isEmpty, !year.isEmpty else {
             return nil
         }
         
