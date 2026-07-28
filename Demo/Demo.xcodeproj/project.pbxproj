@@ -27,6 +27,7 @@
 		42C574D525FA6CAC008B3681 /* AppSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C574D425FA6CAC008B3681 /* AppSwitcher.swift */; };
 		45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 45DDDDA82C08FB0B00C262E5 /* PayPalMessages */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
+		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
 		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
 		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
@@ -157,6 +158,7 @@
 		42F3F6DB2603B83100401B0D /* CardinalMobile.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CardinalMobile.xcframework; path = ../Frameworks/CardinalMobile.xcframework; sourceTree = "<group>"; };
 		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
+		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
 		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		809E86A42ACF6607004998B0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				625257C6301935C800B69488 /* CardFormView.swift */,
 				04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */,
 				803FB9DD26D93146002BF92D /* BTCardFormView.swift */,
 				BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */,
@@ -735,6 +738,7 @@
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
 				0827D165300131C100D26DC4 /* SEPADirectDebitView.swift in Sources */,
+				625257C7301935CD00B69488 /* CardFormView.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
 				08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */,

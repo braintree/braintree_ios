@@ -11,6 +11,8 @@ struct CardTokenizationView: View {
     @State private var cardNumber = ""
     @State private var expirationDate = ""
     @State private var cvv = ""
+    @State private var postalCode = ""
+    @State private var phoneNumber = ""
     @State private var fieldsEnabled = true
     
     init(
@@ -25,32 +27,28 @@ struct CardTokenizationView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            TextField("Card Number", text: $cardNumber)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.roundedBorder)
-                .disabled(!fieldsEnabled)
-            
-            TextField("MM/YYYY", text: $expirationDate)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.roundedBorder)
-                .disabled(!fieldsEnabled)
-            
-            TextField("CVV", text: $cvv)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.roundedBorder)
-                .disabled(!fieldsEnabled)
+            CardFormView(
+                cardNumber: $cardNumber,
+                expirationDate: $expirationDate,
+                cvv: $cvv,
+                postalCode: $postalCode,
+                phoneNumber: $phoneNumber,
+                hidePostalCodeField: true,
+                hidePhoneNumberField: true,
+                fieldsEnabled: fieldsEnabled
+            )
             
             Button {
-                Task {
-                    await tappedSubmit()
-                }
+                Task { await tappedSubmit() }
             } label: {
                 Text("Submit")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.capsule)
-            .controlSize(.large)
+            .background(fieldsEnabled ? Color.black : Color.black.opacity(0.3))
+            .clipShape(Capsule())
             .disabled(!fieldsEnabled)
             
             Button {
@@ -91,18 +89,14 @@ struct CardTokenizationView: View {
         }
     }
     
-    // Note: CardHelpers.newCard(from:) took a `BTCardFormView` which no longer exists in this SwiftUI version.
-    // This builds the BTCard directly from local state instead - adjust the expiration-date split below if
-    // CardHelpers used a different MM/YYYY format.
-    
     private func makeCard() -> BTCard? {
         guard !cardNumber.isEmpty, !cvv.isEmpty else { return nil }
         
         let parts = expirationDate.split(separator: "/")
         guard parts.count == 2,
-            let month = parts.first,
-            let year = parts.last,
-            !month.isEmpty, !year.isEmpty else {
+              let month = parts.first,
+              let year = parts.last,
+              !month.isEmpty, !year.isEmpty else {
             return nil
         }
         
