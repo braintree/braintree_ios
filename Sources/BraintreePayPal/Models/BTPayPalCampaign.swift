@@ -3,9 +3,9 @@ import Foundation
 /// A PayPal campaign applied to a checkout transaction.
 @objcMembers public class BTPayPalCampaign: NSObject, Encodable {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
 
-    public let id: String
+    let id: String
 
     // MARK: - Public Initializer
 

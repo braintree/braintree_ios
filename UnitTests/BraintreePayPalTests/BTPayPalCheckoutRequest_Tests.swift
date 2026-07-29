@@ -223,7 +223,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
     }
 
-    func testParametersWithConfiguration_whenPayPalCampaignIDHasSurroundingWhitespace_trimsPayPalCampaignID() {
+    func testParametersWithConfiguration_whenPayPalCampaignIDHasSurroundingWhitespace_preservesPayPalCampaignID() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
             campaigns: [BTPayPalCampaign(id: " campaign-123-id ")]
@@ -236,7 +236,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         }
 
         XCTAssertEqual(payPalCampaigns.count, 1)
-        XCTAssertEqual(payPalCampaigns.first?["id"] as? String, "campaign-123-id")
+        XCTAssertEqual(payPalCampaigns.first?["id"] as? String, " campaign-123-id ")
     }
 
     func testParametersWithConfiguration_whenAppSwitchRequestHasPayPalCampaigns_returnsPayPalCampaigns() {

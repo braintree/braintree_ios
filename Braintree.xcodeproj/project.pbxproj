@@ -1704,6 +1704,7 @@
 		45E8CE4A2D1F291400D7A2DC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */,
 				B8F483CE2D6F8A5F00214627 /* PayPalAccountPOSTEncodable.swift */,
 				45E8CE4B2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift */,
 				45E8CE4F2D2C772000D7A2DC /* PayPalExperienceProfilePOSTBody.swift */,
@@ -1745,7 +1746,6 @@
 				5708E0A728809BC6007946B9 /* BTJSONError.swift */,
 				570B93D82853C6180041BAFE /* BTLogLevel.swift */,
 				570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */,
-				13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */,
 				BE9FB82A2898324C00D6FE2F /* BTPaymentMethodNonce.swift */,
 				BE63A3A6288F3026001936DA /* BTPostalAddress.swift */,
 				BED7493528579BAC0074C818 /* BTURLUtils.swift */,
@@ -3722,6 +3722,7 @@
 				5754481E294A2A1D00DEB7B0 /* BTPayPalCreditFinancingAmount.swift in Sources */,
 				57D9436E2968A8080079EAB1 /* BTPayPalLocaleCode.swift in Sources */,
 				45E8CE4C2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift in Sources */,
+				13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */,
 				57544F582952298900DEB7B0 /* BTPayPalAccountNonce.swift in Sources */,
 				451508362D400C050071E385 /* BTPayPalPaymentType.swift in Sources */,
 				8014221C2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift in Sources */,
@@ -3754,7 +3755,6 @@
 				BC17F9BC28D24C9E004B18CC /* BTGraphQLErrorTree.swift in Sources */,
 				BEF1089129019DB9003B2FDA /* BTAPIClient.swift in Sources */,
 				BC17F9C028D255B9004B18CC /* BTGraphQLSingleErrorNode.swift in Sources */,
-				13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */,
 				BE5C8C0328A2C183004F9130 /* BTConfiguration+Core.swift in Sources */,
 				CE836AA02E4FDCE300AC7FCA /* UIApplication+ApplicationState.swift in Sources */,
 				BEE2E4E6290080BD00C03FDD /* BTAnalyticsServiceError.swift in Sources */,
