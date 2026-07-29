@@ -86,48 +86,6 @@ import BraintreeCore
     ///   during checkout. Defaults to `false`.
     ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
     ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
-    /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
-    /// - Note: The PayPal App Switch flow currently only supports the production environment.
-    public convenience init(
-        amount: String,
-        enablePayPalAppSwitch: Bool,
-        userAuthenticationEmail: String? = nil,
-        intent: BTPayPalRequestIntent = .authorize,
-        userAction: BTPayPalRequestUserAction = .none,
-        offerPayLater: Bool = false,
-        currencyCode: String? = nil,
-        requestBillingAgreement: Bool = false,
-        contactPreference: BTContactPreference = .none,
-        offerCredit: Bool = false
-    ) {
-        self.init(
-            amount: amount,
-            intent: intent,
-            userAction: userAction,
-            offerPayLater: offerPayLater,
-            contactPreference: contactPreference,
-            currencyCode: currencyCode,
-            enablePayPalAppSwitch: enablePayPalAppSwitch,
-            requestBillingAgreement: requestBillingAgreement,
-            userAuthenticationEmail: userAuthenticationEmail,
-            offerCredit: offerCredit
-        )
-    }
-
-    /// Initializes a PayPal Checkout request for the PayPal App Switch flow with PayPal campaigns.
-    /// - Parameters:
-    ///   - amount: Required: Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.' and is limited to 7 digits before the decimal point.
-    ///   - enablePayPalAppSwitch: Required: Used to determine if the customer will use the PayPal app switch flow.
-    ///   - userAuthenticationEmail: Optional: User email to initiate a quicker authentication flow in cases where the user has a PayPal Account with the same email.
-    ///   - intent: Optional: Payment intent. Defaults to `.authorize`. Only applies to PayPal Checkout.
-    ///   - userAction: Optional: Changes the call-to-action in the PayPal Checkout flow. Defaults to `.none`.
-    ///   - offerPayLater: Optional: Offers PayPal Pay Later if the customer qualifies. Defaults to `false`. Only available with PayPal Checkout.
-    ///   - currencyCode: Optional: A three-character ISO-4217 ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
-    ///   See https://developer.paypal.com/docs/api/reference/currency-codes/ for a list of supported currency codes.
-    ///   - requestBillingAgreement: Optional: If set to `true`, this enables the Checkout with Vault flow, where the customer will be prompted to consent to a billing agreement
-    ///   during checkout. Defaults to `false`.
-    ///   - contactPreference: Optional: Preference for the contact information section within the payment flow. Defaults to `.none` if not set.
-    ///   - offerCredit: Optional: Offers PayPal Credit if the customer qualifies. Defaults to `false`.
     ///   - campaigns: Optional: PayPal campaigns applied to the transaction.
     /// - Warning: This initializer should be used for merchants using the PayPal App Switch flow. This feature is currently in beta and may change or be removed in future releases.
     /// - Note: The PayPal App Switch flow currently only supports the production environment.
@@ -142,7 +100,7 @@ import BraintreeCore
         requestBillingAgreement: Bool = false,
         contactPreference: BTContactPreference = .none,
         offerCredit: Bool = false,
-        campaigns: [BTPayPalCampaign]
+        campaigns: [BTPayPalCampaign]? = nil
     ) {
         self.init(
             amount: amount,
@@ -155,7 +113,7 @@ import BraintreeCore
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail,
             offerCredit: offerCredit,
-            campaigns: campaigns
+            campaigns: campaigns ?? []
         )
     }
 
