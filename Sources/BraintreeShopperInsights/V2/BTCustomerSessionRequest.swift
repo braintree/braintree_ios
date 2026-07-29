@@ -9,6 +9,7 @@ public struct BTCustomerSessionRequest {
     let payPalAppInstalled: Bool?
     let venmoAppInstalled: Bool?
     let purchaseUnits: [BTPurchaseUnit]?
+    let payPalCampaigns: [BTShopperInsightsCampaign]
     
     /// Creates a BTCustomerSessionRequest
     /// - Parameters:
@@ -17,18 +18,21 @@ public struct BTCustomerSessionRequest {
     ///   - payPalAppInstalled: Optional: Checks whether the PayPal app is installed on the device.
     ///   - venmoAppInstalled: Optional: Checks whether the Venmo app is installed on the device.
     ///   - purchaseUnits: Optional: The list of purchase units containing the amount and currency code.
+    ///   - payPalCampaigns: Optional: PayPal campaigns displayed to the customer in the shopping journey.
     /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
     public init(
         hashedEmail: String? = nil,
         hashedPhoneNumber: String? = nil,
         payPalAppInstalled: Bool? = nil,
         venmoAppInstalled: Bool? = nil,
-        purchaseUnits: [BTPurchaseUnit]? = nil
+        purchaseUnits: [BTPurchaseUnit]? = nil,
+        payPalCampaigns: [BTShopperInsightsCampaign] = []
     ) {
         self.hashedEmail = hashedEmail
         self.hashedPhoneNumber = hashedPhoneNumber
         self.payPalAppInstalled = payPalAppInstalled
         self.venmoAppInstalled = venmoAppInstalled
         self.purchaseUnits = purchaseUnits
+        self.payPalCampaigns = payPalCampaigns
     }
 }

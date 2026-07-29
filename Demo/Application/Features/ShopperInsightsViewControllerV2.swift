@@ -52,6 +52,13 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "94f0b2db-5323-4d86-add3-paypalmsg000"
         return view
     }()
+
+    lazy var payPalCampaignsView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "PayPal Campaigns"
+        view.textField.placeholder = "campaign-123-id"
+        return view
+    }()
     
     private let recommendationsLabel: UILabel = {
         let label = UILabel()
@@ -79,7 +86,13 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     )
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView])
+        let stackView = UIStackView(arrangedSubviews: [
+            emailView,
+            countryCodeView,
+            nationalNumberView,
+            sessionIDView,
+            payPalCampaignsView
+        ])
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -135,7 +148,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
                 purchaseUnits: [
                     BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-                ]
+                ],
+                payPalCampaigns: payPalCampaigns
             )
 
             do {
@@ -162,7 +176,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ],
+            payPalCampaigns: payPalCampaigns
         )
 
         Task {
@@ -194,7 +209,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ],
+            payPalCampaigns: payPalCampaigns
         )
 
         Task {
@@ -241,6 +257,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     private func resetRecommendationsLabel() {
         recommendationsLabel.text = ""
         recommendationsLabel.isHidden = true
+    }
+
+    private var payPalCampaigns: [BTShopperInsightsCampaign] {
+        payPalCampaignsView.textField.text?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .map { BTShopperInsightsCampaign(id: $0) } ?? []
     }
     
     private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {

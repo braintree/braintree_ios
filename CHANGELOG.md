@@ -1,6 +1,8 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* BraintreeShopperInsights
+  * Add `payPalCampaigns` to `BTCustomerSessionRequest` for customer session and recommendations requests so eligible PayPal campaign context can be recorded during the shopping journey.
 * BraintreeUIComponents
   * Fix minimum target version to iOS 16.0 to match all other modules
 
