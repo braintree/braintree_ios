@@ -17,7 +17,7 @@ class BTPaymentActionsService {
     func setPaymentMethod<Body: BTGraphQLEncodableBody>(_ body: Body) async throws -> BTPaymentActionResult {
         
         let responseBody: BTJSON?
-        
+
         do {
             (responseBody, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
         } catch let error as NSError {
@@ -27,16 +27,16 @@ class BTPaymentActionsService {
                urlResponse.statusCode == 422 {
                 var userInfo: [String: Any] = error.userInfo
                 let errorBody = error.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
-
+                
                 if let message = errorBody?["error"]["message"], message.isString {
                     userInfo[NSLocalizedDescriptionKey] = message.asString() as Any
                 }
-
+                
                 throw BTPaymentActionsError.customerInputInvalid(userInfo)
             }
             throw error
         }
-
+        
         let setPaymentActionPaymentMethodJSON: BTJSON = responseBody?["data"]["setPaymentActionPaymentMethod"] ?? BTJSON()
         
         if let jsonError = setPaymentActionPaymentMethodJSON.asError() {
