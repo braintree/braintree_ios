@@ -29,6 +29,8 @@
 		45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 45DDDDA82C08FB0B00C262E5 /* PayPalMessages */; };
 		62070627300A8EE100C430AA /* IdealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62070626300A8ED500C430AA /* IdealView.swift */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
+		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
+		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
 		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
 		8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8028B9772B28D42400C88CE8 /* BraintreeShopperInsights.framework */; };
@@ -160,6 +162,8 @@
 		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62070626300A8ED500C430AA /* IdealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdealView.swift; sourceTree = "<group>"; };
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
+		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
+		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		7B20BE362F706797A0A110B0 /* UIViewController+Embed.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIViewController+Embed.swift"; sourceTree = "<group>"; };
@@ -314,6 +318,7 @@
 		809E86A42ACF6607004998B0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				625257C6301935C800B69488 /* CardFormView.swift */,
 				04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */,
 				803FB9DD26D93146002BF92D /* BTCardFormView.swift */,
 				BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */,
@@ -388,6 +393,7 @@
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				0827D1663013AEDB00D26DC4 /* ApplePayView.swift */,
 				BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */,
+				62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */,
 				BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */,
 				BEAAAA332A98E5E6001ECA63 /* IdealViewController.swift */,
 				62070626300A8ED500C430AA /* IdealView.swift */,
@@ -740,6 +746,7 @@
 				BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */,
 				0827D1673013AEDB00D26DC4 /* ApplePayView.swift in Sources */,
 				0827D165300131C100D26DC4 /* SEPADirectDebitView.swift in Sources */,
+				625257C7301935CD00B69488 /* CardFormView.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
 				08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */,
@@ -750,6 +757,7 @@
 				809E86A62AD00AF4004998B0 /* AppDelegate.swift in Sources */,
 				8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */,
 				04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */,
+				62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */,
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
 				91E24EA930E1F3EFF3329A16 /* UIViewController+Embed.swift in Sources */,
 			);
