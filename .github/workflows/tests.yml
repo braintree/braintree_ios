@@ -6,21 +6,21 @@ concurrency:
 jobs:
   unit_test_job:
     name: Unit
-    runs-on: macos-15-xlarge
+    runs-on: xcode-27-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.4
-        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Use Xcode 27
+        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
 
       - name: Check Unit Test Coverage
         run: |
@@ -50,7 +50,7 @@ jobs:
           EOF
   ui_test_job:
     name: UI
-    runs-on: macos-15-xlarge
+    runs-on: xcode-27-xlarge
     timeout-minutes: 20  # Add overall job timeout
     strategy:
       matrix:
@@ -71,8 +71,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: Use Xcode 16.4
-        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Use Xcode 27
+        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
 
       - name: Install CocoaPod dependencies
         run: pod install
@@ -80,8 +80,8 @@ jobs:
       - name: Boot Simulator
         run: |
           # Boot simulator ahead of time to reduce test startup time
-          # Find iPhone 16 Pro with iOS 18.5
-          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 18.5" | grep "iPhone 16 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
+          # Find iPhone 17 Pro with iOS 27.0
+          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 17 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
 
           if [ -n "$DEVICE_UDID" ]; then
             xcrun simctl boot "$DEVICE_UDID" || true
@@ -94,11 +94,11 @@ jobs:
         timeout-minutes: 3
         run: |
           # Reset simulator state to ensure clean environment
-          echo "Finding iPhone 16 Pro (iOS 18.5) simulator..."
-          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 18.5" | grep "iPhone 16 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
+          echo "Finding iPhone 17 Pro (iOS 27.0) simulator..."
+          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 17 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
 
           if [ -z "$DEVICE_UDID" ]; then
-            echo "::error::iPhone 16 Pro (iOS 18.5) simulator not found"
+            echo "::error::iPhone 17 Pro (iOS 27.0) simulator not found"
             exit 1
           fi
 
@@ -127,7 +127,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Debug' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' \
+            -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -disable-concurrent-destination-testing \
@@ -136,18 +136,18 @@ jobs:
 
   integration_test_job:
     name: Integration
-    runs-on: macos-15-xlarge
+    runs-on: xcode-27-xlarge
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.4
-        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Use Xcode 27
+        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
