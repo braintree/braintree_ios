@@ -46,6 +46,10 @@ import Foundation
             return .succeeded
         case BTPaymentActionStatus.requiresCapture.description:
             return .requiresCapture
+        case BTPaymentActionStatus.canceled.description:
+            return .canceled
+        case BTPaymentActionStatus.expired.description:
+            return .expired
         default:
             return .unknown
         }
