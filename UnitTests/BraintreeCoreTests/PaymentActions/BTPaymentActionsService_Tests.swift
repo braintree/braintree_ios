@@ -122,9 +122,8 @@ class BTPaymentActionsService_Tests: XCTestCase {
             _ = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
             XCTFail("Expected error to be thrown")
         } catch {
-            // Propagated as-is from BTJSON.asError() — no reinterpretation into a custom error type.
-            // Braintree's GraphQL API returns HTTP 200 with a top-level `errors` array on failure,
-            // so this is the failure path this mutation actually hits in practice.
+            // TODO: Verify the exact error shape we receive back from GraphQL for this mutation.
+            // Usually, the GraphQL API returns HTTP 200 with a top-level `errors` array on failure.
         }
     }
 
