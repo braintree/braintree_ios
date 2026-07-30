@@ -14,6 +14,11 @@ class BTPaymentActionsService {
     
     // MARK: - Internal Methods
     
+    /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
+    /// - Parameter body: the GraphQL request body to submit, encoding the payment method details and the fields
+    /// to return on the `paymentAction` selection set.
+    /// - Returns: a `BTPaymentActionResult` containing the Payment Action `id` and `status`.
+    /// - Throws: `BTPaymentActionsError.customerInputInvalid` if the server returns a 422 with an invalid-input message, or the underlying error otherwise.
     func setPaymentMethod<Body: BTGraphQLEncodableBody>(_ body: Body) async throws -> BTPaymentActionResult {
         
         let responseBody: BTJSON?
