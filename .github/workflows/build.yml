@@ -14,7 +14,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
+        run: |
+          XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -i 27 | sort -V | tail -1)
+          if [ -z "$XCODE_PATH" ]; then
+            echo "::error::No Xcode 27 install found on this runner. Installed Xcode apps:"
+            ls /Applications | grep -i Xcode
+            exit 1
+          fi
+          echo "Resolved Xcode path: $XCODE_PATH"
+          sudo xcode-select -switch "$XCODE_PATH"
+          xcodebuild -version
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
@@ -30,7 +39,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
+        run: |
+          XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -i 27 | sort -V | tail -1)
+          if [ -z "$XCODE_PATH" ]; then
+            echo "::error::No Xcode 27 install found on this runner. Installed Xcode apps:"
+            ls /Applications | grep -i Xcode
+            exit 1
+          fi
+          echo "Resolved Xcode path: $XCODE_PATH"
+          sudo xcode-select -switch "$XCODE_PATH"
+          xcodebuild -version
       - name: Remove SPMTest
         run: |
           git config --global user.email "code@getbraintree.com"
@@ -57,7 +75,16 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_3.app
+        run: |
+          XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | grep -i 27 | sort -V | tail -1)
+          if [ -z "$XCODE_PATH" ]; then
+            echo "::error::No Xcode 27 install found on this runner. Installed Xcode apps:"
+            ls /Applications | grep -i Xcode
+            exit 1
+          fi
+          echo "Resolved Xcode path: $XCODE_PATH"
+          sudo xcode-select -switch "$XCODE_PATH"
+          xcodebuild -version
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF//\//\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
