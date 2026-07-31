@@ -43,21 +43,23 @@ class PaymentButtonBaseViewController: BaseViewController {
         )
         contentViewEqualHeightConstraint.priority = .defaultLow
 
+        let contentInset: CGFloat = usesIntrinsicContentHeight ? 10 : 20
+
         let paymentButtonTopConstraint = paymentButton.topAnchor.constraint(
             equalTo: contentView.topAnchor,
-            constant: 20
+            constant: contentInset
         )
         paymentButtonTopConstraint.priority = .defaultHigh
 
         let paymentButtonBottomConstraint = paymentButton.bottomAnchor.constraint(
             equalTo: contentView.bottomAnchor,
-            constant: -20
+            constant: -contentInset
         )
         paymentButtonBottomConstraint.priority = .defaultHigh
 
         var constraints = [
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
@@ -71,15 +73,15 @@ class PaymentButtonBaseViewController: BaseViewController {
 
             paymentButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             paymentButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            paymentButton.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 20),
-            paymentButton.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -20),
+            paymentButton.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: contentInset),
+            paymentButton.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -contentInset),
             paymentButtonTopConstraint,
-            paymentButtonBottomConstraint,
-            paymentButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            paymentButtonBottomConstraint
         ]
 
         if !usesIntrinsicContentHeight {
             constraints.append(paymentButton.heightAnchor.constraint(equalToConstant: heightConstraint ?? 100))
+            constraints.append(paymentButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
         }
 
         NSLayoutConstraint.activate(constraints)
