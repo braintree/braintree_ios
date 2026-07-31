@@ -26,13 +26,13 @@ public struct BTCustomerSessionRequest {
         payPalAppInstalled: Bool? = nil,
         venmoAppInstalled: Bool? = nil,
         purchaseUnits: [BTPurchaseUnit]? = nil,
-        payPalCampaigns: [BTShopperInsightsCampaign] = []
+        payPalCampaigns: [BTShopperInsightsCampaign]? = nil
     ) {
         self.hashedEmail = hashedEmail
         self.hashedPhoneNumber = hashedPhoneNumber
         self.payPalAppInstalled = payPalAppInstalled
         self.venmoAppInstalled = venmoAppInstalled
         self.purchaseUnits = purchaseUnits
-        self.payPalCampaigns = payPalCampaigns
+        self.payPalCampaigns = payPalCampaigns ?? []
     }
 }
