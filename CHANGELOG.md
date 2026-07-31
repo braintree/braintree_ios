@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add `campaigns` to `BTPayPalCheckoutRequest` and pass them in PayPal checkout requests so eligible campaign context can be persisted during order creation and surfaced in the PayPal checkout experience.
+  * Add `campaigns` to `BTPayPalCheckoutRequest` so eligible campaign context can be persisted during order creation and surfaced in the PayPal checkout experience.
 * BraintreeUIComponents
   * Fix minimum target version to iOS 16.0 to match all other modules
 
