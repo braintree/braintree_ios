@@ -181,7 +181,7 @@ import BraintreeCore
         userAuthenticationEmail: String? = nil,
         userPhoneNumber: BTPayPalPhoneNumber? = nil,
         offerCredit: Bool = false,
-        campaigns: [BTPayPalCampaign] = []
+        campaigns: [BTPayPalCampaign]? = nil
     ) {
         self.amount = amount
         self.intent = intent
@@ -204,7 +204,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.localeCode = localeCode
         self.merchantAccountID = merchantAccountID
-        self.campaigns = campaigns
+        self.campaigns = campaigns ?? []
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.requestBillingAgreement = requestBillingAgreement
