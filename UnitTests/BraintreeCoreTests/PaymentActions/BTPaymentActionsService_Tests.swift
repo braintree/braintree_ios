@@ -94,24 +94,26 @@ class BTPaymentActionsService_Tests: XCTestCase {
         XCTAssertEqual(result.id, "pa_111")
     }
 
-    func testSetPaymentActionPaymentMethod_whenPaymentActionIsMissingEntirely_doesNotThrowAndReturnsUnknown() async throws {
-        mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["setPaymentActionPaymentMethod": [:]] as [String: Any]])
-
-        let result = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
-
-        XCTAssertEqual(result.status, .unknown)
-        XCTAssertEqual(result.id, "")
-    }
-
     // MARK: - Failure Cases
 
-    func testSetPaymentActionPaymentMethod_whenGraphQLErrorsArrayPresent_throwsUnderlyingJSONError() async {
+    func testSetPaymentActionPaymentMethod_whenPaymentActionIsMissingEntirely_throws() async {
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["setPaymentActionPaymentMethod": [:]] as [String: Any]])
+
+        do {
+            _ = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
+            XCTFail("Expected error to be thrown")
+        } catch {
+            // TODO: assert against the finalized error type/case once the error shape is defined.
+        }
+    }
+
+    func testSetPaymentActionPaymentMethod_whenIDIsMissing_throws() async {
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "data": [
                     "setPaymentActionPaymentMethod": [
-                        "errors": [
-                            ["message": "payment action not found"]
+                        "paymentAction": [
+                            "status": "SUCCEEDED"
                         ]
                     ]
                 ]
@@ -122,12 +124,48 @@ class BTPaymentActionsService_Tests: XCTestCase {
             _ = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
             XCTFail("Expected error to be thrown")
         } catch {
-            // TODO: Verify the exact error shape we receive back from GraphQL for this mutation.
-            // Usually, the GraphQL API returns HTTP 200 with a top-level `errors` array on failure.
+            // TODO: assert against the finalized error type/case once the error shape is defined.
+        }
+    }
+
+    func testSetPaymentActionPaymentMethod_whenIDIsEmptyString_throws() async {
+        // An empty string id is treated the same as a missing id -- there's no valid flow where
+        // an empty PA id is usable downstream.
+        mockAPIClient.cannedResponseBody = paymentActionResponse(id: "", status: "SUCCEEDED")
+
+        do {
+            _ = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
+            XCTFail("Expected error to be thrown")
+        } catch {
+            // TODO: assert against the finalized error type/case once the error shape is defined.
+        }
+    }
+
+    func testSetPaymentActionPaymentMethod_whenStatusIsMissing_throws() async {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "setPaymentActionPaymentMethod": [
+                        "paymentAction": [
+                            "id": "pa_123"
+                        ]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+
+        do {
+            _ = try await sut.setPaymentActionPaymentMethod(StubGraphQLBody())
+            XCTFail("Expected error to be thrown")
+        } catch {
+            // TODO: assert against the finalized error type/case once the error shape is defined.
         }
     }
 
     func testSetPaymentActionPaymentMethod_whenNetworkErrorThrown_propagatesUnderlyingErrorUnchanged() async {
+        // BTGraphQLHTTP already parses top-level GraphQL `errors` and HTTP-level failures into a
+        // thrown error before this method ever sees a response body, so this method does no
+        // custom error handling of its own -- errors from apiClient.post should propagate as-is.
         let stubError = NSError(domain: BTHTTPError.errorDomain, code: BTHTTPError.clientError([:]).errorCode, userInfo: nil)
         mockAPIClient.cannedResponseError = stubError
 
