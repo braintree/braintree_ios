@@ -70,7 +70,13 @@ class BTPayPalClient_Tests: XCTestCase {
 
     @MainActor
     func testTokenizePayPalAccount_checkout_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+        let checkoutRequest = BTPayPalCheckoutRequest(
+            amount: "1",
+            campaigns: [
+                BTPayPalCampaign(id: "campaign-123-id"),
+                BTPayPalCampaign(id: "campaign-456-id")
+            ]
+        )
         checkoutRequest.intent = .sale
 
         let expectation = expectation(description: "Tokenize started")
@@ -86,6 +92,15 @@ class BTPayPalClient_Tests: XCTestCase {
 
         XCTAssertEqual(lastPostParameters["intent"] as? String, "sale")
         XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
+
+        guard let payPalCampaigns = lastPostParameters["paypal_campaigns"] as? [[String: Any]] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(payPalCampaigns.count, 2)
+        XCTAssertEqual(payPalCampaigns[0]["id"] as? String, "campaign-123-id")
+        XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "sdk.ios.braintree://onetouch/v1/success")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
