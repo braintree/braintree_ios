@@ -23,7 +23,7 @@ struct Variables: Encodable {
                 PurchaseUnit(purchaseUnit: $0)
             }
 
-            let validPayPalCampaigns = request?.payPalCampaigns.filter {
+            let validPayPalCampaigns = request?.payPalCampaigns?.filter {
                 !$0.id.isEmpty
             } ?? []
             payPalCampaigns = validPayPalCampaigns.isEmpty ? nil : validPayPalCampaigns
