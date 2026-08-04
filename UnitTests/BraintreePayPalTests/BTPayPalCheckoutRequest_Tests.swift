@@ -184,13 +184,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
     }
 
-    func testParametersWithConfiguration_whenPayPalCampaignIDsAreEmpty_doesNotReturnPayPalCampaigns() {
+    func testParametersWithConfiguration_whenPayPalCampaignsAreEmpty_doesNotReturnPayPalCampaigns() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
-            campaigns: [
-                BTPayPalCampaign(id: ""),
-                BTPayPalCampaign(id: "")
-            ]
+            campaigns: []
         )
 
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
@@ -201,7 +198,7 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["paypal_campaigns"])
     }
 
-    func testParametersWithConfiguration_whenSomePayPalCampaignIDsAreEmpty_returnsOnlyValidPayPalCampaignsInOrder() {
+    func testParametersWithConfiguration_whenPayPalCampaignIDsAreEmpty_preservesPayPalCampaignsInOrder() {
         let request = BTPayPalCheckoutRequest(
             amount: "1",
             campaigns: [
@@ -218,10 +215,11 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(payPalCampaigns.count, 3)
+        XCTAssertEqual(payPalCampaigns.count, 4)
         XCTAssertEqual(payPalCampaigns[0]["id"] as? String, "campaign-123-id")
-        XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "campaign-456-id")
-        XCTAssertEqual(payPalCampaigns[2]["id"] as? String, "   ")
+        XCTAssertEqual(payPalCampaigns[1]["id"] as? String, "")
+        XCTAssertEqual(payPalCampaigns[2]["id"] as? String, "campaign-456-id")
+        XCTAssertEqual(payPalCampaigns[3]["id"] as? String, "   ")
     }
 
     func testParametersWithConfiguration_whenPayPalCampaignIDsContainWhitespace_preservesPayPalCampaignIDs() {
