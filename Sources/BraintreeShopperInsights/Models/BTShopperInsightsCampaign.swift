@@ -6,6 +6,7 @@ public struct BTShopperInsightsCampaign: Encodable {
 
     // MARK: - Internal Properties
 
+    /// The PayPal campaign ID.
     let id: String
 
     // MARK: - Public Initializer
