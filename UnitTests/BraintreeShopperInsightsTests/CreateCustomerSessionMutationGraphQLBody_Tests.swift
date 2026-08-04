@@ -113,7 +113,7 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
         XCTAssertEqual(purchaseUnits?.count, 0)
     }
 
-    func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyPayPalCampaignIDsOmitsThem() {
+    func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyPayPalCampaignIDsPreservesIDs() {
         let request = BTCustomerSessionRequest(
             payPalCampaigns: [
                 BTShopperInsightsCampaign(id: ""),
@@ -129,8 +129,11 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
 
         let variables = jsonObject["variables"] as? [String: Any]
         let input = variables?["input"] as? [String: Any]
+        let payPalCampaigns = input?["paypalCampaigns"] as? [[String: Any]]
 
-        XCTAssertNil(input?["paypalCampaigns"])
+        XCTAssertEqual(payPalCampaigns?.count, 2)
+        XCTAssertEqual(payPalCampaigns?[0]["id"] as? String, "")
+        XCTAssertEqual(payPalCampaigns?[1]["id"] as? String, "")
     }
 
     func testEncodingCreateCustomerSessionGraphQLBodyWithWhitespacePayPalCampaignIDsPreservesIDs() {
