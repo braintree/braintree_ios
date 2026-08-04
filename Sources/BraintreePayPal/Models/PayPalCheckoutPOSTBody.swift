@@ -65,11 +65,13 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.offerCredit = payPalRequest.offerCredit
         self.amountBreakdown = payPalRequest.amountBreakdown
 
-        let validCampaigns = payPalRequest.campaigns.filter {
-            !$0.id.isEmpty
-        }
-        if !validCampaigns.isEmpty {
-            self.payPalCampaigns = validCampaigns
+        if let campaigns = payPalRequest.campaigns {
+            let validCampaigns = campaigns.filter {
+                !$0.id.isEmpty
+            }
+            if !validCampaigns.isEmpty {
+                self.payPalCampaigns = validCampaigns
+            }
         }
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode

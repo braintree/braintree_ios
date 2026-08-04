@@ -59,7 +59,7 @@ import BraintreeCore
     var lineItems: [BTPayPalLineItem]?
     var localeCode: BTPayPalLocaleCode?
     var merchantAccountID: String?
-    var campaigns: [BTPayPalCampaign]
+    var campaigns: [BTPayPalCampaign]?
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var requestBillingAgreement: Bool
@@ -113,7 +113,7 @@ import BraintreeCore
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail,
             offerCredit: offerCredit,
-            campaigns: campaigns ?? []
+            campaigns: campaigns
         )
     }
 
@@ -204,7 +204,7 @@ import BraintreeCore
         self.lineItems = lineItems
         self.localeCode = localeCode
         self.merchantAccountID = merchantAccountID
-        self.campaigns = campaigns ?? []
+        self.campaigns = campaigns
         self.recurringBillingDetails = recurringBillingDetails
         self.recurringBillingPlanType = recurringBillingPlanType
         self.requestBillingAgreement = requestBillingAgreement
