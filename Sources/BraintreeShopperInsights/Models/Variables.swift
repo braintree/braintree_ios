@@ -23,11 +23,8 @@ struct Variables: Encodable {
                 PurchaseUnit(purchaseUnit: $0)
             }
 
-            if let payPalCampaigns = request?.payPalCampaigns, !payPalCampaigns.isEmpty {
-                self.payPalCampaigns = payPalCampaigns
-            } else {
-                self.payPalCampaigns = nil
-            }
+            let campaigns = request?.payPalCampaigns
+            payPalCampaigns = campaigns?.isEmpty == false ? campaigns : nil
         }
         
         enum CodingKeys: String, CodingKey {

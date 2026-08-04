@@ -1,6 +1,6 @@
 import Foundation
 
-/// A PayPal campaign displayed to the customer in the shopping journey.
+/// A campaign displayed to the customer in the shopping journey.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct ShopperInsightsCampaign: Encodable {
 
