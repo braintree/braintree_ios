@@ -21,8 +21,8 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
             )
         ],
         payPalCampaigns: [
-            BTShopperInsightsCampaign(id: "campaign-123-id"),
-            BTShopperInsightsCampaign(id: "campaign-456-id")
+            ShopperInsightsCampaign(id: "campaign-123-id"),
+            ShopperInsightsCampaign(id: "campaign-456-id")
         ]
     )
     let expectedQuery = """

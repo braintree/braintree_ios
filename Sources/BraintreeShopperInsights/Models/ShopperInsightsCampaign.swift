@@ -2,7 +2,7 @@ import Foundation
 
 /// A PayPal campaign displayed to the customer in the shopping journey.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
-public struct BTShopperInsightsCampaign: Encodable {
+public struct ShopperInsightsCampaign: Encodable {
 
     // MARK: - Internal Properties
 
@@ -11,7 +11,7 @@ public struct BTShopperInsightsCampaign: Encodable {
 
     // MARK: - Public Initializer
 
-    /// Creates a BTShopperInsightsCampaign.
+    /// Creates a ShopperInsightsCampaign.
     /// - Parameter id: Required. The PayPal campaign ID.
     public init(id: String) {
         self.id = id

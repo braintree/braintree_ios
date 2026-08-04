@@ -277,12 +277,12 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         recommendationsLabel.isHidden = true
     }
 
-    private var payPalCampaigns: [BTShopperInsightsCampaign] {
+    private var payPalCampaigns: [ShopperInsightsCampaign] {
         payPalCampaignsView.textField.text?
             .split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
-            .map { BTShopperInsightsCampaign(id: $0) } ?? []
+            .map { ShopperInsightsCampaign(id: $0) } ?? []
     }
     
     private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {

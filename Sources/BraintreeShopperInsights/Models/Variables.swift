@@ -14,7 +14,7 @@ struct Variables: Encodable {
         let sessionID: String?
         let customer: Customer?
         let purchaseUnits: [PurchaseUnit]?
-        let payPalCampaigns: [BTShopperInsightsCampaign]?
+        let payPalCampaigns: [ShopperInsightsCampaign]?
         
         init(request: BTCustomerSessionRequest?, sessionID: String?) {
             self.sessionID = sessionID

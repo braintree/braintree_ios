@@ -9,7 +9,7 @@ public struct BTCustomerSessionRequest {
     let payPalAppInstalled: Bool?
     let venmoAppInstalled: Bool?
     let purchaseUnits: [BTPurchaseUnit]?
-    let payPalCampaigns: [BTShopperInsightsCampaign]?
+    let payPalCampaigns: [ShopperInsightsCampaign]?
     
     /// Creates a BTCustomerSessionRequest
     /// - Parameters:
@@ -26,7 +26,7 @@ public struct BTCustomerSessionRequest {
         payPalAppInstalled: Bool? = nil,
         venmoAppInstalled: Bool? = nil,
         purchaseUnits: [BTPurchaseUnit]? = nil,
-        payPalCampaigns: [BTShopperInsightsCampaign]? = nil
+        payPalCampaigns: [ShopperInsightsCampaign]? = nil
     ) {
         self.hashedEmail = hashedEmail
         self.hashedPhoneNumber = hashedPhoneNumber

@@ -20,8 +20,8 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
             )
         ],
         payPalCampaigns: [
-            BTShopperInsightsCampaign(id: "campaign-123-id"),
-            BTShopperInsightsCampaign(id: "campaign-456-id")
+            ShopperInsightsCampaign(id: "campaign-123-id"),
+            ShopperInsightsCampaign(id: "campaign-456-id")
         ]
     )
     let expectedQuery = """
@@ -63,7 +63,7 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
             payPalAppInstalled: nil,
             venmoAppInstalled: nil,
             purchaseUnits: nil,
-            payPalCampaigns: [BTShopperInsightsCampaign(id: "campaign-123-id")]
+            payPalCampaigns: [ShopperInsightsCampaign(id: "campaign-123-id")]
         )
         
         let body = CreateCustomerSessionMutationGraphQLBody(request: request)
@@ -116,8 +116,8 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
     func testEncodingCreateCustomerSessionGraphQLBodyWithEmptyPayPalCampaignIDsPreservesIDs() {
         let request = BTCustomerSessionRequest(
             payPalCampaigns: [
-                BTShopperInsightsCampaign(id: ""),
-                BTShopperInsightsCampaign(id: "")
+                ShopperInsightsCampaign(id: ""),
+                ShopperInsightsCampaign(id: "")
             ]
         )
 
@@ -139,8 +139,8 @@ class CreateCustomerSessionMutationGraphQLBody_Tests: XCTestCase {
     func testEncodingCreateCustomerSessionGraphQLBodyWithWhitespacePayPalCampaignIDsPreservesIDs() {
         let request = BTCustomerSessionRequest(
             payPalCampaigns: [
-                BTShopperInsightsCampaign(id: " campaign-123-id "),
-                BTShopperInsightsCampaign(id: "   ")
+                ShopperInsightsCampaign(id: " campaign-123-id "),
+                ShopperInsightsCampaign(id: "   ")
             ]
         )
 
