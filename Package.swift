@@ -59,6 +59,10 @@ let package = Package(
             name: "BraintreeUIComponents",
             targets: ["BraintreeUIComponents"]
         ),
+        .library(
+            name: "BraintreePayPalPaymentMethod",
+            targets: ["BraintreePayPalPaymentMethod"]
+        ),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -145,6 +149,11 @@ let package = Package(
         .target(
             name: "BraintreeUIComponents",
             dependencies: ["BraintreeCore", "BraintreeCard", "BraintreePayPal", "BraintreeVenmo"],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
+        ),
+        .target(
+            name: "BraintreePayPalPaymentMethod",
+            dependencies: ["BraintreeCore", "BraintreePayPal"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         )
     ]
