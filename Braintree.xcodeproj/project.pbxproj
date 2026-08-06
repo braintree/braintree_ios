@@ -2176,7 +2176,6 @@
 				A903E1B524F9D37B00C314E1 /* XCTest.framework */,
 				9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */,
 				85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */,
-				BB14DB9A004BB5147CD07965 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2461,13 +2460,6 @@
 				454BCF762E1C60610099E674 /* MockPresentationContext.swift */,
 			);
 			path = BraintreeCoreTests;
-			sourceTree = "<group>";
-		};
-		BB14DB9A004BB5147CD07965 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = iOS;
 			sourceTree = "<group>";
 		};
 		BE5496E92E313A3B003CCA60 /* V1 */ = {
