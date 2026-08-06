@@ -2,7 +2,7 @@ import Foundation
 
 extension Bundle {
 
-    static var savedPayPalPaymentMethod: Bundle {
+    static var payPalPaymentMethod: Bundle {
         #if SWIFT_PACKAGE
         return Bundle.module
         #elseif COCOAPODS
