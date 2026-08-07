@@ -395,5 +395,4 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
 
         completionBlock(nonce)
     }
-
 }
