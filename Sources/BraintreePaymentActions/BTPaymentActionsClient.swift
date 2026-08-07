@@ -1,15 +1,29 @@
 import Foundation
 
-class BTPaymentActionsService {
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+@objc public class BTPaymentActionsClient: NSObject {
     
-    // MARK: - Internal Properties
+    // MARK: - Private Properties
     
     private let apiClient: BTAPIClient
     
     // MARK: - Initializer
     
-    init(apiClient: BTAPIClient) {
-        self.apiClient = apiClient
+    /// Creates a Payment Actions Client.
+    /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    public init(authorization: String) {
+        self.apiClient = BTAPIClient(authorization: authorization)
+    }
+    
+    // MARK: - Public Methods
+    
+    @nonobjc public func submitForPaymentAction(_ request: any BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
+        let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
+        let result = try await setPaymentActionPaymentMethod(body)
+        return result.status
     }
     
     // MARK: - Internal Methods
