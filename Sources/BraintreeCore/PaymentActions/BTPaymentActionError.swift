@@ -24,14 +24,14 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
         }
     }
     
-    public var errorUserInfo: [String: Any] {
+    public var errorDescription: String? {
         switch self {
         case .missingID:
-            return [NSLocalizedDescriptionKey: "Payment Action response is missing an id."]
+            return "Payment Action response is missing an id."
         case .missingStatus:
-            return [NSLocalizedDescriptionKey: "Payment Action response is missing a status."]
+            return "Payment Action response is missing a status."
         case .decodingFailure:
-            return [NSLocalizedDescriptionKey: "Failed to decode Payment Action response."]
+            return "Failed to decode Payment Action response."
         }
     }
     
