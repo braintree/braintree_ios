@@ -22,6 +22,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var enablePayPalAppSwitch: Bool?
     private var contactPreference: String?
     private var currencyCode: String?
+    private var editBillingAgreementJWT: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
     private var osType: String?
@@ -97,6 +98,10 @@ struct PayPalCheckoutPOSTBody: Encodable {
             self.merchantAccountID = merchantAccountID
         }
         
+        if let editBillingAgreementJWT = payPalRequest.editBillingAgreementJWT {
+            self.editBillingAgreementJWT = editBillingAgreementJWT
+        }
+        
         if let riskCorrelationID = payPalRequest.riskCorrelationID {
             self.riskCorrelationID = riskCorrelationID
         }
@@ -160,6 +165,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case cancelURL = "cancel_url"
         case contactPreference = "contact_preference"
         case currencyCode = "currency_iso_code"
+        case editBillingAgreementJWT = "edit_billing_agreement_jwt"
         case enablePayPalAppSwitch = "launch_paypal_app"
         case experienceProfile = "experience_profile"
         case intent

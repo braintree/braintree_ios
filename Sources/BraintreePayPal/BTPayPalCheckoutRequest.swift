@@ -52,6 +52,7 @@ import BraintreeCore
     var contactPreference: BTContactPreference = .none
     var currencyCode: String?
     var displayName: String?
+    var editBillingAgreementJWT: String?
     var enablePayPalAppSwitch: Bool = false
     var isShippingAddressEditable: Bool = false
     var isShippingAddressRequired: Bool = false

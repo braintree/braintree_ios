@@ -244,6 +244,30 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
+    func testParametersWithConfiguration_whenEditBillingAgreementJWTSet_includesEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreementJWT = "edit-fi-jwt"
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(parameters["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
+    }
+
+    func testParametersWithConfiguration_whenEditBillingAgreementJWTNotSet_omitsEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        // Optional field must be omitted (not null) so existing flows are byte-identical.
+        XCTAssertNil(parameters["edit_billing_agreement_jwt"])
+    }
+
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         // no_shipping = true should be the default.
