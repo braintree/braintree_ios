@@ -22,26 +22,24 @@ class BTPaymentActionsService {
     func setPaymentActionPaymentMethod<Body: BTGraphQLEncodableBody>(
         _ body: Body
     ) async throws -> BTPaymentActionResult {
-        let (responseBody, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
         
-        let paymentActionJSON: BTJSON = responseBody?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
-        
-        // TODO: no error type currently exists for this service -- using NSError as a placeholder until the team decides how errors should be surfaced here.
-        guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
-            throw NSError(
-                domain: "com.braintreepayments.BTPaymentActionsErrorDomain",
-                code: 0,
-                userInfo: [NSLocalizedDescriptionKey: "Payment Action response is missing an id."]
-            )
+        do {
+            let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
+            
+            let paymentActionJSON: BTJSON = body?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
+            
+            // TODO: Verify and ensure these error types are correct in a later PR.
+            guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
+                throw BTPaymentActionError.missingID
+            }
+            guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
+                throw BTPaymentActionError.missingStatus
+            }
+            let status = BTPaymentActionStatus.status(from: statusString)
+            return BTPaymentActionResult(id: paymentActionID, status: status)
+        } catch {
+            // TODO: Replace with exact error type in a later PR.
+            throw error
         }
-        guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
-            throw NSError(
-                domain: "com.braintreepayments.BTPaymentActionsErrorDomain",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Payment Action response is missing a status."]
-            )
-        }
-        let status = BTPaymentActionStatus.status(from: statusString)
-        return BTPaymentActionResult(id: paymentActionID, status: status)
     }
 }
