@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1294,6 +1294,10 @@
 		CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ApplicationState.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		626E895630267AEF00AE6692 /* Card */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Card; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		03502C801E9C0A1700F15EE6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -1804,6 +1808,7 @@
 		626E894F302669B300AE6692 /* BraintreePaymentActions */ = {
 			isa = PBXGroup;
 			children = (
+				626E895630267AEF00AE6692 /* Card */,
 				626E89543026769200AE6692 /* AnyEncodable.swift */,
 				626E8952302675B600AE6692 /* SetPaymentActionPaymentMethodGraphQLBody.swift */,
 				626E89503026748000AE6692 /* BTPaymentActionRequest.swift */,
@@ -2748,6 +2753,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				626E895630267AEF00AE6692 /* Card */,
 			);
 			name = BraintreeCore;
 			productName = BraintreeCore;
