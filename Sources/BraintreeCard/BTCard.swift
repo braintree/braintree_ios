@@ -30,9 +30,9 @@ import BraintreeCore
     let shouldValidate: Bool
     let authenticationInsightRequested: Bool
     let merchantAccountID: String?
-
+    
     // MARK: - Initializers
-
+    
     /// Internal designated initializer. Accepts an optional card number so that convenience
     /// initializers can omit it entirely from the tokenization payload.
     @nonobjc init(
@@ -78,7 +78,7 @@ import BraintreeCore
         self.authenticationInsightRequested = authenticationInsightRequested
         self.merchantAccountID = merchantAccountID
     }
-
+    
     /// Creates a Card
     /// - Parameters:
     ///   - number: Required: The card number.
@@ -155,7 +155,7 @@ import BraintreeCore
             merchantAccountID: merchantAccountID
         )
     }
-
+    
     /// Creates a `BTCard` with only expiration date and CVV, omitting the card number entirely.
     /// Use this when updating the expiry of a card already stored in your Vault, without re-sending
     /// the card number.
@@ -166,7 +166,7 @@ import BraintreeCore
     public convenience init(expirationMonth: String, expirationYear: String, cvv: String) {
         self.init(number: nil, expirationMonth: expirationMonth, expirationYear: expirationYear, cvv: cvv)
     }
-
+    
     /// Creates a new instance of `BTCard` with only a CVV value,
     /// setting default values for all other parameters.
     /// This initializer should only be used if you wish to create a
@@ -176,7 +176,7 @@ import BraintreeCore
     public convenience init(cvv: String) {
         self.init(number: nil, expirationMonth: "", expirationYear: "", cvv: cvv)
     }
-
+    
     /// Creates a `BTCard` with only optional metadata fields, omitting card number, expiration date,
     /// and CVV. Use this when passing a `BTCard` to `CardFields`, which manages those fields internally.
     public convenience init(
@@ -220,9 +220,9 @@ import BraintreeCore
             merchantAccountID: merchantAccountID
         )
     }
-
+    
     // MARK: - Public Methods
-
+    
     /// Returns a new `BTCard` by merging the card number, expiration date, and CVV collected by
     /// `CardFields` with the metadata fields (e.g. cardholder name, billing address) from this instance.
     ///
@@ -257,16 +257,16 @@ import BraintreeCore
             merchantAccountID: merchantAccountID
         )
     }
-
+    
     // MARK: - Internal Methods
-
+    
     func parameters(apiClient: BTAPIClient) -> CreditCardPOSTBody {
         CreditCardPOSTBody(
             card: self,
             metadata: apiClient.metadata
         )
     }
-            
+    
     func graphQLParameters() -> CreditCardGraphQLBody {
         CreditCardGraphQLBody(card: self)
     }
