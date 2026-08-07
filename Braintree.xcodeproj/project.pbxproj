@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13A9C0D32F11B65000A1B2C3 /* ShopperInsightsCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */; };
 		13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */; };
 		0426CADF2DBC3E4100210697 /* BTAmountBreakdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0426CADE2DBC3E3700210697 /* BTAmountBreakdown.swift */; };
 		045241242EBEBAC100C25EA6 /* BraintreeUIComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045241192EBEBAC100C25EA6 /* BraintreeUIComponents.framework */; };
@@ -1123,6 +1124,7 @@
 		A9E5C22824FD6D0800EE691F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9E80AA224FEF4D800196BD3 /* MockLocalPaymentRequestDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalPaymentRequestDelegate.swift; sourceTree = "<group>"; };
 		B8447AC32E3BCFE700A1D6E6 /* BTGraphQLEncodableBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGraphQLEncodableBody.swift; sourceTree = "<group>"; };
+		13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopperInsightsCampaign.swift; sourceTree = "<group>"; };
 		13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCampaign.swift; sourceTree = "<group>"; };
 		B87B26232D54176F0002225F /* ThreeDSecurePOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSecurePOSTBody.swift; sourceTree = "<group>"; };
 		B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTContactPreference.swift; sourceTree = "<group>"; };
@@ -1768,6 +1770,7 @@
 		624454DA2DDE37CA00A3383B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */,
 				621149DD2E0201C3006D7687 /* Variables.swift */,
 				621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */,
 				624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */,
@@ -3830,6 +3833,7 @@
 				04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */,
 				621149DE2E0201C7006D7687 /* Variables.swift in Sources */,
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
+				13A9C0D32F11B65000A1B2C3 /* ShopperInsightsCampaign.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 				624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */,
 				455AA2762DEE0577008D99AB /* BTCustomerRecommendationsResult.swift in Sources */,
