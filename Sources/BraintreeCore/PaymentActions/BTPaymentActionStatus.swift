@@ -15,6 +15,12 @@ import Foundation
     /// The payment method has been authorized but funds have not yet been captured.
     case requiresCapture
     
+    /// The Payment Action was canceled and can no longer be used. The merchant server must create a new Payment Action to retry.
+    case canceled
+    
+    /// The Payment Action expired before it could be completed. The client token can't be reused; the merchant server must create a new Payment Action.
+    case expired
+    
     /// The status returned by the server could not be mapped to a known case.
     case unknown
     
@@ -24,6 +30,8 @@ import Foundation
         case .readyForConfirmation: return "READY_FOR_CONFIRMATION"
         case .succeeded: return "SUCCEEDED"
         case .requiresCapture: return "REQUIRES_CAPTURE"
+        case .canceled: return "CANCELED"
+        case .expired: return "EXPIRED"
         case .unknown: return "UNKNOWN"
         }
     }
@@ -38,6 +46,10 @@ import Foundation
             return .succeeded
         case BTPaymentActionStatus.requiresCapture.description:
             return .requiresCapture
+        case BTPaymentActionStatus.canceled.description:
+            return .canceled
+        case BTPaymentActionStatus.expired.description:
+            return .expired
         default:
             return .unknown
         }
