@@ -6,9 +6,10 @@ import BraintreeCore
 
 @objc public class BTPaymentActionsClient: NSObject {
     
-    // MARK: - Private Properties
+    // MARK: - Internal Properties
     
-    private let apiClient: BTAPIClient
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient
     
     // MARK: - Initializer
     
