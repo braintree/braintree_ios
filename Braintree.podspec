@@ -116,3 +116,5 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
     s.resource_bundle = { "BraintreePaymentActions_PrivacyInfo" => "Sources/BraintreePaymentActions/PrivacyInfo.xcprivacy" }
   end
+
+end

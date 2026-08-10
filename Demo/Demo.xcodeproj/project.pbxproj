@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -218,6 +218,10 @@
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		622C9471302A2B56005001C2 /* BraintreePaymentActions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = BraintreePaymentActions; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		42C574A825FA66F9008B3681 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -329,6 +333,7 @@
 				9C030582267BDF9E00DB7A68 /* Demo.entitlements */,
 				A9C4E08024EC2A70002F6FF2 /* Application */,
 				42C574AC25FA66F9008B3681 /* MockVenmo */,
+				622C9471302A2B56005001C2 /* BraintreePaymentActions */,
 				A0988FFB24DB44D60095EEEE /* Frameworks */,
 				F1D1FED7D4B39E9B6D0FCC73 /* Pods */,
 				A0988E4A24DB43DC0095EEEE /* Products */,
@@ -568,7 +573,7 @@
 		A0988E4124DB43DC0095EEEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = braintree;
 				TargetAttributes = {
