@@ -1843,13 +1843,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		625257D6301A979600B69488 /* PaymentActions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = PaymentActions;
-			sourceTree = "<group>";
-		};
 		626E894F302669B300AE6692 /* BraintreePaymentActions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2447,7 +2440,6 @@
 		A9E5C22524FD6D0800EE691F /* BraintreeCoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				625257D6301A979600B69488 /* PaymentActions */,
 				8053F05529FAB6FF0076F988 /* Analytics */,
 				800BB3EF2BFCAC1100F30CE8 /* Authorization */,
 				842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */,
