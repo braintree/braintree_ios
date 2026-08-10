@@ -127,8 +127,13 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
     func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorization() async {
         let sut = BTPayPalSavedPaymentMethodClient(authorization: "sandbox_merchant_1234567890abc")
 
-        await assertThrows(BTPayPalSavedPaymentMethodError.invalidAuthorization) {
-            try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        do {
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .invalidAuthorization)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
@@ -137,30 +142,50 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT)
         sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
 
-        await assertThrows(BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT) {
-            try await self.sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        do {
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingPaymentMethodIDJWT)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
     func testFetchPaymentMethod_whenFIFromApprovedCheckoutWithoutOrderID_throwsMissingOrderID() async {
-        await assertThrows(BTPayPalSavedPaymentMethodError.missingOrderID) {
-            try await self.sut.fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout)
+        do {
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout)
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingOrderID)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
     func testFetchPaymentMethod_whenBodyIsNil_throwsEmptyBodyReturned() async {
         mockAPIClient.cannedResponseBody = nil
 
-        await assertThrows(BTPayPalSavedPaymentMethodError.emptyBodyReturned) {
-            try await self.sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        do {
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .emptyBodyReturned)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
     func testFetchPaymentMethod_whenFundingInstrumentDetailsIsNull_throwsFailedToParseSummary() async {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["paypalFundingInstrumentDetails": NSNull()]])
 
-        await assertThrows(BTPayPalSavedPaymentMethodError.failedToParseSummary) {
-            try await self.sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        do {
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .failedToParseSummary)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
@@ -173,24 +198,6 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
             XCTFail("Expected an error")
         } catch {
             XCTAssertEqual(error as NSError, cannedError)
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func assertThrows(
-        _ expectedError: BTPayPalSavedPaymentMethodError,
-        file: StaticString = #filePath,
-        line: UInt = #line,
-        _ block: () async throws -> Void
-    ) async {
-        do {
-            try await block()
-            XCTFail("Expected an error", file: file, line: line)
-        } catch let error as BTPayPalSavedPaymentMethodError {
-            XCTAssertEqual(error, expectedError, file: file, line: line)
-        } catch {
-            XCTFail("Unexpected error: \(error)", file: file, line: line)
         }
     }
 }

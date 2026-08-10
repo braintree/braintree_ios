@@ -17,6 +17,9 @@ enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError,
     /// 4. The funding instrument details could not be parsed from the response.
     case failedToParseSummary
 
+    /// 5. PayPal returned no Pay Later message to display for this buyer.
+    case missingPreferredMessage
+
     static var errorDomain: String {
         "com.braintreepayments.BTPayPalSavedPaymentMethodErrorDomain"
     }
@@ -37,6 +40,8 @@ enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError,
             return "An empty body was returned from the funding instrument details request."
         case .failedToParseSummary:
             return "Unable to parse the funding instrument details from the response."
+        case .missingPreferredMessage:
+            return "No Pay Later message was returned for this buyer."
         }
     }
 }

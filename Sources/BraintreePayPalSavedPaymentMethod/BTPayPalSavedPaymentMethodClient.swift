@@ -4,7 +4,8 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// Fetches the funding instrument that PayPal will charge for a buyer's vaulted PayPal payment method.
+/// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
+/// Pay Later message that accompanies it.
 final class BTPayPalSavedPaymentMethodClient {
 
     // MARK: - Internal Properties
@@ -78,5 +79,39 @@ final class BTPayPalSavedPaymentMethodClient {
         }
 
         return summary
+    }
+
+    /// Fetches the PayPal Pay Later message to display alongside the funding instrument.
+    /// - Parameters:
+    ///   - amount: The order amount the message is calculated from, for example `"55.00"`.
+    ///   - currencyCode: The ISO-4217 currency code for `amount`, for example `"USD"`.
+    /// - Returns: A `BTPayPalCreditMessagingResult` describing the message to render
+    /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or PayPal returns no message
+    /// - Note: The message is additive. Callers are expected to hide the row when this throws rather than fail checkout.
+    func fetchCreditPresentmentMessages(
+        amount: String,
+        currencyCode: String
+    ) async throws -> BTPayPalCreditMessagingResult {
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+        }
+
+        let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
+
+        let (body, _) = try await apiClient.post(
+            "/v2/credit/fetch-presentment-messages",
+            parameters: parameters,
+            httpType: .payPalAPI
+        )
+
+        guard let body else {
+            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+        }
+
+        guard let result = BTPayPalCreditMessagingResult(json: body) else {
+            throw BTPayPalSavedPaymentMethodError.missingPreferredMessage
+        }
+
+        return result
     }
 }
