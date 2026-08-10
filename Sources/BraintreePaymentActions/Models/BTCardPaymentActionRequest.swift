@@ -77,32 +77,35 @@ import Foundation
 extension BTCardPaymentActionRequest {
 
     public func paymentMethodParameters() -> any Encodable {
-        PaymentMethodPayload(
-            card: .init(
-                number: cardNumber,
-                expirationMonth: expirationMonth,
-                expirationYear: expirationYear,
-                cvv: cvv,
-                cardholderName: cardholderName,
-                billingAddress: BillingAddress(request: self)
-            )
-        )
+        PaymentMethodPayload(card: .init(request: self))
     }
 
     struct PaymentMethodPayload: Encodable {
-        let card: Card
 
-        struct Card: Encodable {
-            let number: String
-            let expirationMonth: String
-            let expirationYear: String
-            let cvv: String?
-            let cardholderName: String?
-            let billingAddress: BillingAddress?
+        let card: Card
+    }
+
+    struct Card: Encodable {
+
+        let number: String
+        let expirationMonth: String
+        let expirationYear: String
+        let cvv: String?
+        let cardholderName: String?
+        let billingAddress: BillingAddress?
+
+        init(request: BTCardPaymentActionRequest) {
+            self.number = request.cardNumber
+            self.expirationMonth = request.expirationMonth
+            self.expirationYear = request.expirationYear
+            self.cvv = request.cvv
+            self.cardholderName = request.cardholderName
+            self.billingAddress = BillingAddress(request: request)
         }
     }
 
     struct BillingAddress: Encodable {
+
         let streetAddress: String?
         let extendedAddress: String?
         let locality: String?

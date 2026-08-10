@@ -4,16 +4,20 @@ import Foundation
 import BraintreeCore
 #endif
 
+// swiftlint:disable nesting
+/// The POST body for the graphQL API `SetPaymentActionPaymentMethod`
 struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
-    let query = """
+    // swiftlint:disable indentation_width
+    let query =
+    """
     mutation SetPaymentActionPaymentMethod($input: SetPaymentActionPaymentMethodInput!) {
-      setPaymentActionPaymentMethod(input: $input) {
-        paymentAction {
-          id
-          status
-        }
+     setPaymentActionPaymentMethod(input: $input) {
+      paymentAction {
+      id
+      status
       }
+     }
     }
     """
     
@@ -32,6 +36,7 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
         }
         
         struct Input: Encodable {
+            
             let paymentActionId: String
             let paymentMethod: AnyEncodable
             
