@@ -26,7 +26,11 @@ struct BTPayPalSavedPaymentMethod: Equatable {
 
     // MARK: - Initializer
 
-    init(json: BTJSON) {
+    init?(json: BTJSON) {
+        guard json.isObject else {
+            return nil
+        }
+
         self.type = json["type"].asString().flatMap(BTPayPalSavedPaymentMethodType.init(rawValue:))
         self.label = json["label"].asString()
         self.imageURL = json["imageUrl"].asURL()

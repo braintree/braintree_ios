@@ -54,6 +54,22 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
     }
 
+    func testInit_whenAPaymentMethodEntryIsNotAnObject_dropsThatEntry() throws {
+        let json = BTJSON(
+            value: [
+                "paymentMethods": [
+                    NSNull(),
+                    ["label": "Visa", "lastDigits": "0199", "type": "CARD"]
+                ]
+            ] as [String: Any]
+        )
+
+        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json))
+
+        XCTAssertEqual(summary.paymentMethods.count, 1)
+        XCTAssertEqual(summary.paymentMethods.first?.label, "Visa")
+    }
+
     func testInit_whenOnlyPayerIsPresent_parsesPayerAndReturnsNoPaymentMethods() throws {
         let json = BTJSON(
             value: [
