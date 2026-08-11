@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "316D10BBBEE3F7316967DAFE"
-               BuildableName = "BraintreePayPalPaymentMethod.framework"
-               BlueprintName = "BraintreePayPalPaymentMethod"
+               BuildableName = "BraintreePayPalSavedPaymentMethod.framework"
+               BlueprintName = "BraintreePayPalSavedPaymentMethod"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,8 +31,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "316D10BBBEE3F7316967DAFE"
-            BuildableName = "BraintreePayPalPaymentMethod.framework"
-            BlueprintName = "BraintreePayPalPaymentMethod"
+            BuildableName = "BraintreePayPalSavedPaymentMethod.framework"
+            BlueprintName = "BraintreePayPalSavedPaymentMethod"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -42,8 +42,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B5857F6FB79089D15FBCAC58"
-               BuildableName = "BraintreePayPalPaymentMethodTests.xctest"
-               BlueprintName = "BraintreePayPalPaymentMethodTests"
+               BuildableName = "BraintreePayPalSavedPaymentMethodTests.xctest"
+               BlueprintName = "BraintreePayPalSavedPaymentMethodTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "316D10BBBEE3F7316967DAFE"
-            BuildableName = "BraintreePayPalPaymentMethod.framework"
-            BlueprintName = "BraintreePayPalPaymentMethod"
+            BuildableName = "BraintreePayPalSavedPaymentMethod.framework"
+            BlueprintName = "BraintreePayPalSavedPaymentMethod"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -81,8 +81,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "316D10BBBEE3F7316967DAFE"
-            BuildableName = "BraintreePayPalPaymentMethod.framework"
-            BlueprintName = "BraintreePayPalPaymentMethod"
+            BuildableName = "BraintreePayPalSavedPaymentMethod.framework"
+            BlueprintName = "BraintreePayPalSavedPaymentMethod"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -111,13 +111,13 @@ Pod::Spec.new do |s|
     }
   end
 
-  s.subspec "PayPalPaymentMethod" do |s|
-    s.source_files = "Sources/BraintreePayPalPaymentMethod/**/*.swift"
+  s.subspec "PayPalSavedPaymentMethod" do |s|
+    s.source_files = "Sources/BraintreePayPalSavedPaymentMethod/**/*.swift"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPal"
     s.resource_bundle = {
-      'BraintreePayPalPaymentMethod' => ['Sources/BraintreePayPalPaymentMethod/Resources/*.xcassets'],
-      "BraintreePayPalPaymentMethod_PrivacyInfo" => "Sources/BraintreePayPalPaymentMethod/PrivacyInfo.xcprivacy"
+      'BraintreePayPalSavedPaymentMethod' => ['Sources/BraintreePayPalSavedPaymentMethod/Resources/*.xcassets'],
+      "BraintreePayPalSavedPaymentMethod_PrivacyInfo" => "Sources/BraintreePayPalSavedPaymentMethod/PrivacyInfo.xcprivacy"
     }
   end
 

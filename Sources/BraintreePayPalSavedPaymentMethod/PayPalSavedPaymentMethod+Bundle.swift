@@ -2,12 +2,12 @@ import Foundation
 
 extension Bundle {
 
-    static var payPalPaymentMethod: Bundle {
+    static var payPalSavedPaymentMethod: Bundle {
         #if SWIFT_PACKAGE
         return Bundle.module
         #elseif COCOAPODS
         let frameworkBundle = Bundle(for: BundleToken.self)
-        if let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("BraintreePayPalPaymentMethod.bundle") {
+        if let bundleURL = frameworkBundle.resourceURL?.appendingPathComponent("BraintreePayPalSavedPaymentMethod.bundle") {
             if let bundle = Bundle(url: bundleURL) {
                 return bundle
             }

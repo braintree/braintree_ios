@@ -60,8 +60,8 @@ let package = Package(
             targets: ["BraintreeUIComponents"]
         ),
         .library(
-            name: "BraintreePayPalPaymentMethod",
-            targets: ["BraintreePayPalPaymentMethod"]
+            name: "BraintreePayPalSavedPaymentMethod",
+            targets: ["BraintreePayPalSavedPaymentMethod"]
         ),
     ],
     targets: [
@@ -152,7 +152,7 @@ let package = Package(
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
-            name: "BraintreePayPalPaymentMethod",
+            name: "BraintreePayPalSavedPaymentMethod",
             dependencies: ["BraintreeCore", "BraintreePayPal"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         )
