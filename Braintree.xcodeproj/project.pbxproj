@@ -153,7 +153,6 @@
 		622C9499302A4EB8005001C2 /* BTPaymentActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626E89483026698A00AE6692 /* BTPaymentActionResult.swift */; };
 		622C949A302A4EB8005001C2 /* BTPaymentActionsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626E89493026698A00AE6692 /* BTPaymentActionsClient.swift */; };
 		622C949B302A4EB8005001C2 /* BTPaymentActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626E894A3026698A00AE6692 /* BTPaymentActionStatus.swift */; };
-		622C949C302A4EC8005001C2 /* BTPaymentActionsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622C9490302A4C40005001C2 /* BTPaymentActionsClientTests.swift */; };
 		624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
 		625010722F9FF5E000EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */; };
@@ -1016,7 +1015,6 @@
 		622C945E302A2A98005001C2 /* BraintreePaymentActions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePaymentActions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		622C947D302A2B97005001C2 /* BraintreePaymentActionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreePaymentActionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		622C948C302A2CC7005001C2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		622C9490302A4C40005001C2 /* BTPaymentActionsClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPaymentActionsClientTests.swift; sourceTree = "<group>"; };
 		624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
 		625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient_IntegrationTests.swift; sourceTree = "<group>"; };
@@ -1844,14 +1842,6 @@
 			path = BraintreeCore;
 			sourceTree = "<group>";
 		};
-		622C948F302A2FA1005001C2 /* BraintreePaymentActionsTests */ = {
-			isa = PBXGroup;
-			children = (
-				622C9490302A4C40005001C2 /* BTPaymentActionsClientTests.swift */,
-			);
-			path = BraintreePaymentActionsTests;
-			sourceTree = "<group>";
-		};
 		624454DA2DDE37CA00A3383B /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -2061,7 +2051,6 @@
 		808249F8252C1F97000AD8FF /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				622C948F302A2FA1005001C2 /* BraintreePaymentActionsTests */,
 				A948D6C724FAB79B00F4F178 /* BraintreeAmericanExpressTests */,
 				A948D6DD24FAC6C000F4F178 /* BraintreeApplePayTests */,
 				A95C410924FAEF2100045045 /* BraintreeCardTests */,
@@ -4004,7 +3993,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				622C949C302A4EC8005001C2 /* BTPaymentActionsClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

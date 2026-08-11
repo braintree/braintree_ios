@@ -22,10 +22,14 @@ import BraintreeCore
     // MARK: - Public Methods
     
     // TODO: - Add Obj-C interop in a follow-up PR.
-    @nonobjc public func submitForPaymentAction(_ request: any BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
-        let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
-        let result = try await setPaymentActionPaymentMethod(body)
-        return result.status
+    public func submitForPaymentAction(_ request: any BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
+        do {
+            let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
+            let result = try await setPaymentActionPaymentMethod(body)
+            return result.status
+        } catch {
+            throw error
+        }
     }
     
     // MARK: - Internal Methods
