@@ -26,6 +26,6 @@ struct BTPayPalSavedPaymentMethodSummary: Equatable {
         }
 
         self.payer = BTPayPalPayer(json: json["payer"])
-        self.paymentMethods = json["paymentMethods"].asArray()?.map(BTPayPalSavedPaymentMethod.init) ?? []
+        self.paymentMethods = json["paymentMethods"].asArray()?.compactMap(BTPayPalSavedPaymentMethod.init) ?? []
     }
 }
