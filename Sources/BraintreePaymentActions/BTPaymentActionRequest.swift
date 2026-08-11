@@ -1,7 +1,7 @@
 import Foundation
 
 /// A payment method-specific request to submit to a Payment Action via `BTPaymentActionsClient`.
-public protocol BTPaymentActionRequest {
+protocol BTPaymentActionRequest {
     
     /// The ID of the Payment Action to submit this payment method for.
     var paymentActionID: String { get }
