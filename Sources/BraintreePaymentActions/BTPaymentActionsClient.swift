@@ -21,18 +21,53 @@ import BraintreeCore
     
     // MARK: - Public Methods
     
-    // TODO: - Add Obj-C interop in a follow-up PR.
-    public func submitForPaymentAction(_ request: any BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
+    /// Submits a card as the payment method for a Payment Action.
+    /// - Parameters:
+    ///    - request: The card payment method details to submit.
+    ///    - completion: A completion block that is invoked when the submission has completed. If it succeeds,
+    ///    `status` will contain the resulting `BTPaymentActionStatus` and `error` will be `nil`; if it fails,
+    ///    `error` will describe the failure.
+    @objc(submitForPaymentAction:completion:)
+    public func submitForPaymentAction(
+        _ request: BTCardPaymentActionRequest,
+        completion: @escaping (BTPaymentActionStatus, Error?) -> Void
+    ) {
+        Task { @MainActor in
+            do {
+                let status = try await submitForPaymentAction(request)
+                completion(status, nil)
+            } catch {
+                completion(.unknown, error)
+            }
+        }
+    }
+    
+    /// Submit a card as the payment method for Payment Action.
+    /// - Parameter request: The card payment method details to submit.
+    /// - Returns: the resulting `BTPaymentActionStatus`.
+    /// - Throws: an `Error` describing the failure.
+    public func submitForPaymentAction(
+        _ request: BTCardPaymentActionRequest
+    ) async throws -> BTPaymentActionStatus {
+        try await submit(request)
+    }
+    
+    // MARK: - Internal Methods
+    
+    /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
+    /// - Parameter request: any payment-method-specific request conforming to `BTPaymentActionRequest`.
+    /// - Returns: the resulting `BTPaymentActionStatus`.
+    /// - Throws: the underlying error from the network layer or GraphQL response.
+    func submit<Request: BTPaymentActionRequest>(_ request: Request) async throws -> BTPaymentActionStatus {
         do {
             let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
             let result = try await setPaymentActionPaymentMethod(body)
             return result.status
         } catch {
+            // TODO: Replace with the exact error type in a later PR.
             throw error
         }
     }
-    
-    // MARK: - Internal Methods
     
     /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
     /// - Parameter body: the GraphQL request body to submit, encoding the payment method

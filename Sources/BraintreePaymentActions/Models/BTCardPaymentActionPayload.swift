@@ -1,7 +1,7 @@
 import Foundation
 
 /// The card payment method payload submitted to a Payment Action via `BTPaymentActionsClient`
-struct PaymentMethodPayload: Encodable {
+struct BTCardPaymentMethodPayload: Encodable {
     
     let card: Card
 }

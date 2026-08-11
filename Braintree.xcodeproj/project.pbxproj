@@ -1320,16 +1320,16 @@
 		622C9496302A4EAE005001C2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BTCardPaymentActionPayload.swift,
 				BTCardPaymentActionRequest.swift,
-				CardPaymentActionPayload.swift,
 			);
 			target = 622C945D302A2A98005001C2 /* BraintreePaymentActions */;
 		};
 		62EC04AD302A4F340037FC81 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				BTCardPaymentActionPayload.swift,
 				BTCardPaymentActionRequest.swift,
-				CardPaymentActionPayload.swift,
 			);
 			target = 570B936A285397520041BAFE /* BraintreeCore */;
 		};

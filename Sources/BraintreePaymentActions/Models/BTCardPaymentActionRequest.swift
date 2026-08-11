@@ -65,6 +65,6 @@ import Foundation
     // MARK: - BTPaymentActionRequest
     
     func paymentMethodParameters() -> any Encodable {
-        PaymentMethodPayload(card: Card(request: self))
+        BTCardPaymentMethodPayload(card: Card(request: self))
     }
 }
