@@ -40,6 +40,22 @@ class BTClientToken_Tests: XCTestCase {
         XCTAssertEqual(clientToken.configURL, URL(string: configURLString))
     }
 
+    func testInitialization_whenClientTokenContainsPaymentMethodIDJWT_populatesProperty() throws {
+        let clientToken = try XCTUnwrap(
+            BTClientToken(
+                clientToken: TestClientTokenFactory.token(withVersion: 3, overrides: ["paymentMethodIdJwt": "fake-payment-method-id-jwt"])
+            )
+        )
+
+        XCTAssertEqual(clientToken.paymentMethodIDJWT, "fake-payment-method-id-jwt")
+    }
+
+    func testInitialization_whenClientTokenOmitsPaymentMethodIDJWT_returnsNil() throws {
+        let clientToken = try XCTUnwrap(BTClientToken(clientToken: TestClientTokenFactory.token(withVersion: 3)))
+
+        XCTAssertNil(clientToken.paymentMethodIDJWT)
+    }
+
     func testInitialization_withInvalidJSON_returnsError() {
         do {
             let clientToken = try BTClientToken(clientToken: "definitely_not_a_client_token")

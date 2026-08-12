@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* BraintreePayPal
+  * Add `editBillingAgreement` to `BTPayPalCheckoutRequest` to support the PayPal Edit FI flow
+
 ## 7.9.0 (2026-07-21)
 * BraintreeUIComponents
   * Fix minimum target version to iOS 16.0 to match all other modules

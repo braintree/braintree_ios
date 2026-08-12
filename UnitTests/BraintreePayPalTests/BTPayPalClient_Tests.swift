@@ -91,6 +91,36 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     @MainActor
+    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndClientTokenHasJWT_includesEditBillingAgreementJWTInPOSTBody() {
+        let clientToken = TestClientTokenFactory.token(withVersion: 3, overrides: ["paymentMethodIdJwt": "edit-fi-jwt"])
+        let mockAPIClientWithJWT = MockAPIClient(authorization: clientToken)
+        mockAPIClientWithJWT.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": ["environment": "offline"],
+            "merchantId": "testMerchantId"
+        ] as [String: Any])
+        mockAPIClientWithJWT.cannedResponseBody = BTJSON(value: [
+            "paymentResource": ["redirectUrl": "http://fakeURL.com"]
+        ])
+        payPalClient.apiClient = mockAPIClientWithJWT
+
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
+
+        let expectation = expectation(description: "Tokenize started")
+
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClientWithJWT.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClientWithJWT.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertEqual(lastPostParameters["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
+    }
+
+    @MainActor
     func testTokenizePayPalAccount_vault_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let vaultRequest = BTPayPalVaultRequest()
         vaultRequest.billingAgreementDescription = "description"
