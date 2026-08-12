@@ -41,7 +41,7 @@ class BTClientToken: ClientAuthorization {
         self.bearer = authorizationFingerprint
         self.configURL = configURL
         self.originalValue = clientToken
-        self.paymentMethodIDJWT = json["paymentMethodIDJWT"].asString()
+        self.paymentMethodIDJWT = json["paymentMethodIdJwt"].asString()
     }
     
     // MARK: - Internal helper functions
