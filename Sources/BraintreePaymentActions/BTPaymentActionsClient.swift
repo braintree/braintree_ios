@@ -21,15 +21,15 @@ import BraintreeCore
     
     // MARK: - Public Methods
     
-    /// Submits a card as the payment method for a Payment Action.
+    /// Submits a payment method to a Payment Action.
     /// - Parameters:
-    ///    - request: The card payment method details to submit.
+    ///    - request: The payment method details to submit — e.g. a `BTCardPaymentActionRequest`.
     ///    - completion: A completion block that is invoked when the submission has completed. If it succeeds,
     ///    `status` will contain the resulting `BTPaymentActionStatus` and `error` will be `nil`; if it fails,
     ///    `error` will describe the failure.
     @objc(submitForPaymentAction:completion:)
     public func submitForPaymentAction(
-        _ request: BTCardPaymentActionRequest,
+        _ request: BTPaymentActionRequest,
         completion: @escaping (BTPaymentActionStatus, Error?) -> Void
     ) {
         Task { @MainActor in
@@ -42,12 +42,12 @@ import BraintreeCore
         }
     }
     
-    /// Submit a card as the payment method for Payment Action.
-    /// - Parameter request: The card payment method details to submit.
+    /// Submit a payment method for a Payment Action.
+    /// - Parameter request: The payment method details to submit — e.g. a `BTCardPaymentActionRequest`.
     /// - Returns: the resulting `BTPaymentActionStatus`.
     /// - Throws: an `Error` describing the failure.
     public func submitForPaymentAction(
-        _ request: BTCardPaymentActionRequest
+        _ request: BTPaymentActionRequest
     ) async throws -> BTPaymentActionStatus {
         try await submit(request)
     }
@@ -55,10 +55,10 @@ import BraintreeCore
     // MARK: - Internal Methods
     
     /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
-    /// - Parameter request: any payment-method-specific request conforming to `BTPaymentActionRequest`.
+    /// - Parameter request: any payment-method-specific request subclassing `BTPaymentActionRequest`.
     /// - Returns: the resulting `BTPaymentActionStatus`.
     /// - Throws: the underlying error from the network layer or GraphQL response.
-    func submit<Request: BTPaymentActionRequest>(_ request: Request) async throws -> BTPaymentActionStatus {
+    func submit(_ request: BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
         do {
             let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
             let result = try await setPaymentActionPaymentMethod(body)

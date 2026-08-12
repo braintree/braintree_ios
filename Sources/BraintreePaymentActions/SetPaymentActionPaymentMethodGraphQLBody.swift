@@ -23,7 +23,7 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
     let variables: Variables
     
-    init(request: any BTPaymentActionRequest) {
+    init(request: BTPaymentActionRequest) {
         self.variables = Variables(request: request)
     }
     
@@ -31,7 +31,7 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
         
         let input: Input
         
-        init(request: any BTPaymentActionRequest) {
+        init(request: BTPaymentActionRequest) {
             self.input = Input(request: request)
         }
         
@@ -40,7 +40,7 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
             let paymentActionId: String
             let paymentMethod: AnyEncodable
             
-            init(request: any BTPaymentActionRequest) {
+            init(request: BTPaymentActionRequest) {
                 self.paymentActionId = request.paymentActionID
                 self.paymentMethod = AnyEncodable(request.paymentMethodParameters())
             }

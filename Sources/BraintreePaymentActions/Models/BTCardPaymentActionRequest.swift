@@ -1,11 +1,10 @@
 import Foundation
 
 /// The card details to submit as the payment method for a Payment Action.
-@objcMembers public class BTCardPaymentActionRequest: NSObject, BTPaymentActionRequest {
+public class BTCardPaymentActionRequest: BTPaymentActionRequest {
     
     // MARK: - Internal Properties
     
-    let paymentActionID: String
     let cardNumber: String
     let expirationMonth: String
     let expirationYear: String
@@ -48,7 +47,6 @@ import Foundation
         postalCode: String? = nil,
         countryCodeAlpha2: String? = nil
     ) {
-        self.paymentActionID = paymentActionID
         self.cardNumber = cardNumber
         self.expirationMonth = expirationMonth
         self.expirationYear = expirationYear
@@ -60,11 +58,12 @@ import Foundation
         self.region = region
         self.postalCode = postalCode
         self.countryCodeAlpha2 = countryCodeAlpha2
+        super.init(paymentActionID: paymentActionID)
     }
     
     // MARK: - BTPaymentActionRequest
     
-    func paymentMethodParameters() -> any Encodable {
+    override func paymentMethodParameters() -> any Encodable {
         BTCardPaymentMethodPayload(card: Card(request: self))
     }
 }
