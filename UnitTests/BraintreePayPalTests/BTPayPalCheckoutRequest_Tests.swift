@@ -244,11 +244,13 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
-    func testParametersWithConfiguration_whenEditBillingAgreementJWTSet_includesEditBillingAgreementJWT() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.editBillingAgreementJWT = "edit-fi-jwt"
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueAndJWTPresent_includesEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
 
-        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            paymentMethodIDJWT: "edit-fi-jwt"
+        ).toDictionary() else {
             XCTFail()
             return
         }
@@ -256,15 +258,30 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
     }
 
-    func testParametersWithConfiguration_whenEditBillingAgreementJWTNotSet_omitsEditBillingAgreementJWT() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
+    func testParametersWithConfiguration_whenEditBillingAgreementFalse_omitsEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: false)
+
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            paymentMethodIDJWT: "edit-fi-jwt"
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        // Merchant did not opt in, so the JWT must not be sent even when present on the client token.
+        XCTAssertNil(parameters["edit_billing_agreement_jwt"])
+    }
+
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueButJWTNil_omitsEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
 
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
             XCTFail()
             return
         }
 
-        // Optional field must be omitted (not null) so existing flows are byte-identical.
+        // No JWT on the client token → omit the key (not null) so existing flows stay byte-identical.
         XCTAssertNil(parameters["edit_billing_agreement_jwt"])
     }
 

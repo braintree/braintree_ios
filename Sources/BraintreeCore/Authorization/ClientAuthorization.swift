@@ -17,6 +17,18 @@ public protocol ClientAuthorization {
     /// :nodoc: The original, full string value of the authorization string provided by the merchant.
     /// The full client token or tokenization key.
     var originalValue: String { get }
+
+    /// :nodoc: The payment method ID JWT extracted from the client token, if present. Used by the
+    /// PayPal Edit FI flow to reference an existing billing agreement. `nil` when not present
+    /// (e.g. tokenization keys, or client tokens that don't include it).
+    var paymentMethodIDJWT: String? { get }
+}
+
+/// :nodoc: Default so existing conformers are unaffected; only client tokens provide a value.
+@_documentation(visibility: private)
+extension ClientAuthorization {
+
+    public var paymentMethodIDJWT: String? { nil }
 }
 
 /// :nodoc:

@@ -30,7 +30,8 @@ protocol BTPayPalRequest {
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool,
         universalLink: URL?,
-        fallbackURLScheme: String?
+        fallbackURLScheme: String?,
+        paymentMethodIDJWT: String?
     ) -> Encodable
 }
 
