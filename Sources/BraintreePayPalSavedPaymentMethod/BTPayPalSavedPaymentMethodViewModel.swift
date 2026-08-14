@@ -130,7 +130,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
-    /// payer (email); else brand-only.
+    /// payer (email); else the component hides entirely (a network failure keeps the brand mark
+    /// via the `loadStickyFI` catch instead).
     static func state(from summary: BTPayPalSavedPaymentMethodSummary) -> FIState {
         if let fi = summary.paymentMethods.first {
             return .instrument(
@@ -146,7 +147,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         if let payer = summary.payer, let email = payer.email {
             return .displayOnly(email: email, isEditable: payer.isEditable)
         }
-        return .brandOnly
+        return .hidden
     }
 
     /// Fetches the Pay Later message. Additive — any failure hides the row.
@@ -177,7 +178,30 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         )
         self.payPalClient = payPalClient
         payPalClient.tokenize(checkoutRequest) { [weak self] nonce, error in
-            self?.completion(nonce, error)
+            guard let self else { return }
+            self.completion(nonce, error)
+
+            // On a successful edit, re-fetch the FI for the approved checkout (order ID = the EC
+            // token resolved during tokenize) so the displayed instrument reflects the change.
+            if nonce != nil, let orderID = payPalClient.payPalContextID {
+                Task { await self.refreshFI(orderID: orderID) }
+            }
+        }
+    }
+
+    /// Best-effort refresh after an edit. On failure the last-known FI is kept on screen — the
+    /// edit result itself already succeeded, so a failed refresh must not disturb it.
+    private func refreshFI(orderID: String) async {
+        guard let fetchClient else { return }
+        do {
+            let summary = try await fetchClient.fetchPaymentMethod(
+                fundingInstrumentType: .fiFromApprovedCheckout,
+                orderID: orderID,
+                merchantAccountID: checkoutRequest.merchantAccountID
+            )
+            fiState = Self.state(from: summary)
+        } catch {
+            // Keep the last-known label.
         }
     }
 
