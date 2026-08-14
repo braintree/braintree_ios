@@ -83,6 +83,24 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    func testExecute_whenResponseDoesNotIncludeExpiration_returnsNilExpiration() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "generateCustomerRecommendations": [
+                        "sessionId": sessionID,
+                        "isInPayPalNetwork": false,
+                        "paymentRecommendations": []
+                    ]
+                ]
+            ]
+        )
+
+        let result = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
+
+        XCTAssertNil(result.expiresAt)
+    }
     
     func testExceute_whenGenerateCustomerRecommendationsAPIFails_throwsNSError() async {
         let mockError = NSError(domain: "generate-customer-recommendations-error", code: 1, userInfo: nil)
