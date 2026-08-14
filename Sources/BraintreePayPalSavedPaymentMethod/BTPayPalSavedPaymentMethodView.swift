@@ -9,7 +9,7 @@ import UIKit
 /// The component resolves and renders the sticky FI, exposes an edit affordance that
 /// launches the PayPal paysheet via `BTPayPalClient`, and reports the tokenization outcome
 /// via `completion`. The buyer's FI is resolved by the SDK from the client token — the
-/// merchant supplies the checkout request (its amount also drives the credit-messaging line).
+/// merchant supplies the checkout request plus the `amount` that drives the credit-messaging line.
 public struct BTPayPalSavedPaymentMethodView: View {
 
     // MARK: - Private Properties
@@ -22,6 +22,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
 
     /// Creates a `BTPayPalSavedPaymentMethodView`.
     /// - Parameters:
+    ///   - amount: Required. The order amount the credit (Pay Later) message is calculated from, e.g. `"55.00"`.
     ///   - authorization: Required. A valid client token or tokenization key. The saved FI is
     ///     resolved from the client token.
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
@@ -31,6 +32,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     ///   - style: Optional. Styling overrides. Defaults to the shipped `BTPayPalSavedPaymentMethodViewStyle`.
     ///   - completion: Called with the `BTPayPalAccountNonce` (or `Error`) when the edit tokenization completes.
     public init(
+        amount: String,
         authorization: String,
         universalLink: URL,
         fallbackURLScheme: String? = nil,
@@ -40,6 +42,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     ) {
         _viewModel = StateObject(
             wrappedValue: BTPayPalSavedPaymentMethodViewModel(
+                amount: amount,
                 request: request,
                 style: style,
                 universalLink: universalLink,

@@ -48,6 +48,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     private let fallbackURLScheme: String?
     private let fetchClient: BTPayPalSavedPaymentMethodClient?
 
+    /// The order amount + currency the credit (Pay Later) message is calculated from.
+    private let amount: String
+    private let currencyCode: String
+
     /// Retained across the app-switch/edit paysheet round trip.
     private var payPalClient: BTPayPalClient?
 
@@ -56,6 +60,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     // MARK: - Initializers
 
     init(
+        amount: String,
+        currencyCode: String = "USD",
         request: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle,
         universalLink: URL,
@@ -63,6 +69,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
         authorization: String
     ) {
+        self.amount = amount
+        self.currencyCode = currencyCode
         self.checkoutRequest = request
         self.style = style
         self.universalLink = universalLink
@@ -80,6 +88,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         request: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
     ) {
+        self.amount = "0"
+        self.currencyCode = "USD"
         self.checkoutRequest = request
         self.style = style
         // swiftlint:disable:next force_unwrapping
@@ -141,10 +151,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Fetches the Pay Later message. Additive — any failure hides the row.
     private func loadCreditMessaging() async {
-        guard let fetchClient, let currencyCode = checkoutRequest.currencyCode else { return }
+        guard let fetchClient else { return }
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
-                amount: checkoutRequest.amount,
+                amount: amount,
                 currencyCode: currencyCode
             )
             creditMessage = CreditMessageContent(result: result)
