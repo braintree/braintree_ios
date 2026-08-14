@@ -41,7 +41,7 @@ import BraintreeCore
     let hermesPath = "v1/paypal_hermes/create_payment_resource"
     let paymentType: BTPayPalPaymentType = .checkout
     
-    var amount: String
+    public private(set) var amount: String
     var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
     var offerPayLater: Bool
@@ -50,7 +50,7 @@ import BraintreeCore
     var billingAgreementDescription: String?
     var contactInformation: BTContactInformation?
     var contactPreference: BTContactPreference = .none
-    var currencyCode: String?
+    public private(set) var currencyCode: String?
     var displayName: String?
     var editBillingAgreement: Bool = false
     var enablePayPalAppSwitch: Bool = false
@@ -59,7 +59,7 @@ import BraintreeCore
     var landingPageType: BTPayPalRequestLandingPageType?
     var lineItems: [BTPayPalLineItem]?
     var localeCode: BTPayPalLocaleCode?
-    var merchantAccountID: String?
+    public private(set) var merchantAccountID: String?
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var requestBillingAgreement: Bool

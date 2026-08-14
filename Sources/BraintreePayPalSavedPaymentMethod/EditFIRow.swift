@@ -12,7 +12,7 @@ struct EditFIRow: View {
 
     enum Content: Equatable {
         case instrument(BTPayPalSavedPaymentMethodFISummary)
-        case displayOnly(email: String)
+        case displayOnly(email: String, isEditable: Bool)
         case brandOnly
     }
 
@@ -72,7 +72,7 @@ struct EditFIRow: View {
                     }
                 }
                 .padding(.leading, fiClusterGap)
-            case .displayOnly(let email):
+            case .displayOnly(let email, let isEditable):
                 fiPill {
                     HStack(spacing: viewEditSpacing) {
                         Text(email)
@@ -80,7 +80,9 @@ struct EditFIRow: View {
                             .foregroundColor(textColor)
                             .lineLimit(1)
                             .truncationMode(.middle)
-                        editButton
+                        if isEditable {
+                            editButton
+                        }
                     }
                 }
                 .padding(.leading, fiClusterGap)

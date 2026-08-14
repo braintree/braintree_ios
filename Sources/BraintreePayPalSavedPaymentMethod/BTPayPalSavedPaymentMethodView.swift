@@ -41,7 +41,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
                 request: request,
                 style: style,
                 onResult: onResult,
-                apiClient: BTAPIClient(authorization: authorization)
+                authorization: authorization
             )
         )
     }
@@ -94,8 +94,8 @@ public struct BTPayPalSavedPaymentMethodView: View {
             BTPayPalSavedPaymentMethodSkeletonRow(style: style)
         case .instrument(let summary):
             EditFIRow(content: .instrument(summary), style: style) { viewModel.editTapped() }
-        case .displayOnly(let email):
-            EditFIRow(content: .displayOnly(email: email), style: style) { viewModel.editTapped() }
+        case .displayOnly(let email, let isEditable):
+            EditFIRow(content: .displayOnly(email: email, isEditable: isEditable), style: style) { viewModel.editTapped() }
         case .brandOnly:
             EditFIRow(content: .brandOnly, style: style) { viewModel.editTapped() }
         case .hidden:
@@ -108,8 +108,8 @@ public struct BTPayPalSavedPaymentMethodView: View {
             Group {
                 if viewModel.fiState == .loading {
                     CreditMessageSkeleton()
-                } else {
-                    CreditMessagingRow(style: style) {
+                } else if let content = viewModel.creditMessage {
+                    CreditMessagingRow(style: style, content: content) {
                         viewModel.learnMoreTapped()
                     }
                 }
@@ -164,7 +164,7 @@ extension BTPayPalSavedPaymentMethodView {
         case .instrument(let summary):
             fiState = .instrument(summary)
         case .displayOnly(let email):
-            fiState = .displayOnly(email: email)
+            fiState = .displayOnly(email: email, isEditable: true)
         case .brandOnly:
             fiState = .brandOnly
         case .hidden:
@@ -220,7 +220,7 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
                 preview("Instrument — truncation", .instrument(
                     BTPayPalSavedPaymentMethodFISummary(type: "CARD", label: "A Very Long Funding Instrument Bank Name", lastDigits: "1234")
                 ))
-                preview("Display-only (email)", .displayOnly(email: "buyer@example.com"))
+                preview("Display-only (email)", .displayOnly(email: "buyer@example.com", isEditable: true))
                 preview("Brand only (no network)", .brandOnly)
                 preview("Bordered container", .instrument(
                     BTPayPalSavedPaymentMethodFISummary(type: "CARD", label: "Mastercard", lastDigits: "4444")
