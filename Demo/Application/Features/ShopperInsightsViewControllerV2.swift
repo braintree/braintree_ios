@@ -258,6 +258,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 let details = """
                     SessionID: \(String(describing: result.sessionID ?? ""))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
+                    ExpiresAt: \(result.expiresAt ?? "nil")
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
                         "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)"

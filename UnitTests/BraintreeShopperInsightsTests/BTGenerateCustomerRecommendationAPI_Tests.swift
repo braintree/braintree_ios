@@ -53,7 +53,8 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
                                 "paymentOption": "PAYPAL",
                                 "recommendedPriority": 1
                             ]
-                        ]
+                        ],
+                        "expiresAt": "2026-08-12T14:01:11Z"
                     ]
                 ]
             ]
@@ -66,6 +67,7 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         XCTAssertEqual(expectedResult.isInPayPalNetwork, true)
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.paymentOption, "PAYPAL")
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.recommendedPriority, 1)
+        XCTAssertEqual(expectedResult.expiresAt, "2026-08-12T14:01:11Z")
     }
     
     func testExecute_whenEmptyResponseBodyReturned_throwsBTShopperInsightsError() async {
@@ -94,4 +96,3 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         }
     }
 }
-
