@@ -33,16 +33,17 @@ struct BTPayPalCreditMessagingResult: Equatable {
     /// - Returns: `nil` when PayPal has no message to show for this buyer, including the documented 204 No Content response.
     init?(json: BTJSON) {
         let preferredMessage = json["messages"][0]["preferred_message"]
+        let content = preferredMessage["content"]
+        let mainItems = content["main_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
 
-        guard preferredMessage.isObject else {
+        // Reporting success with no message text would fire the impression beacon for a message the buyer never saw.
+        guard !mainItems.isEmpty else {
             return nil
         }
 
-        let content = preferredMessage["content"]
-
         self.messageID = preferredMessage["id"].asString()
         self.messageType = preferredMessage["type"].asString()
-        self.mainItems = content["main_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
+        self.mainItems = mainItems
         self.disclaimerItems = content["disclaimer_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
         self.actionItems = content["action_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
         self.impressionURL = preferredMessage["analytics"]["impression_url"].asURL()

@@ -99,18 +99,19 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         XCTAssertEqual(result.mainItems[0].text, "Or ")
     }
 
-    func testFetchCreditPresentmentMessages_whenTheMessageHasNoContent_returnsEmptyItems() async throws {
+    func testFetchCreditPresentmentMessages_whenTheMessageHasNoCopy_throwsMissingPreferredMessage() async {
         mockAPIClient.cannedResponseBody = BTJSON(
             value: ["messages": [["preferred_message": ["id": "fake-id"]]]] as [String: Any]
         )
 
-        let result = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
-
-        XCTAssertEqual(result.messageID, "fake-id")
-        XCTAssertNil(result.impressionURL)
-        XCTAssertTrue(result.mainItems.isEmpty)
-        XCTAssertTrue(result.disclaimerItems.isEmpty)
-        XCTAssertTrue(result.actionItems.isEmpty)
+        do {
+            _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingPreferredMessage)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
     // MARK: - Errors
