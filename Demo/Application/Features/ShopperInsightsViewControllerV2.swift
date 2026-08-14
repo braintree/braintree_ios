@@ -258,7 +258,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 let details = """
                     SessionID: \(String(describing: result.sessionID ?? ""))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
-                    ExpiresAt: \(result.expiresAt ?? "nil")
+                    ExpiresAt: \(formatExpirationDate(result.expiresAt))
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
                         "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)"
@@ -276,6 +276,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     private func resetRecommendationsLabel() {
         recommendationsLabel.text = ""
         recommendationsLabel.isHidden = true
+    }
+
+    private func formatExpirationDate(_ date: Date?) -> String {
+        guard let date else { return "nil" }
+
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.string(from: date)
     }
 
     private var payPalCampaigns: [ShopperInsightsCampaign] {

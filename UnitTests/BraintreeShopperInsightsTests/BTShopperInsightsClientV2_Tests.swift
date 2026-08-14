@@ -337,7 +337,8 @@ class BTShopperInsightsClientV2_Tests: XCTestCase {
 
             XCTAssertEqual(recommendations[1].paymentOption, "Venmo")
             XCTAssertEqual(recommendations[1].recommendedPriority, 2)
-            XCTAssertEqual(result.expiresAt, "2026-08-12T14:01:11Z")
+            let expectedExpirationDate = ISO8601DateFormatter().date(from: "2026-08-12T14:01:11Z")
+            XCTAssertEqual(result.expiresAt, expectedExpirationDate)
             
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "shopper-insights:generate-customer-recommendations:started")
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, "shopper-insights:generate-customer-recommendations:succeeded")

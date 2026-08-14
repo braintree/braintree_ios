@@ -3,7 +3,7 @@
 ## unreleased
 * BraintreeShopperInsights
   * Add `payPalCampaigns` to `BTCustomerSessionRequest` for customer session and recommendations requests so eligible PayPal campaign context can be recorded during the shopping journey.
-  * Add `expiresAt` to `BTCustomerRecommendationsResult` to expose the recommendation expiration timestamp.
+  * Add `expiresAt` as a `Date?` to `BTCustomerRecommendationsResult` to expose the recommendation expiration timestamp.
 * BraintreePayPal
   * Add `campaigns` to `BTPayPalCheckoutRequest` so eligible campaign context can be persisted during order creation and surfaced in the PayPal checkout experience.
 

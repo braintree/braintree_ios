@@ -14,5 +14,5 @@ public struct BTCustomerRecommendationsResult {
     public let paymentRecommendations: [BTPaymentOptions]?
 
     /// The date and time at which the recommendations expire.
-    public let expiresAt: String?
+    public let expiresAt: Date?
 }
