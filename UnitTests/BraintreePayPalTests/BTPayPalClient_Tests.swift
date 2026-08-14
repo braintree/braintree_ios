@@ -517,8 +517,7 @@ class BTPayPalClient_Tests: XCTestCase {
     // MARK: - Browser switch
 
     func testTokenizePayPalAccount_whenPayPalPayLaterOffered_performsSwitchCorrectly() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.currencyCode = "GBP"
+        let request = BTPayPalCheckoutRequest(amount: "1", currencyCode: "GBP")
         request.offerPayLater = true
 
         let expectation = expectation(description: "Tokenize started")

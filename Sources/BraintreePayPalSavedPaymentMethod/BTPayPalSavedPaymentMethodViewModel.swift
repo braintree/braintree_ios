@@ -150,6 +150,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
             creditMessage = CreditMessageContent(result: result)
             learnMoreURL = creditMessage?.learnMoreURL
         } catch {
+            apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.creditMessagingFailed)
             creditMessage = nil
         }
     }
@@ -172,6 +173,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     func learnMoreTapped() {
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.creditMessagingSelected)
+        guard learnMoreURL != nil else { return }
         isLanderPresented = true
     }
 }

@@ -79,11 +79,10 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     // MARK: - parametersWithConfiguration
 
     func testParametersWithConfiguration_returnsAllParams() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1", currencyCode: "currency-code")
         request.intent = .sale
         request.offerPayLater = true
         request.offerCredit = true
-        request.currencyCode = "currency-code"
         request.requestBillingAgreement = true
         request.billingAgreementDescription = "description"
         request.userAction = .payNow
@@ -198,13 +197,12 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_returnsAllBaseParams() {
-        let request = BTPayPalCheckoutRequest(amount: "1")
+        let request = BTPayPalCheckoutRequest(amount: "1", merchantAccountID: "merchant-account-id")
         request.isShippingAddressRequired = true
         request.displayName = "Display Name"
         request.landingPageType = .login
         request.localeCode = .en_US
         request.riskCorrelationID = "123-correlation-id"
-        request.merchantAccountID = "merchant-account-id"
         request.isShippingAddressEditable = true
         
         let lineItem = BTPayPalLineItem(

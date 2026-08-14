@@ -67,7 +67,11 @@ public struct BTPayPalSavedPaymentMethodView: View {
         }
         .onAppear { viewModel.onAppear() }
         .sheet(isPresented: $viewModel.isLanderPresented) {
-            CreditMessagingLanderView(url: viewModel.learnMoreURL)
+            if let url = viewModel.learnMoreURL {
+                BTPayPalCreditMessagingLanderView(url: url)
+                    .presentationDetents([.medium, .large])
+                    .ignoresSafeArea()
+            }
         }
     }
 
