@@ -467,7 +467,7 @@ import BraintreeDataCollector
             isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
             universalLink: self.universalLink,
             fallbackURLScheme: self.fallbackURLScheme,
-            paymentMethodIDJWT: self.apiClient.authorization.paymentMethodIDJWT
+            paymentMethodIDJWT: (self.apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT
         )
 
         do {
