@@ -7,12 +7,9 @@ import UIKit
 /// instrument (FI) and lets them edit it, with optional inline Pay Later messaging.
 ///
 /// The component resolves and renders the sticky FI, exposes an edit affordance that
-/// launches the PayPal paysheet, and reports the outcome via `onResult`. The buyer's FI is
-/// resolved by the SDK from the client token — the merchant supplies only the checkout
-/// request (its amount also drives the credit-messaging line).
-///
-/// > Note: The fetch/edit network calls are not yet wired in; the component renders its
-/// > loading and result states from the view model, which is where those APIs plug in.
+/// launches the PayPal paysheet via `BTPayPalClient`, and reports the tokenization outcome
+/// via `completion`. The buyer's FI is resolved by the SDK from the client token — the
+/// merchant supplies the checkout request (its amount also drives the credit-messaging line).
 public struct BTPayPalSavedPaymentMethodView: View {
 
     // MARK: - Private Properties
@@ -27,20 +24,27 @@ public struct BTPayPalSavedPaymentMethodView: View {
     /// - Parameters:
     ///   - authorization: Required. A valid client token or tokenization key. The saved FI is
     ///     resolved from the client token.
-    ///   - request: Required. The request configuring the component (checkout request + credit-message toggle).
+    ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
+    ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
+    ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
+    ///   - request: Required. The PayPal checkout request. Set `editBillingAgreement` on it to enable the edit flow.
     ///   - style: Optional. Styling overrides. Defaults to the shipped `BTPayPalSavedPaymentMethodViewStyle`.
-    ///   - onResult: Called with the terminal `BTPayPalSavedPaymentMethodResult` after an edit flow completes.
+    ///   - completion: Called with the `BTPayPalAccountNonce` (or `Error`) when the edit tokenization completes.
     public init(
         authorization: String,
-        request: BTPayPalSavedPaymentMethodRequest,
+        universalLink: URL,
+        fallbackURLScheme: String? = nil,
+        request: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle(),
-        onResult: @escaping (BTPayPalSavedPaymentMethodResult) -> Void
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         _viewModel = StateObject(
             wrappedValue: BTPayPalSavedPaymentMethodViewModel(
                 request: request,
                 style: style,
-                onResult: onResult,
+                universalLink: universalLink,
+                fallbackURLScheme: fallbackURLScheme,
+                completion: completion,
                 authorization: authorization
             )
         )
@@ -104,7 +108,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     }
 
     @ViewBuilder private var creditRegion: some View {
-        if viewModel.request.showCreditMessage, style.showCreditMessaging {
+        if style.showCreditMessaging {
             Group {
                 if viewModel.fiState == .loading {
                     CreditMessageSkeleton()
@@ -153,10 +157,7 @@ extension BTPayPalSavedPaymentMethodView {
         showCreditMessage: Bool = false,
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
     ) {
-        let request = BTPayPalSavedPaymentMethodRequest(
-            payPalRequest: BTPayPalCheckoutRequest(amount: "0"),
-            showCreditMessage: showCreditMessage
-        )
+        let request = BTPayPalCheckoutRequest(amount: "0")
         let fiState: BTPayPalSavedPaymentMethodViewModel.FIState
         switch previewState {
         case .loading:
@@ -178,10 +179,7 @@ extension BTPayPalSavedPaymentMethodView {
 
 struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
 
-    private static let request = BTPayPalSavedPaymentMethodRequest(
-        payPalRequest: BTPayPalCheckoutRequest(amount: "324.50"),
-        showCreditMessage: true
-    )
+    private static let request = BTPayPalCheckoutRequest(amount: "324.50")
 
     private static func preview(
         _ title: String,

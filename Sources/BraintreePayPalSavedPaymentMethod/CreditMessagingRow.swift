@@ -55,7 +55,7 @@ struct CreditMessagingRow: View {
 /// The display-ready credit message composed from a fetched `BTPayPalCreditMessagingResult`.
 struct CreditMessageContent: Equatable {
 
-    /// The concatenated main-block copy (e.g. "4 interest-free payments of $13.75 with ").
+    /// The non-tappable copy: main block plus any disclaimer block, space-joined.
     let message: String
 
     /// The "Learn more" action copy, when present.
@@ -69,13 +69,33 @@ struct CreditMessageContent: Equatable {
 
     /// Composes the content, or returns `nil` when there is no main copy to display (hide the row).
     init?(result: BTPayPalCreditMessagingResult) {
-        let text = result.mainItems.compactMap(\.text).joined()
-        guard !text.isEmpty else { return nil }
+        let mainText = Self.compose(result.mainItems)
+        guard !mainText.isEmpty else { return nil }
 
-        self.message = text
+        // Order per PayPal: main, then disclaimers (empty today, may be enabled later), then action.
+        let disclaimerText = Self.compose(result.disclaimerItems)
+        self.message = [mainText, disclaimerText].filter { !$0.isEmpty }.joined(separator: " ")
+
+        let actionText = Self.compose(result.actionItems)
+        self.learnMoreText = actionText.isEmpty ? nil : actionText
+
         let action = result.actionItems.first { $0.clickURL != nil } ?? result.actionItems.first
-        self.learnMoreText = action?.text
         self.learnMoreURL = action?.clickURL
         self.isEmbeddable = action?.isEmbeddable ?? false
+    }
+
+    /// Resolves each block to its display text — `image` blocks use their `alternativeText`
+    /// (e.g. the "PayPal" logo renders as the word "PayPal") — and concatenates them in order
+    /// with no separator, since each block already carries its own surrounding whitespace.
+    private static func compose(_ items: [BTPayPalCreditMessageItem]) -> String {
+        items.map { item in
+            switch item.type {
+            case .image:
+                return item.alternativeText ?? item.text ?? ""
+            default:
+                return item.text ?? item.alternativeText ?? ""
+            }
+        }
+        .joined()
     }
 }

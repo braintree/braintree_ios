@@ -4,10 +4,9 @@ import Foundation
 
 /// View model backing `BTPayPalSavedPaymentMethodView`.
 ///
-/// Owns the FI load state and the "Learn more" lander presentation, and is the single
-/// seam where the fetch/edit APIs plug in later. Today the networking calls are stubbed
-/// (`onAppear` / `editTapped`) so the component is pure UI; every visual state is still
-/// reachable via the internal preview initializer.
+/// Owns the FI load state and the "Learn more" lander presentation, and drives the
+/// fetch (sticky FI + credit messaging) and edit (`BTPayPalClient` tokenize) flows.
+/// Every visual state is also reachable via the internal preview initializer.
 @MainActor
 final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
@@ -35,7 +34,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The composed credit (Pay Later) message to render, or `nil` to hide the row.
     @Published private(set) var creditMessage: CreditMessageContent?
 
-    let request: BTPayPalSavedPaymentMethodRequest
+    let checkoutRequest: BTPayPalCheckoutRequest
     let style: BTPayPalSavedPaymentMethodViewStyle
 
     /// The "Learn more" lander URL, populated from the credit-messaging response.
@@ -43,22 +42,33 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
-    private let onResult: (BTPayPalSavedPaymentMethodResult) -> Void
+    private let completion: (BTPayPalAccountNonce?, Error?) -> Void
+    private let authorization: String
+    private let universalLink: URL
+    private let fallbackURLScheme: String?
     private let fetchClient: BTPayPalSavedPaymentMethodClient?
+
+    /// Retained across the app-switch/edit paysheet round trip.
+    private var payPalClient: BTPayPalClient?
 
     private var apiClient: BTAPIClient? { fetchClient?.apiClient }
 
     // MARK: - Initializers
 
     init(
-        request: BTPayPalSavedPaymentMethodRequest,
+        request: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle,
-        onResult: @escaping (BTPayPalSavedPaymentMethodResult) -> Void,
+        universalLink: URL,
+        fallbackURLScheme: String?,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
         authorization: String
     ) {
-        self.request = request
+        self.checkoutRequest = request
         self.style = style
-        self.onResult = onResult
+        self.universalLink = universalLink
+        self.fallbackURLScheme = fallbackURLScheme
+        self.completion = completion
+        self.authorization = authorization
         self.fetchClient = BTPayPalSavedPaymentMethodClient(authorization: authorization)
         self.fiState = .loading
     }
@@ -67,12 +77,16 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// each visual state without the fetch API.
     init(
         previewState: FIState,
-        request: BTPayPalSavedPaymentMethodRequest,
+        request: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
     ) {
-        self.request = request
+        self.checkoutRequest = request
         self.style = style
-        self.onResult = { _ in }
+        // swiftlint:disable:next force_unwrapping
+        self.universalLink = URL(string: "https://example.com")!
+        self.fallbackURLScheme = nil
+        self.completion = { _, _ in }
+        self.authorization = ""
         self.fetchClient = nil
         self.fiState = previewState
     }
@@ -83,7 +97,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.savedPayPalPaymentMethodPresented)
         Task { await loadStickyFI() }
 
-        if request.showCreditMessage, style.showCreditMessaging {
+        if style.showCreditMessaging {
             apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.creditMessagingPresented)
             Task { await loadCreditMessaging() }
         }
@@ -96,7 +110,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .stickyFI,
-                merchantAccountID: request.payPalRequest.merchantAccountID
+                merchantAccountID: checkoutRequest.merchantAccountID
             )
             fiState = Self.state(from: summary)
         } catch {
@@ -127,10 +141,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Fetches the Pay Later message. Additive — any failure hides the row.
     private func loadCreditMessaging() async {
-        guard let fetchClient, let currencyCode = request.payPalRequest.currencyCode else { return }
+        guard let fetchClient, let currencyCode = checkoutRequest.currencyCode else { return }
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
-                amount: request.payPalRequest.amount,
+                amount: checkoutRequest.amount,
                 currencyCode: currencyCode
             )
             creditMessage = CreditMessageContent(result: result)
@@ -143,10 +157,17 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     func editTapped() {
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.savedPayPalPaymentMethodEditSelected)
 
-        // TODO: [edit flow] Forward `request.payPalRequest` (editBillingAgreement + app switch)
-        // to `BTPayPalClient.tokenize`, then on return run tokenize + FI refresh
-        // (FI_FROM_APPROVED_CHECKOUT + orderID) in parallel and invoke `onResult`.
-        // Blocked on exposing the approved-checkout `orderID`/paymentToken from `BTPayPalClient`.
+        // Mirrors `PayPalButton`: the merchant's request carries `editBillingAgreement`, so the
+        // create-payment-resource call emits `edit_billing_agreement_jwt` from the client token.
+        let payPalClient = BTPayPalClient(
+            authorization: authorization,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme
+        )
+        self.payPalClient = payPalClient
+        payPalClient.tokenize(checkoutRequest) { [weak self] nonce, error in
+            self?.completion(nonce, error)
+        }
     }
 
     func learnMoreTapped() {

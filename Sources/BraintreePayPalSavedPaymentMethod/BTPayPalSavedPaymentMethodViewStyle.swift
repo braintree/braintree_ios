@@ -20,7 +20,6 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     public var showLabel: Bool = true
 
     /// Show the inline credit (Pay Later) messaging line. Default: `true`.
-    /// (Only rendered when the request also sets `showCreditMessage`.)
     public var showCreditMessaging: Bool = true
 
     public var theme: Theme = Theme()
