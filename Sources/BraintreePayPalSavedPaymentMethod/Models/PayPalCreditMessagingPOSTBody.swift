@@ -20,7 +20,6 @@ struct PayPalCreditMessagingPOSTBody: Encodable {
 
         let amount: Amount
 
-        /// Requests the Treatment A copy directly, so no experiment arm has to be resolved before the message is fetched.
         let contentAttributes = ["ALTERNATIVE_PREFIX_UPPERCASE_OR", "MESSAGE_LENGTH_COMPACT"]
 
         enum CodingKeys: String, CodingKey {

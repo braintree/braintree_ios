@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The buyer's PayPal account, returned when the funding instrument itself cannot be displayed.
+/// The buyer's PayPal account.
 struct BTPayPalPayer: Equatable {
 
     // MARK: - Internal Properties

@@ -12,7 +12,7 @@ struct BTPayPalCreditMessageItem: Equatable {
     /// The kind of block, or `nil` when PayPal returns a type this SDK version does not recognize.
     let type: BTPayPalCreditMessageItemType?
 
-    /// The copy to display, for example `"4 interest-free payments of $13.75 with "`.
+    /// The text to display, for example `"4 interest-free payments of $13.75 with "`.
     let text: String?
 
     /// The screen reader text for blocks whose `text` relies on symbols or abbreviations.

@@ -15,7 +15,7 @@ struct BTPayPalCreditMessagingResult: Equatable {
     /// The template the message was built from, for example `"PLST_SQ"`.
     let messageType: String?
 
-    /// The core copy of the message.
+    /// The main text and logo blocks of the message.
     let mainItems: [BTPayPalCreditMessageItem]
 
     /// Legal disclaimers that PayPal requires to be displayed with `mainItems`.
@@ -30,7 +30,7 @@ struct BTPayPalCreditMessagingResult: Equatable {
     // MARK: - Initializer
 
     /// Parses the preferred message out of a `v2/credit/fetch-presentment-messages` response.
-    /// - Returns: `nil` when PayPal has no message to show for this buyer, including the documented 204 No Content response.
+    /// - Returns: `nil` when PayPal has no message to show for this buyer.
     init?(json: BTJSON) {
         let preferredMessage = json["messages"][0]["preferred_message"]
         let content = preferredMessage["content"]
