@@ -115,7 +115,9 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         )
 
         let result = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
-        let expectedExpirationDate = ISO8601DateFormatter().date(from: "2026-08-12T14:01:11.123Z")
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let expectedExpirationDate = formatter.date(from: "2026-08-12T14:01:11.123Z")
 
         XCTAssertEqual(result.expiresAt, expectedExpirationDate)
     }
