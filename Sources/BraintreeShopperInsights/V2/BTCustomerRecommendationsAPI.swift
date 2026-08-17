@@ -90,5 +90,4 @@ final class BTCustomerRecommendationsAPI {
         formatter.formatOptions = [.withInternetDateTime]
         return formatter.date(from: value)
     }
-
 }
