@@ -31,6 +31,9 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     @Published private(set) var fiState: FIState
     @Published var isLanderPresented = false
 
+    /// Whether the full-screen "Sending you to PayPal" loader is showing (create-payment-resource in flight).
+    @Published private(set) var isEditing = false
+
     /// The composed credit (Pay Later) message to render, or `nil` to hide the row.
     @Published private(set) var creditMessage: CreditMessageContent?
 
@@ -52,8 +55,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     private let amount: String
     private let currencyCode: String
 
-    /// Retained across the app-switch/edit paysheet round trip.
-    private var payPalClient: BTPayPalClient?
+    /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
+    private var fiStateBeforeEdit: FIState?
 
     private var apiClient: BTAPIClient? { fetchClient?.apiClient }
 
@@ -167,42 +170,50 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     }
 
     func editTapped() {
+        guard !isEditing else { return }
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.savedPayPalPaymentMethodEditSelected)
-
-        // Mirrors `PayPalButton`: the merchant's request carries `editBillingAgreement`, so the
-        // create-payment-resource call emits `edit_billing_agreement_jwt` from the client token.
-        let payPalClient = BTPayPalClient(
-            authorization: authorization,
-            universalLink: universalLink,
-            fallbackURLScheme: fallbackURLScheme
-        )
-        self.payPalClient = payPalClient
-        payPalClient.tokenize(checkoutRequest) { [weak self] nonce, error in
-            guard let self else { return }
-            self.completion(nonce, error)
-
-            // On a successful edit, re-fetch the FI for the approved checkout (order ID = the EC
-            // token resolved during tokenize) so the displayed instrument reflects the change.
-            if nonce != nil, let orderID = payPalClient.payPalContextID {
-                Task { await self.refreshFI(orderID: orderID) }
-            }
-        }
+        fiStateBeforeEdit = fiState
+        isEditing = true
+        Task { await performEdit() }
     }
 
-    /// Best-effort refresh after an edit. On failure the last-known FI is kept on screen — the
-    /// edit result itself already succeeded, so a failed refresh must not disturb it.
-    private func refreshFI(orderID: String) async {
-        guard let fetchClient else { return }
+    /// Called when the app returns from the PayPal paysheet/app switch: dismiss the full-screen
+    /// loader and show the FI shimmer while the cosmetic refresh (inside `editFundingInstrument`)
+    /// finishes.
+    func didReturnFromPayPal() {
+        guard isEditing else { return }
+        isEditing = false
+        fiState = .loading
+    }
+
+    /// Delegates the edit + cosmetic FI refresh to the data layer. The merchant only receives
+    /// `(nonce, error)`; the refreshed `summary` updates the displayed FI, and a refresh failure
+    /// keeps the last-known FI (the edit itself still succeeded).
+    private func performEdit() async {
+        guard let fetchClient else {
+            isEditing = false
+            return
+        }
         do {
-            let summary = try await fetchClient.fetchPaymentMethod(
-                fundingInstrumentType: .fiFromApprovedCheckout,
-                orderID: orderID,
+            let result = try await fetchClient.editFundingInstrument(
+                request: checkoutRequest,
                 merchantAccountID: checkoutRequest.merchantAccountID
             )
-            fiState = Self.state(from: summary)
+            isEditing = false
+            if let summary = result.summary {
+                fiState = Self.state(from: summary)
+            } else if let prior = fiStateBeforeEdit {
+                fiState = prior
+            }
+            completion(result.nonce, nil)
         } catch {
-            // Keep the last-known label.
+            isEditing = false
+            if let prior = fiStateBeforeEdit {
+                fiState = prior
+            }
+            completion(nil, error)
         }
+        fiStateBeforeEdit = nil
     }
 
     func learnMoreTapped() {

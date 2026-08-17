@@ -76,6 +76,18 @@ public struct BTPayPalSavedPaymentMethodView: View {
                     .ignoresSafeArea()
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            viewModel.didReturnFromPayPal()
+        }
+        .fullScreenCover(isPresented: editLoaderBinding) {
+            EditFlowLoadingView()
+                .clearPresentationBackground()
+        }
+    }
+
+    /// Read-only binding: the loader is dismissed by the view model, not by user interaction.
+    private var editLoaderBinding: Binding<Bool> {
+        Binding(get: { viewModel.isEditing }, set: { _ in })
     }
 
     private var container: some View {
@@ -135,6 +147,50 @@ public struct BTPayPalSavedPaymentMethodView: View {
         guard style.showLogo else { return 0 }
         let logoSide = style.container.logo.width.map { EditFiStyleGuard.logoWidth($0) } ?? PayPalBrandCluster.defaultLogoSide
         return logoSide + EditFiStyleGuard.labelLeadingGap(style.container.label.leadingGap)
+    }
+}
+
+// MARK: - Edit-flow loader
+
+/// Full-screen loader shown while the edit paysheet (create-payment-resource) is being prepared.
+private struct EditFlowLoadingView: View {
+
+    @State private var rotation = 0.0
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.6).ignoresSafeArea()
+            VStack(spacing: 16) {
+                Image("LoadingSpinner", bundle: .payPalSavedPaymentMethod)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 44)
+                    .foregroundColor(.white)
+                    .rotationEffect(.degrees(rotation))
+                Text("Sending you to PayPal")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+        }
+        .onAppear {
+            withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                rotation = 360
+            }
+        }
+    }
+}
+
+private extension View {
+
+    /// Makes a `fullScreenCover` background see-through (iOS 16.4+) so the merchant's screen dims
+    /// behind the loader; a no-op on earlier versions (opaque backdrop).
+    @ViewBuilder func clearPresentationBackground() -> some View {
+        if #available(iOS 16.4, *) {
+            presentationBackground(.clear)
+        } else {
+            self
+        }
     }
 }
 

@@ -4,6 +4,10 @@ import Foundation
 import BraintreeCore
 #endif
 
+#if canImport(BraintreePayPal)
+import BraintreePayPal
+#endif
+
 /// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
 /// Pay Later message that accompanies it.
 final class BTPayPalSavedPaymentMethodClient {
@@ -112,6 +116,24 @@ final class BTPayPalSavedPaymentMethodClient {
 
         return result
     }
+
+    /// Edits the buyer's funding instrument, then refreshes what to display for the approved checkout.
+    /// - Parameters:
+    ///   - request: The checkout request to tokenize (carries `editBillingAgreement`).
+    ///   - merchantAccountID: The merchant account the refreshed funding instrument is fetched against.
+    /// - Returns: The tokenized `nonce`, the refreshed `summary` (or `nil`), and a cosmetic `refreshError`.
+    /// - Note: Placeholder — the real tokenize (PayPal paysheet) + `fiFromApprovedCheckout` refresh is
+    ///   delivered by the data layer in a follow-up. This stub lets the UI integration build and wire
+    ///   against the final signature.
+    func editFundingInstrument(
+        request: BTPayPalCheckoutRequest,
+        merchantAccountID: String? = nil
+    ) async throws -> (nonce: BTPayPalAccountNonce, summary: BTPayPalSavedPaymentMethodSummary?, refreshError: Error?) {
+        throw NSError(
+            domain: BTPayPalSavedPaymentMethodError.errorDomain,
+            code: -1,
+            userInfo: [NSLocalizedDescriptionKey: "editFundingInstrument is not yet implemented."]
+        )
 
     // MARK: - Private Methods
 
