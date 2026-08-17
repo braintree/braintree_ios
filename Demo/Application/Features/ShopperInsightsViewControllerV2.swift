@@ -12,6 +12,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     lazy var payPalClient = BTPayPalClient(authorization: authorization)
     lazy var venmoClient = BTVenmoClient(
         authorization: authorization,
+        // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
@@ -394,7 +395,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             progressBlock(error?.localizedDescription)
             return
         }
-
         completionBlock(nonce)
     }
 }
