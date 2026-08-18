@@ -50,16 +50,6 @@ import BraintreeCore
     public func submitForPaymentAction(
         _ request: BTPaymentActionRequest
     ) async throws -> BTPaymentActionResult {
-        try await submit(request)
-    }
-    
-    // MARK: - Internal Methods
-    
-    /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
-    /// - Parameter request: any payment-method-specific request subclassing `BTPaymentActionRequest`.
-    /// - Returns: the resulting `BTPaymentActionStatus`.
-    /// - Throws: the underlying error from the network layer or GraphQL response.
-    func submit(_ request: BTPaymentActionRequest) async throws -> BTPaymentActionResult {
         do {
             let body = try SetPaymentActionPaymentMethodGraphQLBody(request: request)
             let paymentAction = try await setPaymentActionPaymentMethod(body)
@@ -69,6 +59,8 @@ import BraintreeCore
             throw error
         }
     }
+    
+    // MARK: - Internal Methods
     
     /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
     /// - Parameter body: the GraphQL request body to submit, encoding the payment method
