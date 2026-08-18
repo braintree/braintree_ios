@@ -78,19 +78,22 @@ import BraintreeCore
     func setPaymentActionPaymentMethod<Body: BTGraphQLEncodableBody>(
         _ body: Body
     ) async throws -> BTPaymentAction {
-        
         do {
             let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
             
             let paymentActionJSON: BTJSON = body?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
             
             // TODO: Verify and ensure these error types are correct in a later PR.
-            guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
+            guard let paymentActionID = paymentActionJSON["id"].asString(),
+                  !paymentActionID.isEmpty else {
                 throw BTPaymentActionError.missingID
             }
-            guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
+            
+            guard let statusString = paymentActionJSON["status"].asString(),
+                  !statusString.isEmpty else {
                 throw BTPaymentActionError.missingStatus
             }
+            
             let status = BTPaymentActionStatus.status(from: statusString)
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
