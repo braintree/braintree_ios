@@ -17,12 +17,17 @@ final class BTPayPalSavedPaymentMethodClient {
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
 
+    // MARK: - Private Properties
+
+    private let authorization: String
+
     // MARK: - Initializer
 
     /// Creates a `BTPayPalSavedPaymentMethodClient`
     /// - Parameter authorization: A client token generated with the buyer's payment method ID. A tokenization key
     ///   cannot be used — it carries no `paymentMethodIdJwt`, so the saved funding instrument cannot be resolved.
     init(authorization: String) {
+        self.authorization = authorization
         self.apiClient = BTAPIClient(authorization: authorization)
     }
 
@@ -117,23 +122,26 @@ final class BTPayPalSavedPaymentMethodClient {
         return result
     }
 
-    /// Edits the buyer's funding instrument, then refreshes what to display for the approved checkout.
+    /// Tokenizes the edit of the buyer's funding instrument through the PayPal paysheet.
     /// - Parameters:
-    ///   - request: The checkout request to tokenize (carries `editBillingAgreement`).
-    ///   - merchantAccountID: The merchant account the refreshed funding instrument is fetched against.
-    /// - Returns: The tokenized `nonce`, the refreshed `summary` (or `nil`), and a cosmetic `refreshError`.
-    /// - Note: Placeholder — the real tokenize (PayPal paysheet) + `fiFromApprovedCheckout` refresh is
-    ///   delivered by the data layer in a follow-up. This stub lets the UI integration build and wire
-    ///   against the final signature.
+    ///   - request: The checkout request to tokenize.
+    ///   - universalLink: The URL used for the PayPal app switch flow.
+    ///   - fallbackURLScheme: A custom URL scheme used if the universal link fails.
+    /// - Returns: The tokenized `BTPayPalAccountNonce`. Its `paymentID` is the approved checkout order ID,
+    ///   which callers pass to `fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout, orderID:)`.
     func editFundingInstrument(
         request: BTPayPalCheckoutRequest,
-        merchantAccountID: String? = nil
-    ) async throws -> (nonce: BTPayPalAccountNonce, summary: BTPayPalSavedPaymentMethodSummary?, refreshError: Error?) {
-        throw NSError(
-            domain: BTPayPalSavedPaymentMethodError.errorDomain,
-            code: -1,
-            userInfo: [NSLocalizedDescriptionKey: "editFundingInstrument is not yet implemented."]
+        universalLink: URL,
+        fallbackURLScheme: String? = nil
+    ) async throws -> BTPayPalAccountNonce {
+        let payPalClient = BTPayPalClient(
+            authorization: authorization,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme
         )
+
+        return try await payPalClient.tokenize(request)
+    }
 
     // MARK: - Private Methods
 

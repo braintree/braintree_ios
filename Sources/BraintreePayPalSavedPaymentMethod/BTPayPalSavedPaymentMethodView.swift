@@ -1,7 +1,6 @@
 import BraintreeCore
 import BraintreePayPal
 import SwiftUI
-import UIKit
 
 /// A drop-in checkout component that shows the returning PayPal buyer's saved funding
 /// instrument (FI) and lets them edit it, with optional inline Pay Later messaging.
@@ -28,7 +27,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
     ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
     ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
-    ///   - request: Required. The PayPal checkout request. Set `editBillingAgreement` on it to enable the edit flow.
+    ///   - request: Required. The PayPal checkout request used for the edit tokenization.
     ///   - style: Optional. Styling overrides. Defaults to the shipped `BTPayPalSavedPaymentMethodViewStyle`.
     ///   - completion: Called with the `BTPayPalAccountNonce` (or `Error`) when the edit tokenization completes.
     public init(
@@ -75,9 +74,6 @@ public struct BTPayPalSavedPaymentMethodView: View {
                     .presentationDetents([.medium, .large])
                     .ignoresSafeArea()
             }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            viewModel.didReturnFromPayPal()
         }
         .fullScreenCover(isPresented: editLoaderBinding) {
             EditFlowLoadingView()
@@ -129,12 +125,13 @@ public struct BTPayPalSavedPaymentMethodView: View {
     @ViewBuilder private var creditRegion: some View {
         if style.showCreditMessaging {
             Group {
-                if viewModel.fiState == .loading {
-                    CreditMessageSkeleton()
-                } else if let content = viewModel.creditMessage {
+                // Keep an already-resolved message on screen while the FI refreshes after an edit.
+                if let content = viewModel.creditMessage {
                     CreditMessagingRow(style: style, content: content) {
                         viewModel.learnMoreTapped()
                     }
+                } else if viewModel.fiState == .loading {
+                    CreditMessageSkeleton()
                 }
             }
             .padding(.leading, creditLeadingInset)

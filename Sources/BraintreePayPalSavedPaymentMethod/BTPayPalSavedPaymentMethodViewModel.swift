@@ -1,5 +1,5 @@
 import BraintreeCore
-import BraintreePayPal
+@_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 import Foundation
 
 /// View model backing `BTPayPalSavedPaymentMethodView`.
@@ -74,6 +74,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     ) {
         self.amount = amount
         self.currencyCode = currencyCode
+        // The component opts into the billing-agreement edit itself; merchants never set it.
+        request.enableEditBillingAgreement()
         self.checkoutRequest = request
         self.style = style
         self.universalLink = universalLink
@@ -177,42 +179,58 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         Task { await performEdit() }
     }
 
-    /// Called when the app returns from the PayPal paysheet/app switch: dismiss the full-screen
-    /// loader and show the FI shimmer while the cosmetic refresh (inside `editFundingInstrument`)
-    /// finishes.
-    func didReturnFromPayPal() {
-        guard isEditing else { return }
-        isEditing = false
-        fiState = .loading
-    }
-
-    /// Delegates the edit + cosmetic FI refresh to the data layer. The merchant only receives
-    /// `(nonce, error)`; the refreshed `summary` updates the displayed FI, and a refresh failure
-    /// keeps the last-known FI (the edit itself still succeeded).
+    /// Runs the edit, then the cosmetic FI refresh. The full-screen loader is held until the nonce
+    /// arrives; the FI then shimmers until the refresh settles. The merchant only receives
+    /// `(nonce, error)` — a refresh failure keeps the last-known FI, since the edit itself succeeded.
     private func performEdit() async {
         guard let fetchClient else {
             isEditing = false
             return
         }
+
+        let nonce: BTPayPalAccountNonce
         do {
-            let result = try await fetchClient.editFundingInstrument(
+            nonce = try await fetchClient.editFundingInstrument(
                 request: checkoutRequest,
-                merchantAccountID: checkoutRequest.merchantAccountID
+                universalLink: universalLink,
+                fallbackURLScheme: fallbackURLScheme
             )
-            isEditing = false
-            if let summary = result.summary {
-                fiState = Self.state(from: summary)
-            } else if let prior = fiStateBeforeEdit {
-                fiState = prior
-            }
-            completion(result.nonce, nil)
         } catch {
             isEditing = false
             if let prior = fiStateBeforeEdit {
                 fiState = prior
             }
+            fiStateBeforeEdit = nil
             completion(nil, error)
+            return
         }
+
+        isEditing = false
+        completion(nonce, nil)
+
+        guard let orderID = nonce.paymentID else {
+            if let prior = fiStateBeforeEdit {
+                fiState = prior
+            }
+            fiStateBeforeEdit = nil
+            return
+        }
+
+        fiState = .loading
+
+        do {
+            let summary = try await fetchClient.fetchPaymentMethod(
+                fundingInstrumentType: .fiFromApprovedCheckout,
+                orderID: orderID,
+                merchantAccountID: checkoutRequest.merchantAccountID
+            )
+            fiState = Self.state(from: summary)
+        } catch {
+            if let prior = fiStateBeforeEdit {
+                fiState = prior
+            }
+        }
+
         fiStateBeforeEdit = nil
     }
 
