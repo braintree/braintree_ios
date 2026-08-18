@@ -87,6 +87,9 @@
 		BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */; };
 		BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */; };
+		FE1000000000000000000002 /* BraintreePayPalSavedPaymentMethod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000001 /* BraintreePayPalSavedPaymentMethod.framework */; };
+		FE1000000000000000000003 /* BraintreePayPalSavedPaymentMethod.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000001 /* BraintreePayPalSavedPaymentMethod.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FE1000000000000000000007 /* PayPalSavedPaymentMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +129,7 @@
 				BE35FCD92A1BD162008F0326 /* BraintreeLocalPayment.framework in Embed Frameworks */,
 				803D6504256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Embed Frameworks */,
 				803D6502256DAF9A00ACE692 /* BraintreePayPal.framework in Embed Frameworks */,
+				FE1000000000000000000003 /* BraintreePayPalSavedPaymentMethod.framework in Embed Frameworks */,
 				803D64F8256DAF9A00ACE692 /* BraintreeApplePay.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -214,6 +218,8 @@
 		BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationViewController.swift; sourceTree = "<group>"; };
 		BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalMessaging_UITests.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		FE1000000000000000000001 /* BraintreePayPalSavedPaymentMethod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePayPalSavedPaymentMethod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +244,7 @@
 				BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				9C36BD2926B3071B00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
+				FE1000000000000000000002 /* BraintreePayPalSavedPaymentMethod.framework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
@@ -388,6 +395,7 @@
 				08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */,
 				BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
+				FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
 				0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */,
 				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
@@ -426,6 +434,7 @@
 				803D64EE256DAF9A00ACE692 /* BraintreeDataCollector.framework */,
 				803D64EF256DAF9A00ACE692 /* BraintreePaymentFlow.framework */,
 				803D64F0256DAF9A00ACE692 /* BraintreePayPal.framework */,
+				FE1000000000000000000001 /* BraintreePayPalSavedPaymentMethod.framework */,
 				803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */,
 				803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */,
 				428D119625A3A834003D8552 /* PPRiskMagnes.xcframework */,
@@ -685,13 +694,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -722,6 +727,7 @@
 				BE994B0D2AD838A500470773 /* PaymentButtonBaseViewController.swift in Sources */,
 				62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */,
 				BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */,
+				FE1000000000000000000007 /* PayPalSavedPaymentMethodViewController.swift in Sources */,
 				BEBD52872AABA513005D6687 /* ThreeDSecureViewController.swift in Sources */,
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
 				BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */,
@@ -966,6 +972,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "Demo-Simulator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
@@ -995,6 +1002,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "Demo-Simulator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
