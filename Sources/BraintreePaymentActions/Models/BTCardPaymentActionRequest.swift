@@ -63,7 +63,7 @@ public class BTCardPaymentActionRequest: BTPaymentActionRequest {
     
     // MARK: - BTPaymentActionRequest
     
-    override func paymentMethodParameters() -> any Encodable {
+    override func paymentMethodParameters() throws -> any Encodable {
         BTCardPaymentMethodPayload(card: Card(request: self))
     }
 }

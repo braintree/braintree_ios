@@ -15,6 +15,7 @@ import BraintreeCore
     
     /// Creates a Payment Actions Client.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
+    @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(authorization: authorization)
     }
@@ -27,17 +28,17 @@ import BraintreeCore
     ///    - completion: A completion block that is invoked when the submission has completed. If it succeeds,
     ///    `status` will contain the resulting `BTPaymentActionStatus` and `error` will be `nil`; if it fails,
     ///    `error` will describe the failure.
-    @objc(submitForPaymentAction:completion:)
+    @objc(submitForPaymentActionWithRequest:completion:)
     public func submitForPaymentAction(
         _ request: BTPaymentActionRequest,
-        completion: @escaping (BTPaymentActionStatus, Error?) -> Void
+        completion: @escaping (BTPaymentActionResult?, Error?) -> Void
     ) {
         Task { @MainActor in
             do {
-                let status = try await submitForPaymentAction(request)
-                completion(status, nil)
+                let result = try await submitForPaymentAction(request)
+                completion(result, nil)
             } catch {
-                completion(.unknown, error)
+                completion(nil, error)
             }
         }
     }
@@ -48,7 +49,7 @@ import BraintreeCore
     /// - Throws: an `Error` describing the failure.
     public func submitForPaymentAction(
         _ request: BTPaymentActionRequest
-    ) async throws -> BTPaymentActionStatus {
+    ) async throws -> BTPaymentActionResult {
         try await submit(request)
     }
     
@@ -58,11 +59,11 @@ import BraintreeCore
     /// - Parameter request: any payment-method-specific request subclassing `BTPaymentActionRequest`.
     /// - Returns: the resulting `BTPaymentActionStatus`.
     /// - Throws: the underlying error from the network layer or GraphQL response.
-    func submit(_ request: BTPaymentActionRequest) async throws -> BTPaymentActionStatus {
+    func submit(_ request: BTPaymentActionRequest) async throws -> BTPaymentActionResult {
         do {
-            let body = SetPaymentActionPaymentMethodGraphQLBody(request: request)
-            let result = try await setPaymentActionPaymentMethod(body)
-            return result.status
+            let body = try SetPaymentActionPaymentMethodGraphQLBody(request: request)
+            let paymentAction = try await setPaymentActionPaymentMethod(body)
+            return result(from: paymentAction)
         } catch {
             // TODO: Replace with the exact error type in a later PR.
             throw error
@@ -76,7 +77,7 @@ import BraintreeCore
     /// - Throws: the underlying error from the network layer or GraphQL response.
     func setPaymentActionPaymentMethod<Body: BTGraphQLEncodableBody>(
         _ body: Body
-    ) async throws -> BTPaymentActionResult {
+    ) async throws -> BTPaymentAction {
         
         do {
             let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
@@ -91,10 +92,32 @@ import BraintreeCore
                 throw BTPaymentActionError.missingStatus
             }
             let status = BTPaymentActionStatus.status(from: statusString)
-            return BTPaymentActionResult(id: paymentActionID, status: status)
+            return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
             // TODO: Replace with exact error type in a later PR.
             throw error
+        }
+    }
+    
+    /// Maps a raw `BTPaymentAction` (id + status from the GraphQL response) into the semantic
+    /// `BTPaymentActionResult` the merchant acts on.
+    func result(from paymentAction: BTPaymentAction) -> BTPaymentActionResult {
+        switch paymentAction.status {
+        case .requiresPaymentMethod:
+            return BTPaymentActionResult(type: .paymentMethodRequired, id: paymentAction.id)
+        case .readyForConfirmation:
+            return BTPaymentActionResult(type: .serverActionRequired, id: paymentAction.id, serverAction: .confirm)
+        case .requiresCapture:
+            return BTPaymentActionResult(type: .serverActionRequired, id: paymentAction.id, serverAction: .capture)
+        case .requiresCustomerAction:
+            return BTPaymentActionResult(type: .customerActionRequired, id: paymentAction.id)
+        case .processing:
+            return BTPaymentActionResult(type: .processing, id: paymentAction.id)
+        case .succeeded:
+            return BTPaymentActionResult(type: .completed, id: paymentAction.id)
+        case .canceled, .expired, .unknown:
+            // TODO: Confirm with Android whether EXPIRED/UNKNOWN should map to .canceled
+            return BTPaymentActionResult(type: .canceled, id: paymentAction.id)
         }
     }
 }
