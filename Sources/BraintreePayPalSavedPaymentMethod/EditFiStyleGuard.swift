@@ -1,91 +1,114 @@
-import CoreGraphics
+import UIKit
 
-/// Platform-agnostic guardrails for `BTPayPalSavedPaymentMethodViewStyle` (styling doc §4).
+/// Resolves `BTPayPalSavedPaymentMethodViewStyle` values for rendering.
 ///
-/// Per the approved styling doc, every spacing/sizing/font-size field floors at `0`
-/// (never negative) with **no upper cap** — merchants have full discretion above the
-/// floor. Dynamic Type scaling on top of a font size is left unbounded so accessibility
-/// is preserved.
+/// Two separate jobs, in order:
+/// 1. **Default when absent** — a `nil` field means the merchant didn't set it, so the SDK default
+///    below applies. `nil` never resolves to `0`.
+/// 2. **Floor** — a merchant-supplied spacing or size is clamped to `[0, ∞)` with no upper cap, so
+///    Dynamic Type scaling stays unbounded and accessibility is preserved.
+///
+/// Text sizes additionally fall back to `componentAppearance.baseFontSize` before the SDK default.
 enum EditFiStyleGuard {
 
-    /// Gap between the logo and the label: `[0, ∞)`.
-    static func labelLeadingGap(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    /// The SDK's built-in defaults. Values for merchant-configurable fields apply when the merchant
+    /// leaves a field `nil`; the funding-instrument pill and card-icon values are fixed and are read
+    /// directly at the render site.
+    enum Defaults {
+        static let backgroundColor = UIColor.white
+        static let textColor = UIColor(white: 0.133, alpha: 1)
+
+        static let containerHorizontalPadding: CGFloat = 0
+        static let containerVerticalPadding: CGFloat = 10
+        static let containerCornerRadius: CGFloat = 0
+        static let containerBorderColor = UIColor.clear
+        static let containerBorderWidth: CGFloat = 0
+
+        static let labelFontSize: CGFloat = 20
+        static let labelLeadingGap: CGFloat = 12.73
+
+        static let fundingInstrumentTextFontSize: CGFloat = 14
+        static let editIconSize: CGFloat = 16
+        static let fundingInstrumentLeadingGap: CGFloat = 8
+        static let fundingInstrumentBackgroundColor = UIColor(
+            red: 240 / 255,
+            green: 242 / 255,
+            blue: 249 / 255,
+            alpha: 1
+        )
+        static let fundingInstrumentCornerRadius: CGFloat = 6
+        static let fundingInstrumentHorizontalPadding: CGFloat = 8
+        static let fundingInstrumentVerticalPadding: CGFloat = 4
+
+        static let cardIconCornerRadius: CGFloat = 3
+        static let cardIconBorderColor = UIColor(white: 0.8, alpha: 1)
+        static let cardIconBorderWidth: CGFloat = 0.71
+
+        static let creditMessageFontSize: CGFloat = 16
     }
 
-    /// Gap between the label and FI clusters: `[0, ∞)`.
-    static func fiClusterLeadingGap(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    // MARK: - Colors
+
+    static func backgroundColor(_ value: UIColor?) -> UIColor {
+        value ?? Defaults.backgroundColor
     }
 
-    /// Label text size: `[0, ∞)`.
-    static func labelFontSize(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func textColor(_ value: UIColor?) -> UIColor {
+        value ?? Defaults.textColor
     }
 
-    /// FI text size: `[0, ∞)`.
-    static func fiTextFontSize(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func containerBorderColor(_ value: UIColor?) -> UIColor {
+        value ?? Defaults.containerBorderColor
     }
 
-    /// Edit-icon size: `[0, ∞)`.
-    static func editIconSize(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    // MARK: - Text sizes
+
+    static func labelFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
+        nonNegative(value ?? base ?? Defaults.labelFontSize)
     }
 
-    /// FI pill corner radius: `[0, ∞)`.
-    static func fiClusterCornerRadius(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func fundingInstrumentTextFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
+        nonNegative(value ?? base ?? Defaults.fundingInstrumentTextFontSize)
     }
 
-    /// FI pill horizontal padding: `[0, ∞)`.
-    static func fiClusterHorizontalPadding(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func creditMessageFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
+        nonNegative(value ?? base ?? Defaults.creditMessageFontSize)
     }
 
-    /// FI pill vertical padding: `[0, ∞)`.
-    static func fiClusterVerticalPadding(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    // MARK: - Spacing and sizing
+
+    static func labelLeadingGap(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.labelLeadingGap)
     }
 
-    /// FI card-art corner radius: `[0, ∞)`.
-    static func cardIconCornerRadius(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func fundingInstrumentLeadingGap(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.fundingInstrumentLeadingGap)
     }
 
-    /// FI card-art border width: `[0, ∞)`.
-    static func cardIconBorderWidth(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func editIconSize(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.editIconSize)
     }
 
-    /// Logo width: `[0, ∞)`.
+    /// Logo width has no SDK-default constant here: callers fall back to the brand cluster's own
+    /// intrinsic size when the merchant leaves it unset.
     static func logoWidth(_ value: CGFloat) -> CGFloat {
         nonNegative(value)
     }
 
-    /// Credit-messaging text size: `[0, ∞)`.
-    static func creditMessageFontSize(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func horizontalPadding(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.containerHorizontalPadding)
     }
 
-    /// Container horizontal padding: `[0, ∞)`.
-    static func horizontalPadding(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func verticalPadding(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.containerVerticalPadding)
     }
 
-    /// Container vertical padding: `[0, ∞)`.
-    static func verticalPadding(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func cornerRadius(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.containerCornerRadius)
     }
 
-    /// Container corner radius: `[0, ∞)`.
-    static func cornerRadius(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
-    }
-
-    /// Container border width: `[0, ∞)`.
-    static func borderWidth(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
+    static func borderWidth(_ value: CGFloat?) -> CGFloat {
+        nonNegative(value ?? Defaults.containerBorderWidth)
     }
 
     // MARK: - Private Helpers

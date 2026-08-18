@@ -32,22 +32,25 @@ struct EditFIRow: View {
     // MARK: - Derived style values (guarded)
 
     private var textColor: Color {
-        Color(uiColor: style.theme.textColorBase ?? UIColor(white: 0.133, alpha: 1))
+        Color(uiColor: EditFiStyleGuard.textColor(style.componentAppearance?.textColor))
     }
 
     private var fiFont: Font {
         BTPayPalSavedPaymentMethodFont.font(
-            name: style.theme.fontName,
-            size: EditFiStyleGuard.fiTextFontSize(style.container.fiCluster.textFontSize)
+            name: style.componentAppearance?.fontName,
+            size: EditFiStyleGuard.fundingInstrumentTextFontSize(
+                style.container?.fundingInstrument?.textFontSize,
+                base: style.componentAppearance?.baseFontSize
+            )
         )
     }
 
     private var editIconSide: CGFloat {
-        EditFiStyleGuard.editIconSize(style.container.fiCluster.editIconSize)
+        EditFiStyleGuard.editIconSize(style.container?.fundingInstrument?.editIconSize)
     }
 
-    private var fiClusterGap: CGFloat {
-        EditFiStyleGuard.fiClusterLeadingGap(style.container.fiCluster.leadingGap)
+    private var fundingInstrumentGap: CGFloat {
+        EditFiStyleGuard.fundingInstrumentLeadingGap(style.container?.fundingInstrument?.leadingGap)
     }
 
     // MARK: - Body
@@ -71,7 +74,7 @@ struct EditFIRow: View {
                         editButton
                     }
                 }
-                .padding(.leading, fiClusterGap)
+                .padding(.leading, fundingInstrumentGap)
             case .displayOnly(let email, let isEditable):
                 fiPill {
                     HStack(spacing: viewEditSpacing) {
@@ -85,7 +88,7 @@ struct EditFIRow: View {
                         }
                     }
                 }
-                .padding(.leading, fiClusterGap)
+                .padding(.leading, fundingInstrumentGap)
             case .brandOnly:
                 EmptyView()
             }
@@ -101,19 +104,18 @@ struct EditFIRow: View {
         PayPalBrandCluster(style: style)
     }
 
-    /// The rounded pill wrapping the FI content + edit pencil.
+    /// The rounded pill wrapping the FI content + edit pencil. Fixed to the Figma values — not
+    /// merchant-configurable.
     private func fiPill<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
         content()
-            .padding(.horizontal, EditFiStyleGuard.fiClusterHorizontalPadding(style.container.fiCluster.horizontalPadding))
-            .padding(.vertical, EditFiStyleGuard.fiClusterVerticalPadding(style.container.fiCluster.verticalPadding))
+            .padding(.horizontal, EditFiStyleGuard.Defaults.fundingInstrumentHorizontalPadding)
+            .padding(.vertical, EditFiStyleGuard.Defaults.fundingInstrumentVerticalPadding)
             .background(pillBackground)
     }
 
-    @ViewBuilder private var pillBackground: some View {
-        if let color = style.container.fiCluster.backgroundColor {
-            RoundedRectangle(cornerRadius: EditFiStyleGuard.fiClusterCornerRadius(style.container.fiCluster.cornerRadius))
-                .fill(Color(uiColor: color))
-        }
+    private var pillBackground: some View {
+        RoundedRectangle(cornerRadius: EditFiStyleGuard.Defaults.fundingInstrumentCornerRadius)
+            .fill(Color(uiColor: EditFiStyleGuard.Defaults.fundingInstrumentBackgroundColor))
     }
 
     @ViewBuilder private func fiIcon(for summary: BTPayPalSavedPaymentMethodFISummary) -> some View {
@@ -133,30 +135,21 @@ struct EditFIRow: View {
             }
         }
         .frame(width: cardArtWidth, height: cardArtHeight)
-        .background(cardIconBackground)
         .clipShape(RoundedRectangle(cornerRadius: cardIconRadius))
         .overlay(cardIconBorder)
         .accessibilityHidden(true)
     }
 
     private var cardIconRadius: CGFloat {
-        EditFiStyleGuard.cardIconCornerRadius(style.container.fiCluster.cardIconCornerRadius)
+        EditFiStyleGuard.Defaults.cardIconCornerRadius
     }
 
-    @ViewBuilder private var cardIconBorder: some View {
-        if let color = style.container.fiCluster.cardIconBorderColor {
-            RoundedRectangle(cornerRadius: cardIconRadius)
-                .strokeBorder(
-                    Color(uiColor: color),
-                    lineWidth: EditFiStyleGuard.cardIconBorderWidth(style.container.fiCluster.cardIconBorderWidth)
-                )
-        }
-    }
-
-    @ViewBuilder private var cardIconBackground: some View {
-        if let color = style.container.fiCluster.cardIconBackgroundColor {
-            RoundedRectangle(cornerRadius: cardIconRadius).fill(Color(uiColor: color))
-        }
+    private var cardIconBorder: some View {
+        RoundedRectangle(cornerRadius: cardIconRadius)
+            .strokeBorder(
+                Color(uiColor: EditFiStyleGuard.Defaults.cardIconBorderColor),
+                lineWidth: EditFiStyleGuard.Defaults.cardIconBorderWidth
+            )
     }
 
     private func fallbackGlyph(for summary: BTPayPalSavedPaymentMethodFISummary) -> some View {
@@ -198,13 +191,16 @@ struct PayPalBrandCluster: View {
     let style: BTPayPalSavedPaymentMethodViewStyle
 
     private var textColor: Color {
-        Color(uiColor: style.theme.textColorBase ?? UIColor(white: 0.133, alpha: 1))
+        Color(uiColor: EditFiStyleGuard.textColor(style.componentAppearance?.textColor))
     }
 
     private var labelFont: Font {
         BTPayPalSavedPaymentMethodFont.font(
-            name: style.theme.fontName,
-            size: EditFiStyleGuard.labelFontSize(style.container.label.fontSize),
+            name: style.componentAppearance?.fontName,
+            size: EditFiStyleGuard.labelFontSize(
+                style.container?.label?.fontSize,
+                base: style.componentAppearance?.baseFontSize
+            ),
             weight: .bold
         )
     }
@@ -214,22 +210,22 @@ struct PayPalBrandCluster: View {
     static let defaultLogoSide: CGFloat = 48
 
     private var logoSide: CGFloat {
-        if let width = style.container.logo.width {
+        if let width = style.container?.logo?.width {
             return EditFiStyleGuard.logoWidth(width)
         }
         return Self.defaultLogoSide
     }
 
     var body: some View {
-        HStack(spacing: EditFiStyleGuard.labelLeadingGap(style.container.label.leadingGap)) {
-            if style.showLogo {
+        HStack(spacing: EditFiStyleGuard.labelLeadingGap(style.container?.label?.leadingGap)) {
+            if style.showPayPalLogo {
                 Image("PayPalBadge", bundle: .payPalSavedPaymentMethod)
                     .resizable()
                     .scaledToFit()
                     .frame(width: logoSide, height: logoSide)
                     .accessibilityHidden(true)
             }
-            if style.showLabel {
+            if style.showPayPalLabel {
                 Text("PayPal")
                     .font(labelFont)
                     .foregroundColor(textColor)

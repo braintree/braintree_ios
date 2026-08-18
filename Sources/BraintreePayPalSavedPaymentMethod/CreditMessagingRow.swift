@@ -12,19 +12,22 @@ struct CreditMessagingRow: View {
     let onLearnMore: () -> Void
 
     private var textColor: Color {
-        Color(uiColor: style.theme.textColorBase ?? UIColor(white: 0.133, alpha: 1))
+        Color(uiColor: EditFiStyleGuard.textColor(style.componentAppearance?.textColor))
     }
 
     /// Accent for "Learn more". When no `linkColor` is set, the link is distinguished by
     /// bold + underline in the base text color instead (styling doc §3.1).
     private var learnMoreColor: Color? {
-        style.theme.linkColor.map { Color(uiColor: $0) }
+        style.container?.creditMessaging?.linkColor.map { Color(uiColor: $0) }
     }
 
     private var font: Font {
         BTPayPalSavedPaymentMethodFont.font(
-            name: style.theme.fontName,
-            size: EditFiStyleGuard.creditMessageFontSize(style.container.creditMessaging.fontSize)
+            name: style.componentAppearance?.fontName,
+            size: EditFiStyleGuard.creditMessageFontSize(
+                style.container?.creditMessaging?.fontSize,
+                base: style.componentAppearance?.baseFontSize
+            )
         )
     }
 
@@ -66,6 +69,14 @@ struct CreditMessageContent: Equatable {
 
     /// Whether `learnMoreURL` may load in an embedded web view rather than an external browser.
     let isEmbeddable: Bool
+
+    /// Seeds content directly. Used by SwiftUI previews and tests, which have no network response.
+    init(message: String, learnMoreText: String?, learnMoreURL: URL?, isEmbeddable: Bool) {
+        self.message = message
+        self.learnMoreText = learnMoreText
+        self.learnMoreURL = learnMoreURL
+        self.isEmbeddable = isEmbeddable
+    }
 
     /// Composes the content, or returns `nil` when there is no main copy to display (hide the row).
     init?(result: BTPayPalCreditMessagingResult) {

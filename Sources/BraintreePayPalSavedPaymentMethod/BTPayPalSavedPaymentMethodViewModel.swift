@@ -31,7 +31,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     @Published private(set) var fiState: FIState
     @Published var isLanderPresented = false
 
-    /// Whether the full-screen "Sending you to PayPal" loader is showing (create-payment-resource in flight).
+    /// Whether the full-screen loader is showing (create-payment-resource in flight).
     @Published private(set) var isEditing = false
 
     /// The composed credit (Pay Later) message to render, or `nil` to hide the row.
@@ -91,7 +91,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     init(
         previewState: FIState,
         request: BTPayPalCheckoutRequest,
-        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
+        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle(),
+        showCreditMessage: Bool = false
     ) {
         self.amount = "0"
         self.currencyCode = "USD"
@@ -104,6 +105,18 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         self.authorization = ""
         self.fetchClient = nil
         self.fiState = previewState
+
+        if showCreditMessage {
+            let sample = CreditMessageContent(
+                message: style.container?.creditMessaging?.messageText
+                    ?? BTPayPalSavedPaymentMethodViewStyle.CreditMessagingStyle().messageText,
+                learnMoreText: BTPayPalSavedPaymentMethodViewStyle.CreditMessagingStyle().learnMoreText,
+                learnMoreURL: nil,
+                isEmbeddable: false
+            )
+            self.creditMessage = sample
+            self.learnMoreURL = sample.learnMoreURL
+        }
     }
 
     // MARK: - Internal Methods
@@ -112,7 +125,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.savedPayPalPaymentMethodPresented)
         Task { await loadStickyFI() }
 
-        if style.showCreditMessaging {
+        if style.showPayPalCreditMessaging {
             apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.creditMessagingPresented)
             Task { await loadCreditMessaging() }
         }

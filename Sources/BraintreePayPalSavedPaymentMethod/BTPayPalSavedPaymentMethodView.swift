@@ -93,16 +93,16 @@ public struct BTPayPalSavedPaymentMethodView: View {
             creditRegion
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: style.container.height, alignment: .center)
-        .padding(.horizontal, EditFiStyleGuard.horizontalPadding(style.container.horizontalPadding))
-        .padding(.vertical, EditFiStyleGuard.verticalPadding(style.container.verticalPadding))
-        .background(Color(uiColor: style.theme.backgroundColor ?? .clear))
-        .clipShape(RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container.cornerRadius)))
+        .frame(height: style.container?.height, alignment: .center)
+        .padding(.horizontal, EditFiStyleGuard.horizontalPadding(style.container?.horizontalPadding))
+        .padding(.vertical, EditFiStyleGuard.verticalPadding(style.container?.verticalPadding))
+        .background(Color(uiColor: EditFiStyleGuard.backgroundColor(style.componentAppearance?.backgroundColor)))
+        .clipShape(RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container?.cornerRadius)))
         .overlay(
-            RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container.cornerRadius))
+            RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container?.cornerRadius))
                 .stroke(
-                    Color(uiColor: style.container.borderColor ?? .clear),
-                    lineWidth: EditFiStyleGuard.borderWidth(style.container.borderWidth)
+                    Color(uiColor: EditFiStyleGuard.containerBorderColor(style.container?.borderColor)),
+                    lineWidth: EditFiStyleGuard.borderWidth(style.container?.borderWidth)
                 )
         )
     }
@@ -123,7 +123,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     }
 
     @ViewBuilder private var creditRegion: some View {
-        if style.showCreditMessaging {
+        if style.showPayPalCreditMessaging {
             Group {
                 // Keep an already-resolved message on screen while the FI refreshes after an edit.
                 if let content = viewModel.creditMessage {
@@ -141,9 +141,9 @@ public struct BTPayPalSavedPaymentMethodView: View {
     /// Leading inset that aligns the credit-messaging line with the "PayPal" label (i.e. past
     /// the logo). Zero when the logo is hidden and the label already starts at the leading edge.
     private var creditLeadingInset: CGFloat {
-        guard style.showLogo else { return 0 }
-        let logoSide = style.container.logo.width.map { EditFiStyleGuard.logoWidth($0) } ?? PayPalBrandCluster.defaultLogoSide
-        return logoSide + EditFiStyleGuard.labelLeadingGap(style.container.label.leadingGap)
+        guard style.showPayPalLogo else { return 0 }
+        let logoSide = style.container?.logo?.width.map { EditFiStyleGuard.logoWidth($0) } ?? PayPalBrandCluster.defaultLogoSide
+        return logoSide + EditFiStyleGuard.labelLeadingGap(style.container?.label?.leadingGap)
     }
 }
 
@@ -157,18 +157,13 @@ private struct EditFlowLoadingView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.6).ignoresSafeArea()
-            VStack(spacing: 16) {
-                Image("LoadingSpinner", bundle: .payPalSavedPaymentMethod)
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 44, height: 44)
-                    .foregroundColor(.white)
-                    .rotationEffect(.degrees(rotation))
-                Text("Sending you to PayPal")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.white)
-            }
+            Image("LoadingSpinner", bundle: .payPalSavedPaymentMethod)
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 44, height: 44)
+                .foregroundColor(.white)
+                .rotationEffect(.degrees(rotation))
         }
         .onAppear {
             withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
@@ -231,7 +226,12 @@ extension BTPayPalSavedPaymentMethodView {
         case .hidden:
             fiState = .hidden
         }
-        self.init(viewModel: BTPayPalSavedPaymentMethodViewModel(previewState: fiState, request: request, style: style))
+        self.init(viewModel: BTPayPalSavedPaymentMethodViewModel(
+            previewState: fiState,
+            request: request,
+            style: style,
+            showCreditMessage: showCreditMessage
+        ))
     }
 }
 
@@ -257,10 +257,12 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
 
     private static var borderedStyle: BTPayPalSavedPaymentMethodViewStyle {
         var style = BTPayPalSavedPaymentMethodViewStyle()
-        style.container.cornerRadius = 8
-        style.container.borderColor = .systemGray4
-        style.container.borderWidth = 1
-        style.container.horizontalPadding = 12
+        var container = BTPayPalSavedPaymentMethodViewStyle.ContainerStyle()
+        container.cornerRadius = 8
+        container.borderColor = .systemGray4
+        container.borderWidth = 1
+        container.horizontalPadding = 12
+        style.container = container
         return style
     }
 

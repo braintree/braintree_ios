@@ -2,147 +2,148 @@ import UIKit
 
 /// The styling contract for `BTPayPalSavedPaymentMethodView`.
 ///
-/// Modeled as the view hierarchy itself (mobile-native, matching the Android
-/// `SavedPaymentMethodViewStyle` tree): top-level visibility toggles, a `theme` group for
-/// global type & color, and a `container` group that owns the box shape plus each
-/// positioned sub-view (`logo`, `label`, `fiCluster`, `creditMessaging`).
+/// Every field is optional: `nil` means "not set by the merchant", so the SDK applies its own
+/// default for that element. `nil` never means zero — the defaults live in `EditFiStyleGuard`,
+/// which also floors merchant-supplied spacing and sizes at `0`.
 ///
-/// Field set, defaults, and guards match Android; only the types differ (`dp`/`sp` →
-/// `CGFloat` points, with text sizes rendered through Dynamic Type; `@ColorInt` →
-/// `UIColor`; `@FontRes` → `fontName` PostScript string). Merchant-supplied values are
-/// clamped by `EditFiStyleGuard` at render time.
+/// Text sizes resolve in three tiers: the element-specific size, then
+/// `componentAppearance.baseFontSize`, then the SDK default for that element.
 public struct BTPayPalSavedPaymentMethodViewStyle {
 
     /// Show the PayPal brand logo. Default: `true`.
-    public var showLogo: Bool = true
+    public var showPayPalLogo: Bool = true
 
     /// Show the "PayPal" text label. Default: `true`.
-    public var showLabel: Bool = true
+    public var showPayPalLabel: Bool = true
 
-    /// Show the inline credit (Pay Later) messaging line. Default: `true`.
-    public var showCreditMessaging: Bool = true
+    /// Show the inline PayPal credit (Pay Later) messaging line. Default: `true`.
+    public var showPayPalCreditMessaging: Bool = true
 
-    public var theme: Theme = Theme()
-    public var container: Container = Container()
+    /// Global type and color for the component. `nil` → SDK defaults.
+    public var componentAppearance: ComponentAppearance?
+
+    /// The outer container box and its positioned sub-views. `nil` → SDK defaults.
+    public var container: ContainerStyle?
 
     public init() {}
 
     // MARK: - Nested style types
 
-    /// Global type & color. Applies to the label, FI text, and credit messaging.
-    public struct Theme {
+    /// Global type and color. Applies to the label, funding-instrument text, and credit messaging.
+    public struct ComponentAppearance {
 
-        /// Component background color. Default: white.
-        public var backgroundColor: UIColor? = .white
+        /// Component background color. `nil` → SDK default (white).
+        public var backgroundColor: UIColor?
 
-        /// Base text color for label, FI text, and credit messaging. Default: ≈ `#222222`.
-        public var textColorBase: UIColor? = UIColor(white: 0.133, alpha: 1)
+        /// Base text color for the label, funding-instrument text, and credit messaging.
+        /// `nil` → SDK default (≈ `#222222`).
+        public var textColor: UIColor?
 
-        /// Accent color for the credit-messaging "Learn more" link. When `nil`, the link is
-        /// distinguished by bold + underline in the base text color instead.
-        public var linkColor: UIColor?
+        /// Fallback text size for every element that doesn't set its own. `nil` → each element
+        /// uses its own SDK default.
+        public var baseFontSize: CGFloat?
 
-        /// Registered custom-font PostScript name. `nil` → system font. Mirrors Android `@FontRes`.
+        /// Registered custom-font PostScript name. `nil` → system font.
         public var fontName: String?
 
-        public init() {}
+        public init(
+            backgroundColor: UIColor? = nil,
+            textColor: UIColor? = nil,
+            baseFontSize: CGFloat? = nil,
+            fontName: String? = nil
+        ) {
+            self.backgroundColor = backgroundColor
+            self.textColor = textColor
+            self.baseFontSize = baseFontSize
+            self.fontName = fontName
+        }
     }
 
     /// The outer container box plus its positioned sub-views.
-    public struct Container {
+    public struct ContainerStyle {
 
-        /// Fixed height. `nil` → intrinsic / wrap content (default).
+        /// Fixed height. `nil` → intrinsic / wrap content.
         public var height: CGFloat?
 
-        /// Leading/trailing padding. Default: 0.
-        public var horizontalPadding: CGFloat = 0
+        /// Leading/trailing padding. `nil` → SDK default.
+        public var horizontalPadding: CGFloat?
 
-        /// Top/bottom padding. Default: 10.
-        public var verticalPadding: CGFloat = 10
+        /// Top/bottom padding. `nil` → SDK default.
+        public var verticalPadding: CGFloat?
 
-        /// Container corner radius. Default: 0.
-        public var cornerRadius: CGFloat = 0
+        /// Container corner radius. `nil` → SDK default.
+        public var cornerRadius: CGFloat?
 
-        /// Container border color. Default: transparent (no visible border).
-        public var borderColor: UIColor? = .clear
+        /// Container border color. `nil` → SDK default (transparent, so no visible border).
+        public var borderColor: UIColor?
 
-        /// Container border width. Default: 0.
-        public var borderWidth: CGFloat = 0
+        /// Container border width. `nil` → SDK default.
+        public var borderWidth: CGFloat?
 
-        public var logo: Logo = Logo()
-        public var label: Label = Label()
-        public var fiCluster: FiCluster = FiCluster()
-        public var creditMessaging: CreditMessaging = CreditMessaging()
+        /// The PayPal brand logo. `nil` → SDK defaults.
+        public var logo: PayPalLogoStyle?
+
+        /// The "PayPal" text label. `nil` → SDK defaults.
+        public var label: PayPalLabelStyle?
+
+        /// The funding-instrument cluster. `nil` → SDK defaults.
+        public var fundingInstrument: FundingInstrumentStyle?
+
+        /// The inline credit (Pay Later) messaging line. `nil` → SDK defaults.
+        public var creditMessaging: CreditMessagingStyle?
 
         public init() {}
     }
 
     /// The PayPal brand logo.
-    public struct Logo {
+    public struct PayPalLogoStyle {
 
-        /// Side of the square (1:1) logo container. `nil` → 48×48 default. The 48×30 logo artwork
-        /// scales to fit inside, keeping its aspect ratio; growing this value grows both sides equally.
+        /// Side of the square (1:1) logo container. `nil` → SDK default. The logo artwork scales to
+        /// fit inside, keeping its aspect ratio; growing this value grows both sides equally.
         public var width: CGFloat?
 
         public init() {}
     }
 
     /// The "PayPal" text label.
-    public struct Label {
+    public struct PayPalLabelStyle {
 
-        /// Label text size. Default: 20 pt · Dynamic Type (floor 0).
-        public var fontSize: CGFloat = 20
+        /// Label text size. `nil` → `baseFontSize`, then the SDK default.
+        public var fontSize: CGFloat?
 
-        /// Gap between the logo and the label. Default: 12.73 (floor 0).
-        public var leadingGap: CGFloat = 12.73
+        /// Gap between the logo and the label. `nil` → SDK default.
+        public var leadingGap: CGFloat?
 
         public init() {}
     }
 
     /// The funding-instrument cluster: card art + last digits + edit pencil, inside a pill.
-    public struct FiCluster {
+    ///
+    /// The pill fill/shape/padding and the card-icon chrome are fixed to their Figma values and are
+    /// not merchant-configurable.
+    public struct FundingInstrumentStyle {
 
-        /// FI text size. Default: 14 pt · Dynamic Type (floor 0).
-        public var textFontSize: CGFloat = 14
+        /// Funding-instrument text size. `nil` → `baseFontSize`, then the SDK default.
+        public var textFontSize: CGFloat?
 
-        /// Edit (pencil) affordance size. Default: 16 pt (floor 0).
-        public var editIconSize: CGFloat = 16
+        /// Edit (pencil) affordance size. `nil` → SDK default.
+        public var editIconSize: CGFloat?
 
-        /// Gap between the label cluster and the FI cluster. Default: 8 (floor 0).
-        public var leadingGap: CGFloat = 8
-
-        /// Background color of the FI pill. `nil` → no pill. Default: `#F0F2F9`.
-        public var backgroundColor: UIColor? = UIColor(red: 240 / 255, green: 242 / 255, blue: 249 / 255, alpha: 1)
-
-        /// FI pill corner radius. Default: 6 (floor 0).
-        public var cornerRadius: CGFloat = 6
-
-        /// FI pill horizontal (leading/trailing) padding. Default: 8 (floor 0).
-        public var horizontalPadding: CGFloat = 8
-
-        /// FI pill vertical (top/bottom) padding. Default: 4 (floor 0).
-        public var verticalPadding: CGFloat = 4
-
-        /// Optional background color behind the FI card art icon. `nil` → none.
-        public var cardIconBackgroundColor: UIColor?
-
-        /// Corner radius for the FI card art icon. Default: 3 (floor 0).
-        public var cardIconCornerRadius: CGFloat = 3
-
-        /// Border color for the FI card art icon. `nil` → no border. Default: `#CCCCCC`.
-        public var cardIconBorderColor: UIColor? = UIColor(white: 0.8, alpha: 1)
-
-        /// Border width for the FI card art icon. Default: 0.71 pt hairline (floor 0).
-        public var cardIconBorderWidth: CGFloat = 0.71
+        /// Gap between the label cluster and the funding-instrument cluster. `nil` → SDK default.
+        public var leadingGap: CGFloat?
 
         public init() {}
     }
 
     /// The inline credit (Pay Later) messaging line.
-    public struct CreditMessaging {
+    public struct CreditMessagingStyle {
 
-        /// Messaging text size. Default: 16 pt · Dynamic Type (floor 0).
-        public var fontSize: CGFloat = 16
+        /// Messaging text size. `nil` → `baseFontSize`, then the SDK default.
+        public var fontSize: CGFloat?
+
+        /// Accent color for the "Learn more" link. `nil` → the link is distinguished by bold +
+        /// underline in the base text color instead.
+        public var linkColor: UIColor?
 
         /// Internal placeholder copy for testing — not part of the public styling API. Replaced by
         /// the fetched offer copy when the messaging API is wired in.

@@ -61,7 +61,7 @@ struct BTPayPalSavedPaymentMethodSkeletonRow: View {
     let style: BTPayPalSavedPaymentMethodViewStyle
 
     var body: some View {
-        HStack(spacing: EditFiStyleGuard.fiClusterLeadingGap(style.container.fiCluster.leadingGap)) {
+        HStack(spacing: EditFiStyleGuard.fundingInstrumentLeadingGap(style.container?.fundingInstrument?.leadingGap)) {
             PayPalBrandCluster(style: style)
             ShimmerBar(height: 16, cornerRadius: 4, trailingGap: 40)
         }
