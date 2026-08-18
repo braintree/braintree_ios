@@ -121,8 +121,7 @@ import BraintreeCore
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool = false,
         universalLink: URL? = nil,
-        fallbackURLScheme: String? = nil,
-        paymentMethodIDJWT: String? = nil
+        fallbackURLScheme: String? = nil
     ) -> Encodable {
         PayPalVaultPOSTBody(
             payPalRequest: self,

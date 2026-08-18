@@ -462,13 +462,24 @@ import BraintreeDataCollector
             throw BTPayPalError.disabled
         }
 
-        let parameters = request.encodedPostBodyWith(
-            configuration: configuration,
-            isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
-            universalLink: self.universalLink,
-            fallbackURLScheme: self.fallbackURLScheme,
-            paymentMethodIDJWT: (self.apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT
-        )
+        let parameters: Encodable
+
+        if let checkoutRequest = request as? BTPayPalCheckoutRequest {
+            parameters = checkoutRequest.encodedPostBodyWith(
+                configuration: configuration,
+                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+                universalLink: self.universalLink,
+                fallbackURLScheme: self.fallbackURLScheme,
+                paymentMethodIDJWT: (self.apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT
+            )
+        } else {
+            parameters = request.encodedPostBodyWith(
+                configuration: configuration,
+                isPayPalAppInstalled: self.application.isPayPalAppInstalled(),
+                universalLink: self.universalLink,
+                fallbackURLScheme: self.fallbackURLScheme
+            )
+        }
 
         do {
             let (body, _) = try await self.apiClient.post(request.hermesPath, parameters: parameters)

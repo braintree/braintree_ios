@@ -3,13 +3,6 @@ import Foundation
 /// An authorization string used to initialize the Braintree SDK
 class BTClientToken: ClientAuthorization, ClientTokenAuthorizationProviding {
 
-    // MARK: - Constants
-
-    private enum JSONKeys {
-        /// The gateway returns this key in camelCase, which differs from the `paymentMethodIDJWT` property name.
-        static let paymentMethodIDJWT = "paymentMethodIdJwt"
-    }
-
     // MARK: - Internal Properties
 
     /// The client token as a BTJSON object
@@ -48,7 +41,7 @@ class BTClientToken: ClientAuthorization, ClientTokenAuthorizationProviding {
         self.bearer = authorizationFingerprint
         self.configURL = configURL
         self.originalValue = clientToken
-        self.paymentMethodIDJWT = json[JSONKeys.paymentMethodIDJWT].asString()
+        self.paymentMethodIDJWT = json["paymentMethodIdJwt"].asString()
     }
     
     // MARK: - Internal helper functions

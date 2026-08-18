@@ -216,8 +216,24 @@ import BraintreeCore
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool = false,
         universalLink: URL? = nil,
+        fallbackURLScheme: String? = nil
+    ) -> Encodable {
+        encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: isPayPalAppInstalled,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme,
+            paymentMethodIDJWT: nil
+        )
+    }
+
+    /// The Edit FI flow is checkout-only, so the client token's `paymentMethodIdJwt` is passed here rather than on `BTPayPalRequest`.
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil,
         fallbackURLScheme: String? = nil,
-        paymentMethodIDJWT: String? = nil
+        paymentMethodIDJWT: String?
     ) -> Encodable {
         PayPalCheckoutPOSTBody(
             payPalRequest: self,
