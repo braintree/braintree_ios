@@ -92,7 +92,6 @@ import BraintreeCore
         amount: String,
         enablePayPalAppSwitch: Bool,
         userAuthenticationEmail: String? = nil,
-        editBillingAgreement: Bool = false,
         intent: BTPayPalRequestIntent = .authorize,
         userAction: BTPayPalRequestUserAction = .none,
         offerPayLater: Bool = false,
@@ -108,7 +107,6 @@ import BraintreeCore
             offerPayLater: offerPayLater,
             contactPreference: contactPreference,
             currencyCode: currencyCode,
-            editBillingAgreement: editBillingAgreement,
             enablePayPalAppSwitch: enablePayPalAppSwitch,
             requestBillingAgreement: requestBillingAgreement,
             userAuthenticationEmail: userAuthenticationEmail,
@@ -162,7 +160,6 @@ import BraintreeCore
         contactPreference: BTContactPreference = .none,
         currencyCode: String? = nil,
         displayName: String? = nil,
-        editBillingAgreement: Bool = false,
         enablePayPalAppSwitch: Bool = false,
         isShippingAddressEditable: Bool = false,
         isShippingAddressRequired: Bool = false,
@@ -195,7 +192,6 @@ import BraintreeCore
         self.contactPreference = contactPreference
         self.currencyCode = currencyCode
         self.displayName = displayName
-        self.editBillingAgreement = editBillingAgreement
         self.enablePayPalAppSwitch = enablePayPalAppSwitch
         self.isShippingAddressEditable = isShippingAddressEditable
         self.isShippingAddressRequired = isShippingAddressRequired
@@ -231,5 +227,18 @@ import BraintreeCore
             fallbackURLScheme: fallbackURLScheme,
             paymentMethodIDJWT: paymentMethodIDJWT
         )
+    }
+}
+
+// MARK: - BraintreePayPalSavedPaymentMethod SPI
+
+extension BTPayPalCheckoutRequest {
+
+    /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    @_documentation(visibility: private)
+    @_spi(BraintreePayPalSavedPaymentMethod)
+    @nonobjc
+    public func enableEditBillingAgreement() {
+        editBillingAgreement = true
     }
 }

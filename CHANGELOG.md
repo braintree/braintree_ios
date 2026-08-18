@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Add `editBillingAgreement` to `BTPayPalCheckoutRequest` to support the PayPal Edit FI flow
+  * Send `edit_billing_agreement_jwt` on `create_payment_resource` for the PayPal Edit FI flow, sourced from the client token
 
 ## 7.9.0 (2026-07-21)
 * BraintreeUIComponents

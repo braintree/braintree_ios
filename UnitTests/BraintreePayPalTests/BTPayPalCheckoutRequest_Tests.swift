@@ -245,7 +245,8 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenEditBillingAgreementTrueAndJWTPresent_includesEditBillingAgreementJWT() {
-        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = true
 
         guard let parameters = try? request.encodedPostBodyWith(
             configuration: configuration,
@@ -259,7 +260,8 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenEditBillingAgreementFalse_omitsEditBillingAgreementJWT() {
-        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: false)
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = false
 
         guard let parameters = try? request.encodedPostBodyWith(
             configuration: configuration,
@@ -274,7 +276,8 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
     }
 
     func testParametersWithConfiguration_whenEditBillingAgreementTrueButJWTNil_omitsEditBillingAgreementJWT() {
-        let request = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = true
 
         guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
             XCTFail()

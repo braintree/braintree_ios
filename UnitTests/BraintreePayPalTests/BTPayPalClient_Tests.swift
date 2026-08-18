@@ -104,7 +104,8 @@ class BTPayPalClient_Tests: XCTestCase {
         ])
         payPalClient.apiClient = mockAPIClientWithJWT
 
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1", editBillingAgreement: true)
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+        checkoutRequest.editBillingAgreement = true
 
         let expectation = expectation(description: "Tokenize started")
 
