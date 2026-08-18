@@ -111,4 +111,10 @@ Pod::Spec.new do |s|
     }
   end
 
+  s.subspec "PaymentActions" do |s|
+    s.source_files = "Sources/BraintreePaymentActions/**/*.swift"
+    s.dependency "Braintree/Core"
+    s.resource_bundle = { "BraintreePaymentActions_PrivacyInfo" => "Sources/BraintreePaymentActions/PrivacyInfo.xcprivacy" }
+  end
+
 end

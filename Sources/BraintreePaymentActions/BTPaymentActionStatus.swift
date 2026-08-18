@@ -1,6 +1,6 @@
 import Foundation
 
-/// The lifecycle status of a Payment Action. 
+/// The lifecycle status of a Payment Action.
 @objc public enum BTPaymentActionStatus: Int {
     
     /// The Payment Action has been created but does not yet have a payment method selected.
@@ -14,6 +14,12 @@ import Foundation
     
     /// The payment method has been authorized but funds have not yet been captured.
     case requiresCapture
+    
+    /// The Payment Action requires the customer to complete an additional action (e.g. 3D Secure challenge) before it can proceed.
+    case requiresCustomerAction
+    
+    /// The Payment Action is being processed by the server and has not yet reached a terminal or actionable state.
+    case processing
     
     /// The Payment Action was canceled and can no longer be used. The merchant server must create a new Payment Action to retry.
     case canceled
@@ -30,6 +36,8 @@ import Foundation
         case .readyForConfirmation: return "READY_FOR_CONFIRMATION"
         case .succeeded: return "SUCCEEDED"
         case .requiresCapture: return "REQUIRES_CAPTURE"
+        case .requiresCustomerAction: return "REQUIRES_CUSTOMER_ACTION"
+        case .processing: return "PROCESSING"
         case .canceled: return "CANCELED"
         case .expired: return "EXPIRED"
         case .unknown: return "UNKNOWN"
@@ -46,6 +54,10 @@ import Foundation
             return .succeeded
         case BTPaymentActionStatus.requiresCapture.description:
             return .requiresCapture
+        case BTPaymentActionStatus.requiresCustomerAction.description:
+            return .requiresCustomerAction
+        case BTPaymentActionStatus.processing.description:
+            return .processing
         case BTPaymentActionStatus.canceled.description:
             return .canceled
         case BTPaymentActionStatus.expired.description:

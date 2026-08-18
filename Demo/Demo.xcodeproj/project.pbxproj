@@ -568,7 +568,7 @@
 		A0988E4124DB43DC0095EEEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = braintree;
 				TargetAttributes = {
