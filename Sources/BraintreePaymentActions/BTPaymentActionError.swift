@@ -12,6 +12,9 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// 2. Failed to decode the Payment Action response
     case decodingFailure
     
+    /// 3. The `BTPaymentActionRequest` subclass did not override `paymentMethodParameters()`
+    case missingParameters
+    
     public static var errorDomain: String {
         "com.braintreepayments.BTPaymentActionErrorDomain"
     }
@@ -21,6 +24,7 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
         case .missingID: return 0
         case .missingStatus: return 1
         case .decodingFailure: return 2
+        case .missingParameters: return 3
         }
     }
     
@@ -32,6 +36,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "Payment Action response is missing a status."
         case .decodingFailure:
             return "Failed to decode Payment Action response."
+        case .missingParameters:
+            return "BTPaymentActionRequest subclass did not override paymentMethodParameters()."
         }
     }
     

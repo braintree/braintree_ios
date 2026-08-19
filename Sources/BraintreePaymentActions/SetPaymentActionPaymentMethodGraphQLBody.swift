@@ -23,26 +23,30 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
     let variables: Variables
     
-    init(request: any BTPaymentActionRequest) {
-        self.variables = Variables(request: request)
+    init(request: BTPaymentActionRequest) throws {
+        self.variables = try Variables(request: request)
     }
     
     struct Variables: Encodable {
         
         let input: Input
         
-        init(request: any BTPaymentActionRequest) {
-            self.input = Input(request: request)
+        init(request: BTPaymentActionRequest) throws {
+            self.input = try Input(request: request)
         }
         
         struct Input: Encodable {
             
-            let paymentActionId: String
+            let paymentActionID: String
             let paymentMethod: AnyEncodable
             
-            init(request: any BTPaymentActionRequest) {
-                self.paymentActionId = request.paymentActionID
-                self.paymentMethod = AnyEncodable(request.paymentMethodParameters())
+            init(request: BTPaymentActionRequest) throws {
+                self.paymentActionID = request.paymentActionID
+                self.paymentMethod = AnyEncodable(try request.paymentMethodParameters())
+            }
+            
+            enum CodingKeys: String, CodingKey {
+                case paymentActionID = "paymentActionId"
             }
         }
     }
