@@ -1,6 +1,7 @@
 import BraintreeCore
 @_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 import Foundation
+import UIKit
 
 /// View model backing `BTPayPalSavedPaymentMethodView`.
 ///
@@ -47,9 +48,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     private let completion: (BTPayPalAccountNonce?, Error?) -> Void
     private let authorization: String
-    private let universalLink: URL
-    private let fallbackURLScheme: String?
     private let fetchClient: BTPayPalSavedPaymentMethodClient?
+    private let urlOpener: URLOpener
 
     /// The order amount + currency the credit (Pay Later) message is calculated from.
     private let amount: String
@@ -70,7 +70,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         universalLink: URL,
         fallbackURLScheme: String?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
-        authorization: String
+        authorization: String,
+        urlOpener: URLOpener = UIApplication.shared
     ) {
         self.amount = amount
         self.currencyCode = currencyCode
@@ -78,11 +79,14 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         request.enableEditBillingAgreement()
         self.checkoutRequest = request
         self.style = style
-        self.universalLink = universalLink
-        self.fallbackURLScheme = fallbackURLScheme
         self.completion = completion
         self.authorization = authorization
-        self.fetchClient = BTPayPalSavedPaymentMethodClient(authorization: authorization)
+        self.urlOpener = urlOpener
+        self.fetchClient = BTPayPalSavedPaymentMethodClient(
+            authorization: authorization,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme
+        )
         self.fiState = .loading
     }
 
@@ -98,16 +102,14 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         self.currencyCode = "USD"
         self.checkoutRequest = request
         self.style = style
-        // swiftlint:disable:next force_unwrapping
-        self.universalLink = URL(string: "https://example.com")!
-        self.fallbackURLScheme = nil
         self.completion = { _, _ in }
         self.authorization = ""
+        self.urlOpener = UIApplication.shared
         self.fetchClient = nil
         self.fiState = previewState
 
         if showCreditMessage {
-            let sample = CreditMessageContent(
+            let sample: CreditMessageContent = CreditMessageContent(
                 message: style.container?.creditMessaging?.messageText
                     ?? BTPayPalSavedPaymentMethodViewStyle.CreditMessagingStyle().messageText,
                 learnMoreText: BTPayPalSavedPaymentMethodViewStyle.CreditMessagingStyle().learnMoreText,
@@ -203,11 +205,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
         let nonce: BTPayPalAccountNonce
         do {
-            nonce = try await fetchClient.editFundingInstrument(
-                request: checkoutRequest,
-                universalLink: universalLink,
-                fallbackURLScheme: fallbackURLScheme
-            )
+            nonce = try await fetchClient.editFundingInstrument(request: checkoutRequest)
         } catch {
             isEditing = false
             if let prior = fiStateBeforeEdit {
@@ -249,7 +247,13 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     func learnMoreTapped() {
         apiClient?.sendAnalyticsEvent(BTPayPalSavedPaymentMethodAnalytics.creditMessagingSelected)
-        guard learnMoreURL != nil else { return }
-        isLanderPresented = true
+        // SFSafariViewController only loads web URLs, and PayPal marks landers it forbids embedding.
+        guard let url = learnMoreURL, url.scheme == "https" || url.scheme == "http" else { return }
+
+        if creditMessage?.isEmbeddable == true {
+            isLanderPresented = true
+        } else {
+            urlOpener.open(url, options: [:], completionHandler: nil)
+        }
     }
 }
