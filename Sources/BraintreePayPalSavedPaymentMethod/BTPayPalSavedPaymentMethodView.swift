@@ -71,8 +71,6 @@ public struct BTPayPalSavedPaymentMethodView: View {
         .sheet(isPresented: $viewModel.isLanderPresented) {
             if let url = viewModel.learnMoreURL {
                 BTPayPalCreditMessagingLanderView(url: url)
-                    .presentationDetents([.medium, .large])
-                    .ignoresSafeArea()
             }
         }
         .fullScreenCover(isPresented: editLoaderBinding) {
