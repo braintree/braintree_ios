@@ -43,9 +43,7 @@ final class BTCustomerRecommendationsAPI {
             
             let sessionID = body["data"]["generateCustomerRecommendations"]["sessionId"].asString()
             let isInPayPalNetwork = body["data"]["generateCustomerRecommendations"]["isInPayPalNetwork"].asBool()
-            let expiresAt = parseExpirationDate(
-                body["data"]["generateCustomerRecommendations"]["expiresAt"].asString()
-            )
+            let expiresAt = body["data"]["generateCustomerRecommendations"]["expiresAt"].asString()
             var paymentOptions: [BTPaymentOptions]? = []
             if let paymentRecommendations = body["data"]["generateCustomerRecommendations"]["paymentRecommendations"].asArray() {
                 for recommendation in paymentRecommendations {
@@ -78,16 +76,4 @@ final class BTCustomerRecommendationsAPI {
         }
     }
 
-    private func parseExpirationDate(_ value: String?) -> Date? {
-        guard let value else { return nil }
-
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-        if let date = formatter.date(from: value) {
-            return date
-        }
-        formatter.formatOptions = [.withInternetDateTime]
-        return formatter.date(from: value)
-    }
 }

@@ -13,6 +13,6 @@ public struct BTCustomerRecommendationsResult {
     /// The payment recommendations for the shopper.
     public let paymentRecommendations: [BTPaymentOptions]?
 
-    /// The date and time at which the recommendations expire.
-    public let expiresAt: Date?
+    /// The ISO-8601 date and time at which the recommendations expire.
+    public let expiresAt: String?
 }

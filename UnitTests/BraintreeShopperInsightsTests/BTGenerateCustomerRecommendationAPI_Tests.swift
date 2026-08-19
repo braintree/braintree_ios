@@ -67,8 +67,7 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         XCTAssertEqual(expectedResult.isInPayPalNetwork, true)
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.paymentOption, "PAYPAL")
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.recommendedPriority, 1)
-        let expectedExpirationDate = ISO8601DateFormatter().date(from: "2026-08-12T14:01:11Z")
-        XCTAssertEqual(expectedResult.expiresAt, expectedExpirationDate)
+        XCTAssertEqual(expectedResult.expiresAt, "2026-08-12T14:01:11Z")
     }
     
     func testExecute_whenEmptyResponseBodyReturned_throwsBTShopperInsightsError() async {
@@ -103,7 +102,7 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         XCTAssertNil(result.expiresAt)
     }
 
-    func testExecute_whenExpirationIncludesFractionalSeconds_parsesExpirationDate() async throws {
+    func testExecute_whenExpirationIncludesFractionalSeconds_preservesExpirationString() async throws {
         mockAPIClient.cannedResponseBody = BTJSON(
             value: [
                 "data": [
@@ -115,11 +114,7 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         )
 
         let result = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let expectedExpirationDate = formatter.date(from: "2026-08-12T14:01:11.123Z")
-
-        XCTAssertEqual(result.expiresAt, expectedExpirationDate)
+        XCTAssertEqual(result.expiresAt, "2026-08-12T14:01:11.123Z")
     }
     
     func testExceute_whenGenerateCustomerRecommendationsAPIFails_throwsNSError() async {
