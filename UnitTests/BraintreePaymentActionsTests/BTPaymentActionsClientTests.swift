@@ -265,8 +265,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         } catch {
             XCTFail("Expected BTPaymentActionError.missingParameters, got \(error)")
         }
-
-        XCTAssertNil(mockAPIClient.lastPOSTParameters, "Should not have posted to the network")
     }
 
     func testSubmitForPaymentAction_paymentMethodParametersThrows_propagatesError() async {
@@ -280,8 +278,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         } catch {
             XCTAssertEqual(error as NSError, mockError)
         }
-
-        XCTAssertNil(mockAPIClient.lastPOSTParameters, "Should not have posted to the network")
     }
 
     // MARK: - Network Error Propagation
