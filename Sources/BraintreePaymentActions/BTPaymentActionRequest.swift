@@ -5,14 +5,9 @@ import Foundation
 /// public subclasses (e.g. `BTCardPaymentActionRequest`) both require it to be.
 @objcMembers public class BTPaymentActionRequest: NSObject {
     
-    // MARK: - Internal Properties
+    // MARK: - Initializer
     
-    /// The ID of the Payment Action to submit this payment method for.
-    let paymentActionID: String
-    
-    public init(paymentActionID: String) {
-        self.paymentActionID = paymentActionID
-    }
+    public override init() {}
     
     /// The payment method payload for the `setPaymentActionPaymentMethod` GraphQL mutation's
     /// `paymentMethod` field. Each subclass is responsible for overriding this and encoding its own shape.

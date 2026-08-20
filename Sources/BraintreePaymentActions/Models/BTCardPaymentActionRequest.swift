@@ -21,7 +21,6 @@ public class BTCardPaymentActionRequest: BTPaymentActionRequest {
     
     /// Initialize a `BTCardPaymentActionRequest`
     /// - Parameters:
-    ///   - paymentActionID: Required: The ID of the Payment Action to submit this payment method for.
     ///   - cardNumber: Required: The card number.
     ///   - expirationMonth: Required: The 2-digit expiration month i.e. "08"
     ///   - expirationYear: Required: The 2 or 4-digit expiration year.
@@ -34,7 +33,6 @@ public class BTCardPaymentActionRequest: BTPaymentActionRequest {
     ///   - postalCode: Optional: The postal or ZIP code of the cardholder's billing address.
     ///   - countryCodeAlpha2: Optional: The 2-letter ISO 3166-1 country code of the cardholder's billing address.
     public init(
-        paymentActionID: String,
         cardNumber: String,
         expirationMonth: String,
         expirationYear: String,
@@ -58,7 +56,7 @@ public class BTCardPaymentActionRequest: BTPaymentActionRequest {
         self.region = region
         self.postalCode = postalCode
         self.countryCodeAlpha2 = countryCodeAlpha2
-        super.init(paymentActionID: paymentActionID)
+        super.init()
     }
     
     // MARK: - BTPaymentActionRequest
