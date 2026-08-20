@@ -75,5 +75,4 @@ final class BTCustomerRecommendationsAPI {
             throw error
         }
     }
-
 }
