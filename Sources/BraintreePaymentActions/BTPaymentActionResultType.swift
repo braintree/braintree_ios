@@ -20,4 +20,10 @@ import Foundation
     
     /// The Payment Action is still processing.
     case processing
+    
+    /// The Payment Action has expired.
+    case expired
+
+    /// The Payment Action status is unknown.
+    case unknown
 }
