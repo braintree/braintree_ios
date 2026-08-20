@@ -38,6 +38,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The composed credit (Pay Later) message to render, or `nil` to hide the row.
     @Published private(set) var creditMessage: CreditMessageContent?
 
+    /// Set once an edit returns a nonce. The Pay Later offer was quoted against the pre-edit funding
+    /// instrument, so the row stays hidden for the rest of the component's life.
+    @Published private(set) var didCompleteEdit = false
+
     let checkoutRequest: BTPayPalCheckoutRequest
     let style: BTPayPalSavedPaymentMethodViewStyle
 
@@ -217,6 +221,9 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         }
 
         isEditing = false
+        // The Pay Later offer is tied to the pre-edit funding instrument, so it stops applying once the buyer edits.
+        didCompleteEdit = true
+        creditMessage = nil
         completion(nonce, nil)
 
         guard let orderID = nonce.paymentID else {
