@@ -142,7 +142,7 @@ class Venmo_UITests: XCTestCase {
         // Wait for app to become active
         XCTAssertTrue(
             app.wait(for: .runningForeground, timeout: timeout),
-            "\(app.bundleID) did not come to the foreground after app switch"
+            "App did not come to the foreground after app switch"
         )
 
         // Give the app a moment to fully render UI after switch
