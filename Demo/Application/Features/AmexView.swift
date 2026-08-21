@@ -77,3 +77,10 @@ struct AmexView: View {
         }
     }
 }
+
+#Preview {
+    AmexView(
+        amexClient: BTAmericanExpressClient(authorization: "sandbox_tokenization_key"),
+        cardClient: BTCardClient(authorization: "sandbox_tokenization_key")
+    )
+}
