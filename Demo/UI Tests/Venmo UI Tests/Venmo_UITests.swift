@@ -24,6 +24,14 @@ class Venmo_UITests: XCTestCase {
 
         // Wait for app to be ready
         _ = demoApp.wait(for: .runningForeground, timeout: 10)
+
+        // Pre-warm MockVenmo so its universal link association is resolved by the
+        // simulator before the test triggers the real app switch, then bring the
+        // Demo app back to the foreground so the test starts in the expected state.
+        mockVenmo.activate()
+        _ = mockVenmo.wait(for: .runningForeground, timeout: 10)
+        demoApp.activate()
+        _ = demoApp.wait(for: .runningForeground, timeout: 10)
     }
 
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
