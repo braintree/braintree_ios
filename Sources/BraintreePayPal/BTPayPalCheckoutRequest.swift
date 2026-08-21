@@ -52,6 +52,7 @@ import BraintreeCore
     var contactPreference: BTContactPreference = .none
     var currencyCode: String?
     var displayName: String?
+    var editBillingAgreement: Bool = false
     var enablePayPalAppSwitch: Bool = false
     var isShippingAddressEditable: Bool = false
     var isShippingAddressRequired: Bool = false
@@ -217,12 +218,43 @@ import BraintreeCore
         universalLink: URL? = nil,
         fallbackURLScheme: String? = nil
     ) -> Encodable {
+        encodedPostBodyWith(
+            configuration: configuration,
+            isPayPalAppInstalled: isPayPalAppInstalled,
+            universalLink: universalLink,
+            fallbackURLScheme: fallbackURLScheme,
+            paymentMethodIDJWT: nil
+        )
+    }
+
+    /// The Edit FI flow is checkout-only, so the client token's `paymentMethodIdJwt` is passed here rather than on `BTPayPalRequest`.
+    func encodedPostBodyWith(
+        configuration: BTConfiguration,
+        isPayPalAppInstalled: Bool = false,
+        universalLink: URL? = nil,
+        fallbackURLScheme: String? = nil,
+        paymentMethodIDJWT: String?
+    ) -> Encodable {
         PayPalCheckoutPOSTBody(
             payPalRequest: self,
             configuration: configuration,
             isPayPalAppInstalled: isPayPalAppInstalled,
             universalLink: universalLink,
-            fallbackURLScheme: fallbackURLScheme
+            fallbackURLScheme: fallbackURLScheme,
+            paymentMethodIDJWT: paymentMethodIDJWT
         )
+    }
+}
+
+// MARK: - BraintreePayPalSavedPaymentMethod SPI
+
+extension BTPayPalCheckoutRequest {
+
+    /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    @_documentation(visibility: private)
+    @_spi(BraintreePayPalSavedPaymentMethod)
+    @nonobjc
+    public func enableEditBillingAgreement() {
+        editBillingAgreement = true
     }
 }

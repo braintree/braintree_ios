@@ -22,6 +22,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var enablePayPalAppSwitch: Bool?
     private var contactPreference: String?
     private var currencyCode: String?
+    private var editBillingAgreementJWT: String?
     private var lineItems: [BTPayPalLineItem]?
     private var merchantAccountID: String?
     private var osType: String?
@@ -56,7 +57,8 @@ struct PayPalCheckoutPOSTBody: Encodable {
         configuration: BTConfiguration,
         isPayPalAppInstalled: Bool,
         universalLink: URL?,
-        fallbackURLScheme: String?
+        fallbackURLScheme: String?,
+        paymentMethodIDJWT: String?
     ) {
         self.amount = payPalRequest.amount
         self.intent = payPalRequest.intent.stringValue
@@ -95,6 +97,11 @@ struct PayPalCheckoutPOSTBody: Encodable {
         
         if let merchantAccountID = payPalRequest.merchantAccountID {
             self.merchantAccountID = merchantAccountID
+        }
+        
+        // Only sent for the Edit FI flow: merchant opts in via `editBillingAgreement`; JWT is from the client token.
+        if payPalRequest.editBillingAgreement, let paymentMethodIDJWT {
+            self.editBillingAgreementJWT = paymentMethodIDJWT
         }
         
         if let riskCorrelationID = payPalRequest.riskCorrelationID {
@@ -160,6 +167,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case cancelURL = "cancel_url"
         case contactPreference = "contact_preference"
         case currencyCode = "currency_iso_code"
+        case editBillingAgreementJWT = "edit_billing_agreement_jwt"
         case enablePayPalAppSwitch = "launch_paypal_app"
         case experienceProfile = "experience_profile"
         case intent

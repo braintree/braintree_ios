@@ -244,6 +244,50 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueAndJWTPresent_includesEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = true
+
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            paymentMethodIDJWT: "edit-fi-jwt"
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(parameters["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
+    }
+
+    func testParametersWithConfiguration_whenEditBillingAgreementFalse_omitsEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = false
+
+        guard let parameters = try? request.encodedPostBodyWith(
+            configuration: configuration,
+            paymentMethodIDJWT: "edit-fi-jwt"
+        ).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        // Merchant did not opt in, so the JWT must not be sent even when present on the client token.
+        XCTAssertNil(parameters["edit_billing_agreement_jwt"])
+    }
+
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueButJWTNil_omitsEditBillingAgreementJWT() {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = true
+
+        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
+            XCTFail()
+            return
+        }
+
+        // No JWT on the client token → omit the key (not null) so existing flows stay byte-identical.
+        XCTAssertNil(parameters["edit_billing_agreement_jwt"])
+    }
+
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         // no_shipping = true should be the default.

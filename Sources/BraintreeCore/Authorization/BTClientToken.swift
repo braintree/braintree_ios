@@ -1,7 +1,7 @@
 import Foundation
 
 /// An authorization string used to initialize the Braintree SDK
-class BTClientToken: ClientAuthorization {
+class BTClientToken: ClientAuthorization, ClientTokenAuthorizationProviding {
 
     // MARK: - Internal Properties
 
@@ -18,6 +18,9 @@ class BTClientToken: ClientAuthorization {
 
     /// The original string used to initialize this instance
     let originalValue: String
+
+    /// The payment method ID JWT extracted from the client token, if present.
+    let paymentMethodIDJWT: String?
 
     // MARK: - Initializers
 
@@ -38,6 +41,7 @@ class BTClientToken: ClientAuthorization {
         self.bearer = authorizationFingerprint
         self.configURL = configURL
         self.originalValue = clientToken
+        self.paymentMethodIDJWT = json["paymentMethodIdJwt"].asString()
     }
     
     // MARK: - Internal helper functions

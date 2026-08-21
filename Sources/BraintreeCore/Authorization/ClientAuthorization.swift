@@ -19,6 +19,15 @@ public protocol ClientAuthorization {
     var originalValue: String { get }
 }
 
+/// :nodoc: A capability only client-token authorizations provide: the payment method ID JWT used by
+/// the PayPal Edit FI flow. Read it via `authorization as? ClientTokenAuthorizationProviding`.
+@_documentation(visibility: private)
+public protocol ClientTokenAuthorizationProviding {
+
+    /// :nodoc: The payment method ID JWT extracted from the client token, if present.
+    var paymentMethodIDJWT: String? { get }
+}
+
 /// :nodoc:
 @_documentation(visibility: private)
 public enum AuthorizationType {
