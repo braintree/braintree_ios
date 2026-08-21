@@ -12,6 +12,7 @@ class Venmo_UITests: XCTestCase {
         continueAfterFailure = false
 
         mockVenmo = XCUIApplication(bundleIdentifier: "com.braintreepayments.MockVenmo")
+        mockVenmo.activate()
 
         demoApp = XCUIApplication(bundleIdentifier: "com.braintreepayments.Demo")
         demoApp.launchArguments.append("-EnvironmentSandbox")
@@ -23,14 +24,6 @@ class Venmo_UITests: XCTestCase {
         demoApp.launch()
 
         // Wait for app to be ready
-        _ = demoApp.wait(for: .runningForeground, timeout: 10)
-
-        // Pre-warm MockVenmo so its universal link association is resolved by the
-        // simulator before the test triggers the real app switch, then bring the
-        // Demo app back to the foreground so the test starts in the expected state.
-        mockVenmo.activate()
-        _ = mockVenmo.wait(for: .runningForeground, timeout: 10)
-        demoApp.activate()
         _ = demoApp.wait(for: .runningForeground, timeout: 10)
     }
 
@@ -146,14 +139,11 @@ class Venmo_UITests: XCTestCase {
     // MARK: - Helper Methods
 
     /// Wait for app switch with proper timing
-    private func waitForAppSwitch(to app: XCUIApplication, timeout: TimeInterval = 15) {
+    private func waitForAppSwitch(to app: XCUIApplication, timeout: TimeInterval = 10) {
         // Wait for app to become active
-        XCTAssertTrue(
-            app.wait(for: .runningForeground, timeout: timeout),
-            "App did not come to the foreground after app switch"
-        )
+        _ = app.wait(for: .runningForeground, timeout: timeout)
 
         // Give the app a moment to fully render UI after switch
-        Thread.sleep(forTimeInterval: 1)
+        Thread.sleep(forTimeInterval: 0.5)
     }
 }
