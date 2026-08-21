@@ -2,7 +2,7 @@
 
 ## unreleased
 * BraintreePayPal
-  * Send `edit_billing_agreement_jwt` on `create_payment_resource` for the PayPal Edit FI flow, sourced from the client token
+  * Send the `edit_billing_agreement_jwt` sourced from the client token for the PayPal Edit FI beta flow
 
 ## 7.9.0 (2026-07-21)
 * BraintreeUIComponents

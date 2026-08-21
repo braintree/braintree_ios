@@ -122,6 +122,25 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     @MainActor
+    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndAuthorizationIsTokenizationKey_omitsEditBillingAgreementJWTFromPOSTBody() {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+        checkoutRequest.editBillingAgreement = true
+
+        let expectation = expectation(description: "Tokenize started")
+
+        payPalClient.tokenize(checkoutRequest) { _, _ in
+            expectation.fulfill()
+        }
+
+        wait(for: [expectation], timeout: 1)
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }
+
+        XCTAssertNil(lastPostParameters["edit_billing_agreement_jwt"])
+    }
+
+    @MainActor
     func testTokenizePayPalAccount_vault_whenRemoteConfigurationFetchSucceeds_postsToCorrectEndpoint() {
         let vaultRequest = BTPayPalVaultRequest()
         vaultRequest.billingAgreementDescription = "description"
