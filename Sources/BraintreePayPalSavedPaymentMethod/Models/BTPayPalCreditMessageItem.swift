@@ -32,7 +32,11 @@ struct BTPayPalCreditMessageItem: Equatable {
 
     // MARK: - Initializer
 
-    init(json: BTJSON) {
+    init?(json: BTJSON) {
+        guard json.isObject else {
+            return nil
+        }
+
         self.type = json["type"].asString().flatMap(BTPayPalCreditMessageItemType.init(rawValue:))
         self.text = json["text"].asString()
         self.alternativeText = json["alternative_text"].asString()

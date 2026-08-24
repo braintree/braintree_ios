@@ -99,6 +99,66 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         XCTAssertEqual(result.mainItems[0].text, "Or ")
     }
 
+    func testFetchCreditPresentmentMessages_whenAMainItemIsNotAnObject_dropsThatItem() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "messages": [
+                    [
+                        "preferred_message": [
+                            "content": ["main_items": [NSNull(), ["type": "TEXT", "text": "Or "]]]
+                        ]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+
+        let result = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+
+        XCTAssertEqual(result.mainItems.count, 1)
+        XCTAssertEqual(result.mainItems[0].text, "Or ")
+    }
+
+    func testFetchCreditPresentmentMessages_whenOnlyAnImageBlockIsReturned_usesItsAlternativeTextAsCopy() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "messages": [
+                    [
+                        "preferred_message": [
+                            "content": ["main_items": [["type": "IMAGE", "alternative_text": "PayPal"]]]
+                        ]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+
+        let result = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+
+        XCTAssertEqual(result.mainItems[0].alternativeText, "PayPal")
+    }
+
+    func testFetchCreditPresentmentMessages_whenMainItemsCarryNoCopy_throwsMissingPreferredMessage() async {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "messages": [
+                    [
+                        "preferred_message": [
+                            "content": ["main_items": [["type": "TEXT"], ["type": "TEXT", "text": ""]]]
+                        ]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+
+        do {
+            _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingPreferredMessage)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
     func testFetchCreditPresentmentMessages_whenTheMessageHasNoCopy_throwsMissingPreferredMessage() async {
         mockAPIClient.cannedResponseBody = BTJSON(
             value: ["messages": [["preferred_message": ["id": "fake-id"]]]] as [String: Any]

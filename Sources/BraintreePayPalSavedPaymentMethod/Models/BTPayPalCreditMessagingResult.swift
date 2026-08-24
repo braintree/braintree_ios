@@ -34,18 +34,19 @@ struct BTPayPalCreditMessagingResult: Equatable {
     init?(json: BTJSON) {
         let preferredMessage = json["messages"][0]["preferred_message"]
         let content = preferredMessage["content"]
-        let mainItems = content["main_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
+        let mainItems = content["main_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
 
-        // Reporting success with no message text would fire the impression beacon for a message the buyer never saw.
-        guard !mainItems.isEmpty else {
+        // Reporting success with no copy would fire the impression beacon for a message the buyer never saw.
+        // Image blocks carry their copy in `alternativeText` rather than `text`.
+        guard mainItems.contains(where: { $0.text?.isEmpty == false || $0.alternativeText?.isEmpty == false }) else {
             return nil
         }
 
         self.messageID = preferredMessage["id"].asString()
         self.messageType = preferredMessage["type"].asString()
         self.mainItems = mainItems
-        self.disclaimerItems = content["disclaimer_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
-        self.actionItems = content["action_items"].asArray()?.map(BTPayPalCreditMessageItem.init) ?? []
+        self.disclaimerItems = content["disclaimer_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        self.actionItems = content["action_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
         self.impressionURL = preferredMessage["analytics"]["impression_url"].asURL()
     }
 }
