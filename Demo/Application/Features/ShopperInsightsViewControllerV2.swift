@@ -15,9 +15,12 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
+
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
+
     lazy var paymentOptions: [BTPaymentOptions]? = nil
+
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
@@ -25,6 +28,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "sandbox1@pp.com"
         return view
     }()
+
     lazy var countryCodeView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Country Code"
@@ -32,6 +36,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "1"
         return view
     }()
+
     lazy var nationalNumberView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "National Number"
@@ -39,6 +44,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "4085005005"
         return view
     }()
+
     lazy var sessionIDView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "SessionID"
@@ -271,7 +277,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         recommendationsLabel.text = ""
         recommendationsLabel.isHidden = true
     }
-
 
     private var payPalCampaigns: [ShopperInsightsCampaign] {
         payPalCampaignsView.textField.text?
