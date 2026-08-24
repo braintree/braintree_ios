@@ -7,13 +7,15 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
 
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
 
+    let universalLink = URL(string: "https://example.com/universal-link")!
+
     var mockAPIClient: MockAPIClient!
     var sut: BTPayPalSavedPaymentMethodClient!
 
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken)
+        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
         sut.apiClient = mockAPIClient
     }
 
@@ -177,7 +179,10 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
     // MARK: - Errors
 
     func testFetchCreditPresentmentMessages_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorization() async {
-        let sut = BTPayPalSavedPaymentMethodClient(authorization: "sandbox_merchant_1234567890abc")
+        let sut = BTPayPalSavedPaymentMethodClient(
+            authorization: "sandbox_merchant_1234567890abc",
+            universalLink: universalLink
+        )
 
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
