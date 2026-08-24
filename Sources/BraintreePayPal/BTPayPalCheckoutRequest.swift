@@ -59,7 +59,7 @@ import BraintreeCore
     var landingPageType: BTPayPalRequestLandingPageType?
     var lineItems: [BTPayPalLineItem]?
     var localeCode: BTPayPalLocaleCode?
-    public private(set) var merchantAccountID: String?
+    var merchantAccountID: String?
     var recurringBillingDetails: BTPayPalRecurringBillingDetails?
     var recurringBillingPlanType: BTPayPalRecurringBillingPlanType?
     var requestBillingAgreement: Bool

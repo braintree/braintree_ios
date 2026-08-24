@@ -55,9 +55,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     private let fetchClient: BTPayPalSavedPaymentMethodClient?
     private let urlOpener: URLOpener
 
-    /// The order amount + currency the credit (Pay Later) message is calculated from.
-    private let amount: String
-    private let currencyCode: String
+    /// The amount, currency, and merchant account the FI and Pay Later message are resolved from.
+    private let request: BTPayPalSavedPaymentMethodRequest
 
     /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
     private var fiStateBeforeEdit: FIState?
@@ -67,9 +66,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     // MARK: - Initializers
 
     init(
-        amount: String,
-        currencyCode: String = "USD",
-        request: BTPayPalCheckoutRequest,
+        payPalCheckoutRequest: BTPayPalCheckoutRequest,
+        request: BTPayPalSavedPaymentMethodRequest,
         style: BTPayPalSavedPaymentMethodViewStyle,
         universalLink: URL,
         fallbackURLScheme: String?,
@@ -77,11 +75,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         authorization: String,
         urlOpener: URLOpener = UIApplication.shared
     ) {
-        self.amount = amount
-        self.currencyCode = currencyCode
+        self.request = request
         // The component opts into the billing-agreement edit itself; merchants never set it.
-        request.enableEditBillingAgreement()
-        self.checkoutRequest = request
+        payPalCheckoutRequest.enableEditBillingAgreement()
+        self.checkoutRequest = payPalCheckoutRequest
         self.style = style
         self.completion = completion
         self.authorization = authorization
@@ -98,13 +95,12 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// each visual state without the fetch API.
     init(
         previewState: FIState,
-        request: BTPayPalCheckoutRequest,
+        payPalCheckoutRequest: BTPayPalCheckoutRequest,
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle(),
         showCreditMessage: Bool = false
     ) {
-        self.amount = "0"
-        self.currencyCode = "USD"
-        self.checkoutRequest = request
+        self.request = BTPayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD")
+        self.checkoutRequest = payPalCheckoutRequest
         self.style = style
         self.completion = { _, _ in }
         self.authorization = ""
@@ -144,7 +140,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .stickyFI,
-                merchantAccountID: checkoutRequest.merchantAccountID
+                merchantAccountID: request.merchantAccountID
             )
             fiState = Self.state(from: summary)
         } catch {
@@ -179,8 +175,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return }
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
-                amount: amount,
-                currencyCode: currencyCode
+                amount: request.amount,
+                currencyCode: request.currencyCode
             )
             creditMessage = CreditMessageContent(result: result)
             learnMoreURL = creditMessage?.learnMoreURL
@@ -240,7 +236,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .fiFromApprovedCheckout,
                 orderID: orderID,
-                merchantAccountID: checkoutRequest.merchantAccountID
+                merchantAccountID: request.merchantAccountID
             )
             fiState = Self.state(from: summary)
         } catch {

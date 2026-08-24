@@ -16,15 +16,16 @@ class PayPalSavedPaymentMethodViewController: PaymentButtonBaseViewController {
 
         // swiftlint:disable:next force_unwrapping
         let universalLink = URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
-        let request = BTPayPalCheckoutRequest(amount: "10.00", enablePayPalAppSwitch: true)
+        let payPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "10.00", enablePayPalAppSwitch: true)
+        let request = BTPayPalSavedPaymentMethodRequest(amount: "10.00", currencyCode: "USD")
 
         embed(
             BTPayPalSavedPaymentMethodView(
-                amount: "10.00",
+                payPalCheckoutRequest: payPalCheckoutRequest,
+                request: request,
                 authorization: hardcodedClientToken,
                 universalLink: universalLink,
                 fallbackURLScheme: "com.braintreepayments.Demo.payments",
-                request: request,
                 completion: { [weak self] nonce, error in
                     guard let self else { return }
                     if let error {
