@@ -15,9 +15,6 @@ public struct BTPayPalSavedPaymentMethodRequest: Equatable {
     /// The merchant account the funding instrument is resolved against. Omit for the default.
     public let merchantAccountID: String?
 
-    /// The receiver info (CIB/CISB flows).
-    public let receiverInfo: String?
-
     // MARK: - Initializer
 
     /// Creates a `BTPayPalSavedPaymentMethodRequest`.
@@ -25,16 +22,13 @@ public struct BTPayPalSavedPaymentMethodRequest: Equatable {
     ///   - amount: Required. The order amount the Pay Later message is calculated from, e.g. `"55.00"`.
     ///   - currencyCode: Required. A three-character ISO-4217 currency code for `amount`.
     ///   - merchantAccountID: Optional. A non-default merchant account to resolve the funding instrument against.
-    ///   - receiverInfo: Optional. The receiver info used by the CIB/CISB flows.
     public init(
         amount: String,
         currencyCode: String,
-        merchantAccountID: String? = nil,
-        receiverInfo: String? = nil
+        merchantAccountID: String? = nil
     ) {
         self.amount = amount
         self.currencyCode = currencyCode
         self.merchantAccountID = merchantAccountID
-        self.receiverInfo = receiverInfo
     }
 }
