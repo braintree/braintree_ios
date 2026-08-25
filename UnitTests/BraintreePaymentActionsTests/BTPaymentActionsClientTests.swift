@@ -3,19 +3,6 @@ import XCTest
 @testable import BraintreeTestShared
 @testable import BraintreePaymentActions
 
-private class MockPaymentActionRequest: BTPaymentActionRequest {
-
-    /// When set, `paymentMethodParameters()` throws this error instead of returning a value.
-    var stubbedError: Error?
-
-    override func paymentMethodParameters() throws -> any Encodable {
-        if let stubbedError {
-            throw stubbedError
-        }
-        return ["type": "MOCK"]
-    }
-}
-
 class BTPaymentActionsClient_Tests: XCTestCase {
 
     let authorization: String = "development_tokenization_key"
