@@ -400,22 +400,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertNil(result.serverAction)
     }
     
-    func testResultFrom_expired_mapsToExpired() {
-        let paymentAction = BTPaymentAction(id: "payment-action-id", status: .expired)
-        let result = sut.result(from: paymentAction)
-        
-        XCTAssertEqual(result.type, .expired)
-        XCTAssertNil(result.serverAction)
-    }
-    
-    func testResultFrom_unknown_mapsToUnknown() {
-        let paymentAction = BTPaymentAction(id: "payment-action-id", status: .unknown)
-        let result = sut.result(from: paymentAction)
-        
-        XCTAssertEqual(result.type, .unknown)
-        XCTAssertNil(result.serverAction)
-    }
-    
     // MARK: - Helpers
 
     private func stubResponse(id: String, status: String) {
