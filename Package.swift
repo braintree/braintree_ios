@@ -140,7 +140,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PPRiskMagnes",
-            path: "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+            url: "https://github.com/paypal/paypal-risk-ios/releases/download/5.6.0-beta1/PPRiskMagnes.xcframework.zip",
+            checksum: "b83c6c90fbfc59883d35b947457142303ef586e56fcc01b52182b2cfc7132243"
         ),
         .target(
             name: "BraintreeUIComponents",

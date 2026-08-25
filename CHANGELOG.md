@@ -1,6 +1,12 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
+* Migrate PPRiskMagnes from locally vendored xcframework to remotely hosted binary artifact
+  * SPM: Package.swift now resolves PPRiskMagnes as a remote binary target from https://github.com/paypal/paypal-risk-ios (same pattern as PayPalMessages and PayPalCheckout)
+  * CocoaPods: DataCollector subspec now depends on the `PayPalRisk` pod instead of vendoring the xcframework locally
+  * Carthage: Cartfile now references the JSON manifest from the paypal-risk-ios repository
+  * Carthage consumers must run `carthage update --use-xcframeworks` after upgrading
+  * No source code changes required -- `import PPRiskMagnes` remains unchanged
 * BraintreeShopperInsights
   * Add `payPalCampaigns` to `BTCustomerSessionRequest` for customer session and recommendations requests so eligible PayPal campaign context can be recorded during the shopping journey.
   * Add `expiresAt` as an optional ISO-8601 `String` to `BTCustomerRecommendationsResult` to expose the recommendation expiration timestamp.
