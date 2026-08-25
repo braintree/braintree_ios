@@ -48,7 +48,6 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     // MARK: - Private Properties
 
     private let completion: (BTPayPalAccountNonce?, Error?) -> Void
-    private let authorization: String
     private let fetchClient: BTPayPalSavedPaymentMethodClient?
     private let urlOpener: URLOpener
 
@@ -57,31 +56,40 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Initializers
 
+    /// `fetchClient` is `nil` for previews, which seed `fiState` directly instead of fetching.
     init(
+        fetchClient: BTPayPalSavedPaymentMethodClient?,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in },
+        urlOpener: URLOpener = UIApplication.shared
+    ) {
+        self.fetchClient = fetchClient
+        self.completion = completion
+        self.urlOpener = urlOpener
+        self.fiState = .loading
+    }
+
+    convenience init(
         universalLink: URL,
         fallbackURLScheme: String?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
         authorization: String,
         urlOpener: URLOpener = UIApplication.shared
     ) {
-        self.completion = completion
-        self.authorization = authorization
-        self.urlOpener = urlOpener
-        self.fetchClient = BTPayPalSavedPaymentMethodClient(
-            authorization: authorization,
-            universalLink: universalLink,
-            fallbackURLScheme: fallbackURLScheme
+        self.init(
+            fetchClient: BTPayPalSavedPaymentMethodClient(
+                authorization: authorization,
+                universalLink: universalLink,
+                fallbackURLScheme: fallbackURLScheme
+            ),
+            completion: completion,
+            urlOpener: urlOpener
         )
-        self.fiState = .loading
     }
 
     /// Seeds a concrete state directly. Used by SwiftUI previews and unit tests to exercise
     /// each visual state without the fetch API.
-    init(previewState: FIState, showCreditMessage: Bool = false) {
-        self.completion = { _, _ in }
-        self.authorization = ""
-        self.urlOpener = UIApplication.shared
-        self.fetchClient = nil
+    convenience init(previewState: FIState, showCreditMessage: Bool = false) {
+        self.init(fetchClient: nil)
         self.fiState = previewState
 
         if showCreditMessage {

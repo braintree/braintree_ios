@@ -471,6 +471,8 @@
 		FE0200000000000000000009 /* BTPayPalSavedPaymentMethodClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000009 /* BTPayPalSavedPaymentMethodClient.swift */; };
 		FE0200000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */; };
 		FE0200000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */; };
+		FE0200000000000000000092 /* EditFiStyleGuard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */; };
+		FE0200000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */; };
 		FE0200000000000000000013 /* BTPayPalCreditMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */; };
 		FE0200000000000000000014 /* BTPayPalCreditMessageItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */; };
 		FE0200000000000000000015 /* BTPayPalCreditMessagingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000015 /* BTPayPalCreditMessagingResult.swift */; };
@@ -1360,6 +1362,8 @@
 		FE0100000000000000000009 /* BTPayPalSavedPaymentMethodClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodClient.swift; sourceTree = "<group>"; };
 		FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodClient_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodSummary_Tests.swift; sourceTree = "<group>"; };
+		FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFiStyleGuard_Tests.swift; sourceTree = "<group>"; };
+		FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodViewModel_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditMessageItem.swift; sourceTree = "<group>"; };
 		FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditMessageItemType.swift; sourceTree = "<group>"; };
 		FE0100000000000000000015 /* BTPayPalCreditMessagingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditMessagingResult.swift; sourceTree = "<group>"; };
@@ -2131,6 +2135,8 @@
 			children = (
 				FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */,
 				FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */,
+				FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */,
+				FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */,
 				FE0100000000000000000017 /* BTPayPalCreditMessaging_Tests.swift */,
 				1592D0E018219589392C6A9A /* Info.plist */,
 			);
@@ -3975,6 +3981,8 @@
 			files = (
 				FE0200000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift in Sources */,
 				FE0200000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift in Sources */,
+				FE0200000000000000000092 /* EditFiStyleGuard_Tests.swift in Sources */,
+				FE0200000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift in Sources */,
 				FE0200000000000000000017 /* BTPayPalCreditMessaging_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
