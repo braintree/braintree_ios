@@ -20,16 +20,15 @@ class PayPalSavedPaymentMethodViewController: PaymentButtonBaseViewController {
                 request: request,
                 authorization: authorization,
                 universalLink: universalLink,
-                fallbackURLScheme: "com.braintreepayments.Demo.payments",
-                completion: { [weak self] nonce, error in
-                    guard let self else { return }
-                    if let error {
-                        self.progressBlock(error.localizedDescription)
-                        return
-                    }
-                    self.completionBlock(nonce)
+                fallbackURLScheme: "com.braintreepayments.Demo.payments"
+            ) { [weak self] nonce, error in
+                guard let self else { return }
+                if let error {
+                    self.progressBlock(error.localizedDescription)
+                    return
                 }
-            )
+                self.completionBlock(nonce)
+            }
         )
     }
 

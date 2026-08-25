@@ -97,7 +97,7 @@ struct EditFIRow: View {
                     editButton
                 }
             }
-        case .displayOnly(let email, let isEditable):
+        case let .displayOnly(email, isEditable):
             fiPill {
                 HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
                     Text(email)

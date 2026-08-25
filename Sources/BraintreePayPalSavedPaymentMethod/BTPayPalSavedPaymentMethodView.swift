@@ -134,7 +134,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
             BTPayPalSavedPaymentMethodSkeletonRow(style: style)
         case .instrument(let summary):
             EditFIRow(content: .instrument(summary), style: style, onEdit: editTapped)
-        case .displayOnly(let email, let isEditable):
+        case let .displayOnly(email, isEditable):
             EditFIRow(content: .displayOnly(email: email, isEditable: isEditable), style: style, onEdit: editTapped)
         case .brandOnly:
             EditFIRow(content: .brandOnly, style: style, onEdit: editTapped)
@@ -242,6 +242,7 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
             json["imageUrl"] = imageURL
         }
         // Force-unwrapped: the literal above is always a valid object.
+        // swiftlint:disable:next force_unwrapping
         return BTPayPalSavedPaymentMethod(json: BTJSON(value: json))!
     }
 
@@ -257,23 +258,29 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        ScrollView {
+        let cardWithArt = previewInstrument(
+            type: "CARD",
+            label: "Visa",
+            lastDigits: "0199",
+            imageURL: "https://www.paypalobjects.com/visa.png"
+        )
+        let bank = previewInstrument(type: "BANK", label: "CREDIT UNION 1", lastDigits: "3357")
+        let longLabel = previewInstrument(
+            type: "CARD",
+            label: "A Very Long Funding Instrument Bank Name",
+            lastDigits: "1234"
+        )
+        let mastercard = previewInstrument(type: "CARD", label: "Mastercard", lastDigits: "4444")
+
+        return ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 preview("Loading (skeleton)", .loading)
-                preview("Instrument — card with art", .instrument(
-                    previewInstrument(type: "CARD", label: "Visa", lastDigits: "0199", imageURL: "https://www.paypalobjects.com/visa.png")
-                ))
-                preview("Instrument — no image (fallback glyph)", .instrument(
-                    previewInstrument(type: "BANK", label: "CREDIT UNION 1", lastDigits: "3357")
-                ))
-                preview("Instrument — truncation", .instrument(
-                    previewInstrument(type: "CARD", label: "A Very Long Funding Instrument Bank Name", lastDigits: "1234")
-                ))
+                preview("Instrument — card with art", .instrument(cardWithArt))
+                preview("Instrument — no image (fallback glyph)", .instrument(bank))
+                preview("Instrument — truncation", .instrument(longLabel))
                 preview("Display-only (email)", .displayOnly(email: "buyer@example.com", isEditable: true))
                 preview("Brand only (no network)", .brandOnly)
-                preview("Bordered container", .instrument(
-                    previewInstrument(type: "CARD", label: "Mastercard", lastDigits: "4444")
-                ), style: borderedStyle)
+                preview("Bordered container", .instrument(mastercard), style: borderedStyle)
             }
             .padding()
         }

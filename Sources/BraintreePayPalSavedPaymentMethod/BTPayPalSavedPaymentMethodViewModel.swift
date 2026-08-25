@@ -140,8 +140,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// payer (email); else the component hides entirely (a network failure keeps the brand mark
     /// via the `loadStickyFI` catch instead).
     static func state(from summary: BTPayPalSavedPaymentMethodSummary) -> FIState {
-        if let fi = summary.paymentMethods.first {
-            return .instrument(fi)
+        if let instrument = summary.paymentMethods.first {
+            return .instrument(instrument)
         }
         if let payer = summary.payer, let email = payer.email {
             return .displayOnly(email: email, isEditable: payer.isEditable)
