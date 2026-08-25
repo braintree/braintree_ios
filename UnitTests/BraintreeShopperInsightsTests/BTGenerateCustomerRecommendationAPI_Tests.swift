@@ -53,7 +53,8 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
                                 "paymentOption": "PAYPAL",
                                 "recommendedPriority": 1
                             ]
-                        ]
+                        ],
+                        "expiresAt": "2026-08-12T14:01:11Z"
                     ]
                 ]
             ]
@@ -66,6 +67,7 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         XCTAssertEqual(expectedResult.isInPayPalNetwork, true)
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.paymentOption, "PAYPAL")
         XCTAssertEqual(expectedResult.paymentRecommendations?.first?.recommendedPriority, 1)
+        XCTAssertEqual(expectedResult.expiresAt, "2026-08-12T14:01:11Z")
     }
     
     func testExecute_whenEmptyResponseBodyReturned_throwsBTShopperInsightsError() async {
@@ -81,6 +83,39 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    func testExecute_whenResponseDoesNotIncludeExpiration_returnsNilExpiration() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "generateCustomerRecommendations": [
+                        "sessionId": sessionID,
+                        "isInPayPalNetwork": false,
+                        "paymentRecommendations": []
+                    ]
+                ]
+            ]
+        )
+
+        let result = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
+
+        XCTAssertNil(result.expiresAt)
+    }
+
+    func testExecute_whenExpirationIncludesFractionalSeconds_preservesExpirationString() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "generateCustomerRecommendations": [
+                        "expiresAt": "2026-08-12T14:01:11.123Z"
+                    ]
+                ]
+            ]
+        )
+
+        let result = try await sut.execute(generateCustomerRecommendationsRequest, sessionID: sessionID)
+        XCTAssertEqual(result.expiresAt, "2026-08-12T14:01:11.123Z")
+    }
     
     func testExceute_whenGenerateCustomerRecommendationsAPIFails_throwsNSError() async {
         let mockError = NSError(domain: "generate-customer-recommendations-error", code: 1, userInfo: nil)
@@ -94,4 +129,3 @@ class BTGenerateCustomerRecommendationAPI_Tests: XCTestCase {
         }
     }
 }
-
