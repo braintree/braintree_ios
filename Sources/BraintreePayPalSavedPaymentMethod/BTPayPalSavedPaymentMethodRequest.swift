@@ -2,7 +2,7 @@ import Foundation
 
 /// The inputs `BTPayPalSavedPaymentMethodView` needs to resolve the buyer's saved funding
 /// instrument and its accompanying Pay Later message.
-public struct BTPayPalSavedPaymentMethodRequest {
+public struct BTPayPalSavedPaymentMethodRequest: Equatable {
 
     // MARK: - Public Properties
 

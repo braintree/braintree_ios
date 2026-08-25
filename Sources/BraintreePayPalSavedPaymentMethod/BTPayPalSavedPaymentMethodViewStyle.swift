@@ -92,7 +92,29 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
         /// The inline credit (Pay Later) messaging line. `nil` → SDK defaults.
         public var creditMessaging: CreditMessagingStyle?
 
-        public init() {}
+        public init(
+            height: CGFloat? = nil,
+            horizontalPadding: CGFloat? = nil,
+            verticalPadding: CGFloat? = nil,
+            cornerRadius: CGFloat? = nil,
+            borderColor: UIColor? = nil,
+            borderWidth: CGFloat? = nil,
+            logo: PayPalLogoStyle? = nil,
+            label: PayPalLabelStyle? = nil,
+            fundingInstrument: FundingInstrumentStyle? = nil,
+            creditMessaging: CreditMessagingStyle? = nil
+        ) {
+            self.height = height
+            self.horizontalPadding = horizontalPadding
+            self.verticalPadding = verticalPadding
+            self.cornerRadius = cornerRadius
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+            self.logo = logo
+            self.label = label
+            self.fundingInstrument = fundingInstrument
+            self.creditMessaging = creditMessaging
+        }
     }
 
     /// The PayPal brand logo.
@@ -102,7 +124,9 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
         /// fit inside, keeping its aspect ratio; growing this value grows both sides equally.
         public var width: CGFloat?
 
-        public init() {}
+        public init(width: CGFloat? = nil) {
+            self.width = width
+        }
     }
 
     /// The "PayPal" text label.
@@ -114,7 +138,10 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
         /// Gap between the logo and the label. `nil` → SDK default.
         public var leadingGap: CGFloat?
 
-        public init() {}
+        public init(fontSize: CGFloat? = nil, leadingGap: CGFloat? = nil) {
+            self.fontSize = fontSize
+            self.leadingGap = leadingGap
+        }
     }
 
     /// The funding-instrument cluster: card art + last digits + edit pencil, inside a pill.
@@ -132,7 +159,15 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
         /// Gap between the label cluster and the funding-instrument cluster. `nil` → SDK default.
         public var leadingGap: CGFloat?
 
-        public init() {}
+        public init(
+            textFontSize: CGFloat? = nil,
+            editIconSize: CGFloat? = nil,
+            leadingGap: CGFloat? = nil
+        ) {
+            self.textFontSize = textFontSize
+            self.editIconSize = editIconSize
+            self.leadingGap = leadingGap
+        }
     }
 
     /// The inline credit (Pay Later) messaging line.
@@ -145,13 +180,9 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
         /// underline in the base text color instead.
         public var linkColor: UIColor?
 
-        /// Internal placeholder copy for testing — not part of the public styling API. Replaced by
-        /// the fetched offer copy when the messaging API is wired in.
-        var messageText: String = "Or 4 interest-free payments of $324.50."
-
-        /// Internal placeholder "Learn more" copy for testing — not part of the public styling API.
-        var learnMoreText: String = "Learn more"
-
-        public init() {}
+        public init(fontSize: CGFloat? = nil, linkColor: UIColor? = nil) {
+            self.fontSize = fontSize
+            self.linkColor = linkColor
+        }
     }
 }

@@ -44,6 +44,19 @@ enum EditFiStyleGuard {
         static let cardIconBorderColor = UIColor(white: 0.8, alpha: 1)
         static let cardIconBorderWidth: CGFloat = 0.71
 
+        static let cardArtWidth: CGFloat = 28
+        static let cardArtHeight: CGFloat = 20
+
+        /// Gap between the card thumbnail and the masked number.
+        static let fundingInstrumentViewGroupSpacing: CGFloat = 4
+        /// Gap between that group and the edit pencil.
+        static let fundingInstrumentViewEditSpacing: CGFloat = 8
+
+        static let payPalLogoSide: CGFloat = 48
+
+        /// Gap between the brand mark and the pill once they stack at large text sizes.
+        static let stackedLayoutSpacing: CGFloat = 6
+
         static let creditMessageFontSize: CGFloat = 16
     }
 

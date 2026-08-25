@@ -40,9 +40,9 @@ extension View {
 /// bar stops short of the trailing edge (matching the design) rather than running edge-to-edge.
 struct ShimmerBar: View {
 
-    var height: CGFloat = 22
-    var cornerRadius: CGFloat = 11
-    var trailingGap: CGFloat = 0
+    var height: CGFloat = 16
+    var cornerRadius: CGFloat = 4
+    var trailingGap: CGFloat = 40
 
     var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
@@ -63,7 +63,7 @@ struct BTPayPalSavedPaymentMethodSkeletonRow: View {
     var body: some View {
         HStack(spacing: EditFiStyleGuard.fundingInstrumentLeadingGap(style.container?.fundingInstrument?.leadingGap)) {
             PayPalBrandCluster(style: style)
-            ShimmerBar(height: 16, cornerRadius: 4, trailingGap: 40)
+            ShimmerBar()
         }
         .accessibilityElement()
         .accessibilityLabel("Loading saved payment method")
@@ -74,7 +74,7 @@ struct BTPayPalSavedPaymentMethodSkeletonRow: View {
 struct CreditMessageSkeleton: View {
 
     var body: some View {
-        ShimmerBar(height: 16, cornerRadius: 4, trailingGap: 40)
+        ShimmerBar()
             .accessibilityHidden(true)
     }
 }

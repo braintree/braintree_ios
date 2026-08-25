@@ -16,7 +16,11 @@ public struct BTPayPalSavedPaymentMethodView: View {
 
     @StateObject private var viewModel: BTPayPalSavedPaymentMethodViewModel
 
-    private var style: BTPayPalSavedPaymentMethodViewStyle { viewModel.style }
+    /// Held on the view rather than the view model: `@StateObject` builds the view model once, so
+    /// anything stored there would keep the values from the first render.
+    private let payPalCheckoutRequest: BTPayPalCheckoutRequest
+    private let request: BTPayPalSavedPaymentMethodRequest
+    private let style: BTPayPalSavedPaymentMethodViewStyle
 
     // MARK: - Initializer
 
@@ -25,8 +29,9 @@ public struct BTPayPalSavedPaymentMethodView: View {
     ///   - payPalCheckoutRequest: Required. The PayPal checkout request used for the edit tokenization.
     ///   - request: Required. The amount, currency, and merchant account used to resolve the saved
     ///     funding instrument and its Pay Later message.
-    ///   - authorization: Required. A valid client token or tokenization key. The saved FI is
-    ///     resolved from the client token.
+    ///   - authorization: Required. A client token generated with the buyer's payment method ID.
+    ///     A tokenization key cannot be used — it carries no `paymentMethodIdJwt`, so the saved
+    ///     funding instrument cannot be resolved.
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
     ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
     ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
@@ -41,11 +46,11 @@ public struct BTPayPalSavedPaymentMethodView: View {
         style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle(),
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
+        self.payPalCheckoutRequest = payPalCheckoutRequest
+        self.request = request
+        self.style = style
         _viewModel = StateObject(
             wrappedValue: BTPayPalSavedPaymentMethodViewModel(
-                payPalCheckoutRequest: payPalCheckoutRequest,
-                request: request,
-                style: style,
                 universalLink: universalLink,
                 fallbackURLScheme: fallbackURLScheme,
                 completion: completion,
@@ -55,7 +60,15 @@ public struct BTPayPalSavedPaymentMethodView: View {
     }
 
     /// Internal initializer for previews and tests — seeds a concrete render state.
-    init(viewModel: BTPayPalSavedPaymentMethodViewModel) {
+    init(
+        viewModel: BTPayPalSavedPaymentMethodViewModel,
+        payPalCheckoutRequest: BTPayPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "0"),
+        request: BTPayPalSavedPaymentMethodRequest = BTPayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD"),
+        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
+    ) {
+        self.payPalCheckoutRequest = payPalCheckoutRequest
+        self.request = request
+        self.style = style
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
@@ -69,7 +82,15 @@ public struct BTPayPalSavedPaymentMethodView: View {
                 container
             }
         }
-        .onAppear { viewModel.onAppear() }
+        .onAppear {
+            viewModel.onAppear(request: request, showCreditMessaging: style.showPayPalCreditMessaging)
+        }
+        .onChange(of: request) { newRequest in
+            viewModel.requestChanged(newRequest, showCreditMessaging: style.showPayPalCreditMessaging)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            viewModel.appReturnedToForeground()
+        }
         .sheet(isPresented: $viewModel.isLanderPresented) {
             if let url = viewModel.learnMoreURL {
                 BTPayPalCreditMessagingLanderView(url: url)
@@ -93,9 +114,9 @@ public struct BTPayPalSavedPaymentMethodView: View {
             creditRegion
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: style.container?.height, alignment: .center)
         .padding(.horizontal, EditFiStyleGuard.horizontalPadding(style.container?.horizontalPadding))
         .padding(.vertical, EditFiStyleGuard.verticalPadding(style.container?.verticalPadding))
+        .frame(height: style.container?.height, alignment: .center)
         .background(Color(uiColor: EditFiStyleGuard.backgroundColor(style.componentAppearance?.backgroundColor)))
         .clipShape(RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container?.cornerRadius)))
         .overlay(
@@ -112,14 +133,18 @@ public struct BTPayPalSavedPaymentMethodView: View {
         case .loading:
             BTPayPalSavedPaymentMethodSkeletonRow(style: style)
         case .instrument(let summary):
-            EditFIRow(content: .instrument(summary), style: style) { viewModel.editTapped() }
+            EditFIRow(content: .instrument(summary), style: style, onEdit: editTapped)
         case .displayOnly(let email, let isEditable):
-            EditFIRow(content: .displayOnly(email: email, isEditable: isEditable), style: style) { viewModel.editTapped() }
+            EditFIRow(content: .displayOnly(email: email, isEditable: isEditable), style: style, onEdit: editTapped)
         case .brandOnly:
-            EditFIRow(content: .brandOnly, style: style) { viewModel.editTapped() }
+            EditFIRow(content: .brandOnly, style: style, onEdit: editTapped)
         case .hidden:
             EmptyView()
         }
+    }
+
+    private func editTapped() {
+        viewModel.editTapped(checkoutRequest: payPalCheckoutRequest, request: request)
     }
 
     @ViewBuilder private var creditRegion: some View {
@@ -142,7 +167,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     /// the logo). Zero when the logo is hidden and the label already starts at the leading edge.
     private var creditLeadingInset: CGFloat {
         guard style.showPayPalLogo else { return 0 }
-        let logoSide = style.container?.logo?.width.map { EditFiStyleGuard.logoWidth($0) } ?? PayPalBrandCluster.defaultLogoSide
+        let logoSide = style.container?.logo?.width.map { EditFiStyleGuard.logoWidth($0) } ?? EditFiStyleGuard.Defaults.payPalLogoSide
         return logoSide + EditFiStyleGuard.labelLeadingGap(style.container?.label?.leadingGap)
     }
 }
@@ -186,60 +211,9 @@ private extension View {
     }
 }
 
-// MARK: - Preview / Demo support
-
-/// Render-state selector for the demo/preview initializer below.
-///
-/// - Note: This is a temporary seam for demos, SwiftUI previews, and UI tests while the
-///   fetch API is not yet wired. It is expected to be removed once `BTPayPalSavedPaymentMethodView`
-///   resolves its own state from the network.
-public enum BTPayPalSavedPaymentMethodPreviewState: Equatable {
-    case loading
-    case instrument(BTPayPalSavedPaymentMethodFISummary)
-    case displayOnly(email: String)
-    case brandOnly
-    case hidden
-}
-
-extension BTPayPalSavedPaymentMethodView {
-
-    /// Seeds a concrete render state, bypassing the fetch API (not yet wired). Intended for
-    /// demos, SwiftUI previews, and UI tests only.
-    ///
-    /// - Note: Temporary — remove once the component resolves its state from the network.
-    public init(
-        previewState: BTPayPalSavedPaymentMethodPreviewState,
-        showCreditMessage: Bool = false,
-        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
-    ) {
-        let payPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "0")
-        let fiState: BTPayPalSavedPaymentMethodViewModel.FIState
-        switch previewState {
-        case .loading:
-            fiState = .loading
-        case .instrument(let summary):
-            fiState = .instrument(summary)
-        case .displayOnly(let email):
-            fiState = .displayOnly(email: email, isEditable: true)
-        case .brandOnly:
-            fiState = .brandOnly
-        case .hidden:
-            fiState = .hidden
-        }
-        self.init(viewModel: BTPayPalSavedPaymentMethodViewModel(
-            previewState: fiState,
-            payPalCheckoutRequest: payPalCheckoutRequest,
-            style: style,
-            showCreditMessage: showCreditMessage
-        ))
-    }
-}
-
 // MARK: - Previews
 
 struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
-
-    private static let payPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "324.50")
 
     private static func preview(
         _ title: String,
@@ -249,14 +223,26 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
         VStack(alignment: .leading, spacing: 4) {
             Text(title).font(.caption).foregroundColor(.secondary)
             BTPayPalSavedPaymentMethodView(
-                viewModel: BTPayPalSavedPaymentMethodViewModel(
-                    previewState: state,
-                    payPalCheckoutRequest: payPalCheckoutRequest,
-                    style: style
-                )
+                viewModel: BTPayPalSavedPaymentMethodViewModel(previewState: state),
+                style: style
             )
             .border(Color.gray.opacity(0.2))
         }
+    }
+
+    /// Builds a data-layer instrument for previews, which only has a failable JSON initializer.
+    private static func previewInstrument(
+        type: String,
+        label: String,
+        lastDigits: String,
+        imageURL: String? = nil
+    ) -> BTPayPalSavedPaymentMethod {
+        var json: [String: Any] = ["type": type, "label": label, "lastDigits": lastDigits]
+        if let imageURL {
+            json["imageUrl"] = imageURL
+        }
+        // Force-unwrapped: the literal above is always a valid object.
+        return BTPayPalSavedPaymentMethod(json: BTJSON(value: json))!
     }
 
     private static var borderedStyle: BTPayPalSavedPaymentMethodViewStyle {
@@ -275,19 +261,18 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
             VStack(alignment: .leading, spacing: 16) {
                 preview("Loading (skeleton)", .loading)
                 preview("Instrument — card with art", .instrument(
-                    BTPayPalSavedPaymentMethodFISummary(type: "CARD", label: "Visa", lastDigits: "0199",
-                              imageURL: URL(string: "https://www.paypalobjects.com/visa.png"))
+                    previewInstrument(type: "CARD", label: "Visa", lastDigits: "0199", imageURL: "https://www.paypalobjects.com/visa.png")
                 ))
                 preview("Instrument — no image (fallback glyph)", .instrument(
-                    BTPayPalSavedPaymentMethodFISummary(type: "BANK", label: "CREDIT UNION 1", lastDigits: "3357")
+                    previewInstrument(type: "BANK", label: "CREDIT UNION 1", lastDigits: "3357")
                 ))
                 preview("Instrument — truncation", .instrument(
-                    BTPayPalSavedPaymentMethodFISummary(type: "CARD", label: "A Very Long Funding Instrument Bank Name", lastDigits: "1234")
+                    previewInstrument(type: "CARD", label: "A Very Long Funding Instrument Bank Name", lastDigits: "1234")
                 ))
                 preview("Display-only (email)", .displayOnly(email: "buyer@example.com", isEditable: true))
                 preview("Brand only (no network)", .brandOnly)
                 preview("Bordered container", .instrument(
-                    BTPayPalSavedPaymentMethodFISummary(type: "CARD", label: "Mastercard", lastDigits: "4444")
+                    previewInstrument(type: "CARD", label: "Mastercard", lastDigits: "4444")
                 ), style: borderedStyle)
             }
             .padding()

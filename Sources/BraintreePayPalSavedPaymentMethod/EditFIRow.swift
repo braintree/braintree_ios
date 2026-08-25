@@ -11,7 +11,7 @@ import UIKit
 struct EditFIRow: View {
 
     enum Content: Equatable {
-        case instrument(BTPayPalSavedPaymentMethodFISummary)
+        case instrument(BTPayPalSavedPaymentMethod)
         case displayOnly(email: String, isEditable: Bool)
         case brandOnly
     }
@@ -19,15 +19,6 @@ struct EditFIRow: View {
     let content: Content
     let style: BTPayPalSavedPaymentMethodViewStyle
     let onEdit: () -> Void
-
-    // MARK: - Layout constants
-
-    /// Gap between the card thumbnail and the masked number (the "view" group).
-    private let viewGroupSpacing: CGFloat = 4
-    /// Gap between the "view" group and the edit pencil.
-    private let viewEditSpacing: CGFloat = 8
-    private let cardArtWidth: CGFloat = 28
-    private let cardArtHeight: CGFloat = 20
 
     // MARK: - Derived style values (guarded)
 
@@ -56,45 +47,71 @@ struct EditFIRow: View {
     // MARK: - Body
 
     var body: some View {
+        // At large accessibility text sizes the brand mark and the pill no longer fit side by side;
+        // stacking keeps the funding instrument legible instead of truncating it.
+        ViewThatFits(in: .horizontal) {
+            sideBySideLayout
+            stackedLayout
+        }
+    }
+
+    // MARK: - Layouts
+
+    private var sideBySideLayout: some View {
         HStack(spacing: 0) {
             brandCluster
-
-            switch content {
-            case .instrument(let summary):
-                fiPill {
-                    HStack(spacing: viewEditSpacing) {
-                        HStack(spacing: viewGroupSpacing) {
-                            fiIcon(for: summary)
-                            Text(fiText(for: summary))
-                                .font(fiFont)
-                                .foregroundColor(textColor)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                        }
-                        editButton
-                    }
-                }
+            fiCluster
                 .padding(.leading, fundingInstrumentGap)
-            case .displayOnly(let email, let isEditable):
-                fiPill {
-                    HStack(spacing: viewEditSpacing) {
-                        Text(email)
-                            .font(fiFont)
-                            .foregroundColor(textColor)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                        if isEditable {
-                            editButton
-                        }
-                    }
-                }
-                .padding(.leading, fundingInstrumentGap)
-            case .brandOnly:
-                EmptyView()
-            }
 
             // Keep the cluster left-aligned; the pill hugs the brand mark.
             Spacer(minLength: 0)
+        }
+    }
+
+    private var stackedLayout: some View {
+        VStack(alignment: .leading, spacing: EditFiStyleGuard.Defaults.stackedLayoutSpacing) {
+            HStack(spacing: 0) {
+                brandCluster
+                Spacer(minLength: 0)
+            }
+            HStack(spacing: 0) {
+                fiCluster
+                Spacer(minLength: 0)
+            }
+        }
+    }
+
+    @ViewBuilder private var fiCluster: some View {
+        switch content {
+        case .instrument(let summary):
+            fiPill {
+                HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
+                    HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewGroupSpacing) {
+                        fiIcon(for: summary)
+                        Text(fiText(for: summary))
+                            .font(fiFont)
+                            .foregroundColor(textColor)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                    }
+                    editButton
+                }
+            }
+        case .displayOnly(let email, let isEditable):
+            fiPill {
+                HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
+                    Text(email)
+                        .font(fiFont)
+                        .foregroundColor(textColor)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                    if isEditable {
+                        editButton
+                    }
+                }
+            }
+        case .brandOnly:
+            EmptyView()
         }
     }
 
@@ -118,23 +135,28 @@ struct EditFIRow: View {
             .fill(Color(uiColor: EditFiStyleGuard.Defaults.fundingInstrumentBackgroundColor))
     }
 
-    @ViewBuilder private func fiIcon(for summary: BTPayPalSavedPaymentMethodFISummary) -> some View {
+    @ViewBuilder private func fiIcon(for summary: BTPayPalSavedPaymentMethod) -> some View {
         Group {
             if let url = summary.imageURL {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .success(let image):
                         image.resizable().scaledToFit()
+                    case .empty:
+                        // In flight — stay blank so the glyph doesn't flash before the art arrives.
+                        Color.clear
                     default:
-                        // No-image-load fallback → generic glyph.
-                        fallbackGlyph(for: summary)
+                        fallbackGlyph
                     }
                 }
             } else {
-                fallbackGlyph(for: summary)
+                fallbackGlyph
             }
         }
-        .frame(width: cardArtWidth, height: cardArtHeight)
+        .frame(
+            width: EditFiStyleGuard.Defaults.cardArtWidth,
+            height: EditFiStyleGuard.Defaults.cardArtHeight
+        )
         .clipShape(RoundedRectangle(cornerRadius: cardIconRadius))
         .overlay(cardIconBorder)
         .accessibilityHidden(true)
@@ -152,7 +174,8 @@ struct EditFIRow: View {
             )
     }
 
-    private func fallbackGlyph(for summary: BTPayPalSavedPaymentMethodFISummary) -> some View {
+    /// One generic glyph covers every instrument type — design ships a single fallback asset.
+    private var fallbackGlyph: some View {
         Image("FundingIcon", bundle: .payPalSavedPaymentMethod)
             .resizable()
             .scaledToFit()
@@ -175,9 +198,9 @@ struct EditFIRow: View {
 
     // MARK: - Helpers
 
-    private func fiText(for summary: BTPayPalSavedPaymentMethodFISummary) -> String {
+    private func fiText(for summary: BTPayPalSavedPaymentMethod) -> String {
         guard let lastDigits = summary.lastDigits, !lastDigits.isEmpty else {
-            return summary.label
+            return summary.label ?? ""
         }
         // Card art conveys the brand; the text is just the masked last digits.
         return "••\(lastDigits)"
@@ -207,13 +230,11 @@ struct PayPalBrandCluster: View {
 
     /// The PayPal logo (48×30 artwork) sits in a square (1:1) container. `logo.width` sets the
     /// side (default 48); the artwork scales to fit inside, preserving its own aspect ratio.
-    static let defaultLogoSide: CGFloat = 48
-
     private var logoSide: CGFloat {
         if let width = style.container?.logo?.width {
             return EditFiStyleGuard.logoWidth(width)
         }
-        return Self.defaultLogoSide
+        return EditFiStyleGuard.Defaults.payPalLogoSide
     }
 
     var body: some View {

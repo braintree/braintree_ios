@@ -251,10 +251,16 @@ import BraintreeCore
 extension BTPayPalCheckoutRequest {
 
     /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    ///
+    /// Scoped rather than a plain setter so the merchant's request is not left in edit mode after
+    /// the call — they may reuse the same instance for an ordinary checkout.
     @_documentation(visibility: private)
     @_spi(BraintreePayPalSavedPaymentMethod)
     @nonobjc
-    public func enableEditBillingAgreement() {
+    public func withEditBillingAgreement<T>(_ body: () async throws -> T) async rethrows -> T {
+        let previous = editBillingAgreement
         editBillingAgreement = true
+        defer { editBillingAgreement = previous }
+        return try await body()
     }
 }

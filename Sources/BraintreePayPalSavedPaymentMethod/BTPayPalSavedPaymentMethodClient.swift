@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 #if canImport(BraintreePayPal)
-import BraintreePayPal
+@_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 #endif
 
 /// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
@@ -142,7 +142,9 @@ final class BTPayPalSavedPaymentMethodClient {
     /// - Returns: The tokenized `BTPayPalAccountNonce`. Its `paymentID` is the approved checkout order ID,
     ///   which callers pass to `fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout, orderID:)`.
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
-        try await payPalClient.tokenize(request)
+        try await request.withEditBillingAgreement {
+            try await payPalClient.tokenize(request)
+        }
     }
 
     // MARK: - Private Methods

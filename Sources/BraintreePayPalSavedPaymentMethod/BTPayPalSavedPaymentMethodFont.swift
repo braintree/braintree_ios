@@ -13,7 +13,7 @@ enum BTPayPalSavedPaymentMethodFont {
     static func font(name: String?, size: CGFloat, weight: Font.Weight = .regular) -> Font {
         if let name, !name.isEmpty {
             // Custom fonts scale automatically via the `relativeTo:` reference style.
-            return .custom(name, size: size, relativeTo: .body)
+            return .custom(name, size: size, relativeTo: .body).weight(weight)
         }
         // System font: scale the point size through Dynamic Type explicitly.
         let scaled = UIFontMetrics(forTextStyle: .body).scaledValue(for: size)

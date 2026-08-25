@@ -1,6 +1,6 @@
 import XCTest
 @testable import BraintreeCore
-@testable import BraintreePayPal
+@_spi(BraintreePayPalSavedPaymentMethod) @testable import BraintreePayPal
 
 class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
@@ -286,6 +286,34 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
         // No JWT on the client token → omit the key (not null) so existing flows stay byte-identical.
         XCTAssertNil(parameters["edit_billing_agreement_jwt"])
+    }
+
+    // MARK: - withEditBillingAgreement
+
+    func testWithEditBillingAgreement_setsFlagForTheDurationAndRestoresItAfterwards() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        var flagDuringBody = false
+
+        await request.withEditBillingAgreement {
+            flagDuringBody = request.editBillingAgreement
+        }
+
+        XCTAssertTrue(flagDuringBody)
+        XCTAssertFalse(request.editBillingAgreement)
+    }
+
+    func testWithEditBillingAgreement_whenBodyThrows_stillRestoresTheFlag() async {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        do {
+            try await request.withEditBillingAgreement {
+                throw BTPayPalError.canceled
+            }
+            XCTFail("Expected an error")
+        } catch {
+            // The merchant may reuse this request for an ordinary checkout, so it must not stay in edit mode.
+            XCTAssertFalse(request.editBillingAgreement)
+        }
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
