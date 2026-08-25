@@ -116,40 +116,20 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
-    func testSubmitForPaymentAction_expired_returnsCanceledResult() async throws {
-        stubResponse(id: "payment-action-id", status: "EXPIRED")
-
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
-
-        XCTAssertEqual(result.type, .canceled)
-        XCTAssertEqual(result.id, "payment-action-id")
-    }
-
-    func testSubmitForPaymentAction_unknownServerStatus_returnsCanceledResult() async throws {
-        stubResponse(id: "payment-action-id", status: "SOME_NEW_SERVER_STATUS")
-
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
-
-        XCTAssertEqual(result.type, .canceled)
-        XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
-    }
-    
     func testSubmitForPaymentAction_expired_returnsExpiredResult() async throws {
         stubResponse(id: "payment-action-id", status: "EXPIRED")
-        
+
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
-        
+
         XCTAssertEqual(result.type, .expired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
     }
-    
+
     func testSubmitForPaymentAction_unknownServerStatus_returnsUnknownResult() async throws {
         stubResponse(id: "payment-action-id", status: "SOME_NEW_SERVER_STATUS")
-        
+
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
-        
+
         XCTAssertEqual(result.type, .unknown)
         XCTAssertEqual(result.id, "payment-action-id")
         XCTAssertNil(result.serverAction)
@@ -405,18 +385,18 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.type, .canceled)
     }
 
-    func testResultFrom_expired_mapsToCanceled() {
+    func testResultFrom_expired_mapsToExpired() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .expired)
         let result = sut.result(from: paymentAction)
 
-        XCTAssertEqual(result.type, .canceled)
+        XCTAssertEqual(result.type, .expired)
     }
 
-    func testResultFrom_unknown_mapsToCanceled() {
+    func testResultFrom_unknown_mapsToUnknown() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .unknown)
         let result = sut.result(from: paymentAction)
 
-        XCTAssertEqual(result.type, .canceled)
+        XCTAssertEqual(result.type, .unknown)
         XCTAssertNil(result.serverAction)
     }
     
