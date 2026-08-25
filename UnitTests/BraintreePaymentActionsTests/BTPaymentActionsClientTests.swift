@@ -8,10 +8,6 @@ private class MockPaymentActionRequest: BTPaymentActionRequest {
     /// When set, `paymentMethodParameters()` throws this error instead of returning a value.
     var stubbedError: Error?
 
-    override init(paymentActionID: String = "payment-action-id") {
-        super.init(paymentActionID: paymentActionID)
-    }
-
     override func paymentMethodParameters() throws -> any Encodable {
         if let stubbedError {
             throw stubbedError
@@ -47,7 +43,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             ]
         ])
 
-        let request = MockPaymentActionRequest(paymentActionID: "payment-action-123")
+        let request = MockPaymentActionRequest()
         _ = try await sut.submitForPaymentAction(request)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
@@ -66,18 +62,18 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
     func testSubmitForPaymentAction_requiresPaymentMethod_returnsPaymentMethodRequiredResult() async throws {
         stubResponse(id: "payment-action-id", status: "REQUIRES_PAYMENT_METHOD")
-
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
-
+  
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
+ 
         XCTAssertEqual(result.type, .paymentMethodRequired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertEqual(result.serverAction, .none)
+        XCTAssertNil(result.serverAction)
     }
 
     func testSubmitForPaymentAction_readyForConfirmation_returnsServerActionRequiredConfirm() async throws {
         stubResponse(id: "payment-action-id", status: "READY_FOR_CONFIRMATION")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .serverActionRequired)
         XCTAssertEqual(result.serverAction, .confirm)
@@ -87,7 +83,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     func testSubmitForPaymentAction_requiresCapture_returnsServerActionRequiredCapture() async throws {
         stubResponse(id: "payment-action-id", status: "REQUIRES_CAPTURE")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .serverActionRequired)
         XCTAssertEqual(result.serverAction, .capture)
@@ -96,35 +92,38 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
     func testSubmitForPaymentAction_requiresCustomerAction_returnsCustomerActionRequiredResult() async throws {
         stubResponse(id: "payment-action-id", status: "REQUIRES_CUSTOMER_ACTION")
-
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+ 
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .customerActionRequired)
         XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
     }
 
     func testSubmitForPaymentAction_processing_returnsProcessingResult() async throws {
         stubResponse(id: "payment-action-id", status: "PROCESSING")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .processing)
         XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
     }
 
     func testSubmitForPaymentAction_succeeded_returnsCompletedResult() async throws {
         stubResponse(id: "payment-action-id", status: "SUCCEEDED")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .completed)
         XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
     }
 
     func testSubmitForPaymentAction_canceled_returnsCanceledResult() async throws {
         stubResponse(id: "payment-action-id", status: "CANCELED")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .canceled)
         XCTAssertEqual(result.id, "payment-action-id")
@@ -133,7 +132,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     func testSubmitForPaymentAction_expired_returnsCanceledResult() async throws {
         stubResponse(id: "payment-action-id", status: "EXPIRED")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .canceled)
         XCTAssertEqual(result.id, "payment-action-id")
@@ -142,12 +141,33 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     func testSubmitForPaymentAction_unknownServerStatus_returnsCanceledResult() async throws {
         stubResponse(id: "payment-action-id", status: "SOME_NEW_SERVER_STATUS")
 
-        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id"))
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .canceled)
         XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
     }
-
+    
+    func testSubmitForPaymentAction_expired_returnsExpiredResult() async throws {
+        stubResponse(id: "payment-action-id", status: "EXPIRED")
+        
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
+        
+        XCTAssertEqual(result.type, .expired)
+        XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
+    }
+    
+    func testSubmitForPaymentAction_unknownServerStatus_returnsUnknownResult() async throws {
+        stubResponse(id: "payment-action-id", status: "SOME_NEW_SERVER_STATUS")
+        
+        let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
+        
+        XCTAssertEqual(result.type, .unknown)
+        XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertNil(result.serverAction)
+    }
+    
     // MARK: - Missing / Empty Fields
 
     func testSubmitForPaymentAction_missingID_throwsMissingID() async {
@@ -255,7 +275,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     func testSubmitForPaymentAction_baseClassDoesNotOverrideParameters_throwsMissingParameters() async {
         // Using BTPaymentActionRequest directly (no subclass override) should throw .missingParameters
         // before any network call is made.
-        let request = BTPaymentActionRequest(paymentActionID: "payment-action-id")
+        let request = BTPaymentActionRequest()
 
         do {
             _ = try await sut.submitForPaymentAction(request)
@@ -269,7 +289,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
     func testSubmitForPaymentAction_paymentMethodParametersThrows_propagatesError() async {
         let mockError = NSError(domain: "TestErrorDomain", code: 42, userInfo: nil)
-        let request = MockPaymentActionRequest(paymentActionID: "payment-action-id")
+
+        let request = MockPaymentActionRequest()
         request.stubbedError = mockError
 
         do {
@@ -301,7 +322,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         let expectation = expectation(description: "Completion called")
 
-        sut.submitForPaymentAction(MockPaymentActionRequest(paymentActionID: "payment-action-id")) { result, error in
+        sut.submitForPaymentAction(MockPaymentActionRequest()) { result, error in
             XCTAssertNil(error)
             XCTAssertEqual(result?.type, .completed)
             XCTAssertEqual(result?.id, "payment-action-id")
@@ -347,13 +368,13 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .paymentMethodRequired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertEqual(result.serverAction, .none)
+        XCTAssertNil(result.serverAction)
     }
 
     func testResultFrom_readyForConfirmation_mapsToServerActionRequiredConfirm() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .readyForConfirmation)
         let result = sut.result(from: paymentAction)
-
+        
         XCTAssertEqual(result.type, .serverActionRequired)
         XCTAssertEqual(result.serverAction, .confirm)
     }
@@ -371,6 +392,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .customerActionRequired)
+        XCTAssertNil(result.serverAction)
     }
 
     func testResultFrom_processing_mapsToProcessing() {
@@ -378,6 +400,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .processing)
+        XCTAssertNil(result.serverAction)
     }
 
     func testResultFrom_succeeded_mapsToCompleted() {
@@ -385,6 +408,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .completed)
+        XCTAssertNil(result.serverAction)
     }
 
     func testResultFrom_canceled_mapsToCanceled() {
@@ -406,8 +430,25 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .canceled)
+        XCTAssertNil(result.serverAction)
     }
-
+    
+    func testResultFrom_expired_mapsToExpired() {
+        let paymentAction = BTPaymentAction(id: "payment-action-id", status: .expired)
+        let result = sut.result(from: paymentAction)
+        
+        XCTAssertEqual(result.type, .expired)
+        XCTAssertNil(result.serverAction)
+    }
+    
+    func testResultFrom_unknown_mapsToUnknown() {
+        let paymentAction = BTPaymentAction(id: "payment-action-id", status: .unknown)
+        let result = sut.result(from: paymentAction)
+        
+        XCTAssertEqual(result.type, .unknown)
+        XCTAssertNil(result.serverAction)
+    }
+    
     // MARK: - Helpers
 
     private func stubResponse(id: String, status: String) {
