@@ -6,6 +6,8 @@
   * Add `expiresAt` as an optional ISO-8601 `String` to `BTCustomerRecommendationsResult` to expose the recommendation expiration timestamp.
 * BraintreePayPal
   * Add `campaigns` to `BTPayPalCheckoutRequest` so eligible campaign context can be persisted during order creation and surfaced in the PayPal checkout experience.
+* BraintreeVenmo
+  * Fix `BTVenmoAccountNonce.externalID` returning `nil` after vaulting a Venmo account with a client token
 
 ## 7.9.0 (2026-07-21)
 * BraintreeUIComponents
