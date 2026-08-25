@@ -23,7 +23,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     
     @MainActor
     func testCheckoutFlow_withClientToken_tokenizesPayPalAccount() async throws {
-        let clientToken = try await BTIntegrationTestsConstants.fetchClientToken()
+        let clientToken = try await Helpers.shared.fetchClientToken()
         let payPalClient = BTPayPalClient(authorization: clientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
@@ -62,7 +62,7 @@ class BraintreePayPal_IntegrationTests: XCTestCase {
     
     @MainActor
     func testVaultFlow_withClientToken_tokenizedPayPalAccount() async throws {
-        let clientToken = try await BTIntegrationTestsConstants.fetchClientToken()
+        let clientToken = try await Helpers.shared.fetchClientToken()
         let payPalClient = BTPayPalClient(authorization: clientToken)
         payPalClient.payPalRequest = BTPayPalVaultRequest()
 
