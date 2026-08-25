@@ -1,6 +1,12 @@
-import BraintreeCore
-import BraintreePayPal
 import SwiftUI
+
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+#if canImport(BraintreePayPal)
+import BraintreePayPal
+#endif
 
 /// A drop-in checkout component that shows the returning PayPal buyer's saved funding
 /// instrument (FI) and lets them edit it, with optional inline Pay Later messaging.
@@ -116,7 +122,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, EditFiStyleGuard.horizontalPadding(style.container?.horizontalPadding))
         .padding(.vertical, EditFiStyleGuard.verticalPadding(style.container?.verticalPadding))
-        .frame(height: style.container?.height, alignment: .center)
+        .frame(height: EditFiStyleGuard.containerHeight(style.container?.height), alignment: .center)
         .background(Color(uiColor: EditFiStyleGuard.backgroundColor(style.componentAppearance?.backgroundColor)))
         .clipShape(RoundedRectangle(cornerRadius: EditFiStyleGuard.cornerRadius(style.container?.cornerRadius)))
         .overlay(

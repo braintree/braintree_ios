@@ -472,6 +472,8 @@
 		FE0200000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */; };
 		FE0200000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */; };
 		FE0200000000000000000092 /* EditFiStyleGuard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */; };
+		FE0200000000000000000094 /* BTPayPalSavedPaymentMethodUnits_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000094 /* BTPayPalSavedPaymentMethodUnits_Tests.swift */; };
+		FE0200000000000000000093 /* BTPayPalSavedPaymentMethodView_RenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000093 /* BTPayPalSavedPaymentMethodView_RenderTests.swift */; };
 		FE0200000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */; };
 		FE0200000000000000000013 /* BTPayPalCreditMessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */; };
 		FE0200000000000000000014 /* BTPayPalCreditMessageItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */; };
@@ -1363,6 +1365,8 @@
 		FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodClient_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodSummary_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFiStyleGuard_Tests.swift; sourceTree = "<group>"; };
+		FE0100000000000000000094 /* BTPayPalSavedPaymentMethodUnits_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodUnits_Tests.swift; sourceTree = "<group>"; };
+		FE0100000000000000000093 /* BTPayPalSavedPaymentMethodView_RenderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodView_RenderTests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodViewModel_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditMessageItem.swift; sourceTree = "<group>"; };
 		FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCreditMessageItemType.swift; sourceTree = "<group>"; };
@@ -2136,6 +2140,8 @@
 				FE0100000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift */,
 				FE0100000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift */,
 				FE0100000000000000000092 /* EditFiStyleGuard_Tests.swift */,
+				FE0100000000000000000094 /* BTPayPalSavedPaymentMethodUnits_Tests.swift */,
+				FE0100000000000000000093 /* BTPayPalSavedPaymentMethodView_RenderTests.swift */,
 				FE0100000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift */,
 				FE0100000000000000000017 /* BTPayPalCreditMessaging_Tests.swift */,
 				1592D0E018219589392C6A9A /* Info.plist */,
@@ -3982,6 +3988,8 @@
 				FE0200000000000000000010 /* BTPayPalSavedPaymentMethodClient_Tests.swift in Sources */,
 				FE0200000000000000000011 /* BTPayPalSavedPaymentMethodSummary_Tests.swift in Sources */,
 				FE0200000000000000000092 /* EditFiStyleGuard_Tests.swift in Sources */,
+				FE0200000000000000000094 /* BTPayPalSavedPaymentMethodUnits_Tests.swift in Sources */,
+				FE0200000000000000000093 /* BTPayPalSavedPaymentMethodView_RenderTests.swift in Sources */,
 				FE0200000000000000000091 /* BTPayPalSavedPaymentMethodViewModel_Tests.swift in Sources */,
 				FE0200000000000000000017 /* BTPayPalCreditMessaging_Tests.swift in Sources */,
 			);

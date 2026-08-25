@@ -124,6 +124,11 @@ enum EditFiStyleGuard {
         nonNegative(value ?? Defaults.containerBorderWidth)
     }
 
+    /// `nil` preserves the container's intrinsic height, so it is passed through rather than defaulted.
+    static func containerHeight(_ value: CGFloat?) -> CGFloat? {
+        value.map(nonNegative)
+    }
+
     // MARK: - Private Helpers
 
     private static func nonNegative(_ value: CGFloat) -> CGFloat {

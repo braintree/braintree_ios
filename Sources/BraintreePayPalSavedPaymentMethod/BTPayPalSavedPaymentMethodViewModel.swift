@@ -1,7 +1,13 @@
-import BraintreeCore
-@_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 import Foundation
 import UIKit
+
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+#if canImport(BraintreePayPal)
+@_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
+#endif
 
 /// View model backing `BTPayPalSavedPaymentMethodView`.
 ///
@@ -60,11 +66,11 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     init(
         fetchClient: BTPayPalSavedPaymentMethodClient?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in },
-        urlOpener: URLOpener = UIApplication.shared
+        urlOpener: URLOpener? = nil
     ) {
         self.fetchClient = fetchClient
         self.completion = completion
-        self.urlOpener = urlOpener
+        self.urlOpener = urlOpener ?? UIApplication.shared
         self.fiState = .loading
     }
 
@@ -73,7 +79,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         fallbackURLScheme: String?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
         authorization: String,
-        urlOpener: URLOpener = UIApplication.shared
+        urlOpener: URLOpener? = nil
     ) {
         self.init(
             fetchClient: BTPayPalSavedPaymentMethodClient(
