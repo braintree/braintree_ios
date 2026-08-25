@@ -1,11 +1,15 @@
 # Braintree iOS SDK Release Notes
 
 ## unreleased
-* Migrate PPRiskMagnes from locally vendored xcframework to remotely hosted binary artifact
-  * SPM: Package.swift now resolves PPRiskMagnes as a remote binary target from https://github.com/paypal/paypal-risk-ios (same pattern as PayPalMessages and PayPalCheckout)
+* BraintreeDataCollector
+  * Migrate PPRiskMagnes from a locally vendored xcframework to a remotely hosted binary artifact at https://github.com/paypal/paypal-risk-ios (v5.6.0-beta2)
+  * This version of the PPRiskMagnes framework is dynamic (previously static)
+  * SPM: Package.swift now resolves PPRiskMagnes as a remote binary target (same pattern as PayPalMessages and PayPalCheckout) -- no consumer action required
   * CocoaPods: DataCollector subspec now depends on the `PayPalRisk` pod instead of vendoring the xcframework locally
-  * Carthage: Cartfile now references the JSON manifest from the paypal-risk-ios repository
-  * Carthage consumers must run `carthage update --use-xcframeworks` after upgrading
+    * If your Podfile uses `use_frameworks! :linkage => :static` (or omits `use_frameworks!` entirely), note that PPRiskMagnes is now a dynamic framework and will be embedded in your app
+  * Carthage: Cartfile now references the JSON manifest from the paypal-risk-ios repository instead of a local xcframework
+    * Run `carthage update --use-xcframeworks` after upgrading
+    * **Action required:** Because PPRiskMagnes is now dynamic, add `PPRiskMagnes.xcframework` to your target's "Embed Frameworks" build phase (copy-frameworks Input Files) -- this was not required when the framework was static
   * No source code changes required -- `import PPRiskMagnes` remains unchanged
 * BraintreeShopperInsights
   * Add `payPalCampaigns` to `BTCustomerSessionRequest` for customer session and recommendations requests so eligible PayPal campaign context can be recorded during the shopping journey.

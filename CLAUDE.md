@@ -157,7 +157,7 @@ Follow `STYLE_GUIDE.md` in full. Key highlights:
 
 **Runtime (binary frameworks — do not update without testing 3DS/fraud flows):**
 - `CardinalMobile.xcframework` v2.2.5-9 — 3D Secure certification
-- `PayPalRisk` (PPRiskMagnes binary) v5.6.0-beta1 — PayPal fraud detection, hosted at https://github.com/paypal/paypal-risk-ios
+- `PayPalRisk` (PPRiskMagnes binary) v5.6.0-beta2 — PayPal fraud detection, hosted at https://github.com/paypal/paypal-risk-ios
   - SPM: consumed as a remote `.binaryTarget(url:checksum:)` in Package.swift
   - CocoaPods: consumed as a dependency on the `PayPalRisk` pod
   - Carthage: consumed via `Carthage/PayPalRisk.json` from the remote repo
