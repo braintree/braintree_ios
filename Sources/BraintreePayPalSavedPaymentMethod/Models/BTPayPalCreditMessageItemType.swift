@@ -11,7 +11,4 @@ enum BTPayPalCreditMessageItemType: String {
 
     /// Plain copy.
     case text = "TEXT"
-
-    /// Copy with a value substituted in, such as the payment amount.
-    case textVariable = "TEXT_VARIABLE"
 }
