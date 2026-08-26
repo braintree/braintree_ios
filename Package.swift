@@ -25,15 +25,15 @@ let package = Package(
         ),
         .library(
             name: "BraintreeDataCollector",
-            targets: ["BraintreeDataCollector", "PPRiskMagnes"]
+            targets: ["BraintreeDataCollector"]
         ),
         .library(
             name: "BraintreeLocalPayment",
-            targets: ["BraintreeLocalPayment", "PPRiskMagnes"]
+            targets: ["BraintreeLocalPayment"]
         ),
         .library(
             name: "BraintreePayPal",
-            targets: ["BraintreePayPal", "PPRiskMagnes"]
+            targets: ["BraintreePayPal"]
         ),
         .library(
             name: "BraintreePayPalMessaging",
@@ -49,7 +49,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreeThreeDSecure",
-            targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
+            targets: ["BraintreeThreeDSecure", "CardinalMobile"]
         ),
         .library(
             name: "BraintreeVenmo",
@@ -59,6 +59,9 @@ let package = Package(
             name: "BraintreeUIComponents",
             targets: ["BraintreeUIComponents"]
         ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/paypal/paypal-risk-ios.git", exact: "5.6.0-beta2")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -85,7 +88,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeDataCollector",
-            dependencies: ["BraintreeCore", "PPRiskMagnes"],
+            dependencies: ["BraintreeCore", .product(name: "PayPalRisk", package: "paypal-risk-ios")],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
@@ -126,7 +129,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreeThreeDSecure",
-            dependencies: ["BraintreeCard", "CardinalMobile", "PPRiskMagnes", "BraintreeCore"],
+            dependencies: ["BraintreeCard", "CardinalMobile", .product(name: "PayPalRisk", package: "paypal-risk-ios"), "BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .binaryTarget(
@@ -137,11 +140,6 @@ let package = Package(
             name: "BraintreeVenmo",
             dependencies: ["BraintreeCore"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
-        ),
-        .binaryTarget(
-            name: "PPRiskMagnes",
-            url: "https://github.com/paypal/paypal-risk-ios/releases/download/5.6.0-beta2/PPRiskMagnes.xcframework.zip",
-            checksum: "66a26c6f8f36ae4bd7d37feb08e3de00b73a2732b62b4f239c419bd6d1513833"
         ),
         .target(
             name: "BraintreeUIComponents",
