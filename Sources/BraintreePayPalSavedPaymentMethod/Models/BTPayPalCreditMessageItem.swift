@@ -32,6 +32,8 @@ struct BTPayPalCreditMessageItem: Equatable {
 
     // MARK: - Initializer
 
+    /// Parses a single content block of a presentment message.
+    /// - Returns: `nil` when the block is not an object.
     init?(json: BTJSON) {
         guard json.isObject else {
             return nil

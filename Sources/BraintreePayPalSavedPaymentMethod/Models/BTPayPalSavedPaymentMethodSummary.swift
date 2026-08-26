@@ -17,6 +17,8 @@ struct BTPayPalSavedPaymentMethodSummary: Equatable {
 
     // MARK: - Initializer
 
+    /// Parses the `paypalFundingInstrumentDetails` field of a `PaypalFundingInstrumentDetails` response.
+    /// - Returns: `nil` when the field is not an object.
     init?(json: BTJSON) {
         guard json.isObject else {
             return nil

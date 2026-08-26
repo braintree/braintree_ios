@@ -26,6 +26,8 @@ struct BTPayPalSavedPaymentMethod: Equatable {
 
     // MARK: - Initializer
 
+    /// Parses a single entry of the `paymentMethods` array.
+    /// - Returns: `nil` when the entry is not an object.
     init?(json: BTJSON) {
         guard json.isObject else {
             return nil

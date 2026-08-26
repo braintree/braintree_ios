@@ -17,6 +17,8 @@ struct BTPayPalPayer: Equatable {
 
     // MARK: - Initializer
 
+    /// Parses the `payer` field of a funding instrument details response.
+    /// - Returns: `nil` when PayPal returns no payer.
     init?(json: BTJSON) {
         guard json.isObject else {
             return nil
