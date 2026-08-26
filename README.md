@@ -1,3 +1,4 @@
+
 # Braintree iOS SDK
 
 [![CocoaPods compatible](https://img.shields.io/cocoapods/v/Braintree.svg?style=flat)](https://cocoapods.org/pods/Braintree)
