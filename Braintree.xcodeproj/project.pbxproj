@@ -1332,7 +1332,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BTCardPaymentActionPayload.swift,
-				BTCardPaymentActionRequest.swift,
+				CreditCard.swift,
 			);
 			target = 622C945D302A2A98005001C2 /* BraintreePaymentActions */;
 		};
@@ -1340,7 +1340,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BTCardPaymentActionPayload.swift,
-				BTCardPaymentActionRequest.swift,
+				CreditCard.swift,
 			);
 			target = 570B936A285397520041BAFE /* BraintreeCore */;
 		};
