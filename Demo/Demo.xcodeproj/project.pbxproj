@@ -72,6 +72,7 @@
 		BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; };
 		BE35FCD92A1BD162008F0326 /* BraintreeLocalPayment.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE35FCD72A1BD162008F0326 /* BraintreeLocalPayment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE45D7152AD97C340047E2C7 /* ContainmentViewController.swift */; };
+		BE500C7D303F25ED00A5FB81 /* PayPalRisk in Frameworks */ = {isa = PBXBuildFile; productRef = BE500C7C303F25ED00A5FB81 /* PayPalRisk */; };
 		BE67CDC02B29FF7B00BA4904 /* PayPalMessagingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */; };
 		BE67CDC22B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */; };
 		BE67CDC32B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -249,6 +250,7 @@
 				8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */,
 				803D64F9256DAF9A00ACE692 /* BraintreeCard.framework in Frameworks */,
 				08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */,
+				BE500C7D303F25ED00A5FB81 /* PayPalRisk in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +543,7 @@
 			name = Demo;
 			packageProductDependencies = (
 				45DDDDA82C08FB0B00C262E5 /* PayPalMessages */,
+				BE500C7C303F25ED00A5FB81 /* PayPalRisk */,
 			);
 			productName = Demo;
 			productReference = A0988E4924DB43DC0095EEEE /* Demo.app */;
@@ -618,6 +621,7 @@
 			mainGroup = A0988E4024DB43DC0095EEEE;
 			packageReferences = (
 				45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
+				BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */,
 			);
 			productRefGroup = A0988E4A24DB43DC0095EEEE /* Products */;
 			projectDirPath = "";
@@ -691,9 +695,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1121,6 +1129,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
+			requirement = {
+				kind = exactVersion;
+				version = "5.6.0-beta2";
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1128,6 +1144,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */;
 			productName = PayPalMessages;
+		};
+		BE500C7C303F25ED00A5FB81 /* PayPalRisk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */;
+			productName = PayPalRisk;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
