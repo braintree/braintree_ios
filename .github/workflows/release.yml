@@ -183,7 +183,10 @@ jobs:
       - name: Publish reference docs
         run: |
           set -euo pipefail
-          gem install jazzy
+          # TODO: We should utilize bundler in the future
+          gem install jazzy --no-document
+          gem uninstall mustache -v 1.1.3 -x
+          gem install mustache -v 1.1.2 --no-document
           brew install sourcekitten
 
           # run sourcekitten on each Swift module individually
