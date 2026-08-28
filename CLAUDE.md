@@ -17,7 +17,7 @@ UnitTests/          # Unit test targets mirroring Sources/ structure
 IntegrationTests/   # API-level integration tests
 Demo/               # Sample app with UI tests (Braintree.xcworkspace)
 SampleApps/         # Minimal apps for validating CocoaPods and SPM installs
-Frameworks/         # Vendored binary frameworks (CardinalMobile, PPRiskMagnes)
+Frameworks/         # Vendored binary frameworks (CardinalMobile)
 Docs/               # Additional documentation
 .github/workflows/  # GitHub Actions CI workflows
 ```
@@ -157,7 +157,11 @@ Follow `STYLE_GUIDE.md` in full. Key highlights:
 
 **Runtime (binary frameworks — do not update without testing 3DS/fraud flows):**
 - `CardinalMobile.xcframework` v2.2.5-9 — 3D Secure certification
-- `PPRiskMagnes.xcframework` v5.6.0 — PayPal fraud detection
+- `PayPalRisk` (PPRiskMagnes binary) v5.6.0 — PayPal fraud detection, hosted at https://github.com/paypal/paypal-risk-ios
+  - SPM: consumed as a `.package` dependency referencing the `PayPalRisk` product (not a raw binaryTarget, to avoid target name collisions with other SDKs in the same app graph)
+  - CocoaPods: consumed as a dependency on the `PayPalRisk` pod
+  - Carthage: consumed via `Carthage/PayPalRisk.json` from the remote repo
+  - `import PPRiskMagnes` in Swift source files remains unchanged
 - `PayPalMessages.xcframework` v1.0.0 — Pay Later messaging UI
 
 **Development only:**

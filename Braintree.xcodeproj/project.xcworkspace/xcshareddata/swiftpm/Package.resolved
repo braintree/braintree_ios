@@ -1,5 +1,5 @@
 {
-  "originHash" : "1bc9f2ac5ce3e7b7333b5cd9855429f9a60c65fc32be228cb6cd9b3c926648de",
+  "originHash" : "bad063ba048ac733551b3c27d65a05e54855db1dab74a858edb2a1a88da7f728",
   "pins" : [
     {
       "identity" : "paypal-messages-ios",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "86bb29908a7493c67af29d6039e3b737229f077a",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "paypal-risk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypal-risk-ios",
+      "state" : {
+        "revision" : "97d70968d508992f99ac9c46dd1da4c0cf0a2d97",
+        "version" : "5.6.0"
       }
     }
   ],
