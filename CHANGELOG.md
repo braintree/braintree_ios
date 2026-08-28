@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.11.0 (2026-08-28)
 * BraintreeDataCollector
   * Fix bug with revoked Magnes certificate (fixes #1857) - Error: The signature of "PPRiskMagnes.xcframework" 
     cannot be validated and may have been compromised. Validation Error: The signing certificate has been 
