@@ -37,16 +37,10 @@ struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
         
         struct Input: Encodable {
             
-            let paymentActionID: String
             let paymentMethod: AnyEncodable
             
             init(request: BTPaymentActionRequest) throws {
-                self.paymentActionID = request.paymentActionID
                 self.paymentMethod = AnyEncodable(try request.paymentMethodParameters())
-            }
-            
-            enum CodingKeys: String, CodingKey {
-                case paymentActionID = "paymentActionId"
             }
         }
     }

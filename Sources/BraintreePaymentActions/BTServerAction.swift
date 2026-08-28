@@ -4,9 +4,6 @@ import Foundation
 /// Only meaningful when `BTPaymentActionResult.type == .serverActionRequired`.
 @objc public enum BTServerAction: Int {
     
-    /// Not applicable. The associated `BTPaymentActionResult.type` is not `.serverActionRequired`
-    case none
-    
     /// The Payment Action must be confirmed.
     case confirm
     

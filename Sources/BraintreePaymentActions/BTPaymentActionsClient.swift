@@ -108,9 +108,12 @@ import BraintreeCore
             return BTPaymentActionResult(type: .processing, id: paymentAction.id)
         case .succeeded:
             return BTPaymentActionResult(type: .completed, id: paymentAction.id)
-        case .canceled, .expired, .unknown:
-            // TODO: Confirm with Android whether EXPIRED/UNKNOWN should map to .canceled
+        case .canceled:
             return BTPaymentActionResult(type: .canceled, id: paymentAction.id)
+        case .expired:
+            return BTPaymentActionResult(type: .expired, id: paymentAction.id)
+        case .unknown:
+            return BTPaymentActionResult(type: .unknown, id: paymentAction.id)
         }
     }
 }

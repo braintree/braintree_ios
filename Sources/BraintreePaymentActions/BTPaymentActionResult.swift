@@ -8,7 +8,7 @@ import Foundation
     
     let type: BTPaymentActionResultType
     let id: String
-    let serverAction: BTServerAction
+    let serverAction: BTServerAction?
     
     // MARK: - Initializer
     
@@ -16,8 +16,8 @@ import Foundation
     /// - Parameters:
     ///   - type: Required: The kind of result. Check this first to determine which other properties are populated.
     ///   - id: Required: The Payment Action ID.
-    ///   - serverAction: Required: The server-driven action to perform next. Only applicable when `type == .serverActionRequired`; otherwise `.none`.
-    public init(type: BTPaymentActionResultType, id: String, serverAction: BTServerAction = .none) {
+    ///   - serverAction: Optional: The server-driven action to perform next. Only applicable when `type == .serverActionRequired`; otherwise `nil`.
+    public init(type: BTPaymentActionResultType, id: String, serverAction: BTServerAction? = nil) {
         self.type = type
         self.id = id
         self.serverAction = serverAction
