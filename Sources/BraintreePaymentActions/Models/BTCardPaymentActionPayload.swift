@@ -15,7 +15,7 @@ struct Card: Encodable {
     let cardholderName: String?
     let billingAddress: BillingAddress?
     
-    init(request: CreditCard) {
+    init(request: BTCreditCard) {
         self.number = request.cardNumber
         self.expirationMonth = request.expirationMonth
         self.expirationYear = request.expirationYear
@@ -34,7 +34,7 @@ struct BillingAddress: Encodable {
     let postalCode: String?
     let countryCodeAlpha2: String?
     
-    init?(request: CreditCard) {
+    init?(request: BTCreditCard) {
         let billingAddressProperties = [
             request.streetAddress,
             request.extendedAddress,
