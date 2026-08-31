@@ -108,7 +108,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     }
 
     func testSubmitForPaymentAction_canceled_returnsCanceledResult() async throws {
-        stubResponse(id: "payment-action-id", status: "CANCELED")
+        stubResponse(id: "payment-action-id", status: "CANCELLED")
 
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 

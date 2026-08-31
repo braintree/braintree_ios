@@ -38,7 +38,7 @@ import Foundation
         case .requiresCapture: return "REQUIRES_CAPTURE"
         case .requiresCustomerAction: return "REQUIRES_CUSTOMER_ACTION"
         case .processing: return "PROCESSING"
-        case .canceled: return "CANCELED"
+        case .canceled: return "CANCELLED"
         case .expired: return "EXPIRED"
         case .unknown: return "UNKNOWN"
         }
