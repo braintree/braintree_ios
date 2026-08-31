@@ -136,4 +136,4 @@ DEPENDENCIES
   mustache (= 1.1.2)
 
 BUNDLED WITH
-   2.6.9
+  4.0.19
