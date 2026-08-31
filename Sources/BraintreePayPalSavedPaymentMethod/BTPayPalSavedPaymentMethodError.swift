@@ -1,6 +1,6 @@
 import Foundation
 
-enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError, Equatable {
+public enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. The authorization used to initialize the client is not a client token.
     case invalidAuthorization
@@ -20,15 +20,15 @@ enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError,
     /// 5. PayPal returned no Pay Later message to display for this buyer.
     case missingPreferredMessage
 
-    static var errorDomain: String {
+    public static var errorDomain: String {
         "com.braintreepayments.BTPayPalSavedPaymentMethodErrorDomain"
     }
 
-    var errorCode: Int {
+    public var errorCode: Int {
         rawValue
     }
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidAuthorization:
             return "Invalid authorization. This feature can only be used with a client token."

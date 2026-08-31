@@ -2607,6 +2607,14 @@
 				FE0300000000000000000001 /* Models */,
 				FE0100000000000000000009 /* BTPayPalSavedPaymentMethodClient.swift */,
 				FE0100000000000000000007 /* BTPayPalSavedPaymentMethodError.swift */,
+				FE0100000000000000000001 /* BTPayPalFundingInstrumentFetchType.swift */,
+				FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */,
+				FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */,
+				FE0100000000000000000015 /* BTPayPalCreditMessagingResult.swift */,
+				FE0100000000000000000004 /* BTPayPalSavedPaymentMethod.swift */,
+				FE0100000000000000000005 /* BTPayPalSavedPaymentMethodSummary.swift */,
+				FE0100000000000000000002 /* BTPayPalSavedPaymentMethodType.swift */,
+				FE0100000000000000000003 /* BTPayPalPayer.swift */,
 				1E79542E9F427658B9629CB3 /* PayPalSavedPaymentMethod+Bundle.swift */,
 				0F08462435EF3B671689B7D9 /* PrivacyInfo.xcprivacy */,
 				A55DA96FDE02C0C017EA1056 /* Resources */,
@@ -2618,14 +2626,6 @@
 		FE0300000000000000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				FE0100000000000000000001 /* BTPayPalFundingInstrumentFetchType.swift */,
-				FE0100000000000000000013 /* BTPayPalCreditMessageItem.swift */,
-				FE0100000000000000000014 /* BTPayPalCreditMessageItemType.swift */,
-				FE0100000000000000000015 /* BTPayPalCreditMessagingResult.swift */,
-				FE0100000000000000000004 /* BTPayPalSavedPaymentMethod.swift */,
-				FE0100000000000000000005 /* BTPayPalSavedPaymentMethodSummary.swift */,
-				FE0100000000000000000002 /* BTPayPalSavedPaymentMethodType.swift */,
-				FE0100000000000000000003 /* BTPayPalPayer.swift */,
 				FE0100000000000000000016 /* PayPalCreditMessagingPOSTBody.swift */,
 				FE0100000000000000000006 /* PayPalFundingInstrumentDetailsGraphQLBody.swift */,
 			);

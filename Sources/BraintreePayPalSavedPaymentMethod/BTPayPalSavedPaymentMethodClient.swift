@@ -16,7 +16,8 @@ final class BTPayPalSavedPaymentMethodClient {
     // MARK: - Initializer
 
     /// Creates a `BTPayPalSavedPaymentMethodClient`
-    /// - Parameter authorization: A client token generated with the buyer's payment method ID
+    /// - Parameter authorization: A client token generated with the buyer's payment method ID. A tokenization key
+    ///   cannot be used — it carries no `paymentMethodIdJwt`, so the saved funding instrument cannot be resolved.
     init(authorization: String) {
         self.apiClient = BTAPIClient(authorization: authorization)
     }
@@ -31,6 +32,8 @@ final class BTPayPalSavedPaymentMethodClient {
     ///   - merchantAccountID: The merchant account the funding instrument is fetched against.
     /// - Returns: A `BTPayPalSavedPaymentMethodSummary` describing what to display for the buyer
     /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or the response cannot be parsed
+    /// - Note: Requires a client token. Throws `BTPayPalSavedPaymentMethodError.invalidAuthorization` when initialized
+    ///   with a tokenization key, which carries no `paymentMethodIdJwt`.
     func fetchPaymentMethod(
         fundingInstrumentType: BTPayPalFundingInstrumentFetchType,
         orderID: String? = nil,
@@ -88,6 +91,8 @@ final class BTPayPalSavedPaymentMethodClient {
     /// - Returns: A `BTPayPalCreditMessagingResult` describing the message to render
     /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or PayPal returns no message
     /// - Note: The message is additive. Callers are expected to hide the row when this throws rather than fail checkout.
+    /// - Note: Requires a client token. Throws `BTPayPalSavedPaymentMethodError.invalidAuthorization` when initialized
+    ///   with a tokenization key, since the PayPal API rail authenticates with the client token's bearer.
     func fetchCreditPresentmentMessages(
         amount: String,
         currencyCode: String
