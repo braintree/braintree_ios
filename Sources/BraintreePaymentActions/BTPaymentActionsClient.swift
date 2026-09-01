@@ -98,7 +98,10 @@ import BraintreeCore
             )
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.decodingFailure.errorDescription)
+            apiClient.sendAnalyticsEvent(
+                BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed,
+                errorDescription: BTPaymentActionError.decodingFailure.errorDescription
+            )
             throw error
         }
     }
