@@ -77,17 +77,25 @@ import BraintreeCore
             let paymentActionJSON: BTJSON = body?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
             
             guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
-                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.missingID.errorDescription)
+                apiClient.sendAnalyticsEvent(
+                    BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed,
+                    errorDescription: BTPaymentActionError.missingID.errorDescription
+                )
                 throw BTPaymentActionError.missingID
             }
             
             guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
-                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.missingStatus.errorDescription)
+                apiClient.sendAnalyticsEvent(
+                    BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed,
+                    errorDescription: BTPaymentActionError.missingStatus.errorDescription
+                )
                 throw BTPaymentActionError.missingStatus
             }
             
             let status = BTPaymentActionStatus.status(from: statusString)
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodSucceeded)
+            apiClient.sendAnalyticsEvent(
+                BTPaymentActionAnalytics.paymentActionsSetPaymentMethodSucceeded
+            )
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
             apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.decodingFailure.errorDescription)
