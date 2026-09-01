@@ -1,7 +1,7 @@
 import Foundation
 
 /// The card details to submit as the payment method for a Payment Action.
-public class BTCardPaymentActionRequest: BTPaymentActionRequest {
+@objcMembers public class BTCreditCard: BTPaymentActionRequest {
     
     // MARK: - Internal Properties
     
