@@ -3,10 +3,23 @@ import Foundation
 /// The card payment method payload submitted to a Payment Action via `BTPaymentActionsClient`
 struct BTCardPaymentMethodPayload: Encodable {
     
-    let card: Card
+    let paymentMethodDetails: PaymentMethodDetails
+    
+    init(request: BTCreditCard) {
+        self.paymentMethodDetails = PaymentMethodDetails(request: request)
+    }
 }
 
-struct Card: Encodable {
+struct PaymentMethodDetails: Encodable {
+    
+    let creditCard: CreditCard
+    
+    init(request: BTCreditCard) {
+        self.creditCard = CreditCard(request: request)
+    }
+}
+
+struct CreditCard: Encodable {
     
     let number: String
     let expirationMonth: String
