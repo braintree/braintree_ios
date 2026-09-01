@@ -70,24 +70,27 @@ import BraintreeCore
     func setPaymentActionPaymentMethod<Body: BTGraphQLEncodableBody>(
         _ body: Body
     ) async throws -> BTPaymentAction {
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodStarted)
         do {
             let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
             
             let paymentActionJSON: BTJSON = body?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
             
-            // TODO: Verify and ensure these error types are correct in a later PR.
             guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
+                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.missingID.errorDescription)
                 throw BTPaymentActionError.missingID
             }
             
             guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
+                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.missingStatus.errorDescription)
                 throw BTPaymentActionError.missingStatus
             }
             
             let status = BTPaymentActionStatus.status(from: statusString)
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodSucceeded)
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
-            // TODO: Replace with exact error type in a later PR.
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentMethodFailed, errorDescription: BTPaymentActionError.decodingFailure.errorDescription)
             throw error
         }
     }
