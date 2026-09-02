@@ -13,7 +13,11 @@ struct PayPalCreditMessagingPOSTBody: Encodable {
     }
 
     init(amount: String, currencyCode: String) {
-        self.messagePlacements = [MessagePlacement(amount: MessagePlacement.Amount(currencyCode: currencyCode, value: amount))]
+        self.messagePlacements = [
+            MessagePlacement(
+                amount: MessagePlacement.Amount(currencyCode: currencyCode, value: amount)
+            )
+        ]
     }
 
     struct MessagePlacement: Encodable {

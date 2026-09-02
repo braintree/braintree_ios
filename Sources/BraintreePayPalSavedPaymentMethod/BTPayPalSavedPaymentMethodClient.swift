@@ -29,7 +29,8 @@ final class BTPayPalSavedPaymentMethodClient {
     ///   - fundingInstrumentType: Which funding instrument to resolve. `stickyFI` uses the payment method ID JWT carried by the
     ///     client token; `fiFromApprovedCheckout` requires `orderID`.
     ///   - orderID: The approved checkout order ID. Required for `fiFromApprovedCheckout` and ignored otherwise.
-    ///   - merchantAccountID: The merchant account the funding instrument is fetched against.
+    ///   - merchantAccountID: Optional. A non-default merchant account to resolve the funding instrument against. Applies to
+    ///     both fetch types and is omitted from the request when nil, so the default merchant account is used.
     /// - Returns: A `BTPayPalSavedPaymentMethodSummary` describing what to display for the buyer
     /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or the response cannot be parsed
     /// - Note: Requires a client token. Throws `BTPayPalSavedPaymentMethodError.invalidAuthorization` when initialized
