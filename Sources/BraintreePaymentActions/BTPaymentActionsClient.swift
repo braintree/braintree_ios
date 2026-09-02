@@ -70,7 +70,7 @@ import BraintreeCore
     func setPaymentActionPaymentMethod<Body: BTGraphQLEncodableBody>(
         _ body: Body
     ) async throws -> BTPaymentAction {
-        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.paymentActionsSetPaymentActionPaymentMethodStarted)
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.setPaymentActionPaymentMethodStarted)
         do {
             let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
             
@@ -78,7 +78,7 @@ import BraintreeCore
             
             guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
                 apiClient.sendAnalyticsEvent(
-                    BTPaymentActionAnalytics.paymentActionsSetPaymentActionPaymentMethodFailed,
+                    BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
                     errorDescription: BTPaymentActionError.missingID.errorDescription
                 )
                 throw BTPaymentActionError.missingID
@@ -86,7 +86,7 @@ import BraintreeCore
             
             guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
                 apiClient.sendAnalyticsEvent(
-                    BTPaymentActionAnalytics.paymentActionsSetPaymentActionPaymentMethodFailed,
+                    BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
                     errorDescription: BTPaymentActionError.missingStatus.errorDescription
                 )
                 throw BTPaymentActionError.missingStatus
@@ -94,12 +94,12 @@ import BraintreeCore
             
             let status = BTPaymentActionStatus.status(from: statusString)
             apiClient.sendAnalyticsEvent(
-                BTPaymentActionAnalytics.paymentActionsSetPaymentActionPaymentMethodSucceeded
+                BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded
             )
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
             apiClient.sendAnalyticsEvent(
-                BTPaymentActionAnalytics.paymentActionsSetPaymentActionPaymentMethodFailed,
+                BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded,
                 errorDescription: error.localizedDescription
             )
             throw error
