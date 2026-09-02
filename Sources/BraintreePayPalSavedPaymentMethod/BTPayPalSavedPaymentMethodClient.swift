@@ -39,9 +39,9 @@ final class BTPayPalSavedPaymentMethodClient {
         orderID: String? = nil,
         merchantAccountID: String? = nil
     ) async throws -> BTPayPalSavedPaymentMethodSummary {
-        guard apiClient.authorization.type == .clientToken else {
-            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
-        }
+        // TODO: emit the sticky-FI and post-edit refresh analytics events once the catalog is approved.
+
+        try validateClientTokenAuthorization()
 
         // The API rejects the request unless exactly the identity field matching the fetch type is sent.
         let paymentMethodIDJWT: String?
@@ -71,11 +71,7 @@ final class BTPayPalSavedPaymentMethodClient {
             merchantAccountID: merchantAccountID
         )
 
-        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
-
-        guard let body else {
-            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
-        }
+        let body = try await post("", parameters: parameters, httpType: .graphQLAPI)
 
         guard let summary = BTPayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
             throw BTPayPalSavedPaymentMethodError.failedToParseSummary
@@ -97,26 +93,46 @@ final class BTPayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> BTPayPalCreditMessagingResult {
-        guard apiClient.authorization.type == .clientToken else {
-            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
-        }
+        // TODO: emit the credit messaging analytics events once the catalog is approved.
+
+        try validateClientTokenAuthorization()
 
         let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
 
-        let (body, _) = try await apiClient.post(
+        let body = try await post(
             "/v2/credit/fetch-presentment-messages",
             parameters: parameters,
             httpType: .payPalAPI
         )
-
-        guard let body else {
-            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
-        }
 
         guard let result = BTPayPalCreditMessagingResult(json: body) else {
             throw BTPayPalSavedPaymentMethodError.missingPreferredMessage
         }
 
         return result
+    }
+
+    // MARK: - Private Methods
+
+    /// The GraphQL rail reads the client token's `paymentMethodIdJwt` and the PayPal API rail authenticates with its bearer,
+    /// so neither works with a tokenization key.
+    private func validateClientTokenAuthorization() throws {
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+        }
+    }
+
+    private func post(
+        _ path: String,
+        parameters: Encodable,
+        httpType: BTAPIClientHTTPService
+    ) async throws -> BTJSON {
+        let (body, _) = try await apiClient.post(path, parameters: parameters, httpType: httpType)
+
+        guard let body else {
+            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+        }
+
+        return body
     }
 }

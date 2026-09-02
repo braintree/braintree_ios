@@ -11,7 +11,7 @@ public enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, Localize
     /// 2. An order ID was not provided for a `fiFromApprovedCheckout` fetch.
     case missingOrderID
 
-    /// 3. A nil body was returned from the funding instrument details request and no error was returned.
+    /// 3. A nil body was returned from the request and no error was returned.
     case emptyBodyReturned
 
     /// 4. The funding instrument details could not be parsed from the response.
@@ -37,7 +37,7 @@ public enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, Localize
         case .missingOrderID:
             return "An order ID is required to fetch the funding instrument selected on an approved checkout."
         case .emptyBodyReturned:
-            return "An empty body was returned from the funding instrument details request."
+            return "An empty body was returned from the request."
         case .failedToParseSummary:
             return "Unable to parse the funding instrument details from the response."
         case .missingPreferredMessage:
