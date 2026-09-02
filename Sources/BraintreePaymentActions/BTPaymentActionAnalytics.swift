@@ -4,7 +4,7 @@ enum BTPaymentActionAnalytics {
     
     // MARK: - Payment Action Events
     
-    static let paymentActionsSetPaymentMethodStarted = "card:payment-actions:set-payment-method:started"
-    static let paymentActionsSetPaymentMethodSucceeded = "card:payment-actions:set-payment-method:succeeded"
-    static let paymentActionsSetPaymentMethodFailed = "card:payment-actions:set-payment-method:failed"
+    static let paymentActionsSetPaymentActionPaymentMethodStarted = "payment-actions:set-payment-action-payment-method:started"
+    static let paymentActionsSetPaymentActionPaymentMethodSucceeded = "payment-actions:set-payment-action-payment-method:succeeded"
+    static let paymentActionsSetPaymentActionPaymentMethodFailed = "payment-actions:set-payment-action-payment-method:failed"
 }
