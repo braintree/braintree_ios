@@ -1,0 +1,52 @@
+import Foundation
+
+#if canImport(BraintreeCore)
+import BraintreeCore
+#endif
+
+/// The Pay Later message to display alongside a vaulted PayPal payment method.
+struct BTPayPalCreditMessagingResult: Equatable {
+
+    // MARK: - Internal Properties
+
+    /// The identifier of the message that was selected.
+    let messageID: String?
+
+    /// The template the message was built from, for example `"PLST_SQ"`.
+    let messageType: String?
+
+    /// The main text and logo blocks of the message.
+    let mainItems: [BTPayPalCreditMessageItem]
+
+    /// Legal disclaimers that PayPal requires to be displayed with `mainItems`.
+    let disclaimerItems: [BTPayPalCreditMessageItem]
+
+    /// The interactive blocks of the message, such as the "Learn more" link.
+    let actionItems: [BTPayPalCreditMessageItem]
+
+    /// The tracking beacon to fire once the message is on screen.
+    let impressionURL: URL?
+
+    // MARK: - Initializer
+
+    /// Parses the preferred message out of a `v2/credit/fetch-presentment-messages` response.
+    /// - Returns: `nil` when PayPal has no message to show for this buyer.
+    init?(json: BTJSON) {
+        let preferredMessage = json["messages"][0]["preferred_message"]
+        let content = preferredMessage["content"]
+        let mainItems = content["main_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+
+        // Reporting success with no copy would fire the impression beacon for a message the buyer never saw.
+        // Image blocks carry their copy in `alternativeText` rather than `text`.
+        guard mainItems.contains(where: { $0.text?.isEmpty == false || $0.alternativeText?.isEmpty == false }) else {
+            return nil
+        }
+
+        self.messageID = preferredMessage["id"].asString()
+        self.messageType = preferredMessage["type"].asString()
+        self.mainItems = mainItems
+        self.disclaimerItems = content["disclaimer_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        self.actionItems = content["action_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        self.impressionURL = preferredMessage["analytics"]["impression_url"].asURL()
+    }
+}

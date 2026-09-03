@@ -250,11 +250,25 @@ import BraintreeCore
 
 extension BTPayPalCheckoutRequest {
 
-    /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    /// :nodoc: Not part of the public API. `public` is required by `@_spi` because the symbol
+    /// crosses a module boundary; `@_spi` is what restricts visibility, and the method does not
+    /// exist under a plain `import BraintreePayPal`.
+    ///
+    /// `@_spi` has no bearing on Objective-C header generation, and this type is `@objcMembers`,
+    /// so `@nonobjc` guards that side independently. It is inert while this signature stays
+    /// `async rethrows`, and load-bearing if it is ever simplified.
+    ///
+    /// Scoped rather than a plain setter so the merchant's request is not left in edit mode after
+    /// the call — they may reuse the same instance for an ordinary checkout.
     @_documentation(visibility: private)
     @_spi(BraintreePayPalSavedPaymentMethod)
     @nonobjc
-    public func enableEditBillingAgreement() {
+    public func withEditBillingAgreement(
+        _ body: () async throws -> BTPayPalAccountNonce
+    ) async rethrows -> BTPayPalAccountNonce {
+        let previous = editBillingAgreement
         editBillingAgreement = true
+        defer { editBillingAgreement = previous }
+        return try await body()
     }
 }
