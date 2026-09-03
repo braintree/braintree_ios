@@ -60,6 +60,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
     private var fiStateBeforeEdit: FIState?
 
+    /// Set when the sticky FI fetch fails, so a credit-messaging response that lands afterwards
+    /// does not reinstate the Pay Later row.
+    private var fiFetchFailed = false
+
     // MARK: - Initializers
 
     /// `fetchClient` is `nil` for previews, which seed `fiState` directly instead of fetching.
@@ -139,6 +143,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
             fiState = Self.state(from: summary)
         } catch {
             fiState = .brandOnly
+            // The offer is quoted against an instrument we could not resolve, so it must not
+            // outlive the FI row. Credit messaging races this call, hence the flag as well.
+            fiFetchFailed = true
+            creditMessage = nil
         }
     }
 
@@ -163,6 +171,7 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
                 amount: request.amount,
                 currencyCode: request.currencyCode
             )
+            guard !fiFetchFailed else { return }
             creditMessage = CreditMessageContent(result: result)
             learnMoreURL = creditMessage?.learnMoreURL
         } catch {

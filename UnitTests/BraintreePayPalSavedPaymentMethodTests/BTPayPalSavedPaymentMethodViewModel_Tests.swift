@@ -134,6 +134,34 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(sut.fiState, .brandOnly)
     }
 
+    /// The Pay Later offer is quoted against the funding instrument, so it must not survive an
+    /// instrument we could not resolve. Credit messaging is a separate task that can land either
+    /// side of the failure.
+    func testOnAppear_whenTheFIFetchFails_alsoHidesCreditMessaging() async {
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: true)
+        await drainTasks()
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertNil(sut.creditMessage)
+    }
+
+    func testOnAppear_whenCreditMessagingResolvesBeforeTheFIFetchFails_stillHidesIt() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        XCTAssertNotNil(sut.creditMessage)
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertNil(sut.creditMessage)
+    }
+
     func testOnAppear_passesTheMerchantAccountIDFromTheRequest() async {
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
