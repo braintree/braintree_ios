@@ -85,8 +85,15 @@ final class BTPayPalSavedPaymentMethodView_RenderTests: XCTestCase {
         try render(view(state: .loading))
     }
 
-    func testRender_loadingStateWithCreditMessaging_rendersBothSkeletons() throws {
-        try render(view(state: .loading, showCreditMessage: false))
+    func testRender_loadingState_withCreditMessagingDisabled_rendersFISkeletonOnly() throws {
+        var style = BTPayPalSavedPaymentMethodViewStyle()
+        style.showPayPalCreditMessaging = false
+        try render(view(state: .loading, style: style))
+    }
+
+    /// Credit messaging is enabled but has not resolved yet, so both rows shimmer.
+    func testRender_loadingState_withCreditMessagingPending_rendersBothSkeletons() throws {
+        try render(view(state: .loading))
     }
 
     func testRender_instrumentState_rendersCardRow() throws {
@@ -105,6 +112,40 @@ final class BTPayPalSavedPaymentMethodView_RenderTests: XCTestCase {
     func testRender_bankInstrument_rendersBankGlyph() throws {
         let fi = try instrument(type: "BANK", label: "CREDIT UNION 1", lastDigits: "0199")
         try render(view(state: .instrument(fi)))
+    }
+
+    /// PayPal Credit reports a placeholder `lastDigits` of "0000" and no image, so the row must
+    /// render its label alone rather than "••0000" beside a generic glyph.
+    func testRender_payPalCreditPayIn4_rendersLabelOnly() throws {
+        let fi = try instrument(
+            type: "PAYPAL_CREDIT",
+            label: "Pay in 4",
+            lastDigits: "0000",
+            subtype: "PAY_LATER_US"
+        )
+        try render(view(state: .instrument(fi)))
+    }
+
+    func testRender_payPalCreditPayMonthly_rendersLabelOnly() throws {
+        let fi = try instrument(
+            type: "PAYPAL_CREDIT",
+            label: "Pay Monthly",
+            lastDigits: "0000",
+            subtype: "PAY_LATER_US"
+        )
+        try render(view(state: .instrument(fi)))
+    }
+
+    /// Same label and digits, different type. A card renders card art plus "••0000"; PayPal Credit
+    /// renders the label alone, so the two must not produce identical output.
+    func testRender_payPalCreditDiffersFromACardWithTheSameFields() throws {
+        let credit = try instrument(type: "PAYPAL_CREDIT", label: "Pay in 4", lastDigits: "0000")
+        let card = try instrument(type: "CARD", label: "Pay in 4", lastDigits: "0000")
+
+        let creditImage = try render(view(state: .instrument(credit))).pngData()
+        let cardImage = try render(view(state: .instrument(card))).pngData()
+
+        XCTAssertNotEqual(creditImage, cardImage)
     }
 
     func testRender_instrumentWithUnknownType_rendersWithoutTrapping() throws {

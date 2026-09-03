@@ -5,7 +5,8 @@ import UIKit
 ///
 /// The brand mark (badge + "PayPal") sits on the left; the FI (card art + last digits + edit
 /// pencil) sits in a rounded pill to its right. Renders three variants:
-/// - `.instrument` — card art (or generic fallback glyph) + last digits + edit pencil
+/// - `.instrument` — card art (or generic fallback glyph) + last digits + edit pencil, except for
+///   PayPal Credit, which renders its label alone ("Pay in 4", "Pay Monthly")
 /// - `.displayOnly` — buyer email + edit pencil (no-FI-but-email fallback)
 /// - `.brandOnly` — PayPal brand mark only (no-network fallback)
 struct EditFIRow: View {
@@ -87,7 +88,9 @@ struct EditFIRow: View {
             fiPill {
                 HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
                     HStack(spacing: EditFiStyleGuard.Defaults.fundingInstrumentViewGroupSpacing) {
-                        fiIcon(for: summary)
+                        if !isPayPalCredit(summary) {
+                            fiIcon(for: summary)
+                        }
                         Text(fiText(for: summary))
                             .font(fiFont)
                             .foregroundColor(textColor)
@@ -198,7 +201,17 @@ struct EditFIRow: View {
 
     // MARK: - Helpers
 
+    /// PayPal Credit ships no card art and reports a placeholder `lastDigits` of `"0000"`, so the
+    /// label ("Pay in 4", "Pay Monthly") is the only meaningful thing to render.
+    private func isPayPalCredit(_ summary: BTPayPalSavedPaymentMethod) -> Bool {
+        summary.type == .payPalCredit
+    }
+
     private func fiText(for summary: BTPayPalSavedPaymentMethod) -> String {
+        if isPayPalCredit(summary) {
+            return summary.label ?? ""
+        }
+
         guard let lastDigits = summary.lastDigits, !lastDigits.isEmpty else {
             return summary.label ?? ""
         }

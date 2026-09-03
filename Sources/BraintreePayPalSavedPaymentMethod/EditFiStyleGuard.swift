@@ -102,8 +102,8 @@ enum EditFiStyleGuard {
         nonNegative(value ?? Defaults.editIconSize)
     }
 
-    /// Logo width has no SDK-default constant here: callers fall back to the brand cluster's own
-    /// intrinsic size when the merchant leaves it unset.
+    /// Takes a non-optional because the `Defaults.payPalLogoSide` fallback is applied by the
+    /// caller, which is the only place that can tell an unset width from a supplied one.
     static func logoWidth(_ value: CGFloat) -> CGFloat {
         nonNegative(value)
     }

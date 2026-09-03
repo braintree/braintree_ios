@@ -193,16 +193,21 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Runs the edit, then the cosmetic FI refresh. The full-screen loader is held until the nonce
     /// arrives; the FI then shimmers until the refresh settles. The merchant only receives
-    /// `(nonce, error)` — a refresh failure keeps the last-known FI, since the edit itself succeeded.
+    /// `(nonce, error)` — a refresh failure after a successful edit hides the row, since the
+    /// pre-edit instrument is no longer the one that will be charged.
     private func performEdit(
         checkoutRequest: BTPayPalCheckoutRequest,
         request: BTPayPalSavedPaymentMethodRequest
     ) async {
+        // Held locally: `appReturnedToForeground` clears the shared property when the buyer comes
+        // back from the app switch, which happens before this task resumes on that rail.
+        let priorState = fiState
+
         // Every exit path either replaced fiState or must restore what was on screen before the edit.
         var restoresPriorState = true
         defer {
-            if restoresPriorState, let prior = fiStateBeforeEdit {
-                fiState = prior
+            if restoresPriorState {
+                fiState = priorState
             }
             fiStateBeforeEdit = nil
             isEditing = false
@@ -224,7 +229,13 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         creditMessage = nil
         completion(nonce, nil)
 
-        guard let orderID = nonce.paymentID else { return }
+        // Past this point the edit has succeeded, so the pre-edit instrument must never be shown again.
+        restoresPriorState = false
+
+        guard let orderID = nonce.paymentID else {
+            fiState = .hidden
+            return
+        }
 
         fiState = .loading
 
@@ -235,9 +246,10 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
                 merchantAccountID: request.merchantAccountID
             )
             fiState = Self.state(from: summary)
-            restoresPriorState = false
         } catch {
-            // Cosmetic refresh only — the defer restores the pre-edit FI.
+            // The edit succeeded, so the pre-edit instrument will not be charged. Showing it again
+            // would misstate the payment method, so hide the row instead.
+            fiState = .hidden
         }
     }
 
