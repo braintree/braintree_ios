@@ -1,12 +1,12 @@
 import Foundation
 
 /// The card payment method payload submitted to a Payment Action via `BTPaymentActionsClient`
-struct BTCardPaymentMethodPayload: Encodable {
+struct CardPaymentMethodPayload: Encodable {
     
     let paymentMethodDetails: PaymentMethodDetails
     
-    init(request: BTCreditCard) {
-        self.paymentMethodDetails = PaymentMethodDetails(request: request)
+    init(card: BTCreditCard) {
+        self.paymentMethodDetails = PaymentMethodDetails(card: card)
     }
 }
 
@@ -14,8 +14,8 @@ struct PaymentMethodDetails: Encodable {
     
     let creditCard: CreditCard
     
-    init(request: BTCreditCard) {
-        self.creditCard = CreditCard(request: request)
+    init(card: BTCreditCard) {
+        self.creditCard = CreditCard(card: card)
     }
 }
 
@@ -28,13 +28,13 @@ struct CreditCard: Encodable {
     let cardholderName: String?
     let billingAddress: BillingAddress?
     
-    init(request: BTCreditCard) {
-        self.number = request.cardNumber
-        self.expirationMonth = request.expirationMonth
-        self.expirationYear = request.expirationYear
-        self.cvv = request.cvv
-        self.cardholderName = request.cardholderName
-        self.billingAddress = BillingAddress(request: request)
+    init(card: BTCreditCard) {
+        self.number = card.cardNumber
+        self.expirationMonth = card.expirationMonth
+        self.expirationYear = card.expirationYear
+        self.cvv = card.cvv
+        self.cardholderName = card.cardholderName
+        self.billingAddress = BillingAddress(card: card)
     }
 }
 
@@ -47,25 +47,25 @@ struct BillingAddress: Encodable {
     let postalCode: String?
     let countryCodeAlpha2: String?
     
-    init?(request: BTCreditCard) {
+    init?(card: BTCreditCard) {
         let billingAddressProperties = [
-            request.streetAddress,
-            request.extendedAddress,
-            request.locality,
-            request.region,
-            request.postalCode,
-            request.countryCodeAlpha2
+            card.streetAddress,
+            card.extendedAddress,
+            card.locality,
+            card.region,
+            card.postalCode,
+            card.countryCodeAlpha2
         ]
         
         if billingAddressProperties.allSatisfy({ $0?.isEmpty ?? true }) {
             return nil
         }
         
-        self.streetAddress = request.streetAddress
-        self.extendedAddress = request.extendedAddress
-        self.locality = request.locality
-        self.region = request.region
-        self.postalCode = request.postalCode
-        self.countryCodeAlpha2 = request.countryCodeAlpha2
+        self.streetAddress = card.streetAddress
+        self.extendedAddress = card.extendedAddress
+        self.locality = card.locality
+        self.region = card.region
+        self.postalCode = card.postalCode
+        self.countryCodeAlpha2 = card.countryCodeAlpha2
     }
 }
