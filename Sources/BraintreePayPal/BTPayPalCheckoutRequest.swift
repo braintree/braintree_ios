@@ -250,7 +250,9 @@ import BraintreeCore
 
 extension BTPayPalCheckoutRequest {
 
-    /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    /// :nodoc: Not part of the public API. `@_spi` hides this from Swift merchants but has no
+    /// effect on the generated Objective-C header, so `@nonobjc` guards that side independently:
+    /// it is inert while this signature stays generic and `async`, and load-bearing if it stops being.
     ///
     /// Scoped rather than a plain setter so the merchant's request is not left in edit mode after
     /// the call — they may reuse the same instance for an ordinary checkout.
