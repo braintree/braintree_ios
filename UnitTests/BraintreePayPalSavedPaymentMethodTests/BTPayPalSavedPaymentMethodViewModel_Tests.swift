@@ -60,6 +60,19 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
+    private static func payerOnlyResponse(isEditable: Bool = true) -> BTJSON {
+        BTJSON(
+            value: [
+                "data": [
+                    "paypalFundingInstrumentDetails": [
+                        "payer": ["email": "buyer@example.com", "editable": isEditable],
+                        "paymentMethods": []
+                    ]
+                ]
+            ] as [String: Any]
+        )
+    }
+
     /// `onAppear` and `requestChanged` kick off detached `Task`s, so give them a beat to settle.
     private func drainTasks() async {
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -135,8 +148,7 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     /// The Pay Later offer is quoted against the funding instrument, so it must not survive an
-    /// instrument we could not resolve. Credit messaging is a separate task that can land either
-    /// side of the failure.
+    /// instrument we could not resolve.
     func testOnAppear_whenTheFIFetchFails_alsoHidesCreditMessaging() async {
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
         let sut = makeSUT()
@@ -145,10 +157,12 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await drainTasks()
 
         XCTAssertEqual(sut.fiState, .brandOnly)
-        XCTAssertNil(sut.creditMessage)
+        XCTAssertFalse(sut.showsCreditMessaging)
     }
 
-    func testOnAppear_whenCreditMessagingResolvesBeforeTheFIFetchFails_stillHidesIt() async {
+    /// Derived rather than latched, so a messaging response landing after the failure cannot
+    /// reinstate the row.
+    func testShowsCreditMessaging_whenCreditMessagingResolvesBeforeTheFIFetchFails_staysHidden() async {
         let sut = makeSUT()
         await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
         XCTAssertNotNil(sut.creditMessage)
@@ -159,7 +173,44 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await drainTasks()
 
         XCTAssertEqual(sut.fiState, .brandOnly)
-        XCTAssertNil(sut.creditMessage)
+        XCTAssertFalse(sut.showsCreditMessaging)
+    }
+
+    /// An empty `paymentMethods` alongside an editable payer is a successful fetch, not a failure,
+    /// so the Pay Later row still applies.
+    func testOnAppear_whenAnEditablePayerIsReturned_keepsCreditMessaging() async {
+        mockAPIClient.cannedResponseBody = Self.payerOnlyResponse()
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+
+        XCTAssertEqual(sut.fiState, .displayOnly(email: "buyer@example.com", isEditable: true))
+        XCTAssertTrue(sut.showsCreditMessaging)
+    }
+
+    /// A payer who cannot change the funding instrument cannot act on the offer, so it is hidden
+    /// along with the edit pencil.
+    func testOnAppear_whenThePayerIsNotEditable_hidesCreditMessaging() async {
+        mockAPIClient.cannedResponseBody = Self.payerOnlyResponse(isEditable: false)
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+
+        XCTAssertEqual(sut.fiState, .displayOnly(email: "buyer@example.com", isEditable: false))
+        XCTAssertFalse(sut.showsCreditMessaging)
+    }
+
+    func testShowsCreditMessaging_whileLoadingAndForInstruments_isTrue() async {
+        let sut = makeSUT()
+        XCTAssertTrue(sut.showsCreditMessaging)
+
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+
+        XCTAssertTrue(sut.showsCreditMessaging)
     }
 
     func testOnAppear_passesTheMerchantAccountIDFromTheRequest() async {

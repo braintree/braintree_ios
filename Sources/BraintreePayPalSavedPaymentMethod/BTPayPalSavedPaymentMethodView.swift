@@ -154,7 +154,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     }
 
     @ViewBuilder private var creditRegion: some View {
-        if style.showPayPalCreditMessaging, !viewModel.didCompleteEdit {
+        if style.showPayPalCreditMessaging, !viewModel.didCompleteEdit, viewModel.showsCreditMessaging {
             Group {
                 // Keep an already-resolved message on screen while the FI refreshes after an edit.
                 if let content = viewModel.creditMessage {
