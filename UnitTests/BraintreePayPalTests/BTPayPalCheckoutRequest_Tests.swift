@@ -290,12 +290,14 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
     // MARK: - withEditBillingAgreement
 
-    func testWithEditBillingAgreement_setsFlagForTheDurationAndRestoresItAfterwards() async {
+    func testWithEditBillingAgreement_setsFlagForTheDurationAndRestoresItAfterwards() async throws {
         let request = BTPayPalCheckoutRequest(amount: "1")
+        let nonce = try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": "fake-nonce"])))
         var flagDuringBody = false
 
-        await request.withEditBillingAgreement {
+        _ = await request.withEditBillingAgreement {
             flagDuringBody = request.editBillingAgreement
+            return nonce
         }
 
         XCTAssertTrue(flagDuringBody)
