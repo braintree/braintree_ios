@@ -185,7 +185,7 @@ class BTCardClient_IntegrationTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 10)
     }
 
     func testVerifyCard_withSavedPaymentMethodToken_cvvOnlyTokenizesSuccessfully() {

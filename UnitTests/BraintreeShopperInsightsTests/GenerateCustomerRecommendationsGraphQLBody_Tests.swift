@@ -34,6 +34,7 @@ class GenerateCustomerRecommendationsGraphQLBody_Tests: XCTestCase {
                         paymentOption
                         recommendedPriority
                     }
+                    expiresAt
                 }
             }
             """
