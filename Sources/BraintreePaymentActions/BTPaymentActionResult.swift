@@ -6,9 +6,9 @@ import Foundation
     
     // MARK: - Internal Properties
     
-    let type: BTPaymentActionResultType
-    let id: String
-    let serverAction: BTServerAction?
+    public let type: BTPaymentActionResultType
+    public let id: String
+    public let serverAction: BTServerAction?
     
     // MARK: - Initializer
     
