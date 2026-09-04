@@ -12,15 +12,25 @@ The Braintree iOS SDK is a multi-module Swift library that enables merchants to 
 ## Repository Structure
 
 ```
-Sources/            # 13 SDK modules (one directory per module)
+Sources/            # 13 SDK modules (one directory per module) — the SDK itself
 UnitTests/          # Unit test targets mirroring Sources/ structure
-IntegrationTests/   # API-level integration tests
-Demo/               # Sample app with UI tests (Braintree.xcworkspace)
-SampleApps/         # Minimal apps for validating CocoaPods and SPM installs
-Frameworks/         # Vendored binary frameworks (CardinalMobile)
-Docs/               # Additional documentation
+IntegrationTests/   # API-level integration tests against sandbox (require credentials)
+Demo/               # Sample app exercising the SDK, with its own UI Tests target
+SampleApps/         # Minimal CarthageTest and SPMTest apps that validate package installs (not feature demos)
+Frameworks/         # Vendored binary frameworks (e.g. CardinalMobile XCFrameworks)
+Docs/               # Standalone docs/guides that don't fit README/DEVELOPMENT/STYLE_GUIDE
 .github/workflows/  # GitHub Actions CI workflows
+Braintree.podspec   # CocoaPods distribution spec
+Package.swift       # SPM module/target definitions
+Podfile             # Dev workspace dependencies (Demo, tests) — not the podspec
 ```
+
+- `Sources/` vs `UnitTests/` vs `IntegrationTests/` vs `Demo/`: `Sources/` is shipped SDK code; `UnitTests/` are isolated, mocked tests mirroring `Sources/` 1:1 per module; `IntegrationTests/` hit real Braintree sandbox endpoints; `Demo/` is a real app for manual/UI testing, not an automated test suite itself (though it has a `UI Tests` target).
+- `SampleApps/` exists purely to catch packaging/dependency-resolution regressions (Carthage, SPM) — it is not where you'd add a feature example; that's `Demo/`.
+
+### Within a module (`Sources/<ModuleName>/`)
+
+Most modules are flat (all client/request/nonce/error/analytics types at the top level) with an optional `Models/` subdirectory. Only add a subdirectory when a module has enough related files to warrant it (e.g. `BraintreeCore/Analytics`, `BraintreeCore/Authorization`, `BraintreeCore/Configuration`; `BraintreeThreeDSecure/V2UICustomization`; `BraintreeUIComponents/CardFields`). Don't create a new subdirectory for one or two files — see [Module `Models` Directory](#module-models-directory) below for the one subdirectory convention that's consistent across every module.
 
 ### SDK Modules (`Sources/`)
 
@@ -68,6 +78,9 @@ All tests are run via Xcode or `xcodebuild`. Target the `Braintree.xcworkspace`.
 CI uses iPhone 16 Pro / iOS 18.5 simulator on macOS 15 with Xcode 16.4.
 
 ## Architecture & Key Patterns
+
+### Module `Models` Directory
+Each module's `Sources/<ModuleName>/Models/` directory is reserved for **network/GraphQL data models only** — types whose sole purpose is shaping a request or response body (e.g. `CreditCardPOSTBody`, `PayPalVaultPOSTBody`, `CreditCardGraphQLBody`). It is not a general home for business-logic or public-facing types. Conforming to `Encodable`/`Codable` does not by itself qualify a type for `Models` — request/business-logic types like `BTPayPalRequest` or `BTPayPalCampaign` are also `Encodable` but live in the module's top-level directory alongside the client and other public types. See `STYLE_GUIDE.md` for the full note.
 
 ### Client / Provider Split
 Public-facing types are **Clients** (e.g., `BTCardClient`, `BTPayPalClient`). Internal implementation details live in **Providers** (e.g., `BTThreeDSecureV2Provider`). Keep this separation when adding new functionality.
