@@ -10,7 +10,7 @@ struct AmexView: View {
     let onProgress: (String?) -> Void
     let onComplete: (BTPaymentMethodNonce?) -> Void
 
-    @State private var isProcessing = false
+    @State private var loadingCardNumber: String?
 
     init(
         amexClient: BTAmericanExpressClient,
@@ -29,27 +29,29 @@ struct AmexView: View {
             Button("Valid Card") {
                 Task { await getRewards(for: "371260714673002") }
             }
-            .disabled(isProcessing)
+            .opacity(loadingCardNumber == "371260714673002" ? 0.5 : 1.0)
+            .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Insufficient Points Card") {
                 Task { await getRewards(for: "371544868764018") }
             }
-            .disabled(isProcessing)
+            .opacity(loadingCardNumber == "371544868764018" ? 0.5 : 1.0)
+            .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Ineligible Card") {
                 Task { await getRewards(for: "378267515471109") }
             }
             .foregroundColor(.red)
-            .disabled(isProcessing)
+            .opacity(loadingCardNumber == "378267515471109" ? 0.5 : 1.0)
+            .allowsHitTesting(loadingCardNumber == nil)
         }
         .padding(.horizontal)
-        .opacity(isProcessing ? 0.5 : 1.0)
     }
 
     private func getRewards(for cardNumber: String) async {
-        guard !isProcessing else { return }
-        isProcessing = true
-        defer { isProcessing = false }
+        guard loadingCardNumber == nil else { return }
+        loadingCardNumber = cardNumber
+        defer { loadingCardNumber = nil }
 
         let card = BTCard(
             number: cardNumber,
@@ -93,7 +95,7 @@ struct AmexView: View {
 
 #Preview {
     AmexView(
-        amexClient: BTAmericanExpressClient(authorization: "sandbox_d54x7ckf_hh4cpc39zq4rgjcg"),
-        cardClient: BTCardClient(authorization: "sandbox_d54x7ckf_hh4cpc39zq4rgjcg")
+        amexClient: BTAmericanExpressClient(authorization: "sandbox_tokenization_key"),
+        cardClient: BTCardClient(authorization: "sandbox_tokenization_key")
     )
 }
