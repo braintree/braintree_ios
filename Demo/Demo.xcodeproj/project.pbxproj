@@ -31,6 +31,7 @@
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
 		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
 		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
+		62F1F560304B5E9400C180C2 /* AmexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F1F55F304B5E9400C180C2 /* AmexView.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
 		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
 		8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8028B9772B28D42400C88CE8 /* BraintreeShopperInsights.framework */; };
@@ -163,6 +164,7 @@
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
 		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
 		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
+		62F1F55F304B5E9400C180C2 /* AmexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmexView.swift; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		7B20BE362F706797A0A110B0 /* UIViewController+Embed.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIViewController+Embed.swift"; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				62F1F55F304B5E9400C180C2 /* AmexView.swift */,
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				0827D1663013AEDB00D26DC4 /* ApplePayView.swift */,
@@ -738,6 +741,7 @@
 				A0988FFA24DB44B20095EEEE /* BraintreeDemoMerchantAPIClient.swift in Sources */,
 				BE777AC427D9370400487D23 /* SEPADirectDebitViewController.swift in Sources */,
 				62070627300A8EE100C430AA /* IdealView.swift in Sources */,
+				62F1F560304B5E9400C180C2 /* AmexView.swift in Sources */,
 				B88F9CCE2E2196530014BCB7 /* ShopperInsightsViewControllerV2.swift in Sources */,
 				BEBD52852AAB9649005D6687 /* AmexViewController.swift in Sources */,
 				809E86A82AD01FE7004998B0 /* SceneDelegate.swift in Sources */,
@@ -996,6 +1000,7 @@
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
@@ -1016,6 +1021,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Frameworks/**",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "$(SRCROOT)/Application/Supporting Files/Braintree-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1025,6 +1031,7 @@
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
@@ -1134,7 +1141,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "5.6.0";
+				version = 5.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
