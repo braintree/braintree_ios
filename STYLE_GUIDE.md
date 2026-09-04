@@ -52,7 +52,7 @@ class MyViewController: UIViewController, UITableViewDataSource, UIScrollViewDel
 }
 ```
 
-**Note**: Classes or structs that conform to `Encodable` should be placed within a `Models` directory for relevant payment method types. This helps maintain a clear separation between data models and other components.
+**Note**: The `Models` directory in each module is reserved for network/GraphQL data models — types that only exist to shape a request or response body (e.g. `CreditCardPOSTBody`, `PayPalVaultPOSTBody`). Conforming to `Encodable` alone does not qualify a type for `Models`: public request/business-logic types (e.g. `BTPayPalRequest`, `BTPayPalCampaign`) also conform to `Encodable` but belong alongside the other client-facing types in the module's top-level directory, not in `Models`.
 
 ### Nested structs
 
