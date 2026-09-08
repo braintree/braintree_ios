@@ -42,8 +42,8 @@ final class PaymentActionsViewModel: ObservableObject {
         progressMessage = "Fetching Payment Action Client Token..."
         
         // TODO: Add fetchPaymentActionClientToken(completion:) to BraintreeDemoMerchantAPIClient.
-        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken {
-            [weak self] response, error in
+        
+        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { [weak self] response, error in
             guard let self else { return }
             
             Task { @MainActor in
@@ -122,7 +122,7 @@ final class PaymentActionsViewModel: ObservableObject {
                 showOrderConfirmation(paymentActionId: result.id)
             case nil:
                 progressMessage = "Server action required but none was specified."
-            case .some(_):
+            case .some:
                 progressMessage = "Server action unknown."
             }
             
