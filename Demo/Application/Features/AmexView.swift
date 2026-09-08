@@ -3,6 +3,12 @@ import BraintreeAmericanExpress
 import BraintreeCard
 import BraintreeCore
 
+private enum TestCardNumber {
+    static let valid = "371260714673002"
+    static let insufficientPoints = "371544868764018"
+    static let ineligible = "378267515471109"
+}
+
 struct AmexView: View {
 
     let amexClient: BTAmericanExpressClient
@@ -27,22 +33,22 @@ struct AmexView: View {
     var body: some View {
         VStack(spacing: 10) {
             Button("Valid Card") {
-                Task { await getRewards(for: "371260714673002") }
+                Task { await getRewards(for: TestCardNumber.valid) }
             }
-            .opacity(loadingCardNumber == "371260714673002" ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == TestCardNumber.valid ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Insufficient Points Card") {
-                Task { await getRewards(for: "371544868764018") }
+                Task { await getRewards(for: TestCardNumber.insufficientPoints) }
             }
-            .opacity(loadingCardNumber == "371544868764018" ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == TestCardNumber.insufficientPoints ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Ineligible Card") {
-                Task { await getRewards(for: "378267515471109") }
+                Task { await getRewards(for: TestCardNumber.ineligible) }
             }
             .foregroundColor(.red)
-            .opacity(loadingCardNumber == "378267515471109" ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == TestCardNumber.ineligible ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
         }
         .padding(.horizontal)
