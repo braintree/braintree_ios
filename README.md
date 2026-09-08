@@ -60,7 +60,6 @@ pod 'Braintree'
 pod 'Braintree/DataCollector'
 pod 'Braintree/Venmo'
 ```
-*Note:* [CocoaPods will no longer be supported in late 2026](https://blog.cocoapods.org/CocoaPods-Specs-Repo/) - please migrate to SPM or Carthage as we will be removing CocoaPods support in late 2026.
 
 #### Migrating from CocoaPods to Swift Package Manager
 
