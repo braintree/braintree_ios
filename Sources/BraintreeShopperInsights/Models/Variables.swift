@@ -14,6 +14,7 @@ struct Variables: Encodable {
         let sessionID: String?
         let customer: Customer?
         let purchaseUnits: [PurchaseUnit]?
+        let payPalCampaigns: [ShopperInsightsCampaign]?
         
         init(request: BTCustomerSessionRequest?, sessionID: String?) {
             self.sessionID = sessionID
@@ -21,12 +22,16 @@ struct Variables: Encodable {
             purchaseUnits = request?.purchaseUnits?.compactMap {
                 PurchaseUnit(purchaseUnit: $0)
             }
+
+            let campaigns = request?.payPalCampaigns
+            payPalCampaigns = campaigns?.isEmpty == false ? campaigns : nil
         }
         
         enum CodingKeys: String, CodingKey {
             case sessionID = "sessionId"
             case customer
             case purchaseUnits
+            case payPalCampaigns = "paypalCampaigns"
         }
         
         struct Customer: Encodable {

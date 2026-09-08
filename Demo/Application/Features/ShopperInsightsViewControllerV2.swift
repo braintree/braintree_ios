@@ -15,12 +15,12 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         // swiftlint:disable:next force_unwrapping
         universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
     )
-    
+
     lazy var payPalVaultButton = createButton(title: "PayPal Vault", action: #selector(payPalVaultButtonTapped))
     lazy var venmoButton = createButton(title: "Venmo", action: #selector(venmoButtonTapped))
-    
+
     lazy var paymentOptions: [BTPaymentOptions]? = nil
-    
+
     lazy var emailView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Email"
@@ -28,7 +28,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "sandbox1@pp.com"
         return view
     }()
-    
+
     lazy var countryCodeView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "Country Code"
@@ -36,7 +36,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "1"
         return view
     }()
-    
+
     lazy var nationalNumberView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "National Number"
@@ -44,12 +44,19 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         view.textField.text = "4085005005"
         return view
     }()
-    
+
     lazy var sessionIDView: TextFieldWithLabel = {
         let view = TextFieldWithLabel()
         view.label.text = "SessionID"
         view.textField.placeholder = "SessionID"
         view.textField.text = "94f0b2db-5323-4d86-add3-paypalmsg000"
+        return view
+    }()
+
+    lazy var payPalCampaignsView: TextFieldWithLabel = {
+        let view = TextFieldWithLabel()
+        view.label.text = "PayPal Campaigns"
+        view.textField.placeholder = "campaign-123-id"
         return view
     }()
     
@@ -79,10 +86,21 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     )
     
     lazy var shopperInsightsInputView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [emailView, countryCodeView, nationalNumberView, sessionIDView])
+        let inputViews = [
+            emailView,
+            countryCodeView,
+            nationalNumberView,
+            sessionIDView,
+            payPalCampaignsView
+        ]
+        inputViews.forEach {
+            $0.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        }
+
+        let stackView = UIStackView(arrangedSubviews: inputViews)
         stackView.axis = .vertical
         stackView.spacing = 10
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -98,25 +116,38 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
         ]
         payPalVaultButton.isEnabled = false
         venmoButton.isEnabled = false
+        buttons.forEach {
+            $0.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        }
 
         let stackView = UIStackView(arrangedSubviews: buttons)
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
-    // Update createPaymentButton to return the property
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            shopperInsightsInputView,
+            paymentButtonsStackView,
+            recommendationsLabel
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
     override func createPaymentButton() -> UIView {
-        paymentButtonsStackView
+        contentStackView
     }
     
     override func viewDidLoad() {
+        super.usesIntrinsicContentHeight = true
         super.viewDidLoad()
-
-        createSubviews()
-        layoutConstraints()
     }
     
     @objc func createCustomerSessionButtonTapped(_ button: UIButton) {
@@ -135,7 +166,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
                 purchaseUnits: [
                     BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-                ]
+                ],
+                payPalCampaigns: payPalCampaigns
             )
 
             do {
@@ -162,7 +194,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ],
+            payPalCampaigns: payPalCampaigns
         )
 
         Task {
@@ -194,7 +227,8 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             venmoAppInstalled: shopperInsightsClient.isVenmoAppInstalled(),
             purchaseUnits: [
                 BTPurchaseUnit(amount: "42.00", currencyCode: "USD")
-            ]
+            ],
+            payPalCampaigns: payPalCampaigns
         )
 
         Task {
@@ -224,6 +258,7 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
                 let details = """
                     SessionID: \(String(describing: result.sessionID ?? ""))
                     InPayPalNetwork: \(result.isInPayPalNetwork?.description ?? "nil")
+                    ExpiresAt: \(result.expiresAt ?? "nil")
                     PaymentRecommendations:
                     \(result.paymentRecommendations?.map {
                         "- Option: \($0.paymentOption), Priority: \($0.recommendedPriority)"
@@ -241,6 +276,14 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
     private func resetRecommendationsLabel() {
         recommendationsLabel.text = ""
         recommendationsLabel.isHidden = true
+    }
+
+    private var payPalCampaigns: [ShopperInsightsCampaign] {
+        payPalCampaignsView.textField.text?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .map { ShopperInsightsCampaign(id: $0) } ?? []
     }
     
     private func mapPriorityToButtonOrder(_ priority: Int) -> BTButtonOrder {
@@ -350,32 +393,6 @@ class ShopperInsightsViewControllerV2: PaymentButtonBaseViewController {
             progressBlock(error?.localizedDescription)
             return
         }
-
         completionBlock(nonce)
-    }
-
-    private func createSubviews() {
-        shopperInsightsInputView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(shopperInsightsInputView)
-        view.addSubview(recommendationsLabel)
-    }
-
-    private func layoutConstraints() {
-        NSLayoutConstraint.activate(
-            [
-                shopperInsightsInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                shopperInsightsInputView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                shopperInsightsInputView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-                shopperInsightsInputView.heightAnchor.constraint(equalToConstant: 200)
-            ]
-        )
-        
-        NSLayoutConstraint.activate(
-            [
-                recommendationsLabel.topAnchor.constraint(equalTo: paymentButtonsStackView.bottomAnchor, constant: 10),
-                recommendationsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                recommendationsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
-            ]
-        )
     }
 }

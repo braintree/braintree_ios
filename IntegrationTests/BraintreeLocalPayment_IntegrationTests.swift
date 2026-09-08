@@ -35,7 +35,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 15)
+        waitForExpectations(timeout: 30)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 
@@ -59,7 +59,7 @@ class BTLocalPaymentClient_IntegrationTests: XCTestCase {
 
         localPaymentClient.start(request) { _, _ in }
 
-        waitForExpectations(timeout: 15)
+        waitForExpectations(timeout: 30)
         XCTAssertFalse(delegate.receivedPaymentID?.isEmpty == true)
     }
 

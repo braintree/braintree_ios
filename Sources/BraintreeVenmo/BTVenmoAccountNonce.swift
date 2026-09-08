@@ -35,8 +35,9 @@ import BraintreeCore
 
     // MARK: - Initializers
 
-    init(with nonce: String, username: String, isDefault: Bool) {
+    init(with nonce: String, username: String, isDefault: Bool, externalID: String? = nil) {
         self.username = username
+        self.externalID = externalID
         super.init(nonce: nonce, type: "Venmo", isDefault: isDefault)
     }
 
@@ -60,10 +61,13 @@ import BraintreeCore
     // MARK: - Internal Methods
 
     static func venmoAccount(with json: BTJSON) -> BTVenmoAccountNonce {
+        // The vault response does not include an `externalId` field, but `details.commonId`
+        // contains the same underlying Venmo account identifier.
         BTVenmoAccountNonce(
             with: json["nonce"].asString() ?? "",
             username: json["details"]["username"].asString() ?? "",
-            isDefault: json["default"].isTrue
+            isDefault: json["default"].isTrue,
+            externalID: json["details"]["commonId"].asString()
         )
     }
 }

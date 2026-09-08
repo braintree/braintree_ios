@@ -16,6 +16,7 @@ struct GenerateCustomerRecommendationsGraphQLBody: Encodable {
                         paymentOption
                         recommendedPriority
                     }
+                    expiresAt
                 }
             }
             """
