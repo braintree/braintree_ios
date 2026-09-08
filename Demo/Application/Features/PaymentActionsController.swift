@@ -27,9 +27,6 @@ class PaymentActionsViewController: PaymentButtonBaseViewController {
         
         createSubviews()
         layoutConstraints()
-        
-        // Fetch a Payment-Action-scoped client token and re-initialize the client eagerly, so
-        // gateway config is prefetched before the customer taps Pay.
         fetchClientToken()
     }
     
@@ -58,18 +55,11 @@ class PaymentActionsViewController: PaymentButtonBaseViewController {
     /// Fetches a client token scoped to a Payment Action, reads the confirmationMethod/
     /// captureMethod the server assigned to it off the `paymentActions` field of the response,
     /// and re-initializes `paymentActionsClient`. Pay is disabled while a fetch is in flight.
-    ///
-    /// Since these values come back from the server rather than being requested by the client,
-    /// exercising all four confirmationMethod × captureMethod combinations means tapping
-    /// "Get New Payment Action" until each combination has been observed — there's no client-side
-    /// control over which one comes back on a given fetch.
     @objc private func fetchClientToken() {
         payButton.isEnabled = false
         progressBlock("Fetching Payment Action client token...")
         
         // TODO: Add fetchPaymentActionClientToken(completion:) to BraintreeDemoMerchantAPIClient.
-        // Should hit the sample-merchant server's Payment Action client token endpoint and return
-        // the client token plus the confirmationMethod/captureMethod it came back with.
         BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { [weak self] response, error in
             guard let self else { return }
             
@@ -183,7 +173,7 @@ class PaymentActionsViewController: PaymentButtonBaseViewController {
     /// Asks the merchant server to confirm a Payment Action that requires it.
     private func notifyServerToConfirm(paymentActionId: String) async throws {
         // TODO: Add confirmPaymentAction(id:) to BraintreeDemoMerchantAPIClient.
-        // Should hit the sample-merchant server's confirm endpoint for the given Payment Action id. Contract still pending.
+        // Should hit the sample-merchant server's confirm endpoint for the given Payment Action id.
         // try await BraintreeDemoMerchantAPIClient.shared.confirmPaymentAction(id: paymentActionId)
     }
     
