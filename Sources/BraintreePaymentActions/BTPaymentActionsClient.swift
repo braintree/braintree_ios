@@ -99,7 +99,7 @@ import BraintreeCore
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
             apiClient.sendAnalyticsEvent(
-                BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded,
+                BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
                 errorDescription: error.localizedDescription
             )
             throw error
