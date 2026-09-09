@@ -77,7 +77,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         XCTAssertEqual(learnMore.type, .link)
         XCTAssertEqual(learnMore.text, "Learn more")
         XCTAssertEqual(learnMore.clickURL, URL(string: "https://example.com/click"))
-        XCTAssertTrue(learnMore.isEmbeddable)
+        XCTAssertEqual(learnMore.isEmbeddable, true)
     }
 
     func testFetchCreditPresentmentMessages_whenAnItemTypeIsUnrecognized_keepsTheRestOfTheItem() async throws {

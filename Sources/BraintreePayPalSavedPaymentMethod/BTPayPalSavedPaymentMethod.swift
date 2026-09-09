@@ -33,7 +33,7 @@ struct BTPayPalSavedPaymentMethod: Equatable {
             return nil
         }
 
-        self.type = json["type"].asString().flatMap(BTPayPalSavedPaymentMethodType.init(rawValue:))
+        self.type = BTPayPalSavedPaymentMethodType(json: json["type"])
         self.label = json["label"].asString()
         self.imageURL = json["imageUrl"].asURL()
         self.lastDigits = json["lastDigits"].asString()

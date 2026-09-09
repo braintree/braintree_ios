@@ -42,11 +42,12 @@ final class BTPayPalSavedPaymentMethodClient {
     ) async throws -> BTPayPalSavedPaymentMethodSummary {
         // TODO: emit the sticky-FI and post-edit refresh analytics events once the catalog is approved.
 
-        try validateClientTokenAuthorization()
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+        }
 
         // The API rejects the request unless exactly the identity field matching the fetch type is sent.
-        let paymentMethodIDJWT: String?
-        let resolvedOrderID: String?
+        let parameters: PayPalFundingInstrumentDetailsGraphQLBody
 
         switch fundingInstrumentType {
         case .stickyFI:
@@ -54,25 +55,30 @@ final class BTPayPalSavedPaymentMethodClient {
                 throw BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
             }
 
-            paymentMethodIDJWT = jwt
-            resolvedOrderID = nil
+            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: fundingInstrumentType,
+                paymentMethodIDJWT: jwt,
+                orderID: nil,
+                merchantAccountID: merchantAccountID
+            )
         case .fiFromApprovedCheckout:
             guard let orderID else {
                 throw BTPayPalSavedPaymentMethodError.missingOrderID
             }
 
-            paymentMethodIDJWT = nil
-            resolvedOrderID = orderID
+            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: fundingInstrumentType,
+                paymentMethodIDJWT: nil,
+                orderID: orderID,
+                merchantAccountID: merchantAccountID
+            )
         }
 
-        let parameters = PayPalFundingInstrumentDetailsGraphQLBody(
-            fundingInstrumentType: fundingInstrumentType,
-            paymentMethodIDJWT: paymentMethodIDJWT,
-            orderID: resolvedOrderID,
-            merchantAccountID: merchantAccountID
-        )
+        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
 
-        let body = try await post("", parameters: parameters, httpType: .graphQLAPI)
+        guard let body else {
+            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+        }
 
         guard let summary = BTPayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
             throw BTPayPalSavedPaymentMethodError.failedToParseSummary
@@ -96,44 +102,26 @@ final class BTPayPalSavedPaymentMethodClient {
     ) async throws -> BTPayPalCreditMessagingResult {
         // TODO: emit the credit messaging analytics events once the catalog is approved.
 
-        try validateClientTokenAuthorization()
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+        }
 
         let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
 
-        let body = try await post(
+        let (body, _) = try await apiClient.post(
             "/v2/credit/fetch-presentment-messages",
             parameters: parameters,
             httpType: .payPalAPI
         )
+
+        guard let body else {
+            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+        }
 
         guard let result = BTPayPalCreditMessagingResult(json: body) else {
             throw BTPayPalSavedPaymentMethodError.missingPreferredMessage
         }
 
         return result
-    }
-
-    // MARK: - Private Methods
-
-    /// The GraphQL rail reads the client token's `paymentMethodIdJwt` and the PayPal API rail authenticates with its bearer,
-    /// so neither works with a tokenization key.
-    private func validateClientTokenAuthorization() throws {
-        guard apiClient.authorization.type == .clientToken else {
-            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
-        }
-    }
-
-    private func post(
-        _ path: String,
-        parameters: Encodable,
-        httpType: BTAPIClientHTTPService
-    ) async throws -> BTJSON {
-        let (body, _) = try await apiClient.post(path, parameters: parameters, httpType: httpType)
-
-        guard let body else {
-            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
-        }
-
-        return body
     }
 }

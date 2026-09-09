@@ -13,7 +13,7 @@ struct BTPayPalPayer: Equatable {
     let email: String?
 
     /// Whether the buyer is allowed to change the funding instrument PayPal will charge.
-    let isEditable: Bool
+    let isEditable: Bool?
 
     // MARK: - Initializer
 
@@ -25,6 +25,6 @@ struct BTPayPalPayer: Equatable {
         }
 
         self.email = json["email"].asString()
-        self.isEditable = json["editable"].asBool() ?? false
+        self.isEditable = json["editable"].asBool()
     }
 }

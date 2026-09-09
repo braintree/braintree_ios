@@ -88,12 +88,12 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         XCTAssertTrue(summary.paymentMethods.isEmpty)
     }
 
-    func testInit_whenPayerOmitsEditable_defaultsToNotEditable() throws {
+    func testInit_whenPayerOmitsEditable_returnsNilEditable() throws {
         let json = BTJSON(value: ["payer": ["email": "buyer@example.com"]])
 
         let payer = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json)?.payer)
 
-        XCTAssertEqual(payer.isEditable, false)
+        XCTAssertNil(payer.isEditable)
     }
 
     func testInit_whenPayloadIsEmpty_returnsEmptySummary() throws {

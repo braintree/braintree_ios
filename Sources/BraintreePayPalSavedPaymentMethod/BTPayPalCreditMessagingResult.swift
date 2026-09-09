@@ -9,12 +9,6 @@ struct BTPayPalCreditMessagingResult: Equatable {
 
     // MARK: - Internal Properties
 
-    /// The identifier of the message that was selected.
-    let messageID: String?
-
-    /// The template the message was built from, for example `"PLST_SQ"`.
-    let messageType: String?
-
     /// The main text and logo blocks of the message.
     let mainItems: [BTPayPalCreditMessageItem]
 
@@ -23,6 +17,12 @@ struct BTPayPalCreditMessagingResult: Equatable {
 
     /// The interactive blocks of the message, such as the "Learn more" link.
     let actionItems: [BTPayPalCreditMessageItem]
+
+    /// The identifier of the message that was selected.
+    let messageID: String?
+
+    /// The template the message was built from, for example `"PLST_SQ"`.
+    let messageType: String?
 
     /// The tracking beacon to fire once the message is on screen.
     let impressionURL: URL?
@@ -42,11 +42,11 @@ struct BTPayPalCreditMessagingResult: Equatable {
             return nil
         }
 
-        self.messageID = preferredMessage["id"].asString()
-        self.messageType = preferredMessage["type"].asString()
         self.mainItems = mainItems
         self.disclaimerItems = content["disclaimer_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
         self.actionItems = content["action_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        self.messageID = preferredMessage["id"].asString()
+        self.messageType = preferredMessage["type"].asString()
         self.impressionURL = preferredMessage["analytics"]["impression_url"].asURL()
     }
 }

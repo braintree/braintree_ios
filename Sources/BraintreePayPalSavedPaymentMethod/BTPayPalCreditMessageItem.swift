@@ -28,7 +28,7 @@ struct BTPayPalCreditMessageItem: Equatable {
     let name: String?
 
     /// Whether `clickURL` may be loaded in an embedded web view rather than an external browser.
-    let isEmbeddable: Bool
+    let isEmbeddable: Bool?
 
     // MARK: - Initializer
 
@@ -39,7 +39,7 @@ struct BTPayPalCreditMessageItem: Equatable {
             return nil
         }
 
-        self.type = json["type"].asString().flatMap(BTPayPalCreditMessageItemType.init(rawValue:))
+        self.type = BTPayPalCreditMessageItemType(json: json["type"])
         self.text = json["text"].asString()
         self.alternativeText = json["alternative_text"].asString()
         self.clickURL = json["click_url"].asURL()
