@@ -54,6 +54,7 @@ struct PayPalFundingInstrumentDetailsInput: Encodable {
 
     let fundingInstrumentType: String
     let integrationChannel = "BT_NATIVE_SDK"
+    let osType = "IOS"
     let paymentMethodIDJWT: String?
     let orderID: String?
     let merchantAccountID: String?
@@ -61,6 +62,7 @@ struct PayPalFundingInstrumentDetailsInput: Encodable {
     enum CodingKeys: String, CodingKey {
         case fundingInstrumentType
         case integrationChannel
+        case osType
         case paymentMethodIDJWT = "paymentMethodIdJwt"
         case orderID = "orderId"
         case merchantAccountID = "merchantAccountId"

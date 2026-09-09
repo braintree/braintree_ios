@@ -41,6 +41,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertTrue(query.contains("paypalFundingInstrumentDetails(input: $input)"))
         XCTAssertEqual(input["fundingInstrumentType"] as? String, "STICKY_FI")
         XCTAssertEqual(input["integrationChannel"] as? String, "BT_NATIVE_SDK")
+        XCTAssertEqual(input["osType"] as? String, "IOS")
         XCTAssertEqual(input["paymentMethodIdJwt"] as? String, "fake-payment-method-id-jwt")
         XCTAssertEqual(input["merchantAccountId"] as? String, "fake-merchant-account-id")
         XCTAssertNil(input["orderId"])
@@ -53,6 +54,8 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         let input = try XCTUnwrap((parameters["variables"] as? [String: Any])?["input"] as? [String: Any])
 
         XCTAssertEqual(input["fundingInstrumentType"] as? String, "FI_FROM_APPROVED_CHECKOUT")
+        XCTAssertEqual(input["integrationChannel"] as? String, "BT_NATIVE_SDK")
+        XCTAssertEqual(input["osType"] as? String, "IOS")
         XCTAssertEqual(input["orderId"] as? String, "fake-order-id")
         XCTAssertNil(input["paymentMethodIdJwt"])
         XCTAssertNil(input["merchantAccountId"])
