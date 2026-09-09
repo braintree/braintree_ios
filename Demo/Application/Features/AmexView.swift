@@ -3,10 +3,10 @@ import BraintreeAmericanExpress
 import BraintreeCard
 import BraintreeCore
 
-private enum TestCardNumber {
-    static let valid = "371260714673002"
-    static let insufficientPoints = "371544868764018"
-    static let ineligible = "378267515471109"
+private enum TestCardNumber: String {
+    case valid = "371260714673002"
+    case insufficientPoints = "371544868764018"
+    case ineligible = "378267515471109"
 }
 
 struct AmexView: View {
@@ -16,7 +16,7 @@ struct AmexView: View {
     let onProgress: (String?) -> Void
     let onComplete: (BTPaymentMethodNonce?) -> Void
 
-    @State private var loadingCardNumber: String?
+    @State private var loadingCardNumber: TestCardNumber?
 
     init(
         amexClient: BTAmericanExpressClient,
@@ -33,34 +33,34 @@ struct AmexView: View {
     var body: some View {
         VStack(spacing: 10) {
             Button("Valid Card") {
-                Task { await getRewards(for: TestCardNumber.valid) }
+                Task { await getRewards(for: .valid) }
             }
-            .opacity(loadingCardNumber == TestCardNumber.valid ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == .valid ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Insufficient Points Card") {
-                Task { await getRewards(for: TestCardNumber.insufficientPoints) }
+                Task { await getRewards(for: .insufficientPoints) }
             }
-            .opacity(loadingCardNumber == TestCardNumber.insufficientPoints ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == .insufficientPoints ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
 
             Button("Ineligible Card") {
-                Task { await getRewards(for: TestCardNumber.ineligible) }
+                Task { await getRewards(for: .ineligible) }
             }
             .foregroundColor(.red)
-            .opacity(loadingCardNumber == TestCardNumber.ineligible ? 0.5 : 1.0)
+            .opacity(loadingCardNumber == .ineligible ? 0.5 : 1.0)
             .allowsHitTesting(loadingCardNumber == nil)
         }
         .padding(.horizontal)
     }
 
-    private func getRewards(for cardNumber: String) async {
+    private func getRewards(for cardNumber: TestCardNumber) async {
         guard loadingCardNumber == nil else { return }
         loadingCardNumber = cardNumber
         defer { loadingCardNumber = nil }
 
         let card = BTCard(
-            number: cardNumber,
+            number: cardNumber.rawValue,
             expirationMonth: "12",
             expirationYear: CardHelpers.generateFuture(.year),
             cvv: "1234"
