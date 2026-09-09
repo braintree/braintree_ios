@@ -1,220 +1,53 @@
 import SwiftUI
-import BraintreeCard
-import BraintreePaymentActions
-
-final class PaymentActionsViewModel: ObservableObject {
-    
-    // Card Form Fields
-    @Published var cardNumber: String = ""
-    @Published var expirationMonth: String = ""
-    @Published var expirationYear: String = ""
-    @Published var cvv: String = ""
-    @Published var postalCode: String = ""
-    
-    // UI State
-    @Published var progressMessage: String = ""
-    @Published var isPayEnabled: Bool = false
-    @Published var isFieldsEnabled: Bool = false
-    
-    /// Reflects the confirmationMethod/captureMethod that came back on the `paymentActions` field
-    /// off the most recently fetched client token.
-    @Published var paymentActionConfigText = "confirmationMethod: — · captureMethod: —"
-    
-    private let authorization: String
-    private lazy var paymentActionsClient = BTPaymentActionsClient(authorization: authorization)
-    
-    // MARK: Initializer
-    
-    init(authorization: String) {
-        self.authorization = authorization
-    }
-    
-    // MARK: Lifecycle
-    
-    func onAppear() {
-        fetchClientToken()
-    }
-    
-    // MARK: Client Token / Client Setup
-    
-    func fetchClientToken() {
-        isPayEnabled = false
-        progressMessage = "Fetching Payment Action Client Token..."
-        
-        // TODO: Add fetchPaymentActionClientToken(completion:) to BraintreeDemoMerchantAPIClient.
-        
-        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { [weak self] response, error in
-            guard let self else { return }
-            
-            Task { @MainActor in
-                if let error {
-                    self.progressMessage = "Failed to fetch client token: \(error.localizedDescription)"
-                    return
-                }
-                
-                guard response != nil else {
-                    self.progressMessage = "Failed to fetch client token"
-                    return
-                }
-                // TODO: Set this once confirmationMethod/captureMethod are available on the response.
-                // self.paymentActionConfigText = "confirmationMethod: \(response.confirmationMethod) · captureMethod: \(response.captureMethod)"
-                self.isPayEnabled = true
-                self.progressMessage = "Fetched client token. Ready to pay."
-            }
-        }
-    }
-    
-    // MARK: Actions
-    
-    func tappedPay() {
-        progressMessage = "Submitting payment method for Payment Action.."
-        
-        guard !cvv.isEmpty else {
-            progressMessage = " Fill in all card fields."
-            return
-        }
-        
-        let request = BTCreditCard(
-            cardNumber: cardNumber,
-            expirationMonth: expirationMonth,
-            expirationYear: expirationYear,
-            cvv: cvv,
-            postalCode: postalCode.isEmpty ? nil : postalCode
-        )
-        
-        isFieldsEnabled = false
-        
-        Task { @MainActor in
-            do {
-                let result = try await paymentActionsClient.submitForPaymentAction(request)
-                isFieldsEnabled = true
-                try await handle(result)
-            } catch {
-                isFieldsEnabled = true
-                progressMessage = "Failed to submit payment method: \(error.localizedDescription)"
-            }
-        }
-    }
-    
-    func tappedAutofill() {
-        cardNumber = "4111111111111111"
-        cvv = "123"
-        expirationMonth = "12"
-        expirationYear = String(Calendar.current.component(.year, from: Date()) + 2)
-        postalCode = "94105"
-    }
-    
-    // MARK: Result Handling
-    
-    private func handle(_ result: BTPaymentActionResult) async throws {
-        switch result.type {
-        case .completed:
-            showOrderConfirmation(paymentActionId: result.id)
-            
-        case .serverActionRequired:
-            switch result.serverAction {
-            case .confirm:
-                progressMessage = "Notifying server to confirm Payment Action \(result.id)..."
-                try await notifyServerToConfirm(paymentActionId: result.id)
-                showOrderConfirmation(paymentActionId: result.id)
-            case .capture:
-                // Authorized; capture is pending server-side.
-                showOrderConfirmation(paymentActionId: result.id)
-            case nil:
-                progressMessage = "Server action required but none was specified."
-            case .some:
-                progressMessage = "Server action unknown."
-            }
-            
-        case .paymentMethodRequired:
-            clearCardFields()
-            showDeclineMessage()
-            
-        case .customerActionRequired, .processing, .canceled, .expired, .unknown:
-            progressMessage = "Payment Action \(result.id): \(result.type)"
-        @unknown default:
-            progressMessage = "Payment Action \(result.id) case not handled."
-        }
-    }
-    
-    private func showOrderConfirmation(paymentActionId: String) {
-        progressMessage = "Payment Action \(paymentActionId) complete ✅"
-    }
-    
-    private func showDeclineMessage() {
-        progressMessage = "Payment method declined. Please try another card."
-    }
-    
-    /// Asks the merchant server to confirm a Payment Action that requires it.
-    private func notifyServerToConfirm(paymentActionId: String) async throws {
-        // TODO: Add confirmPaymentAction(id:) to BraintreeDemoMerchantAPIClient.
-        // Should hit the sample-merchant server's confirm endpoint for the given Payment Action id.
-        // try await BraintreeDemoMerchantAPIClient.shared.confirmPaymentAction(id: paymentActionId)
-    }
-    
-    private func clearCardFields() {
-        cardNumber = ""
-        cvv = ""
-    }
-}
-
-// MARK: - View
 
 struct PaymentActionsView: View {
-    
+
     @StateObject private var viewModel: PaymentActionsViewModel
-    
+
     init(authorization: String) {
         _viewModel = StateObject(wrappedValue: PaymentActionsViewModel(authorization: authorization))
     }
-    
+
     var body: some View {
         Form {
             Section("Card Details") {
-                TextField("Card Number", text: $viewModel.cardNumber)
-                    .keyboardType(.numberPad)
-                    .disabled(!viewModel.isFieldsEnabled)
-                
-                HStack {
-                    TextField("MM", text: $viewModel.expirationMonth)
-                        .keyboardType(.numberPad)
-                    TextField("YYYY", text: $viewModel.expirationYear)
-                        .keyboardType(.numberPad)
-                }
-                .disabled(!viewModel.isFieldsEnabled)
-                
-                TextField("CVV", text: $viewModel.cvv)
-                    .keyboardType(.numberPad)
-                    .disabled(!viewModel.isFieldsEnabled)
-                
-                TextField("Postal Code", text: $viewModel.postalCode)
-                    .disabled(!viewModel.isFieldsEnabled)
-                
+                CardFormView(
+                    cardNumber: $viewModel.cardNumber,
+                    expirationDate: $viewModel.expirationDate,
+                    cvv: $viewModel.cvv,
+                    postalCode: $viewModel.postalCode,
+                    phoneNumber: .constant(""),
+                    hidePhoneNumberField: true,
+                    fieldsEnabled: viewModel.isCardFieldsEnabled
+                )
+
                 Button("Autofill") {
                     viewModel.tappedAutofill()
                 }
-                .disabled(!viewModel.isFieldsEnabled)
+                .font(.subheadline.weight(.medium))
+                .buttonStyle(.bordered)
+                .tint(.black)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .disabled(!viewModel.isCardFieldsEnabled)
             }
-            
+
             Section("Payment Actions Flow") {
-                Text(viewModel.paymentActionConfigText)
-                    .font(.system(size: 13))
+                Label(viewModel.paymentActionConfigText, systemImage: "gearshape")
+                    .font(.footnote)
                     .foregroundColor(.secondary)
-                
-                Button("Get New Payment Action") {
+
+                Button {
                     viewModel.fetchClientToken()
+                } label: {
+                    Label("Get New Payment Action", systemImage: "arrow.clockwise")
                 }
-                
-                Button("Pay") {
-                    viewModel.tappedPay()
-                }
-                .disabled(!viewModel.isPayEnabled)
+
+                payButton
             }
-            
+
             if !viewModel.progressMessage.isEmpty {
                 Section {
-                    Text(viewModel.progressMessage)
-                        .foregroundColor(.secondary)
+                    statusRow
                 }
             }
         }
@@ -222,5 +55,79 @@ struct PaymentActionsView: View {
         .onAppear {
             viewModel.onAppear()
         }
+    }
+
+    // MARK: - Styled Subviews
+
+    private var payButton: some View {
+        Button("Pay") {
+            viewModel.tappedPay()
+        }
+        .buttonStyle(CapsuleButtonStyle(isEnabled: viewModel.isPayButtonEnabled))
+        .disabled(!viewModel.isPayButtonEnabled)
+        .listRowInsets(EdgeInsets())
+        .padding(.horizontal)
+        .listRowBackground(Color.clear)
+    }
+
+    private var statusRow: some View {
+        Label(viewModel.progressMessage, systemImage: statusKind.icon)
+            .font(.subheadline.weight(.medium))
+            .foregroundColor(statusKind.color)
+    }
+
+    /// Best-effort classification of `progressMessage` for status coloring. `progressMessage` is a
+    /// plain display string rather than a typed status, so this matches on the same substrings the
+    /// view model already uses when setting it (e.g. "complete ✅", "declined", "Failed").
+    private var statusKind: StatusKind {
+        let message = viewModel.progressMessage
+        if message.contains("✅") || message.contains("Ready") {
+            return .success
+        } else if message.contains("Failed") || message.contains("declined") {
+            return .failure
+        } else {
+            return .neutral
+        }
+    }
+}
+
+// MARK: - Status Styling
+
+private enum StatusKind {
+    case success, failure, neutral
+
+    var icon: String {
+        switch self {
+        case .success: return "checkmark.circle.fill"
+        case .failure: return "exclamationmark.triangle.fill"
+        case .neutral: return "clock"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .success: return .green
+        case .failure: return .red
+        case .neutral: return .secondary
+        }
+    }
+}
+
+// MARK: - Button Styling
+
+/// Full-width black capsule button matching the house style used by CardTokenizationView's
+/// "Submit" and UIComponentsViewController's primary action buttons.
+private struct CapsuleButtonStyle: ButtonStyle {
+
+    let isEnabled: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(isEnabled ? Color.black : Color.black.opacity(0.3))
+            .clipShape(Capsule())
     }
 }
