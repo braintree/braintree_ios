@@ -39,9 +39,15 @@ final class PaymentActionsViewModel: ObservableObject {
         isPayButtonEnabled = false
         progressMessage = "Fetching Payment Action Client Token..."
 
-        // TODO: Add fetchPaymentActionClientToken(completion:) to BraintreeDemoMerchantAPIClient.
+        let confirmationMethod = "AUTOMATIC"
+        let captureMethod = "AUTOMATIC"
 
-        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { [weak self] response, error in
+        BraintreeDemoMerchantAPIClient.shared.fetchPaymentActionClientToken(
+            amount: "10.00",
+            merchantAccountID: "f45wth52cxsdk4mg",
+            confirmationMethod: confirmationMethod,
+            captureMethod: captureMethod
+        ) { [weak self] response, error in
             guard let self else { return }
 
             Task { @MainActor in
@@ -50,12 +56,12 @@ final class PaymentActionsViewModel: ObservableObject {
                     return
                 }
 
-                guard response != nil else {
+                guard let response else {
                     self.progressMessage = "Failed to fetch client token"
                     return
                 }
-                // TODO: Set this once confirmationMethod/captureMethod are available on the response.
-                // self.paymentActionConfigText = "confirmationMethod: \(response.confirmationMethod) · captureMethod: \(response.captureMethod)"
+                
+                self.paymentActionConfigText = "confirmationMethod: \(confirmationMethod) · captureMethod: \(captureMethod)"
                 self.isPayButtonEnabled = true
                 self.progressMessage = "Fetched client token. Ready to pay."
             }
@@ -110,9 +116,6 @@ final class PaymentActionsViewModel: ObservableObject {
                 // Authorized; capture is pending server-side.
                 showOrderConfirmation(paymentActionID: result.id)
             case nil:
-                // Shouldn't happen in practice — `BTPaymentActionsClient` only ever produces
-                // `.serverActionRequired` paired with a `.confirm` or `.capture` action — but
-                // handled defensively since `serverAction` is optional on the model.
                 progressMessage = "Server action required but none was specified."
             }
 
@@ -149,9 +152,7 @@ final class PaymentActionsViewModel: ObservableObject {
         postalCode = ""
     }
 
-    /// Builds a `BTCreditCard` from the card form fields, or `nil` if a required field is
-    /// missing/malformed. Mirrors the validation `CardTokenizationView.makeCard()` uses for the
-    /// shared `CardFormView`, so both features stay in sync if the form's requirements change.
+    /// Builds a `BTCreditCard` from the card form fields, or `nil` if a required field is missing/malformed.
     private func makeCard() -> BTCreditCard? {
         guard !cardNumber.isEmpty, !cvv.isEmpty else { return nil }
 
