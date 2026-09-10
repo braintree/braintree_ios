@@ -1,7 +1,7 @@
 import Foundation
 
 /// The lifecycle status of a Payment Action.
-@objc public enum BTPaymentActionStatus: Int {
+@objc public enum BTPaymentActionStatus: Int, Equatable {
     
     /// The Payment Action has been created but does not yet have a payment method selected.
     case requiresPaymentMethod
