@@ -8,7 +8,7 @@ public enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, Localize
     /// 1. The client token does not carry a payment method ID JWT.
     case missingPaymentMethodIDJWT
 
-    /// 2. An order ID was not provided for a `fiFromApprovedCheckout` fetch.
+    /// 2. An order ID was not provided for a `buyerUpdatedBillingAgreement` fetch.
     case missingOrderID
 
     /// 3. A nil body was returned from the request and no error was returned.

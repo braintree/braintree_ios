@@ -26,9 +26,9 @@ final class BTPayPalSavedPaymentMethodClient {
 
     /// Fetches the funding instrument details for a vaulted PayPal payment method.
     /// - Parameters:
-    ///   - fundingInstrumentType: Which funding instrument to resolve. `stickyFI` uses the payment method ID JWT carried by the
-    ///     client token; `fiFromApprovedCheckout` requires `orderID`.
-    ///   - orderID: The approved checkout order ID. Required for `fiFromApprovedCheckout` and ignored otherwise.
+    ///   - fundingInstrumentType: Which funding instrument to resolve. `buyerDefaultBillingAgreement` uses the payment
+    ///     method ID JWT carried by the client token; `buyerUpdatedBillingAgreement` requires `orderID`.
+    ///   - orderID: The approved checkout order ID. Required for `buyerUpdatedBillingAgreement` and ignored otherwise.
     ///   - merchantAccountID: Optional. A non-default merchant account to resolve the funding instrument against. Applies to
     ///     both fetch types and is omitted from the request when nil, so the default merchant account is used.
     /// - Returns: A `BTPayPalSavedPaymentMethodSummary` describing what to display for the buyer
@@ -40,7 +40,7 @@ final class BTPayPalSavedPaymentMethodClient {
         orderID: String? = nil,
         merchantAccountID: String? = nil
     ) async throws -> BTPayPalSavedPaymentMethodSummary {
-        // TODO: emit the sticky-FI and post-edit refresh analytics events once the catalog is approved.
+        // TODO: emit the default and updated billing agreement analytics events once the catalog is approved.
 
         guard apiClient.authorization.type == .clientToken else {
             throw BTPayPalSavedPaymentMethodError.invalidAuthorization
@@ -50,7 +50,7 @@ final class BTPayPalSavedPaymentMethodClient {
         let parameters: PayPalFundingInstrumentDetailsGraphQLBody
 
         switch fundingInstrumentType {
-        case .stickyFI:
+        case .buyerDefaultBillingAgreement:
             guard let jwt = (apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT else {
                 throw BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
             }
@@ -61,7 +61,7 @@ final class BTPayPalSavedPaymentMethodClient {
                 orderID: nil,
                 merchantAccountID: merchantAccountID
             )
-        case .fiFromApprovedCheckout:
+        case .buyerUpdatedBillingAgreement:
             guard let orderID else {
                 throw BTPayPalSavedPaymentMethodError.missingOrderID
             }

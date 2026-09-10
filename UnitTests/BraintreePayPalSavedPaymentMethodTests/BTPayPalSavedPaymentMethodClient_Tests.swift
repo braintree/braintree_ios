@@ -28,8 +28,8 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
     // MARK: - Request
 
-    func testFetchPaymentMethod_whenStickyFI_postsQueryWithPaymentMethodIDJWT() async throws {
-        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI, merchantAccountID: "fake-merchant-account-id")
+    func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_postsQueryWithPaymentMethodIDJWT() async throws {
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement, merchantAccountID: "fake-merchant-account-id")
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "")
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
@@ -47,8 +47,8 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertNil(input["orderId"])
     }
 
-    func testFetchPaymentMethod_whenFIFromApprovedCheckout_postsQueryWithOrderID() async throws {
-        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout, orderID: "fake-order-id")
+    func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreement_postsQueryWithOrderID() async throws {
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID: "fake-order-id")
 
         let parameters = try XCTUnwrap(mockAPIClient.lastPOSTParameters)
         let input = try XCTUnwrap((parameters["variables"] as? [String: Any])?["input"] as? [String: Any])
@@ -61,8 +61,8 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertNil(input["merchantAccountId"])
     }
 
-    func testFetchPaymentMethod_whenStickyFI_ignoresOrderID() async throws {
-        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI, orderID: "fake-order-id")
+    func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_ignoresOrderID() async throws {
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement, orderID: "fake-order-id")
 
         let parameters = try XCTUnwrap(mockAPIClient.lastPOSTParameters)
         let input = try XCTUnwrap((parameters["variables"] as? [String: Any])?["input"] as? [String: Any])
@@ -92,7 +92,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let summary = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        let summary = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
         let paymentMethod = try XCTUnwrap(summary.paymentMethods.first)
 
         XCTAssertNil(summary.payer)
@@ -118,7 +118,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let summary = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+        let summary = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
 
         XCTAssertEqual(summary.payer?.email, "buyer@example.com")
         XCTAssertEqual(summary.payer?.isEditable, true)
@@ -131,7 +131,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         let sut = BTPayPalSavedPaymentMethodClient(authorization: "sandbox_merchant_1234567890abc")
 
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
         } catch let error as BTPayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .invalidAuthorization)
@@ -140,13 +140,13 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         }
     }
 
-    func testFetchPaymentMethod_whenStickyFIAndClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWT() async {
+    func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementAndClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWT() async {
         let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
         sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT)
         sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
 
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
         } catch let error as BTPayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPaymentMethodIDJWT)
@@ -155,9 +155,9 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         }
     }
 
-    func testFetchPaymentMethod_whenFIFromApprovedCheckoutWithoutOrderID_throwsMissingOrderID() async {
+    func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementWithoutOrderID_throwsMissingOrderID() async {
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .fiFromApprovedCheckout)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement)
             XCTFail("Expected an error")
         } catch let error as BTPayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingOrderID)
@@ -170,7 +170,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
 
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
         } catch let error as BTPayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .emptyBodyReturned)
@@ -183,7 +183,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["data": ["paypalFundingInstrumentDetails": NSNull()]])
 
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
         } catch let error as BTPayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .failedToParseSummary)
@@ -197,7 +197,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = cannedError
 
         do {
-            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .stickyFI)
+            _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
         } catch {
             XCTAssertEqual(error as NSError, cannedError)
