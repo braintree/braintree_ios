@@ -4,7 +4,7 @@ import Foundation
 /// lifecycle status into the next action the merchant should take.
 @objcMembers public class BTPaymentActionResult: NSObject {
     
-    // MARK: - Internal Properties
+    // MARK: - Public Properties
     
     public let type: BTPaymentActionResultType
     public let id: String
@@ -17,7 +17,7 @@ import Foundation
     ///   - type: Required: The kind of result. Check this first to determine which other properties are populated.
     ///   - id: Required: The Payment Action ID.
     ///   - serverAction: Optional: The server-driven action to perform next. Only applicable when `type == .serverActionRequired`; otherwise `nil`.
-    public init(type: BTPaymentActionResultType, id: String, serverAction: BTServerAction? = nil) {
+    init(type: BTPaymentActionResultType, id: String, serverAction: BTServerAction? = nil) {
         self.type = type
         self.id = id
         self.serverAction = serverAction
