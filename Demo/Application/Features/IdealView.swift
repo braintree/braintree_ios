@@ -99,5 +99,5 @@ final class LocalPaymentFlowCoordinator: NSObject, ObservableObject, BTLocalPaym
 }
 
 #Preview {
-    IdealView(client: BTLocalPaymentClient(authorization: "sandbox_f252zhq7_hh4cpc39zq4rgjcg"))
+    IdealView(client: BTLocalPaymentClient(authorization: "sandbox_d54x7ckf_hh4cpc39zq4rgjcg"))
 }

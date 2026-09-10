@@ -9,71 +9,24 @@ class AmexViewController: PaymentButtonBaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         title = "Amex"
-    }
 
-    override func createPaymentButton() -> UIView {
-        let validCardButton = createButton(title: "Valid card", action: #selector(tappedValidCard))
-        let insufficientPointsCardButton = createButton(title: "Insufficient points card", action: #selector(tappedInsufficientPointsCard))
-        let ineligibleCardButton = createButton(title: "Ineligible card", action: #selector(tappedIneligibleCard))
-
-        let stackView = UIStackView(arrangedSubviews: [validCardButton, insufficientPointsCardButton, ineligibleCardButton])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        return stackView
-    }
-
-    @objc func tappedValidCard() {
-        Task {
-            await getRewards(for: "371260714673002")
-        }
-    }
-
-    @objc func tappedInsufficientPointsCard() {
-        Task {
-            await getRewards(for: "371544868764018")
-        }
-    }
-
-    @objc func tappedIneligibleCard() {
-        Task {
-            await getRewards(for: "378267515471109")
-        }
-    }
-
-    private func getRewards(for cardNumber: String) async {
-        let card = BTCard(
-            number: cardNumber,
-            expirationMonth: "12",
-            expirationYear: CardHelpers.generateFuture(.year),
-            cvv: "1234"
+        let demoView = AmexView(
+            amexClient: amexClient,
+            cardClient: cardClient,
+            onProgress: progressBlock,
+            onComplete: completionBlock
         )
+        embed(demoView)
+    }
 
-        progressBlock("Tokenizing Card")
-        
-        do {
-            let tokenizedCard = try await cardClient.tokenize(card)
-            progressBlock("Amex - getting rewards balance")
-            
-            let rewardsBalance = try await amexClient.getRewardsBalance(forNonce: tokenizedCard.nonce, currencyISOCode: "USD")
-            
-            if let errorMessage = rewardsBalance.errorMessage {
-                progressBlock("Error: \(errorMessage)")
-                return
-            }
-            
-            if
-                let rewardsAmount = rewardsBalance.rewardsAmount,
-                let rewardsUnit = rewardsBalance.rewardsUnit,
-                let currencyAmount = rewardsBalance.currencyAmount,
-                let currencyIsoCode = rewardsBalance.currencyIsoCode {
-                progressBlock("\(rewardsAmount) \(rewardsUnit), \(currencyAmount) \(currencyIsoCode)")
-            }
-        } catch {
-            progressBlock(error.localizedDescription)
-        }
+    // TODO: Remove or change createPaymentButton during full SwiftUI migration
+    // This is to suppress Constraint warnings when the payment button is not overriden.
+    // The actual Payment Button is within the SwiftUI view.
+    override func createPaymentButton() -> UIView {
+        let placeholderView = UIView()
+        placeholderView.translatesAutoresizingMaskIntoConstraints = false
+        return placeholderView
     }
 }
