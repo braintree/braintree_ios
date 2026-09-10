@@ -98,17 +98,23 @@ private enum StatusKind {
 
     var icon: String {
         switch self {
-        case .success: return "checkmark.circle.fill"
-        case .failure: return "exclamationmark.triangle.fill"
-        case .neutral: return "clock"
+        case .success:
+            return "checkmark.circle.fill"
+        case .failure:
+            return "exclamationmark.triangle.fill"
+        case .neutral:
+            return "clock"
         }
     }
 
     var color: Color {
         switch self {
-        case .success: return .green
-        case .failure: return .red
-        case .neutral: return .secondary
+        case .success:
+            return .green
+        case .failure:
+            return .red
+        case .neutral:
+            return .secondary
         }
     }
 }
