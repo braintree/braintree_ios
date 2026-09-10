@@ -71,6 +71,7 @@ import BraintreeCore
         _ body: Body
     ) async throws -> BTPaymentAction {
         apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.setPaymentActionPaymentMethodStarted)
+        
         do {
             let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
             
@@ -93,9 +94,11 @@ import BraintreeCore
             }
             
             let status = BTPaymentActionStatus.status(from: statusString)
+            
             apiClient.sendAnalyticsEvent(
                 BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded
             )
+            
             return BTPaymentAction(id: paymentActionID, status: status)
         } catch {
             apiClient.sendAnalyticsEvent(

@@ -32,15 +32,24 @@ import Foundation
     
     var description: String {
         switch self {
-        case .requiresPaymentMethod: return "REQUIRES_PAYMENT_METHOD"
-        case .readyForConfirmation: return "READY_FOR_CONFIRMATION"
-        case .succeeded: return "SUCCEEDED"
-        case .requiresCapture: return "REQUIRES_CAPTURE"
-        case .requiresCustomerAction: return "REQUIRES_CUSTOMER_ACTION"
-        case .processing: return "PROCESSING"
-        case .canceled: return "CANCELLED"
-        case .expired: return "EXPIRED"
-        case .unknown: return "UNKNOWN"
+        case .requiresPaymentMethod:
+            return "REQUIRES_PAYMENT_METHOD"
+        case .readyForConfirmation:
+            return "READY_FOR_CONFIRMATION"
+        case .succeeded:
+            return "SUCCEEDED"
+        case .requiresCapture:
+            return "REQUIRES_CAPTURE"
+        case .requiresCustomerAction:
+            return "REQUIRES_CUSTOMER_ACTION"
+        case .processing:
+            return "PROCESSING"
+        case .canceled:
+            return "CANCELLED"
+        case .expired:
+            return "EXPIRED"
+        case .unknown:
+            return "UNKNOWN"
         }
     }
     
