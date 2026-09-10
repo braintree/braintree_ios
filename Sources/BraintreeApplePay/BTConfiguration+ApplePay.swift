@@ -55,6 +55,8 @@ extension BTConfiguration {
                 supportedNetworks.append(.maestro)
             } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("elo") == .orderedSame {
                 supportedNetworks.append(.elo)
+            } else if gatewaySupportedNetwork.localizedCaseInsensitiveCompare("eftpos") == .orderedSame {
+                supportedNetworks.append(.eftpos)
             }
         }
 
