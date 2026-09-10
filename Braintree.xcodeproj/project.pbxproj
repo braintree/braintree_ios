@@ -2060,13 +2060,13 @@
 		80824659252C19F5000AD8FF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				626E894F302669B300AE6692 /* BraintreePaymentActions */,
 				0357C47D1F96869600E63851 /* BraintreeAmericanExpress */,
 				A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A7C889911B5F043B007A0E9C /* BraintreeCard */,
 				570B93AE285397D20041BAFE /* BraintreeCore */,
 				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				038C7FBB1EA1648900241ABE /* BraintreeLocalPayment */,
+				626E894F302669B300AE6692 /* BraintreePaymentActions */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
 				BECC91942B20DF7F00A2EE42 /* BraintreePayPalMessaging */,
 				BEF3F17027CE9E2600072467 /* BraintreeSEPADirectDebit */,
@@ -8255,7 +8255,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "5.6.0";
+				version = 5.6.0;
 			};
 		};
 		BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */ = {
