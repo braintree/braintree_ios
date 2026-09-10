@@ -69,7 +69,7 @@ pod 'Braintree/Venmo'
 4. Update import statements if needed; module names are unchanged.
 5. Delete `Podfile`, `Podfile.lock`, and the `.xcworkspace` (if it existed only for CocoaPods), and reopen the project via `Braintree.xcodeproj`.
 
-If SPM isn't an option, Carthage remains supported below, or you can integrate a prebuilt `.xcframework` directly from the [Releases page](https://github.com/braintree/braintree_ios/releases).
+If SPM isn't an option, Carthage remains supported below.
 
 ### Carthage
 Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
