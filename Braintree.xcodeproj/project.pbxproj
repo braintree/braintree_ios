@@ -1881,20 +1881,20 @@
 		626E894F302669B300AE6692 /* BraintreePaymentActions */ = {
 			isa = PBXGroup;
 			children = (
-				62AB2B5D30472B89001D7507 /* BTPaymentActionAnalytics.swift */,
-				62C41DF93034A9E600310770 /* BTPaymentActionResultType.swift */,
-				6285ADA93041DA3300E0CC81 /* BTCreditCard.swift */,
-				626E895630267AEF00AE6692 /* Models */,
 				626E89543026769200AE6692 /* AnyEncodable.swift */,
-				626E8952302675B600AE6692 /* SetPaymentActionPaymentMethodGraphQLBody.swift */,
-				626E89503026748000AE6692 /* BTPaymentActionRequest.swift */,
+				6285ADA93041DA3300E0CC81 /* BTCreditCard.swift */,
+				62C41DF53034A89F00310770 /* BTPaymentAction.swift */,
+				62AB2B5D30472B89001D7507 /* BTPaymentActionAnalytics.swift */,
 				626E89473026698A00AE6692 /* BTPaymentActionError.swift */,
+				626E89503026748000AE6692 /* BTPaymentActionRequest.swift */,
 				626E89483026698A00AE6692 /* BTPaymentActionResult.swift */,
+				62C41DF93034A9E600310770 /* BTPaymentActionResultType.swift */,
 				626E89493026698A00AE6692 /* BTPaymentActionsClient.swift */,
 				626E894A3026698A00AE6692 /* BTPaymentActionStatus.swift */,
-				62C41DF53034A89F00310770 /* BTPaymentAction.swift */,
 				62C41DF73034A8F900310770 /* BTServerAction.swift */,
+				626E895630267AEF00AE6692 /* Models */,
 				622C948C302A2CC7005001C2 /* PrivacyInfo.xcprivacy */,
+				626E8952302675B600AE6692 /* SetPaymentActionPaymentMethodGraphQLBody.swift */,
 			);
 			path = BraintreePaymentActions;
 			sourceTree = "<group>";
