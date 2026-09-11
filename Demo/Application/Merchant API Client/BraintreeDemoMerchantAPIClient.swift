@@ -105,7 +105,6 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         guard var urlComponents = URLComponents(string: "https://braintree-sample-merchant.herokuapp.com/create_payment_action") else {
             return
         }
-        
         urlComponents.queryItems = [
             URLQueryItem(name: "amount", value: amount),
             URLQueryItem(name: "merchant_account_id", value: merchantAccountID),
@@ -118,17 +117,16 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let httpResponse = response as? HTTPURLResponse {
-                print("Status code: \(httpResponse.statusCode) for \(httpResponse.url?.absoluteString ?? "?")")
-            }
-
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async { completion(nil, error) }
                 return
             }
-
-            print("create_payment_action raw response:\n\(String(data: data, encoding: .utf8) ?? "<non-utf8 data>")")
+            
+            let jsonDecoder = JSONDecoder()
+            jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+            let response = try? jsonDecoder.decode(PaymentActionResponse.self, from: data)
+            DispatchQueue.main.async { completion(response, nil) }
         }
         task.resume()
     }

@@ -44,11 +44,13 @@ final class PaymentActionsViewModel: ObservableObject {
 
         BraintreeDemoMerchantAPIClient.shared.fetchPaymentActionClientToken(
             amount: "10.00",
-            merchantAccountID: "f45wth52cxsdk4mg",
+            merchantAccountID: BraintreeDemoSettings.sandboxMerchantAccountID,
             confirmationMethod: confirmationMethod,
             captureMethod: captureMethod
         ) { [weak self] response, error in
             guard let self else { return }
+            let response = response
+            let error = error
 
             Task { @MainActor in
                 if let error {
@@ -56,11 +58,11 @@ final class PaymentActionsViewModel: ObservableObject {
                     return
                 }
 
-                guard let response else {
+                guard response != nil else {
                     self.progressMessage = "Failed to fetch client token"
                     return
                 }
-                
+
                 self.paymentActionConfigText = "confirmationMethod: \(confirmationMethod) · captureMethod: \(captureMethod)"
                 self.isPayButtonEnabled = true
                 self.progressMessage = "Fetched client token. Ready to pay."
