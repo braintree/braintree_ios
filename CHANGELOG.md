@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Add support for Xcode 27 / iOS 27
+* BraintreePayPalMessaging
+  * Update `PayPalMessages` dependency to 2.0.0
+
 ## 7.11.0 (2026-08-28)
 * BraintreeDataCollector
   * Fix bug with revoked Magnes certificate (fixes #1857) - Error: The signature of "PPRiskMagnes.xcframework" 
