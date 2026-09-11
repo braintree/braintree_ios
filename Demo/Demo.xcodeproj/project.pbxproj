@@ -29,7 +29,12 @@
 		45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 45DDDDA82C08FB0B00C262E5 /* PayPalMessages */; };
 		62070627300A8EE100C430AA /* IdealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62070626300A8ED500C430AA /* IdealView.swift */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
+		62303A6330508E0E00748DE0 /* PaymentActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62303A6230508E0600748DE0 /* PaymentActionsView.swift */; };
 		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
+		627A86843051B4BD0024BAEA /* PaymentActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627A86833051B4B70024BAEA /* PaymentActionsViewModel.swift */; };
+		627A86953051B7E40024BAEA /* PaymentActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627A86943051B7DC0024BAEA /* PaymentActionsViewController.swift */; };
+		62AB2B6530472FFF001D7507 /* BraintreePaymentActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62AB2B6430472FFF001D7507 /* BraintreePaymentActions.framework */; };
+		62AB2B6630472FFF001D7507 /* BraintreePaymentActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 62AB2B6430472FFF001D7507 /* BraintreePaymentActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
 		8028B9762B28C9E100C88CE8 /* ShopperInsightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */; };
@@ -124,6 +129,7 @@
 				803D6508256DAF9A00ACE692 /* BraintreeVenmo.framework in Embed Frameworks */,
 				803D64FA256DAF9A00ACE692 /* BraintreeCard.framework in Embed Frameworks */,
 				803D64FE256DAF9A00ACE692 /* BraintreeDataCollector.framework in Embed Frameworks */,
+				62AB2B6630472FFF001D7507 /* BraintreePaymentActions.framework in Embed Frameworks */,
 				BE9BD75A28872E4D00022983 /* BraintreeSEPADirectDebit.framework in Embed Frameworks */,
 				803D64FC256DAF9A00ACE692 /* BraintreeCore.framework in Embed Frameworks */,
 				BE67CDC32B2A023F00BA4904 /* BraintreePayPalMessaging.framework in Embed Frameworks */,
@@ -161,7 +167,11 @@
 		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62070626300A8ED500C430AA /* IdealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdealView.swift; sourceTree = "<group>"; };
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
+		62303A6230508E0600748DE0 /* PaymentActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentActionsView.swift; sourceTree = "<group>"; };
 		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
+		627A86833051B4B70024BAEA /* PaymentActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentActionsViewModel.swift; sourceTree = "<group>"; };
+		627A86943051B7DC0024BAEA /* PaymentActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentActionsViewController.swift; sourceTree = "<group>"; };
+		62AB2B6430472FFF001D7507 /* BraintreePaymentActions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreePaymentActions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
 		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -243,6 +253,7 @@
 				BE35FCD82A1BD162008F0326 /* BraintreeLocalPayment.framework in Frameworks */,
 				BE9BD75928872E4D00022983 /* BraintreeSEPADirectDebit.framework in Frameworks */,
 				803D6501256DAF9A00ACE692 /* BraintreePayPal.framework in Frameworks */,
+				62AB2B6530472FFF001D7507 /* BraintreePaymentActions.framework in Frameworks */,
 				803D64FD256DAF9A00ACE692 /* BraintreeDataCollector.framework in Frameworks */,
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
@@ -387,6 +398,9 @@
 		A0988F5924DB44B10095EEEE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				627A86943051B7DC0024BAEA /* PaymentActionsViewController.swift */,
+				627A86833051B4B70024BAEA /* PaymentActionsViewModel.swift */,
+				62303A6230508E0600748DE0 /* PaymentActionsView.swift */,
 				BEBD52842AAB9649005D6687 /* AmexViewController.swift */,
 				BEBD52822AAB62FB005D6687 /* ApplePayViewController.swift */,
 				0827D1663013AEDB00D26DC4 /* ApplePayView.swift */,
@@ -420,6 +434,7 @@
 		A0988FFB24DB44D60095EEEE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				62AB2B6430472FFF001D7507 /* BraintreePaymentActions.framework */,
 				08A83F5A2EDF965E0076BD28 /* BraintreeUIComponents.framework */,
 				8028B9772B28D42400C88CE8 /* BraintreeShopperInsights.framework */,
 				BE67CDC12B2A023F00BA4904 /* BraintreePayPalMessaging.framework */,
@@ -747,6 +762,7 @@
 				625257C7301935CD00B69488 /* CardFormView.swift in Sources */,
 				BED461832AD072D9001B0DDF /* CardHelpers.swift in Sources */,
 				BE994B0B2AD8377D00470773 /* BaseViewController.swift in Sources */,
+				627A86843051B4BD0024BAEA /* PaymentActionsViewModel.swift in Sources */,
 				08A83F592EDE268E0076BD28 /* UIComponentsViewController.swift in Sources */,
 				80D36DEE2A7967F20035380E /* VenmoViewController.swift in Sources */,
 				BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */,
@@ -756,8 +772,10 @@
 				8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */,
 				04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */,
 				62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */,
+				627A86953051B7E40024BAEA /* PaymentActionsViewController.swift in Sources */,
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
 				91E24EA930E1F3EFF3329A16 /* UIViewController+Embed.swift in Sources */,
+				62303A6330508E0E00748DE0 /* PaymentActionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,7 +1152,7 @@
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
 			requirement = {
 				kind = exactVersion;
-				version = "5.6.0";
+				version = 5.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
