@@ -45,6 +45,6 @@ struct BTPayPalCreditMessageItem: Equatable {
         self.clickURL = json["click_url"].asURL()
         self.sourceURL = json["source_url"].asURL()
         self.name = json["name"].asString()
-        self.isEmbeddable = json["embeddable"].asBool() ?? false
+        self.isEmbeddable = json["embeddable"].asBool()
     }
 }
