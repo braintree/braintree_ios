@@ -62,6 +62,6 @@ import Foundation
     // MARK: - BTPaymentActionRequest
     
     override func paymentMethodParameters() throws -> any Encodable {
-        BTCardPaymentMethodPayload(card: Card(request: self))
+        CardPaymentMethodPayload(card: self)
     }
 }

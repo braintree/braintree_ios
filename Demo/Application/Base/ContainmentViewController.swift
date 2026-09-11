@@ -249,6 +249,8 @@ class ContainmentViewController: UIViewController {
             return UIComponentsViewController(authorization: authorization)
         case "PayPalMessagingViewController":
             return PayPalMessagingViewController(authorization: authorization)
+        case "PaymentActionsViewController":
+            return PaymentActionsViewController(authorization: authorization)
         default:
             return PayPalWebCheckoutViewController(authorization: authorization)
         }

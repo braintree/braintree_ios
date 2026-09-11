@@ -74,6 +74,39 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         stackView.distribution = .fillEqually
         return stackView
     }()
+
+    lazy var payPalCampaignsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "PayPal Campaigns:"
+        return label
+    }()
+
+    lazy var payPalCampaignsTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "campaign-123-id"
+        textField.textAlignment = .right
+        textField.backgroundColor = .systemBackground
+        return textField
+    }()
+
+    lazy var payPalCampaignsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [payPalCampaignsLabel, payPalCampaignsTextField])
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+
+    lazy var customerInfoStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            emailStackView,
+            countryCodeStackView,
+            nationalNumberStackView,
+            payPalCampaignsStackView
+        ])
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = 8
+        return stackView
+    }()
     
     let rbaDataToggle = Toggle(title: "Recurring Billing (RBA) Data")
     let contactInformationToggle = Toggle(title: "Add Contact Information")
@@ -81,7 +114,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
     let requestBillingAgreementToggle = Toggle(title: "Request Billing Agreement")
 
     override func viewDidLoad() {
-        super.heightConstraint = 500
+        super.usesIntrinsicContentHeight = true
         super.viewDidLoad()
     }
 
@@ -129,9 +162,7 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
         vaultStackView.spacing = 12
 
         let stackView = UIStackView(arrangedSubviews: [
-            emailStackView,
-            countryCodeStackView,
-            nationalNumberStackView,
+            customerInfoStackView,
             oneTimeCheckoutStackView,
             vaultStackView
         ])
@@ -187,7 +218,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             userPhoneNumber: BTPayPalPhoneNumber(
                 countryCode: countryCodeTextField.text ?? "",
                 nationalNumber: nationalNumberTextField.text ?? ""
-            )
+            ),
+            campaigns: payPalCampaigns
         )
 
         if amountBreakdownToggle.isOn {
@@ -231,7 +263,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
                 merchantAccountID: "quantumleapsandboxtesting-1",
                 recurringBillingDetails: recurringBillingDetails,
                 recurringBillingPlanType: .subscription,
-                requestBillingAgreement: true
+                requestBillingAgreement: true,
+                campaigns: payPalCampaigns
             )
         }
 
@@ -315,7 +348,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             amount: amount,
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
-            userAction: .payNow
+            userAction: .payNow,
+            campaigns: payPalCampaigns
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -339,7 +373,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerCredit: true
+            offerCredit: true,
+            campaigns: payPalCampaigns
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -385,7 +420,8 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
             enablePayPalAppSwitch: true,
             userAuthenticationEmail: emailTextField.text,
             userAction: .payNow,
-            offerPayLater: true
+            offerPayLater: true,
+            campaigns: payPalCampaigns
         )
 
         payPalClient.tokenize(request) { nonce, error in
@@ -398,5 +434,13 @@ class PayPalWebCheckoutViewController: PaymentButtonBaseViewController {
 
             self.completionBlock(nonce)
         }
+    }
+
+    private var payPalCampaigns: [BTPayPalCampaign] {
+        payPalCampaignsTextField.text?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .map { BTPayPalCampaign(id: $0) } ?? []
     }
 }
