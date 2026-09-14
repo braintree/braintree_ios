@@ -15,7 +15,7 @@ final class PaymentActionsViewModel: ObservableObject {
 
     private let authorization: String
     private let onProgress: (String?) -> Void
-    private lazy var paymentActionsClient = BTPaymentActionsClient(authorization: authorization)
+    private var paymentActionsClient: BTPaymentActionsClient?
 
     // MARK: Initializer
 
@@ -50,11 +50,12 @@ final class PaymentActionsViewModel: ObservableObject {
                     return
                 }
 
-                guard response != nil else {
+                guard let response else {
                     self.onProgress("Failed to fetch client token")
                     return
                 }
 
+                self.paymentActionsClient = BTPaymentActionsClient(authorization: response.clientToken)
                 self.isPayButtonEnabled = true
                 self.onProgress("Fetched client token. Ready to pay.")
             }
@@ -65,6 +66,11 @@ final class PaymentActionsViewModel: ObservableObject {
 
     func tappedPay() {
         onProgress("Submitting payment method for Payment Action.")
+
+        guard let paymentActionsClient else {
+            onProgress("Fetch a Payment Action Client Token first.")
+            return
+        }
 
         guard let request = makeCard() else {
             onProgress("Fill in all card fields.")
