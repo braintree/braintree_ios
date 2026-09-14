@@ -17,6 +17,6 @@ class PaymentActionsViewController: BaseViewController {
         super.viewDidLoad()
         view.removeGestureRecognizer(tapToDismissKeyboard)
         title = "Payment Actions"
-        embed(PaymentActionsView(authorization: authorization))
+        embed(PaymentActionsView(authorization: authorization, onProgress: progressBlock))
     }
 }
