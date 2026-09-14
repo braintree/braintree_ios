@@ -54,7 +54,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
  
         XCTAssertEqual(result.type, .paymentMethodRequired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testSubmitForPaymentAction_readyForConfirmation_returnsServerActionRequiredConfirm() async throws {
@@ -63,7 +63,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .serverActionRequired)
-        XCTAssertEqual(result.serverAction, .confirm)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
@@ -73,18 +73,18 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .serverActionRequired)
-        XCTAssertEqual(result.serverAction, .capture)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .capture)
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
     func testSubmitForPaymentAction_requiresCustomerAction_returnsCustomerActionRequiredResult() async throws {
         stubResponse(id: "payment-action-id", status: "REQUIRES_CUSTOMER_ACTION")
- 
+
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
         XCTAssertEqual(result.type, .customerActionRequired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testSubmitForPaymentAction_processing_returnsProcessingResult() async throws {
@@ -94,7 +94,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .processing)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testSubmitForPaymentAction_succeeded_returnsCompletedResult() async throws {
@@ -104,7 +104,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .completed)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testSubmitForPaymentAction_canceled_returnsCanceledResult() async throws {
@@ -132,7 +132,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .unknown)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
     
     // MARK: - Missing / Empty Fields
@@ -335,15 +335,15 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .paymentMethodRequired)
         XCTAssertEqual(result.id, "payment-action-id")
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testResultFrom_readyForConfirmation_mapsToServerActionRequiredConfirm() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .readyForConfirmation)
         let result = sut.result(from: paymentAction)
-        
+
         XCTAssertEqual(result.type, .serverActionRequired)
-        XCTAssertEqual(result.serverAction, .confirm)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
     }
 
     func testResultFrom_requiresCapture_mapsToServerActionRequiredCapture() {
@@ -351,7 +351,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .serverActionRequired)
-        XCTAssertEqual(result.serverAction, .capture)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .capture)
     }
 
     func testResultFrom_requiresCustomerAction_mapsToCustomerActionRequired() {
@@ -359,7 +359,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .customerActionRequired)
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testResultFrom_processing_mapsToProcessing() {
@@ -367,7 +367,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .processing)
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testResultFrom_succeeded_mapsToCompleted() {
@@ -375,7 +375,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .completed)
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
 
     func testResultFrom_canceled_mapsToCanceled() {
@@ -397,7 +397,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = sut.result(from: paymentAction)
 
         XCTAssertEqual(result.type, .unknown)
-        XCTAssertNil(result.serverAction)
+        XCTAssertFalse(result is BTServerActionRequiredResult)
     }
     
     // MARK: - Helpers

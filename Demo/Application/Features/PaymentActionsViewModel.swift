@@ -99,31 +99,29 @@ final class PaymentActionsViewModel: ObservableObject {
         switch result.type {
         case .completed:
             showOrderConfirmation(paymentActionID: result.id)
-
         case .serverActionRequired:
-            switch result.serverAction {
-            case .confirm:
-                progressMessage = "Notifying server to confirm Payment Action \(result.id)..."
-                try await notifyServerToConfirm(paymentActionID: result.id)
-                showOrderConfirmation(paymentActionID: result.id)
-            case .capture:
-                // Authorized; capture is pending server-side.
-                showOrderConfirmation(paymentActionID: result.id)
-            case nil:
-                // Shouldn't happen in practice — `BTPaymentActionsClient` only ever produces
-                // `.serverActionRequired` paired with a `.confirm` or `.capture` action — but
-                // handled defensively since `serverAction` is optional on the model.
-                progressMessage = "Server action required but none was specified."
-            }
-
+            guard let result = result as? BTServerActionRequiredResult else { return }
+            try await handle(serverAction: result.serverAction, paymentActionID: result.id)
         case .paymentMethodRequired:
             clearCardFields()
             showDeclineMessage()
-
         case .customerActionRequired, .processing, .canceled, .expired, .unknown:
             progressMessage = "Payment Action \(result.id): \(result.type)"
         @unknown default:
             progressMessage = "Payment Action \(result.id) case not handled."
+        }
+    }
+
+    /// Handles the server-driven action a `BTServerActionRequiredResult` carries.
+    private func handle(serverAction: BTServerAction, paymentActionID: String) async throws {
+        switch serverAction {
+        case .confirm:
+            progressMessage = "Notifying server to confirm Payment Action \(paymentActionID)..."
+            try await notifyServerToConfirm(paymentActionID: paymentActionID)
+            showOrderConfirmation(paymentActionID: paymentActionID)
+        case .capture:
+            // Authorized; capture is pending server-side.
+            showOrderConfirmation(paymentActionID: paymentActionID)
         }
     }
 

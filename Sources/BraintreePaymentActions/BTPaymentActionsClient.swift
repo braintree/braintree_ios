@@ -116,9 +116,9 @@ import BraintreeCore
         case .requiresPaymentMethod:
             return BTPaymentActionResult(type: .paymentMethodRequired, id: paymentAction.id)
         case .readyForConfirmation:
-            return BTPaymentActionResult(type: .serverActionRequired, id: paymentAction.id, serverAction: .confirm)
+            return BTServerActionRequiredResult(id: paymentAction.id, serverAction: .confirm)
         case .requiresCapture:
-            return BTPaymentActionResult(type: .serverActionRequired, id: paymentAction.id, serverAction: .capture)
+            return BTServerActionRequiredResult(id: paymentAction.id, serverAction: .capture)
         case .requiresCustomerAction:
             return BTPaymentActionResult(type: .customerActionRequired, id: paymentAction.id)
         case .processing:
