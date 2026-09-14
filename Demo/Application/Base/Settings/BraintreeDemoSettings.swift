@@ -76,4 +76,8 @@ class BraintreeDemoSettings: NSObject {
     static var clientTokenVersion: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoSettingsClientTokenVersionDefaultsKey")
     }
+    
+    static var sandboxMerchantAccountID: String {
+        "dcpspy2brwdjr3qn"
+    }
 }

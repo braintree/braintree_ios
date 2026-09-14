@@ -39,9 +39,15 @@ final class PaymentActionsViewModel: ObservableObject {
         isPayButtonEnabled = false
         progressMessage = "Fetching Payment Action Client Token..."
 
-        // TODO: Add fetchPaymentActionClientToken(completion:) to BraintreeDemoMerchantAPIClient.
+        let confirmationMethod = "AUTOMATIC"
+        let captureMethod = "AUTOMATIC"
 
-        BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { [weak self] response, error in
+        BraintreeDemoMerchantAPIClient.shared.fetchPaymentActionClientToken(
+            amount: "10.00",
+            merchantAccountID: BraintreeDemoSettings.sandboxMerchantAccountID,
+            confirmationMethod: confirmationMethod,
+            captureMethod: captureMethod
+        ) { [weak self] response, error in
             guard let self else { return }
 
             Task { @MainActor in
@@ -54,8 +60,8 @@ final class PaymentActionsViewModel: ObservableObject {
                     self.progressMessage = "Failed to fetch client token"
                     return
                 }
-                // TODO: Set this once confirmationMethod/captureMethod are available on the response.
-                // self.paymentActionConfigText = "confirmationMethod: \(response.confirmationMethod) · captureMethod: \(response.captureMethod)"
+
+                self.paymentActionConfigText = "confirmationMethod: \(confirmationMethod) · captureMethod: \(captureMethod)"
                 self.isPayButtonEnabled = true
                 self.progressMessage = "Fetched client token. Ready to pay."
             }

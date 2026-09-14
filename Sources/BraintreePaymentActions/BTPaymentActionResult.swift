@@ -17,7 +17,7 @@ import Foundation
 
     // MARK: - Initializer
 
-    init(type: BTPaymentActionResultType, id: String) {
+    public init(type: BTPaymentActionResultType, id: String) {
         self.type = type
         self.id = id
     }

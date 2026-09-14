@@ -12,6 +12,18 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         let message: String
     }
     
+    struct PaymentActionResponse: Codable {
+
+        let clientToken: String
+        let paymentAction: PaymentActionDetail
+    }
+
+    struct PaymentActionDetail: Codable {
+
+        let id: String
+        let status: String
+    }
+    
     static let shared = BraintreeDemoMerchantAPIClient()
     
     private override init() {}
@@ -80,6 +92,42 @@ class BraintreeDemoMerchantAPIClient: NSObject {
             DispatchQueue.main.async { completion(message, nil) }
         }
         
+        task.resume()
+    }
+    
+    func fetchPaymentActionClientToken(
+        amount: String,
+        merchantAccountID: String,
+        confirmationMethod: String = "AUTOMATIC",
+        captureMethod: String = "AUTOMATIC",
+        completion: @escaping (PaymentActionResponse?, Error?) -> Void
+    ) {
+        guard var urlComponents = URLComponents(string: "https://braintree-sample-merchant.herokuapp.com/create_payment_action") else {
+            return
+        }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "amount", value: amount),
+            URLQueryItem(name: "merchant_account_id", value: merchantAccountID),
+            URLQueryItem(name: "confirmation_method", value: confirmationMethod),
+            URLQueryItem(name: "capture_method", value: captureMethod)
+        ]
+        
+        guard let url = urlComponents.url else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async { completion(nil, error) }
+                return
+            }
+            
+            let jsonDecoder = JSONDecoder()
+            jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+            let response = try? jsonDecoder.decode(PaymentActionResponse.self, from: data)
+            DispatchQueue.main.async { completion(response, nil) }
+        }
         task.resume()
     }
 }
