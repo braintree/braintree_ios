@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/paypal/paypal-messages-ios",
       "state" : {
-        "revision" : "86bb29908a7493c67af29d6039e3b737229f077a",
-        "version" : "1.0.0"
+        "revision" : "e3ee08c5310096457ea709f49b8b22b6b385a916",
+        "version" : "2.0.0"
       }
     },
     {
