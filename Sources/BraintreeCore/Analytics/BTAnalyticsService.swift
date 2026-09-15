@@ -6,10 +6,8 @@ final class BTAnalyticsService: AnalyticsSendable {
     
     static let shared = BTAnalyticsService()
 
-    // swiftlint:disable force_unwrapping
     /// The FPTI URL to post all analytic events.
     static let url = URL(string: "https://api.paypal.com")!
-    // swiftlint:enable force_unwrapping
 
     /// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
     var http: BTHTTP?

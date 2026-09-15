@@ -10,7 +10,6 @@ import BraintreeCore
 
     // MARK: - Internal Properties
 
-    // swiftlint:disable:next force_unwrapping
     let appStoreURL = URL(string: "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")!
 
     /// Exposed for testing to get the instance of BTAPIClient
