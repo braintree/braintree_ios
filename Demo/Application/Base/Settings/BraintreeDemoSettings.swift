@@ -78,6 +78,6 @@ class BraintreeDemoSettings: NSObject {
     }
     
     static var sandboxMerchantAccountID: String {
-        "dcpspy2brwdjr3qn"
+        "stch2nfdfwszytw5"
     }
 }

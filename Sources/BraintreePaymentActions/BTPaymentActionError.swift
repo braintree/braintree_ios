@@ -21,10 +21,14 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     
     public var errorCode: Int {
         switch self {
-        case .missingID: return 0
-        case .missingStatus: return 1
-        case .decodingFailure: return 2
-        case .missingParameters: return 3
+        case .missingID:
+            return 0
+        case .missingStatus:
+            return 1
+        case .decodingFailure:
+            return 2
+        case .missingParameters:
+            return 3
         }
     }
     
