@@ -152,10 +152,10 @@ jobs:
 
           for scheme in "${SCHEMES[@]}"; do
             # 3) Build device archive
-            xcodebuild archive -workspace Braintree.xcworkspace -scheme "$scheme" -destination "generic/platform=iOS" -archivePath "archives/${scheme}_Device" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
+            xcodebuild archive -project Braintree.xcodeproj -scheme "$scheme" -destination "generic/platform=iOS" -archivePath "archives/${scheme}_Device" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
 
             # 4) Build simulator archive
-            xcodebuild archive -workspace Braintree.xcworkspace -scheme "$scheme" -destination "generic/platform=iOS Simulator" -archivePath "archives/${scheme}_Simulator" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
+            xcodebuild archive -project Braintree.xcodeproj -scheme "$scheme" -destination "generic/platform=iOS Simulator" -archivePath "archives/${scheme}_Simulator" BUILD_LIBRARY_FOR_DISTRIBUTION=YES SKIP_INSTALL=NO
 
             # 5) Combine archives into xcframework
             xcodebuild -create-xcframework \
@@ -187,19 +187,19 @@ jobs:
           brew install sourcekitten
 
           # run sourcekitten on each Swift module individually
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCore -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-core.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-sepa-direct-debit.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeAmericanExpress -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-american-express.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeDataCollector -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-data-collector.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeApplePay -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-apple-pay.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeLocalPayment -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-local-payment.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeThreeDSecure -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-three-d-secure.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeCard -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-card.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPal -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-paypal.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeVenmo -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-venmo.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreePayPalMessaging -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-paypal-messaging.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeShopperInsights -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-shopper-insights.json
-          sourcekitten doc -- -workspace Braintree.xcworkspace -scheme BraintreeUIComponents -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-ui-components.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeCore -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-core.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeSEPADirectDebit -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-sepa-direct-debit.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeAmericanExpress -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-american-express.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeDataCollector -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-data-collector.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeApplePay -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-apple-pay.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeLocalPayment -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-local-payment.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeThreeDSecure -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-three-d-secure.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeCard -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-card.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreePayPal -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-paypal.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeVenmo -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-venmo.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreePayPalMessaging -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-paypal-messaging.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeShopperInsights -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-shopper-insights.json
+          sourcekitten doc -- -project Braintree.xcodeproj -scheme BraintreeUIComponents -destination 'name=iPhone 16,platform=iOS Simulator' > braintree-ui-components.json
 
           # merge sourcekitten output
           jq -s '.[0] + .[1] + .[2] + .[3] + .[4] + .[5] + .[6] + .[7] + .[8] + .[9] + .[10] + .[11] + .[12]' braintree-core.json braintree-sepa-direct-debit.json braintree-american-express.json braintree-data-collector.json braintree-apple-pay.json braintree-local-payment.json braintree-three-d-secure.json braintree-card.json braintree-paypal.json braintree-venmo.json braintree-paypal-messaging.json braintree-shopper-insights.json braintree-ui-components.json > swiftDoc.json
@@ -225,13 +225,5 @@ jobs:
           git commit -m "Publish ${RELEASE_VERSION} docs to github pages"
           git push
 
-          # Return to original branch to avoid stashing in CocoaPods step
+          # Return to original branch to leave a clean working tree
           git checkout "${CURRENT_BRANCH}"
-
-      - name: Publish to CocoaPods
-        env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: |
-          set -euo pipefail
-          git checkout "${RELEASE_VERSION}"
-          pod trunk push Braintree.podspec
