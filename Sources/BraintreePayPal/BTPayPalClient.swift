@@ -21,6 +21,10 @@ import BraintreeDataCollector
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     var application: URLOpener = UIApplication.shared
 
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles so that
+    /// background task assertions are not requested from the system during tests.
+    var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
+
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL?
 
@@ -78,6 +82,9 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine if the context type is `BA-TOKEN` or `EC-TOKEN`
     private var contextType: String?
+    
+    /// Used to wrap handleReturn API call inside a background task
+    private var returnBackgroundTaskID: UIBackgroundTaskIdentifier = .invalid
 
     // MARK: - Initializer
 
@@ -283,7 +290,9 @@ import BraintreeDataCollector
             "sessionId": metadata.sessionID
         ]
         
+        beginReturnBackgroundTask()
         apiClient.post("/v1/payment_methods/paypal_accounts", parameters: parameters) { body, _, error in
+            defer { self.endReturnBackgroundTask() }
             if let error {
                 self.notifyFailure(with: error, completion: completion)
                 return
@@ -424,6 +433,19 @@ import BraintreeDataCollector
     }
 
     // MARK: - Private Methods
+    
+    private func beginReturnBackgroundTask() {
+        endReturnBackgroundTask()
+        returnBackgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") { [weak self] in
+            self?.endReturnBackgroundTask()
+        }
+    }
+    
+    private func endReturnBackgroundTask() {
+        guard returnBackgroundTaskID != .invalid else { return }
+        backgroundTaskManager.endBackgroundTask(returnBackgroundTaskID)
+        returnBackgroundTaskID = .invalid
+    }
 
     private func tokenize(
         request: BTPayPalRequest,
