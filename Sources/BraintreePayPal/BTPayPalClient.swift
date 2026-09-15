@@ -87,6 +87,9 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
     private var fundingSource: BTPayPalFundingSource?
+    
+    /// Used to wrap handleReturn API call inside a background task
+    private var returnBackgroundTaskID: UIBackgroundTaskIdentifier = .invalid
 
     // MARK: - Initializer
 
@@ -272,6 +275,9 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] }
         )
 
+        beginReturnBackgroundTask()
+        defer { endReturnBackgroundTask() }
+
         let (body, _) = try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
 
         guard
@@ -426,6 +432,19 @@ import BraintreeDataCollector
     }
 
     // MARK: - Private Methods
+    
+    private func beginReturnBackgroundTask() {
+        endReturnBackgroundTask()
+        returnBackgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTPayPalHandleReturnTokenize") { [weak self] in
+            self?.endReturnBackgroundTask()
+        }
+    }
+    
+    private func endReturnBackgroundTask() {
+        guard returnBackgroundTaskID != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(returnBackgroundTaskID)
+        returnBackgroundTaskID = .invalid
+    }
 
     private func tokenize(request: BTPayPalRequest) async throws -> BTPayPalAccountNonce {
         self.payPalRequest = request
