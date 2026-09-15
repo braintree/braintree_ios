@@ -21,6 +21,10 @@ import BraintreeDataCollector
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     var application: URLOpener = UIApplication.shared
 
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles so that
+    /// background task assertions are not requested from the system during tests.
+    var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
+
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL?
 
@@ -432,14 +436,14 @@ import BraintreeDataCollector
     
     private func beginReturnBackgroundTask() {
         endReturnBackgroundTask()
-        returnBackgroundTaskID = UIApplication.shared.beginBackgroundTask(withName: "BTPayPalHandleReturnTokenize") { [weak self] in
+        returnBackgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") { [weak self] in
             self?.endReturnBackgroundTask()
         }
     }
     
     private func endReturnBackgroundTask() {
         guard returnBackgroundTaskID != .invalid else { return }
-        UIApplication.shared.endBackgroundTask(returnBackgroundTaskID)
+        backgroundTaskManager.endBackgroundTask(returnBackgroundTaskID)
         returnBackgroundTaskID = .invalid
     }
 
