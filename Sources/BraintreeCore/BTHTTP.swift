@@ -461,7 +461,7 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
                 if path.contains("graphql"),
                     let data = task.originalRequest?.httpBody,
                     let mutationName = getGraphQLMutationName(data) {
-                        path = mutationName
+                    path = mutationName
                 }
                 
                 networkTimingDelegate?.fetchAPITiming(

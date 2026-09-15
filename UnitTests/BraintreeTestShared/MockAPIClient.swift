@@ -36,8 +36,27 @@ public class MockAPIClient: BTAPIClient {
     public var cannedResponseBody : BTJSON? = nil
     var cannedMetadata : BTClientMetadata? = nil
 
+    /// When `true`, `post` captures its completion block instead of invoking it, so a test can control
+    /// when — or whether — the response arrives. Use this to observe the window while a request is
+    /// still in flight. Defaults to `false`, which preserves the synchronous behavior existing tests rely on.
+    public var shouldDeferPOSTCompletion = false
+
+    /// The completion captured while `shouldDeferPOSTCompletion` was `true`, if any.
+    private var deferredPOSTCompletion: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)?
+
+    /// `true` when a deferred POST is still awaiting a response.
+    public var hasDeferredPOSTCompletion: Bool { deferredPOSTCompletion != nil }
+
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
+
+    /// Invokes a completion captured while `shouldDeferPOSTCompletion` was `true`, simulating the
+    /// response finally arriving. No-op when nothing is pending.
+    public func flushDeferredPOSTCompletion() {
+        let completionBlock = deferredPOSTCompletion
+        deferredPOSTCompletion = nil
+        completionBlock?(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+    }
 
     public override func get(_ path: String, parameters: Encodable?, httpType: BTAPIClientHTTPService, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
@@ -58,6 +77,12 @@ public class MockAPIClient: BTAPIClient {
         guard let completionBlock = completionBlock else {
             return
         }
+
+        if shouldDeferPOSTCompletion {
+            deferredPOSTCompletion = completionBlock
+            return
+        }
+
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
@@ -70,6 +95,12 @@ public class MockAPIClient: BTAPIClient {
         guard let completionBlock = completionBlock else {
             return
         }
+
+        if shouldDeferPOSTCompletion {
+            deferredPOSTCompletion = completionBlock
+            return
+        }
+
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
     
