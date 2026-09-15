@@ -1,9 +1,11 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## Unreleased
 * Add support for Xcode 27 / iOS 27
 * BraintreePayPalMessaging
   * Update `PayPalMessages` dependency to 2.0.0
+* BraintreeApplePay
+  * Add eftpos network support when mapping Apple Pay supported networks from configuration.
 
 ## 7.11.0 (2026-08-28)
 * BraintreeDataCollector

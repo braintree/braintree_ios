@@ -65,11 +65,11 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
 
     func testApplePaySupportedNetworks_returnsSupportedNetworks() {
         let configurationJSON = BTJSON(value: [
-            "applePay": [ "supportedNetworks": ["visa", "mastercard", "amex", "discover"] ]
+            "applePay": [ "supportedNetworks": ["visa", "mastercard", "amex", "discover", "eftpos"] ]
         ])
         let configuration = BTConfiguration(json: configurationJSON)
 
-        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex, PKPaymentNetwork.discover])
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.visa, PKPaymentNetwork.masterCard, PKPaymentNetwork.amex, PKPaymentNetwork.discover, PKPaymentNetwork.eftpos])
     }
 
     func testApplePaySupportedNetworks_whenSupportedNetworksIncludesMaestro_returnsSupportedNetworks() {
@@ -89,6 +89,15 @@ class BTConfiguration_ApplePay_Tests : XCTestCase {
 
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.elo])
     }
+
+    func testApplePaySupportedNetworks_whenSupportedNetworksIncludesEftpos_returnsSupportedNetworks() {
+            let configurationJSON = BTJSON(value: [
+                "applePay": [ "supportedNetworks": ["eftpos"] ]
+                ])
+            let configuration = BTConfiguration(json: configurationJSON)
+
+            XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetwork.eftpos])
+        }
 
     func testApplePaySupportedNetworks_doesNotPassesThroughUnknownValuesFromConfiguration() {
         let configurationJSON = BTJSON(value: [
