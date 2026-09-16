@@ -1,7 +1,7 @@
 import Foundation
 
 /// The kind of `BTPaymentActionResult`. Check this before reading any of the result's other properties.
-@objc public enum BTPaymentActionResultType: Int {
+@objc public enum BTPaymentActionResultType: Int, Equatable {
     
     /// The Payment Action completed successfully.
     case completed

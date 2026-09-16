@@ -10,21 +10,18 @@ final class PaymentActionsViewModel: ObservableObject {
     @Published var postalCode: String = ""
 
     // UI State
-    @Published var progressMessage: String = ""
     @Published var isPayButtonEnabled: Bool = false
     @Published var isCardFieldsEnabled: Bool = true
 
-    /// Reflects the confirmationMethod/captureMethod that came back on the `paymentActions` field
-    /// off the most recently fetched client token.
-    @Published var paymentActionConfigText = "confirmationMethod: — · captureMethod: —"
-
     private let authorization: String
-    private lazy var paymentActionsClient = BTPaymentActionsClient(authorization: authorization)
+    private let onProgress: (String?) -> Void
+    private var paymentActionsClient: BTPaymentActionsClient?
 
     // MARK: Initializer
 
-    init(authorization: String) {
+    init(authorization: String, onProgress: @escaping (String?) -> Void = { _ in }) {
         self.authorization = authorization
+        self.onProgress = onProgress
     }
 
     // MARK: Lifecycle
@@ -37,35 +34,30 @@ final class PaymentActionsViewModel: ObservableObject {
 
     func fetchClientToken() {
         isPayButtonEnabled = false
-        progressMessage = "Fetching Payment Action Client Token..."
-
-        let confirmationMethod = "AUTOMATIC"
-        let captureMethod = "AUTOMATIC"
+        onProgress("Fetching Payment Action Client Token...")
 
         BraintreeDemoMerchantAPIClient.shared.fetchPaymentActionClientToken(
             amount: "10.00",
             merchantAccountID: BraintreeDemoSettings.sandboxMerchantAccountID,
-            confirmationMethod: confirmationMethod,
-            captureMethod: captureMethod
+            confirmationMethod: "AUTOMATIC",
+            captureMethod: "AUTOMATIC"
         ) { [weak self] response, error in
             guard let self else { return }
-            let response = response
-            let error = error
 
             Task { @MainActor in
                 if let error {
-                    self.progressMessage = "Failed to fetch client token: \(error.localizedDescription)"
+                    self.onProgress("Failed to fetch client token: \(error.localizedDescription)")
                     return
                 }
 
-                guard response != nil else {
-                    self.progressMessage = "Failed to fetch client token"
+                guard let response else {
+                    self.onProgress("Failed to fetch client token")
                     return
                 }
 
-                self.paymentActionConfigText = "confirmationMethod: \(confirmationMethod) · captureMethod: \(captureMethod)"
+                self.paymentActionsClient = BTPaymentActionsClient(authorization: response.clientToken)
                 self.isPayButtonEnabled = true
-                self.progressMessage = "Fetched client token. Ready to pay."
+                self.onProgress("Fetched client token. Ready to pay.")
             }
         }
     }
@@ -73,10 +65,15 @@ final class PaymentActionsViewModel: ObservableObject {
     // MARK: Actions
 
     func tappedPay() {
-        progressMessage = "Submitting payment method for Payment Action.."
+        onProgress("Submitting payment method for Payment Action.")
+
+        guard let paymentActionsClient else {
+            onProgress("Fetch a Payment Action Client Token first.")
+            return
+        }
 
         guard let request = makeCard() else {
-            progressMessage = "Fill in all card fields."
+            onProgress("Fill in all card fields.")
             return
         }
 
@@ -89,7 +86,7 @@ final class PaymentActionsViewModel: ObservableObject {
                 try await handle(result)
             } catch {
                 isCardFieldsEnabled = true
-                progressMessage = "Failed to submit payment method: \(error.localizedDescription)"
+                onProgress("Failed to submit payment method: \(error.localizedDescription)")
             }
         }
     }
@@ -107,37 +104,38 @@ final class PaymentActionsViewModel: ObservableObject {
         switch result.type {
         case .completed:
             showOrderConfirmation(paymentActionID: result.id)
-
         case .serverActionRequired:
-            switch result.serverAction {
-            case .confirm:
-                progressMessage = "Notifying server to confirm Payment Action \(result.id)..."
-                try await notifyServerToConfirm(paymentActionID: result.id)
-                showOrderConfirmation(paymentActionID: result.id)
-            case .capture:
-                // Authorized; capture is pending server-side.
-                showOrderConfirmation(paymentActionID: result.id)
-            case nil:
-                progressMessage = "Server action required but none was specified."
-            }
-
+            guard let result = result as? BTServerActionRequiredResult else { return }
+            try await handle(serverAction: result.serverAction, paymentActionID: result.id)
         case .paymentMethodRequired:
             clearCardFields()
             showDeclineMessage()
-
         case .customerActionRequired, .processing, .canceled, .expired, .unknown:
-            progressMessage = "Payment Action \(result.id): \(result.type)"
+            onProgress("Payment Action \(result.id): \(result.type)")
         @unknown default:
-            progressMessage = "Payment Action \(result.id) case not handled."
+            onProgress("Payment Action \(result.id) case not handled.")
+        }
+    }
+
+    /// Handles the server-driven action a `BTServerActionRequiredResult` carries.
+    private func handle(serverAction: BTServerAction, paymentActionID: String) async throws {
+        switch serverAction {
+        case .confirm:
+            onProgress("Notifying server to confirm Payment Action \(paymentActionID)...")
+            try await notifyServerToConfirm(paymentActionID: paymentActionID)
+            showOrderConfirmation(paymentActionID: paymentActionID)
+        case .capture:
+            // Authorized; capture is pending server-side.
+            showOrderConfirmation(paymentActionID: paymentActionID)
         }
     }
 
     private func showOrderConfirmation(paymentActionID: String) {
-        progressMessage = "Payment Action \(paymentActionID) complete ✅"
+        onProgress("Payment Action \(paymentActionID) complete ✅")
     }
 
     private func showDeclineMessage() {
-        progressMessage = "Payment method declined. Please try another card."
+        onProgress("Payment method declined. Please try another card.")
     }
 
     /// Asks the merchant server to confirm a Payment Action that requires it.
@@ -154,7 +152,9 @@ final class PaymentActionsViewModel: ObservableObject {
         postalCode = ""
     }
 
-    /// Builds a `BTCreditCard` from the card form fields, or `nil` if a required field is missing/malformed.
+    /// Builds a `BTCreditCard` from the card form fields, or `nil` if a required field is
+    /// missing/malformed. Mirrors the validation `CardTokenizationView.makeCard()` uses for the
+    /// shared `CardFormView`, so both features stay in sync if the form's requirements change.
     private func makeCard() -> BTCreditCard? {
         guard !cardNumber.isEmpty, !cvv.isEmpty else { return nil }
 
