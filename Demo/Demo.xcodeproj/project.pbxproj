@@ -30,6 +30,7 @@
 		62070627300A8EE100C430AA /* IdealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62070626300A8ED500C430AA /* IdealView.swift */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
 		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
+		62C59A90305B1C350043BD10 /* InAppSettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 62C59A8F305B1C350043BD10 /* InAppSettingsKit */; };
 		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
 		62F1F560304B5E9400C180C2 /* AmexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F1F55F304B5E9400C180C2 /* AmexView.swift */; };
 		8025988D2CC1A95400E7D898 /* Toggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025988C2CC1A95400E7D898 /* Toggle.swift */; };
@@ -249,6 +250,7 @@
 				803D64F7256DAF9A00ACE692 /* BraintreeApplePay.framework in Frameworks */,
 				803D6507256DAF9A00ACE692 /* BraintreeVenmo.framework in Frameworks */,
 				803D6503256DAF9A00ACE692 /* BraintreeThreeDSecure.framework in Frameworks */,
+				62C59A90305B1C350043BD10 /* InAppSettingsKit in Frameworks */,
 				8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */,
 				803D64F9256DAF9A00ACE692 /* BraintreeCard.framework in Frameworks */,
 				08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */,
@@ -547,6 +549,7 @@
 			packageProductDependencies = (
 				45DDDDA82C08FB0B00C262E5 /* PayPalMessages */,
 				BE500C7C303F25ED00A5FB81 /* PayPalRisk */,
+				62C59A8F305B1C350043BD10 /* InAppSettingsKit */,
 			);
 			productName = Demo;
 			productReference = A0988E4924DB43DC0095EEEE /* Demo.app */;
@@ -625,6 +628,7 @@
 			packageReferences = (
 				45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 				BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */,
+				62C59A8E305B1C350043BD10 /* XCRemoteSwiftPackageReference "InAppSettingsKit" */,
 			);
 			productRefGroup = A0988E4A24DB43DC0095EEEE /* Products */;
 			projectDirPath = "";
@@ -698,9 +702,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1132,6 +1140,14 @@
 				version = 2.0.0;
 			};
 		};
+		62C59A8E305B1C350043BD10 /* XCRemoteSwiftPackageReference "InAppSettingsKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/futuretap/InAppSettingsKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.9.2;
+			};
+		};
 		BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
@@ -1147,6 +1163,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 45DDDDA72C08FB0B00C262E5 /* XCRemoteSwiftPackageReference "paypal-messages-ios" */;
 			productName = PayPalMessages;
+		};
+		62C59A8F305B1C350043BD10 /* InAppSettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A8E305B1C350043BD10 /* XCRemoteSwiftPackageReference "InAppSettingsKit" */;
+			productName = InAppSettingsKit;
 		};
 		BE500C7C303F25ED00A5FB81 /* PayPalRisk */ = {
 			isa = XCSwiftPackageProductDependency;

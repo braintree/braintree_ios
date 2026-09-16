@@ -158,6 +158,8 @@
 		62BF860E2DD2BF0300A05064 /* BTCreateCustomerSessionAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BF860D2DD2BEF100A05064 /* BTCreateCustomerSessionAPI_Tests.swift */; };
 		62C458D32DD291AE00B4F9B3 /* BTCreateCustomerSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */; };
 		62C458D52DD292D900B4F9B3 /* BTCustomerSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C458D42DD292CF00B4F9B3 /* BTCustomerSessionRequest.swift */; };
+		62C59A8A305B1B5B0043BD10 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 62C59A89305B1B5B0043BD10 /* OCMock */; };
+		62C59A8D305B1C080043BD10 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */; };
 		62D5754A2D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D575492D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift */; };
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
@@ -1482,6 +1484,8 @@
 			files = (
 				045241652EBED39400C25EA6 /* BraintreeCore.framework in Frameworks */,
 				A9E5C23324FD6DAE00EE691F /* BraintreeTestShared.framework in Frameworks */,
+				62C59A8A305B1B5B0043BD10 /* OCMock in Frameworks */,
+				62C59A8D305B1C080043BD10 /* OHHTTPStubsSwift in Frameworks */,
 				28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3063,6 +3067,10 @@
 				A9E5C23224FD6DAA00EE691F /* PBXTargetDependency */,
 			);
 			name = BraintreeCoreTests;
+			packageProductDependencies = (
+				62C59A89305B1B5B0043BD10 /* OCMock */,
+				62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */,
+			);
 			productName = BraintreeCoreTests;
 			productReference = A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3267,6 +3275,8 @@
 			packageReferences = (
 				BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
 				967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */,
+				62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */,
+				62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -7762,6 +7772,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/erikdoe/ocmock";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
@@ -7781,6 +7807,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		62C59A89305B1B5B0043BD10 /* OCMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */;
+			productName = OCMock;
+		};
+		62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
 		967D1037303DDC76001F605F /* PayPalRisk */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */;
