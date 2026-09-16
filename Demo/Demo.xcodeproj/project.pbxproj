@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		04DDF4622EE8AA1900FBDE49 /* PaymentButtonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */; };
-		08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */; };
 		0827D165300131C100D26DC4 /* SEPADirectDebitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */; };
 		0827D1673013AEDB00D26DC4 /* ApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0827D1663013AEDB00D26DC4 /* ApplePayView.swift */; };
 		084C2C6E2FD85A960018BB01 /* CardFields_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084C2C6D2FD85A960018BB01 /* CardFields_UITests.swift */; };
@@ -253,7 +252,6 @@
 				62C59A90305B1C350043BD10 /* InAppSettingsKit in Frameworks */,
 				8028B9782B28D42400C88CE8 /* BraintreeShopperInsights.framework in Frameworks */,
 				803D64F9256DAF9A00ACE692 /* BraintreeCard.framework in Frameworks */,
-				08222B07C311489F90D08D41 /* Pods_Demo.framework in Frameworks */,
 				BE500C7D303F25ED00A5FB81 /* PayPalRisk in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,12 +532,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0988E6224DB43DF0095EEEE /* Build configuration list for PBXNativeTarget "Demo" */;
 			buildPhases = (
-				4B20C942096415547FE03C69 /* [CP] Check Pods Manifest.lock */,
 				A0988E4524DB43DC0095EEEE /* Sources */,
 				A0988E4624DB43DC0095EEEE /* Frameworks */,
 				A0988E4724DB43DC0095EEEE /* Resources */,
 				A098902024DB44D60095EEEE /* Embed Frameworks */,
-				65DE4DA0A163F074298379F4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -670,52 +666,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4B20C942096415547FE03C69 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Demo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		65DE4DA0A163F074298379F4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		42C574A725FA66F9008B3681 /* Sources */ = {
@@ -983,7 +933,6 @@
 		};
 		A0988E6324DB43DF0095EEEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73498B4265CA7D315E2FBF38 /* Pods-Demo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
@@ -1013,7 +962,6 @@
 		};
 		A0988E6424DB43DF0095EEEE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
