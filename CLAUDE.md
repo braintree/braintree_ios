@@ -175,7 +175,7 @@ Follow `STYLE_GUIDE.md` in full. Key highlights:
   - CocoaPods: consumed as a dependency on the `PayPalRisk` pod
   - Carthage: consumed via `Carthage/PayPalRisk.json` from the remote repo
   - `import PPRiskMagnes` in Swift source files remains unchanged
-- `PayPalMessages.xcframework` v1.0.0 — Pay Later messaging UI
+- `PayPalMessages.xcframework` v2.0.0 — Pay Later messaging UI
 
 **Development only:**
 - OCMock — Objective-C mocking
