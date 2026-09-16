@@ -27,77 +27,137 @@ class BTPaymentActionsClient_IntegrationTests: XCTestCase {
     // MARK: - submitForPaymentAction
     
     func testSubmitForPaymentAction_autoConfirmAutoCapture_returnsProcessingResult() async throws {
-        try XCTSkipIf(true, "Pending Flow 1 (Auto Confirm / Auto Capture) test PAN")
+        let client = try await makePaymentActionsClient(confirmationMethod: "AUTOMATIC", captureMethod: "AUTOMATIC")
+        let result = try await client.submitForPaymentAction(cardRequest)
         
-        do {
-            let result = try await paymentActionsClient.submitForPaymentAction(cardRequest)
-            
-            XCTAssertEqual(result.type, .completed)
-            XCTAssertNil(result.serverAction)
-        } catch {
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+        XCTAssertEqual(result.type, .completed)
     }
     
     func testSubmitForPaymentAction_manualConfirmAutoCapture_returnServerActionRequiredConfirm() async throws {
-        try XCTSkipIf(true, "Pending Flow 2 (MANUAL confirm / AUTOMATIC capture) test PAN")
+        let client = try await makePaymentActionsClient(confirmationMethod: "MANUAL", captureMethod: "AUTOMATIC")
+        let result = try await client.submitForPaymentAction(cardRequest)
         
-        do {
-            let result = try await paymentActionsClient.submitForPaymentAction(cardRequest)
-            
-            XCTAssertEqual(result.type, .serverActionRequired)
-            XCTAssertEqual(result.serverAction, .confirm)
-        } catch {
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+        XCTAssertEqual(result.type, .serverActionRequired)
+        let serverActionResult = try XCTUnwrap(result as? BTServerActionRequiredResult)
+        XCTAssertEqual(serverActionResult.serverAction, .confirm)
     }
     
     func testSubmitForPaymentAction_autoConfirmManualCapture_returnsProcessingResult() async throws {
-        try XCTSkipIf(true, "Pending Flow 3 (AUTOMATIC confirm / MANUAL capture) test PAN")
+        let client = try await makePaymentActionsClient(confirmationMethod: "AUTOMATIC", captureMethod: "MANUAL")
+        let result = try await client.submitForPaymentAction(cardRequest)
         
-        do {
-            let result = try await paymentActionsClient.submitForPaymentAction(cardRequest)
-            
-            XCTAssertEqual(result.type, .serverActionRequired)
-            XCTAssertEqual(result.serverAction, .capture)
-        } catch {
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+        XCTAssertEqual(result.type, .serverActionRequired)
+        let serverActionResult = try XCTUnwrap(result as? BTServerActionRequiredResult)
+        XCTAssertEqual(serverActionResult.serverAction, .capture)
     }
     
     func testSubmitForPaymentAction_flow4_manualConfirmManualCapture_returnsServerActionRequiredConfirm() async throws {
-        try XCTSkipIf(true, "Pending Flow 4 (MANUAL confirm / MANUAL capture) test PAN")
+        let client = try await makePaymentActionsClient(confirmationMethod: "MANUAL", captureMethod: "MANUAL")
+        let result = try await client.submitForPaymentAction(cardRequest)
         
-        do {
-            let result = try await paymentActionsClient.submitForPaymentAction(cardRequest)
-            
-            XCTAssertEqual(result.type, .serverActionRequired)
-            XCTAssertEqual(result.serverAction, .confirm)
-        } catch {
-            XCTFail("Unexpected error: \(error.localizedDescription)")
-        }
+        XCTAssertEqual(result.type, .serverActionRequired)
+        let serverActionResult = try XCTUnwrap(result as? BTServerActionRequiredResult)
+        XCTAssertEqual(serverActionResult.serverAction, .confirm)
     }
     
     // MARK: - Failure Path
     
-    func testSubmitForPaymentAction_usingTokenizationKey_failsWithAuthrorizationError() {
-        let expectation = XCTestExpectation(description: "Submit for Payment Action using tokenization key")
+    func testSubmitForPaymentAction_usingTokenizationKey_failsWithAuthrorizationError() async throws {
+        let client = BTPaymentActionsClient(authorization: BTIntegrationTestsConstants.sandboxTokenizationKey)
         
-        paymentActionsClient.submitForPaymentAction(cardRequest) { result, error in
-            guard let error = error as? NSError else {
-                XCTFail("Expected an error to be returned")
-                return
-            }
-            XCTAssertNil(result)
-            XCTAssertEqual(error.domain, BTCoreConstants.httpErrorDomain)
-            XCTAssertEqual(error.code, 2)
+        do {
+            _ = try await client.submitForPaymentAction(cardRequest)
+            XCTFail("Expected an error to be thrown")
+        } catch {
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, BTCoreConstants.httpErrorDomain)
+            XCTAssertEqual(nsError.code, 2)
             
-            let httpResponse = error.userInfo[BTCoreConstants.urlResponseKey] as! HTTPURLResponse
-            XCTAssertEqual(httpResponse.statusCode, 403)
-            expectation.fulfill()
-            
+            let httpResponse = try XCTUnwrap(nsError.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse)
+            XCTAssertEqual(httpResponse.statusCode, 422)
+        }
+    }
+    
+    // MARK: Helpers
+    
+    /// Fetches a client token configured for the given confirm/capture combination and builds a fresh `BTPaymentActionsClient` from it.
+    /// The sever decides which flow triggers based on these parameters, so the same test card works for all four combinations.
+    private func makePaymentActionsClient(
+        confirmationMethod: String,
+        captureMethod: String
+    ) async throws -> BTPaymentActionsClient {
+        let clientToken = try await fetchPaymentActionClientToken(
+            confirmationMethod: confirmationMethod,
+            captureMethod: captureMethod
+        )
+        return BTPaymentActionsClient(authorization: clientToken)
+    }
+    
+    /// Standalone port of `BraintreeDemoMerchantAPIClient.fetchPaymentActionClientToken`, kept local to this test target.
+    private func fetchPaymentActionClientToken(
+        amount: String = "10.00",
+        merchantAccountID: String = "stch2nfdfwszytw5",
+        confirmationMethod: String,
+        captureMethod: String
+    ) async throws -> String {
+        guard var urlComponents = URLComponents(string: "https://braintree-sample-merchant.herokuapp.com/create_payment_action") else {
+            throw NSError(
+                domain: "BTPaymentActionsClient_IntegrationTests",
+                code: 0,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Could not construct create_payment_action URL"
+                ]
+            )
+        }
+        urlComponents.queryItems = [
+            URLQueryItem(name: "amount", value: amount),
+            URLQueryItem(name: "merchant_account_id", value: merchantAccountID),
+            URLQueryItem(name: "confirmation_method", value: confirmationMethod),
+            URLQueryItem(name: "capture_method", value: captureMethod)
+        ]
+        
+        guard let url = urlComponents.url else {
+            throw NSError(
+                domain: "BTPaymentActionsClient_IntegrationTests",
+                code: 0,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Could not build URL from components"
+                ]
+            )
         }
         
-        waitForExpectations(timeout: 5)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        do {
+            let response = try jsonDecoder.decode(PaymentActionClientTokenResponse.self, from: data)
+            return response.clientToken
+        } catch {
+            let rawBody = String(data: data, encoding: .utf8) ?? "<undecodable body>"
+            throw NSError(
+                domain: "BTPaymentActionsClient_IntegrationTests",
+                code: 0,
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Failed to decode PaymentActionClientTokenResponse: \(error). Raw body: \(rawBody)"
+                ]
+            )
+        }
+    }
+    
+    /// Mirrors `BraintreeDemoMerchantAPIClient.PaymentActionResponse` / `PaymentActionDetail`
+    /// kept local to this test target to avoid a dependency on the Demo app.
+    private struct PaymentActionClientTokenResponse: Codable {
+        let clientToken: String
+        let paymentAction: PaymentActionDetail
+    }
+    
+    private struct PaymentActionDetail: Codable {
+        let id: String
+        let status: String
     }
 }

@@ -47,9 +47,7 @@ struct PaymentActionsView: View {
         }
         .buttonStyle(CapsuleButtonStyle(isEnabled: viewModel.isPayButtonEnabled))
         .disabled(!viewModel.isPayButtonEnabled)
-        .listRowInsets(EdgeInsets())
         .padding(.horizontal)
-        .listRowBackground(Color.clear)
     }
 }
 

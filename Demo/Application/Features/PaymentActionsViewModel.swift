@@ -80,9 +80,9 @@ final class PaymentActionsViewModel: ObservableObject {
         isCardFieldsEnabled = false
 
         Task { @MainActor in
+            defer { isCardFieldsEnabled = true }
             do {
                 let result = try await paymentActionsClient.submitForPaymentAction(request)
-                isCardFieldsEnabled = true
                 try await handle(result)
             } catch {
                 isCardFieldsEnabled = true
@@ -105,7 +105,10 @@ final class PaymentActionsViewModel: ObservableObject {
         case .completed:
             showOrderConfirmation(paymentActionID: result.id)
         case .serverActionRequired:
-            guard let result = result as? BTServerActionRequiredResult else { return }
+            guard let result = result as? BTServerActionRequiredResult else {
+                onProgress("Unexpected result: missing server action")
+                return
+            }
             try await handle(serverAction: result.serverAction, paymentActionID: result.id)
         case .paymentMethodRequired:
             clearCardFields()
@@ -122,7 +125,6 @@ final class PaymentActionsViewModel: ObservableObject {
         switch serverAction {
         case .confirm:
             onProgress("Notifying server to confirm Payment Action \(paymentActionID)...")
-            try await notifyServerToConfirm(paymentActionID: paymentActionID)
             showOrderConfirmation(paymentActionID: paymentActionID)
         case .capture:
             // Authorized; capture is pending server-side.
@@ -136,13 +138,6 @@ final class PaymentActionsViewModel: ObservableObject {
 
     private func showDeclineMessage() {
         onProgress("Payment method declined. Please try another card.")
-    }
-
-    /// Asks the merchant server to confirm a Payment Action that requires it.
-    private func notifyServerToConfirm(paymentActionID: String) async throws {
-        // TODO: Add confirmPaymentAction(id:) to BraintreeDemoMerchantAPIClient.
-        // Should hit the sample-merchant server's confirm endpoint for the given Payment Action id.
-        // try await BraintreeDemoMerchantAPIClient.shared.confirmPaymentAction(id: paymentActionID)
     }
 
     private func clearCardFields() {
