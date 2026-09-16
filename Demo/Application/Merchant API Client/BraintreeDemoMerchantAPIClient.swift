@@ -102,7 +102,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         captureMethod: String = "AUTOMATIC",
         completion: @escaping (PaymentActionResponse?, Error?) -> Void
     ) {
-        guard var urlComponents = URLComponents(string: "https://braintree-sample-merchant.herokuapp.com/create_payment_action") else {
+        guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/create_payment_action") else {
             return
         }
         urlComponents.queryItems = [
