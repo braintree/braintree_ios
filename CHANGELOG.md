@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 7.12.0 (2026-09-16)
 * Add support for Xcode 27 / iOS 27
 * BraintreePayPalMessaging
   * Update `PayPalMessages` dependency to 2.0.0
