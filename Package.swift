@@ -112,8 +112,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PayPalMessages",
-            url: "https://github.com/paypal/paypal-messages-ios/releases/download/1.0.0/PayPalMessages.xcframework.zip",
-            checksum: "565ab72a3ab75169e41685b16e43268a39e24217a12a641155961d8b10ffe1b4"
+            url: "https://github.com/paypal/paypal-messages-ios/releases/download/2.0.0/PayPalMessages.xcframework.zip",
+            checksum: "d4411c4c49367fc096b8352f2dceba36fc8f601adc6c6d498be92e065cb41f5f"
         ),
         .binaryTarget(
             name: "PayPalCheckout",
