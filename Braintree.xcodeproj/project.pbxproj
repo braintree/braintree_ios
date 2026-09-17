@@ -62,10 +62,8 @@
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
 		13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */; };
 		13A9C0D32F11B65000A1B2C3 /* ShopperInsightsCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */; };
-		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
 		2786AB6520BA4E79A5EFB08B /* CVVHintCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731BD3E21BC44E928B80A155 /* CVVHintCard.swift */; };
 		2863A507CC454374A3E14E6B /* CardNumberFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863A507CC454374A3E14E6A /* CardNumberFieldViewModelTests.swift */; };
-		28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */; };
 		3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */; };
 		3B14BFDF29B647AF0047426A /* BTCardAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14BFDE29B647AF0047426A /* BTCardAnalytics_Tests.swift */; };
@@ -1313,7 +1311,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */,
 				E943983246FD4C94BAA4C009 /* BraintreeShopperInsights.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1482,7 +1479,6 @@
 				A9E5C23324FD6DAE00EE691F /* BraintreeTestShared.framework in Frameworks */,
 				62C59A8A305B1B5B0043BD10 /* OCMock in Frameworks */,
 				62C59A8D305B1C080043BD10 /* OHHTTPStubsSwift in Frameworks */,
-				28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2782,11 +2778,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7ABD65A1B702FD900A1223C /* Build configuration list for PBXNativeTarget "IntegrationTests" */;
 			buildPhases = (
-				356114CCDD2F8BD4A20E655A /* [CP] Check Pods Manifest.lock */,
 				A7ABD64F1B702FD800A1223C /* Sources */,
 				A7ABD6511B702FD800A1223C /* Resources */,
 				0B301426A8383084777148A4 /* Frameworks */,
-				CDAB67F3BC5BE564FCFFD6BC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3039,11 +3033,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A9E5C22E24FD6D0800EE691F /* Build configuration list for PBXNativeTarget "BraintreeCoreTests" */;
 			buildPhases = (
-				8C3FA3D1B7E43D0E85F9D382 /* [CP] Check Pods Manifest.lock */,
 				A9E5C22024FD6D0800EE691F /* Sources */,
 				A9E5C22124FD6D0800EE691F /* Frameworks */,
 				A9E5C22224FD6D0800EE691F /* Resources */,
-				7613C68129DDF0C2CFF1376D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3512,70 +3504,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		356114CCDD2F8BD4A20E655A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-IntegrationTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7613C68129DDF0C2CFF1376D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8C3FA3D1B7E43D0E85F9D382 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-BraintreeCoreTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		BE676C532C417B8F000A6579 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -3594,26 +3522,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\n\nif test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		CDAB67F3BC5BE564FCFFD6BC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
