@@ -10,13 +10,15 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         overrides: ["paymentMethodIdJwt": "fake-payment-method-id-jwt"]
     )
 
+    let universalLink = URL(string: "https://example.com/universal-link")!
+
     var mockAPIClient: MockAPIClient!
     var sut: BTPayPalSavedPaymentMethodClient!
 
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken)
+        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
         sut.apiClient = mockAPIClient
     }
 
@@ -128,7 +130,10 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
     // MARK: - Errors
 
     func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorization() async {
-        let sut = BTPayPalSavedPaymentMethodClient(authorization: "sandbox_merchant_1234567890abc")
+        let sut = BTPayPalSavedPaymentMethodClient(
+            authorization: "sandbox_merchant_1234567890abc",
+            universalLink: universalLink
+        )
 
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
@@ -142,7 +147,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementAndClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWT() async {
         let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT)
+        sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT, universalLink: universalLink)
         sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
 
         do {
