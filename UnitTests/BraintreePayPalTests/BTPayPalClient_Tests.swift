@@ -2028,6 +2028,41 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(manager.endCallCount, 1)
     }
 
+    /// Regression test: when background time runs out the app suspends and the response never arrives, so
+    /// the expiration handler must end the wait. Without cancelling the request, the caller's `await` never
+    /// resumes and the merchant receives neither a nonce nor an error.
+    @MainActor
+    func testHandleReturn_whenBackgroundTaskExpires_failsWithExpirationError() async {
+        let manager = makeMockBackgroundTaskManager()
+        // The response never arrives, as when the app is suspended mid-request.
+        mockAPIClient.shouldSuspendPOST = true
+
+        let tokenization = Task {
+            try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+        }
+
+        await mockAPIClient.waitUntilPOSTSuspended()
+
+        guard mockAPIClient.isPOSTSuspended else {
+            tokenization.cancel()
+            return XCTFail("POST never suspended; expiration could not be simulated mid-request")
+        }
+
+        // Simulate iOS calling the expiration handler shortly before background time reaches 0.
+        manager.expirationHandler?()
+
+        do {
+            _ = try await tokenization.value
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.returnBackgroundTaskExpired.errorCode)
+        }
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeFailed))
+        XCTAssertFalse(manager.hasActiveTask)
+    }
+
     @MainActor
     func testHandleReturn_whenSystemDeniesBackgroundTask_doesNotEndBackgroundTask() async throws {
         // An empty `taskIDsToReturn` makes the mock return `.invalid`, as the system does when background
