@@ -299,7 +299,11 @@ import BraintreeDataCollector
         do {
             tokenizationResponse = try await tokenizationTask.value
         } catch {
-            guard tokenizationTask.isCancelled else { throw error }
+            guard tokenizationTask.isCancelled else {
+                notifyFailure(with: error)
+                throw error
+            }
+
             notifyFailure(with: BTPayPalError.returnBackgroundTaskExpired)
             throw BTPayPalError.returnBackgroundTaskExpired
         }
