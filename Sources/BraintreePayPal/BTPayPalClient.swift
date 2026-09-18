@@ -92,13 +92,6 @@ import BraintreeDataCollector
     /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
     private var fundingSource: BTPayPalFundingSource?
     
-    /// Used to wrap handleReturn API call inside a background task
-    private var returnBackgroundTaskID: UIBackgroundTaskIdentifier = .invalid
-
-    /// The in-flight handleReturn tokenization request, retained so the background task expiration
-    /// handler can cancel it.
-    private var returnTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
-
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -283,16 +276,31 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] }
         )
 
-        beginReturnBackgroundTask()
-        defer { endReturnBackgroundTask() }
+        // Local rather than instance state, so two overlapping returns cannot release each other's
+        // assertion or cancel the wrong request. Closures capture locals by reference, so the expiration
+        // handler still sees the identifier assigned below.
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        var cancellableTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
 
-        // Run the request in a task the expiration handler can reach, so expiry ends the wait rather than
-        // leaving it pending forever.
+        let releaseBackgroundTask = { [backgroundTaskManager] in
+            guard backgroundTaskID != .invalid else { return }
+            backgroundTaskManager.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+
+        // Requested before the request goes out, as UIKit recommends. The handler cancels as well as
+        // releasing: once the app suspends the response never arrives, so leaving the request pending
+        // would strand the caller's `await`.
+        backgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") {
+            cancellableTokenizationTask?.cancel()
+            releaseBackgroundTask()
+        }
+        defer { releaseBackgroundTask() }
+
         let tokenizationTask = Task {
             try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
         }
-        returnTokenizationTask = tokenizationTask
-        defer { returnTokenizationTask = nil }
+        cancellableTokenizationTask = tokenizationTask
 
         let tokenizationResponse: (BTJSON?, HTTPURLResponse?)
 
@@ -462,20 +470,6 @@ import BraintreeDataCollector
     }
 
     // MARK: - Private Methods
-    
-    private func beginReturnBackgroundTask() {
-        endReturnBackgroundTask()
-        returnBackgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") { [weak self] in
-            self?.returnTokenizationTask?.cancel()
-            self?.endReturnBackgroundTask()
-        }
-    }
-    
-    private func endReturnBackgroundTask() {
-        guard returnBackgroundTaskID != .invalid else { return }
-        backgroundTaskManager.endBackgroundTask(returnBackgroundTaskID)
-        returnBackgroundTaskID = .invalid
-    }
 
     private func tokenize(request: BTPayPalRequest) async throws -> BTPayPalAccountNonce {
         self.payPalRequest = request
