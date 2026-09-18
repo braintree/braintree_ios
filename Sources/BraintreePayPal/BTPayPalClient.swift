@@ -95,6 +95,10 @@ import BraintreeDataCollector
     /// Used to wrap handleReturn API call inside a background task
     private var returnBackgroundTaskID: UIBackgroundTaskIdentifier = .invalid
 
+    /// The in-flight handleReturn tokenization request, retained so the background task expiration
+    /// handler can cancel it.
+    private var returnTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
+
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -282,7 +286,25 @@ import BraintreeDataCollector
         beginReturnBackgroundTask()
         defer { endReturnBackgroundTask() }
 
-        let (body, _) = try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        // Run the request in a task the expiration handler can reach, so expiry ends the wait rather than
+        // leaving it pending forever.
+        let tokenizationTask = Task {
+            try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        }
+        returnTokenizationTask = tokenizationTask
+        defer { returnTokenizationTask = nil }
+
+        let tokenizationResponse: (BTJSON?, HTTPURLResponse?)
+
+        do {
+            tokenizationResponse = try await tokenizationTask.value
+        } catch {
+            guard tokenizationTask.isCancelled else { throw error }
+            notifyFailure(with: BTPayPalError.returnBackgroundTaskExpired)
+            throw BTPayPalError.returnBackgroundTaskExpired
+        }
+
+        let (body, _) = tokenizationResponse
 
         guard
             let payPalAccount = body?["paypalAccounts"].asArray()?.first,
@@ -440,6 +462,7 @@ import BraintreeDataCollector
     private func beginReturnBackgroundTask() {
         endReturnBackgroundTask()
         returnBackgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") { [weak self] in
+            self?.returnTokenizationTask?.cancel()
             self?.endReturnBackgroundTask()
         }
     }

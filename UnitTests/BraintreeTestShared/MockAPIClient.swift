@@ -47,11 +47,10 @@ public class MockAPIClient: BTAPIClient {
     /// existing tests rely on.
     public var shouldSuspendPOST = false
 
-    /// `true` once a `post` call has actually suspended. Await `waitUntilPOSTSuspended()` rather than
-    /// polling this directly.
+    /// `true` while a `post` call is parked. Await `waitUntilPOSTSuspended()` rather than polling directly.
     public private(set) var isPOSTSuspended = false
 
-    private var suspendedPOSTGate: CheckedContinuation<Void, Never>?
+    private var shouldResumePOST = false
 
     /// Suspends until a `post` call has parked, so a test cannot race ahead of the suspension.
     ///
@@ -68,12 +67,8 @@ public class MockAPIClient: BTAPIClient {
     }
 
     /// Releases a `post` call parked by `shouldSuspendPOST`, simulating the response finally arriving.
-    /// No-op when nothing is parked.
     public func resumePOST() {
-        let gate = suspendedPOSTGate
-        suspendedPOSTGate = nil
-        isPOSTSuspended = false
-        gate?.resume()
+        shouldResumePOST = true
     }
 
     public override func get(
@@ -103,9 +98,13 @@ public class MockAPIClient: BTAPIClient {
         lastPOSTAdditionalHeaders = headers
 
         if shouldSuspendPOST {
-            await withCheckedContinuation { continuation in
-                suspendedPOSTGate = continuation
-                isPOSTSuspended = true
+            isPOSTSuspended = true
+            defer { isPOSTSuspended = false }
+
+            // `Task.sleep` throws `CancellationError` when the task is cancelled, so parking here behaves
+            // like a real in-flight `URLSession.data(for:)` request rather than an uncancellable block.
+            while !shouldResumePOST {
+                try await Task.sleep(nanoseconds: 1_000_000) // 1ms
             }
         }
 
