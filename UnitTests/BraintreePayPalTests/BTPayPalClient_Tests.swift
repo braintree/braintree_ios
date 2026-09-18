@@ -1977,11 +1977,16 @@ class BTPayPalClient_Tests: XCTestCase {
         do {
             _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
             XCTFail("Expected error to be thrown")
-        } catch {
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, "fake-domain")
             XCTAssertEqual(manager.endedTaskID, grantedTaskID)
             XCTAssertEqual(manager.endCallCount, 1)
             XCTAssertFalse(manager.hasActiveTask)
         }
+
+        // The underlying error is reported to FPTI rather than thrown silently.
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeFailed))
+        XCTAssertEqual(mockAPIClient.postedErrorDescription, NSError(domain: "fake-domain", code: 1).localizedDescription)
     }
 
     @MainActor
