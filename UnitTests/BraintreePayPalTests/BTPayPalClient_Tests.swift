@@ -2011,6 +2011,12 @@ class BTPayPalClient_Tests: XCTestCase {
 
         await mockAPIClient.waitUntilPOSTSuspended()
 
+        // Fail loudly rather than deadlocking on `tokenization.value` if the POST was never reached.
+        guard mockAPIClient.isPOSTSuspended else {
+            tokenization.cancel()
+            return XCTFail("POST never suspended; the in-flight window could not be observed")
+        }
+
         // The request is out but no response has arrived — the assertion must still be held.
         XCTAssertTrue(manager.hasActiveTask)
         XCTAssertEqual(manager.endCallCount, 0)

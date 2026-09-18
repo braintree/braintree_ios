@@ -54,9 +54,16 @@ public class MockAPIClient: BTAPIClient {
     private var suspendedPOSTGate: CheckedContinuation<Void, Never>?
 
     /// Suspends until a `post` call has parked, so a test cannot race ahead of the suspension.
-    public func waitUntilPOSTSuspended() async {
-        while !isPOSTSuspended {
-            await Task.yield()
+    ///
+    /// Polls with `Task.sleep` rather than `Task.yield` so it releases its thread between checks: a
+    /// busy-spin here would hold a cooperative-pool thread and add pressure to the shared thread pool,
+    /// which other concurrency tests in this suite are already sensitive to. Bounded by `timeout` so a
+    /// `post` that is never reached fails the waiting test instead of hanging the run.
+    public func waitUntilPOSTSuspended(timeout: TimeInterval = 2) async {
+        let deadline = Date().addingTimeInterval(timeout)
+
+        while !isPOSTSuspended && Date() < deadline {
+            try? await Task.sleep(nanoseconds: 1_000_000) // 1ms
         }
     }
 
