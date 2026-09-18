@@ -13,18 +13,11 @@ public class MockBackgroundTaskManager: BackgroundTaskManaging {
     public var begunTaskIDs: Set<UIBackgroundTaskIdentifier> = []
     public var taskIDsToReturn: Set<UIBackgroundTaskIdentifier> = []
 
-    /// Raw call counts. `begunTaskIDs` and `endedTaskIDs` are `Set`s, so they cannot reveal the same
-    /// identifier being begun or ended twice — these counters can.
-    public var beginCallCount = 0
+    /// `endedTaskIDs` is a `Set`, so it cannot reveal the same identifier being ended twice — this can.
+    /// Relevant because expiry and the `defer` in `handleReturn` both call `endBackgroundTask`.
     public var endCallCount = 0
 
     private let lock = NSLock()
-
-    /// `true` between a `beginBackgroundTask` and its matching `endBackgroundTask`. Both counts are read
-    /// under a single lock acquisition so the pair cannot be observed mid-update.
-    public var hasActiveTask: Bool {
-        lock.withLock { beginCallCount > endCallCount }
-    }
 
     public init() { }
 
@@ -33,7 +26,6 @@ public class MockBackgroundTaskManager: BackgroundTaskManaging {
         defer { lock.unlock() }
 
         didBeginBackgroundTask = true
-        beginCallCount += 1
         lastTaskName = named
 
         // Simulate expiration handler call

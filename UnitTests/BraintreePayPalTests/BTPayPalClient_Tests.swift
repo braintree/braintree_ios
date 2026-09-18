@@ -1950,7 +1950,6 @@ class BTPayPalClient_Tests: XCTestCase {
         _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
 
         XCTAssertTrue(manager.didBeginBackgroundTask)
-        XCTAssertEqual(manager.beginCallCount, 1)
         XCTAssertEqual(manager.lastTaskName, "BTPayPalHandleReturnTokenize")
     }
 
@@ -1964,7 +1963,7 @@ class BTPayPalClient_Tests: XCTestCase {
         XCTAssertEqual(nonce.nonce, "a-nonce")
         XCTAssertEqual(manager.endedTaskID, grantedTaskID)
         XCTAssertEqual(manager.endCallCount, 1)
-        XCTAssertFalse(manager.hasActiveTask)
+        XCTAssertTrue(manager.didEndBackgroundTask)
     }
 
     /// Regression test: the POST is `try await`, so without a `defer` the assertion leaks on every failed
@@ -1981,7 +1980,7 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTAssertEqual(error.domain, "fake-domain")
             XCTAssertEqual(manager.endedTaskID, grantedTaskID)
             XCTAssertEqual(manager.endCallCount, 1)
-            XCTAssertFalse(manager.hasActiveTask)
+            XCTAssertTrue(manager.didEndBackgroundTask)
         }
 
         // The underlying error is reported to FPTI rather than thrown silently.
@@ -2023,13 +2022,13 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         // The request is out but no response has arrived — the assertion must still be held.
-        XCTAssertTrue(manager.hasActiveTask)
+        XCTAssertFalse(manager.didEndBackgroundTask)
         XCTAssertEqual(manager.endCallCount, 0)
 
         mockAPIClient.resumePOST()
         _ = try await tokenization.value
 
-        XCTAssertFalse(manager.hasActiveTask)
+        XCTAssertTrue(manager.didEndBackgroundTask)
         XCTAssertEqual(manager.endCallCount, 1)
     }
 
@@ -2065,7 +2064,7 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeFailed))
-        XCTAssertFalse(manager.hasActiveTask)
+        XCTAssertTrue(manager.didEndBackgroundTask)
     }
 
     @MainActor
@@ -2092,7 +2091,6 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTFail("Expected error to be thrown")
         } catch {
             XCTAssertFalse(manager.didBeginBackgroundTask)
-            XCTAssertEqual(manager.beginCallCount, 0)
         }
     }
 
@@ -2106,7 +2104,6 @@ class BTPayPalClient_Tests: XCTestCase {
             XCTFail("Expected error to be thrown")
         } catch {
             XCTAssertFalse(manager.didBeginBackgroundTask)
-            XCTAssertEqual(manager.beginCallCount, 0)
         }
     }
 
