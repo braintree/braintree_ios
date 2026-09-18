@@ -21,6 +21,10 @@ import BraintreeDataCollector
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     nonisolated(unsafe) var application: URLOpener = UIApplication.shared
 
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles so that
+    /// background task assertions are not requested from the system during tests.
+    nonisolated(unsafe) var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
+
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL?
 
@@ -87,7 +91,7 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
     private var fundingSource: BTPayPalFundingSource?
-
+    
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
@@ -272,7 +276,41 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] }
         )
 
-        let (body, _) = try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        var cancellableTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
+
+        let endBackgroundTask = { [backgroundTaskManager] in
+            guard backgroundTaskID != .invalid else { return }
+            backgroundTaskManager.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+
+        backgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") {
+            cancellableTokenizationTask?.cancel()
+            endBackgroundTask()
+        }
+        defer { endBackgroundTask() }
+
+        let tokenizationTask = Task {
+            try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        }
+        cancellableTokenizationTask = tokenizationTask
+
+        let tokenizationResponse: (BTJSON?, HTTPURLResponse?)
+
+        do {
+            tokenizationResponse = try await tokenizationTask.value
+        } catch {
+            guard tokenizationTask.isCancelled else {
+                notifyFailure(with: error)
+                throw error
+            }
+
+            notifyFailure(with: BTPayPalError.returnBackgroundTaskExpired)
+            throw BTPayPalError.returnBackgroundTaskExpired
+        }
+
+        let (body, _) = tokenizationResponse
 
         guard
             let payPalAccount = body?["paypalAccounts"].asArray()?.first,

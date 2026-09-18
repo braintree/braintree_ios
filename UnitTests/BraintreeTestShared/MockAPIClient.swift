@@ -41,7 +41,36 @@ public class MockAPIClient: BTAPIClient {
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
-    
+
+    /// When `true`, `post` suspends instead of returning, so a test can observe state while the request is
+    /// still in flight. Release it with `resumePOST()`. Defaults to `false`, preserving the behavior
+    /// existing tests rely on.
+    public var shouldSuspendPOST = false
+
+    /// `true` while a `post` call is parked. Await `waitUntilPOSTSuspended()` rather than polling directly.
+    public private(set) var isPOSTSuspended = false
+
+    private var shouldResumePOST = false
+
+    /// Suspends until a `post` call has parked, so a test cannot race ahead of the suspension.
+    ///
+    /// Polls with `Task.sleep` rather than `Task.yield` so it releases its thread between checks: a
+    /// busy-spin here would hold a cooperative-pool thread and add pressure to the shared thread pool,
+    /// which other concurrency tests in this suite are already sensitive to. Bounded by `timeout` so a
+    /// `post` that is never reached fails the waiting test instead of hanging the run.
+    public func waitUntilPOSTSuspended(timeout: TimeInterval = 2) async {
+        let deadline = Date().addingTimeInterval(timeout)
+
+        while !isPOSTSuspended && Date() < deadline {
+            try? await Task.sleep(nanoseconds: 1_000_000) // 1ms
+        }
+    }
+
+    /// Releases a `post` call parked by `shouldSuspendPOST`, simulating the response finally arriving.
+    public func resumePOST() {
+        shouldResumePOST = true
+    }
+
     public override func get(
         _ path: String,
         parameters: Encodable?,
@@ -67,11 +96,22 @@ public class MockAPIClient: BTAPIClient {
         lastPOSTParameters = try? parameters?.toDictionary()
         lastPOSTAPIClientHTTPType = httpType
         lastPOSTAdditionalHeaders = headers
-        
+
+        if shouldSuspendPOST {
+            isPOSTSuspended = true
+            defer { isPOSTSuspended = false }
+
+            // `Task.sleep` throws `CancellationError` when the task is cancelled, so parking here behaves
+            // like a real in-flight `URLSession.data(for:)` request rather than an uncancellable block.
+            while !shouldResumePOST {
+                try await Task.sleep(nanoseconds: 1_000_000) // 1ms
+            }
+        }
+
         if let error = cannedResponseError {
             throw error
         }
-        
+
         return (cannedResponseBody, cannedHTTPURLResponse)
     }
     
