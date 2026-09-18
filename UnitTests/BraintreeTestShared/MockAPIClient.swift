@@ -41,7 +41,34 @@ public class MockAPIClient: BTAPIClient {
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
-    
+
+    /// When `true`, `post` suspends instead of returning, so a test can observe state while the request is
+    /// still in flight. Release it with `resumePOST()`. Defaults to `false`, preserving the behavior
+    /// existing tests rely on.
+    public var shouldSuspendPOST = false
+
+    /// `true` once a `post` call has actually suspended. Await `waitUntilPOSTSuspended()` rather than
+    /// polling this directly.
+    public private(set) var isPOSTSuspended = false
+
+    private var suspendedPOSTGate: CheckedContinuation<Void, Never>?
+
+    /// Suspends until a `post` call has parked, so a test cannot race ahead of the suspension.
+    public func waitUntilPOSTSuspended() async {
+        while !isPOSTSuspended {
+            await Task.yield()
+        }
+    }
+
+    /// Releases a `post` call parked by `shouldSuspendPOST`, simulating the response finally arriving.
+    /// No-op when nothing is parked.
+    public func resumePOST() {
+        let gate = suspendedPOSTGate
+        suspendedPOSTGate = nil
+        isPOSTSuspended = false
+        gate?.resume()
+    }
+
     public override func get(
         _ path: String,
         parameters: Encodable?,
@@ -67,11 +94,18 @@ public class MockAPIClient: BTAPIClient {
         lastPOSTParameters = try? parameters?.toDictionary()
         lastPOSTAPIClientHTTPType = httpType
         lastPOSTAdditionalHeaders = headers
-        
+
+        if shouldSuspendPOST {
+            await withCheckedContinuation { continuation in
+                suspendedPOSTGate = continuation
+                isPOSTSuspended = true
+            }
+        }
+
         if let error = cannedResponseError {
             throw error
         }
-        
+
         return (cannedResponseBody, cannedHTTPURLResponse)
     }
     

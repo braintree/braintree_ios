@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 @testable import BraintreePayPal
 @testable import BraintreeTestShared
@@ -1912,7 +1913,170 @@ class BTPayPalClient_Tests: XCTestCase {
         
         let url = URL(string: "myapp://braintree-payments/braintreeAppSwitchPayPal/success?token=test")!
         XCTAssertFalse(BTPayPalClient.canHandleReturnURL(url))
-        
+
         BTPayPalClient.payPalClient = nil
+    }
+
+    // MARK: - handleReturn Background Task
+
+    /// The tokenization POST issued on return from PayPal is wrapped in a background task assertion so the
+    /// request can finish if the user backgrounds the app immediately after approving. These tests cover the
+    /// lifecycle of that assertion: that it is requested before the request goes out, and always released.
+
+    private var successReturnURL: URL {
+        URL(string: "bar://onetouch/v1/success?token=hermes_token")!
+    }
+
+    private var grantedTaskID: UIBackgroundTaskIdentifier {
+        UIBackgroundTaskIdentifier(rawValue: 42)
+    }
+
+    /// `handleReturn` returns early unless a request is set, so tests that need to reach the POST must seed one.
+    private func makeMockBackgroundTaskManager(grantingTaskID: Bool = true) -> MockBackgroundTaskManager {
+        let manager = MockBackgroundTaskManager()
+        if grantingTaskID {
+            manager.taskIDsToReturn = [grantedTaskID]
+        }
+        payPalClient.backgroundTaskManager = manager
+        payPalClient.payPalRequest = BTPayPalVaultRequest()
+        return manager
+    }
+
+    @MainActor
+    func testHandleReturn_beginsBackgroundTaskWithExpectedName() async throws {
+        let manager = makeMockBackgroundTaskManager()
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paypalAccounts": [["nonce": "a-nonce", "type": "PayPalAccount"]]])
+
+        _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+
+        XCTAssertTrue(manager.didBeginBackgroundTask)
+        XCTAssertEqual(manager.beginCallCount, 1)
+        XCTAssertEqual(manager.lastTaskName, "BTPayPalHandleReturnTokenize")
+    }
+
+    @MainActor
+    func testHandleReturn_whenTokenizationSucceeds_endsBackgroundTask() async throws {
+        let manager = makeMockBackgroundTaskManager()
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paypalAccounts": [["nonce": "a-nonce", "type": "PayPalAccount"]]])
+
+        let nonce = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+
+        XCTAssertEqual(nonce.nonce, "a-nonce")
+        XCTAssertEqual(manager.endedTaskID, grantedTaskID)
+        XCTAssertEqual(manager.endCallCount, 1)
+        XCTAssertFalse(manager.hasActiveTask)
+    }
+
+    /// Regression test: the POST is `try await`, so without a `defer` the assertion leaks on every failed
+    /// tokenization.
+    @MainActor
+    func testHandleReturn_whenTokenizationRequestThrows_endsBackgroundTask() async {
+        let manager = makeMockBackgroundTaskManager()
+        mockAPIClient.cannedResponseError = NSError(domain: "fake-domain", code: 1)
+
+        do {
+            _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(manager.endedTaskID, grantedTaskID)
+            XCTAssertEqual(manager.endCallCount, 1)
+            XCTAssertFalse(manager.hasActiveTask)
+        }
+    }
+
+    @MainActor
+    func testHandleReturn_whenNonceCannotBeCreated_endsBackgroundTask() async {
+        let manager = makeMockBackgroundTaskManager()
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["unexpected": "payload"])
+
+        do {
+            _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.domain, BTPayPalError.errorDomain)
+            XCTAssertEqual(error.code, BTPayPalError.failedToCreateNonce.errorCode)
+            XCTAssertEqual(manager.endCallCount, 1)
+        }
+    }
+
+    @MainActor
+    func testHandleReturn_whileTokenizationRequestIsInFlight_keepsBackgroundTaskActive() async throws {
+        let manager = makeMockBackgroundTaskManager()
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paypalAccounts": [["nonce": "a-nonce", "type": "PayPalAccount"]]])
+        mockAPIClient.shouldSuspendPOST = true
+
+        let tokenization = Task {
+            try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+        }
+
+        await mockAPIClient.waitUntilPOSTSuspended()
+
+        // The request is out but no response has arrived — the assertion must still be held.
+        XCTAssertTrue(manager.hasActiveTask)
+        XCTAssertEqual(manager.endCallCount, 0)
+
+        mockAPIClient.resumePOST()
+        _ = try await tokenization.value
+
+        XCTAssertFalse(manager.hasActiveTask)
+        XCTAssertEqual(manager.endCallCount, 1)
+    }
+
+    @MainActor
+    func testHandleReturn_whenSystemDeniesBackgroundTask_doesNotEndBackgroundTask() async throws {
+        // An empty `taskIDsToReturn` makes the mock return `.invalid`, as the system does when background
+        // execution isn't possible.
+        let manager = makeMockBackgroundTaskManager(grantingTaskID: false)
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paypalAccounts": [["nonce": "a-nonce", "type": "PayPalAccount"]]])
+
+        _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+
+        XCTAssertTrue(manager.didBeginBackgroundTask)
+        XCTAssertFalse(manager.didEndBackgroundTask)
+        XCTAssertEqual(manager.endCallCount, 0)
+    }
+
+    @MainActor
+    func testHandleReturn_whenUserCancels_doesNotBeginBackgroundTask() async {
+        let manager = makeMockBackgroundTaskManager()
+        let cancelURL = URL(string: "bar://onetouch/v1/cancel?token=hermes_token")!
+
+        do {
+            _ = try await payPalClient.handleReturn(cancelURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertFalse(manager.didBeginBackgroundTask)
+            XCTAssertEqual(manager.beginCallCount, 0)
+        }
+    }
+
+    @MainActor
+    func testHandleReturn_whenReturnURLActionIsInvalid_doesNotBeginBackgroundTask() async {
+        let manager = makeMockBackgroundTaskManager()
+        let invalidURL = URL(string: "bar://onetouch/v1/invalid")!
+
+        do {
+            _ = try await payPalClient.handleReturn(invalidURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertFalse(manager.didBeginBackgroundTask)
+            XCTAssertEqual(manager.beginCallCount, 0)
+        }
+    }
+
+    @MainActor
+    func testHandleReturn_whenPayPalRequestIsMissing_doesNotBeginBackgroundTask() async {
+        let manager = MockBackgroundTaskManager()
+        manager.taskIDsToReturn = [grantedTaskID]
+        payPalClient.backgroundTaskManager = manager
+        payPalClient.payPalRequest = nil
+
+        do {
+            _ = try await payPalClient.handleReturn(successReturnURL, paymentType: .checkout)
+            XCTFail("Expected error to be thrown")
+        } catch let error as NSError {
+            XCTAssertEqual(error.code, BTPayPalError.missingPayPalRequest.errorCode)
+            XCTAssertFalse(manager.didBeginBackgroundTask)
+        }
     }
 }
