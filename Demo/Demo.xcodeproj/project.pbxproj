@@ -165,7 +165,6 @@
 		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
 		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
 		62F1F55F304B5E9400C180C2 /* AmexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmexView.swift; sourceTree = "<group>"; };
-		6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B20BE362F706797A0A110B0 /* UIViewController+Embed.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "UIViewController+Embed.swift"; sourceTree = "<group>"; };
 		8025988C2CC1A95400E7D898 /* Toggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toggle.swift; sourceTree = "<group>"; };
 		8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopperInsightsViewController.swift; sourceTree = "<group>"; };
@@ -437,7 +436,6 @@
 				803D64F0256DAF9A00ACE692 /* BraintreePayPal.framework */,
 				803D64F1256DAF9A00ACE692 /* BraintreeThreeDSecure.framework */,
 				803D64F3256DAF9A00ACE692 /* BraintreeVenmo.framework */,
-				6D23244B5E9EE59BAB3F3003 /* Pods_Demo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

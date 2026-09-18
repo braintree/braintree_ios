@@ -4,21 +4,6 @@ concurrency:
   group: build-${{ github.event.number }} 
   cancel-in-progress: true
 jobs:
-  cocoapods:
-    name: CocoaPods (Xcode 16.4.0)
-    runs-on: macos-15-xlarge
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Use Xcode 16.4.0
-        run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
-      - name: Install CocoaPod dependencies
-        run: pod install
-      - name: Run pod lib lint
-        run: pod lib lint
   carthage:
     name: Carthage (Xcode 16.4.0)
     runs-on: macos-15-xlarge

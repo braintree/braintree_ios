@@ -20,7 +20,7 @@ jobs:
       - name: Install Package dependencies
         run: swift package resolve
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | xcbeautify
+        run: set -o pipefail && xcodebuild -project 'Braintree.xcodeproj' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | xcbeautify
 
       - name: Check Unit Test Coverage
         run: |
@@ -124,7 +124,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild \
-            -workspace 'Braintree.xcworkspace' \
+            -project 'Demo/Demo.xcodeproj' \
             -sdk 'iphonesimulator' \
             -configuration 'Debug' \
             -scheme 'UITests' \
@@ -151,4 +151,4 @@ jobs:
       - name: Install Package dependencies
         run: swift package resolve
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | xcbeautify
+        run: set -o pipefail && xcodebuild -project 'Braintree.xcodeproj' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | xcbeautify
