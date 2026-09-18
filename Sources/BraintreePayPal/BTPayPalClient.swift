@@ -276,26 +276,20 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] }
         )
 
-        // Local rather than instance state, so two overlapping returns cannot release each other's
-        // assertion or cancel the wrong request. Closures capture locals by reference, so the expiration
-        // handler still sees the identifier assigned below.
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         var cancellableTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
 
-        let releaseBackgroundTask = { [backgroundTaskManager] in
+        let endBackgroundTask = { [backgroundTaskManager] in
             guard backgroundTaskID != .invalid else { return }
             backgroundTaskManager.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
         }
 
-        // Requested before the request goes out, as UIKit recommends. The handler cancels as well as
-        // releasing: once the app suspends the response never arrives, so leaving the request pending
-        // would strand the caller's `await`.
         backgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") {
             cancellableTokenizationTask?.cancel()
-            releaseBackgroundTask()
+            endBackgroundTask()
         }
-        defer { releaseBackgroundTask() }
+        defer { endBackgroundTask() }
 
         let tokenizationTask = Task {
             try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
