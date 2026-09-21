@@ -1028,6 +1028,14 @@
 				minimumVersion = 3.9.2;
 			};
 		};
+		62C59A8E305B1C350043BD10 /* XCRemoteSwiftPackageReference "InAppSettingsKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/futuretap/InAppSettingsKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.9.2;
+			};
+		};
 		BE500C7B303F25ED00A5FB81 /* XCRemoteSwiftPackageReference "paypal-risk-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
@@ -1093,6 +1101,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F6145BC109F4387B4EED8A7B /* XCLocalSwiftPackageReference ".." */;
 			productName = BraintreeApplePay;
+		};
+		62C59A8F305B1C350043BD10 /* InAppSettingsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A8E305B1C350043BD10 /* XCRemoteSwiftPackageReference "InAppSettingsKit" */;
+			productName = InAppSettingsKit;
 		};
 		BE500C7C303F25ED00A5FB81 /* PayPalRisk */ = {
 			isa = XCSwiftPackageProductDependency;
