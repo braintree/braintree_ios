@@ -1,10 +1,12 @@
 # Braintree iOS SDK Release Notes
 
-## 7.12.0 (2026-09-16)
-* Add support for Xcode 27 / iOS 27
+## unreleased
 * BraintreePayPal
   * Request additional background execution time for the tokenization call made when returning from the PayPal app or browser, so the payment can finish if the buyer backgrounds the app immediately after approving
   * Add `BTPayPalError.returnBackgroundTaskExpired` (code 15), returned when the background execution time runs out before tokenization completes. Previously the completion handler was never invoked in this case
+
+## 7.12.0 (2026-09-16)
+* Add support for Xcode 27 / iOS 27
 * BraintreePayPalMessaging
   * Update `PayPalMessages` dependency to 2.0.0
 
