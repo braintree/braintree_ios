@@ -74,7 +74,11 @@ jobs:
 
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> cocoapods-deprecation
       - name: Install xcbeautify
         run: brew install xcbeautify
 
