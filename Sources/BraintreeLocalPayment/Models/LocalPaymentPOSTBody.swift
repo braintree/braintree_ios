@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The POST body for `v1/local_payments/create`
 struct LocalPaymentPOSTBody: Encodable {

@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 ///  Use `BTShopperInsightsClient` to optimize your checkout experience by prioritizing the customer’s preferred payment methods in your UI.
 ///  By customizing each customer’s checkout experience, you can improve conversion, increase sales/repeat buys and boost user retention/loyalty.

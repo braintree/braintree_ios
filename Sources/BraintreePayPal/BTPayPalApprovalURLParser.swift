@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The type of PayPal authentication flow to occur
 enum PayPalRedirectType: Equatable {

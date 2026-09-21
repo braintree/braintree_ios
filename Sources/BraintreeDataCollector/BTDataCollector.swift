@@ -2,10 +2,7 @@ import Foundation
 import CoreLocation
 import PPRiskMagnes
 import Security
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Braintree's advanced fraud protection solution.
 @objc public class BTDataCollector: NSObject {

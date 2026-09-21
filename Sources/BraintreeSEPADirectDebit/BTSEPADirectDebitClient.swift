@@ -1,9 +1,6 @@
 import Foundation
 import AuthenticationServices
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Used to integrate with SEPA Direct Debit.
 @objc public class BTSEPADirectDebitClient: BTWebAuthenticationSessionClient {

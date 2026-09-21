@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The result returned from the SEPADirectDebitAPI.createMandate API call. This result is used to display the mandate to the customer.
 struct CreateMandateResult {

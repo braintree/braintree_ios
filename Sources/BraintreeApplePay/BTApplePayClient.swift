@@ -1,9 +1,6 @@
 import Foundation
 import PassKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Used to process Apple Pay payments
 @objc public class BTApplePayClient: NSObject {
