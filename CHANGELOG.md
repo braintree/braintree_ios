@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * Lower minimum deployment target from iOS 16.0 to iOS 15.0
 
 ## 7.12.0 (2026-09-16)
