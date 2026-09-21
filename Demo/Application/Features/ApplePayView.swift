@@ -30,12 +30,11 @@ struct ApplePayView: View {
     var body: some View {
         VStack {
             if isApplePaySupported {
-                PayWithApplePayButton(.plain) {
+                ApplePayButtonRepresentable {
                     Task {
                         await requestApplePayPayment()
                     }
                 }
-                .payWithApplePayButtonStyle(.automatic)
                 .frame(height: 50)
                 .padding(.horizontal)
             }
@@ -57,7 +56,11 @@ struct ApplePayView: View {
         do {
             let request = try await applePayClient.makePaymentRequest()
             let paymentRequest = constructPaymentRequest(with: request)
-            paymentRequest.recurringPaymentRequest = recurringPaymentRequest()
+
+            // NEXT_MAJOR_VERSION: remove the #available check when minimum target moved to iOS 16 or higher
+            if #available(iOS 16, *) {
+                paymentRequest.recurringPaymentRequest = recurringPaymentRequest()
+            }
 
             onProgress("Presenting Apple Pay Sheet")
             onPaymentRequestCreated(paymentRequest)
@@ -66,6 +69,7 @@ struct ApplePayView: View {
         }
     }
 
+    @available(iOS 16, *)
     private func recurringPaymentRequest() -> PKRecurringPaymentRequest {
         PKRecurringPaymentRequest(
             paymentDescription: "Payment description.",
@@ -105,4 +109,36 @@ struct ApplePayView: View {
 
 #Preview {
     ApplePayView(client: BTApplePayClient(authorization: ""))
+}
+
+/// UIKit-backed Apple Pay button, used so we can set a square `cornerRadius` (not exposed by the SwiftUI `PayWithApplePayButton`)
+private struct ApplePayButtonRepresentable: UIViewRepresentable {
+
+    let action: () -> Void
+
+    func makeUIView(context: Context) -> PKPaymentButton {
+        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
+        button.cornerRadius = 0
+        button.addTarget(context.coordinator, action: #selector(Coordinator.didTap), for: .touchUpInside)
+        return button
+    }
+
+    func updateUIView(_ uiView: PKPaymentButton, context: Context) { }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(action: action)
+    }
+
+    final class Coordinator: NSObject {
+
+        private let action: () -> Void
+
+        init(action: @escaping () -> Void) {
+            self.action = action
+        }
+
+        @objc func didTap() {
+            action()
+        }
+    }
 }
