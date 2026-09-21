@@ -46,8 +46,13 @@ class BTHTTP: NSObject, URLSessionTaskDelegate {
         "application/json"
     }
 
+    // NEXT_MAJOR_VERSION: remove the pre-16 branch when minimum target moved to iOS 16 or higher
     var acceptLanguageString: String {
-        "\(Locale.current.language.languageCode?.identifier ?? "en")-\(Locale.current.region?.identifier ?? "US")"
+        if #available(iOS 16, *) {
+            return "\(Locale.current.language.languageCode?.identifier ?? "en")-\(Locale.current.region?.identifier ?? "US")"
+        } else {
+            return "\(Locale.current.languageCode ?? "en")-\(Locale.current.regionCode ?? "US")"
+        }
     }
     
     // MARK: - Internal Initializers
