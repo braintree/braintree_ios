@@ -1,9 +1,6 @@
 import Foundation
 import CardinalMobile
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 class BTThreeDSecureV2Provider {
 

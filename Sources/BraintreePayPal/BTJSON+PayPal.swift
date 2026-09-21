@@ -1,6 +1,4 @@
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 extension BTJSON {
 
