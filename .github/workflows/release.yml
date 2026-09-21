@@ -19,11 +19,11 @@ jobs:
       - name: Install Package dependencies
         run: swift package resolve
 
-      - name: Install CocoaPod dependencies
-        run: pod install
+      - name: Install xcbeautify
+        run: brew install xcbeautify
 
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -project 'Braintree.xcodeproj' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | xcbeautify
 
   release:
     name: Release
@@ -85,7 +85,6 @@ jobs:
           set -euo pipefail
           today=$(date +'%Y-%m-%d')
           sed -i '' 's/## unreleased.*/## '"${RELEASE_VERSION}"' ('"$today"')/' CHANGELOG.md
-          sed -i '' 's/\(s\.version *= *\).*/\1"'"${RELEASE_VERSION}"'\"/' Braintree.podspec
           sed -i '' 's/braintreeSDKVersion: String =.*/braintreeSDKVersion: String = "'"${RELEASE_VERSION}"'"/' Sources/BraintreeCore/BTCoreConstants.swift
           plutil -replace CFBundleVersion -string "${RELEASE_VERSION}" -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
           plutil -replace CFBundleShortVersionString -string "${RELEASE_VERSION}" -- 'Demo/Application/Supporting Files/Braintree-Demo-Info.plist'
