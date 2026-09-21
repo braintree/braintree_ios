@@ -15,12 +15,12 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: Install Package dependencies
         run: swift package resolve
-      - name: Install CocoaPod dependencies
-        run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | xcbeautify
 
       - name: Check Unit Test Coverage
         run: |
@@ -75,8 +75,8 @@ jobs:
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
 
-      - name: Install CocoaPod dependencies
-        run: pod install
+      - name: Install xcbeautify
+        run: brew install xcbeautify
 
       - name: Boot Simulator
         run: |
@@ -133,7 +133,7 @@ jobs:
             -only-testing:UITests/${{ matrix.test-suite }} \
             -disable-concurrent-destination-testing \
             -retry-tests-on-failure \
-            test | ./Pods/xcbeautify/xcbeautify
+            test | xcbeautify
 
   integration_test_job:
     name: Integration
@@ -146,9 +146,9 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 16.4
         run: sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: Install Package dependencies
         run: swift package resolve
-      - name: Install CocoaPod dependencies
-        run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 16 Pro,OS=18.5,platform=iOS Simulator' -derivedDataPath DerivedData test | xcbeautify
