@@ -2064,7 +2064,8 @@ class BTPayPalClient_Tests: XCTestCase {
         }
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPayPalAnalytics.tokenizeFailed))
-        XCTAssertTrue(manager.didEndBackgroundTask)
+
+        XCTAssertEqual(manager.endCallCount, 1)
     }
 
     @MainActor

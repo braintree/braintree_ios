@@ -225,6 +225,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
     
     // swiftlint:disable function_body_length
+    @MainActor
     func handleReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType
@@ -449,7 +450,7 @@ import BraintreeDataCollector
                 return
             }
 
-            Task {
+            Task { @MainActor in
                 do {
                     let nonce = try await handleReturn(url, paymentType: payPalRequest.paymentType)
                     appSwitchCompletion(nonce, nil)
@@ -691,7 +692,7 @@ import BraintreeDataCollector
                         return
                     }
 
-                    Task {
+                    Task { @MainActor in
                         do {
                             let nonce = try await self.handleReturn(url, paymentType: payPalRequest.paymentType)
                             continuation.resume(returning: nonce)
