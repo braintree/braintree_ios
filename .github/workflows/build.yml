@@ -14,7 +14,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run pod lib lint
@@ -30,7 +30,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Remove SPMTest
         run: |
           git config --global user.email "code@getbraintree.com"
@@ -57,7 +57,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Use current branch
         run: sed -i '' 's/branch = .*/branch = \"'"${GITHUB_HEAD_REF//\//\/}"'\";/' SampleApps/SPMTest/SPMTest.xcodeproj/project.pbxproj
       - name: Run swift package resolve
