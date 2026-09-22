@@ -20,7 +20,7 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Unit Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Debug' -scheme 'UnitTests' -destination 'name=iPhone 18 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData -enableCodeCoverage YES test | ./Pods/xcbeautify/xcbeautify
 
       - name: Check Unit Test Coverage
         run: |
@@ -81,8 +81,8 @@ jobs:
       - name: Boot Simulator
         run: |
           # Boot simulator ahead of time to reduce test startup time
-          # Find iPhone 17 Pro with iOS 27.0
-          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 17 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
+          # Find iPhone 18 Pro with iOS 27.0
+          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 18 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
 
           if [ -n "$DEVICE_UDID" ]; then
             xcrun simctl boot "$DEVICE_UDID" || true
@@ -95,11 +95,11 @@ jobs:
         timeout-minutes: 3
         run: |
           # Reset simulator state to ensure clean environment
-          echo "Finding iPhone 17 Pro (iOS 27.0) simulator..."
-          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 17 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
+          echo "Finding iPhone 18 Pro (iOS 27.0) simulator..."
+          DEVICE_UDID=$(xcrun simctl list devices | grep -A 1 "iOS 27.0" | grep "iPhone 18 Pro (" | head -n 1 | grep -oE '\([A-Z0-9-]+\)' | tr -d '()')
 
           if [ -z "$DEVICE_UDID" ]; then
-            echo "::error::iPhone 17 Pro (iOS 27.0) simulator not found"
+            echo "::error::iPhone 18 Pro (iOS 27.0) simulator not found"
             exit 1
           fi
 
@@ -128,7 +128,7 @@ jobs:
             -sdk 'iphonesimulator' \
             -configuration 'Debug' \
             -scheme 'UITests' \
-            -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' \
+            -destination 'name=iPhone 18 Pro,OS=27.0,platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             -only-testing:UITests/${{ matrix.test-suite }} \
             -disable-concurrent-destination-testing \
@@ -151,4 +151,4 @@ jobs:
       - name: Install CocoaPod dependencies
         run: pod install
       - name: Run Integration Tests
-        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 17 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
+        run: set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration 'Release' -scheme 'IntegrationTests' -destination 'name=iPhone 18 Pro,OS=27.0,platform=iOS Simulator' -derivedDataPath DerivedData test | ./Pods/xcbeautify/xcbeautify
