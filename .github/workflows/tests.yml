@@ -14,7 +14,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
@@ -73,7 +73,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
 
       - name: Install CocoaPod dependencies
         run: pod install
@@ -145,7 +145,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Use Xcode 27
-        run: sudo xcode-select -switch /Applications/Xcode_27_beta_6.app
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Install Package dependencies
         run: swift package resolve
       - name: Install CocoaPod dependencies
