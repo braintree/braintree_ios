@@ -280,7 +280,7 @@ import BraintreeDataCollector
         var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
         var cancellableTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
 
-        let endBackgroundTask = { [backgroundTaskManager] in
+        let endBackgroundTaskIfNeeded = { [backgroundTaskManager] in
             guard backgroundTaskID != .invalid else { return }
             backgroundTaskManager.endBackgroundTask(backgroundTaskID)
             backgroundTaskID = .invalid
@@ -288,9 +288,9 @@ import BraintreeDataCollector
 
         backgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") {
             cancellableTokenizationTask?.cancel()
-            endBackgroundTask()
+            endBackgroundTaskIfNeeded()
         }
-        defer { endBackgroundTask() }
+        defer { endBackgroundTaskIfNeeded() }
 
         let tokenizationTask = Task {
             try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
