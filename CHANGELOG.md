@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Lower minimum deployment target from iOS 16.0 to iOS 15.0
+
 ## 7.12.0 (2026-09-16)
 * Add support for Xcode 27 / iOS 27
 * BraintreePayPalMessaging
