@@ -91,7 +91,7 @@ import BraintreeDataCollector
     
     /// Used for analytics purpose to determine the funding source of the flow i.e. credit, payLater
     private var fundingSource: BTPayPalFundingSource?
-    
+
     // MARK: - Initializer
 
     /// Initialize a new PayPal client instance.
