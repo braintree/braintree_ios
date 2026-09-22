@@ -23,7 +23,7 @@ import BraintreeDataCollector
 
     /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles so that
     /// background task assertions are not requested from the system during tests.
-    nonisolated(unsafe) var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
+    var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
 
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL?
@@ -452,7 +452,13 @@ import BraintreeDataCollector
                 return
             }
 
-            Task { @MainActor in
+            let appSwitchCompletion = self.appSwitchCompletion
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    appSwitchCompletion(nil, BTPayPalError.deallocated)
+                    return
+                }
+
                 do {
                     let nonce = try await handleReturn(url, paymentType: payPalRequest.paymentType)
                     appSwitchCompletion(nonce, nil)
@@ -694,9 +700,14 @@ import BraintreeDataCollector
                         return
                     }
 
-                    Task { @MainActor in
+                    Task { [weak self] in
+                        guard let self else {
+                            continuation.resume(throwing: BTPayPalError.deallocated)
+                            return
+                        }
+
                         do {
-                            let nonce = try await self.handleReturn(url, paymentType: payPalRequest.paymentType)
+                            let nonce = try await handleReturn(url, paymentType: payPalRequest.paymentType)
                             continuation.resume(returning: nonce)
                         } catch {
                             continuation.resume(throwing: error)
