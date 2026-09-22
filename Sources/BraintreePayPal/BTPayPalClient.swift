@@ -302,7 +302,9 @@ import BraintreeDataCollector
         do {
             tokenizationResponse = try await tokenizationTask.value
         } catch {
-            guard tokenizationTask.isCancelled else {
+            let wasCancelled = error is CancellationError || (error as? URLError)?.code == .cancelled
+
+            guard wasCancelled else {
                 notifyFailure(with: error)
                 throw error
             }
