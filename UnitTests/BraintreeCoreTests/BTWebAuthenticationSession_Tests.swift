@@ -97,8 +97,11 @@ class BTWebAuthenticationSession_Tests: XCTestCase {
             }
         }
         
-        // Release all threads at exactly the same time
-        DispatchQueue.global().asyncAfter(deadline: .now() + 0.1) {
+        // Release all threads at exactly the same time.
+        // Not `DispatchQueue.global()`: the blocks above park every worker in that pool, and this release
+        // is queued behind them, so it can only run once the pool grows past `threadCount`. A private
+        // queue targets the overcommit root queue and always gets a thread.
+        DispatchQueue(label: "com.braintree.webAuthenticationSessionTests.startBarrier").asyncAfter(deadline: .now() + 0.1) {
             for _ in 0..<self.threadCount {
                 startBarrier.signal()
             }

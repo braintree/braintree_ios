@@ -21,6 +21,10 @@ import BraintreeDataCollector
     /// to prevent calls to openURL. Subclassing UIApplication is not possible, since it enforces that only one instance can ever exist.
     nonisolated(unsafe) var application: URLOpener = UIApplication.shared
 
+    /// Defaults to `UIApplication.shared`, but exposed for unit tests to inject test doubles so that
+    /// background task assertions are not requested from the system during tests.
+    var backgroundTaskManager: BackgroundTaskManaging = UIApplication.shared
+
     /// Exposed for testing the approvalURL construction
     var approvalURL: URL?
 
@@ -221,6 +225,7 @@ import BraintreeDataCollector
     // MARK: - Internal Methods
     
     // swiftlint:disable function_body_length
+    @MainActor
     func handleReturn(
         _ url: URL?,
         paymentType: BTPayPalPaymentType
@@ -272,7 +277,43 @@ import BraintreeDataCollector
             correlationID: contextID.flatMap { clientMetadataIDs[$0] }
         )
 
-        let (body, _) = try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+        var cancellableTokenizationTask: Task<(BTJSON?, HTTPURLResponse?), Error>?
+
+        let endBackgroundTaskIfNeeded = { [backgroundTaskManager] in
+            guard backgroundTaskID != .invalid else { return }
+            backgroundTaskManager.endBackgroundTask(backgroundTaskID)
+            backgroundTaskID = .invalid
+        }
+
+        backgroundTaskID = backgroundTaskManager.beginBackgroundTask(named: "BTPayPalHandleReturnTokenize") {
+            cancellableTokenizationTask?.cancel()
+            endBackgroundTaskIfNeeded()
+        }
+        defer { endBackgroundTaskIfNeeded() }
+
+        let tokenizationTask = Task {
+            try await apiClient.post("/v1/payment_methods/paypal_accounts", parameters: encodableParams)
+        }
+        cancellableTokenizationTask = tokenizationTask
+
+        let tokenizationResponse: (BTJSON?, HTTPURLResponse?)
+
+        do {
+            tokenizationResponse = try await tokenizationTask.value
+        } catch {
+            let wasCancelled = error is CancellationError || (error as? URLError)?.code == .cancelled
+
+            guard wasCancelled else {
+                notifyFailure(with: error)
+                throw error
+            }
+
+            notifyFailure(with: BTPayPalError.returnBackgroundTaskExpired)
+            throw BTPayPalError.returnBackgroundTaskExpired
+        }
+
+        let (body, _) = tokenizationResponse
 
         guard
             let payPalAccount = body?["paypalAccounts"].asArray()?.first,
@@ -411,7 +452,13 @@ import BraintreeDataCollector
                 return
             }
 
-            Task {
+            let appSwitchCompletion = self.appSwitchCompletion
+            Task { @MainActor [weak self] in
+                guard let self else {
+                    appSwitchCompletion(nil, BTPayPalError.deallocated)
+                    return
+                }
+
                 do {
                     let nonce = try await handleReturn(url, paymentType: payPalRequest.paymentType)
                     appSwitchCompletion(nonce, nil)
@@ -653,9 +700,14 @@ import BraintreeDataCollector
                         return
                     }
 
-                    Task {
+                    Task { [weak self] in
+                        guard let self else {
+                            continuation.resume(throwing: BTPayPalError.deallocated)
+                            return
+                        }
+
                         do {
-                            let nonce = try await self.handleReturn(url, paymentType: payPalRequest.paymentType)
+                            let nonce = try await handleReturn(url, paymentType: payPalRequest.paymentType)
                             continuation.resume(returning: nonce)
                         } catch {
                             continuation.resume(throwing: error)
