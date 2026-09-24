@@ -11,6 +11,16 @@ class Venmo_UITests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
 
+        // Auto-dismiss system alerts (e.g. first-launch permission prompts) that would
+        // otherwise block the app-switch handshake with MockVenmo.
+        addUIInterruptionMonitor(withDescription: "System Alert") { alert in
+            for buttonLabel in ["Allow", "Allow Once", "OK", "Continue"] where alert.buttons[buttonLabel].exists {
+                alert.buttons[buttonLabel].tap()
+                return true
+            }
+            return false
+        }
+
         mockVenmo = XCUIApplication(bundleIdentifier: "com.braintreepayments.MockVenmo")
         mockVenmo.activate()
 
@@ -25,6 +35,7 @@ class Venmo_UITests: XCTestCase {
 
         // Wait for app to be ready
         _ = demoApp.wait(for: .runningForeground, timeout: 10)
+        demoApp.tap()
     }
 
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
@@ -145,5 +156,9 @@ class Venmo_UITests: XCTestCase {
 
         // Give the app a moment to fully render UI after switch
         Thread.sleep(forTimeInterval: 0.5)
+
+        // Interacting with the app is what causes XCTest to check for and dismiss
+        // any pending system alert registered via addUIInterruptionMonitor.
+        app.tap()
     }
 }
