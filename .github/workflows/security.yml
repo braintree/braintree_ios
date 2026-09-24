@@ -22,7 +22,6 @@ jobs:
     with:
       mac-runner-version: 'macos-15-xlarge'
       project: Demo/Demo.xcodeproj
-      workspace: Braintree.xcworkspace
       scheme: Demo
 
   dependency-review:
