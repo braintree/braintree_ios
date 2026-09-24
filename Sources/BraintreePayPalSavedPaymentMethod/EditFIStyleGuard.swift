@@ -9,7 +9,7 @@ import UIKit
 ///    Dynamic Type scaling stays unbounded and accessibility is preserved.
 ///
 /// Text sizes additionally fall back to `componentAppearance.baseFontSize` before the SDK default.
-enum EditFiStyleGuard {
+enum EditFIStyleGuard {
 
     /// The SDK's built-in defaults. Values for merchant-configurable fields apply when the merchant
     /// leaves a field `nil`; the funding-instrument pill and card-icon values are fixed and are read

@@ -2,14 +2,13 @@ import SwiftUI
 import UIKit
 
 /// Builds fonts for the component from the style's `fontName` and size fields, always
-/// rendering through Dynamic Type so text respects the user's accessibility text-size
-/// setting (the iOS equivalent of Android `sp`, per the styling doc §3.4).
+/// rendering through Dynamic Type so text respects the user's accessibility text-size setting.
 enum BTPayPalSavedPaymentMethodFont {
 
     /// - Parameters:
     ///   - name: Registered custom-font PostScript name, or `nil` for the system font.
-    ///   - size: The base point size (already clamped by `EditFiStyleGuard`).
-    ///   - weight: Weight applied to the system font.
+    ///   - size: The base point size (already clamped by `EditFIStyleGuard`).
+    ///   - weight: Weight applied to both the system and custom font.
     static func font(name: String?, size: CGFloat, weight: Font.Weight = .regular) -> Font {
         if let name, !name.isEmpty {
             // Custom fonts scale automatically via the `relativeTo:` reference style.

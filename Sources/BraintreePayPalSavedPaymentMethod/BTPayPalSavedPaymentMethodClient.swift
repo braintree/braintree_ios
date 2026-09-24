@@ -17,19 +17,19 @@ final class BTPayPalSavedPaymentMethodClient {
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
 
+    /// Exposed for testing to inject a mock BTPayPalClient. Built on first edit because `BTPayPalClient.init`
+    /// appends itself to `BTAppContextSwitcher`'s client list without de-duplicating.
+    lazy var payPalClient = BTPayPalClient(
+        authorization: authorization,
+        universalLink: universalLink,
+        fallbackURLScheme: fallbackURLScheme
+    )
+
     // MARK: - Private Properties
 
     private let authorization: String
     private let universalLink: URL
     private let fallbackURLScheme: String?
-
-    /// Built on first edit. `BTPayPalClient.init` appends itself to `BTAppContextSwitcher`'s client list without
-    /// de-duplicating, so one instance is reused rather than created per edit.
-    private lazy var payPalClient = BTPayPalClient(
-        authorization: authorization,
-        universalLink: universalLink,
-        fallbackURLScheme: fallbackURLScheme
-    )
 
     // MARK: - Initializer
 

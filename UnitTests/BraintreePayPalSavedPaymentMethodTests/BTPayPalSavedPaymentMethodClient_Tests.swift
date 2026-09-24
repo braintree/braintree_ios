@@ -1,6 +1,7 @@
 import XCTest
 @testable import BraintreeTestShared
 @testable import BraintreeCore
+@testable import BraintreePayPal
 @testable import BraintreePayPalSavedPaymentMethod
 
 final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
@@ -207,5 +208,38 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         } catch {
             XCTAssertEqual(error as NSError, cannedError)
         }
+    }
+
+    // MARK: - editFundingInstrument
+
+    func testEditFundingInstrument_returnsTheNonceWithEditBillingAgreementOnDuringTokenize() async throws {
+        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
+        mockPayPalClient.cannedNonce = try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": "fake-nonce"])))
+        sut.payPalClient = mockPayPalClient
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        let nonce = try await sut.editFundingInstrument(request: request)
+
+        XCTAssertEqual(nonce.nonce, "fake-nonce")
+        XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertFalse(request.editBillingAgreement)
+    }
+
+    func testEditFundingInstrument_whenTokenizeFails_propagatesTheErrorAndRestoresTheFlag() async {
+        let cannedError = NSError(domain: "com.example.error", code: 1)
+        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
+        mockPayPalClient.cannedError = cannedError
+        sut.payPalClient = mockPayPalClient
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        do {
+            _ = try await sut.editFundingInstrument(request: request)
+            XCTFail("Expected editFundingInstrument to throw")
+        } catch {
+            XCTAssertEqual(error as NSError, cannedError)
+        }
+
+        XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertFalse(request.editBillingAgreement)
     }
 }

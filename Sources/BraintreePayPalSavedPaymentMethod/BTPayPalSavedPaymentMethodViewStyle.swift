@@ -3,7 +3,7 @@ import UIKit
 /// The styling contract for `BTPayPalSavedPaymentMethodView`.
 ///
 /// Every field is optional: `nil` means "not set by the merchant", so the SDK applies its own
-/// default for that element. `nil` never means zero — the defaults live in `EditFiStyleGuard`,
+/// default for that element. `nil` never means zero — the defaults live in `EditFIStyleGuard`,
 /// which also floors merchant-supplied spacing and sizes at `0`.
 ///
 /// Text sizes resolve in three tiers: the element-specific size, then
@@ -146,8 +146,7 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
 
     /// The funding-instrument cluster: card art + last digits + edit pencil, inside a pill.
     ///
-    /// The pill fill/shape/padding and the card-icon chrome are fixed to their Figma values and are
-    /// not merchant-configurable.
+    /// The pill fill/shape/padding and the card-icon chrome are fixed and are not merchant-configurable.
     public struct FundingInstrumentStyle {
 
         /// Funding-instrument text size. `nil` → `baseFontSize`, then the SDK default.
