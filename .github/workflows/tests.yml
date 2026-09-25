@@ -121,6 +121,7 @@ jobs:
           timeout 60 xcrun simctl bootstatus "$DEVICE_UDID" -b || echo "::warning::Boot status check timed out, continuing anyway"
 
       - name: Run UI Tests - ${{ matrix.test-suite }}
+        timeout-minutes: 15
         run: |
           set -o pipefail
           xcodebuild \
@@ -136,7 +137,7 @@ jobs:
             test | tee raw_xcodebuild.log | ./Pods/xcbeautify/xcbeautify
 
       - name: Upload UI Test diagnostics - ${{ matrix.test-suite }}
-        if: failure()
+        if: failure() || cancelled()
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-diagnostics-${{ strategy.job-index }}
