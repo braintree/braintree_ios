@@ -7,51 +7,51 @@ enum AppSwitcher {
     static var successURLWithPaymentContext: URL? {
         let resourceID = "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
 
-        return returnURL(forQueryItemNamed: "x-success", additionalQueryItems: [URLQueryItem(name: "resource_id", value: resourceID)])
+        return returnURL(appendingPath: "success", queryItems: [URLQueryItem(name: "resource_id", value: resourceID)])
     }
 
     static var successURLWithoutPaymentContext: URL? {
         let username = "@fake-venmo-username"
         let nonce = "fake-venmo-account-nonce"
 
-        return returnURL(forQueryItemNamed: "x-success", additionalQueryItems: [
+        return returnURL(appendingPath: "success", queryItems: [
             URLQueryItem(name: "username", value: username),
             URLQueryItem(name: "paymentMethodNonce", value: nonce)
         ])
     }
 
     static var errorURL: URL? {
-        returnURL(forQueryItemNamed: "x-error", additionalQueryItems: [
+        returnURL(appendingPath: "error", queryItems: [
             URLQueryItem(name: "errorMessage", value: "An error occurred during the Venmo flow"),
             URLQueryItem(name: "errorCode", value: "123")
         ])
     }
 
     static var cancelURL: URL? {
-        returnURL(forQueryItemNamed: "x-cancel")
+        returnURL(appendingPath: "cancel")
     }
 
-    /// `openVenmoURL` is the outbound `https://venmo.com/go/checkout` universal link the Demo app opened to
-    /// switch into Venmo — it is not a domain associated with the Demo app. The actual URL Venmo should
-    /// redirect back to is embedded in that link's `x-success`/`x-error`/`x-cancel` query parameters, so the
-    /// return URL must be extracted from there rather than built by appending onto `openVenmoURL` itself.
-    private static func returnURL(forQueryItemNamed queryItemName: String, additionalQueryItems: [URLQueryItem] = []) -> URL? {
-        guard
-            let openVenmoURL,
-            let openComponents = URLComponents(url: openVenmoURL, resolvingAgainstBaseURL: false),
-            let baseReturnURLString = openComponents.queryItems?.first(where: { $0.name == queryItemName })?.value,
-            let baseReturnURL = URL(string: baseReturnURLString)
-        else {
-            print("DEBUG - AppSwitcher failed to extract \(queryItemName) from openVenmoURL: \(openVenmoURL?.absoluteString ?? "nil")")
+    /// Appends a path component (e.g. "success"/"error"/"cancel") before any existing query string on
+    /// `openVenmoURL`, rather than concatenating strings, so the app-switch return URL's path still
+    /// contains the expected keyword when `openVenmoURL` already has query parameters.
+    ///
+    /// `openVenmoURL` is set to a fixed placeholder URL by SceneDelegate's `willConnectTo`, not extracted
+    /// from a real inbound app-switch: the UI tests activate MockVenmo directly via
+    /// `XCUIApplication(bundleIdentifier:).activate()` rather than going through a genuine OS-level
+    /// universal link/URL scheme handoff, so it never carries real x-success/x-error/x-cancel query items.
+    private static func returnURL(appendingPath path: String, queryItems: [URLQueryItem] = []) -> URL? {
+        guard let baseURL = openVenmoURL else {
+            print("DEBUG - AppSwitcher returnURL(appendingPath: \(path)) failed: openVenmoURL is nil")
             return nil
         }
+        let urlWithPath = baseURL.appendingPathComponent(path)
 
-        guard !additionalQueryItems.isEmpty else {
-            print("DEBUG - AppSwitcher returnURL (no additional query items): \(baseReturnURL.absoluteString)")
-            return baseReturnURL
+        guard !queryItems.isEmpty else {
+            print("DEBUG - AppSwitcher returnURL: \(urlWithPath.absoluteString)")
+            return urlWithPath
         }
-        guard var components = URLComponents(url: baseReturnURL, resolvingAgainstBaseURL: false) else { return baseReturnURL }
-        components.queryItems = (components.queryItems ?? []) + additionalQueryItems
+        guard var components = URLComponents(url: urlWithPath, resolvingAgainstBaseURL: false) else { return urlWithPath }
+        components.queryItems = (components.queryItems ?? []) + queryItems
         print("DEBUG - AppSwitcher returnURL: \(components.url?.absoluteString ?? "nil")")
         return components.url
     }
