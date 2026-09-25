@@ -244,24 +244,20 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertEqual(parameters["cancel_url"] as? String, "sdk.ios.braintree://onetouch/v1/cancel")
     }
 
-    func testParametersWithConfiguration_whenEditBillingAgreementTrueAndJWTPresent_includesEditBillingAgreementJWT() {
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueAndJWTPresent_includesEditBillingAgreementJWT() throws {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.editBillingAgreement = true
 
-        guard let parameters = try? request.encodedPostBodyWith(
-            configuration: configuration,
-            paymentMethodIDJWT: "edit-fi-jwt"
-        ).toDictionary() else {
-            XCTFail()
-            return
-        }
+        let parameters = try XCTUnwrap(
+            EditBillingAgreementScope.$isActive.withValue(true) {
+                request.encodedPostBodyWith(configuration: configuration, paymentMethodIDJWT: "edit-fi-jwt")
+            }.toDictionary()
+        )
 
         XCTAssertEqual(parameters["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
     }
 
     func testParametersWithConfiguration_whenEditBillingAgreementFalse_omitsEditBillingAgreementJWT() {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.editBillingAgreement = false
 
         guard let parameters = try? request.encodedPostBodyWith(
             configuration: configuration,
@@ -275,14 +271,14 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         XCTAssertNil(parameters["edit_billing_agreement_jwt"])
     }
 
-    func testParametersWithConfiguration_whenEditBillingAgreementTrueButJWTNil_omitsEditBillingAgreementJWT() {
+    func testParametersWithConfiguration_whenEditBillingAgreementTrueButJWTNil_omitsEditBillingAgreementJWT() throws {
         let request = BTPayPalCheckoutRequest(amount: "1")
-        request.editBillingAgreement = true
 
-        guard let parameters = try? request.encodedPostBodyWith(configuration: configuration).toDictionary() else {
-            XCTFail()
-            return
-        }
+        let parameters = try XCTUnwrap(
+            EditBillingAgreementScope.$isActive.withValue(true) {
+                request.encodedPostBodyWith(configuration: configuration)
+            }.toDictionary()
+        )
 
         // No JWT on the client token → omit the key (not null) so existing flows stay byte-identical.
         XCTAssertNil(parameters["edit_billing_agreement_jwt"])
@@ -318,43 +314,38 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         }
     }
 
-    /// An abandoned app switch leaves the first call suspended, so a retry must not restore its `true`.
+    /// An abandoned app switch leaves the first call suspended, so overlapping calls must not share the flag.
     @MainActor
-    func testWithEditBillingAgreement_whenARetryFinishesWhileTheFirstCallIsSuspended_leavesTheFlagOff() async throws {
+    func testWithEditBillingAgreement_whenCallsOverlap_eachSeesOnlyItsOwnFlag() async throws {
         let request = BTPayPalCheckoutRequest(amount: "1")
         let nonce = try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": "fake-nonce"])))
         var releaseFirstCall: CheckedContinuation<Void, Never>?
+        var firstCallFlagAfterRetry: Bool?
+        var retryFlag = false
 
         let firstCall = Task {
             await request.withEditBillingAgreement {
                 await withCheckedContinuation { releaseFirstCall = $0 }
+                firstCallFlagAfterRetry = request.editBillingAgreement
                 return nonce
             }
         }
         while releaseFirstCall == nil { await Task.yield() }
 
-        _ = await request.withEditBillingAgreement { nonce }
+        XCTAssertFalse(request.editBillingAgreement)
 
+        _ = await request.withEditBillingAgreement {
+            retryFlag = request.editBillingAgreement
+            return nonce
+        }
+
+        XCTAssertTrue(retryFlag)
         XCTAssertFalse(request.editBillingAgreement)
 
         releaseFirstCall?.resume()
         _ = await firstCall.value
+        XCTAssertEqual(firstCallFlagAfterRetry, true)
         XCTAssertFalse(request.editBillingAgreement)
-    }
-
-    func testEncodedPostBodyWith_sendsEditBillingAgreementJWTOnlyOnce() throws {
-        let request = BTPayPalCheckoutRequest(amount: "1")
-        request.editBillingAgreement = true
-
-        let first = try XCTUnwrap(
-            request.encodedPostBodyWith(configuration: configuration, paymentMethodIDJWT: "edit-fi-jwt").toDictionary()
-        )
-        let second = try XCTUnwrap(
-            request.encodedPostBodyWith(configuration: configuration, paymentMethodIDJWT: "edit-fi-jwt").toDictionary()
-        )
-
-        XCTAssertEqual(first["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
-        XCTAssertNil(second["edit_billing_agreement_jwt"])
     }
 
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {

@@ -1,5 +1,5 @@
 import XCTest
-@testable import BraintreePayPal
+@_spi(BraintreePayPalSavedPaymentMethod) @testable import BraintreePayPal
 @testable import BraintreeTestShared
 @testable import BraintreeCore
 
@@ -91,7 +91,7 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     @MainActor
-    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndClientTokenHasJWT_includesEditBillingAgreementJWTInPOSTBody() {
+    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndClientTokenHasJWT_includesEditBillingAgreementJWTInPOSTBody() async {
         let clientToken = TestClientTokenFactory.token(withVersion: 3, overrides: ["paymentMethodIdJwt": "edit-fi-jwt"])
         let mockAPIClientWithJWT = MockAPIClient(authorization: clientToken)
         mockAPIClientWithJWT.cannedConfigurationResponseBody = BTJSON(value: [
@@ -105,15 +105,10 @@ class BTPayPalClient_Tests: XCTestCase {
         payPalClient.apiClient = mockAPIClientWithJWT
 
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
-        checkoutRequest.editBillingAgreement = true
 
-        let expectation = expectation(description: "Tokenize started")
-
-        payPalClient.tokenize(checkoutRequest) { _, _ in
-            expectation.fulfill()
+        _ = try? await checkoutRequest.withEditBillingAgreement {
+            try await payPalClient.tokenize(checkoutRequest)
         }
-
-        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClientWithJWT.lastPOSTPath)
         guard let lastPostParameters = mockAPIClientWithJWT.lastPOSTParameters else { XCTFail(); return }
@@ -122,17 +117,12 @@ class BTPayPalClient_Tests: XCTestCase {
     }
 
     @MainActor
-    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndAuthorizationIsTokenizationKey_omitsEditBillingAgreementJWTFromPOSTBody() {
+    func testTokenizePayPalAccount_checkout_whenEditBillingAgreementTrueAndAuthorizationIsTokenizationKey_omitsEditBillingAgreementJWTFromPOSTBody() async {
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
-        checkoutRequest.editBillingAgreement = true
 
-        let expectation = expectation(description: "Tokenize started")
-
-        payPalClient.tokenize(checkoutRequest) { _, _ in
-            expectation.fulfill()
+        _ = try? await checkoutRequest.withEditBillingAgreement {
+            try await payPalClient.tokenize(checkoutRequest)
         }
-
-        wait(for: [expectation], timeout: 1)
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else { XCTFail(); return }

@@ -52,7 +52,8 @@ import BraintreeCore
     var contactPreference: BTContactPreference = .none
     var currencyCode: String?
     var displayName: String?
-    var editBillingAgreement: Bool = false
+    /// True only inside `withEditBillingAgreement`; stored per call rather than on the request.
+    var editBillingAgreement: Bool { EditBillingAgreementScope.isActive }
     var enablePayPalAppSwitch: Bool = false
     var isShippingAddressEditable: Bool = false
     var isShippingAddressRequired: Bool = false
@@ -235,9 +236,7 @@ import BraintreeCore
         fallbackURLScheme: String? = nil,
         paymentMethodIDJWT: String?
     ) -> Encodable {
-        // One-shot: an abandoned app switch never resumes `tokenize`, so the SPI's `defer` may never run.
-        defer { editBillingAgreement = false }
-        return PayPalCheckoutPOSTBody(
+        PayPalCheckoutPOSTBody(
             payPalRequest: self,
             configuration: configuration,
             isPayPalAppInstalled: isPayPalAppInstalled,
@@ -252,16 +251,20 @@ import BraintreeCore
 
 extension BTPayPalCheckoutRequest {
 
-    /// Sets `editBillingAgreement` for one tokenize call, then clears it, since the merchant may reuse the request.
+    /// Marks `editBillingAgreement` for the duration of `body` only, without modifying the request.
     @_documentation(visibility: private)
     @_spi(BraintreePayPalSavedPaymentMethod)
     @nonobjc
     public func withEditBillingAgreement(
         _ body: () async throws -> BTPayPalAccountNonce
     ) async rethrows -> BTPayPalAccountNonce {
-        // Cleared rather than restored: this is the only writer, and an overlapping call would restore `true`.
-        editBillingAgreement = true
-        defer { editBillingAgreement = false }
-        return try await body()
+        try await EditBillingAgreementScope.$isActive.withValue(true) {
+            try await body()
+        }
     }
+}
+
+/// Task-local, so overlapping edits each see only their own value and nothing is left set if a call never returns.
+enum EditBillingAgreementScope {
+    @TaskLocal static var isActive: Bool = false
 }
