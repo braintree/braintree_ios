@@ -41,7 +41,7 @@ class Venmo_UITests: XCTestCase {
         // Wait for Venmo button and tap with retry
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -71,7 +71,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -98,7 +98,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -125,7 +125,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -149,6 +149,14 @@ class Venmo_UITests: XCTestCase {
     }
 
     // MARK: - Helper Methods
+
+    private func waitForVenmoButtonToBeHittable(_ venmoButton: XCUIElement, timeout: TimeInterval = 30) -> Bool {
+        let isHittable = waitForElementToBeHittable(venmoButton, timeout: timeout)
+        if !isHittable {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        return isHittable
+    }
 
     /// Wait for app switch with proper timing
     private func waitForAppSwitch(to app: XCUIApplication, timeout: TimeInterval = 10) {

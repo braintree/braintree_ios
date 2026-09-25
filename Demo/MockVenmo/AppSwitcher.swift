@@ -7,40 +7,47 @@ enum AppSwitcher {
     static var successURLWithPaymentContext: URL? {
         let resourceID = "cGF5bWVudGNvbnRleHRfZGNwc3B5MmJyd2RqcjNxbiM4NjE4ZThkYi0xZDJkLTQwYjktYWJjOC0zNTVlNTk5YzliNTg="
 
-        return returnURL(appendingPath: "success", queryItems: [URLQueryItem(name: "resource_id", value: resourceID)])
+        return returnURL(forQueryItemNamed: "x-success", additionalQueryItems: [URLQueryItem(name: "resource_id", value: resourceID)])
     }
 
     static var successURLWithoutPaymentContext: URL? {
         let username = "@fake-venmo-username"
         let nonce = "fake-venmo-account-nonce"
 
-        return returnURL(appendingPath: "success", queryItems: [
+        return returnURL(forQueryItemNamed: "x-success", additionalQueryItems: [
             URLQueryItem(name: "username", value: username),
             URLQueryItem(name: "paymentMethodNonce", value: nonce)
         ])
     }
 
     static var errorURL: URL? {
-        returnURL(appendingPath: "error", queryItems: [
+        returnURL(forQueryItemNamed: "x-error", additionalQueryItems: [
             URLQueryItem(name: "errorMessage", value: "An error occurred during the Venmo flow"),
             URLQueryItem(name: "errorCode", value: "123")
         ])
     }
 
     static var cancelURL: URL? {
-        returnURL(appendingPath: "cancel")
+        returnURL(forQueryItemNamed: "x-cancel")
     }
 
-    /// Appends a path component (e.g. "success"/"error"/"cancel") before any existing query string on
-    /// `openVenmoURL`, rather than concatenating strings, so the app-switch return URL's path still
-    /// contains the expected keyword when `openVenmoURL` already has query parameters.
-    private static func returnURL(appendingPath path: String, queryItems: [URLQueryItem] = []) -> URL? {
-        guard let baseURL = openVenmoURL else { return nil }
-        let urlWithPath = baseURL.appendingPathComponent(path)
+    /// `openVenmoURL` is the outbound `https://venmo.com/go/checkout` universal link the Demo app opened to
+    /// switch into Venmo — it is not a domain associated with the Demo app. The actual URL Venmo should
+    /// redirect back to is embedded in that link's `x-success`/`x-error`/`x-cancel` query parameters, so the
+    /// return URL must be extracted from there rather than built by appending onto `openVenmoURL` itself.
+    private static func returnURL(forQueryItemNamed queryItemName: String, additionalQueryItems: [URLQueryItem] = []) -> URL? {
+        guard
+            let openVenmoURL,
+            let openComponents = URLComponents(url: openVenmoURL, resolvingAgainstBaseURL: false),
+            let baseReturnURLString = openComponents.queryItems?.first(where: { $0.name == queryItemName })?.value,
+            let baseReturnURL = URL(string: baseReturnURLString)
+        else {
+            return nil
+        }
 
-        guard !queryItems.isEmpty else { return urlWithPath }
-        guard var components = URLComponents(url: urlWithPath, resolvingAgainstBaseURL: false) else { return urlWithPath }
-        components.queryItems = (components.queryItems ?? []) + queryItems
+        guard !additionalQueryItems.isEmpty else { return baseReturnURL }
+        guard var components = URLComponents(url: baseReturnURL, resolvingAgainstBaseURL: false) else { return baseReturnURL }
+        components.queryItems = (components.queryItems ?? []) + additionalQueryItems
         return components.url
     }
 }
