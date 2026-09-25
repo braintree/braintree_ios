@@ -31,27 +31,23 @@ enum AppSwitcher {
         returnURL(appendingPath: "cancel")
     }
 
-    /// Appends a path component (e.g. "success"/"error"/"cancel") before any existing query string on
-    /// `openVenmoURL`, rather than concatenating strings, so the app-switch return URL's path still
-    /// contains the expected keyword when `openVenmoURL` already has query parameters.
-    ///
-    /// `openVenmoURL` is set to a fixed placeholder URL by SceneDelegate's `willConnectTo`, not extracted
-    /// from a real inbound app-switch: the UI tests activate MockVenmo directly via
-    /// `XCUIApplication(bundleIdentifier:).activate()` rather than going through a genuine OS-level
-    /// universal link/URL scheme handoff, so it never carries real x-success/x-error/x-cancel query items.
+    /// Builds the return URL using Demo's own `com.braintreepayments.Demo.payments` custom URL scheme rather
+    /// than an `https` universal link. `BTVenmoAppSwitchReturnURL.isValid(url:)` accepts this form
+    /// (`host == "x-callback-url"`, `path` prefixed with `/vzero/auth/venmo/`) because it mirrors how the real
+    /// Venmo app returns control via a merchant's custom scheme. Universal links require Simulator to resolve
+    /// them without going through Safari, which is unreliable in CI; a custom scheme open is delivered directly
+    /// to `scene(_:openURLContexts:)` with no network dependency.
     private static func returnURL(appendingPath path: String, queryItems: [URLQueryItem] = []) -> URL? {
-        guard let baseURL = openVenmoURL else {
-            print("DEBUG - AppSwitcher returnURL(appendingPath: \(path)) failed: openVenmoURL is nil")
-            return nil
-        }
-        let urlWithPath = baseURL.appendingPathComponent(path)
+        var components = URLComponents()
+        components.scheme = "com.braintreepayments.Demo.payments"
+        components.host = "x-callback-url"
+        components.path = "/vzero/auth/venmo/\(path)"
 
         guard !queryItems.isEmpty else {
-            print("DEBUG - AppSwitcher returnURL: \(urlWithPath.absoluteString)")
-            return urlWithPath
+            print("DEBUG - AppSwitcher returnURL: \(components.url?.absoluteString ?? "nil")")
+            return components.url
         }
-        guard var components = URLComponents(url: urlWithPath, resolvingAgainstBaseURL: false) else { return urlWithPath }
-        components.queryItems = (components.queryItems ?? []) + queryItems
+        components.queryItems = queryItems
         print("DEBUG - AppSwitcher returnURL: \(components.url?.absoluteString ?? "nil")")
         return components.url
     }
