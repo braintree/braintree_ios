@@ -11,14 +11,14 @@ permissions:
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, remove-cocoapods-from-security-workflow ]
   push:
-    branches: [ main ]
+    branches: [ main, remove-cocoapods-from-security-workflow ]
   workflow_dispatch:
 
 jobs:
   code-scanning:
-    uses: braintree/security-workflows/.github/workflows/codeql-ios.ymlremoveCocoaPods
+    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@removeCocoaPods
     with:
       mac-runner-version: 'macos-15-xlarge'
       project: Demo/Demo.xcodeproj
