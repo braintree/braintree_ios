@@ -133,7 +133,17 @@ jobs:
             -only-testing:UITests/${{ matrix.test-suite }} \
             -disable-concurrent-destination-testing \
             -retry-tests-on-failure \
-            test | ./Pods/xcbeautify/xcbeautify
+            test | tee raw_xcodebuild.log | ./Pods/xcbeautify/xcbeautify
+
+      - name: Upload UI Test diagnostics - ${{ matrix.test-suite }}
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-diagnostics-${{ strategy.job-index }}
+          path: |
+            raw_xcodebuild.log
+            DerivedData/Logs/Test/*.xcresult
+          retention-days: 7
 
   integration_test_job:
     name: Integration
