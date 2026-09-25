@@ -4,8 +4,13 @@ import Foundation
 import BraintreeCore
 #endif
 
+#if canImport(BraintreePayPal)
+@_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
+#endif
+
 /// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
 /// Pay Later message that accompanies it.
+@MainActor
 final class BTPayPalSavedPaymentMethodClient {
 
     // MARK: - Internal Properties
@@ -13,12 +18,32 @@ final class BTPayPalSavedPaymentMethodClient {
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
 
+    /// Exposed for testing to inject a mock BTPayPalClient. Built on first edit because `BTPayPalClient.init`
+    /// appends itself to `BTAppContextSwitcher`'s client list without de-duplicating; `@MainActor` keeps it to one build.
+    lazy var payPalClient = BTPayPalClient(
+        authorization: authorization,
+        universalLink: universalLink,
+        fallbackURLScheme: fallbackURLScheme
+    )
+
+    // MARK: - Private Properties
+
+    private let authorization: String
+    private let universalLink: URL
+    private let fallbackURLScheme: String?
+
     // MARK: - Initializer
 
     /// Creates a `BTPayPalSavedPaymentMethodClient`
-    /// - Parameter authorization: A client token generated with the buyer's payment method ID. A tokenization key
-    ///   cannot be used — it carries no `paymentMethodIdJwt`, so the saved funding instrument cannot be resolved.
-    init(authorization: String) {
+    /// - Parameters:
+    ///   - authorization: A client token generated with the buyer's payment method ID. A tokenization key
+    ///     cannot be used — it carries no `paymentMethodIdJwt`, so the saved funding instrument cannot be resolved.
+    ///   - universalLink: The URL used for the PayPal app switch flow.
+    ///   - fallbackURLScheme: A custom URL scheme used if the universal link fails.
+    init(authorization: String, universalLink: URL, fallbackURLScheme: String? = nil) {
+        self.authorization = authorization
+        self.universalLink = universalLink
+        self.fallbackURLScheme = fallbackURLScheme
         self.apiClient = BTAPIClient(authorization: authorization)
     }
 
@@ -123,5 +148,15 @@ final class BTPayPalSavedPaymentMethodClient {
         }
 
         return result
+    }
+
+    /// Tokenizes the edit of the buyer's funding instrument through the PayPal paysheet.
+    /// - Parameter request: The checkout request to tokenize.
+    /// - Returns: The tokenized `BTPayPalAccountNonce`. Its `paymentID` is the approved checkout order ID,
+    ///   which callers pass to `fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID:)`.
+    func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
+        try await request.withEditBillingAgreement {
+            try await payPalClient.tokenize(request)
+        }
     }
 }

@@ -52,7 +52,8 @@ import BraintreeCore
     var contactPreference: BTContactPreference = .none
     var currencyCode: String?
     var displayName: String?
-    var editBillingAgreement: Bool = false
+    /// True only inside `withEditBillingAgreement`; stored per call rather than on the request.
+    var editBillingAgreement: Bool { EditBillingAgreementScope.isActive }
     var enablePayPalAppSwitch: Bool = false
     var isShippingAddressEditable: Bool = false
     var isShippingAddressRequired: Bool = false
@@ -250,11 +251,20 @@ import BraintreeCore
 
 extension BTPayPalCheckoutRequest {
 
-    /// :nodoc: Not part of the public API. `@nonobjc` keeps this out of the generated Objective-C header.
+    /// Marks `editBillingAgreement` for the duration of `body` only, without modifying the request.
     @_documentation(visibility: private)
     @_spi(BraintreePayPalSavedPaymentMethod)
     @nonobjc
-    public func enableEditBillingAgreement() {
-        editBillingAgreement = true
+    public func withEditBillingAgreement(
+        _ body: () async throws -> BTPayPalAccountNonce
+    ) async rethrows -> BTPayPalAccountNonce {
+        try await EditBillingAgreementScope.$isActive.withValue(true) {
+            try await body()
+        }
     }
+}
+
+/// Task-local, so overlapping edits each see only their own value and nothing is left set if a call never returns.
+enum EditBillingAgreementScope {
+    @TaskLocal static var isActive: Bool = false
 }
