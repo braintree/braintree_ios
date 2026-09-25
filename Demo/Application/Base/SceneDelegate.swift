@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         URLContexts.forEach { urlContext in
             let url = urlContext.url
+            print("DEBUG - Demo received openURLContexts: \(url.absoluteString)")
             if url.scheme?.localizedCaseInsensitiveCompare("com.braintreepayments.Demo.payments") == .orderedSame {
                 BTAppContextSwitcher.sharedInstance.handleOpenURL(context: urlContext)
             }

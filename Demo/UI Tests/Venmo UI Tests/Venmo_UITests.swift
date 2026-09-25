@@ -11,6 +11,16 @@ class Venmo_UITests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
 
+        // Auto-dismiss system alerts (e.g. first-launch permission prompts) that would
+        // otherwise block the app-switch handshake with MockVenmo.
+        addUIInterruptionMonitor(withDescription: "System Alert") { alert in
+            for buttonLabel in ["Allow", "Allow Once", "OK", "Continue"] where alert.buttons[buttonLabel].exists {
+                alert.buttons[buttonLabel].tap()
+                return true
+            }
+            return false
+        }
+
         mockVenmo = XCUIApplication(bundleIdentifier: "com.braintreepayments.MockVenmo")
         mockVenmo.activate()
 
@@ -31,7 +41,7 @@ class Venmo_UITests: XCTestCase {
         // Wait for Venmo button and tap with retry
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -61,7 +71,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -78,16 +88,17 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
-        XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
-            "Nonce button did not appear"
-        )
+        let nonceButtonAppeared = waitForElementToAppear(nonceButton, timeout: 30)
+        if !nonceButtonAppeared {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        XCTAssertTrue(nonceButtonAppeared, "Nonce button did not appear")
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -104,16 +115,17 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let errorMessage = demoApp.buttons["An error occurred during the Venmo flow"]
-        XCTAssertTrue(
-            waitForElementToAppear(errorMessage, timeout: 30),
-            "Error message did not appear"
-        )
+        let errorMessageAppeared = waitForElementToAppear(errorMessage, timeout: 30)
+        if !errorMessageAppeared {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        XCTAssertTrue(errorMessageAppeared, "Error message did not appear")
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForElementToBeHittable(venmoButton, timeout: 30),
+            waitForVenmoButtonToBeHittable(venmoButton),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -137,6 +149,14 @@ class Venmo_UITests: XCTestCase {
     }
 
     // MARK: - Helper Methods
+
+    private func waitForVenmoButtonToBeHittable(_ venmoButton: XCUIElement, timeout: TimeInterval = 30) -> Bool {
+        let isHittable = waitForElementToBeHittable(venmoButton, timeout: timeout)
+        if !isHittable {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        return isHittable
+    }
 
     /// Wait for app switch with proper timing
     private func waitForAppSwitch(to app: XCUIApplication, timeout: TimeInterval = 10) {
