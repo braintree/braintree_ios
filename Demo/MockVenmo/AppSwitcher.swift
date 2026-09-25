@@ -42,12 +42,17 @@ enum AppSwitcher {
             let baseReturnURLString = openComponents.queryItems?.first(where: { $0.name == queryItemName })?.value,
             let baseReturnURL = URL(string: baseReturnURLString)
         else {
+            print("DEBUG - AppSwitcher failed to extract \(queryItemName) from openVenmoURL: \(openVenmoURL?.absoluteString ?? "nil")")
             return nil
         }
 
-        guard !additionalQueryItems.isEmpty else { return baseReturnURL }
+        guard !additionalQueryItems.isEmpty else {
+            print("DEBUG - AppSwitcher returnURL (no additional query items): \(baseReturnURL.absoluteString)")
+            return baseReturnURL
+        }
         guard var components = URLComponents(url: baseReturnURL, resolvingAgainstBaseURL: false) else { return baseReturnURL }
         components.queryItems = (components.queryItems ?? []) + additionalQueryItems
+        print("DEBUG - AppSwitcher returnURL: \(components.url?.absoluteString ?? "nil")")
         return components.url
     }
 }
