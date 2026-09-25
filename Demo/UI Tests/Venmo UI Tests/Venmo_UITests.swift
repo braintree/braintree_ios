@@ -35,7 +35,6 @@ class Venmo_UITests: XCTestCase {
 
         // Wait for app to be ready
         _ = demoApp.wait(for: .runningForeground, timeout: 10)
-        demoApp.tap()
     }
 
     func testTokenizeVenmo_whenSignInSuccessfulWithPaymentContext_returnsNonce() {
@@ -89,10 +88,11 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
-        XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
-            "Nonce button did not appear"
-        )
+        let nonceButtonAppeared = waitForElementToAppear(nonceButton, timeout: 30)
+        if !nonceButtonAppeared {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        XCTAssertTrue(nonceButtonAppeared, "Nonce button did not appear")
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
@@ -115,10 +115,11 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let errorMessage = demoApp.buttons["An error occurred during the Venmo flow"]
-        XCTAssertTrue(
-            waitForElementToAppear(errorMessage, timeout: 30),
-            "Error message did not appear"
-        )
+        let errorMessageAppeared = waitForElementToAppear(errorMessage, timeout: 30)
+        if !errorMessageAppeared {
+            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
+        }
+        XCTAssertTrue(errorMessageAppeared, "Error message did not appear")
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
@@ -156,9 +157,5 @@ class Venmo_UITests: XCTestCase {
 
         // Give the app a moment to fully render UI after switch
         Thread.sleep(forTimeInterval: 0.5)
-
-        // Interacting with the app is what causes XCTest to check for and dismiss
-        // any pending system alert registered via addUIInterruptionMonitor.
-        app.tap()
     }
 }
