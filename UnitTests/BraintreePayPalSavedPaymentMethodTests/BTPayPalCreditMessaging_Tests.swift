@@ -3,6 +3,7 @@ import XCTest
 @testable import BraintreeCore
 @testable import BraintreePayPalSavedPaymentMethod
 
+@MainActor
 final class BTPayPalCreditMessaging_Tests: XCTestCase {
 
     let clientToken = TestClientTokenFactory.token(withVersion: 3)

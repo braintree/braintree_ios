@@ -10,6 +10,7 @@ import BraintreeCore
 
 /// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
 /// Pay Later message that accompanies it.
+@MainActor
 final class BTPayPalSavedPaymentMethodClient {
 
     // MARK: - Internal Properties
@@ -18,7 +19,7 @@ final class BTPayPalSavedPaymentMethodClient {
     var apiClient: BTAPIClient
 
     /// Exposed for testing to inject a mock BTPayPalClient. Built on first edit because `BTPayPalClient.init`
-    /// appends itself to `BTAppContextSwitcher`'s client list without de-duplicating.
+    /// appends itself to `BTAppContextSwitcher`'s client list without de-duplicating; `@MainActor` keeps it to one build.
     lazy var payPalClient = BTPayPalClient(
         authorization: authorization,
         universalLink: universalLink,

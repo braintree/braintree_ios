@@ -318,6 +318,45 @@ class BTPayPalCheckoutRequest_Tests: XCTestCase {
         }
     }
 
+    /// An abandoned app switch leaves the first call suspended, so a retry must not restore its `true`.
+    @MainActor
+    func testWithEditBillingAgreement_whenARetryFinishesWhileTheFirstCallIsSuspended_leavesTheFlagOff() async throws {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        let nonce = try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": "fake-nonce"])))
+        var releaseFirstCall: CheckedContinuation<Void, Never>?
+
+        let firstCall = Task {
+            await request.withEditBillingAgreement {
+                await withCheckedContinuation { releaseFirstCall = $0 }
+                return nonce
+            }
+        }
+        while releaseFirstCall == nil { await Task.yield() }
+
+        _ = await request.withEditBillingAgreement { nonce }
+
+        XCTAssertFalse(request.editBillingAgreement)
+
+        releaseFirstCall?.resume()
+        _ = await firstCall.value
+        XCTAssertFalse(request.editBillingAgreement)
+    }
+
+    func testEncodedPostBodyWith_sendsEditBillingAgreementJWTOnlyOnce() throws {
+        let request = BTPayPalCheckoutRequest(amount: "1")
+        request.editBillingAgreement = true
+
+        let first = try XCTUnwrap(
+            request.encodedPostBodyWith(configuration: configuration, paymentMethodIDJWT: "edit-fi-jwt").toDictionary()
+        )
+        let second = try XCTUnwrap(
+            request.encodedPostBodyWith(configuration: configuration, paymentMethodIDJWT: "edit-fi-jwt").toDictionary()
+        )
+
+        XCTAssertEqual(first["edit_billing_agreement_jwt"] as? String, "edit-fi-jwt")
+        XCTAssertNil(second["edit_billing_agreement_jwt"])
+    }
+
     func testParametersWithConfiguration_whenShippingAddressIsRequiredNotSet_returnsNoShippingTrue() {
         let request = BTPayPalCheckoutRequest(amount: "1")
         // no_shipping = true should be the default.

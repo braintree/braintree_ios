@@ -4,6 +4,7 @@ import XCTest
 @testable import BraintreePayPal
 @testable import BraintreePayPalSavedPaymentMethod
 
+@MainActor
 final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
     let clientToken = TestClientTokenFactory.token(
