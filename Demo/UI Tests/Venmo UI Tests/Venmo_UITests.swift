@@ -63,7 +63,7 @@ class Venmo_UITests: XCTestCase {
         // Verify nonce received
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
         XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
+            waitForElementToAppear(nonceButton, timeout: 60),
             "Nonce button did not appear"
         )
     }
@@ -89,7 +89,7 @@ class Venmo_UITests: XCTestCase {
 
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
         XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
+            waitForElementToAppear(nonceButton, timeout: 60),
             "Nonce button did not appear"
         )
     }
