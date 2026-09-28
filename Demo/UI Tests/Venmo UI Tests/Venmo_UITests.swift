@@ -41,7 +41,7 @@ class Venmo_UITests: XCTestCase {
         // Wait for Venmo button and tap with retry
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForVenmoButtonToBeHittable(venmoButton),
+            waitForElementToBeHittable(venmoButton, timeout: 30),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -71,7 +71,7 @@ class Venmo_UITests: XCTestCase {
     func testTokenizeVenmo_whenSignInSuccessfulWithoutPaymentContext_returnsNonce() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForVenmoButtonToBeHittable(venmoButton),
+            waitForElementToBeHittable(venmoButton, timeout: 30),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -88,17 +88,16 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
-        let nonceButtonAppeared = waitForElementToAppear(nonceButton, timeout: 30)
-        if !nonceButtonAppeared {
-            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
-        }
-        XCTAssertTrue(nonceButtonAppeared, "Nonce button did not appear")
+        XCTAssertTrue(
+            waitForElementToAppear(nonceButton, timeout: 30),
+            "Nonce button did not appear"
+        )
     }
 
     func testTokenizeVenmo_whenErrorOccurs_returnsError() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForVenmoButtonToBeHittable(venmoButton),
+            waitForElementToBeHittable(venmoButton, timeout: 30),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -115,17 +114,16 @@ class Venmo_UITests: XCTestCase {
         waitForAppSwitch(to: demoApp)
 
         let errorMessage = demoApp.buttons["An error occurred during the Venmo flow"]
-        let errorMessageAppeared = waitForElementToAppear(errorMessage, timeout: 30)
-        if !errorMessageAppeared {
-            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
-        }
-        XCTAssertTrue(errorMessageAppeared, "Error message did not appear")
+        XCTAssertTrue(
+            waitForElementToAppear(errorMessage, timeout: 30),
+            "Error message did not appear"
+        )
     }
 
     func testTokenizeVenmo_whenUserCancels_returnsCancel() {
         let venmoButton = demoApp.buttons["Venmo"]
         XCTAssertTrue(
-            waitForVenmoButtonToBeHittable(venmoButton),
+            waitForElementToBeHittable(venmoButton, timeout: 30),
             "Venmo button did not appear"
         )
         XCTAssertTrue(venmoButton.tapWithRetry(), "Failed to tap Venmo button")
@@ -149,14 +147,6 @@ class Venmo_UITests: XCTestCase {
     }
 
     // MARK: - Helper Methods
-
-    private func waitForVenmoButtonToBeHittable(_ venmoButton: XCUIElement, timeout: TimeInterval = 30) -> Bool {
-        let isHittable = waitForElementToBeHittable(venmoButton, timeout: timeout)
-        if !isHittable {
-            print("DEBUG - demoApp hierarchy on failure:\n\(demoApp.debugDescription)")
-        }
-        return isHittable
-    }
 
     /// Wait for app switch with proper timing
     private func waitForAppSwitch(to app: XCUIApplication, timeout: TimeInterval = 10) {
