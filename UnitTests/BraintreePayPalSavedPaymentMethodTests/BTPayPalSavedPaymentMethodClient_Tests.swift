@@ -243,4 +243,41 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
         XCTAssertFalse(request.editBillingAgreement)
     }
+
+    func testEditFundingInstrument_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorizationWithoutTokenizing() async {
+        let tokenizationKey = "sandbox_merchant_1234567890abc"
+        sut = BTPayPalSavedPaymentMethodClient(authorization: tokenizationKey, universalLink: universalLink)
+        let mockPayPalClient = MockPayPalClient(authorization: tokenizationKey)
+        sut.payPalClient = mockPayPalClient
+
+        do {
+            _ = try await sut.editFundingInstrument(request: BTPayPalCheckoutRequest(amount: "1"))
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .invalidAuthorization)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
+    }
+
+    func testEditFundingInstrument_whenClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWTWithoutTokenizing() async {
+        let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
+        sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT, universalLink: universalLink)
+        sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
+        let mockPayPalClient = MockPayPalClient(authorization: clientTokenWithoutJWT)
+        sut.payPalClient = mockPayPalClient
+
+        do {
+            _ = try await sut.editFundingInstrument(request: BTPayPalCheckoutRequest(amount: "1"))
+            XCTFail("Expected an error")
+        } catch let error as BTPayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingPaymentMethodIDJWT)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
+    }
 }

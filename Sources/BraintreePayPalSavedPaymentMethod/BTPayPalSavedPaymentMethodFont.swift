@@ -8,14 +8,24 @@ enum BTPayPalSavedPaymentMethodFont {
     /// - Parameters:
     ///   - name: Registered custom-font PostScript name, or `nil` for the system font.
     ///   - size: The base point size (already clamped by `EditFIStyleGuard`).
+    ///   - dynamicTypeSize: The view's `\.dynamicTypeSize`, so merchant limits and live changes apply to the system font.
     ///   - weight: Weight applied to both the system and custom font.
-    static func font(name: String?, size: CGFloat, weight: Font.Weight = .regular) -> Font {
+    static func font(
+        name: String?,
+        size: CGFloat,
+        dynamicTypeSize: DynamicTypeSize,
+        weight: Font.Weight = .regular
+    ) -> Font {
         if let name, !name.isEmpty {
             // Custom fonts scale automatically via the `relativeTo:` reference style.
             return .custom(name, size: size, relativeTo: .body).weight(weight)
         }
-        // System font: scale the point size through Dynamic Type explicitly.
-        let scaled = UIFontMetrics(forTextStyle: .body).scaledValue(for: size)
-        return .system(size: scaled, weight: weight)
+        // The system font can't scale itself at a custom size, so scale the size for the view's text-size setting.
+        return .system(size: scaledSize(size, for: dynamicTypeSize), weight: weight)
+    }
+
+    static func scaledSize(_ size: CGFloat, for dynamicTypeSize: DynamicTypeSize) -> CGFloat {
+        let traits = UITraitCollection(preferredContentSizeCategory: UIContentSizeCategory(dynamicTypeSize))
+        return UIFontMetrics(forTextStyle: .body).scaledValue(for: size, compatibleWith: traits)
     }
 }

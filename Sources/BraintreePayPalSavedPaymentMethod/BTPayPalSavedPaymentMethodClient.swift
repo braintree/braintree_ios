@@ -154,8 +154,18 @@ final class BTPayPalSavedPaymentMethodClient {
     /// - Parameter request: The checkout request to tokenize.
     /// - Returns: The tokenized `BTPayPalAccountNonce`. Its `paymentID` is the approved checkout order ID,
     ///   which callers pass to `fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID:)`.
+    /// - Throws: `BTPayPalSavedPaymentMethodError.invalidAuthorization` or `.missingPaymentMethodIDJWT` before the paysheet
+    ///   opens, since without the JWT PayPal would run a plain checkout instead of an edit.
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
-        try await request.withEditBillingAgreement {
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+        }
+
+        guard (apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT != nil else {
+            throw BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
+        }
+
+        return try await request.withEditBillingAgreement {
             try await payPalClient.tokenize(request)
         }
     }
