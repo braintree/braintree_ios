@@ -1,8 +1,5 @@
 import SwiftUI
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 #if canImport(BraintreeVenmo)
 import BraintreeVenmo

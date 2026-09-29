@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 ///  Options for the PayPal Vault flow.
 @objcMembers public class BTPayPalVaultRequest: NSObject, BTPayPalRequest {

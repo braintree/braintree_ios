@@ -1,9 +1,6 @@
 import Foundation
 import AuthenticationServices
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 #if canImport(BraintreeDataCollector)
 import BraintreeDataCollector

@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Contains information about a Venmo Account payment method
 @objcMembers public class BTVenmoAccountNonce: BTPaymentMethodNonce {

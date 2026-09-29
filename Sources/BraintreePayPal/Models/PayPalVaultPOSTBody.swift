@@ -1,9 +1,6 @@
 import Foundation
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The POST body for `v1/paypal_hermes/setup_billing_agreement`
 struct PayPalVaultPOSTBody: Encodable {

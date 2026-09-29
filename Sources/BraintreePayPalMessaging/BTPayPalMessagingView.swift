@@ -1,10 +1,7 @@
 import UIKit
 import SwiftUI
 import PayPalMessages
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Use `BTPayPalMessagingView` to display PayPal messages to promote offers such as Pay Later and PayPal Credit to customers.
 /// - Warning: This module is in beta. It's public API may change or be removed in future releases.

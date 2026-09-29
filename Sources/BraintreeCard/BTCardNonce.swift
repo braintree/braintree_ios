@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Contains information about a tokenized card.
 @objcMembers public class BTCardNonce: BTPaymentMethodNonce {
