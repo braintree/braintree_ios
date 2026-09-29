@@ -200,9 +200,7 @@ struct FPTIBatchData: Codable {
         let environment: String?
         
         let packageManager: String = {
-            #if COCOAPODS
-                "CocoaPods"
-            #elseif SWIFT_PACKAGE
+            #if SWIFT_PACKAGE
                 "Swift Package Manager"
             #else
                 "Carthage or Other"
