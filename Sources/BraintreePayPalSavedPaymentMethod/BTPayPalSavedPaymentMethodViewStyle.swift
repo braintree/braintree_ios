@@ -8,7 +8,10 @@ import UIKit
 ///
 /// Text sizes resolve in three tiers: the element-specific size, then
 /// `componentAppearance.baseFontSize`, then the SDK default for that element.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTPayPalSavedPaymentMethodViewStyle {
+
+    // MARK: - Public Properties
 
     /// Show the PayPal brand logo. Default: `true`.
     public var showPayPalLogo: Bool = true
@@ -24,6 +27,8 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
 
     /// The outer container box and its positioned sub-views. `nil` → SDK defaults.
     public var container: ContainerStyle?
+
+    // MARK: - Initializer
 
     public init() {}
 
