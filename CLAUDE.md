@@ -4,7 +4,7 @@
 
 The Braintree iOS SDK is a multi-module Swift library that enables merchants to accept payments (credit card, PayPal, Venmo, Apple Pay, 3D Secure, and more) in iOS apps. It is distributed via Swift Package Manager, CocoaPods, and Carthage.
 
-- **Minimum iOS**: 16.0
+- **Minimum iOS**: 15.0
 - **Minimum Swift**: 5.10
 - **Minimum Xcode**: 16.2
 - **Current version**: 7.x (see `Braintree.podspec` for exact version)

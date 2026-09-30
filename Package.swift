@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Braintree",
-    platforms: [.iOS(.v16)],
+    platforms: [.iOS(.v15)],
     products: [
         .library(
             name: "BraintreeAmericanExpress",
@@ -61,7 +61,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/paypal/paypal-risk-ios.git", exact: "5.6.0")
+        .package(url: "https://github.com/paypal/paypal-risk-ios.git", exact: "5.6.0"),
+        .package(url: "https://github.com/paypal/paypal-messages-ios.git", exact: "2.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -103,13 +104,11 @@ let package = Package(
         ),
         .target(
             name: "BraintreePayPalMessaging",
-            dependencies: ["BraintreeCore", "PayPalMessages"],
+            dependencies: [
+                "BraintreeCore",
+                .product(name: "PayPalMessages", package: "paypal-messages-ios")
+            ],
             resources: [.copy("PrivacyInfo.xcprivacy")]
-        ),
-        .binaryTarget(
-            name: "PayPalMessages",
-            url: "https://github.com/paypal/paypal-messages-ios/releases/download/2.0.0/PayPalMessages.xcframework.zip",
-            checksum: "d4411c4c49367fc096b8352f2dceba36fc8f601adc6c6d498be92e065cb41f5f"
         ),
         .binaryTarget(
             name: "PayPalCheckout",

@@ -87,7 +87,7 @@ class CVVFieldViewModel: ObservableObject {
 
     private func scheduleMasking(for characterID: UUID) {
         Task {
-            try? await Task.sleep(for: .seconds(1))
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
             guard let index = characters.firstIndex(where: { $0.id == characterID }) else { return }
             characters[index].isMasked = true
         }
