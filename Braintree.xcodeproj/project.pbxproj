@@ -474,6 +474,13 @@
 		FE0200000000000000000015 /* PayPalCreditMessagingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000015 /* PayPalCreditMessagingResult.swift */; };
 		FE0200000000000000000016 /* PayPalCreditMessagingPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000016 /* PayPalCreditMessagingPOSTBody.swift */; };
 		FE0200000000000000000017 /* PayPalCreditMessaging_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000017 /* PayPalCreditMessaging_Tests.swift */; };
+		DFC0FDE73D3962EA2A8AB723 /* EditFIRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B3E8083DF5C570A0980226 /* EditFIRow.swift */; };
+		726C076DB9F137A417D5C48C /* CreditMessagingRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641EC7E99725AAE51814AB7 /* CreditMessagingRow.swift */; };
+		80EF2CC7E520472F87ABA244 /* CreditMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902FE52FB26AD7E62D2EBDFB /* CreditMessageContent.swift */; };
+		318A72A321A510767D161237 /* BTPayPalSavedPaymentMethodRows_RenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BE50E55EC3D014060405FF /* BTPayPalSavedPaymentMethodRows_RenderTests.swift */; };
+		C416F73BC6115AEFAC5DC290 /* PayPalSavedPaymentMethodBundle_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F758443BA9DE643587AC8F /* PayPalSavedPaymentMethodBundle_Tests.swift */; };
+		D1015C673E8ECC980065B331 /* SavedPaymentMethodRenderTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14876A46FBDEC1B81EB691F /* SavedPaymentMethodRenderTestCase.swift */; };
+		EF03BDDEAF80A5C17289C52E /* CreditMessageContent_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0957A5138ECB6E1386B5B5F5 /* CreditMessageContent_Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1361,6 +1368,13 @@
 		FE0100000000000000000015 /* PayPalCreditMessagingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalCreditMessagingResult.swift; sourceTree = "<group>"; };
 		FE0100000000000000000016 /* PayPalCreditMessagingPOSTBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalCreditMessagingPOSTBody.swift; sourceTree = "<group>"; };
 		FE0100000000000000000017 /* PayPalCreditMessaging_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalCreditMessaging_Tests.swift; sourceTree = "<group>"; };
+		48B3E8083DF5C570A0980226 /* EditFIRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFIRow.swift; sourceTree = "<group>"; };
+		0641EC7E99725AAE51814AB7 /* CreditMessagingRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditMessagingRow.swift; sourceTree = "<group>"; };
+		902FE52FB26AD7E62D2EBDFB /* CreditMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditMessageContent.swift; sourceTree = "<group>"; };
+		43BE50E55EC3D014060405FF /* BTPayPalSavedPaymentMethodRows_RenderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalSavedPaymentMethodRows_RenderTests.swift; sourceTree = "<group>"; };
+		D9F758443BA9DE643587AC8F /* PayPalSavedPaymentMethodBundle_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodBundle_Tests.swift; sourceTree = "<group>"; };
+		E14876A46FBDEC1B81EB691F /* SavedPaymentMethodRenderTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPaymentMethodRenderTestCase.swift; sourceTree = "<group>"; };
+		0957A5138ECB6E1386B5B5F5 /* CreditMessageContent_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditMessageContent_Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2132,6 +2146,10 @@
 				FE01000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift */,
 				FE01000000000000000000A1 /* MockPayPalClient.swift */,
 				FE0100000000000000000017 /* PayPalCreditMessaging_Tests.swift */,
+				43BE50E55EC3D014060405FF /* BTPayPalSavedPaymentMethodRows_RenderTests.swift */,
+				D9F758443BA9DE643587AC8F /* PayPalSavedPaymentMethodBundle_Tests.swift */,
+				E14876A46FBDEC1B81EB691F /* SavedPaymentMethodRenderTestCase.swift */,
+				0957A5138ECB6E1386B5B5F5 /* CreditMessageContent_Tests.swift */,
 				1592D0E018219589392C6A9A /* Info.plist */,
 			);
 			name = BraintreePayPalSavedPaymentMethodTests;
@@ -2636,6 +2654,9 @@
 				FE0100000000000000000002 /* PayPalSavedPaymentMethodType.swift */,
 				FE0100000000000000000003 /* PayPalPayer.swift */,
 				FE0100000000000000000090 /* PayPalSavedPaymentMethodRequest.swift */,
+				48B3E8083DF5C570A0980226 /* EditFIRow.swift */,
+				0641EC7E99725AAE51814AB7 /* CreditMessagingRow.swift */,
+				902FE52FB26AD7E62D2EBDFB /* CreditMessageContent.swift */,
 				1E79542E9F427658B9629CB3 /* PayPalSavedPaymentMethod+Bundle.swift */,
 				0F08462435EF3B671689B7D9 /* PrivacyInfo.xcprivacy */,
 				A55DA96FDE02C0C017EA1056 /* Resources */,
@@ -3948,6 +3969,9 @@
 				FE0200000000000000000005 /* PayPalSavedPaymentMethodSummary.swift in Sources */,
 				FE0200000000000000000002 /* PayPalSavedPaymentMethodType.swift in Sources */,
 				FE0200000000000000000003 /* PayPalPayer.swift in Sources */,
+				DFC0FDE73D3962EA2A8AB723 /* EditFIRow.swift in Sources */,
+				726C076DB9F137A417D5C48C /* CreditMessagingRow.swift in Sources */,
+				80EF2CC7E520472F87ABA244 /* CreditMessageContent.swift in Sources */,
 				FE0200000000000000000016 /* PayPalCreditMessagingPOSTBody.swift in Sources */,
 				FE0200000000000000000006 /* PayPalFundingInstrumentDetailsGraphQLBody.swift in Sources */,
 				498B7F4694E27FD85767DCBB /* PayPalSavedPaymentMethod+Bundle.swift in Sources */,
@@ -3968,6 +3992,10 @@
 				FE02000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift in Sources */,
 				FE02000000000000000000A1 /* MockPayPalClient.swift in Sources */,
 				FE0200000000000000000017 /* PayPalCreditMessaging_Tests.swift in Sources */,
+				318A72A321A510767D161237 /* BTPayPalSavedPaymentMethodRows_RenderTests.swift in Sources */,
+				C416F73BC6115AEFAC5DC290 /* PayPalSavedPaymentMethodBundle_Tests.swift in Sources */,
+				D1015C673E8ECC980065B331 /* SavedPaymentMethodRenderTestCase.swift in Sources */,
+				EF03BDDEAF80A5C17289C52E /* CreditMessageContent_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
