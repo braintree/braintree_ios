@@ -20,82 +20,40 @@ final class EditFIStyleGuard_Tests: XCTestCase {
 
     // MARK: - Text sizes
 
-    func testTextSizes_whenUnset_fallBackToTheSDKDefault() {
-        XCTAssertEqual(EditFIStyleGuard.labelFontSize(nil, base: nil), EditFIStyleGuard.Defaults.labelFontSize)
-        XCTAssertEqual(
-            EditFIStyleGuard.fundingInstrumentTextFontSize(nil, base: nil),
-            EditFIStyleGuard.Defaults.fundingInstrumentTextFontSize
-        )
-        XCTAssertEqual(
-            EditFIStyleGuard.creditMessageFontSize(nil, base: nil),
-            EditFIStyleGuard.Defaults.creditMessageFontSize
-        )
+    func testFontSize_whenUnset_fallsBackToTheDefault() {
+        XCTAssertEqual(EditFIStyleGuard.fontSize(nil, base: nil, default: 20), 20)
     }
 
-    func testTextSizes_whenOnlyBaseFontSizeIsSet_useTheBase() {
-        XCTAssertEqual(EditFIStyleGuard.labelFontSize(nil, base: 30), 30)
-        XCTAssertEqual(EditFIStyleGuard.fundingInstrumentTextFontSize(nil, base: 30), 30)
-        XCTAssertEqual(EditFIStyleGuard.creditMessageFontSize(nil, base: 30), 30)
+    func testFontSize_whenOnlyBaseFontSizeIsSet_usesTheBase() {
+        XCTAssertEqual(EditFIStyleGuard.fontSize(nil, base: 30, default: 20), 30)
     }
 
-    func testTextSizes_whenTheFieldIsSet_itWinsOverTheBase() {
-        XCTAssertEqual(EditFIStyleGuard.labelFontSize(11, base: 30), 11)
-        XCTAssertEqual(EditFIStyleGuard.fundingInstrumentTextFontSize(11, base: 30), 11)
-        XCTAssertEqual(EditFIStyleGuard.creditMessageFontSize(11, base: 30), 11)
+    func testFontSize_whenTheFieldIsSet_itWinsOverTheBase() {
+        XCTAssertEqual(EditFIStyleGuard.fontSize(11, base: 30, default: 20), 11)
     }
 
-    func testTextSizes_whenNegative_areClampedToZero() {
-        XCTAssertEqual(EditFIStyleGuard.labelFontSize(-5, base: nil), 0)
-        XCTAssertEqual(EditFIStyleGuard.fundingInstrumentTextFontSize(-5, base: nil), 0)
-        XCTAssertEqual(EditFIStyleGuard.creditMessageFontSize(-5, base: nil), 0)
-    }
-
-    func testTextSizes_whenBaseIsNegative_areClampedToZero() {
-        XCTAssertEqual(EditFIStyleGuard.labelFontSize(nil, base: -5), 0)
+    func testFontSize_whenTheFieldOrBaseIsNegative_isClampedToZero() {
+        XCTAssertEqual(EditFIStyleGuard.fontSize(-5, base: nil, default: 20), 0)
+        XCTAssertEqual(EditFIStyleGuard.fontSize(nil, base: -5, default: 20), 0)
     }
 
     // MARK: - Spacing and sizing
 
-    func testSpacing_whenUnset_fallsBackToTheSDKDefault() {
-        XCTAssertEqual(EditFIStyleGuard.labelLeadingGap(nil), EditFIStyleGuard.Defaults.labelLeadingGap)
-        XCTAssertEqual(
-            EditFIStyleGuard.fundingInstrumentLeadingGap(nil),
-            EditFIStyleGuard.Defaults.fundingInstrumentLeadingGap
-        )
-        XCTAssertEqual(EditFIStyleGuard.editIconSize(nil), EditFIStyleGuard.Defaults.editIconSize)
-        XCTAssertEqual(EditFIStyleGuard.horizontalPadding(nil), EditFIStyleGuard.Defaults.containerHorizontalPadding)
-        XCTAssertEqual(EditFIStyleGuard.verticalPadding(nil), EditFIStyleGuard.Defaults.containerVerticalPadding)
-        XCTAssertEqual(EditFIStyleGuard.cornerRadius(nil), EditFIStyleGuard.Defaults.containerCornerRadius)
-        XCTAssertEqual(EditFIStyleGuard.borderWidth(nil), EditFIStyleGuard.Defaults.containerBorderWidth)
+    func testDimension_whenUnset_fallsBackToTheDefault() {
+        XCTAssertEqual(EditFIStyleGuard.dimension(nil, default: 12.73), 12.73)
     }
 
-    func testSpacing_whenSet_returnsTheMerchantValue() {
-        XCTAssertEqual(EditFIStyleGuard.labelLeadingGap(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.fundingInstrumentLeadingGap(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.editIconSize(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.logoWidth(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.horizontalPadding(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.verticalPadding(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.cornerRadius(4), 4)
-        XCTAssertEqual(EditFIStyleGuard.borderWidth(4), 4)
+    func testDimension_whenSet_returnsTheMerchantValue() {
+        XCTAssertEqual(EditFIStyleGuard.dimension(4, default: 12.73), 4)
     }
 
     /// Negative geometry throws inside SwiftUI, so every dimension is clamped rather than passed through.
-    func testSpacing_whenNegative_isClampedToZero() {
-        XCTAssertEqual(EditFIStyleGuard.labelLeadingGap(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.fundingInstrumentLeadingGap(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.editIconSize(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.logoWidth(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.horizontalPadding(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.verticalPadding(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.cornerRadius(-1), 0)
-        XCTAssertEqual(EditFIStyleGuard.borderWidth(-1), 0)
+    func testDimension_whenNegative_isClampedToZero() {
+        XCTAssertEqual(EditFIStyleGuard.dimension(-1, default: 12.73), 0)
     }
 
-    func testSpacing_whenZero_isPreserved() {
-        XCTAssertEqual(EditFIStyleGuard.labelLeadingGap(0), 0)
-        XCTAssertEqual(EditFIStyleGuard.editIconSize(0), 0)
-        XCTAssertEqual(EditFIStyleGuard.borderWidth(0), 0)
+    func testDimension_whenZero_isPreserved() {
+        XCTAssertEqual(EditFIStyleGuard.dimension(0, default: 12.73), 0)
     }
 
     // MARK: - Container height

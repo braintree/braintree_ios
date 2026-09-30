@@ -76,52 +76,16 @@ enum EditFIStyleGuard {
 
     // MARK: - Text sizes
 
-    static func labelFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
-        nonNegative(value ?? base ?? Defaults.labelFontSize)
-    }
-
-    static func fundingInstrumentTextFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
-        nonNegative(value ?? base ?? Defaults.fundingInstrumentTextFontSize)
-    }
-
-    static func creditMessageFontSize(_ value: CGFloat?, base: CGFloat?) -> CGFloat {
-        nonNegative(value ?? base ?? Defaults.creditMessageFontSize)
+    /// Resolves a text size: the merchant's field, else `componentAppearance.baseFontSize`, else `defaultValue`.
+    static func fontSize(_ value: CGFloat?, base: CGFloat?, default defaultValue: CGFloat) -> CGFloat {
+        nonNegative(value ?? base ?? defaultValue)
     }
 
     // MARK: - Spacing and sizing
 
-    static func labelLeadingGap(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.labelLeadingGap)
-    }
-
-    static func fundingInstrumentLeadingGap(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.fundingInstrumentLeadingGap)
-    }
-
-    static func editIconSize(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.editIconSize)
-    }
-
-    /// Takes a non-optional because the `Defaults.payPalLogoSide` fallback is applied by the
-    /// caller, which is the only place that can tell an unset width from a supplied one.
-    static func logoWidth(_ value: CGFloat) -> CGFloat {
-        nonNegative(value)
-    }
-
-    static func horizontalPadding(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.containerHorizontalPadding)
-    }
-
-    static func verticalPadding(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.containerVerticalPadding)
-    }
-
-    static func cornerRadius(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.containerCornerRadius)
-    }
-
-    static func borderWidth(_ value: CGFloat?) -> CGFloat {
-        nonNegative(value ?? Defaults.containerBorderWidth)
+    /// Resolves a spacing or size: the merchant's field, else `defaultValue`.
+    static func dimension(_ value: CGFloat?, default defaultValue: CGFloat) -> CGFloat {
+        nonNegative(value ?? defaultValue)
     }
 
     /// `nil` preserves the container's intrinsic height, so it is passed through rather than defaulted.
