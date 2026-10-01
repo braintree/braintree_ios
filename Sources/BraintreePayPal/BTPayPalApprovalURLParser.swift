@@ -57,7 +57,12 @@ struct BTPayPalApprovalURLParser {
         return nil
     }
 
+    /// The `ASWebAuthenticationSession` fallback URL to use if the PayPal app switch (universal link) fails to open
+    let webApprovalURL: URL?
+
     init?(body: BTJSON) {
+        webApprovalURL = body["agreementSetup"]["webApprovalURL"].asURL() ?? body["paymentResource"]["checkoutFallbackUrl"].asURL()
+
         if let payPalAppRedirectURL = body["agreementSetup"]["paypalAppApprovalUrl"].asURL() {
             redirectType = .payPalApp(url: payPalAppRedirectURL)
             url = payPalAppRedirectURL
