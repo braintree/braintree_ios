@@ -207,7 +207,25 @@ var employees: Dictionary<Int, String>
 var faxNumber: Optional<Int>
 ```
 
+### Structs vs. Classes
+
+Default to `struct`/`enum` for new Swift types. Reach for `class` only when you specifically need:
+
+- **Reference semantics** — e.g. a `BT<Name>Client` holding mutable session state across async calls, or a SwiftUI `ObservableObject` view model.
+- **Objective-C interop** — `@objc`/`@objcMembers` types, or anything bridged to Objective-C callers.
+- **`NSSecureCoding` conformance** — e.g. `BTPaymentMethodNonce` subclasses.
+
+If none of those apply, prefer a value type.
+
 ## Naming
+
+### Type Prefix
+
+All public types use the `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Internal types do too, by default.
+
+**Exception**: in SwiftUI view-layer modules — modules whose public surface is a SwiftUI `View` (e.g. `BraintreeUIComponents/CardFields`) — internal, non-public supporting types (view models, validators, style/formatting helpers) may omit the `BT` prefix. This matches the existing `CardFields` precedent (`CardFieldsViewModel`, `CardBrand`, `ValidationResult`, `CardNumberFieldValidator`).
+
+This exception is narrow: it does not apply just because a module is Swift-only or has no Objective-C interop needs. Match the convention already used by the module you're working in — most modules (`BraintreeShopperInsights`, `BraintreePayPalMessaging`, `BraintreePayPalSavedPaymentMethod`, etc.) prefix every type, public or internal, with `BT`, and new types added to those modules should do the same.
 
 ### Abbreviations
 

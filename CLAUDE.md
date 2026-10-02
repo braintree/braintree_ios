@@ -130,7 +130,7 @@ Every success/failure path should call `sendAnalyticsEvent` using the module's a
 
 Follow `STYLE_GUIDE.md` in full. Key highlights:
 
-- **Prefixes**: All public types use `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Do not abbreviate further.
+- **Prefixes**: All public types use `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Do not abbreviate further. Exception: in SwiftUI view-layer modules (modules whose public surface is a SwiftUI `View`, e.g. `BraintreeUIComponents/CardFields`), internal, non-public supporting types (view models, validators, style/formatting helpers) may omit the `BT` prefix — see [Naming Conventions](#naming-conventions) below. This exception does not apply to other modules; their internal types keep the `BT` prefix as usual.
 - **Acronyms**: Capitalize per Swift convention — `orderID`, `dataUTF8`, `url` (not `URL` when a variable).
 - **MARK sections**: Use `// MARK: - Public Properties`, `// MARK: - Internal Properties`, `// MARK: - Initializer`, `// MARK: - Public Methods`, `// MARK: - Private Methods`, `// MARK: - <ProtocolName>` for conformance.
 - **Protocol conformance**: Implement in a `// MARK: -` extension, not inline in the class body.
@@ -148,6 +148,19 @@ Follow `STYLE_GUIDE.md` in full. Key highlights:
 | Error enums | `BT<Name>Error` | `BTThreeDSecureError` |
 | Analytics enums | `BT<Name>Analytics` | `BTVenmoAnalytics` |
 | Error domains | `com.braintreepayments.BT<Name>ErrorDomain` | `com.braintreepayments.BTCardClientErrorDomain` |
+
+### SwiftUI View-Layer Modules
+
+Modules built around a public SwiftUI `View` (e.g. `BraintreeUIComponents/CardFields`) are the one documented exception to full `BT` prefixing: their internal, non-public supporting types (view models, validators, style/formatting helpers) may drop the `BT` prefix, following the existing `CardFields` precedent (`CardFieldsViewModel`, `CardBrand`, `ValidationResult`, `CardNumberFieldValidator`). Public types in these modules still require the `BT` prefix.
+
+This exception is scoped to SwiftUI view-layer modules only — it does not extend to other modules just because they are Swift-only or have no Objective-C interop requirement. Modules like `BraintreeShopperInsights`, `BraintreePayPalMessaging`, and `BraintreePayPalSavedPaymentMethod` prefix every type, public or internal, with `BT`, and new code in those modules should continue to do so. When adding a new type to an existing module, match that module's existing convention rather than introducing a new one.
+
+### Structs vs. Classes
+
+Default to `struct`/`enum` for new Swift types. Use `class` only when you need:
+- Reference semantics (e.g. a `BT<Name>Client` holding mutable session state, or a SwiftUI `ObservableObject` view model)
+- Objective-C interop (`@objc`/`@objcMembers`, bridging to Obj-C callers)
+- `NSSecureCoding` conformance (e.g. `BTPaymentMethodNonce` subclasses)
 
 ## Testing Conventions
 
