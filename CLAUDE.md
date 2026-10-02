@@ -130,7 +130,7 @@ Every success/failure path should call `sendAnalyticsEvent` using the module's a
 
 Follow `STYLE_GUIDE.md` in full. Key highlights:
 
-- **Prefixes**: All public types use `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Do not abbreviate further.
+- **Prefixes**: All public types use `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Do not abbreviate further. Exception: SwiftUI view code — see [Naming Conventions](#naming-conventions) below.
 - **Acronyms**: Capitalize per Swift convention — `orderID`, `dataUTF8`, `url` (not `URL` when a variable).
 - **MARK sections**: Use `// MARK: - Public Properties`, `// MARK: - Internal Properties`, `// MARK: - Initializer`, `// MARK: - Public Methods`, `// MARK: - Private Methods`, `// MARK: - <ProtocolName>` for conformance.
 - **Protocol conformance**: Implement in a `// MARK: -` extension, not inline in the class body.
@@ -148,6 +148,17 @@ Follow `STYLE_GUIDE.md` in full. Key highlights:
 | Error enums | `BT<Name>Error` | `BTThreeDSecureError` |
 | Analytics enums | `BT<Name>Analytics` | `BTVenmoAnalytics` |
 | Error domains | `com.braintreepayments.BT<Name>ErrorDomain` | `com.braintreepayments.BTCardClientErrorDomain` |
+
+### SwiftUI Naming Exception
+
+SwiftUI view code (views, view models, and their supporting types) may drop the `BT` prefix, public and internal alike, for cleaner call-site naming (`PayPalButton(color: .blue)` instead of `BTPayPalButton`). `BraintreeUIComponents` is the existing precedent (`PayPalButton`, `PayPalButtonColor`, `CardFields`, `CardFieldsViewModel`). This applies to the SwiftUI view layer only — the `BT`-prefixed client/request/nonce types it wraps (`BTPayPalClient`, `BTPayPalCheckoutRequest`) keep their prefix as normal, and non-UI code elsewhere continues to prefix everything with `BT`.
+
+### Structs vs. Classes
+
+Default to `struct`/`enum` for new Swift types. Use `class` only when you need:
+- Reference semantics (e.g. a `BT<Name>Client` holding mutable session state, or a SwiftUI `ObservableObject` view model)
+- Objective-C interop (`@objc`/`@objcMembers`, bridging to Obj-C callers)
+- `NSSecureCoding` conformance (e.g. `BTPaymentMethodNonce` subclasses)
 
 ## Testing Conventions
 
