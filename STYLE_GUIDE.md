@@ -223,9 +223,7 @@ If none of those apply, prefer a value type.
 
 All public types use the `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Internal types do too, by default.
 
-**Exception**: in SwiftUI view-layer modules — modules whose public surface is a SwiftUI `View` (e.g. `BraintreeUIComponents/CardFields`) — internal, non-public supporting types (view models, validators, style/formatting helpers) may omit the `BT` prefix. This matches the existing `CardFields` precedent (`CardFieldsViewModel`, `CardBrand`, `ValidationResult`, `CardNumberFieldValidator`).
-
-This exception is narrow: it does not apply just because a module is Swift-only or has no Objective-C interop needs. Match the convention already used by the module you're working in — most modules (`BraintreeShopperInsights`, `BraintreePayPalMessaging`, `BraintreePayPalSavedPaymentMethod`, etc.) prefix every type, public or internal, with `BT`, and new types added to those modules should do the same.
+**Exception**: SwiftUI view code (views, view models, and their supporting types) may drop the `BT` prefix, public and internal alike, for cleaner call-site naming (`PayPalButton(color: .blue)` instead of `BTPayPalButton`). `BraintreeUIComponents` is the existing precedent (`PayPalButton`, `PayPalButtonColor`, `CardFields`, `CardFieldsViewModel`). This applies to the SwiftUI view layer only — the `BT`-prefixed client/request/nonce types it wraps (`BTPayPalClient`, `BTPayPalCheckoutRequest`) keep their prefix as normal, and non-UI code elsewhere continues to prefix everything with `BT`.
 
 ### Abbreviations
 
