@@ -81,6 +81,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     private var pendingEditResult: (nonce: BTPayPalAccountNonce?, error: Error?)?
     private var isEditLoaderOnScreen = false
 
+    /// Only the latest credit fetch may set `creditMessage`, so an older amount's response can't land last.
+    private var creditTask: Task<Void, Never>?
+
     // MARK: - Initializers
 
     /// `fetchClient` is `nil` for previews, which seed `fiState` directly instead of fetching.
@@ -129,13 +132,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         Task { await loadStickyFI(request: request) }
 
         if showCreditMessaging {
-            Task { await loadCreditMessaging(request: request) }
+            startCreditFetch(request: request)
         }
     }
 
     func requestChanged(_ request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         guard showCreditMessaging, !didCompleteEdit else { return }
-        Task { await loadCreditMessaging(request: request) }
+        startCreditFetch(request: request)
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
@@ -219,18 +222,28 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fiState = state
     }
 
+    private func startCreditFetch(request: PayPalSavedPaymentMethodRequest) {
+        creditTask?.cancel()
+        creditTask = Task { await loadCreditMessaging(request: request) }
+    }
+
     /// Fetches the Pay Later message. Additive — any failure hides the row.
     private func loadCreditMessaging(request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return }
+
+        let content: CreditMessageContent?
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
                 amount: request.amount,
                 currencyCode: request.currencyCode
             )
-            creditMessage = CreditMessageContent(result: result)
+            content = CreditMessageContent(result: result)
         } catch {
-            creditMessage = nil
+            content = nil
         }
+
+        guard !Task.isCancelled, !didCompleteEdit else { return }
+        creditMessage = content
     }
 
     /// Runs the edit, then the cosmetic FI refresh. The full-screen loader is held until the nonce

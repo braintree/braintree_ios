@@ -240,6 +240,17 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "")
     }
 
+    func testRequestChanged_whenTheOlderAmountRespondsLast_keepsTheNewerMessage() async throws {
+        fetchClient.apiClient = SlowFirstCreditAPIClient(authorization: clientToken)
+        let sut = makeSUT()
+
+        sut.requestChanged(makeRequest(amount: "50.00"), showCreditMessaging: true)
+        sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
+        try await Task.sleep(nanoseconds: 400_000_000)
+
+        XCTAssertEqual(sut.creditMessage?.message, "Pay in 4 on 70.00")
+    }
+
     // MARK: - appReturnedToForeground
 
     /// An abandoned app switch never resumes the continuation, so foregrounding is the only
@@ -454,5 +465,31 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await drainTasks()
 
         XCTAssertNil(mockAPIClient.lastPOSTParameters)
+    }
+}
+
+// MARK: - Test doubles
+
+/// Answers the first credit-messaging request after the second, echoing each request's amount in the message.
+private final class SlowFirstCreditAPIClient: MockAPIClient {
+
+    private var postCount = 0
+
+    override func post(
+        _ path: String,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        postCount += 1
+        let placement = ((try? parameters?.toDictionary())?["message_placements"] as? [[String: Any]])?.first
+        let amount = (placement?["amount"] as? [String: Any])?["value"] as? String ?? ""
+
+        if postCount == 1 {
+            try? await Task.sleep(nanoseconds: 200_000_000)
+        }
+
+        let message: [String: Any] = ["main_items": [["type": "TEXT", "text": "Pay in 4 on \(amount)"]]]
+        return (BTJSON(value: ["messages": [["preferred_message": ["content": message]]]] as [String: Any]), nil)
     }
 }
