@@ -15,14 +15,6 @@ struct CreditMessageContent: Equatable {
     /// Whether `learnMoreURL` may load in an embedded web view rather than an external browser.
     let isEmbeddable: Bool
 
-    /// Seeds content directly. Used by SwiftUI previews and tests, which have no network response.
-    init(message: String, learnMoreText: String?, learnMoreURL: URL?, isEmbeddable: Bool) {
-        self.message = message
-        self.learnMoreText = learnMoreText
-        self.learnMoreURL = learnMoreURL
-        self.isEmbeddable = isEmbeddable
-    }
-
     /// Composes the content, or returns `nil` when there is no main copy to display (hide the row).
     init?(result: PayPalCreditMessagingResult) {
         let mainText = Self.compose(result.mainItems)
