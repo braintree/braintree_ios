@@ -111,9 +111,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Seeds a concrete state directly. Used by SwiftUI previews and unit tests to exercise
     /// each visual state without the fetch API.
-    convenience init(previewState: FIState) {
+    convenience init(previewState: FIState, creditMessage: CreditMessageContent? = nil) {
         self.init(fetchClient: nil)
         self.fiState = previewState
+        self.creditMessage = creditMessage
     }
 
     // MARK: - Internal Methods
