@@ -4,7 +4,7 @@ import SafariServices
 /// Presents the credit-messaging "Learn more" lander (`click_url`) in an
 /// `SFSafariViewController`, giving buyers Safari's built-in security and reader chrome
 /// without pulling in a new dependency or triggering an app-switch consent alert.
-struct BTPayPalCreditMessagingLanderView: UIViewControllerRepresentable {
+struct PayPalCreditMessagingLanderView: UIViewControllerRepresentable {
 
     let url: URL
 

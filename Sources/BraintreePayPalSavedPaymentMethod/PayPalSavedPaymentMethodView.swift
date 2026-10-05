@@ -14,23 +14,23 @@ import BraintreePayPal
 /// The component resolves and renders the sticky FI, exposes an edit affordance that
 /// launches the PayPal paysheet via `BTPayPalClient`, and reports the tokenization outcome
 /// via `completion`. The buyer's FI is resolved by the SDK from the client token — the
-/// merchant supplies the checkout request plus a `BTPayPalSavedPaymentMethodRequest` carrying
+/// merchant supplies the checkout request plus a `PayPalSavedPaymentMethodRequest` carrying
 /// the amount, currency, and merchant account the component needs.
-public struct BTPayPalSavedPaymentMethodView: View {
+public struct PayPalSavedPaymentMethodView: View {
 
     // MARK: - Private Properties
 
-    @StateObject private var viewModel: BTPayPalSavedPaymentMethodViewModel
+    @StateObject private var viewModel: PayPalSavedPaymentMethodViewModel
 
     /// Held on the view rather than the view model: `@StateObject` builds the view model once, so
     /// anything stored there would keep the values from the first render.
     private let payPalCheckoutRequest: BTPayPalCheckoutRequest
-    private let request: BTPayPalSavedPaymentMethodRequest
-    private let style: BTPayPalSavedPaymentMethodViewStyle
+    private let request: PayPalSavedPaymentMethodRequest
+    private let style: PayPalSavedPaymentMethodViewStyle
 
     // MARK: - Initializer
 
-    /// Creates a `BTPayPalSavedPaymentMethodView`.
+    /// Creates a `PayPalSavedPaymentMethodView`.
     /// - Parameters:
     ///   - payPalCheckoutRequest: Required. The PayPal checkout request used for the edit tokenization.
     ///   - request: Required. The amount, currency, and merchant account used to resolve the saved
@@ -41,22 +41,22 @@ public struct BTPayPalSavedPaymentMethodView: View {
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
     ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
     ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
-    ///   - style: Optional. Styling overrides. Defaults to the shipped `BTPayPalSavedPaymentMethodViewStyle`.
+    ///   - style: Optional. Styling overrides. Defaults to the shipped `PayPalSavedPaymentMethodViewStyle`.
     ///   - completion: Called with the `BTPayPalAccountNonce` (or `Error`) when the edit tokenization completes.
     public init(
         payPalCheckoutRequest: BTPayPalCheckoutRequest,
-        request: BTPayPalSavedPaymentMethodRequest,
+        request: PayPalSavedPaymentMethodRequest,
         authorization: String,
         universalLink: URL,
         fallbackURLScheme: String? = nil,
-        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle(),
+        style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle(),
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.payPalCheckoutRequest = payPalCheckoutRequest
         self.request = request
         self.style = style
         _viewModel = StateObject(
-            wrappedValue: BTPayPalSavedPaymentMethodViewModel(
+            wrappedValue: PayPalSavedPaymentMethodViewModel(
                 universalLink: universalLink,
                 fallbackURLScheme: fallbackURLScheme,
                 completion: completion,
@@ -67,10 +67,10 @@ public struct BTPayPalSavedPaymentMethodView: View {
 
     /// Internal initializer for previews and tests — seeds a concrete render state.
     init(
-        viewModel: BTPayPalSavedPaymentMethodViewModel,
+        viewModel: PayPalSavedPaymentMethodViewModel,
         payPalCheckoutRequest: BTPayPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "0"),
-        request: BTPayPalSavedPaymentMethodRequest = BTPayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD"),
-        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
+        request: PayPalSavedPaymentMethodRequest = PayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD"),
+        style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle()
     ) {
         self.payPalCheckoutRequest = payPalCheckoutRequest
         self.request = request
@@ -99,7 +99,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
         }
         .sheet(isPresented: $viewModel.isLanderPresented) {
             if let url = viewModel.learnMoreURL {
-                BTPayPalCreditMessagingLanderView(url: url)
+                PayPalCreditMessagingLanderView(url: url)
             }
         }
         .fullScreenCover(
@@ -154,7 +154,7 @@ public struct BTPayPalSavedPaymentMethodView: View {
     @ViewBuilder private var fiRegion: some View {
         switch viewModel.fiState {
         case .loading:
-            BTPayPalSavedPaymentMethodSkeletonRow(style: style)
+            PayPalSavedPaymentMethodSkeletonRow(style: style)
         case .instrument(let summary):
             EditFIRow(content: .instrument(summary), style: style, onEdit: editTapped)
         case let .displayOnly(email, isEditable):
@@ -171,11 +171,16 @@ public struct BTPayPalSavedPaymentMethodView: View {
     }
 
     @ViewBuilder private var creditRegion: some View {
-        if style.showPayPalCreditMessaging, !viewModel.didCompleteEdit, viewModel.showsCreditMessaging {
+        if style.showPayPalCreditMessaging, viewModel.showsCreditMessaging {
             Group {
                 // Keep an already-resolved message on screen while the FI refreshes after an edit.
                 if let content = viewModel.creditMessage {
-                    CreditMessagingRow(style: style, content: content) {
+                    CreditMessagingRow(
+                        style: style,
+                        message: content.message,
+                        learnMoreText: content.learnMoreText,
+                        learnMoreURL: content.learnMoreURL
+                    ) {
                         viewModel.learnMoreTapped()
                     }
                 } else if viewModel.fiState == .loading {
@@ -236,17 +241,17 @@ private extension View {
 
 // MARK: - Previews
 
-struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
+struct PayPalSavedPaymentMethodView_Previews: PreviewProvider {
 
     private static func preview(
         _ title: String,
-        _ state: BTPayPalSavedPaymentMethodViewModel.FIState,
-        style: BTPayPalSavedPaymentMethodViewStyle = BTPayPalSavedPaymentMethodViewStyle()
+        _ state: PayPalSavedPaymentMethodViewModel.FIState,
+        style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle()
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title).font(.caption).foregroundColor(.secondary)
-            BTPayPalSavedPaymentMethodView(
-                viewModel: BTPayPalSavedPaymentMethodViewModel(previewState: state),
+            PayPalSavedPaymentMethodView(
+                viewModel: PayPalSavedPaymentMethodViewModel(previewState: state),
                 style: style
             )
             .border(Color.gray.opacity(0.2))
@@ -259,25 +264,20 @@ struct BTPayPalSavedPaymentMethodView_Previews: PreviewProvider {
         label: String,
         lastDigits: String,
         imageURL: String? = nil
-    ) -> BTPayPalSavedPaymentMethod {
+    ) -> PayPalSavedPaymentMethod {
         var json: [String: Any] = ["type": type, "label": label, "lastDigits": lastDigits]
         if let imageURL {
             json["imageUrl"] = imageURL
         }
         // Force-unwrapped: the literal above is always a valid object.
         // swiftlint:disable:next force_unwrapping
-        return BTPayPalSavedPaymentMethod(json: BTJSON(value: json))!
+        return PayPalSavedPaymentMethod(json: BTJSON(value: json))!
     }
 
-    private static var borderedStyle: BTPayPalSavedPaymentMethodViewStyle {
-        var style = BTPayPalSavedPaymentMethodViewStyle()
-        var container = BTPayPalSavedPaymentMethodViewStyle.ContainerStyle()
-        container.cornerRadius = 8
-        container.borderColor = .systemGray4
-        container.borderWidth = 1
-        container.horizontalPadding = 12
-        style.container = container
-        return style
+    private static var borderedStyle: PayPalSavedPaymentMethodViewStyle {
+        PayPalSavedPaymentMethodViewStyle(
+            container: .init(horizontalPadding: 12, cornerRadius: 8, borderColor: .systemGray4, borderWidth: 1)
+        )
     }
 
     static var previews: some View {

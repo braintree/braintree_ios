@@ -56,9 +56,9 @@ struct ShimmerBar: View {
 
 /// Loading placeholder for the FI row: the real PayPal brand mark stays visible while a
 /// shimmer bar fills the space where the FI pill will appear.
-struct BTPayPalSavedPaymentMethodSkeletonRow: View {
+struct PayPalSavedPaymentMethodSkeletonRow: View {
 
-    let style: BTPayPalSavedPaymentMethodViewStyle
+    let style: PayPalSavedPaymentMethodViewStyle
 
     var body: some View {
         HStack(spacing: EditFIStyleGuard.dimension(
