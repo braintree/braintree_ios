@@ -29,7 +29,7 @@ struct CreditMessagingRow: View {
             size: EditFIStyleGuard.fontSize(
                 style.container?.creditMessaging?.fontSize,
                 base: style.componentAppearance?.baseFontSize,
-                default: EditFIStyleGuard.Defaults.creditMessageFontSize
+                default: EditFIStyleDefaultConstants.creditMessageFontSize
             ),
             dynamicTypeSize: dynamicTypeSize,
             name: style.componentAppearance?.fontName

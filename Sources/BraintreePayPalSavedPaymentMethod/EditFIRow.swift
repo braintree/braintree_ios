@@ -34,7 +34,7 @@ struct EditFIRow: View {
             size: EditFIStyleGuard.fontSize(
                 style.container?.fundingInstrument?.textFontSize,
                 base: style.componentAppearance?.baseFontSize,
-                default: EditFIStyleGuard.Defaults.fundingInstrumentTextFontSize
+                default: EditFIStyleDefaultConstants.fundingInstrumentTextFontSize
             ),
             dynamicTypeSize: dynamicTypeSize,
             name: style.componentAppearance?.fontName
@@ -44,14 +44,14 @@ struct EditFIRow: View {
     private var editIconSide: CGFloat {
         EditFIStyleGuard.dimension(
             style.container?.fundingInstrument?.editIconSize,
-            default: EditFIStyleGuard.Defaults.editIconSize
+            default: EditFIStyleDefaultConstants.editIconSize
         )
     }
 
     private var fundingInstrumentGap: CGFloat {
         EditFIStyleGuard.dimension(
             style.container?.fundingInstrument?.leadingGap,
-            default: EditFIStyleGuard.Defaults.fundingInstrumentLeadingGap
+            default: EditFIStyleDefaultConstants.fundingInstrumentLeadingGap
         )
     }
 
@@ -80,7 +80,7 @@ struct EditFIRow: View {
     }
 
     private var stackedLayout: some View {
-        VStack(alignment: .leading, spacing: EditFIStyleGuard.Defaults.stackedLayoutSpacing) {
+        VStack(alignment: .leading, spacing: EditFIStyleDefaultConstants.stackedLayoutSpacing) {
             HStack(spacing: 0) {
                 brandCluster
                 Spacer(minLength: 0)
@@ -97,8 +97,8 @@ struct EditFIRow: View {
         case .instrument(let summary):
             editable(label: fiAccessibilityLabel(for: summary)) {
                 fiPill {
-                    HStack(spacing: EditFIStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
-                        HStack(spacing: EditFIStyleGuard.Defaults.fundingInstrumentViewGroupSpacing) {
+                    HStack(spacing: EditFIStyleDefaultConstants.fundingInstrumentViewEditSpacing) {
+                        HStack(spacing: EditFIStyleDefaultConstants.fundingInstrumentViewGroupSpacing) {
                             if !isPayPalCredit(summary) {
                                 fiIcon(for: summary)
                             }
@@ -114,7 +114,7 @@ struct EditFIRow: View {
             }
         case let .displayOnly(email, isEditable):
             let pill = fiPill {
-                HStack(spacing: EditFIStyleGuard.Defaults.fundingInstrumentViewEditSpacing) {
+                HStack(spacing: EditFIStyleDefaultConstants.fundingInstrumentViewEditSpacing) {
                     Text(email)
                         .font(fiFont)
                         .foregroundColor(textColor)
@@ -171,14 +171,14 @@ struct EditFIRow: View {
     /// merchant-configurable.
     private func fiPill<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
         content()
-            .padding(.horizontal, EditFIStyleGuard.Defaults.fundingInstrumentHorizontalPadding)
-            .padding(.vertical, EditFIStyleGuard.Defaults.fundingInstrumentVerticalPadding)
+            .padding(.horizontal, EditFIStyleDefaultConstants.fundingInstrumentHorizontalPadding)
+            .padding(.vertical, EditFIStyleDefaultConstants.fundingInstrumentVerticalPadding)
             .background(pillBackground)
     }
 
     private var pillBackground: some View {
-        RoundedRectangle(cornerRadius: EditFIStyleGuard.Defaults.fundingInstrumentCornerRadius)
-            .fill(Color(uiColor: EditFIStyleGuard.Defaults.fundingInstrumentBackgroundColor))
+        RoundedRectangle(cornerRadius: EditFIStyleDefaultConstants.fundingInstrumentCornerRadius)
+            .fill(Color(uiColor: EditFIStyleDefaultConstants.fundingInstrumentBackgroundColor))
     }
 
     @ViewBuilder private func fiIcon(for summary: PayPalSavedPaymentMethod) -> some View {
@@ -200,8 +200,8 @@ struct EditFIRow: View {
             }
         }
         .frame(
-            width: EditFIStyleGuard.Defaults.cardArtWidth,
-            height: EditFIStyleGuard.Defaults.cardArtHeight
+            width: EditFIStyleDefaultConstants.cardArtWidth,
+            height: EditFIStyleDefaultConstants.cardArtHeight
         )
         .clipShape(RoundedRectangle(cornerRadius: cardIconRadius))
         .overlay(cardIconBorder)
@@ -209,14 +209,14 @@ struct EditFIRow: View {
     }
 
     private var cardIconRadius: CGFloat {
-        EditFIStyleGuard.Defaults.cardIconCornerRadius
+        EditFIStyleDefaultConstants.cardIconCornerRadius
     }
 
     private var cardIconBorder: some View {
         RoundedRectangle(cornerRadius: cardIconRadius)
             .strokeBorder(
-                Color(uiColor: EditFIStyleGuard.Defaults.cardIconBorderColor),
-                lineWidth: EditFIStyleGuard.Defaults.cardIconBorderWidth
+                Color(uiColor: EditFIStyleDefaultConstants.cardIconBorderColor),
+                lineWidth: EditFIStyleDefaultConstants.cardIconBorderWidth
             )
     }
 
@@ -276,7 +276,7 @@ struct PayPalBrandCluster: View {
             size: EditFIStyleGuard.fontSize(
                 style.container?.label?.fontSize,
                 base: style.componentAppearance?.baseFontSize,
-                default: EditFIStyleGuard.Defaults.labelFontSize
+                default: EditFIStyleDefaultConstants.labelFontSize
             ),
             dynamicTypeSize: dynamicTypeSize,
             name: style.componentAppearance?.fontName,
@@ -287,13 +287,13 @@ struct PayPalBrandCluster: View {
     /// The PayPal logo (48×30 artwork) sits in a square (1:1) container. `logo.width` sets the
     /// side (default 48); the artwork scales to fit inside, preserving its own aspect ratio.
     private var logoSide: CGFloat {
-        EditFIStyleGuard.dimension(style.container?.logo?.width, default: EditFIStyleGuard.Defaults.payPalLogoSide)
+        EditFIStyleGuard.dimension(style.container?.logo?.width, default: EditFIStyleDefaultConstants.payPalLogoSide)
     }
 
     var body: some View {
         HStack(spacing: EditFIStyleGuard.dimension(
             style.container?.label?.leadingGap,
-            default: EditFIStyleGuard.Defaults.labelLeadingGap
+            default: EditFIStyleDefaultConstants.labelLeadingGap
         )) {
             if style.showPayPalLogo {
                 Image("PayPalBadge", bundle: .payPalSavedPaymentMethod)

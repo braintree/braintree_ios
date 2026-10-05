@@ -2136,15 +2136,15 @@
 			isa = PBXGroup;
 			children = (
 				FE0100000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift */,
+				7EE6974392CC188D068C44D6 /* SavedPaymentMethodRenderTestCase.swift */,
+				C714F3581AFE24B17DFF3B74 /* PayPalSavedPaymentMethodBundle_Tests.swift */,
+				F993447D3AF9291C3765DD65 /* PayPalSavedPaymentMethodRows_RenderTests.swift */,
 				FE0100000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift */,
 				FE0100000000000000000092 /* EditFIStyleGuard_Tests.swift */,
 				FE0100000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift */,
 				FE01000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift */,
 				FE01000000000000000000A1 /* MockPayPalClient.swift */,
 				FE0100000000000000000017 /* PayPalCreditMessaging_Tests.swift */,
-				7EE6974392CC188D068C44D6 /* SavedPaymentMethodRenderTestCase.swift */,
-				C714F3581AFE24B17DFF3B74 /* PayPalSavedPaymentMethodBundle_Tests.swift */,
-				F993447D3AF9291C3765DD65 /* PayPalSavedPaymentMethodRows_RenderTests.swift */,
 				1592D0E018219589392C6A9A /* Info.plist */,
 			);
 			name = BraintreePayPalSavedPaymentMethodTests;
@@ -3979,15 +3979,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE0200000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift in Sources */,
+				BA2B6B59869C38440576FCE8 /* SavedPaymentMethodRenderTestCase.swift in Sources */,
+				ACA3F2F45BF298C8262C5900 /* PayPalSavedPaymentMethodBundle_Tests.swift in Sources */,
+				15EB8A2EEF9EA563EA5DB384 /* PayPalSavedPaymentMethodRows_RenderTests.swift in Sources */,
 				FE0200000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift in Sources */,
 				FE0200000000000000000092 /* EditFIStyleGuard_Tests.swift in Sources */,
 				FE0200000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift in Sources */,
 				FE02000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift in Sources */,
 				FE02000000000000000000A1 /* MockPayPalClient.swift in Sources */,
 				FE0200000000000000000017 /* PayPalCreditMessaging_Tests.swift in Sources */,
-				BA2B6B59869C38440576FCE8 /* SavedPaymentMethodRenderTestCase.swift in Sources */,
-				ACA3F2F45BF298C8262C5900 /* PayPalSavedPaymentMethodBundle_Tests.swift in Sources */,
-				15EB8A2EEF9EA563EA5DB384 /* PayPalSavedPaymentMethodRows_RenderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
