@@ -5,12 +5,12 @@ import BraintreeCore
 #endif
 
 /// A funding instrument PayPal can charge on the buyer's behalf.
-struct BTPayPalSavedPaymentMethod: Equatable {
+struct PayPalSavedPaymentMethod: Equatable {
 
     // MARK: - Internal Properties
 
     /// The kind of funding instrument, or `nil` when PayPal returns a type this SDK version does not recognize.
-    let type: BTPayPalSavedPaymentMethodType?
+    let type: PayPalSavedPaymentMethodType?
 
     /// The display name of the funding instrument, for example `"Visa"` or `"CREDIT UNION 1"`.
     let label: String?
@@ -33,7 +33,7 @@ struct BTPayPalSavedPaymentMethod: Equatable {
             return nil
         }
 
-        self.type = BTPayPalSavedPaymentMethodType(json: json["type"])
+        self.type = PayPalSavedPaymentMethodType(json: json["type"])
         self.label = json["label"].asString()
         self.imageURL = json["imageUrl"].asURL()
         self.lastDigits = json["lastDigits"].asString()

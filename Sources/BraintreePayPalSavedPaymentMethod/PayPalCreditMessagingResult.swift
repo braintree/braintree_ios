@@ -5,18 +5,18 @@ import BraintreeCore
 #endif
 
 /// The Pay Later message to display alongside a vaulted PayPal payment method.
-struct BTPayPalCreditMessagingResult: Equatable {
+struct PayPalCreditMessagingResult: Equatable {
 
     // MARK: - Internal Properties
 
     /// The main text and logo blocks of the message.
-    let mainItems: [BTPayPalCreditMessageItem]
+    let mainItems: [PayPalCreditMessageItem]
 
     /// Legal disclaimers that PayPal requires to be displayed with `mainItems`.
-    let disclaimerItems: [BTPayPalCreditMessageItem]
+    let disclaimerItems: [PayPalCreditMessageItem]
 
     /// The interactive blocks of the message, such as the "Learn more" link.
-    let actionItems: [BTPayPalCreditMessageItem]
+    let actionItems: [PayPalCreditMessageItem]
 
     /// The identifier of the message that was selected.
     let messageID: String?
@@ -34,7 +34,7 @@ struct BTPayPalCreditMessagingResult: Equatable {
     init?(json: BTJSON) {
         let preferredMessage = json["messages"][0]["preferred_message"]
         let content = preferredMessage["content"]
-        let mainItems = content["main_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        let mainItems = content["main_items"].asArray()?.compactMap(PayPalCreditMessageItem.init) ?? []
 
         // Reporting success with no copy would fire the impression beacon for a message the buyer never saw.
         // Image blocks carry their copy in `alternativeText` rather than `text`.
@@ -43,8 +43,8 @@ struct BTPayPalCreditMessagingResult: Equatable {
         }
 
         self.mainItems = mainItems
-        self.disclaimerItems = content["disclaimer_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
-        self.actionItems = content["action_items"].asArray()?.compactMap(BTPayPalCreditMessageItem.init) ?? []
+        self.disclaimerItems = content["disclaimer_items"].asArray()?.compactMap(PayPalCreditMessageItem.init) ?? []
+        self.actionItems = content["action_items"].asArray()?.compactMap(PayPalCreditMessageItem.init) ?? []
         self.messageID = preferredMessage["id"].asString()
         self.messageType = preferredMessage["type"].asString()
         self.impressionURL = preferredMessage["analytics"]["impression_url"].asURL()

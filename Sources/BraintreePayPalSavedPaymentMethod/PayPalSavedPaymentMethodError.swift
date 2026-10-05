@@ -1,6 +1,6 @@
 import Foundation
 
-public enum BTPayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError, Equatable {
+public enum PayPalSavedPaymentMethodError: Int, Error, CustomNSError, LocalizedError, Equatable {
 
     /// 0. The authorization used to initialize the client is not a client token.
     case invalidAuthorization

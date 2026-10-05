@@ -1,11 +1,11 @@
 import XCTest
 @testable import BraintreePayPalSavedPaymentMethod
 
-final class BTPayPalSavedPaymentMethodViewStyle_Tests: XCTestCase {
+final class PayPalSavedPaymentMethodViewStyle_Tests: XCTestCase {
 
     /// These three are opt-out, not opt-in: a merchant who passes no style gets the full component.
     func testDefaultStyle_showsLogoLabelAndCreditMessaging() {
-        let style = BTPayPalSavedPaymentMethodViewStyle()
+        let style = PayPalSavedPaymentMethodViewStyle()
 
         XCTAssertTrue(style.showPayPalLogo)
         XCTAssertTrue(style.showPayPalLabel)

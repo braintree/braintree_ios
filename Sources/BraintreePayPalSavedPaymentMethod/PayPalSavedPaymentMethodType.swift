@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The kind of funding instrument PayPal will charge.
-enum BTPayPalSavedPaymentMethodType: String {
+enum PayPalSavedPaymentMethodType: String {
 
     /// A bank account linked to the buyer's PayPal account.
     case bank = "BANK"

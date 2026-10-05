@@ -10,7 +10,7 @@ import BraintreeCore
 
 /// Fetches what to display for a buyer's vaulted PayPal payment method: the funding instrument PayPal will charge, and the
 /// Pay Later message that accompanies it.
-final class BTPayPalSavedPaymentMethodClient {
+final class PayPalSavedPaymentMethodClient {
 
     // MARK: - Internal Properties
 
@@ -22,7 +22,7 @@ final class BTPayPalSavedPaymentMethodClient {
 
     // MARK: - Initializer
 
-    /// Creates a `BTPayPalSavedPaymentMethodClient`
+    /// Creates a `PayPalSavedPaymentMethodClient`
     /// - Parameters:
     ///   - authorization: A client token generated with the buyer's payment method ID. A tokenization key
     ///     cannot be used — it carries no `paymentMethodIdJwt`, so the saved funding instrument cannot be resolved.
@@ -46,15 +46,15 @@ final class BTPayPalSavedPaymentMethodClient {
     ///   - orderID: The approved checkout order ID. Required for `buyerUpdatedBillingAgreement` and ignored otherwise.
     ///   - merchantAccountID: Optional. A non-default merchant account to resolve the funding instrument against. Applies to
     ///     both fetch types and is omitted from the request when nil, so the default merchant account is used.
-    /// - Returns: A `BTPayPalSavedPaymentMethodSummary` describing what to display for the buyer
-    /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or the response cannot be parsed
-    /// - Note: Requires a client token. Throws `BTPayPalSavedPaymentMethodError.invalidAuthorization` when initialized
+    /// - Returns: A `PayPalSavedPaymentMethodSummary` describing what to display for the buyer
+    /// - Throws: A `PayPalSavedPaymentMethodError` if the request cannot be built or the response cannot be parsed
+    /// - Note: Requires a client token. Throws `PayPalSavedPaymentMethodError.invalidAuthorization` when initialized
     ///   with a tokenization key, which carries no `paymentMethodIdJwt`.
     func fetchPaymentMethod(
-        fundingInstrumentType: BTPayPalFundingInstrumentFetchType,
+        fundingInstrumentType: PayPalFundingInstrumentFetchType,
         orderID: String? = nil,
         merchantAccountID: String? = nil
-    ) async throws -> BTPayPalSavedPaymentMethodSummary {
+    ) async throws -> PayPalSavedPaymentMethodSummary {
         // TODO: emit the default and updated billing agreement analytics events once the catalog is approved.
 
         try validateClientToken()
@@ -72,7 +72,7 @@ final class BTPayPalSavedPaymentMethodClient {
             )
         case .buyerUpdatedBillingAgreement:
             guard let orderID else {
-                throw BTPayPalSavedPaymentMethodError.missingOrderID
+                throw PayPalSavedPaymentMethodError.missingOrderID
             }
 
             parameters = PayPalFundingInstrumentDetailsGraphQLBody(
@@ -86,11 +86,11 @@ final class BTPayPalSavedPaymentMethodClient {
         let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
 
         guard let body else {
-            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+            throw PayPalSavedPaymentMethodError.emptyBodyReturned
         }
 
-        guard let summary = BTPayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
-            throw BTPayPalSavedPaymentMethodError.failedToParseSummary
+        guard let summary = PayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
+            throw PayPalSavedPaymentMethodError.failedToParseSummary
         }
 
         return summary
@@ -100,15 +100,15 @@ final class BTPayPalSavedPaymentMethodClient {
     /// - Parameters:
     ///   - amount: The order amount the message is calculated from, for example `"55.00"`.
     ///   - currencyCode: The ISO-4217 currency code for `amount`, for example `"USD"`.
-    /// - Returns: A `BTPayPalCreditMessagingResult` describing the message to render
-    /// - Throws: A `BTPayPalSavedPaymentMethodError` if the request cannot be built or PayPal returns no message
+    /// - Returns: A `PayPalCreditMessagingResult` describing the message to render
+    /// - Throws: A `PayPalSavedPaymentMethodError` if the request cannot be built or PayPal returns no message
     /// - Note: The message is additive. Callers are expected to hide the row when this throws rather than fail checkout.
-    /// - Note: Requires a client token. Throws `BTPayPalSavedPaymentMethodError.invalidAuthorization` when initialized
+    /// - Note: Requires a client token. Throws `PayPalSavedPaymentMethodError.invalidAuthorization` when initialized
     ///   with a tokenization key, since the PayPal API rail authenticates with the client token's bearer.
     func fetchCreditPresentmentMessages(
         amount: String,
         currencyCode: String
-    ) async throws -> BTPayPalCreditMessagingResult {
+    ) async throws -> PayPalCreditMessagingResult {
         // TODO: emit the credit messaging analytics events once the catalog is approved.
 
         try validateClientToken()
@@ -122,11 +122,11 @@ final class BTPayPalSavedPaymentMethodClient {
         )
 
         guard let body else {
-            throw BTPayPalSavedPaymentMethodError.emptyBodyReturned
+            throw PayPalSavedPaymentMethodError.emptyBodyReturned
         }
 
-        guard let result = BTPayPalCreditMessagingResult(json: body) else {
-            throw BTPayPalSavedPaymentMethodError.missingPreferredMessage
+        guard let result = PayPalCreditMessagingResult(json: body) else {
+            throw PayPalSavedPaymentMethodError.missingPreferredMessage
         }
 
         return result
@@ -136,7 +136,7 @@ final class BTPayPalSavedPaymentMethodClient {
     /// - Parameter request: The checkout request to tokenize.
     /// - Returns: The tokenized `BTPayPalAccountNonce`. Its `paymentID` is the approved checkout order ID,
     ///   which callers pass to `fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID:)`.
-    /// - Throws: `BTPayPalSavedPaymentMethodError.invalidAuthorization` or `.missingPaymentMethodIDJWT` before the paysheet
+    /// - Throws: `PayPalSavedPaymentMethodError.invalidAuthorization` or `.missingPaymentMethodIDJWT` before the paysheet
     ///   opens, since without the JWT PayPal would run a plain checkout instead of an edit.
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         _ = try paymentMethodIDJWT()
@@ -150,7 +150,7 @@ final class BTPayPalSavedPaymentMethodClient {
 
     private func validateClientToken() throws {
         guard apiClient.authorization.type == .clientToken else {
-            throw BTPayPalSavedPaymentMethodError.invalidAuthorization
+            throw PayPalSavedPaymentMethodError.invalidAuthorization
         }
     }
 
@@ -158,7 +158,7 @@ final class BTPayPalSavedPaymentMethodClient {
         try validateClientToken()
 
         guard let jwt = (apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT else {
-            throw BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
+            throw PayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
         }
         return jwt
     }

@@ -1,6 +1,6 @@
 import UIKit
 
-/// The styling contract for `BTPayPalSavedPaymentMethodView`.
+/// The styling contract for `PayPalSavedPaymentMethodView`.
 ///
 /// Every field is optional: `nil` means "not set by the merchant", so the SDK applies its own
 /// default for that element. `nil` never means zero — the defaults live in `EditFIStyleGuard`,
@@ -9,7 +9,7 @@ import UIKit
 /// Text sizes resolve in three tiers: the element-specific size, then
 /// `componentAppearance.baseFontSize`, then the SDK default for that element.
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
-public struct BTPayPalSavedPaymentMethodViewStyle {
+public struct PayPalSavedPaymentMethodViewStyle {
 
     // MARK: - Internal Properties
 
@@ -21,7 +21,7 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
 
     // MARK: - Initializer
 
-    /// Creates a `BTPayPalSavedPaymentMethodViewStyle`.
+    /// Creates a `PayPalSavedPaymentMethodViewStyle`.
     /// - Parameters:
     ///   - showPayPalLogo: Optional. Show the PayPal brand logo. Defaults to `true`.
     ///   - showPayPalLabel: Optional. Show the "PayPal" text label. Defaults to `true`.

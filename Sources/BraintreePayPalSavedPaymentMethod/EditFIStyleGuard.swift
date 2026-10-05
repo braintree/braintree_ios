@@ -1,6 +1,6 @@
 import UIKit
 
-/// Resolves `BTPayPalSavedPaymentMethodViewStyle` values for rendering.
+/// Resolves `PayPalSavedPaymentMethodViewStyle` values for rendering.
 ///
 /// Two separate jobs, in order:
 /// 1. **Default when absent** — a `nil` field means the merchant didn't set it, so the SDK default

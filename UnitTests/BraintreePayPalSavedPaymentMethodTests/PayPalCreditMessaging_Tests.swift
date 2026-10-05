@@ -4,19 +4,19 @@ import XCTest
 @testable import BraintreePayPalSavedPaymentMethod
 
 @MainActor
-final class BTPayPalCreditMessaging_Tests: XCTestCase {
+final class PayPalCreditMessaging_Tests: XCTestCase {
 
     let clientToken = TestClientTokenFactory.token(withVersion: 3)
 
     let universalLink = URL(string: "https://example.com/universal-link")!
 
     var mockAPIClient: MockAPIClient!
-    var sut: BTPayPalSavedPaymentMethodClient!
+    var sut: PayPalSavedPaymentMethodClient!
 
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
+        sut = PayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
         sut.apiClient = mockAPIClient
     }
 
@@ -157,7 +157,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPreferredMessage)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -172,7 +172,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPreferredMessage)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -182,7 +182,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
     // MARK: - Errors
 
     func testFetchCreditPresentmentMessages_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorization() async {
-        let sut = BTPayPalSavedPaymentMethodClient(
+        let sut = PayPalSavedPaymentMethodClient(
             authorization: "sandbox_merchant_1234567890abc",
             universalLink: universalLink
         )
@@ -190,7 +190,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .invalidAuthorization)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -203,7 +203,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPreferredMessage)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -217,7 +217,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPreferredMessage)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -230,7 +230,7 @@ final class BTPayPalCreditMessaging_Tests: XCTestCase {
         do {
             _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .emptyBodyReturned)
         } catch {
             XCTFail("Unexpected error: \(error)")

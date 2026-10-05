@@ -2,7 +2,7 @@ import XCTest
 @testable import BraintreeCore
 @testable import BraintreePayPalSavedPaymentMethod
 
-final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
+final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
 
     func testInit_whenPaymentMethodsArePresent_parsesEveryField() throws {
         let json = BTJSON(
@@ -20,7 +20,7 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json))
+        let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json))
         let paymentMethod = try XCTUnwrap(summary.paymentMethods.first)
 
         XCTAssertNil(summary.payer)
@@ -47,7 +47,7 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let paymentMethod = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json)?.paymentMethods.first)
+        let paymentMethod = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json)?.paymentMethods.first)
 
         XCTAssertNil(paymentMethod.type)
         XCTAssertEqual(paymentMethod.label, "Visa")
@@ -64,7 +64,7 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json))
+        let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json))
 
         XCTAssertEqual(summary.paymentMethods.count, 1)
         XCTAssertEqual(summary.paymentMethods.first?.label, "Visa")
@@ -81,7 +81,7 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
             ] as [String: Any]
         )
 
-        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json))
+        let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json))
 
         XCTAssertEqual(summary.payer?.email, "buyer@example.com")
         XCTAssertEqual(summary.payer?.isEditable, true)
@@ -91,19 +91,19 @@ final class BTPayPalSavedPaymentMethodSummary_Tests: XCTestCase {
     func testInit_whenPayerOmitsEditable_returnsNilEditable() throws {
         let json = BTJSON(value: ["payer": ["email": "buyer@example.com"]])
 
-        let payer = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: json)?.payer)
+        let payer = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json)?.payer)
 
         XCTAssertNil(payer.isEditable)
     }
 
     func testInit_whenPayloadIsEmpty_returnsEmptySummary() throws {
-        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
+        let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
 
         XCTAssertNil(summary.payer)
         XCTAssertTrue(summary.paymentMethods.isEmpty)
     }
 
     func testInit_whenPayloadIsNotAnObject_returnsNil() {
-        XCTAssertNil(BTPayPalSavedPaymentMethodSummary(json: BTJSON(value: NSNull())))
+        XCTAssertNil(PayPalSavedPaymentMethodSummary(json: BTJSON(value: NSNull())))
     }
 }
