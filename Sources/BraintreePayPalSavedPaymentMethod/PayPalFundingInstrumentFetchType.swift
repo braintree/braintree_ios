@@ -1,7 +1,7 @@
 import Foundation
 
 /// Determines which funding instrument the Braintree GraphQL API resolves, and therefore which identity field is required.
-enum BTPayPalFundingInstrumentFetchType: String {
+enum PayPalFundingInstrumentFetchType: String {
 
     /// The default funding instrument vaulted on the buyer's billing agreement. Resolved from the client token's payment method ID JWT.
     case buyerDefaultBillingAgreement = "STICKY_FI"

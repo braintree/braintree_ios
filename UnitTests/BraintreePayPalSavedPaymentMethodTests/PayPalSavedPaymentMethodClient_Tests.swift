@@ -1,22 +1,26 @@
 import XCTest
 @testable import BraintreeTestShared
 @testable import BraintreeCore
+@testable import BraintreePayPal
 @testable import BraintreePayPalSavedPaymentMethod
 
-final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
+@MainActor
+final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
     let clientToken = TestClientTokenFactory.token(
         withVersion: 3,
         overrides: ["paymentMethodIdJwt": "fake-payment-method-id-jwt"]
     )
 
+    let universalLink = URL(string: "https://example.com/universal-link")!
+
     var mockAPIClient: MockAPIClient!
-    var sut: BTPayPalSavedPaymentMethodClient!
+    var sut: PayPalSavedPaymentMethodClient!
 
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientToken)
+        sut = PayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
         sut.apiClient = mockAPIClient
     }
 
@@ -128,12 +132,15 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
     // MARK: - Errors
 
     func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorization() async {
-        let sut = BTPayPalSavedPaymentMethodClient(authorization: "sandbox_merchant_1234567890abc")
+        let sut = PayPalSavedPaymentMethodClient(
+            authorization: "sandbox_merchant_1234567890abc",
+            universalLink: universalLink
+        )
 
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .invalidAuthorization)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -142,13 +149,13 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementAndClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWT() async {
         let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
-        sut = BTPayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT)
+        sut = PayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT, universalLink: universalLink)
         sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
 
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingPaymentMethodIDJWT)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -159,7 +166,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement)
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .missingOrderID)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -172,7 +179,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .emptyBodyReturned)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -185,7 +192,7 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         do {
             _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
             XCTFail("Expected an error")
-        } catch let error as BTPayPalSavedPaymentMethodError {
+        } catch let error as PayPalSavedPaymentMethodError {
             XCTAssertEqual(error, .failedToParseSummary)
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -202,5 +209,75 @@ final class BTPayPalSavedPaymentMethodClient_Tests: XCTestCase {
         } catch {
             XCTAssertEqual(error as NSError, cannedError)
         }
+    }
+
+    // MARK: - editFundingInstrument
+
+    func testEditFundingInstrument_returnsTheNonceWithEditBillingAgreementOnDuringTokenize() async throws {
+        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
+        mockPayPalClient.cannedNonce = try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": "fake-nonce"])))
+        sut.payPalClient = mockPayPalClient
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        let nonce = try await sut.editFundingInstrument(request: request)
+
+        XCTAssertEqual(nonce.nonce, "fake-nonce")
+        XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertFalse(request.editBillingAgreement)
+    }
+
+    func testEditFundingInstrument_whenTokenizeFails_propagatesTheErrorAndRestoresTheFlag() async {
+        let cannedError = NSError(domain: "com.example.error", code: 1)
+        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
+        mockPayPalClient.cannedError = cannedError
+        sut.payPalClient = mockPayPalClient
+        let request = BTPayPalCheckoutRequest(amount: "1")
+
+        do {
+            _ = try await sut.editFundingInstrument(request: request)
+            XCTFail("Expected editFundingInstrument to throw")
+        } catch {
+            XCTAssertEqual(error as NSError, cannedError)
+        }
+
+        XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertFalse(request.editBillingAgreement)
+    }
+
+    func testEditFundingInstrument_whenAuthorizationIsATokenizationKey_throwsInvalidAuthorizationWithoutTokenizing() async {
+        let tokenizationKey = "sandbox_merchant_1234567890abc"
+        sut = PayPalSavedPaymentMethodClient(authorization: tokenizationKey, universalLink: universalLink)
+        let mockPayPalClient = MockPayPalClient(authorization: tokenizationKey)
+        sut.payPalClient = mockPayPalClient
+
+        do {
+            _ = try await sut.editFundingInstrument(request: BTPayPalCheckoutRequest(amount: "1"))
+            XCTFail("Expected an error")
+        } catch let error as PayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .invalidAuthorization)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
+    }
+
+    func testEditFundingInstrument_whenClientTokenHasNoJWT_throwsMissingPaymentMethodIDJWTWithoutTokenizing() async {
+        let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
+        sut = PayPalSavedPaymentMethodClient(authorization: clientTokenWithoutJWT, universalLink: universalLink)
+        sut.apiClient = MockAPIClient(authorization: clientTokenWithoutJWT)
+        let mockPayPalClient = MockPayPalClient(authorization: clientTokenWithoutJWT)
+        sut.payPalClient = mockPayPalClient
+
+        do {
+            _ = try await sut.editFundingInstrument(request: BTPayPalCheckoutRequest(amount: "1"))
+            XCTFail("Expected an error")
+        } catch let error as PayPalSavedPaymentMethodError {
+            XCTAssertEqual(error, .missingPaymentMethodIDJWT)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
     }
 }

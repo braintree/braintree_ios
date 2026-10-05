@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The kind of content block making up a presentment message.
-enum BTPayPalCreditMessageItemType: String {
+enum PayPalCreditMessageItemType: String {
 
     /// A logo image, with `alternativeText` as its alt text.
     case image = "IMAGE"

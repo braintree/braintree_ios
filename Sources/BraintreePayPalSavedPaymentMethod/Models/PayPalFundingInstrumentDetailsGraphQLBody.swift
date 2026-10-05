@@ -11,7 +11,7 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
     let variables: Variables
 
     init(
-        fundingInstrumentType: BTPayPalFundingInstrumentFetchType,
+        fundingInstrumentType: PayPalFundingInstrumentFetchType,
         paymentMethodIDJWT: String?,
         orderID: String?,
         merchantAccountID: String?

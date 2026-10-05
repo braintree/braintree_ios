@@ -5,7 +5,7 @@ import BraintreeCore
 #endif
 
 /// The buyer's PayPal account.
-struct BTPayPalPayer: Equatable {
+struct PayPalPayer: Equatable {
 
     // MARK: - Internal Properties
 

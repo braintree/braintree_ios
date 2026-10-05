@@ -5,12 +5,12 @@ import BraintreeCore
 #endif
 
 /// A single block of a presentment message. Blocks are returned in the order they must be displayed.
-struct BTPayPalCreditMessageItem: Equatable {
+struct PayPalCreditMessageItem: Equatable {
 
     // MARK: - Internal Properties
 
     /// The kind of block, or `nil` when PayPal returns a type this SDK version does not recognize.
-    let type: BTPayPalCreditMessageItemType?
+    let type: PayPalCreditMessageItemType?
 
     /// The text to display, for example `"4 interest-free payments of $13.75 with "`.
     let text: String?
@@ -39,7 +39,7 @@ struct BTPayPalCreditMessageItem: Equatable {
             return nil
         }
 
-        self.type = BTPayPalCreditMessageItemType(json: json["type"])
+        self.type = PayPalCreditMessageItemType(json: json["type"])
         self.text = json["text"].asString()
         self.alternativeText = json["alternative_text"].asString()
         self.clickURL = json["click_url"].asURL()

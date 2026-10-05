@@ -5,15 +5,15 @@ import BraintreeCore
 #endif
 
 /// The funding instrument details for a vaulted PayPal payment method.
-struct BTPayPalSavedPaymentMethodSummary: Equatable {
+struct PayPalSavedPaymentMethodSummary: Equatable {
 
     // MARK: - Internal Properties
 
     /// The funding instruments PayPal can charge. The first entry is the one that will be charged.
-    let paymentMethods: [BTPayPalSavedPaymentMethod]
+    let paymentMethods: [PayPalSavedPaymentMethod]
 
     /// The buyer's PayPal account, when PayPal returns one.
-    let payer: BTPayPalPayer?
+    let payer: PayPalPayer?
 
     // MARK: - Initializer
 
@@ -24,7 +24,7 @@ struct BTPayPalSavedPaymentMethodSummary: Equatable {
             return nil
         }
 
-        self.paymentMethods = json["paymentMethods"].asArray()?.compactMap(BTPayPalSavedPaymentMethod.init) ?? []
-        self.payer = BTPayPalPayer(json: json["payer"])
+        self.paymentMethods = json["paymentMethods"].asArray()?.compactMap(PayPalSavedPaymentMethod.init) ?? []
+        self.payer = PayPalPayer(json: json["payer"])
     }
 }
