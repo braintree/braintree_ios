@@ -11,46 +11,56 @@ import UIKit
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTPayPalSavedPaymentMethodViewStyle {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
 
-    /// Show the PayPal brand logo. Default: `true`.
-    public var showPayPalLogo: Bool = true
-
-    /// Show the "PayPal" text label. Default: `true`.
-    public var showPayPalLabel: Bool = true
-
-    /// Show the inline PayPal credit (Pay Later) messaging line. Default: `true`.
-    public var showPayPalCreditMessaging: Bool = true
-
-    /// Global type and color for the component. `nil` → SDK defaults.
-    public var componentAppearance: ComponentAppearance?
-
-    /// The outer container box and its positioned sub-views. `nil` → SDK defaults.
-    public var container: ContainerStyle?
+    let showPayPalLogo: Bool
+    let showPayPalLabel: Bool
+    let showPayPalCreditMessaging: Bool
+    let componentAppearance: ComponentAppearance?
+    let container: ContainerStyle?
 
     // MARK: - Initializer
 
-    public init() {}
+    /// Creates a `BTPayPalSavedPaymentMethodViewStyle`.
+    /// - Parameters:
+    ///   - showPayPalLogo: Optional. Show the PayPal brand logo. Defaults to `true`.
+    ///   - showPayPalLabel: Optional. Show the "PayPal" text label. Defaults to `true`.
+    ///   - showPayPalCreditMessaging: Optional. Show the inline PayPal credit (Pay Later) messaging line.
+    ///     Defaults to `true`.
+    ///   - componentAppearance: Optional. Global type and color for the component. `nil` → SDK defaults.
+    ///   - container: Optional. The outer container box and its positioned sub-views. `nil` → SDK defaults.
+    public init(
+        showPayPalLogo: Bool = true,
+        showPayPalLabel: Bool = true,
+        showPayPalCreditMessaging: Bool = true,
+        componentAppearance: ComponentAppearance? = nil,
+        container: ContainerStyle? = nil
+    ) {
+        self.showPayPalLogo = showPayPalLogo
+        self.showPayPalLabel = showPayPalLabel
+        self.showPayPalCreditMessaging = showPayPalCreditMessaging
+        self.componentAppearance = componentAppearance
+        self.container = container
+    }
 
     // MARK: - Nested style types
 
     /// Global type and color. Applies to the label, funding-instrument text, and credit messaging.
     public struct ComponentAppearance {
 
-        /// Component background color. `nil` → SDK default (white).
-        public var backgroundColor: UIColor?
+        let backgroundColor: UIColor?
+        let textColor: UIColor?
+        let baseFontSize: CGFloat?
+        let fontName: String?
 
-        /// Base text color for the label, funding-instrument text, and credit messaging.
-        /// `nil` → SDK default (≈ `#222222`).
-        public var textColor: UIColor?
-
-        /// Fallback text size for every element that doesn't set its own. `nil` → each element
-        /// uses its own SDK default.
-        public var baseFontSize: CGFloat?
-
-        /// Registered custom-font PostScript name. `nil` → system font.
-        public var fontName: String?
-
+        /// Creates a `ComponentAppearance`.
+        /// - Parameters:
+        ///   - backgroundColor: Optional. Component background color. `nil` → SDK default (white).
+        ///   - textColor: Optional. Base text color for the label, funding-instrument text, and credit messaging.
+        ///     `nil` → SDK default (≈ `#222222`).
+        ///   - baseFontSize: Optional. Fallback text size for every element that doesn't set its own.
+        ///     `nil` → each element uses its own SDK default.
+        ///   - fontName: Optional. Registered custom-font PostScript name. `nil` → system font.
         public init(
             backgroundColor: UIColor? = nil,
             textColor: UIColor? = nil,
@@ -67,36 +77,29 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     /// The outer container box plus its positioned sub-views.
     public struct ContainerStyle {
 
-        /// Fixed height. `nil` → intrinsic / wrap content.
-        public var height: CGFloat?
+        let height: CGFloat?
+        let horizontalPadding: CGFloat?
+        let verticalPadding: CGFloat?
+        let cornerRadius: CGFloat?
+        let borderColor: UIColor?
+        let borderWidth: CGFloat?
+        let logo: PayPalLogoStyle?
+        let label: PayPalLabelStyle?
+        let fundingInstrument: FundingInstrumentStyle?
+        let creditMessaging: CreditMessagingStyle?
 
-        /// Leading/trailing padding. `nil` → SDK default.
-        public var horizontalPadding: CGFloat?
-
-        /// Top/bottom padding. `nil` → SDK default.
-        public var verticalPadding: CGFloat?
-
-        /// Container corner radius. `nil` → SDK default.
-        public var cornerRadius: CGFloat?
-
-        /// Container border color. `nil` → SDK default (transparent, so no visible border).
-        public var borderColor: UIColor?
-
-        /// Container border width. `nil` → SDK default.
-        public var borderWidth: CGFloat?
-
-        /// The PayPal brand logo. `nil` → SDK defaults.
-        public var logo: PayPalLogoStyle?
-
-        /// The "PayPal" text label. `nil` → SDK defaults.
-        public var label: PayPalLabelStyle?
-
-        /// The funding-instrument cluster. `nil` → SDK defaults.
-        public var fundingInstrument: FundingInstrumentStyle?
-
-        /// The inline credit (Pay Later) messaging line. `nil` → SDK defaults.
-        public var creditMessaging: CreditMessagingStyle?
-
+        /// Creates a `ContainerStyle`.
+        /// - Parameters:
+        ///   - height: Optional. Fixed height. `nil` → intrinsic / wrap content.
+        ///   - horizontalPadding: Optional. Leading/trailing padding. `nil` → SDK default.
+        ///   - verticalPadding: Optional. Top/bottom padding. `nil` → SDK default.
+        ///   - cornerRadius: Optional. Container corner radius. `nil` → SDK default.
+        ///   - borderColor: Optional. Container border color. `nil` → SDK default (transparent, so no visible border).
+        ///   - borderWidth: Optional. Container border width. `nil` → SDK default.
+        ///   - logo: Optional. The PayPal brand logo. `nil` → SDK defaults.
+        ///   - label: Optional. The "PayPal" text label. `nil` → SDK defaults.
+        ///   - fundingInstrument: Optional. The funding-instrument cluster. `nil` → SDK defaults.
+        ///   - creditMessaging: Optional. The inline credit (Pay Later) messaging line. `nil` → SDK defaults.
         public init(
             height: CGFloat? = nil,
             horizontalPadding: CGFloat? = nil,
@@ -125,10 +128,11 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     /// The PayPal brand logo.
     public struct PayPalLogoStyle {
 
-        /// Side of the square (1:1) logo container. `nil` → SDK default. The logo artwork scales to
-        /// fit inside, keeping its aspect ratio; growing this value grows both sides equally.
-        public var width: CGFloat?
+        let width: CGFloat?
 
+        /// Creates a `PayPalLogoStyle`.
+        /// - Parameter width: Optional. Side of the square (1:1) logo container. `nil` → SDK default. The logo
+        ///   artwork scales to fit inside, keeping its aspect ratio; growing this value grows both sides equally.
         public init(width: CGFloat? = nil) {
             self.width = width
         }
@@ -137,12 +141,13 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     /// The "PayPal" text label.
     public struct PayPalLabelStyle {
 
-        /// Label text size. `nil` → `baseFontSize`, then the SDK default.
-        public var fontSize: CGFloat?
+        let fontSize: CGFloat?
+        let leadingGap: CGFloat?
 
-        /// Gap between the logo and the label. `nil` → SDK default.
-        public var leadingGap: CGFloat?
-
+        /// Creates a `PayPalLabelStyle`.
+        /// - Parameters:
+        ///   - fontSize: Optional. Label text size. `nil` → `baseFontSize`, then the SDK default.
+        ///   - leadingGap: Optional. Gap between the logo and the label. `nil` → SDK default.
         public init(fontSize: CGFloat? = nil, leadingGap: CGFloat? = nil) {
             self.fontSize = fontSize
             self.leadingGap = leadingGap
@@ -154,15 +159,16 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     /// The pill fill/shape/padding and the card-icon chrome are fixed and are not merchant-configurable.
     public struct FundingInstrumentStyle {
 
-        /// Funding-instrument text size. `nil` → `baseFontSize`, then the SDK default.
-        public var textFontSize: CGFloat?
+        let textFontSize: CGFloat?
+        let editIconSize: CGFloat?
+        let leadingGap: CGFloat?
 
-        /// Edit (pencil) affordance size. `nil` → SDK default.
-        public var editIconSize: CGFloat?
-
-        /// Gap between the label cluster and the funding-instrument cluster. `nil` → SDK default.
-        public var leadingGap: CGFloat?
-
+        /// Creates a `FundingInstrumentStyle`.
+        /// - Parameters:
+        ///   - textFontSize: Optional. Funding-instrument text size. `nil` → `baseFontSize`, then the SDK default.
+        ///   - editIconSize: Optional. Edit (pencil) affordance size. `nil` → SDK default.
+        ///   - leadingGap: Optional. Gap between the label cluster and the funding-instrument cluster.
+        ///     `nil` → SDK default.
         public init(
             textFontSize: CGFloat? = nil,
             editIconSize: CGFloat? = nil,
@@ -177,13 +183,14 @@ public struct BTPayPalSavedPaymentMethodViewStyle {
     /// The inline credit (Pay Later) messaging line.
     public struct CreditMessagingStyle {
 
-        /// Messaging text size. `nil` → `baseFontSize`, then the SDK default.
-        public var fontSize: CGFloat?
+        let fontSize: CGFloat?
+        let linkColor: UIColor?
 
-        /// Accent color for the "Learn more" link. `nil` → the link is distinguished by bold +
-        /// underline in the base text color instead.
-        public var linkColor: UIColor?
-
+        /// Creates a `CreditMessagingStyle`.
+        /// - Parameters:
+        ///   - fontSize: Optional. Messaging text size. `nil` → `baseFontSize`, then the SDK default.
+        ///   - linkColor: Optional. Accent color for the "Learn more" link. `nil` → the link is distinguished by
+        ///     bold + underline in the base text color instead.
         public init(fontSize: CGFloat? = nil, linkColor: UIColor? = nil) {
             self.fontSize = fontSize
             self.linkColor = linkColor

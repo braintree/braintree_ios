@@ -5,23 +5,20 @@ import Foundation
 /// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct BTPayPalSavedPaymentMethodRequest: Equatable {
 
-    // MARK: - Public Properties
+    // MARK: - Internal Properties
 
-    /// Drives the inline Pay Later message. Must match `payPalCheckoutRequest.amount`.
-    public let amount: String
-
-    /// ISO-4217 currency for `amount`. Must match `payPalCheckoutRequest.currencyCode`.
-    public let currencyCode: String
-
-    /// The merchant account the funding instrument is resolved against. Omit for the default.
-    public let merchantAccountID: String?
+    let amount: String
+    let currencyCode: String
+    let merchantAccountID: String?
 
     // MARK: - Initializer
 
     /// Creates a `BTPayPalSavedPaymentMethodRequest`.
     /// - Parameters:
     ///   - amount: Required. The order amount the Pay Later message is calculated from, e.g. `"55.00"`.
+    ///     Must match `payPalCheckoutRequest.amount`.
     ///   - currencyCode: Required. A three-character ISO-4217 currency code for `amount`.
+    ///     Must match `payPalCheckoutRequest.currencyCode`.
     ///   - merchantAccountID: Optional. A non-default merchant account to resolve the funding instrument against.
     public init(
         amount: String,

@@ -6,14 +6,14 @@ import UIKit
 enum BTPayPalSavedPaymentMethodFont {
 
     /// - Parameters:
-    ///   - name: Registered custom-font PostScript name, or `nil` for the system font.
     ///   - size: The base point size (already clamped by `EditFIStyleGuard`).
     ///   - dynamicTypeSize: The view's `\.dynamicTypeSize`, so merchant limits and live changes apply to the system font.
+    ///   - name: Registered custom-font PostScript name, or `nil` for the system font.
     ///   - weight: Weight applied to both the system and custom font.
     static func font(
-        name: String?,
         size: CGFloat,
         dynamicTypeSize: DynamicTypeSize,
+        name: String? = nil,
         weight: Font.Weight = .regular
     ) -> Font {
         if let name, !name.isEmpty {

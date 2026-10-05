@@ -160,7 +160,6 @@ final class BTPayPalSavedPaymentMethodClient {
         guard let jwt = (apiClient.authorization as? ClientTokenAuthorizationProviding)?.paymentMethodIDJWT else {
             throw BTPayPalSavedPaymentMethodError.missingPaymentMethodIDJWT
         }
-
         return jwt
     }
 }
