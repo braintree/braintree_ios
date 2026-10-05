@@ -9,26 +9,25 @@ import BraintreeCore
 @_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 #endif
 
-/// View model backing `BTPayPalSavedPaymentMethodView`.
+/// View model backing `PayPalSavedPaymentMethodView`.
 ///
 /// Owns the FI load state and the "Learn more" lander presentation, and drives the
 /// fetch (sticky FI + credit messaging) and edit (`BTPayPalClient` tokenize) flows.
 /// Every visual state is also reachable via the internal preview initializer.
 @MainActor
-final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
+final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
-    /// The render state of the FI display region.
+    /// What is known about the buyer's funding instrument (FI).
     enum FIState: Equatable {
-        /// Fetch in flight — skeleton shimmer.
+        /// The FI fetch has not finished yet.
         case loading
-        /// An instrument was resolved. A `nil` `imageURL` renders the generic fallback glyph;
-        /// long labels ellipsize (truncation case).
-        case instrument(BTPayPalSavedPaymentMethod)
-        /// No instrument, but the buyer email is known — show the email; `isEditable` gates the pencil.
+        /// PayPal resolved the FI that will be charged.
+        case instrument(PayPalSavedPaymentMethod)
+        /// PayPal has no FI to show, but knows the buyer's email; `isEditable` says whether the buyer can change the FI.
         case displayOnly(email: String, isEditable: Bool)
-        /// FI unavailable (e.g. no network) — hide the FI text but keep the PayPal brand mark.
+        /// The FI could not be fetched (e.g. a network failure), so only PayPal is identified.
         case brandOnly
-        /// No FI and no email — hide the component entirely.
+        /// PayPal has neither an FI nor an email for the buyer, so there is nothing to show.
         case hidden
     }
 
@@ -43,18 +42,37 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The composed credit (Pay Later) message to render, or `nil` to hide the row.
     @Published private(set) var creditMessage: CreditMessageContent?
 
-    /// Set once an edit returns a nonce. The Pay Later offer was quoted against the pre-edit funding
-    /// instrument, so the row stays hidden for the rest of the component's life.
+    /// Set once an edit returns a nonce.
     @Published private(set) var didCompleteEdit = false
 
-    /// The "Learn more" lander URL, populated from the credit-messaging response.
-    private(set) var learnMoreURL: URL?
+    /// Exposed for testing to inject a fake application.
+    var application: URLOpener = UIApplication.shared
+
+    /// The "Learn more" lander URL of the current credit message.
+    var learnMoreURL: URL? {
+        creditMessage?.learnMoreURL
+    }
+
+    /// The Pay Later offer is quoted against the pre-edit funding instrument and is only actionable if the
+    /// buyer can change it, so it tracks the FI region and stays hidden once an edit completes.
+    /// Derived rather than latched: the two fetches race, and this is re-read on every render.
+    var showsCreditMessaging: Bool {
+        guard !didCompleteEdit else { return false }
+
+        switch fiState {
+        case .loading, .instrument:
+            return true
+        case .displayOnly(_, let isEditable):
+            return isEditable
+        case .brandOnly, .hidden:
+            return false
+        }
+    }
 
     // MARK: - Private Properties
 
     private let completion: (BTPayPalAccountNonce?, Error?) -> Void
-    private let fetchClient: BTPayPalSavedPaymentMethodClient?
-    private let urlOpener: URLOpener
+    private let fetchClient: PayPalSavedPaymentMethodClient?
 
     /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
     private var fiStateBeforeEdit: FIState?
@@ -67,13 +85,11 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// `fetchClient` is `nil` for previews, which seed `fiState` directly instead of fetching.
     init(
-        fetchClient: BTPayPalSavedPaymentMethodClient?,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in },
-        urlOpener: URLOpener? = nil
+        fetchClient: PayPalSavedPaymentMethodClient?,
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
     ) {
         self.fetchClient = fetchClient
         self.completion = completion
-        self.urlOpener = urlOpener ?? UIApplication.shared
         self.fiState = .loading
     }
 
@@ -81,92 +97,50 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         universalLink: URL,
         fallbackURLScheme: String?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
-        authorization: String,
-        urlOpener: URLOpener? = nil
+        authorization: String
     ) {
         self.init(
-            fetchClient: BTPayPalSavedPaymentMethodClient(
+            fetchClient: PayPalSavedPaymentMethodClient(
                 authorization: authorization,
                 universalLink: universalLink,
                 fallbackURLScheme: fallbackURLScheme
             ),
-            completion: completion,
-            urlOpener: urlOpener
+            completion: completion
         )
     }
 
     /// Seeds a concrete state directly. Used by SwiftUI previews and unit tests to exercise
     /// each visual state without the fetch API.
-    convenience init(previewState: FIState, showCreditMessage: Bool = false) {
+    convenience init(previewState: FIState) {
         self.init(fetchClient: nil)
         self.fiState = previewState
-
-        if showCreditMessage {
-            let sample = CreditMessageContent(
-                message: "Or 4 interest-free payments of $324.50.",
-                learnMoreText: "Learn more",
-                learnMoreURL: nil,
-                isEmbeddable: false
-            )
-            self.creditMessage = sample
-            self.learnMoreURL = sample.learnMoreURL
-        }
     }
 
     // MARK: - Internal Methods
 
     /// The requests are passed in per call rather than stored: `@StateObject` builds this view model
     /// once, so anything captured here would go stale when the merchant updates the amount.
-    func onAppear(request: BTPayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
+    func onAppear(request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         // `onAppear` refires on tab switches and navigation pop-backs. Refetching then would
         // replace the post-edit instrument with the pre-edit one the API still returns.
-        if !didCompleteEdit {
-            Task { await loadStickyFI(request: request) }
-        }
+        guard !didCompleteEdit else { return }
 
-        if showCreditMessaging, !didCompleteEdit {
+        Task { await loadStickyFI(request: request) }
+
+        if showCreditMessaging {
             Task { await loadCreditMessaging(request: request) }
         }
     }
 
-    func requestChanged(_ request: BTPayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
+    func requestChanged(_ request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         guard showCreditMessaging, !didCompleteEdit else { return }
         Task { await loadCreditMessaging(request: request) }
-    }
-
-    /// Resolves the sticky FI (`STICKY_FI`, JWT from the client token) and maps it to `fiState`.
-    /// Any failure falls back to the brand-only tile so checkout is never blocked.
-    private func loadStickyFI(request: BTPayPalSavedPaymentMethodRequest) async {
-        guard let fetchClient else { return } // preview: state is pre-seeded
-        do {
-            let summary = try await fetchClient.fetchPaymentMethod(
-                fundingInstrumentType: .buyerDefaultBillingAgreement,
-                merchantAccountID: request.merchantAccountID
-            )
-            fiState = Self.state(from: summary)
-        } catch {
-            fiState = .brandOnly
-        }
-    }
-
-    /// The Pay Later offer is quoted against the funding instrument and is only actionable if the
-    /// buyer can change it, so it tracks the FI region rather than resolving independently.
-    /// Derived rather than latched: the two fetches race, and this is re-read on every render.
-    var showsCreditMessaging: Bool {
-        switch fiState {
-        case .loading, .instrument:
-            return true
-        case .displayOnly(_, let isEditable):
-            return isEditable
-        case .brandOnly, .hidden:
-            return false
-        }
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
     /// payer (email); else the component hides entirely (a network failure keeps the brand mark
     /// via the `loadStickyFI` catch instead).
-    static func state(from summary: BTPayPalSavedPaymentMethodSummary) -> FIState {
+    static func state(from summary: PayPalSavedPaymentMethodSummary) -> FIState {
         if let instrument = summary.paymentMethods.first {
             return .instrument(instrument)
         }
@@ -178,24 +152,9 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         return .hidden
     }
 
-    /// Fetches the Pay Later message. Additive — any failure hides the row.
-    private func loadCreditMessaging(request: BTPayPalSavedPaymentMethodRequest) async {
-        guard let fetchClient else { return }
-        do {
-            let result = try await fetchClient.fetchCreditPresentmentMessages(
-                amount: request.amount,
-                currencyCode: request.currencyCode
-            )
-            creditMessage = CreditMessageContent(result: result)
-            learnMoreURL = creditMessage?.learnMoreURL
-        } catch {
-            creditMessage = nil
-        }
-    }
-
     func editTapped(
         checkoutRequest: BTPayPalCheckoutRequest,
-        request: BTPayPalSavedPaymentMethodRequest
+        request: PayPalSavedPaymentMethodRequest
     ) {
         guard !isEditing else { return }
         fiStateBeforeEdit = fiState
@@ -214,13 +173,72 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         fiStateBeforeEdit = nil
     }
 
+    func editLoaderDidAppear() {
+        isEditLoaderOnScreen = true
+    }
+
+    func editLoaderDidDismiss() {
+        isEditLoaderOnScreen = false
+        guard let result = pendingEditResult else { return }
+        pendingEditResult = nil
+        completion(result.nonce, result.error)
+    }
+
+    func learnMoreTapped() {
+        // SFSafariViewController only loads web URLs, and PayPal marks landers it forbids embedding.
+        guard let url = learnMoreURL, url.scheme == "https" || url.scheme == "http" else { return }
+
+        if creditMessage?.isEmbeddable == true {
+            isLanderPresented = true
+        } else {
+            application.open(url, options: [:], completionHandler: nil)
+        }
+    }
+
+    // MARK: - Private Methods
+
+    /// Resolves the sticky FI (`STICKY_FI`, JWT from the client token) and maps it to `fiState`.
+    /// Any failure falls back to the brand-only tile so checkout is never blocked.
+    private func loadStickyFI(request: PayPalSavedPaymentMethodRequest) async {
+        guard let fetchClient else { return } // preview: state is pre-seeded
+
+        let state: FIState
+        do {
+            let summary = try await fetchClient.fetchPaymentMethod(
+                fundingInstrumentType: .buyerDefaultBillingAgreement,
+                merchantAccountID: request.merchantAccountID
+            )
+            state = Self.state(from: summary)
+        } catch {
+            state = .brandOnly
+        }
+
+        // An edit may have completed while this was in flight; the post-edit refetch owns `fiState` from then on.
+        guard !didCompleteEdit else { return }
+        fiState = state
+    }
+
+    /// Fetches the Pay Later message. Additive — any failure hides the row.
+    private func loadCreditMessaging(request: PayPalSavedPaymentMethodRequest) async {
+        guard let fetchClient else { return }
+        do {
+            let result = try await fetchClient.fetchCreditPresentmentMessages(
+                amount: request.amount,
+                currencyCode: request.currencyCode
+            )
+            creditMessage = CreditMessageContent(result: result)
+        } catch {
+            creditMessage = nil
+        }
+    }
+
     /// Runs the edit, then the cosmetic FI refresh. The full-screen loader is held until the nonce
     /// arrives; the FI then shimmers until the refresh settles. The merchant only receives
     /// `(nonce, error)` — a refresh failure after a successful edit hides the row, since the
     /// pre-edit instrument is no longer the one that will be charged.
     private func performEdit(
         checkoutRequest: BTPayPalCheckoutRequest,
-        request: BTPayPalSavedPaymentMethodRequest
+        request: PayPalSavedPaymentMethodRequest
     ) async {
         // Held locally: `appReturnedToForeground` clears the shared property when the buyer comes
         // back from the app switch, which happens before this task resumes on that rail.
@@ -250,8 +268,6 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
         didCompleteEdit = true
         creditMessage = nil
         finishEdit(nonce: nonce, error: nil)
-
-        // Past this point the edit has succeeded, so the pre-edit instrument must never be shown again.
         restoresPriorState = false
 
         guard let orderID = nonce.paymentID else {
@@ -269,21 +285,8 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
             )
             fiState = Self.state(from: summary)
         } catch {
-            // The edit succeeded, so the pre-edit instrument will not be charged. Showing it again
-            // would misstate the payment method, so hide the row instead.
             fiState = .hidden
         }
-    }
-
-    func editLoaderDidAppear() {
-        isEditLoaderOnScreen = true
-    }
-
-    func editLoaderDidDismiss() {
-        isEditLoaderOnScreen = false
-        guard let result = pendingEditResult else { return }
-        pendingEditResult = nil
-        completion(result.nonce, result.error)
     }
 
     /// Delivers now if the loader is already gone (the app-switch rail clears it on foreground).
@@ -293,17 +296,6 @@ final class BTPayPalSavedPaymentMethodViewModel: ObservableObject {
             pendingEditResult = (nonce, error)
         } else {
             completion(nonce, error)
-        }
-    }
-
-    func learnMoreTapped() {
-        // SFSafariViewController only loads web URLs, and PayPal marks landers it forbids embedding.
-        guard let url = learnMoreURL, url.scheme == "https" || url.scheme == "http" else { return }
-
-        if creditMessage?.isEmbeddable == true {
-            isLanderPresented = true
-        } else {
-            urlOpener.open(url, options: [:], completionHandler: nil)
         }
     }
 }

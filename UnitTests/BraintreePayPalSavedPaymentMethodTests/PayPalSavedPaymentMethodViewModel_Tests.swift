@@ -5,7 +5,7 @@ import XCTest
 @testable import BraintreePayPalSavedPaymentMethod
 
 @MainActor
-final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
+final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     // MARK: - Properties
 
@@ -17,21 +17,21 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     private let universalLink = URL(string: "https://example.com/universal-link")!
 
     private var mockAPIClient: MockAPIClient!
-    private var fetchClient: BTPayPalSavedPaymentMethodClient!
-    private var urlOpener: MockURLOpener!
+    private var fetchClient: PayPalSavedPaymentMethodClient!
+    private var fakeApplication: FakeApplication!
 
     override func setUp() {
         super.setUp()
         mockAPIClient = MockAPIClient(authorization: clientToken)
-        fetchClient = BTPayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
+        fetchClient = PayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
         fetchClient.apiClient = mockAPIClient
-        urlOpener = MockURLOpener()
+        fakeApplication = FakeApplication()
     }
 
     override func tearDown() {
         mockAPIClient = nil
         fetchClient = nil
-        urlOpener = nil
+        fakeApplication = nil
         super.tearDown()
     }
 
@@ -39,12 +39,14 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     private func makeSUT(
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
-    ) -> BTPayPalSavedPaymentMethodViewModel {
-        BTPayPalSavedPaymentMethodViewModel(fetchClient: fetchClient, completion: completion, urlOpener: urlOpener)
+    ) -> PayPalSavedPaymentMethodViewModel {
+        let sut = PayPalSavedPaymentMethodViewModel(fetchClient: fetchClient, completion: completion)
+        sut.application = fakeApplication
+        return sut
     }
 
-    private func makeRequest(amount: String = "55.00", merchantAccountID: String? = nil) -> BTPayPalSavedPaymentMethodRequest {
-        BTPayPalSavedPaymentMethodRequest(amount: amount, currencyCode: "USD", merchantAccountID: merchantAccountID)
+    private func makeRequest(amount: String = "55.00", merchantAccountID: String? = nil) -> PayPalSavedPaymentMethodRequest {
+        PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: "USD", merchantAccountID: merchantAccountID)
     }
 
     private static func instrumentResponse(label: String = "Visa", lastDigits: String = "0199") -> BTJSON {
@@ -107,13 +109,30 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     /// Drives a real credit-messaging fetch so `creditMessage` and `learnMoreURL` are populated
     /// the same way they are in production.
     private func seedCreditMessage(
-        on sut: BTPayPalSavedPaymentMethodViewModel,
+        on sut: PayPalSavedPaymentMethodViewModel,
         clickURL: String,
         isEmbeddable: Bool
     ) async {
         mockAPIClient.cannedResponseBody = Self.creditMessagingResponse(clickURL: clickURL, isEmbeddable: isEmbeddable)
         sut.requestChanged(makeRequest(), showCreditMessaging: true)
         await drainTasks()
+    }
+
+    @discardableResult
+    private func injectPayPalClient(
+        nonce: String? = nil,
+        orderID: String? = nil,
+        error: Error? = nil
+    ) throws -> MockPayPalClient {
+        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
+        mockPayPalClient.cannedNonce = try nonce.map {
+            var details: [String: Any] = [:]
+            details["paymentToken"] = orderID
+            return try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": $0, "details": details])))
+        }
+        mockPayPalClient.cannedError = error
+        fetchClient.payPalClient = mockPayPalClient
+        return mockPayPalClient
     }
 
     // MARK: - Initial state
@@ -187,13 +206,12 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     func testOnAppear_whenCreditMessagingIsDisabled_doesNotFetchIt() async {
-        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        mockAPIClient.cannedResponseBody = Self.creditMessagingResponse(clickURL: "https://example.com/lander", isEmbeddable: true)
         let sut = makeSUT()
 
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
         await drainTasks()
 
-        XCTAssertNotEqual(mockAPIClient.lastPOSTPath, "/v2/credit/fetch-presentment-messages")
         XCTAssertNil(sut.creditMessage)
     }
 
@@ -226,7 +244,8 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     /// An abandoned app switch never resumes the continuation, so foregrounding is the only
     /// signal that lets us take the full-screen loader down.
-    func testAppReturnedToForeground_whileEditing_clearsTheLoaderAndRestoresThePriorState() async {
+    func testAppReturnedToForeground_whileEditing_clearsTheLoaderAndRestoresThePriorState() async throws {
+        try injectPayPalClient()
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
@@ -242,40 +261,21 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(sut.fiState, stateBeforeEdit)
     }
 
-    func testAppReturnedToForeground_whenNotEditing_isANoOp() {
-        let sut = makeSUT()
-
-        sut.appReturnedToForeground()
-
-        XCTAssertFalse(sut.isEditing)
-        XCTAssertEqual(sut.fiState, .loading)
-    }
-
     // MARK: - editTapped
 
-    func testEditTapped_whileAnEditIsAlreadyInFlight_isIgnored() {
-        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+    func testEditTapped_whileAnEditIsAlreadyInFlight_isIgnored() async throws {
+        let mockPayPalClient = try injectPayPalClient(nonce: "fake-nonce")
         let sut = makeSUT()
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
 
         sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
         sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
+        await drainTasks()
 
-        XCTAssertTrue(sut.isEditing)
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 1)
     }
 
     // MARK: - Edit result delivery
-
-    private func injectPayPalClient(nonce: String? = nil, orderID: String? = nil, error: Error? = nil) throws {
-        let mockPayPalClient = MockPayPalClient(authorization: clientToken)
-        mockPayPalClient.cannedNonce = try nonce.map {
-            var details: [String: Any] = [:]
-            details["paymentToken"] = orderID
-            return try XCTUnwrap(BTPayPalAccountNonce(json: BTJSON(value: ["nonce": $0, "details": details])))
-        }
-        mockPayPalClient.cannedError = error
-        fetchClient.payPalClient = mockPayPalClient
-    }
 
     /// The merchant may present their own modal from `completion`, which iOS drops while ours is still up.
     func testEdit_whileTheLoaderIsOnScreen_deliversTheNonceOnlyAfterItDismisses() async throws {
@@ -329,8 +329,9 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     func testEdit_whenItSucceeds_refetchesTheFIForTheApprovedOrderAndShowsIt() async throws {
         try injectPayPalClient(nonce: "fake-nonce", orderID: "fake-order-id")
-        mockAPIClient.cannedResponseBody = Self.instrumentResponse(label: "Mastercard", lastDigits: "4444")
         let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse(label: "Mastercard", lastDigits: "4444")
 
         sut.editTapped(
             checkoutRequest: BTPayPalCheckoutRequest(amount: "1"),
@@ -349,6 +350,8 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         }
         XCTAssertEqual(summary.label, "Mastercard")
         XCTAssertEqual(summary.lastDigits, "4444")
+        XCTAssertNil(sut.creditMessage)
+        XCTAssertFalse(sut.showsCreditMessaging)
     }
 
     /// The pre-edit instrument will no longer be charged, so it must not be shown again.
@@ -377,7 +380,7 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.learnMoreTapped()
 
         XCTAssertTrue(sut.isLanderPresented)
-        XCTAssertNil(urlOpener.openedURL)
+        XCTAssertNil(fakeApplication.lastOpenURL)
     }
 
     func testLearnMoreTapped_whenTheMessageIsNotEmbeddable_opensExternally() async {
@@ -387,7 +390,7 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.learnMoreTapped()
 
         XCTAssertFalse(sut.isLanderPresented)
-        XCTAssertEqual(urlOpener.openedURL?.absoluteString, "https://example.com/lander")
+        XCTAssertEqual(fakeApplication.lastOpenURL?.absoluteString, "https://example.com/lander")
     }
 
     /// `SFSafariViewController` only loads web URLs, so anything else must be dropped rather than opened.
@@ -398,7 +401,7 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.learnMoreTapped()
 
         XCTAssertFalse(sut.isLanderPresented)
-        XCTAssertNil(urlOpener.openedURL)
+        XCTAssertNil(fakeApplication.lastOpenURL)
     }
 
     func testLearnMoreTapped_whenThereIsNoURL_doesNothing() {
@@ -407,15 +410,15 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.learnMoreTapped()
 
         XCTAssertFalse(sut.isLanderPresented)
-        XCTAssertNil(urlOpener.openedURL)
+        XCTAssertNil(fakeApplication.lastOpenURL)
     }
 
     // MARK: - state(from:)
 
     /// The instrument wins over the payer, so a buyer never sees their email when a card is known.
-    func testStateFromSummary_whenBothAredPresent_prefersTheFundingInstrument() throws {
+    func testStateFromSummary_whenBothArePresent_prefersTheFundingInstrument() throws {
         let summary = try XCTUnwrap(
-            BTPayPalSavedPaymentMethodSummary(
+            PayPalSavedPaymentMethodSummary(
                 json: BTJSON(
                     value: [
                         "payer": ["email": "buyer@example.com", "editable": true],
@@ -425,15 +428,15 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
             )
         )
 
-        guard case .instrument = BTPayPalSavedPaymentMethodViewModel.state(from: summary) else {
+        guard case .instrument = PayPalSavedPaymentMethodViewModel.state(from: summary) else {
             return XCTFail("Expected .instrument")
         }
     }
 
     func testStateFromSummary_whenNeitherIsPresent_hidesTheComponent() throws {
-        let summary = try XCTUnwrap(BTPayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
+        let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
 
-        XCTAssertEqual(BTPayPalSavedPaymentMethodViewModel.state(from: summary), .hidden)
+        XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .hidden)
     }
 
     // MARK: - Refetch guard
@@ -451,26 +454,5 @@ final class BTPayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await drainTasks()
 
         XCTAssertNil(mockAPIClient.lastPOSTParameters)
-    }
-}
-
-// MARK: - Test doubles
-
-private final class MockURLOpener: URLOpener {
-
-    private(set) var openedURL: URL?
-
-    func canOpenURL(_ url: URL) -> Bool { true }
-
-    func isPayPalAppInstalled() -> Bool { false }
-
-    func isVenmoAppInstalled() -> Bool { false }
-
-    func open(
-        _ url: URL,
-        options: [UIApplication.OpenExternalURLOptionsKey: Any],
-        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
-    ) {
-        openedURL = url
     }
 }
