@@ -145,7 +145,7 @@ public struct PayPalSavedPaymentMethodView: View {
         )
     }
 
-    private typealias Defaults = EditFIStyleGuard.Defaults
+    private typealias Defaults = EditFIStyleDefaultConstants
 
     private var cornerRadius: CGFloat {
         EditFIStyleGuard.dimension(style.container?.cornerRadius, default: Defaults.containerCornerRadius)

@@ -2137,10 +2137,10 @@
 				FE0100000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift */,
 				FE0100000000000000000092 /* EditFIStyleGuard_Tests.swift */,
 				FE0100000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift */,
+				2B86B9D7895CB2D004DD4D45 /* PayPalSavedPaymentMethodView_RenderTests.swift */,
 				FE01000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift */,
 				FE01000000000000000000A1 /* MockPayPalClient.swift */,
 				FE0100000000000000000017 /* PayPalCreditMessaging_Tests.swift */,
-				2B86B9D7895CB2D004DD4D45 /* PayPalSavedPaymentMethodView_RenderTests.swift */,
 				1592D0E018219589392C6A9A /* Info.plist */,
 			);
 			name = BraintreePayPalSavedPaymentMethodTests;
@@ -3980,10 +3980,10 @@
 				FE0200000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift in Sources */,
 				FE0200000000000000000092 /* EditFIStyleGuard_Tests.swift in Sources */,
 				FE0200000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift in Sources */,
+				F8512A85BB80A0C30548EBA7 /* PayPalSavedPaymentMethodView_RenderTests.swift in Sources */,
 				FE02000000000000000000A0 /* PayPalSavedPaymentMethodViewStyle_Tests.swift in Sources */,
 				FE02000000000000000000A1 /* MockPayPalClient.swift in Sources */,
 				FE0200000000000000000017 /* PayPalCreditMessaging_Tests.swift in Sources */,
-				F8512A85BB80A0C30548EBA7 /* PayPalSavedPaymentMethodView_RenderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

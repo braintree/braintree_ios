@@ -63,7 +63,7 @@ struct PayPalSavedPaymentMethodSkeletonRow: View {
     var body: some View {
         HStack(spacing: EditFIStyleGuard.dimension(
             style.container?.fundingInstrument?.leadingGap,
-            default: EditFIStyleGuard.Defaults.fundingInstrumentLeadingGap
+            default: EditFIStyleDefaultConstants.fundingInstrumentLeadingGap
         )) {
             PayPalBrandCluster(style: style)
             ShimmerBar()
