@@ -33,7 +33,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Internal Properties
 
+    /// What the FI region currently shows.
     @Published private(set) var fiState: FIState
+
+    /// Whether the in-app "Learn more" lander sheet is showing.
     @Published var isLanderPresented = false
 
     /// Whether the full-screen loader is showing (create-payment-resource in flight).
@@ -71,7 +74,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Private Properties
 
+    /// The merchant's callback for the edit result.
     private let completion: (BTPayPalAccountNonce?, Error?) -> Void
+
+    /// `nil` for previews, which seed `fiState` directly instead of fetching.
     private let fetchClient: PayPalSavedPaymentMethodClient?
 
     /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
@@ -79,6 +85,8 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Held until the loader is off screen: iOS drops a modal presented over one still showing.
     private var pendingEditResult: (nonce: BTPayPalAccountNonce?, error: Error?)?
+
+    /// Whether the full-screen edit loader is currently presented.
     private var isEditLoaderOnScreen = false
 
     /// Only the latest credit fetch may set `creditMessage`, so an older amount's response can't land last.
@@ -86,7 +94,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Initializers
 
-    /// `fetchClient` is `nil` for previews, which seed `fiState` directly instead of fetching.
+    /// Creates a view model that fetches through `fetchClient`.
     init(
         fetchClient: PayPalSavedPaymentMethodClient?,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void = { _, _ in }
@@ -96,11 +104,12 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         self.fiState = .loading
     }
 
+    /// Creates a view model backed by a `PayPalSavedPaymentMethodClient` for the given client token.
     convenience init(
+        authorization: String,
         universalLink: URL,
         fallbackURLScheme: String?,
-        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void,
-        authorization: String
+        completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.init(
             fetchClient: PayPalSavedPaymentMethodClient(
@@ -129,13 +138,14 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         // replace the post-edit instrument with the pre-edit one the API still returns.
         guard !didCompleteEdit else { return }
 
-        Task { await loadStickyFI(request: request) }
+        Task { [weak self] in await self?.loadStickyFI(request: request) }
 
         if showCreditMessaging {
             startCreditFetch(request: request)
         }
     }
 
+    /// Refetches the Pay Later message when the merchant changes the amount or currency.
     func requestChanged(_ request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         guard showCreditMessaging, !didCompleteEdit else { return }
         startCreditFetch(request: request)
@@ -156,14 +166,16 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         return .hidden
     }
 
+    /// Starts the edit flow; taps while an edit is already in flight are ignored.
     func editTapped(
         checkoutRequest: BTPayPalCheckoutRequest,
         request: PayPalSavedPaymentMethodRequest
     ) {
         guard !isEditing else { return }
+        // TODO: emit the edit tapped analytics event once the catalog is approved.
         fiStateBeforeEdit = fiState
         isEditing = true
-        Task { await performEdit(checkoutRequest: checkoutRequest, request: request) }
+        Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
 
     /// An abandoned app switch produces no callback — `BTPayPalClient` leaves its continuation
@@ -177,10 +189,12 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fiStateBeforeEdit = nil
     }
 
+    /// Called when the full-screen edit loader appears.
     func editLoaderDidAppear() {
         isEditLoaderOnScreen = true
     }
 
+    /// Called when the full-screen edit loader is dismissed; delivers any result held for it.
     func editLoaderDidDismiss() {
         isEditLoaderOnScreen = false
         guard let result = pendingEditResult else { return }
@@ -188,7 +202,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         completion(result.nonce, result.error)
     }
 
+    /// Opens the "Learn more" lander in-app when PayPal allows embedding, otherwise in the browser.
     func learnMoreTapped() {
+        // TODO: emit the learn more tapped analytics event once the catalog is approved.
         // SFSafariViewController only loads web URLs, and PayPal marks landers it forbids embedding.
         guard let url = learnMoreURL, url.scheme == "https" || url.scheme == "http" else { return }
 
@@ -222,9 +238,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fiState = state
     }
 
+    /// Cancels any in-flight credit fetch and starts one for `request`.
     private func startCreditFetch(request: PayPalSavedPaymentMethodRequest) {
         creditTask?.cancel()
-        creditTask = Task { await loadCreditMessaging(request: request) }
+        creditTask = Task { [weak self] in await self?.loadCreditMessaging(request: request) }
     }
 
     /// Fetches the Pay Later message. Additive — any failure hides the row.

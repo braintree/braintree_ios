@@ -215,6 +215,21 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertNil(sut.creditMessage)
     }
 
+    /// `onAppear` refires on tab switches, and a refetch would bring back the pre-edit instrument.
+    func testOnAppear_afterAnEdit_doesNotRefetch() async throws {
+        try injectPayPalClient(nonce: "fake-nonce")
+        let sut = makeSUT()
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        await drainTasks()
+        XCTAssertTrue(sut.didCompleteEdit)
+        mockAPIClient.lastPOSTParameters = nil
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: true)
+        await drainTasks()
+
+        XCTAssertNil(mockAPIClient.lastPOSTParameters)
+    }
+
     // MARK: - requestChanged
 
     /// `@StateObject` keeps one view model for the screen's life, so a changed amount has to be
@@ -448,23 +463,6 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
 
         XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .hidden)
-    }
-
-    // MARK: - Refetch guard
-
-    /// `onAppear` refires on tab switches, and a refetch would bring back the pre-edit instrument.
-    func testOnAppear_afterAnEdit_doesNotRefetch() async throws {
-        try injectPayPalClient(nonce: "fake-nonce")
-        let sut = makeSUT()
-        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        await drainTasks()
-        XCTAssertTrue(sut.didCompleteEdit)
-        mockAPIClient.lastPOSTParameters = nil
-
-        sut.onAppear(request: makeRequest(), showCreditMessaging: true)
-        await drainTasks()
-
-        XCTAssertNil(mockAPIClient.lastPOSTParameters)
     }
 }
 

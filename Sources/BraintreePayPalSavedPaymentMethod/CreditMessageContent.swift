@@ -6,21 +6,21 @@ struct CreditMessageContent: Equatable {
     /// The non-tappable copy: main block plus any disclaimer block, space-joined.
     let message: String
 
+    /// Whether `learnMoreURL` may load in an embedded web view rather than an external browser.
+    let isEmbeddable: Bool
+
     /// The "Learn more" action copy, when present.
     let learnMoreText: String?
 
     /// The URL opened when "Learn more" is tapped.
     let learnMoreURL: URL?
 
-    /// Whether `learnMoreURL` may load in an embedded web view rather than an external browser.
-    let isEmbeddable: Bool
-
     /// Seeds content directly. Used by SwiftUI previews and tests, which have no network response.
-    init(message: String, learnMoreText: String?, learnMoreURL: URL?, isEmbeddable: Bool) {
+    init(message: String, isEmbeddable: Bool, learnMoreText: String?, learnMoreURL: URL?) {
         self.message = message
+        self.isEmbeddable = isEmbeddable
         self.learnMoreText = learnMoreText
         self.learnMoreURL = learnMoreURL
-        self.isEmbeddable = isEmbeddable
     }
 
     /// Composes the content, or returns `nil` when there is no main copy to display (hide the row).
