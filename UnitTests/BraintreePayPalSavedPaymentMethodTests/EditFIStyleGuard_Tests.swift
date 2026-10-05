@@ -7,9 +7,9 @@ final class EditFIStyleGuard_Tests: XCTestCase {
     // MARK: - Colors
 
     func testColors_whenMerchantLeavesThemNil_returnTheSDKDefaults() {
-        XCTAssertEqual(EditFIStyleGuard.backgroundColor(nil), EditFIStyleGuard.Defaults.backgroundColor)
-        XCTAssertEqual(EditFIStyleGuard.textColor(nil), EditFIStyleGuard.Defaults.textColor)
-        XCTAssertEqual(EditFIStyleGuard.containerBorderColor(nil), EditFIStyleGuard.Defaults.containerBorderColor)
+        XCTAssertEqual(EditFIStyleGuard.backgroundColor(nil), EditFIStyleDefaultConstants.backgroundColor)
+        XCTAssertEqual(EditFIStyleGuard.textColor(nil), EditFIStyleDefaultConstants.textColor)
+        XCTAssertEqual(EditFIStyleGuard.containerBorderColor(nil), EditFIStyleDefaultConstants.containerBorderColor)
     }
 
     func testColors_whenMerchantSuppliesThem_returnTheMerchantValue() {
