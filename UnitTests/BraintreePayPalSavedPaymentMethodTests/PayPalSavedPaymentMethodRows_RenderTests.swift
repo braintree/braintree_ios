@@ -4,24 +4,12 @@ import XCTest
 
 /// Renders each row on its own. The accessibility truncation bug this suite guards against lived
 /// entirely inside `EditFIRow`'s layout, where no view model assertion could see it.
-final class BTPayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTestCase {
+final class PayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTestCase {
 
     // MARK: - Helpers
 
-    private func creditContent(
-        learnMoreText: String? = "Learn more",
-        isEmbeddable: Bool = false
-    ) -> CreditMessageContent {
-        CreditMessageContent(
-            message: "Or 4 interest-free payments of $324.50.",
-            learnMoreText: learnMoreText,
-            learnMoreURL: URL(string: "https://example.com/lander"),
-            isEmbeddable: isEmbeddable
-        )
-    }
-
     private func row(_ content: EditFIRow.Content) -> EditFIRow {
-        EditFIRow(content: content, style: BTPayPalSavedPaymentMethodViewStyle(), onEdit: {})
+        EditFIRow(content: content, style: PayPalSavedPaymentMethodViewStyle(), onEdit: {})
     }
 
     // MARK: - Glyph selection
@@ -63,18 +51,19 @@ final class BTPayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRender
 
     // MARK: - Credit messaging
 
-    /// The three message shapes share one render path, so they are driven from a table.
+    /// Both message shapes share one render path, so they are driven from a table.
     func testRender_everyCreditMessageShape() {
-        let contents: [(name: String, content: CreditMessageContent)] = [
-            ("with learn more", creditContent()),
-            ("without learn more", creditContent(learnMoreText: nil)),
-            ("embeddable", creditContent(isEmbeddable: true))
+        let learnMoreTexts: [(name: String, text: String?)] = [
+            ("with learn more", "Learn more"),
+            ("without learn more", nil)
         ]
 
-        for entry in contents {
+        for entry in learnMoreTexts {
             let row = CreditMessagingRow(
-                style: BTPayPalSavedPaymentMethodViewStyle(),
-                content: entry.content,
+                style: PayPalSavedPaymentMethodViewStyle(),
+                message: "Or 4 interest-free payments of $324.50.",
+                learnMoreText: entry.text,
+                learnMoreURL: URL(string: "https://example.com/lander"),
                 onLearnMore: {}
             )
             XCTAssertNotNil(rendered(row), entry.name)
@@ -93,7 +82,7 @@ final class BTPayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRender
 
         for content in cases {
             try render(
-                EditFIRow(content: content, style: BTPayPalSavedPaymentMethodViewStyle(), onEdit: {})
+                EditFIRow(content: content, style: PayPalSavedPaymentMethodViewStyle(), onEdit: {})
             )
         }
     }

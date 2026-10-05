@@ -39,12 +39,12 @@ class SavedPaymentMethodRenderTestCase: XCTestCase {
         lastDigits: String? = "1234",
         imageURL: String? = nil,
         subtype: String? = nil
-    ) throws -> BTPayPalSavedPaymentMethod {
+    ) throws -> PayPalSavedPaymentMethod {
         var json: [String: Any] = ["type": type]
         json["label"] = label
         json["lastDigits"] = lastDigits
         json["imageUrl"] = imageURL
         json["subtype"] = subtype
-        return try XCTUnwrap(BTPayPalSavedPaymentMethod(json: BTJSON(value: json)))
+        return try XCTUnwrap(PayPalSavedPaymentMethod(json: BTJSON(value: json)))
     }
 }

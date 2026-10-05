@@ -12,13 +12,13 @@ import UIKit
 struct EditFIRow: View {
 
     enum Content: Equatable {
-        case instrument(BTPayPalSavedPaymentMethod)
+        case instrument(PayPalSavedPaymentMethod)
         case displayOnly(email: String, isEditable: Bool)
         case brandOnly
     }
 
     let content: Content
-    let style: BTPayPalSavedPaymentMethodViewStyle
+    let style: PayPalSavedPaymentMethodViewStyle
     let onEdit: () -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -30,14 +30,14 @@ struct EditFIRow: View {
     }
 
     private var fiFont: Font {
-        BTPayPalSavedPaymentMethodFont.font(
-            name: style.componentAppearance?.fontName,
+        PayPalSavedPaymentMethodFont.font(
             size: EditFIStyleGuard.fontSize(
                 style.container?.fundingInstrument?.textFontSize,
                 base: style.componentAppearance?.baseFontSize,
                 default: EditFIStyleGuard.Defaults.fundingInstrumentTextFontSize
             ),
-            dynamicTypeSize: dynamicTypeSize
+            dynamicTypeSize: dynamicTypeSize,
+            name: style.componentAppearance?.fontName
         )
     }
 
@@ -150,7 +150,7 @@ struct EditFIRow: View {
         .accessibilityHint("Change the funding instrument PayPal will charge")
     }
 
-    private func fiAccessibilityLabel(for summary: BTPayPalSavedPaymentMethod) -> String {
+    private func fiAccessibilityLabel(for summary: PayPalSavedPaymentMethod) -> String {
         if isPayPalCredit(summary) {
             return summary.label ?? ""
         }
@@ -181,7 +181,7 @@ struct EditFIRow: View {
             .fill(Color(uiColor: EditFIStyleGuard.Defaults.fundingInstrumentBackgroundColor))
     }
 
-    @ViewBuilder private func fiIcon(for summary: BTPayPalSavedPaymentMethod) -> some View {
+    @ViewBuilder private func fiIcon(for summary: PayPalSavedPaymentMethod) -> some View {
         Group {
             if let url = summary.imageURL {
                 AsyncImage(url: url) { phase in
@@ -222,7 +222,7 @@ struct EditFIRow: View {
 
     /// Shown when the card art is missing or fails to load. Only banks get the bank glyph;
     /// every other instrument falls back to the card glyph.
-    private func fallbackGlyph(for type: BTPayPalSavedPaymentMethodType?) -> some View {
+    private func fallbackGlyph(for type: PayPalSavedPaymentMethodType?) -> some View {
         Image(type == .bank ? "BankFundingIcon" : "CardFundingIcon", bundle: .payPalSavedPaymentMethod)
             .resizable()
             .scaledToFit()
@@ -242,11 +242,11 @@ struct EditFIRow: View {
     // MARK: - Helpers
 
     /// PayPal Credit isn't a card, so it's shown by its label rather than card art and last digits.
-    private func isPayPalCredit(_ summary: BTPayPalSavedPaymentMethod) -> Bool {
+    private func isPayPalCredit(_ summary: PayPalSavedPaymentMethod) -> Bool {
         summary.type == .payPalCredit
     }
 
-    private func fiText(for summary: BTPayPalSavedPaymentMethod) -> String {
+    private func fiText(for summary: PayPalSavedPaymentMethod) -> String {
         if isPayPalCredit(summary) {
             return summary.label ?? ""
         }
@@ -263,7 +263,7 @@ struct EditFIRow: View {
 /// so the brand stays visible while the FI loads.
 struct PayPalBrandCluster: View {
 
-    let style: BTPayPalSavedPaymentMethodViewStyle
+    let style: PayPalSavedPaymentMethodViewStyle
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
@@ -272,14 +272,14 @@ struct PayPalBrandCluster: View {
     }
 
     private var labelFont: Font {
-        BTPayPalSavedPaymentMethodFont.font(
-            name: style.componentAppearance?.fontName,
+        PayPalSavedPaymentMethodFont.font(
             size: EditFIStyleGuard.fontSize(
                 style.container?.label?.fontSize,
                 base: style.componentAppearance?.baseFontSize,
                 default: EditFIStyleGuard.Defaults.labelFontSize
             ),
             dynamicTypeSize: dynamicTypeSize,
+            name: style.componentAppearance?.fontName,
             weight: .bold
         )
     }

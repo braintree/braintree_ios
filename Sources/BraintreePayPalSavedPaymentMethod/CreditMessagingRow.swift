@@ -3,12 +3,13 @@ import UIKit
 
 /// The inline credit (Pay Later) messaging line rendered below the FI row.
 ///
-/// The copy comes from the fetched `BTPayPalCreditMessagingResult` (composed into
-/// `CreditMessageContent`). Tapping "Learn more" presents the lander (`click_url` webview).
+/// Tapping "Learn more" hands the tap back through `onLearnMore` so the caller picks how the lander opens.
 struct CreditMessagingRow: View {
 
-    let style: BTPayPalSavedPaymentMethodViewStyle
-    let content: CreditMessageContent
+    let style: PayPalSavedPaymentMethodViewStyle
+    let message: String
+    let learnMoreText: String?
+    let learnMoreURL: URL?
     let onLearnMore: () -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -24,14 +25,14 @@ struct CreditMessagingRow: View {
     }
 
     private var font: Font {
-        BTPayPalSavedPaymentMethodFont.font(
-            name: style.componentAppearance?.fontName,
+        PayPalSavedPaymentMethodFont.font(
             size: EditFIStyleGuard.fontSize(
                 style.container?.creditMessaging?.fontSize,
                 base: style.componentAppearance?.baseFontSize,
                 default: EditFIStyleGuard.Defaults.creditMessageFontSize
             ),
-            dynamicTypeSize: dynamicTypeSize
+            dynamicTypeSize: dynamicTypeSize,
+            name: style.componentAppearance?.fontName
         )
     }
 
@@ -51,11 +52,11 @@ struct CreditMessagingRow: View {
     /// "Learn more" is a link inside the message rather than a separate view, so it keeps flowing
     /// and wrapping inline while confining the tap to its own glyphs instead of the whole row.
     private var attributedMessage: AttributedString {
-        var message = AttributedString(content.message)
-        message.foregroundColor = textColor
+        var text = AttributedString(message)
+        text.foregroundColor = textColor
 
-        guard let learnMoreText = content.learnMoreText, let url = content.learnMoreURL else {
-            return message
+        guard let learnMoreText, let url = learnMoreURL else {
+            return text
         }
 
         var link = AttributedString(learnMoreText)
@@ -68,6 +69,6 @@ struct CreditMessagingRow: View {
             link.underlineStyle = .single
         }
 
-        return message + AttributedString(" ") + link
+        return text + AttributedString(" ") + link
     }
 }
