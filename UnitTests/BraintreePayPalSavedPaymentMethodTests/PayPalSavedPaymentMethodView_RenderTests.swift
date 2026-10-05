@@ -14,9 +14,9 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
     ) -> PayPalSavedPaymentMethodView {
         let creditMessage = CreditMessageContent(
             message: "Or 4 interest-free payments of $324.50.",
+            isEmbeddable: false,
             learnMoreText: "Learn more",
-            learnMoreURL: URL(string: "https://example.com/lander"),
-            isEmbeddable: false
+            learnMoreURL: URL(string: "https://example.com/lander")
         )
         return PayPalSavedPaymentMethodView(
             viewModel: PayPalSavedPaymentMethodViewModel(

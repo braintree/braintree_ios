@@ -57,10 +57,10 @@ public struct PayPalSavedPaymentMethodView: View {
         self.style = style
         _viewModel = StateObject(
             wrappedValue: PayPalSavedPaymentMethodViewModel(
+                authorization: authorization,
                 universalLink: universalLink,
                 fallbackURLScheme: fallbackURLScheme,
-                completion: completion,
-                authorization: authorization
+                completion: completion
             )
         )
     }
