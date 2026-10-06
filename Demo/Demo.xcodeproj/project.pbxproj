@@ -77,6 +77,10 @@
 		C0031226D3A57A2FA649B467 /* BraintreeLocalPayment in Frameworks */ = {isa = PBXBuildFile; productRef = 925F0AD22409D82A6A13FBB9 /* BraintreeLocalPayment */; };
 		C641E05A26EDDC6C7A0D981E /* BraintreeSEPADirectDebit in Frameworks */ = {isa = PBXBuildFile; productRef = 3ECAF00E179CD08654745669 /* BraintreeSEPADirectDebit */; };
 		E4A9F0AEC9B8471D0680812F /* BraintreeCore in Frameworks */ = {isa = PBXBuildFile; productRef = D4AA02413D91949E0C524E1A /* BraintreeCore */; };
+		FE1000000000000000000002 /* BraintreePayPalSavedPaymentMethod in Frameworks */ = {isa = PBXBuildFile; productRef = FE1000000000000000000004 /* BraintreePayPalSavedPaymentMethod */; };
+		FE1000000000000000000007 /* PayPalSavedPaymentMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */; };
+		FE1000000000000000000009 /* PayPalSavedPaymentMethodDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000008 /* PayPalSavedPaymentMethodDemoView.swift */; };
+		FE1000000000000000000011 /* PayPalSavedPaymentMethodStyleEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1000000000000000000010 /* PayPalSavedPaymentMethodStyleEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,6 +179,9 @@
 		BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollectorViewController.swift; sourceTree = "<group>"; };
 		BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationViewController.swift; sourceTree = "<group>"; };
 		BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalMessaging_UITests.swift; sourceTree = "<group>"; };
+		FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodViewController.swift; sourceTree = "<group>"; };
+		FE1000000000000000000008 /* PayPalSavedPaymentMethodDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodDemoView.swift; sourceTree = "<group>"; };
+		FE1000000000000000000010 /* PayPalSavedPaymentMethodStyleEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodStyleEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +211,7 @@
 				69F00498C831E71A6AB30B77 /* BraintreeThreeDSecure in Frameworks */,
 				6483C313D1C5496C2961C461 /* BraintreeVenmo in Frameworks */,
 				A41D672CD93FB13120B12D7B /* BraintreeUIComponents in Frameworks */,
+				FE1000000000000000000002 /* BraintreePayPalSavedPaymentMethod in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +280,7 @@
 			children = (
 				625257C6301935C800B69488 /* CardFormView.swift */,
 				04DDF4612EE8AA1200FBDE49 /* PaymentButtonHelper.swift */,
+				FE1000000000000000000010 /* PayPalSavedPaymentMethodStyleEditor.swift */,
 				803FB9DD26D93146002BF92D /* BTCardFormView.swift */,
 				BEAAAD042970A70D000BD296 /* BTSEPADirectDebitTestHelper.swift */,
 				BED461822AD072D9001B0DDF /* CardHelpers.swift */,
@@ -351,6 +360,8 @@
 				08A83F582EDE268E0076BD28 /* UIComponentsViewController.swift */,
 				BE67CDBF2B29FF7B00BA4904 /* PayPalMessagingViewController.swift */,
 				BED7C4C92ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift */,
+				FE1000000000000000000006 /* PayPalSavedPaymentMethodViewController.swift */,
+				FE1000000000000000000008 /* PayPalSavedPaymentMethodDemoView.swift */,
 				BE777AC327D9370400487D23 /* SEPADirectDebitViewController.swift */,
 				0827D164300131C100D26DC4 /* SEPADirectDebitView.swift */,
 				8028B9752B28C9E100C88CE8 /* ShopperInsightsViewController.swift */,
@@ -482,6 +493,7 @@
 				6841832561FF406F968307E6 /* BraintreeThreeDSecure */,
 				19955B14AB6561A52097B4BE /* BraintreeVenmo */,
 				E0E6601256ABE55B6DC78F5C /* BraintreeUIComponents */,
+				FE1000000000000000000004 /* BraintreePayPalSavedPaymentMethod */,
 			);
 			productName = Demo;
 			productReference = A0988E4924DB43DC0095EEEE /* Demo.app */;
@@ -625,6 +637,9 @@
 				BE994B0D2AD838A500470773 /* PaymentButtonBaseViewController.swift in Sources */,
 				62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */,
 				BED7C4CA2ABDD35700EF8550 /* PayPalWebCheckoutViewController.swift in Sources */,
+				FE1000000000000000000007 /* PayPalSavedPaymentMethodViewController.swift in Sources */,
+				FE1000000000000000000009 /* PayPalSavedPaymentMethodDemoView.swift in Sources */,
+				FE1000000000000000000011 /* PayPalSavedPaymentMethodStyleEditor.swift in Sources */,
 				BEBD52872AABA513005D6687 /* ThreeDSecureViewController.swift in Sources */,
 				803FB9DE26D93146002BF92D /* BTCardFormView.swift in Sources */,
 				BE45D7162AD97C340047E2C7 /* ContainmentViewController.swift in Sources */,
@@ -874,6 +889,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "Demo-Simulator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
@@ -903,6 +919,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = "Demo-Simulator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6.0.0;
 				DEVELOPMENT_TEAM = 43253H4X22;
@@ -1117,6 +1134,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F6145BC109F4387B4EED8A7B /* XCLocalSwiftPackageReference ".." */;
 			productName = BraintreeCard;
+		};
+		FE1000000000000000000004 /* BraintreePayPalSavedPaymentMethod */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F6145BC109F4387B4EED8A7B /* XCLocalSwiftPackageReference ".." */;
+			productName = BraintreePayPalSavedPaymentMethod;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
