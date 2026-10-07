@@ -270,7 +270,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     /// An abandoned app switch never resumes the continuation, so foregrounding is the only
     /// signal that lets us take the full-screen loader down.
-    func testAppReturnedToForeground_whileEditing_clearsTheLoaderAndRestoresThePriorState() async throws {
+    func testAppReturnedToForeground_whileEditing_clearsTheLoaderAndLeavesTheFI() async throws {
         try injectPayPalClient()
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
@@ -321,14 +321,14 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
     }
 
-    func testEdit_whenTokenizeFails_holdsTheErrorUntilTheLoaderDismisses() async throws {
+    /// A fast failure (e.g. offline) can land while the loader is still animating in, before it appears.
+    func testEdit_whenTokenizeFailsBeforeTheLoaderAppears_holdsTheErrorUntilItDismisses() async throws {
         let cannedError = NSError(domain: "com.example.error", code: 1)
         try injectPayPalClient(error: cannedError)
         var receivedError: Error?
         let sut = makeSUT { _, error in receivedError = error }
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        sut.editLoaderDidAppear()
         await drainTasks()
 
         XCTAssertFalse(sut.isEditing)
@@ -339,13 +339,15 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(receivedError as NSError?, cannedError)
     }
 
-    /// On the app-switch rail the loader is cleared on foreground, so there is no dismissal to wait for.
+    /// On the app-switch rail the loader is dismissed on foreground, before the nonce arrives.
     func testEdit_whenTheLoaderIsAlreadyGone_deliversTheNonceImmediately() async throws {
         try injectPayPalClient(nonce: "fake-nonce")
         var receivedNonce: BTPayPalAccountNonce?
         let sut = makeSUT { nonce, _ in receivedNonce = nonce }
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        sut.appReturnedToForeground()
+        sut.editLoaderDidDismiss()
         await drainTasks()
 
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
@@ -392,6 +394,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
         await drainTasks()
+        sut.editLoaderDidDismiss()
 
         XCTAssertEqual(sut.fiState, .hidden)
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")

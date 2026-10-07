@@ -32,8 +32,8 @@ final class CreditMessageContent_Tests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(content?.learnMoreText, "Learn more")
-        XCTAssertEqual(content?.learnMoreURL, URL(string: "https://example.com/click"))
+        XCTAssertEqual(content?.learnMore?.text, "Learn more")
+        XCTAssertEqual(content?.learnMore?.url, URL(string: "https://example.com/click"))
     }
 
     /// Copy without a URL would render a link that does nothing when tapped, so it is dropped.
@@ -42,8 +42,7 @@ final class CreditMessageContent_Tests: XCTestCase {
             result: try result(actionItems: [["type": "LINK", "text": "Learn more"]])
         )
 
-        XCTAssertNil(content?.learnMoreText)
-        XCTAssertNil(content?.learnMoreURL)
+        XCTAssertNil(content?.learnMore)
         XCTAssertEqual(content?.message, "Or 4 interest-free payments.")
     }
 
@@ -55,7 +54,7 @@ final class CreditMessageContent_Tests: XCTestCase {
             ])
         )
 
-        XCTAssertEqual(content?.learnMoreText, "Learn more")
-        XCTAssertEqual(content?.learnMoreURL, URL(string: "https://example.com/click"))
+        XCTAssertEqual(content?.learnMore?.text, "Learn more")
+        XCTAssertEqual(content?.learnMore?.url, URL(string: "https://example.com/click"))
     }
 }

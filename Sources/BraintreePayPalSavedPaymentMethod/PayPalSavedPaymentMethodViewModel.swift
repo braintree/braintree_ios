@@ -53,7 +53,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// The "Learn more" lander URL of the current credit message.
     var learnMoreURL: URL? {
-        creditMessage?.learnMoreURL
+        creditMessage?.learnMore?.url
     }
 
     /// The Pay Later offer is quoted against the pre-edit funding instrument and is only actionable if the
@@ -80,14 +80,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// `nil` for previews, which seed `fiState` directly instead of fetching.
     private let fetchClient: PayPalSavedPaymentMethodClient?
 
-    /// The FI shown before an edit began, restored if the cosmetic refresh is unavailable.
-    private var fiStateBeforeEdit: FIState?
-
     /// Held until the loader is off screen: iOS drops a modal presented over one still showing.
     private var pendingEditResult: (nonce: BTPayPalAccountNonce?, error: Error?)?
 
-    /// Whether the full-screen edit loader is currently presented.
-    private var isEditLoaderOnScreen = false
+    /// Set when the loader is requested, so a result that lands while it animates in still waits for it.
+    private var isEditLoaderShowing = false
 
     /// Only the latest credit fetch may set `creditMessage`, so an older amount's response can't land last.
     private var creditTask: Task<Void, Never>?
@@ -173,30 +170,25 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     ) {
         guard !isEditing else { return }
         // TODO: emit the edit tapped analytics event once the catalog is approved.
-        fiStateBeforeEdit = fiState
         isEditing = true
+        isEditLoaderShowing = true
         Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
 
     /// An abandoned app switch produces no callback — `BTPayPalClient` leaves its continuation
     /// suspended — so foregrounding is the only signal that the buyer is back. Matches `PayPalButton`.
     func appReturnedToForeground() {
-        guard isEditing else { return }
         isEditing = false
-        if let prior = fiStateBeforeEdit {
-            fiState = prior
-        }
-        fiStateBeforeEdit = nil
     }
 
-    /// Called when the full-screen edit loader appears.
+    /// Called when the full-screen edit loader appears; covers a retap while the previous one is dismissing.
     func editLoaderDidAppear() {
-        isEditLoaderOnScreen = true
+        isEditLoaderShowing = true
     }
 
     /// Called when the full-screen edit loader is dismissed; delivers any result held for it.
     func editLoaderDidDismiss() {
-        isEditLoaderOnScreen = false
+        isEditLoaderShowing = false
         guard let result = pendingEditResult else { return }
         pendingEditResult = nil
         completion(result.nonce, result.error)
@@ -205,13 +197,12 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// Opens the "Learn more" lander in-app when PayPal allows embedding, otherwise in the browser.
     func learnMoreTapped() {
         // TODO: emit the learn more tapped analytics event once the catalog is approved.
-        // SFSafariViewController only loads web URLs, and PayPal marks landers it forbids embedding.
-        guard let url = learnMoreURL, url.scheme == "https" || url.scheme == "http" else { return }
+        guard let learnMore = creditMessage?.learnMore else { return }
 
-        if creditMessage?.isEmbeddable == true {
+        if learnMore.isEmbeddable {
             isLanderPresented = true
         } else {
-            application.open(url, options: [:], completionHandler: nil)
+            application.open(learnMore.url, options: [:], completionHandler: nil)
         }
     }
 
@@ -271,21 +262,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         checkoutRequest: BTPayPalCheckoutRequest,
         request: PayPalSavedPaymentMethodRequest
     ) async {
-        // Held locally: `appReturnedToForeground` clears the shared property when the buyer comes
-        // back from the app switch, which happens before this task resumes on that rail.
-        let priorState = fiState
-
-        // Every exit path either replaced fiState or must restore what was on screen before the edit.
-        var restoresPriorState = true
-        defer {
-            if restoresPriorState {
-                fiState = priorState
-            }
-            fiStateBeforeEdit = nil
+        guard let fetchClient else {
             isEditing = false
+            return
         }
-
-        guard let fetchClient else { return }
 
         let nonce: BTPayPalAccountNonce
         do {
@@ -299,7 +279,6 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         didCompleteEdit = true
         creditMessage = nil
         finishEdit(nonce: nonce, error: nil)
-        restoresPriorState = false
 
         guard let orderID = nonce.paymentID else {
             fiState = .hidden
@@ -323,7 +302,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// Delivers now if the loader is already gone (the app-switch rail clears it on foreground).
     private func finishEdit(nonce: BTPayPalAccountNonce?, error: Error?) {
         isEditing = false
-        if isEditLoaderOnScreen {
+        if isEditLoaderShowing {
             pendingEditResult = (nonce, error)
         } else {
             completion(nonce, error)
