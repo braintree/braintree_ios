@@ -178,8 +178,8 @@ public struct PayPalSavedPaymentMethodView: View {
                     CreditMessagingRow(
                         style: style,
                         message: content.message,
-                        learnMoreText: content.learnMoreText,
-                        learnMoreURL: content.learnMoreURL
+                        learnMoreText: content.learnMore?.text,
+                        learnMoreURL: content.learnMore?.url
                     ) {
                         viewModel.learnMoreTapped()
                     }
