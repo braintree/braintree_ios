@@ -51,23 +51,39 @@ final class PayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTe
 
     // MARK: - Credit messaging
 
-    /// Both message shapes share one render path, so they are driven from a table.
-    func testRender_everyCreditMessageShape() {
-        let learnMoreTexts: [(name: String, text: String?)] = [
-            ("with learn more", "Learn more"),
-            ("without learn more", nil)
-        ]
+    private func creditRow(learnMoreText: String? = "Learn more", linkColor: UIColor? = nil) -> CreditMessagingRow {
+        CreditMessagingRow(
+            style: PayPalSavedPaymentMethodViewStyle(
+                container: .init(creditMessaging: .init(linkColor: linkColor))
+            ),
+            message: "Or 4 interest-free payments of $324.50.",
+            learnMoreText: learnMoreText,
+            learnMoreURL: URL(string: "https://example.com/lander"),
+            onLearnMore: {}
+        )
+    }
 
-        for entry in learnMoreTexts {
-            let row = CreditMessagingRow(
-                style: PayPalSavedPaymentMethodViewStyle(),
-                message: "Or 4 interest-free payments of $324.50.",
-                learnMoreText: entry.text,
-                learnMoreURL: URL(string: "https://example.com/lander"),
-                onLearnMore: {}
-            )
-            XCTAssertNotNil(rendered(row), entry.name)
-        }
+    func testAttributedMessage_withLearnMore_linksTheURLAndUnderlinesWithoutALinkColor() throws {
+        let message = creditRow().attributedMessage
+        let link = try XCTUnwrap(message.runs.first { $0.link != nil })
+
+        XCTAssertEqual(String(message[link.range].characters), "Learn more")
+        XCTAssertEqual(link.link, URL(string: "https://example.com/lander"))
+        XCTAssertEqual(link.underlineStyle, .single)
+    }
+
+    func testAttributedMessage_withALinkColor_doesNotUnderline() throws {
+        let message = creditRow(linkColor: .systemBlue).attributedMessage
+        let link = try XCTUnwrap(message.runs.first { $0.link != nil })
+
+        XCTAssertNil(link.underlineStyle)
+    }
+
+    func testAttributedMessage_withoutLearnMoreText_hasNoLink() {
+        let message = creditRow(learnMoreText: nil).attributedMessage
+
+        XCTAssertEqual(String(message.characters), "Or 4 interest-free payments of $324.50.")
+        XCTAssertFalse(message.runs.contains { $0.link != nil })
     }
 
     // MARK: - Child rows in isolation

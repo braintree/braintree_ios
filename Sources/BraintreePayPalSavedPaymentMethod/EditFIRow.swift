@@ -23,10 +23,11 @@ struct EditFIRow: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    // MARK: - Derived style values (guarded)
+    // MARK: - Private Properties
 
-    private var textColor: Color {
-        Color(uiColor: EditFIStyleGuard.textColor(style.componentAppearance?.textColor))
+    /// Fixed rather than the merchant's text color, so it stays legible on the fixed pill background.
+    private var pillContentColor: Color {
+        Color(uiColor: EditFIStyleDefaultConstants.fundingInstrumentTextColor)
     }
 
     private var fiFont: Font {
@@ -104,7 +105,7 @@ struct EditFIRow: View {
                             }
                             Text(fiText(for: summary))
                                 .font(fiFont)
-                                .foregroundColor(textColor)
+                                .foregroundColor(pillContentColor)
                                 .lineLimit(1)
                                 .truncationMode(.tail)
                         }
@@ -117,7 +118,7 @@ struct EditFIRow: View {
                 HStack(spacing: EditFIStyleDefaultConstants.fundingInstrumentViewEditSpacing) {
                     Text(email)
                         .font(fiFont)
-                        .foregroundColor(textColor)
+                        .foregroundColor(pillContentColor)
                         .lineLimit(1)
                         .truncationMode(.middle)
                     if isEditable {
@@ -147,18 +148,16 @@ struct EditFIRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(label)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Change the funding instrument PayPal will charge")
+        .accessibilityHint("Change payment method")
     }
 
     private func fiAccessibilityLabel(for summary: PayPalSavedPaymentMethod) -> String {
-        if isPayPalCredit(summary) {
+        guard let lastDigits = lastDigits(for: summary) else {
             return summary.label ?? ""
         }
-
-        guard let lastDigits = summary.lastDigits, !lastDigits.isEmpty else {
-            return summary.label ?? ""
-        }
-        return [summary.label, "ending in \(lastDigits)"].compactMap { $0 }.joined(separator: ", ")
+        // Spaced so VoiceOver reads each digit instead of one number.
+        let spokenDigits = lastDigits.map(String.init).joined(separator: " ")
+        return [summary.label, "ending in \(spokenDigits)"].compactMap { $0 }.joined(separator: ", ")
     }
 
     // MARK: - Subviews
@@ -167,8 +166,7 @@ struct EditFIRow: View {
         PayPalBrandCluster(style: style)
     }
 
-    /// The rounded pill wrapping the FI content + edit pencil. Fixed to the Figma values — not
-    /// merchant-configurable.
+    /// The rounded pill wrapping the FI content + edit pencil. Fixed values — not merchant-configurable.
     private func fiPill<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
         content()
             .padding(.horizontal, EditFIStyleDefaultConstants.fundingInstrumentHorizontalPadding)
@@ -235,7 +233,7 @@ struct EditFIRow: View {
             .resizable()
             .scaledToFit()
             .frame(width: editIconSide, height: editIconSide)
-            .foregroundColor(textColor)
+            .foregroundColor(pillContentColor)
             .accessibilityHidden(true)
     }
 
@@ -246,68 +244,20 @@ struct EditFIRow: View {
         summary.type == .payPalCredit
     }
 
-    private func fiText(for summary: PayPalSavedPaymentMethod) -> String {
-        if isPayPalCredit(summary) {
-            return summary.label ?? ""
+    /// Shared by the visible text and the VoiceOver label so the two can't drift apart.
+    /// `nil` when the FI is shown by its label alone: PayPal Credit, or no digits.
+    private func lastDigits(for summary: PayPalSavedPaymentMethod) -> String? {
+        guard !isPayPalCredit(summary), let lastDigits = summary.lastDigits, !lastDigits.isEmpty else {
+            return nil
         }
+        return lastDigits
+    }
 
-        guard let lastDigits = summary.lastDigits, !lastDigits.isEmpty else {
+    private func fiText(for summary: PayPalSavedPaymentMethod) -> String {
+        guard let lastDigits = lastDigits(for: summary) else {
             return summary.label ?? ""
         }
         // Card art conveys the brand; the text is just the masked last digits.
         return "••\(lastDigits)"
-    }
-}
-
-/// The PayPal brand mark: `[badge] PayPal`. Shared by the loaded row and the loading skeleton
-/// so the brand stays visible while the FI loads.
-struct PayPalBrandCluster: View {
-
-    let style: PayPalSavedPaymentMethodViewStyle
-
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    private var textColor: Color {
-        Color(uiColor: EditFIStyleGuard.textColor(style.componentAppearance?.textColor))
-    }
-
-    private var labelFont: Font {
-        PayPalSavedPaymentMethodFont.font(
-            size: EditFIStyleGuard.fontSize(
-                style.container?.label?.fontSize,
-                base: style.componentAppearance?.baseFontSize,
-                default: EditFIStyleDefaultConstants.labelFontSize
-            ),
-            dynamicTypeSize: dynamicTypeSize,
-            name: style.componentAppearance?.fontName,
-            weight: .bold
-        )
-    }
-
-    /// The PayPal logo (48×30 artwork) sits in a square (1:1) container. `logo.width` sets the
-    /// side (default 48); the artwork scales to fit inside, preserving its own aspect ratio.
-    private var logoSide: CGFloat {
-        EditFIStyleGuard.dimension(style.container?.logo?.width, default: EditFIStyleDefaultConstants.payPalLogoSide)
-    }
-
-    var body: some View {
-        HStack(spacing: EditFIStyleGuard.dimension(
-            style.container?.label?.leadingGap,
-            default: EditFIStyleDefaultConstants.labelLeadingGap
-        )) {
-            if style.showPayPalLogo {
-                Image("PayPalBadge", bundle: .payPalSavedPaymentMethod)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: logoSide, height: logoSide)
-                    .accessibilityHidden(true)
-            }
-            if style.showPayPalLabel {
-                Text("PayPal")
-                    .font(labelFont)
-                    .foregroundColor(textColor)
-                    .fixedSize()
-            }
-        }
     }
 }

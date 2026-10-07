@@ -14,31 +14,27 @@ struct CreditMessagingRow: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    private var textColor: Color {
-        Color(uiColor: EditFIStyleGuard.textColor(style.componentAppearance?.textColor))
-    }
+    // MARK: - Private Properties
 
     /// Accent for "Learn more". When no `linkColor` is set, the link is distinguished by
-    /// bold + underline in the base text color instead (styling doc §3.1).
+    /// an underline in the base text color instead.
     private var learnMoreColor: Color? {
         style.container?.creditMessaging?.linkColor.map { Color(uiColor: $0) }
     }
 
-    private var font: Font {
-        PayPalSavedPaymentMethodFont.font(
-            size: EditFIStyleGuard.fontSize(
-                style.container?.creditMessaging?.fontSize,
-                base: style.componentAppearance?.baseFontSize,
-                default: EditFIStyleDefaultConstants.creditMessageFontSize
-            ),
-            dynamicTypeSize: dynamicTypeSize,
-            name: style.componentAppearance?.fontName
+    private var fontSize: CGFloat {
+        EditFIStyleGuard.fontSize(
+            style.container?.creditMessaging?.fontSize,
+            base: style.componentAppearance?.baseFontSize,
+            default: EditFIStyleDefaultConstants.creditMessageFontSize
         )
     }
 
+    // MARK: - Body
+
     var body: some View {
         Text(attributedMessage)
-            .font(font)
+            .font(font(weight: .regular))
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             // The lander choice (embedded vs external) belongs to the view model, so the link's
@@ -49,11 +45,14 @@ struct CreditMessagingRow: View {
             })
     }
 
+    // MARK: - Internal Properties
+
     /// "Learn more" is a link inside the message rather than a separate view, so it keeps flowing
     /// and wrapping inline while confining the tap to its own glyphs instead of the whole row.
-    private var attributedMessage: AttributedString {
+    /// Internal for testing.
+    var attributedMessage: AttributedString {
         var text = AttributedString(message)
-        text.foregroundColor = textColor
+        text.foregroundColor = style.resolvedTextColor
 
         guard let learnMoreText, let url = learnMoreURL else {
             return text
@@ -61,14 +60,25 @@ struct CreditMessagingRow: View {
 
         var link = AttributedString(learnMoreText)
         link.link = url
-        link.foregroundColor = learnMoreColor ?? textColor
-        link.inlinePresentationIntent = .stronglyEmphasized
+        link.foregroundColor = learnMoreColor ?? style.resolvedTextColor
+        link.font = font(weight: .medium)
 
-        // Without a merchant accent the link is distinguished by bold + underline (styling doc §3.1).
+        // Without a merchant accent the link is distinguished by an underline.
         if learnMoreColor == nil {
             link.underlineStyle = .single
         }
 
         return text + AttributedString(" ") + link
+    }
+
+    // MARK: - Private Methods
+
+    private func font(weight: Font.Weight) -> Font {
+        PayPalSavedPaymentMethodFont.font(
+            size: fontSize,
+            dynamicTypeSize: dynamicTypeSize,
+            name: style.componentAppearance?.fontName,
+            weight: weight
+        )
     }
 }
