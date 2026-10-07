@@ -12,7 +12,7 @@ import BraintreeCore
 /// View model backing `PayPalSavedPaymentMethodView`.
 ///
 /// Owns the FI load state and the "Learn more" lander presentation, and drives the
-/// fetch (sticky FI + credit messaging) and edit (`BTPayPalClient` tokenize) flows.
+/// fetch (buyer default billing agreement + credit messaging) and edit (`BTPayPalClient` tokenize) flows.
 /// Every visual state is also reachable via the internal preview initializer.
 @MainActor
 final class PayPalSavedPaymentMethodViewModel: ObservableObject {
@@ -138,7 +138,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         // replace the post-edit instrument with the pre-edit one the API still returns.
         guard !didCompleteEdit else { return }
 
-        Task { [weak self] in await self?.loadStickyFI(request: request) }
+        Task { [weak self] in await self?.loadBuyerDefaultBillingAgreement(request: request) }
 
         if showCreditMessaging {
             startCreditFetch(request: request)
@@ -153,7 +153,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
     /// payer (email); else the component hides entirely (a network failure keeps the brand mark
-    /// via the `loadStickyFI` catch instead).
+    /// via the `loadBuyerDefaultBillingAgreement` catch instead).
     static func state(from summary: PayPalSavedPaymentMethodSummary) -> FIState {
         if let instrument = summary.paymentMethods.first {
             return .instrument(instrument)
@@ -217,9 +217,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Private Methods
 
-    /// Resolves the sticky FI (`STICKY_FI`, JWT from the client token) and maps it to `fiState`.
-    /// Any failure falls back to the brand-only tile so checkout is never blocked.
-    private func loadStickyFI(request: PayPalSavedPaymentMethodRequest) async {
+    /// Resolves the funding instrument on the buyer's default billing agreement (the one PayPal charges unless they
+    /// change it) and maps it to `fiState`. Any failure falls back to the brand-only tile so checkout is never blocked.
+    private func loadBuyerDefaultBillingAgreement(request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return } // preview: state is pre-seeded
 
         let state: FIState

@@ -46,4 +46,16 @@ final class CreditMessageContent_Tests: XCTestCase {
         XCTAssertNil(content?.learnMoreURL)
         XCTAssertEqual(content?.message, "Or 4 interest-free payments.")
     }
+
+    func testInit_whenThereAreMultipleActionItems_textAndURLComeFromTheSameItem() throws {
+        let content = CreditMessageContent(
+            result: try result(actionItems: [
+                ["type": "IMAGE", "alternative_text": "PayPal"],
+                ["type": "LINK", "text": "Learn more", "click_url": "https://example.com/click"]
+            ])
+        )
+
+        XCTAssertEqual(content?.learnMoreText, "Learn more")
+        XCTAssertEqual(content?.learnMoreURL, URL(string: "https://example.com/click"))
+    }
 }

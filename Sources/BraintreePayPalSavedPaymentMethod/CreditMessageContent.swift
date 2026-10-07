@@ -32,8 +32,8 @@ struct CreditMessageContent: Equatable {
         let disclaimerText = Self.compose(result.disclaimerItems)
         self.message = [mainText, disclaimerText].filter { !$0.isEmpty }.joined(separator: " ")
 
-        let actionText = Self.compose(result.actionItems)
         let action = result.actionItems.first { $0.clickURL != nil } ?? result.actionItems.first
+        let actionText = action.map { Self.compose([$0]) } ?? ""
 
         // Without a click URL the link would render but do nothing, so the copy is dropped with it.
         self.learnMoreURL = action?.clickURL
