@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 /// The SDK's built-in style defaults. Values for merchant-configurable fields apply when the merchant
@@ -27,6 +28,7 @@ enum EditFIStyleDefaultConstants {
         alpha: 1
     )
     static let fundingInstrumentCornerRadius: CGFloat = 6
+    static let fundingInstrumentTextColor = UIColor.black
     static let fundingInstrumentHorizontalPadding: CGFloat = 8
     static let fundingInstrumentVerticalPadding: CGFloat = 4
 
@@ -98,5 +100,13 @@ enum EditFIStyleGuard {
 
     private static func nonNegative(_ value: CGFloat) -> CGFloat {
         max(value, 0)
+    }
+}
+
+extension PayPalSavedPaymentMethodViewStyle {
+
+    /// The merchant's text color, else the SDK default.
+    var resolvedTextColor: Color {
+        Color(uiColor: EditFIStyleGuard.textColor(componentAppearance?.textColor))
     }
 }
