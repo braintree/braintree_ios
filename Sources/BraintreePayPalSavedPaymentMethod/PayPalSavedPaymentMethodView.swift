@@ -11,11 +11,11 @@ import BraintreePayPal
 /// A drop-in checkout component that shows the returning PayPal buyer's saved funding
 /// instrument (FI) and lets them edit it, with optional inline Pay Later messaging.
 ///
-/// The component resolves and renders the sticky FI, exposes an edit affordance that
-/// launches the PayPal paysheet via `BTPayPalClient`, and reports the tokenization outcome
-/// via `completion`. The buyer's FI is resolved by the SDK from the client token — the
-/// merchant supplies the checkout request plus a `PayPalSavedPaymentMethodRequest` carrying
-/// the amount, currency, and merchant account the component needs.
+/// The component resolves and renders the FI on the buyer's default billing agreement, exposes
+/// an edit affordance that launches the PayPal paysheet via `BTPayPalClient`, and reports the
+/// tokenization outcome via `completion`. The buyer's FI is resolved by the SDK from the client
+/// token — the merchant supplies the checkout request plus a `PayPalSavedPaymentMethodRequest`
+/// carrying the amount, currency, and merchant account the component needs.
 public struct PayPalSavedPaymentMethodView: View {
 
     // MARK: - Private Properties
