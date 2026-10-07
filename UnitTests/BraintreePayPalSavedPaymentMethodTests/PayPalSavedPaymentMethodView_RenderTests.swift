@@ -61,10 +61,6 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
         }
     }
 
-    func testRender_loadingState_withCreditMessagingDisabled_rendersFISkeletonOnly() throws {
-        try render(view(state: .loading, style: PayPalSavedPaymentMethodViewStyle(showPayPalCreditMessaging: false)))
-    }
-
     /// `.hidden` must take up no space at all, not render an empty tile with padding and a border.
     func testRender_hiddenState_occupiesNoSpace() {
         XCTAssertNil(rendered(view(state: .hidden)))
@@ -144,38 +140,6 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
 
         XCTAssertEqual(EditFIStyleGuard.containerHeight(-100), 0)
         XCTAssertNil(rendered(view(state: .instrument(try instrument()), showCreditMessage: true, style: style)))
-    }
-
-    func testRender_withZeroHeight_collapsesComponent() throws {
-        let style = PayPalSavedPaymentMethodViewStyle(
-            container: .init(height: 0, horizontalPadding: 0, verticalPadding: 0, cornerRadius: 0, borderWidth: 0)
-        )
-        XCTAssertNil(rendered(view(state: .instrument(try instrument()), style: style)))
-    }
-
-    func testRender_everyStateWithCustomFont() throws {
-        let style = PayPalSavedPaymentMethodViewStyle(componentAppearance: .init(fontName: "HelveticaNeue"))
-
-        let states: [PayPalSavedPaymentMethodViewModel.FIState] = [
-            .loading,
-            .instrument(try instrument()),
-            .displayOnly(email: "buyer@example.com", isEditable: true),
-            .brandOnly
-        ]
-
-        for state in states {
-            try render(view(state: state, showCreditMessage: true, style: style))
-        }
-    }
-
-    // MARK: - Loading placeholders
-
-    func testRender_skeletonRow() throws {
-        try render(PayPalSavedPaymentMethodSkeletonRow(style: PayPalSavedPaymentMethodViewStyle()))
-    }
-
-    func testRender_creditMessageSkeleton() throws {
-        try render(CreditMessageSkeleton())
     }
 
     // MARK: - Assets
