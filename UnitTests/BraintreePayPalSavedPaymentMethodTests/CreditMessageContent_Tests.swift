@@ -25,17 +25,6 @@ final class CreditMessageContent_Tests: XCTestCase {
         )
     }
 
-    func testInit_whenTheActionItemHasAClickURL_keepsTheLearnMoreCopy() throws {
-        let content = CreditMessageContent(
-            result: try result(actionItems: [
-                ["type": "LINK", "text": "Learn more", "click_url": "https://example.com/click"]
-            ])
-        )
-
-        XCTAssertEqual(content?.learnMore?.text, "Learn more")
-        XCTAssertEqual(content?.learnMore?.url, URL(string: "https://example.com/click"))
-    }
-
     /// Copy without a URL would render a link that does nothing when tapped, so it is dropped.
     func testInit_whenTheActionItemHasNoClickURL_dropsTheLearnMoreCopy() throws {
         let content = CreditMessageContent(

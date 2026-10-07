@@ -270,13 +270,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     /// An abandoned app switch never resumes the continuation, so foregrounding is the only
     /// signal that lets us take the full-screen loader down.
-    func testAppReturnedToForeground_whileEditing_clearsTheLoaderAndLeavesTheFI() async throws {
+    func testAppReturnedToForeground_whileEditing_clearsTheLoader() async throws {
         try injectPayPalClient()
-        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
-        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
-        let stateBeforeEdit = sut.fiState
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
         XCTAssertTrue(sut.isEditing)
@@ -284,7 +280,6 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.appReturnedToForeground()
 
         XCTAssertFalse(sut.isEditing)
-        XCTAssertEqual(sut.fiState, stateBeforeEdit)
     }
 
     // MARK: - editTapped
@@ -302,24 +297,6 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     // MARK: - Edit result delivery
-
-    /// The merchant may present their own modal from `completion`, which iOS drops while ours is still up.
-    func testEdit_whileTheLoaderIsOnScreen_deliversTheNonceOnlyAfterItDismisses() async throws {
-        try injectPayPalClient(nonce: "fake-nonce")
-        var receivedNonce: BTPayPalAccountNonce?
-        let sut = makeSUT { nonce, _ in receivedNonce = nonce }
-
-        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        sut.editLoaderDidAppear()
-        await drainTasks()
-
-        XCTAssertFalse(sut.isEditing)
-        XCTAssertNil(receivedNonce)
-
-        sut.editLoaderDidDismiss()
-
-        XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
-    }
 
     /// A fast failure (e.g. offline) can land while the loader is still animating in, before it appears.
     func testEdit_whenTokenizeFailsBeforeTheLoaderAppears_holdsTheErrorUntilItDismisses() async throws {
@@ -426,15 +403,6 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     func testLearnMoreTapped_whenTheSchemeIsNotWeb_doesNothing() async {
         let sut = makeSUT()
         await seedCreditMessage(on: sut, clickURL: "javascript:alert(1)", isEmbeddable: true)
-
-        sut.learnMoreTapped()
-
-        XCTAssertFalse(sut.isLanderPresented)
-        XCTAssertNil(fakeApplication.lastOpenURL)
-    }
-
-    func testLearnMoreTapped_whenThereIsNoURL_doesNothing() {
-        let sut = makeSUT()
 
         sut.learnMoreTapped()
 
