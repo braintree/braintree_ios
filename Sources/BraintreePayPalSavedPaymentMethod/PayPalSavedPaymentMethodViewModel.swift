@@ -31,6 +31,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         case hidden
     }
 
+    /// Where the full-screen edit loader is between being requested and dismissed.
+    private enum EditLoaderPhase {
+        case hidden
+        case requested
+        case onScreen
+    }
+
     // MARK: - Internal Properties
 
     /// What the FI region currently shows.
@@ -83,11 +90,17 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// Held until the loader is off screen: iOS drops a modal presented over one still showing.
     private var pendingEditResult: (nonce: BTPayPalAccountNonce?, error: Error?)?
 
-    /// Set when the loader is requested, so a result that lands while it animates in still waits for it.
-    private var isEditLoaderShowing = false
+    /// A loader that never appeared never reports a dismissal, so results are routed by this phase.
+    private var editLoaderPhase = EditLoaderPhase.hidden
 
     /// Only the latest credit fetch may set `creditMessage`, so an older amount's response can't land last.
     private var creditTask: Task<Void, Never>?
+
+    /// The request `creditMessage` was quoted for.
+    private var creditMessageRequest: PayPalSavedPaymentMethodRequest?
+
+    /// Only the latest post-edit refetch may set `fiState`, so an earlier edit's FI can't land last.
+    private var fiRefetchTask: Task<Void, Never>?
 
     // MARK: - Initializers
 
@@ -163,15 +176,15 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         return .hidden
     }
 
-    /// Starts the edit flow; taps while an edit is already in flight are ignored.
+    /// Starts the edit flow; taps while an edit or its loader is still up are ignored.
     func editTapped(
         checkoutRequest: BTPayPalCheckoutRequest,
         request: PayPalSavedPaymentMethodRequest
     ) {
-        guard !isEditing else { return }
+        guard !isEditing, editLoaderPhase == .hidden else { return }
         // TODO: emit the edit tapped analytics event once the catalog is approved.
         isEditing = true
-        isEditLoaderShowing = true
+        editLoaderPhase = .requested
         Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
 
@@ -179,19 +192,23 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// suspended — so foregrounding is the only signal that the buyer is back. Matches `PayPalButton`.
     func appReturnedToForeground() {
         isEditing = false
+        guard editLoaderPhase == .requested else { return }
+        editLoaderPhase = .hidden
+        deliverPendingEditResult()
     }
 
-    /// Called when the full-screen edit loader appears; covers a retap while the previous one is dismissing.
+    /// Called when the full-screen edit loader appears. Takes it down if a result already arrived.
     func editLoaderDidAppear() {
-        isEditLoaderShowing = true
+        editLoaderPhase = .onScreen
+        if pendingEditResult != nil {
+            isEditing = false
+        }
     }
 
     /// Called when the full-screen edit loader is dismissed; delivers any result held for it.
     func editLoaderDidDismiss() {
-        isEditLoaderShowing = false
-        guard let result = pendingEditResult else { return }
-        pendingEditResult = nil
-        completion(result.nonce, result.error)
+        editLoaderPhase = .hidden
+        deliverPendingEditResult()
     }
 
     /// Opens the "Learn more" lander in-app when PayPal allows embedding, otherwise in the browser.
@@ -209,7 +226,8 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     // MARK: - Private Methods
 
     /// Resolves the funding instrument on the buyer's default billing agreement (the one PayPal charges unless they
-    /// change it) and maps it to `fiState`. Any failure falls back to the brand-only tile so checkout is never blocked.
+    /// change it) and maps it to `fiState`. A failed first fetch falls back to the brand-only tile so checkout is
+    /// never blocked; a failed refetch on re-appear keeps what is already shown.
     private func loadBuyerDefaultBillingAgreement(request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return } // preview: state is pre-seeded
 
@@ -221,6 +239,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             )
             state = Self.state(from: summary)
         } catch {
+            guard fiState == .loading else { return }
             state = .brandOnly
         }
 
@@ -235,7 +254,8 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         creditTask = Task { [weak self] in await self?.loadCreditMessaging(request: request) }
     }
 
-    /// Fetches the Pay Later message. Additive — any failure hides the row.
+    /// Fetches the Pay Later message. Additive — a failure hides the row, except a failed refresh for the
+    /// same request (e.g. on re-appear), which keeps the message already shown.
     private func loadCreditMessaging(request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return }
 
@@ -247,23 +267,24 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             )
             content = CreditMessageContent(result: result)
         } catch {
+            guard request != creditMessageRequest else { return }
             content = nil
         }
 
         guard !Task.isCancelled, !didCompleteEdit else { return }
         creditMessage = content
+        creditMessageRequest = request
     }
 
-    /// Runs the edit, then the cosmetic FI refresh. The full-screen loader is held until the nonce
-    /// arrives; the FI then shimmers until the refresh settles. The merchant only receives
-    /// `(nonce, error)` — a refresh failure after a successful edit hides the row, since the
-    /// pre-edit instrument is no longer the one that will be charged.
+    /// Runs the edit, then starts the cosmetic FI refresh. The full-screen loader is held until the nonce
+    /// arrives; the FI then shimmers until the refresh settles. The merchant only receives `(nonce, error)`.
     private func performEdit(
         checkoutRequest: BTPayPalCheckoutRequest,
         request: PayPalSavedPaymentMethodRequest
     ) async {
         guard let fetchClient else {
             isEditing = false
+            editLoaderPhase = .hidden
             return
         }
 
@@ -280,32 +301,57 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         creditMessage = nil
         finishEdit(nonce: nonce, error: nil)
 
+        fiRefetchTask?.cancel()
         guard let orderID = nonce.paymentID else {
             fiState = .hidden
             return
         }
 
         fiState = .loading
+        fiRefetchTask = Task { [weak self] in
+            await self?.loadBuyerUpdatedBillingAgreement(orderID: orderID, request: request)
+        }
+    }
 
+    /// Resolves the FI the buyer picked for `orderID`. A failure hides the row, since the pre-edit
+    /// instrument is no longer the one that will be charged.
+    private func loadBuyerUpdatedBillingAgreement(orderID: String, request: PayPalSavedPaymentMethodRequest) async {
+        guard let fetchClient else { return }
+
+        let state: FIState
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .buyerUpdatedBillingAgreement,
                 orderID: orderID,
                 merchantAccountID: request.merchantAccountID
             )
-            fiState = Self.state(from: summary)
+            state = Self.state(from: summary)
         } catch {
-            fiState = .hidden
+            state = .hidden
+        }
+
+        guard !Task.isCancelled else { return }
+        fiState = state
+    }
+
+    /// A result that lands before the loader appears keeps it up until `editLoaderDidAppear()`, since
+    /// a loader dismissed before it presents never reports a dismissal to deliver on.
+    private func finishEdit(nonce: BTPayPalAccountNonce?, error: Error?) {
+        switch editLoaderPhase {
+        case .hidden:
+            isEditing = false
+            completion(nonce, error)
+        case .requested:
+            pendingEditResult = (nonce, error)
+        case .onScreen:
+            isEditing = false
+            pendingEditResult = (nonce, error)
         }
     }
 
-    /// Delivers now if the loader is already gone (the app-switch rail clears it on foreground).
-    private func finishEdit(nonce: BTPayPalAccountNonce?, error: Error?) {
-        isEditing = false
-        if isEditLoaderShowing {
-            pendingEditResult = (nonce, error)
-        } else {
-            completion(nonce, error)
-        }
+    private func deliverPendingEditResult() {
+        guard let result = pendingEditResult else { return }
+        pendingEditResult = nil
+        completion(result.nonce, result.error)
     }
 }

@@ -215,6 +215,39 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertNil(sut.creditMessage)
     }
 
+    /// A tab switch refires `onAppear`; a failed refetch then must not replace the FI already shown.
+    func testOnAppear_whenARefetchFails_keepsTheFIAlreadyShown() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+        let shownState = sut.fiState
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await drainTasks()
+
+        XCTAssertEqual(sut.fiState, shownState)
+        XCTAssertTrue(sut.showsCreditMessaging)
+    }
+
+    /// A failed refresh for the same amount keeps the message shown; a new amount must not keep a stale quote.
+    func testCreditRefetchFailure_keepsTheMessageForTheSameRequestButClearsItForANewAmount() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await drainTasks()
+        XCTAssertNotNil(sut.creditMessage)
+
+        sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
+        await drainTasks()
+        XCTAssertNil(sut.creditMessage)
+    }
+
     /// `onAppear` refires on tab switches, and a refetch would bring back the pre-edit instrument.
     func testOnAppear_afterAnEdit_doesNotRefetch() async throws {
         try injectPayPalClient(nonce: "fake-nonce")
@@ -298,8 +331,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     // MARK: - Edit result delivery
 
-    /// A fast failure (e.g. offline) can land while the loader is still animating in, before it appears.
-    func testEdit_whenTokenizeFailsBeforeTheLoaderAppears_holdsTheErrorUntilItDismisses() async throws {
+    /// A fast failure (e.g. the missing-JWT check) can land before the loader appears. A loader taken
+    /// down before it presents never reports a dismissal, so it stays up until it appears.
+    func testEdit_whenTokenizeFailsBeforeTheLoaderAppears_deliversTheErrorAfterItAppearsAndDismisses() async throws {
         let cannedError = NSError(domain: "com.example.error", code: 1)
         try injectPayPalClient(error: cannedError)
         var receivedError: Error?
@@ -307,6 +341,11 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
         await drainTasks()
+
+        XCTAssertTrue(sut.isEditing)
+        XCTAssertNil(receivedError)
+
+        sut.editLoaderDidAppear()
 
         XCTAssertFalse(sut.isEditing)
         XCTAssertNil(receivedError)
@@ -323,6 +362,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT { nonce, _ in receivedNonce = nonce }
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        sut.editLoaderDidAppear()
         sut.appReturnedToForeground()
         sut.editLoaderDidDismiss()
         await drainTasks()
@@ -375,6 +415,26 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         XCTAssertEqual(sut.fiState, .hidden)
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
+    }
+
+    func testEdit_whenAnEarlierEditsRefetchRespondsLast_keepsTheLatestFI() async throws {
+        fetchClient.apiClient = SlowFirstFIAPIClient(authorization: clientToken)
+        let sut = makeSUT()
+
+        try injectPayPalClient(nonce: "first-nonce", orderID: "first-order")
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        await drainTasks()
+        sut.editLoaderDidAppear()
+        sut.editLoaderDidDismiss()
+
+        try injectPayPalClient(nonce: "second-nonce", orderID: "second-order")
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        try await Task.sleep(nanoseconds: 400_000_000)
+
+        guard case .instrument(let summary) = sut.fiState else {
+            return XCTFail("Expected .instrument, got \(sut.fiState)")
+        }
+        XCTAssertEqual(summary.label, "second-order")
     }
 
     // MARK: - learnMoreTapped
@@ -460,5 +520,29 @@ private final class SlowFirstCreditAPIClient: MockAPIClient {
 
         let message: [String: Any] = ["main_items": [["type": "TEXT", "text": "Pay in 4 on \(amount)"]]]
         return (BTJSON(value: ["messages": [["preferred_message": ["content": message]]]] as [String: Any]), nil)
+    }
+}
+
+/// Answers the first FI request after the second, labelling each instrument with the requested order ID.
+private final class SlowFirstFIAPIClient: MockAPIClient {
+
+    private var postCount = 0
+
+    override func post(
+        _ path: String,
+        parameters: Encodable? = nil,
+        headers: [String: String]? = nil,
+        httpType: BTAPIClientHTTPService = .gateway
+    ) async throws -> (BTJSON?, HTTPURLResponse?) {
+        postCount += 1
+        let variables = (try? parameters?.toDictionary())?["variables"] as? [String: Any]
+        let orderID = (variables?["input"] as? [String: Any])?["orderId"] as? String ?? ""
+
+        if postCount == 1 {
+            try? await Task.sleep(nanoseconds: 200_000_000)
+        }
+
+        let details: [String: Any] = ["paymentMethods": [["label": orderID, "lastDigits": "0199", "type": "CARD"]]]
+        return (BTJSON(value: ["data": ["paypalFundingInstrumentDetails": details]] as [String: Any]), nil)
     }
 }
