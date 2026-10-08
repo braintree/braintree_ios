@@ -16,6 +16,7 @@ import BraintreePayPal
 /// tokenization outcome via `completion`. The buyer's FI is resolved by the SDK from the client
 /// token — the merchant supplies the checkout request plus a `PayPalSavedPaymentMethodRequest`
 /// carrying the amount, currency, and merchant account the component needs.
+/// - Warning: This feature is in beta. It's public API may change or be removed in future releases.
 public struct PayPalSavedPaymentMethodView: View {
 
     // MARK: - Private Properties
@@ -32,22 +33,22 @@ public struct PayPalSavedPaymentMethodView: View {
 
     /// Creates a `PayPalSavedPaymentMethodView`.
     /// - Parameters:
-    ///   - payPalCheckoutRequest: Required. The PayPal checkout request used for the edit tokenization.
-    ///   - request: Required. The amount, currency, and merchant account used to resolve the saved
-    ///     funding instrument and its Pay Later message.
     ///   - authorization: Required. A client token generated with the buyer's payment method ID.
     ///     A tokenization key cannot be used — it carries no `paymentMethodIdJwt`, so the saved
     ///     funding instrument cannot be resolved.
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
     ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
+    ///   - payPalCheckoutRequest: Required. The PayPal checkout request used for the edit tokenization.
+    ///   - request: Required. The amount, currency, and merchant account used to resolve the saved
+    ///     funding instrument and its Pay Later message.
     ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
     ///   - style: Optional. Styling overrides. Defaults to the shipped `PayPalSavedPaymentMethodViewStyle`.
     ///   - completion: Called with the `BTPayPalAccountNonce` (or `Error`) when the edit tokenization completes.
     public init(
-        payPalCheckoutRequest: BTPayPalCheckoutRequest,
-        request: PayPalSavedPaymentMethodRequest,
         authorization: String,
         universalLink: URL,
+        payPalCheckoutRequest: BTPayPalCheckoutRequest,
+        request: PayPalSavedPaymentMethodRequest,
         fallbackURLScheme: String? = nil,
         style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle(),
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
@@ -119,19 +120,29 @@ public struct PayPalSavedPaymentMethodView: View {
     }
 
     private var container: some View {
-        // Tighter row gap while loading (skeleton) than in the loaded state.
-        VStack(alignment: .leading, spacing: viewModel.fiState == .loading ? 4 : 6) {
+        VStack(
+            alignment: .leading,
+            spacing: viewModel.fiState == .loading
+                ? EditFIStyleDefaultConstants.loadingRowSpacing
+                : EditFIStyleDefaultConstants.rowSpacing
+        ) {
             fiRegion
             creditRegion
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(
             .horizontal,
-            EditFIStyleGuard.dimension(style.container?.horizontalPadding, default: Defaults.containerHorizontalPadding)
+            EditFIStyleGuard.dimension(
+                style.container?.horizontalPadding,
+                default: EditFIStyleDefaultConstants.containerHorizontalPadding
+            )
         )
         .padding(
             .vertical,
-            EditFIStyleGuard.dimension(style.container?.verticalPadding, default: Defaults.containerVerticalPadding)
+            EditFIStyleGuard.dimension(
+                style.container?.verticalPadding,
+                default: EditFIStyleDefaultConstants.containerVerticalPadding
+            )
         )
         .frame(height: EditFIStyleGuard.containerHeight(style.container?.height), alignment: .center)
         .background(Color(uiColor: EditFIStyleGuard.backgroundColor(style.componentAppearance?.backgroundColor)))
@@ -140,15 +151,16 @@ public struct PayPalSavedPaymentMethodView: View {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(
                     Color(uiColor: EditFIStyleGuard.containerBorderColor(style.container?.borderColor)),
-                    lineWidth: EditFIStyleGuard.dimension(style.container?.borderWidth, default: Defaults.containerBorderWidth)
+                    lineWidth: EditFIStyleGuard.dimension(
+                        style.container?.borderWidth,
+                        default: EditFIStyleDefaultConstants.containerBorderWidth
+                    )
                 )
         )
     }
 
-    private typealias Defaults = EditFIStyleDefaultConstants
-
     private var cornerRadius: CGFloat {
-        EditFIStyleGuard.dimension(style.container?.cornerRadius, default: Defaults.containerCornerRadius)
+        EditFIStyleGuard.dimension(style.container?.cornerRadius, default: EditFIStyleDefaultConstants.containerCornerRadius)
     }
 
     @ViewBuilder private var fiRegion: some View {
@@ -173,7 +185,6 @@ public struct PayPalSavedPaymentMethodView: View {
     @ViewBuilder private var creditRegion: some View {
         if style.showPayPalCreditMessaging, viewModel.showsCreditMessaging {
             Group {
-                // Keep an already-resolved message on screen while the FI refreshes after an edit.
                 if let content = viewModel.creditMessage {
                     CreditMessagingRow(
                         style: style,
@@ -195,8 +206,15 @@ public struct PayPalSavedPaymentMethodView: View {
     /// the logo). Zero when the logo is hidden and the label already starts at the leading edge.
     private var creditLeadingInset: CGFloat {
         guard style.showPayPalLogo else { return 0 }
-        let logoSide = EditFIStyleGuard.dimension(style.container?.logo?.width, default: Defaults.payPalLogoSide)
-        return logoSide + EditFIStyleGuard.dimension(style.container?.label?.leadingGap, default: Defaults.labelLeadingGap)
+        let logoSide = EditFIStyleGuard.dimension(
+            style.container?.logo?.width,
+            default: EditFIStyleDefaultConstants.payPalLogoSide
+        )
+        let labelGap = EditFIStyleGuard.dimension(
+            style.container?.label?.leadingGap,
+            default: EditFIStyleDefaultConstants.labelLeadingGap
+        )
+        return logoSide + labelGap
     }
 }
 
@@ -209,13 +227,16 @@ private struct EditFlowLoadingView: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.6).ignoresSafeArea()
+            Color.white.opacity(EditFIStyleDefaultConstants.editLoaderOverlayOpacity).ignoresSafeArea()
             Image("LoadingSpinner", bundle: .payPalSavedPaymentMethod)
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 44, height: 44)
-                .foregroundColor(.white)
+                .frame(
+                    width: EditFIStyleDefaultConstants.editLoaderSpinnerSide,
+                    height: EditFIStyleDefaultConstants.editLoaderSpinnerSide
+                )
+                .foregroundColor(.black)
                 .rotationEffect(.degrees(rotation))
         }
         .onAppear {
@@ -228,8 +249,8 @@ private struct EditFlowLoadingView: View {
 
 private extension View {
 
-    /// Makes a `fullScreenCover` background see-through (iOS 16.4+) so the merchant's screen dims
-    /// behind the loader; a no-op on earlier versions (opaque backdrop).
+    /// Makes a `fullScreenCover` background see-through (iOS 16.4+) so the merchant's screen shows
+    /// faintly behind the loader; a no-op on earlier versions (opaque backdrop).
     @ViewBuilder func clearPresentationBackground() -> some View {
         if #available(iOS 16.4, *) {
             presentationBackground(.clear)

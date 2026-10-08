@@ -66,6 +66,33 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
         XCTAssertNil(rendered(view(state: .hidden)))
     }
 
+    // MARK: - Rendered content
+
+    func testRender_withACreditMessage_isTallerThanWithout() throws {
+        let fi = try instrument()
+
+        let withMessage = try render(view(state: .instrument(fi), showCreditMessage: true))
+        let withoutMessage = try render(view(state: .instrument(fi)))
+
+        XCTAssertGreaterThan(withMessage.size.height, withoutMessage.size.height)
+    }
+
+    func testRender_brandOnly_drawsTheBrandMark() throws {
+        let brandMarkHidden = PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false)
+
+        let withBrandMark = try render(view(state: .brandOnly)).pngData()
+        let withoutBrandMark = try render(view(state: .brandOnly, style: brandMarkHidden)).pngData()
+
+        XCTAssertNotEqual(withBrandMark, withoutBrandMark)
+    }
+
+    func testRender_editableEmail_drawsTheEditPencil() throws {
+        let editable = try render(view(state: .displayOnly(email: "buyer@example.com", isEditable: true))).pngData()
+        let readOnly = try render(view(state: .displayOnly(email: "buyer@example.com", isEditable: false))).pngData()
+
+        XCTAssertNotEqual(editable, readOnly)
+    }
+
     // MARK: - Style permutations
 
     /// Merchant style permutations that must all lay out. The cases that collapse the component

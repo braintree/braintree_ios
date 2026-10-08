@@ -1,7 +1,6 @@
 import SwiftUI
 
-/// A left-to-right shimmer sweep, masked to the content's silhouette. Used for the
-/// skeleton loading state (per the "Skeleton Shimmer" loader in the design).
+/// A left-to-right shimmer sweep, masked to the content's silhouette. Used for the skeleton loading state.
 struct ShimmerModifier: ViewModifier {
 
     @State private var animating = false
@@ -36,20 +35,15 @@ extension View {
     }
 }
 
-/// A rounded shimmer placeholder bar. Fills the available width minus `trailingGap`, so the
-/// bar stops short of the trailing edge (matching the design) rather than running edge-to-edge.
+/// A rounded shimmer placeholder bar that fills the available width and stops short of the trailing edge.
 struct ShimmerBar: View {
 
-    var height: CGFloat = 16
-    var cornerRadius: CGFloat = 4
-    var trailingGap: CGFloat = 40
-
     var body: some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
+        RoundedRectangle(cornerRadius: EditFIStyleDefaultConstants.shimmerBarCornerRadius)
             .fill(Color(.systemGray5))
-            .frame(height: height)
+            .frame(height: EditFIStyleDefaultConstants.shimmerBarHeight)
             .frame(maxWidth: .infinity)
-            .padding(.trailing, trailingGap)
+            .padding(.trailing, EditFIStyleDefaultConstants.shimmerBarTrailingGap)
             .shimmering()
     }
 }

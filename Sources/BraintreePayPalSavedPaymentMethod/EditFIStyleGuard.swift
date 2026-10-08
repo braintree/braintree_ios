@@ -48,6 +48,18 @@ enum EditFIStyleDefaultConstants {
     static let stackedLayoutSpacing: CGFloat = 6
 
     static let creditMessageFontSize: CGFloat = 16
+
+    /// Gap between the FI row and the credit-messaging line; tighter while the skeleton shows.
+    static let rowSpacing: CGFloat = 6
+    static let loadingRowSpacing: CGFloat = 4
+
+    static let shimmerBarHeight: CGFloat = 16
+    static let shimmerBarCornerRadius: CGFloat = 4
+    /// Space left after the shimmer bar so it stops short of the trailing edge.
+    static let shimmerBarTrailingGap: CGFloat = 40
+
+    static let editLoaderOverlayOpacity: Double = 0.9
+    static let editLoaderSpinnerSide: CGFloat = 48
 }
 
 /// Resolves `PayPalSavedPaymentMethodViewStyle` values for rendering.
