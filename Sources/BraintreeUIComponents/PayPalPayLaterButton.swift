@@ -123,8 +123,7 @@ public struct PayPalPayLaterButton: View {
     private func invokePayPalFlow() {
         let payPalClient = BTPayPalClient(authorization: authorization, universalLink: universalLink, fallbackURLScheme: fallbackURLScheme)
         
-        payPalClient.tokenize(checkoutRequest) {
-            nonce, error in
+        payPalClient.tokenize(checkoutRequest) { nonce, error in
             isLoading = false
             completion(nonce, error)
         }
