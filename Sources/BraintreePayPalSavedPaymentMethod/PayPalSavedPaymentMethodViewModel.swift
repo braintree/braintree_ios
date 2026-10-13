@@ -32,7 +32,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     }
 
     /// The merchant's `(nonce, error)` for an edit.
-    typealias EditResult = (nonce: BTPayPalAccountNonce?, error: Error?)
+    private typealias EditResult = (nonce: BTPayPalAccountNonce?, error: Error?)
 
     /// Where the edit flow is, from the tap until the merchant receives the result.
     private enum EditPhase {
@@ -174,8 +174,8 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Internal Methods
 
-    /// The requests are passed in per call rather than stored: `@StateObject` builds this view model
-    /// once, so anything captured here would go stale when the merchant updates the amount.
+    /// Fetches the buyer's default FI and, when enabled, the Pay Later message. The request is passed per call
+    /// rather than stored: `@StateObject` builds this view model once, so a stored copy would go stale.
     func onAppear(request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         // `onAppear` refires on tab switches and navigation pop-backs. Refetching then would
         // replace the post-edit instrument with the pre-edit one the API still returns.
@@ -328,8 +328,8 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         creditMessageRequest = request
     }
 
-    /// Runs the edit, then starts the cosmetic FI refresh. The full-screen loader is held until the nonce
-    /// arrives; the FI then shimmers until the refresh settles. The merchant only receives `(nonce, error)`.
+    /// Runs the edit, hands the result to `finishEdit`, then refreshes the FI for the approved order. The FI
+    /// shimmers until the refresh settles. The merchant only receives `(nonce, error)`.
     private func performEdit(
         checkoutRequest: BTPayPalCheckoutRequest,
         request: PayPalSavedPaymentMethodRequest
@@ -347,7 +347,6 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             return
         }
 
-        // The Pay Later offer is tied to the pre-edit funding instrument, so it stops applying once the buyer edits.
         didCompleteEdit = true
         creditMessage = nil
         finishEdit(nonce: nonce, error: nil)

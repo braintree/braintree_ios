@@ -554,7 +554,7 @@ private final class GatedAPIClient: MockAPIClient {
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        let dictionary = try? parameters?.toDictionary()
+        let dictionary = try parameters?.toDictionary()
         await withCheckedContinuation { continuation in
             lock.withLock { held.append((dictionary, continuation)) }
         }
