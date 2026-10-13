@@ -77,9 +77,12 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
-    /// `onAppear` and `requestChanged` kick off detached `Task`s, so give them a beat to settle.
-    private func drainTasks() async {
-        try? await Task.sleep(nanoseconds: 100_000_000)
+    /// Awaits the tasks the view model has started. The edit starts the post-edit refetch, so it is awaited last.
+    private func settle(_ sut: PayPalSavedPaymentMethodViewModel) async {
+        await sut.fiFetchTask?.value
+        await sut.creditTask?.value
+        await sut.editTask?.value
+        await sut.fiRefetchTask?.value
     }
 
     private static func creditMessagingResponse(clickURL: String, isEmbeddable: Bool) -> BTJSON {
@@ -115,7 +118,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     ) async {
         mockAPIClient.cannedResponseBody = Self.creditMessagingResponse(clickURL: clickURL, isEmbeddable: isEmbeddable)
         sut.requestChanged(makeRequest(), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
     }
 
     @discardableResult
@@ -135,6 +138,15 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         return mockPayPalClient
     }
 
+    private static func creditAmount(in parameters: [String: Any]?) -> String? {
+        let placement = (parameters?["message_placements"] as? [[String: Any]])?.first
+        return (placement?["amount"] as? [String: Any])?["value"] as? String
+    }
+
+    private static func orderID(in parameters: [String: Any]?) -> String? {
+        ((parameters?["variables"] as? [String: Any])?["input"] as? [String: Any])?["orderId"] as? String
+    }
+
     // MARK: - Initial state
 
     func testInit_startsInTheLoadingStateWithCreditMessagingShown() {
@@ -151,7 +163,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.onAppear(request: makeRequest(merchantAccountID: "fake-merchant-account-id"), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         guard case .instrument(let summary) = sut.fiState else {
             return XCTFail("Expected .instrument, got \(sut.fiState)")
@@ -173,7 +185,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(sut.fiState, .brandOnly)
         XCTAssertFalse(sut.showsCreditMessaging)
@@ -186,7 +198,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.onAppear(request: makeRequest(), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(sut.fiState, .displayOnly(email: "buyer@example.com", isEditable: true))
         XCTAssertTrue(sut.showsCreditMessaging)
@@ -199,7 +211,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(sut.fiState, .displayOnly(email: "buyer@example.com", isEditable: false))
         XCTAssertFalse(sut.showsCreditMessaging)
@@ -210,7 +222,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertNil(sut.creditMessage)
     }
@@ -220,13 +232,13 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
         let shownState = sut.fiState
 
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(sut.fiState, shownState)
         XCTAssertTrue(sut.showsCreditMessaging)
@@ -240,11 +252,11 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
 
         sut.requestChanged(makeRequest(), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
         XCTAssertNotNil(sut.creditMessage)
 
         sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
         XCTAssertNil(sut.creditMessage)
     }
 
@@ -253,12 +265,12 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         try injectPayPalClient(nonce: "fake-nonce")
         let sut = makeSUT()
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        await drainTasks()
+        await settle(sut)
         XCTAssertTrue(sut.didCompleteEdit)
         mockAPIClient.lastPOSTParameters = nil
 
         sut.onAppear(request: makeRequest(), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertNil(mockAPIClient.lastPOSTParameters)
     }
@@ -271,7 +283,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v2/credit/fetch-presentment-messages")
         let placement = (mockAPIClient.lastPOSTParameters?["message_placements"] as? [[String: Any]])?.first
@@ -283,18 +295,30 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT()
 
         sut.requestChanged(makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "")
     }
 
     func testRequestChanged_whenTheOlderAmountRespondsLast_keepsTheNewerMessage() async throws {
-        fetchClient.apiClient = SlowFirstCreditAPIClient(authorization: clientToken)
+        let apiClient = GatedAPIClient(authorization: clientToken) { parameters in
+            let placement = (parameters?["message_placements"] as? [[String: Any]])?.first
+            let amount = (placement?["amount"] as? [String: Any])?["value"] as? String ?? ""
+            let message: [String: Any] = ["main_items": [["type": "TEXT", "text": "Pay in 4 on \(amount)"]]]
+            return BTJSON(value: ["messages": [["preferred_message": ["content": message]]]] as [String: Any])
+        }
+        fetchClient.apiClient = apiClient
         let sut = makeSUT()
 
         sut.requestChanged(makeRequest(amount: "50.00"), showCreditMessaging: true)
+        let olderFetch = sut.creditTask
         sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
-        try await Task.sleep(nanoseconds: 400_000_000)
+        await apiClient.waitUntilHolding(2)
+
+        apiClient.release { Self.creditAmount(in: $0) == "70.00" }
+        await sut.creditTask?.value
+        apiClient.release { Self.creditAmount(in: $0) == "50.00" }
+        await olderFetch?.value
 
         XCTAssertEqual(sut.creditMessage?.message, "Pay in 4 on 70.00")
     }
@@ -324,7 +348,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
         sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 1)
     }
@@ -340,7 +364,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         let sut = makeSUT { _, error in receivedError = error }
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertTrue(sut.isEditing)
         XCTAssertNil(receivedError)
@@ -365,7 +389,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.editLoaderDidAppear()
         sut.appReturnedToForeground()
         sut.editLoaderDidDismiss()
-        await drainTasks()
+        await settle(sut)
 
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
     }
@@ -382,7 +406,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
             checkoutRequest: BTPayPalCheckoutRequest(amount: "1"),
             request: makeRequest(merchantAccountID: "fake-merchant-account-id")
         )
-        await drainTasks()
+        await settle(sut)
 
         let parameters = try XCTUnwrap(mockAPIClient.lastPOSTParameters)
         let input = try XCTUnwrap((parameters["variables"] as? [String: Any])?["input"] as? [String: Any])
@@ -406,11 +430,11 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         var receivedNonce: BTPayPalAccountNonce?
         let sut = makeSUT { nonce, _ in receivedNonce = nonce }
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
-        await drainTasks()
+        await settle(sut)
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
 
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        await drainTasks()
+        await settle(sut)
         sut.editLoaderDidDismiss()
 
         XCTAssertEqual(sut.fiState, .hidden)
@@ -418,18 +442,31 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     func testEdit_whenAnEarlierEditsRefetchRespondsLast_keepsTheLatestFI() async throws {
-        fetchClient.apiClient = SlowFirstFIAPIClient(authorization: clientToken)
+        let apiClient = GatedAPIClient(authorization: clientToken) { parameters in
+            let details: [String: Any] = [
+                "paymentMethods": [["label": Self.orderID(in: parameters) ?? "", "lastDigits": "0199", "type": "CARD"]]
+            ]
+            return BTJSON(value: ["data": ["paypalFundingInstrumentDetails": details]] as [String: Any])
+        }
+        fetchClient.apiClient = apiClient
         let sut = makeSUT()
 
         try injectPayPalClient(nonce: "first-nonce", orderID: "first-order")
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        await drainTasks()
+        await sut.editTask?.value
+        let olderRefetch = sut.fiRefetchTask
         sut.editLoaderDidAppear()
         sut.editLoaderDidDismiss()
 
         try injectPayPalClient(nonce: "second-nonce", orderID: "second-order")
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
-        try await Task.sleep(nanoseconds: 400_000_000)
+        await sut.editTask?.value
+        await apiClient.waitUntilHolding(2)
+
+        apiClient.release { Self.orderID(in: $0) == "second-order" }
+        await sut.fiRefetchTask?.value
+        apiClient.release { Self.orderID(in: $0) == "first-order" }
+        await olderRefetch?.value
 
         guard case .instrument(let summary) = sut.fiState else {
             return XCTFail("Expected .instrument, got \(sut.fiState)")
@@ -499,34 +536,17 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
 // MARK: - Test doubles
 
-/// Answers the first credit-messaging request after the second, echoing each request's amount in the message.
-private final class SlowFirstCreditAPIClient: MockAPIClient {
+/// Holds every POST until the test releases it, so a test can choose the order responses land in without timing.
+private final class GatedAPIClient: MockAPIClient {
 
-    private var postCount = 0
+    private let lock = NSLock()
+    private let response: ([String: Any]?) -> BTJSON?
+    private var held: [(parameters: [String: Any]?, continuation: CheckedContinuation<Void, Never>)] = []
 
-    override func post(
-        _ path: String,
-        parameters: Encodable? = nil,
-        headers: [String: String]? = nil,
-        httpType: BTAPIClientHTTPService = .gateway
-    ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        postCount += 1
-        let placement = ((try? parameters?.toDictionary())?["message_placements"] as? [[String: Any]])?.first
-        let amount = (placement?["amount"] as? [String: Any])?["value"] as? String ?? ""
-
-        if postCount == 1 {
-            try? await Task.sleep(nanoseconds: 200_000_000)
-        }
-
-        let message: [String: Any] = ["main_items": [["type": "TEXT", "text": "Pay in 4 on \(amount)"]]]
-        return (BTJSON(value: ["messages": [["preferred_message": ["content": message]]]] as [String: Any]), nil)
+    init(authorization: String, response: @escaping ([String: Any]?) -> BTJSON?) {
+        self.response = response
+        super.init(authorization: authorization)
     }
-}
-
-/// Answers the first FI request after the second, labelling each instrument with the requested order ID.
-private final class SlowFirstFIAPIClient: MockAPIClient {
-
-    private var postCount = 0
 
     override func post(
         _ path: String,
@@ -534,15 +554,26 @@ private final class SlowFirstFIAPIClient: MockAPIClient {
         headers: [String: String]? = nil,
         httpType: BTAPIClientHTTPService = .gateway
     ) async throws -> (BTJSON?, HTTPURLResponse?) {
-        postCount += 1
-        let variables = (try? parameters?.toDictionary())?["variables"] as? [String: Any]
-        let orderID = (variables?["input"] as? [String: Any])?["orderId"] as? String ?? ""
-
-        if postCount == 1 {
-            try? await Task.sleep(nanoseconds: 200_000_000)
+        let dictionary = try? parameters?.toDictionary()
+        await withCheckedContinuation { continuation in
+            lock.withLock { held.append((dictionary, continuation)) }
         }
+        return (response(dictionary), nil)
+    }
 
-        let details: [String: Any] = ["paymentMethods": [["label": orderID, "lastDigits": "0199", "type": "CARD"]]]
-        return (BTJSON(value: ["data": ["paypalFundingInstrumentDetails": details]] as [String: Any]), nil)
+    /// Returns once `count` requests are in flight.
+    func waitUntilHolding(_ count: Int) async {
+        while lock.withLock({ held.count }) < count {
+            await Task.yield()
+        }
+    }
+
+    /// Lets the first held request matching `predicate` respond.
+    func release(where predicate: ([String: Any]?) -> Bool) {
+        let continuation = lock.withLock { () -> CheckedContinuation<Void, Never>? in
+            guard let index = held.firstIndex(where: { predicate($0.parameters) }) else { return nil }
+            return held.remove(at: index).continuation
+        }
+        continuation?.resume()
     }
 }
