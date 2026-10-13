@@ -1,6 +1,6 @@
 import XCTest
 @testable import BraintreeCore
-@testable import BraintreePayPal
+@_spi(BraintreeUICompoents) @testable import BraintreePayPal
 
 class BTPayPalCheckoutRequest_Tests: XCTestCase {
 
