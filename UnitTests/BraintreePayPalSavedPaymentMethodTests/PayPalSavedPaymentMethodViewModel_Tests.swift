@@ -353,6 +353,20 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 1)
     }
 
+    func testEditTapped_whileTheLoaderIsDismissing_isIgnored() async throws {
+        let mockPayPalClient = try injectPayPalClient(nonce: "fake-nonce")
+        let sut = makeSUT()
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+
+        sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
+        sut.editLoaderDidAppear()
+        sut.appReturnedToForeground()
+        sut.editTapped(checkoutRequest: checkoutRequest, request: makeRequest())
+        await settle(sut)
+
+        XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 1)
+    }
+
     // MARK: - Edit result delivery
 
     /// A fast failure (e.g. the missing-JWT check) can land before the loader appears. A loader taken
@@ -390,6 +404,25 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.appReturnedToForeground()
         sut.editLoaderDidDismiss()
         await settle(sut)
+
+        XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
+    }
+
+    /// Foregrounding starts the dismissal, and the nonce usually lands before it finishes.
+    func testEdit_whenTheNonceArrivesWhileTheLoaderIsDismissing_deliversItOnDismiss() async throws {
+        try injectPayPalClient(nonce: "fake-nonce")
+        var receivedNonce: BTPayPalAccountNonce?
+        let sut = makeSUT { nonce, _ in receivedNonce = nonce }
+
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        sut.editLoaderDidAppear()
+        sut.appReturnedToForeground()
+        await settle(sut)
+
+        XCTAssertFalse(sut.isEditing)
+        XCTAssertNil(receivedNonce)
+
+        sut.editLoaderDidDismiss()
 
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
     }
