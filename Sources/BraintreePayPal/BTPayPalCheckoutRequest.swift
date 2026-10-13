@@ -44,7 +44,6 @@ import BraintreeCore
     var amount: String
     var intent: BTPayPalRequestIntent
     var userAction: BTPayPalRequestUserAction
-    var offerPayLater: Bool
     var offerCredit: Bool
     var amountBreakdown: BTAmountBreakdown?
     var billingAgreementDescription: String?
@@ -69,6 +68,9 @@ import BraintreeCore
     var shopperSessionID: String?
     var userAuthenticationEmail: String?
     var userPhoneNumber: BTPayPalPhoneNumber?
+    
+    // MARK: - Public Properties
+    @_spi(BraintreeUIComponents) public var offerPayLater: Bool
     
     // MARK: - Initializer
 
