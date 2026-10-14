@@ -9,17 +9,17 @@ import BraintreeCore
 struct SetPaymentActionPaymentMethodGraphQLBody: BTGraphQLEncodableBody {
     
     // swiftlint:disable indentation_width
-    let query =
-    """
-    mutation SetPaymentActionPaymentMethod($input: SetPaymentActionPaymentMethodInput!) {
-     setPaymentActionPaymentMethod(input: $input) {
-      paymentAction {
-      id
-      status
-      }
-     }
+    var query: String {
+        """
+        mutation SetPaymentActionPaymentMethod($input: SetPaymentActionPaymentMethodInput!) {
+         setPaymentActionPaymentMethod(input: $input) {
+          paymentAction {
+        \(BTPaymentActionGraphQLFields.paymentActionSelectionSet)
+          }
+         }
+        }
+        """
     }
-    """
     
     let variables: Variables
     
