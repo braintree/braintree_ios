@@ -109,7 +109,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
-    /// Drives a real credit-messaging fetch so `creditMessage` and `learnMoreURL` are populated
+    /// Drives a real credit-messaging fetch so `creditMessage` and its "Learn more" link are populated
     /// the same way they are in production.
     private func seedCreditMessage(
         on sut: PayPalSavedPaymentMethodViewModel,
@@ -516,8 +516,23 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertTrue(sut.isLanderPresented)
+        XCTAssertEqual(sut.presentedLander?.url.absoluteString, "https://example.com/lander")
         XCTAssertNil(fakeApplication.lastOpenURL)
+    }
+
+    /// The credit message can be cleared while the lander is open (e.g. a failed fetch for a new amount).
+    func testLearnMoreTapped_whenTheMessageIsClearedWhileOpen_keepsTheLanderURL() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        sut.learnMoreTapped()
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertNil(sut.creditMessage)
+        XCTAssertEqual(sut.presentedLander?.url.absoluteString, "https://example.com/lander")
     }
 
     func testLearnMoreTapped_whenTheMessageIsNotEmbeddable_opensExternally() async {
@@ -526,7 +541,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertFalse(sut.isLanderPresented)
+        XCTAssertNil(sut.presentedLander)
         XCTAssertEqual(fakeApplication.lastOpenURL?.absoluteString, "https://example.com/lander")
     }
 
@@ -537,7 +552,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertFalse(sut.isLanderPresented)
+        XCTAssertNil(sut.presentedLander)
         XCTAssertNil(fakeApplication.lastOpenURL)
     }
 

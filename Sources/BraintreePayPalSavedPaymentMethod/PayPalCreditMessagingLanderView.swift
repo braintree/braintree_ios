@@ -8,9 +8,35 @@ struct PayPalCreditMessagingLanderView: UIViewControllerRepresentable {
 
     let url: URL
 
+    /// Called when the buyer taps Safari's "Done" button, so the presenter can clear its state.
+    let onFinish: () -> Void
+
     func makeUIViewController(context: Context) -> SFSafariViewController {
-        SFSafariViewController(url: url)
+        let controller = SFSafariViewController(url: url)
+        controller.delegate = context.coordinator
+        return controller
     }
 
-    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {}
+    func updateUIViewController(_ controller: SFSafariViewController, context: Context) {
+        context.coordinator.onFinish = onFinish
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onFinish: onFinish)
+    }
+
+    // MARK: - Coordinator
+
+    final class Coordinator: NSObject, SFSafariViewControllerDelegate {
+
+        var onFinish: () -> Void
+
+        init(onFinish: @escaping () -> Void) {
+            self.onFinish = onFinish
+        }
+
+        func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+            onFinish()
+        }
+    }
 }

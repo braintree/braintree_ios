@@ -98,9 +98,9 @@ public struct PayPalSavedPaymentMethodView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             viewModel.appReturnedToForeground()
         }
-        .sheet(isPresented: $viewModel.isLanderPresented) {
-            if let url = viewModel.learnMoreURL {
-                PayPalCreditMessagingLanderView(url: url)
+        .sheet(item: $viewModel.presentedLander) { lander in
+            PayPalCreditMessagingLanderView(url: lander.url) {
+                viewModel.presentedLander = nil
             }
         }
         .fullScreenCover(
@@ -109,6 +109,7 @@ public struct PayPalSavedPaymentMethodView: View {
             content: {
                 EditFlowLoadingView()
                     .clearPresentationBackground()
+                    .interactiveDismissDisabled(true)
                     .onAppear { viewModel.editLoaderDidAppear() }
             }
         )
@@ -239,7 +240,7 @@ private struct EditFlowLoadingView: View {
                     width: EditFIStyleDefaultConstants.editLoaderSpinnerSide,
                     height: EditFIStyleDefaultConstants.editLoaderSpinnerSide
                 )
-                .foregroundColor(.black)
+                .foregroundColor(Color(uiColor: EditFIStyleDefaultConstants.editLoaderSpinnerColor))
                 .rotationEffect(.degrees(rotation))
         }
         .onAppear {

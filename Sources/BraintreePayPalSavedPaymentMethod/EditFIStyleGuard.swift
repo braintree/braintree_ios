@@ -60,6 +60,7 @@ enum EditFIStyleDefaultConstants {
 
     static let editLoaderOverlayOpacity: Double = 0.9
     static let editLoaderSpinnerSide: CGFloat = 48
+    static let editLoaderSpinnerColor = UIColor.black
 }
 
 /// Resolves `PayPalSavedPaymentMethodViewStyle` values for rendering.

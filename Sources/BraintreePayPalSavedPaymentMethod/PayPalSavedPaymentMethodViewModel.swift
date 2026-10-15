@@ -33,6 +33,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The merchant's `(nonce, error)` for an edit.
     private typealias EditResult = (nonce: BTPayPalAccountNonce?, error: Error?)
 
+    /// An in-app "Learn more" lander.
+    struct Lander: Identifiable, Equatable {
+
+        let url: URL
+        var id: URL { url }
+    }
+
     /// Where the edit flow is, from the tap until the merchant receives the result.
     private enum EditPhase {
         /// No edit is running and the loader is off screen.
@@ -52,8 +59,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// What the FI region currently shows.
     @Published private(set) var fiState: FIState
 
-    /// Whether the in-app "Learn more" lander sheet is showing.
-    @Published var isLanderPresented = false
+    /// The "Learn more" lander showing in-app, or `nil`. Holds its own URL so the sheet stays filled even if the
+    /// credit message is cleared while it's open.
+    @Published var presentedLander: Lander?
 
     /// Whether the full-screen loader should be showing.
     var isEditing: Bool {
@@ -73,11 +81,6 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Exposed for testing to inject a fake application.
     var application: URLOpener = UIApplication.shared
-
-    /// The "Learn more" lander URL of the current credit message.
-    var learnMoreURL: URL? {
-        creditMessage?.learnMore?.url
-    }
 
     /// The Pay Later offer is quoted against the pre-edit funding instrument and is only actionable if the
     /// buyer can change it, so it tracks the FI region and stays hidden once an edit completes.
@@ -267,7 +270,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let learnMore = creditMessage?.learnMore else { return }
 
         if learnMore.isEmbeddable {
-            isLanderPresented = true
+            presentedLander = Lander(url: learnMore.url)
         } else {
             application.open(learnMore.url, options: [:], completionHandler: nil)
         }

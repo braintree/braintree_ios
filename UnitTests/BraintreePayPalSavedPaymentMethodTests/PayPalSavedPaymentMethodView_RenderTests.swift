@@ -1,3 +1,4 @@
+import SafariServices
 import SwiftUI
 import XCTest
 @testable import BraintreePayPalSavedPaymentMethod
@@ -171,6 +172,19 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
 
         XCTAssertEqual(EditFIStyleGuard.containerHeight(-100), 0)
         XCTAssertNil(rendered(view(state: .instrument(try instrument()), showCreditMessage: true, style: style)))
+    }
+
+    // MARK: - Lander
+
+    /// Safari's "Done" button must clear the presenter's state, or the sheet can't be shown again.
+    func testLander_whenSafariFinishes_callsOnFinish() throws {
+        let url = try XCTUnwrap(URL(string: "https://example.com/lander"))
+        var didFinish = false
+        let coordinator = PayPalCreditMessagingLanderView(url: url) { didFinish = true }.makeCoordinator()
+
+        coordinator.safariViewControllerDidFinish(SFSafariViewController(url: url))
+
+        XCTAssertTrue(didFinish)
     }
 
     // MARK: - Assets
