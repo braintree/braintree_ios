@@ -4,10 +4,9 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The POST body for the GraphQL API `SignalCustomerActionComplete` mutation.
-///
-/// `paymentActionId` is intentionally omitted — the client always calls this under a payment-action-scoped
-/// auth fingerprint, which the server uses to resolve the Payment Action without an explicit id.
+/// The POST body for the GraphQL API `SignalCustomerActionComplete` mutation. Omits
+/// `paymentActionId`, since the server resolves the Payment Action from the request's auth
+/// fingerprint.
 struct SignalCustomerActionCompleteGraphQLBody: BTGraphQLEncodableBody {
 
     // swiftlint:disable indentation_width

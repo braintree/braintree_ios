@@ -2,7 +2,7 @@ import Foundation
 
 /// The next action a Payment Action requires the client to complete, derived from the `nextAction`
 /// union's `__typename` in the GraphQL response via `BTPaymentActionNextActionRegistry`.
-enum BTPaymentActionNextAction: Equatable {
+enum BTNextAction: Equatable {
 
     /// Device data collection must be performed; the `bin` drives method selection (e.g. Cardinal setup).
     case threeDSecureAuthentication(BTPaymentActionThreeDSecureAuthenticationNextAction)

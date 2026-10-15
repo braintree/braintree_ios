@@ -2,7 +2,7 @@ import Foundation
 
 /// Mirrors the GraphQL `CustomerActionCompleteInput` `@oneOf` input on `signalCustomerActionComplete` —
 /// exactly one case is ever encoded, enforced by the type system rather than by convention.
-enum BTCustomerCompletedAction: Encodable {
+enum BTCustomerCompletedAction: Encodable, Equatable {
 
     /// Signals that device data collection (the 3D Secure authentication step) has completed.
     case deviceDataCollection(dfReferenceId: String)

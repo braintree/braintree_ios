@@ -12,14 +12,14 @@ struct BTPaymentAction {
 
     let id: String
     let status: BTPaymentActionStatus
-    let nextAction: BTPaymentActionNextAction?
+    let nextAction: BTNextAction?
 
     // MARK: - Initializer
 
     init(
         id: String,
         status: BTPaymentActionStatus,
-        nextAction: BTPaymentActionNextAction? = nil
+        nextAction: BTNextAction? = nil
     ) {
         self.id = id
         self.status = status

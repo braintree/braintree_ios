@@ -4,11 +4,8 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// The POST body for the GraphQL API `GetPaymentAction` self-fetch query.
-///
-/// The Payment Action is resolved from the request's auth fingerprint — the query takes no explicit
-/// `id` argument, matching how `BTPaymentActionsClient` is scoped to a single Payment Action per
-/// instance's authorization.
+/// The POST body for the GraphQL API `GetPaymentAction` query, which self-fetches the current
+/// Payment Action using the request's auth fingerprint rather than an explicit `id`.
 struct GetPaymentActionGraphQLBody: BTGraphQLEncodableBody {
 
     // swiftlint:disable indentation_width

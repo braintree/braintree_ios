@@ -4,7 +4,7 @@ import Foundation
 import BraintreeCore
 #endif
 
-/// Resolves a `nextAction` union JSON payload into a `BTPaymentActionNextAction` by its `__typename`,
+/// Resolves a `nextAction` union JSON payload into a `BTNextAction` by its `__typename`,
 /// so callers never have to branch on a raw type string.
 ///
 /// Each `nextAction` union member registers a parsing closure keyed on the GraphQL `__typename` it
@@ -19,7 +19,7 @@ final class BTPaymentActionNextActionRegistry {
 
     // MARK: - Private Properties
 
-    private var factories: [String: (BTJSON) throws -> BTPaymentActionNextAction] = [:]
+    private var factories: [String: (BTJSON) throws -> BTNextAction] = [:]
 
     // MARK: - Initializer
 
@@ -30,13 +30,13 @@ final class BTPaymentActionNextActionRegistry {
     // MARK: - Internal Methods
 
     /// Registers a parsing closure for a `nextAction` union member, keyed on its GraphQL `__typename`.
-    func register(typeName: String, factory: @escaping (BTJSON) throws -> BTPaymentActionNextAction) {
+    func register(typeName: String, factory: @escaping (BTJSON) throws -> BTNextAction) {
         factories[typeName] = factory
     }
 
-    /// Resolves a `nextAction` JSON object into a `BTPaymentActionNextAction`, or `nil` if there is no `nextAction`.
+    /// Resolves a `nextAction` JSON object into a `BTNextAction`, or `nil` if there is no `nextAction`.
     /// - Throws: `BTPaymentActionError.decodingFailure` if a recognized `__typename`'s required fields are missing.
-    func resolve(json: BTJSON) throws -> BTPaymentActionNextAction? {
+    func resolve(json: BTJSON) throws -> BTNextAction? {
         guard json.asDictionary() != nil else {
             return nil
         }
