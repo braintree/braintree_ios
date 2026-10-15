@@ -71,35 +71,17 @@ import BraintreeCore
         _ body: Body
     ) async throws -> BTPaymentAction {
         apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.setPaymentActionPaymentMethodStarted)
-        
+
         do {
-            let (body, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
-            
-            let paymentActionJSON: BTJSON = body?["data"]["setPaymentActionPaymentMethod"]["paymentAction"] ?? BTJSON()
-            
-            guard let paymentActionID = paymentActionJSON["id"].asString(), !paymentActionID.isEmpty else {
-                apiClient.sendAnalyticsEvent(
-                    BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
-                    errorDescription: BTPaymentActionError.missingID.errorDescription
-                )
-                throw BTPaymentActionError.missingID
-            }
-            
-            guard let statusString = paymentActionJSON["status"].asString(), !statusString.isEmpty else {
-                apiClient.sendAnalyticsEvent(
-                    BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
-                    errorDescription: BTPaymentActionError.missingStatus.errorDescription
-                )
-                throw BTPaymentActionError.missingStatus
-            }
-            
-            let status = BTPaymentActionStatus.status(from: statusString)
-            
-            apiClient.sendAnalyticsEvent(
-                BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded
-            )
-            
-            return BTPaymentAction(id: paymentActionID, status: status)
+            let (responseBody, _) = try await apiClient.post("", parameters: body, httpType: .graphQLAPI)
+
+            let paymentActionJSON: BTJSON = responseBody?["data"]["setPaymentActionPaymentMethod"]["paymentAction"]
+                ?? BTJSON()
+            let paymentAction = try BTPaymentAction(json: paymentActionJSON)
+
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.setPaymentActionPaymentMethodSucceeded)
+
+            return paymentAction
         } catch {
             apiClient.sendAnalyticsEvent(
                 BTPaymentActionAnalytics.setPaymentActionPaymentMethodFailed,
@@ -107,6 +89,39 @@ import BraintreeCore
             )
             throw error
         }
+    }
+
+    /// Self-fetches the current state of the Payment Action scoped to this client's authorization.
+    /// - Returns: a `BTPaymentActionResult` containing the Payment Action's `id`, `status`,
+    ///   and `nextAction` (if any).
+    /// - Throws: the underlying error from the network layer or GraphQL response.
+    func getPaymentAction() async throws -> BTPaymentAction {
+        let (responseBody, _) = try await apiClient.post(
+            "",
+            parameters: GetPaymentActionGraphQLBody(),
+            httpType: .graphQLAPI
+        )
+
+        let paymentActionJSON: BTJSON = responseBody?["data"]["paymentAction"] ?? BTJSON()
+        return try BTPaymentAction(json: paymentActionJSON)
+    }
+
+    /// Signals that the customer has completed the current `nextAction` (e.g. device data collection
+    /// or a 3D Secure challenge), advancing the Payment Action to its next state.
+    /// - Parameter completedAction: the completed action's payload — mirrors the GraphQL `@oneOf` input.
+    /// - Returns: the resulting `BTPaymentAction`, which may carry a new `nextAction` if another
+    ///   customer action is required.
+    /// - Throws: the underlying error from the network layer or GraphQL response.
+    func signalCustomerActionComplete(_ completedAction: BTCustomerCompletedAction) async throws -> BTPaymentAction {
+        let (responseBody, _) = try await apiClient.post(
+            "",
+            parameters: SignalCustomerActionCompleteGraphQLBody(completedAction: completedAction),
+            httpType: .graphQLAPI
+        )
+
+        let paymentActionJSON: BTJSON = responseBody?["data"]["signalCustomerActionComplete"]["paymentAction"]
+            ?? BTJSON()
+        return try BTPaymentAction(json: paymentActionJSON)
     }
     
     /// Maps a raw `BTPaymentAction` (id + status from the GraphQL response) into the semantic
