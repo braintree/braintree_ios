@@ -59,7 +59,7 @@ public struct PayPalPayLaterButton: View {
     ///    - width: Optional. The width of the button. Defaults to 300 px.
     ///    - completion: The completion handler to handle client tokenize request success or failure on button press.
     public init(
-        authorizaton: String,
+        authorization: String,
         universalLink: URL,
         fallbackURLScheme: String? = nil,
         request: BTPayPalCheckoutRequest,
@@ -69,7 +69,7 @@ public struct PayPalPayLaterButton: View {
     ) {
         request.offerPayLater = true
         
-        self.authorization = authorizaton
+        self.authorization = authorization
         self.universalLink = universalLink
         self.fallbackURLScheme = fallbackURLScheme
         self.checkoutRequest = request
@@ -136,7 +136,7 @@ struct PayPalPayLaterButton_Previews: PreviewProvider {
         VStack {
             // Blue Button. Defaults to primary, width 300.
             PayPalPayLaterButton(
-                authorizaton: "auth-key",
+                authorization: "auth-key",
                 universalLink: sampleURL,
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 completion: PayPalPayLaterButton_Previews.closure
@@ -145,7 +145,7 @@ struct PayPalPayLaterButton_Previews: PreviewProvider {
             
             // Black Button. Respects maximum width.
             PayPalPayLaterButton(
-                authorizaton: "auth-key",
+                authorization: "auth-key",
                 universalLink: sampleURL,
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 color: .black,
@@ -156,7 +156,7 @@ struct PayPalPayLaterButton_Previews: PreviewProvider {
             
             // White Button. Respects minimum width.
             PayPalPayLaterButton(
-                authorizaton: "auth-key",
+                authorization: "auth-key",
                 universalLink: sampleURL,
                 request: BTPayPalCheckoutRequest(amount: "10"),
                 color: .white,
