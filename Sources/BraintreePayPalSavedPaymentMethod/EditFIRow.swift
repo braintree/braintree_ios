@@ -8,7 +8,7 @@ import UIKit
 /// - `.instrument` — the art PayPal returns, then `••1234` for a regular card or bank account and
 ///   the label for anything else (PayPal Credit, PayPal balance, Pay in 4, ...), plus the edit pencil
 /// - `.displayOnly` — buyer email + edit pencil (no-FI-but-email fallback)
-/// - `.brandOnly` — PayPal brand mark only (no-network fallback)
+/// - `.brandOnly` — PayPal brand mark only, when there is no FI or email to show
 struct EditFIRow: View {
 
     enum Content: Equatable {
@@ -71,9 +71,11 @@ struct EditFIRow: View {
 
     private var sideBySideLayout: some View {
         HStack(spacing: 0) {
-            brandCluster
+            if showsBrandMark {
+                brandCluster
+            }
             fiCluster
-                .padding(.leading, fundingInstrumentGap)
+                .padding(.leading, showsBrandMark ? fundingInstrumentGap : 0)
 
             // Keep the cluster left-aligned; the pill hugs the brand mark.
             Spacer(minLength: 0)
@@ -81,14 +83,19 @@ struct EditFIRow: View {
     }
 
     private var stackedLayout: some View {
+        // Rows with nothing to draw are left out so the stack doesn't add spacing around them.
         VStack(alignment: .leading, spacing: EditFIStyleDefaultConstants.stackedLayoutSpacing) {
-            HStack(spacing: 0) {
-                brandCluster
-                Spacer(minLength: 0)
+            if showsBrandMark {
+                HStack(spacing: 0) {
+                    brandCluster
+                    Spacer(minLength: 0)
+                }
             }
-            HStack(spacing: 0) {
-                fiCluster
-                Spacer(minLength: 0)
+            if content != .brandOnly {
+                HStack(spacing: 0) {
+                    fiCluster
+                    Spacer(minLength: 0)
+                }
             }
         }
     }
@@ -151,14 +158,19 @@ struct EditFIRow: View {
         .accessibilityHint("Change payment method")
     }
 
-    /// Internal for testing.
+    /// Names PayPal when the brand mark is hidden, and never reads an empty label. Internal for testing.
     func fiAccessibilityLabel(for summary: PayPalSavedPaymentMethod) -> String {
-        guard showsLastDigits(summary), let lastDigits = summary.lastDigits else {
-            return summary.label ?? ""
+        let label = summary.label.flatMap { $0.isEmpty ? nil : $0 }
+        var parts = showsBrandMark ? [] : ["PayPal"]
+
+        if showsLastDigits(summary), let lastDigits = summary.lastDigits {
+            // Spaced so VoiceOver reads each digit instead of one number.
+            let spokenDigits = lastDigits.map(String.init).joined(separator: " ")
+            parts += [label, "ending in \(spokenDigits)"].compactMap { $0 }
+        } else {
+            parts.append(label ?? "Saved payment method")
         }
-        // Spaced so VoiceOver reads each digit instead of one number.
-        let spokenDigits = lastDigits.map(String.init).joined(separator: " ")
-        return [summary.label, "ending in \(spokenDigits)"].compactMap { $0 }.joined(separator: ", ")
+        return parts.joined(separator: ", ")
     }
 
     // MARK: - Subviews
@@ -240,6 +252,11 @@ struct EditFIRow: View {
     }
 
     // MARK: - Helpers
+
+    /// The merchant may hide both the logo and the label.
+    private var showsBrandMark: Bool {
+        style.showPayPalLogo || style.showPayPalLabel
+    }
 
     /// `••1234` is only meaningful for a regular card or bank account. PayPal products (PayPal Credit,
     /// PayPal Debit, PayPal balance, Pay in 4, ...) carry a `subtype` or another type and are shown by

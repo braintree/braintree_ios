@@ -85,12 +85,23 @@ final class PayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTe
             (try instrument(type: "PAYPAL_CREDIT", label: "PayPal Credit", lastDigits: "1234"), "PayPal Credit"),
             (try instrument(type: "PPDC", label: "PayPal Debit", lastDigits: "1234"), "PayPal Debit"),
             (try instrument(type: "CARD", label: "Visa", lastDigits: nil), "Visa"),
-            (try instrument(type: "CARD", label: nil, lastDigits: "1234"), "ending in 1 2 3 4")
+            (try instrument(type: "CARD", label: nil, lastDigits: "1234"), "ending in 1 2 3 4"),
+            (try instrument(type: "CARD", label: "", lastDigits: "1234"), "ending in 1 2 3 4"),
+            (try instrument(type: "PPDC", label: nil, lastDigits: nil), "Saved payment method")
         ]
 
         for (fi, expected) in cases {
             XCTAssertEqual(row(.instrument(fi)).fiAccessibilityLabel(for: fi), expected)
         }
+    }
+
+    /// With the brand mark hidden, the pill is the only thing VoiceOver reads, so it names PayPal itself.
+    func testFIAccessibilityLabel_whenTheBrandMarkIsHidden_namesPayPal() throws {
+        let fi = try instrument(type: "CARD", label: "Visa", lastDigits: "1234")
+        let style = PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false)
+        let row = EditFIRow(content: .instrument(fi), style: style, onEdit: {})
+
+        XCTAssertEqual(row.fiAccessibilityLabel(for: fi), "PayPal, Visa, ending in 1 2 3 4")
     }
 
     // MARK: - Credit messaging
@@ -124,10 +135,12 @@ final class PayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTe
     }
 
     func testAttributedMessage_withoutLearnMoreText_hasNoLink() {
-        let message = creditRow(learnMoreText: nil).attributedMessage
+        for text in [nil, ""] {
+            let message = creditRow(learnMoreText: text).attributedMessage
 
-        XCTAssertEqual(String(message.characters), "Or 4 interest-free payments of $324.50.")
-        XCTAssertFalse(message.runs.contains { $0.link != nil })
+            XCTAssertEqual(String(message.characters), "Or 4 interest-free payments of $324.50.")
+            XCTAssertFalse(message.runs.contains { $0.link != nil })
+        }
     }
 
     // MARK: - Child rows in isolation
@@ -165,6 +178,15 @@ final class PayPalSavedPaymentMethodRows_RenderTests: SavedPaymentMethodRenderTe
 
     func testRender_instrumentRow_atNarrowWidthUsesStackedLayout() throws {
         try render(row(.instrument(try instrument())), width: 200, typeSize: .accessibility5)
+    }
+
+    /// Brand-only has no pill, so the stacked layout must not add its row spacing below the brand mark.
+    func testRender_brandOnlyRow_whenStacked_isNoTallerThanTheBrandMark() throws {
+        let style = PayPalSavedPaymentMethodViewStyle()
+        let row = try render(row(.brandOnly), width: 60, typeSize: .accessibility5)
+        let brandMark = try render(PayPalBrandCluster(style: style), width: 60, typeSize: .accessibility5)
+
+        XCTAssertEqual(row.size.height, brandMark.size.height)
     }
 
     func testRender_longLabelTruncatesWithoutTrapping() throws {

@@ -54,7 +54,7 @@ struct CreditMessagingRow: View {
         var text = AttributedString(message)
         text.foregroundColor = style.resolvedTextColor
 
-        guard let learnMoreText, let url = learnMoreURL else {
+        guard let learnMoreText, !learnMoreText.isEmpty, let url = learnMoreURL else {
             return text
         }
 
