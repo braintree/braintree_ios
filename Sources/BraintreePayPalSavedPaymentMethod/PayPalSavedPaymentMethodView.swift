@@ -83,7 +83,7 @@ public struct PayPalSavedPaymentMethodView: View {
 
     public var body: some View {
         Group {
-            if viewModel.fiState == .hidden {
+            if hasNothingToShow {
                 EmptyView()
             } else {
                 container
@@ -173,9 +173,12 @@ public struct PayPalSavedPaymentMethodView: View {
             EditFIRow(content: .displayOnly(email: email, isEditable: isEditable), style: style, onEdit: editTapped)
         case .brandOnly:
             EditFIRow(content: .brandOnly, style: style, onEdit: editTapped)
-        case .hidden:
-            EmptyView()
         }
+    }
+
+    /// Brand-only with the merchant hiding both the logo and the label would draw an empty tile.
+    private var hasNothingToShow: Bool {
+        viewModel.fiState == .brandOnly && !style.showPayPalLogo && !style.showPayPalLabel
     }
 
     private func editTapped() {

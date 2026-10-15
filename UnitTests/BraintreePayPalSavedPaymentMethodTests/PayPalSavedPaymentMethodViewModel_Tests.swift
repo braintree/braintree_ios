@@ -456,8 +456,8 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertFalse(sut.showsCreditMessaging)
     }
 
-    /// The pre-edit instrument will no longer be charged, so it must not be shown again.
-    func testEdit_whenTheRefetchFails_hidesTheRowButStillDeliversTheNonce() async throws {
+    /// The pre-edit instrument will no longer be charged, so only the brand mark is shown.
+    func testEdit_whenTheRefetchFails_showsTheBrandMarkAndStillDeliversTheNonce() async throws {
         try injectPayPalClient(nonce: "fake-nonce", orderID: "fake-order-id")
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         var receivedNonce: BTPayPalAccountNonce?
@@ -470,7 +470,8 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await settle(sut)
         sut.editLoaderDidDismiss()
 
-        XCTAssertEqual(sut.fiState, .hidden)
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertFalse(sut.showsCreditMessaging)
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
     }
 
@@ -560,10 +561,10 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         }
     }
 
-    func testStateFromSummary_whenNeitherIsPresent_hidesTheComponent() throws {
+    func testStateFromSummary_whenNeitherIsPresent_showsTheBrandMark() throws {
         let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
 
-        XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .hidden)
+        XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .brandOnly)
     }
 }
 

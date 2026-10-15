@@ -25,10 +25,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         case instrument(PayPalSavedPaymentMethod)
         /// PayPal has no FI to show, but knows the buyer's email; `isEditable` says whether the buyer can change the FI.
         case displayOnly(email: String, isEditable: Bool)
-        /// The FI could not be fetched (e.g. a network failure), so only PayPal is identified.
+        /// PayPal can't show an FI or an email (a failed fetch, an empty response, or a failed refresh after an
+        /// edit), so only the PayPal brand mark is shown.
         case brandOnly
-        /// PayPal has neither an FI nor an email for the buyer, so there is nothing to show.
-        case hidden
     }
 
     /// The merchant's `(nonce, error)` for an edit.
@@ -91,7 +90,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             return true
         case .displayOnly(_, let isEditable):
             return isEditable
-        case .brandOnly, .hidden:
+        case .brandOnly:
             return false
         }
     }
@@ -195,8 +194,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
-    /// payer (email); else the component hides entirely (a network failure keeps the brand mark
-    /// via the `loadBuyerDefaultBillingAgreement` catch instead).
+    /// payer (email); else only the PayPal brand mark.
     static func state(from summary: PayPalSavedPaymentMethodSummary) -> FIState {
         if let instrument = summary.paymentMethods.first {
             return .instrument(instrument)
@@ -206,7 +204,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             // pencil we cannot confirm the buyer is allowed to use.
             return .displayOnly(email: email, isEditable: payer.isEditable ?? false)
         }
-        return .hidden
+        return .brandOnly
     }
 
     /// Starts the edit flow; taps while an edit or its loader is still up are ignored.
@@ -353,7 +351,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
         fiRefetchTask?.cancel()
         guard let orderID = nonce.paymentID else {
-            fiState = .hidden
+            fiState = .brandOnly
             return
         }
 
@@ -363,7 +361,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         }
     }
 
-    /// Resolves the FI the buyer picked for `orderID`. A failure hides the row, since the pre-edit
+    /// Resolves the FI the buyer picked for `orderID`. A failure shows only the brand mark, since the pre-edit
     /// instrument is no longer the one that will be charged.
     private func loadBuyerUpdatedBillingAgreement(orderID: String, request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return }
@@ -377,7 +375,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             )
             state = Self.state(from: summary)
         } catch {
-            state = .hidden
+            state = .brandOnly
         }
 
         guard !Task.isCancelled else { return }

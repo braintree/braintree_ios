@@ -47,7 +47,7 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
         }
     }
 
-    /// The non-instrument states. `.hidden` is asserted separately because it must render nothing.
+    /// The non-instrument states.
     func testRender_everyNonInstrumentState() {
         let states: [(name: String, state: PayPalSavedPaymentMethodViewModel.FIState)] = [
             ("loading", .loading),
@@ -61,9 +61,11 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
         }
     }
 
-    /// `.hidden` must take up no space at all, not render an empty tile with padding and a border.
-    func testRender_hiddenState_occupiesNoSpace() {
-        XCTAssertNil(rendered(view(state: .hidden)))
+    /// With the logo and label both hidden, brand-only has nothing to show, so it must not render an empty tile.
+    func testRender_brandOnly_withLogoAndLabelHidden_occupiesNoSpace() {
+        let style = PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false)
+
+        XCTAssertNil(rendered(view(state: .brandOnly, style: style)))
     }
 
     // MARK: - Rendered content
@@ -77,13 +79,15 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
         XCTAssertGreaterThan(withMessage.size.height, withoutMessage.size.height)
     }
 
-    func testRender_brandOnly_drawsTheBrandMark() throws {
-        let brandMarkHidden = PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false)
+    /// Brand-only shows both the logo and the label, and each one respects its style flag.
+    func testRender_brandOnly_drawsTheLogoAndTheLabel() throws {
+        let both = try render(view(state: .brandOnly)).pngData()
+        let logoOnly = try render(view(state: .brandOnly, style: .init(showPayPalLabel: false))).pngData()
+        let labelOnly = try render(view(state: .brandOnly, style: .init(showPayPalLogo: false))).pngData()
 
-        let withBrandMark = try render(view(state: .brandOnly)).pngData()
-        let withoutBrandMark = try render(view(state: .brandOnly, style: brandMarkHidden)).pngData()
-
-        XCTAssertNotEqual(withBrandMark, withoutBrandMark)
+        XCTAssertNotEqual(both, logoOnly)
+        XCTAssertNotEqual(both, labelOnly)
+        XCTAssertNotEqual(logoOnly, labelOnly)
     }
 
     func testRender_editableEmail_drawsTheEditPencil() throws {
