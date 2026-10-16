@@ -56,8 +56,8 @@ public struct PayPalSavedPaymentMethodViewStyle {
         /// Creates a `ComponentAppearance`.
         /// - Parameters:
         ///   - backgroundColor: Optional. Component background color. `nil` → SDK default (white).
-        ///   - textColor: Optional. Base text color for the label, funding-instrument text, and credit messaging.
-        ///     `nil` → SDK default (≈ `#222222`).
+        ///   - textColor: Optional. Base text color for the label and credit messaging. The funding-instrument
+        ///     pill keeps a fixed color so it stays legible on its fixed background. `nil` → SDK default (≈ `#222222`).
         ///   - baseFontSize: Optional. Fallback text size for every element that doesn't set its own.
         ///     `nil` → each element uses its own SDK default.
         ///   - fontName: Optional. Registered custom-font PostScript name. `nil` → system font.
