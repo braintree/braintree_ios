@@ -7,7 +7,6 @@ extension UIViewController {
     func embed(_ swiftUIView: some View) {
         let hostingController = UIHostingController(rootView: swiftUIView)
         addChild(hostingController)
-        hostingController.beginAppearanceTransition(true, animated: false)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(hostingController.view)
 
@@ -19,6 +18,5 @@ extension UIViewController {
         ])
 
         hostingController.didMove(toParent: self)
-        hostingController.endAppearanceTransition()
     }
 }

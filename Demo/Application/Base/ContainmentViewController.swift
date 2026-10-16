@@ -144,11 +144,9 @@ class ContainmentViewController: UIViewController {
 
     private func reloadIntegration() {
         if let currentViewController {
-            currentViewController.beginAppearanceTransition(false, animated: false)
             currentViewController.willMove(toParent: nil)
             currentViewController.removeFromParent()
             currentViewController.view.removeFromSuperview()
-            currentViewController.endAppearanceTransition()
         }
 
         title = "Braintree"
@@ -275,7 +273,6 @@ class ContainmentViewController: UIViewController {
 
     private func appendViewController(_ viewController: UIViewController) {
         addChild(viewController)
-        viewController.beginAppearanceTransition(true, animated: false)
         view.addSubview(viewController.view)
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -287,7 +284,6 @@ class ContainmentViewController: UIViewController {
         ])
 
         viewController.didMove(toParent: self)
-        viewController.endAppearanceTransition()
     }
 }
 
