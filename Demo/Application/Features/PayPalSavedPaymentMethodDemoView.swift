@@ -16,6 +16,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
 
     private let currencyCode = "USD"
 
+    // swiftlint:disable:next force_unwrapping
     private let universalLink = URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
 
     init(
