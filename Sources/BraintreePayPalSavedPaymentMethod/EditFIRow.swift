@@ -146,7 +146,7 @@ struct EditFIRow: View {
 
     /// The whole pill is the tap target, not just the pencil: a 20pt glyph is well under the 44pt
     /// minimum and is the only affordance the buyer has to change what will be charged.
-    private func editable(label: String, @ViewBuilder _ content: () -> some View) -> some View {
+    private func editable(label: String, @ViewBuilder content: () -> some View) -> some View {
         Button(action: onEdit) {
             content()
         }
@@ -180,7 +180,7 @@ struct EditFIRow: View {
     }
 
     /// The rounded pill wrapping the FI content + edit pencil. Fixed values — not merchant-configurable.
-    private func fiPill<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+    private func fiPill<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
             .padding(.horizontal, EditFIStyleDefaultConstants.fundingInstrumentHorizontalPadding)
             .padding(.vertical, EditFIStyleDefaultConstants.fundingInstrumentVerticalPadding)
