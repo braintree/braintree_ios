@@ -63,14 +63,14 @@ struct PayPalSavedPaymentMethodDemoView: View {
 
     private var savedPaymentMethod: some View {
         PayPalSavedPaymentMethodView(
+            authorization: authorization,
+            universalLink: universalLink,
             payPalCheckoutRequest: BTPayPalCheckoutRequest(
                 amount: amount,
                 enablePayPalAppSwitch: isAppSwitchEnabled,
                 currencyCode: currencyCode
             ),
             request: PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: currencyCode),
-            authorization: authorization,
-            universalLink: universalLink,
             fallbackURLScheme: "com.braintreepayments.Demo.payments",
             style: styleConfig.style
         ) { nonce, error in
