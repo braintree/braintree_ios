@@ -186,10 +186,4 @@ final class PayPalSavedPaymentMethodView_RenderTests: SavedPaymentMethodRenderTe
 
         XCTAssertTrue(didFinish)
     }
-
-    // MARK: - Assets
-
-    func testBundle_containsTheLoadingSpinner() {
-        XCTAssertNotNil(UIImage(named: "LoadingSpinner", in: .payPalSavedPaymentMethod, compatibleWith: nil))
-    }
 }

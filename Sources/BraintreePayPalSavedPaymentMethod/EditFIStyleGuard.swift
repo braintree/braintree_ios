@@ -59,10 +59,16 @@ enum EditFIStyleDefaultConstants {
     static let shimmerBarCornerRadius: CGFloat = 4
     /// Space left after the shimmer bar so it stops short of the trailing edge.
     static let shimmerBarTrailingGap: CGFloat = 40
+    static let shimmerBarColor = UIColor.systemGray5
+    static let shimmerHighlightOpacity: Double = 0.65
+    /// The sweeping highlight's width, as a fraction of the bar's width.
+    static let shimmerHighlightWidthRatio: CGFloat = 0.6
+    static let shimmerDuration: Double = 1.2
 
     static let editLoaderOverlayOpacity: Double = 0.9
     static let editLoaderSpinnerSide: CGFloat = 48
     static let editLoaderSpinnerColor = UIColor.black
+    static let editLoaderSpinnerRotationDuration: Double = 1
 }
 
 /// Resolves `PayPalSavedPaymentMethodViewStyle` values for rendering.

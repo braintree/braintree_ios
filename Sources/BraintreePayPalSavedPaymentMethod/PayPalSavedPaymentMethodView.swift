@@ -79,7 +79,7 @@ public struct PayPalSavedPaymentMethodView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
-    // MARK: - View
+    // MARK: - Body
 
     public var body: some View {
         Group {
@@ -115,10 +115,7 @@ public struct PayPalSavedPaymentMethodView: View {
         )
     }
 
-    /// Read-only binding: the loader is dismissed by the view model, not by user interaction.
-    private var editLoaderBinding: Binding<Bool> {
-        Binding(get: { viewModel.isEditing }, set: { _ in })
-    }
+    // MARK: - Subviews
 
     private var container: some View {
         VStack(
@@ -160,10 +157,6 @@ public struct PayPalSavedPaymentMethodView: View {
         )
     }
 
-    private var cornerRadius: CGFloat {
-        EditFIStyleGuard.dimension(style.container?.cornerRadius, default: EditFIStyleDefaultConstants.containerCornerRadius)
-    }
-
     @ViewBuilder private var fiRegion: some View {
         switch viewModel.fiState {
         case .loading:
@@ -175,15 +168,6 @@ public struct PayPalSavedPaymentMethodView: View {
         case .brandOnly:
             EditFIRow(content: .brandOnly, style: style, onEdit: editTapped)
         }
-    }
-
-    /// Brand-only with the merchant hiding both the logo and the label would draw an empty tile.
-    private var hasNothingToShow: Bool {
-        viewModel.fiState == .brandOnly && !style.showPayPalLogo && !style.showPayPalLabel
-    }
-
-    private func editTapped() {
-        viewModel.editTapped(checkoutRequest: payPalCheckoutRequest, request: request)
     }
 
     @ViewBuilder private var creditRegion: some View {
@@ -206,6 +190,22 @@ public struct PayPalSavedPaymentMethodView: View {
         }
     }
 
+    // MARK: - Helpers
+
+    /// Read-only binding: the loader is dismissed by the view model, not by user interaction.
+    private var editLoaderBinding: Binding<Bool> {
+        Binding(get: { viewModel.isEditing }, set: { _ in })
+    }
+
+    private var cornerRadius: CGFloat {
+        EditFIStyleGuard.dimension(style.container?.cornerRadius, default: EditFIStyleDefaultConstants.containerCornerRadius)
+    }
+
+    /// Brand-only with the merchant hiding both the logo and the label would draw an empty tile.
+    private var hasNothingToShow: Bool {
+        viewModel.fiState == .brandOnly && !style.showPayPalLogo && !style.showPayPalLabel
+    }
+
     /// Leading inset that aligns the credit-messaging line with the "PayPal" label (i.e. past
     /// the logo). Zero when the logo is hidden and the label already starts at the leading edge.
     private var creditLeadingInset: CGFloat {
@@ -220,11 +220,17 @@ public struct PayPalSavedPaymentMethodView: View {
         )
         return logoSide + labelGap
     }
+
+    // MARK: - Private Methods
+
+    private func editTapped() {
+        viewModel.editTapped(checkoutRequest: payPalCheckoutRequest, request: request)
+    }
 }
 
 // MARK: - Edit-flow loader
 
-/// Full-screen loader shown while the edit paysheet (create-payment-resource) is being prepared.
+/// Full-screen loader shown while the PayPal edit flow is being prepared.
 private struct EditFlowLoadingView: View {
 
     @State private var rotation = 0.0
@@ -244,7 +250,10 @@ private struct EditFlowLoadingView: View {
                 .rotationEffect(.degrees(rotation))
         }
         .onAppear {
-            withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+            withAnimation(
+                .linear(duration: EditFIStyleDefaultConstants.editLoaderSpinnerRotationDuration)
+                    .repeatForever(autoreverses: false)
+            ) {
                 rotation = 360
             }
         }
@@ -327,7 +336,7 @@ struct PayPalSavedPaymentMethodView_Previews: PreviewProvider {
                 preview("Instrument — no image (fallback glyph)", .instrument(bank))
                 preview("Instrument — truncation", .instrument(longLabel))
                 preview("Display-only (email)", .displayOnly(email: "buyer@example.com", isEditable: true))
-                preview("Brand only (no network)", .brandOnly)
+                preview("Brand only", .brandOnly)
                 preview("Bordered container", .instrument(mastercard), style: borderedStyle)
             }
             .padding()

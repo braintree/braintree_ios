@@ -9,18 +9,21 @@ struct ShimmerModifier: ViewModifier {
         content
             .overlay(
                 GeometryReader { geo in
+                    let highlightWidth = geo.size.width * EditFIStyleDefaultConstants.shimmerHighlightWidthRatio
                     LinearGradient(
-                        gradient: Gradient(colors: [.clear, Color.white.opacity(0.65), .clear]),
+                        gradient: Gradient(
+                            colors: [.clear, Color.white.opacity(EditFIStyleDefaultConstants.shimmerHighlightOpacity), .clear]
+                        ),
                         startPoint: .leading,
                         endPoint: .trailing
                     )
-                    .frame(width: geo.size.width * 0.6)
-                    .offset(x: animating ? geo.size.width : -geo.size.width * 0.6)
+                    .frame(width: highlightWidth)
+                    .offset(x: animating ? geo.size.width : -highlightWidth)
                 }
             )
             .mask(content)
             .onAppear {
-                withAnimation(.linear(duration: 1.2).repeatForever(autoreverses: false)) {
+                withAnimation(.linear(duration: EditFIStyleDefaultConstants.shimmerDuration).repeatForever(autoreverses: false)) {
                     animating = true
                 }
             }
@@ -40,7 +43,7 @@ struct ShimmerBar: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: EditFIStyleDefaultConstants.shimmerBarCornerRadius)
-            .fill(Color(.systemGray5))
+            .fill(Color(uiColor: EditFIStyleDefaultConstants.shimmerBarColor))
             .frame(height: EditFIStyleDefaultConstants.shimmerBarHeight)
             .frame(maxWidth: .infinity)
             .padding(.trailing, EditFIStyleDefaultConstants.shimmerBarTrailingGap)
@@ -54,12 +57,20 @@ struct PayPalSavedPaymentMethodSkeletonRow: View {
 
     let style: PayPalSavedPaymentMethodViewStyle
 
-    var body: some View {
-        HStack(spacing: EditFIStyleGuard.dimension(
+    private var fundingInstrumentGap: CGFloat {
+        EditFIStyleGuard.dimension(
             style.container?.fundingInstrument?.leadingGap,
             default: EditFIStyleDefaultConstants.fundingInstrumentLeadingGap
-        )) {
-            PayPalBrandCluster(style: style)
+        )
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // A hidden brand mark would still take the gap, so it is left out entirely.
+            if style.showPayPalLogo || style.showPayPalLabel {
+                PayPalBrandCluster(style: style)
+                    .padding(.trailing, fundingInstrumentGap)
+            }
             ShimmerBar()
         }
         .accessibilityElement()
