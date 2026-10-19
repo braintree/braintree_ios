@@ -18,7 +18,7 @@ enum BTCustomerCompletedAction: Encodable, Equatable {
     }
 
     private enum DeviceDataCollectionCodingKeys: String, CodingKey {
-        case dfReferenceID
+        case dfReferenceID = "dfReferenceId"
     }
 
     private enum ChallengeCodingKeys: String, CodingKey {
@@ -34,7 +34,7 @@ enum BTCustomerCompletedAction: Encodable, Equatable {
                 keyedBy: DeviceDataCollectionCodingKeys.self,
                 forKey: .deviceDataCollection
             )
-            try nested.encode(dfReferenceId, forKey: .dfReferenceId)
+            try nested.encode(dfReferenceID, forKey: .dfReferenceID)
         case .challenge(let cardinalAuthenticationJWT):
             var nested = container.nestedContainer(keyedBy: ChallengeCodingKeys.self, forKey: .challenge)
             try nested.encode(cardinalAuthenticationJWT, forKey: .cardinalAuthenticationJWT)

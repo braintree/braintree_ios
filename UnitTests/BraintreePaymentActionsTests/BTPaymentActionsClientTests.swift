@@ -489,7 +489,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             ]
         ])
 
-        let completedAction = BTCustomerCompletedAction.deviceDataCollection(dfReferenceId: "df-reference-id")
+        let completedAction = BTCustomerCompletedAction.deviceDataCollection(dfReferenceID: "df-reference-id")
         let result = try await sut.signalCustomerActionComplete(completedAction)
 
         XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)

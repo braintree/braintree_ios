@@ -6,7 +6,7 @@ class SignalCustomerActionCompleteGraphQLBody_Tests: XCTestCase {
 
     func testQuery_requestsSharedPaymentActionFields() {
         let body = SignalCustomerActionCompleteGraphQLBody(
-            completedAction: .deviceDataCollection(dfReferenceId: "df-reference-id")
+            completedAction: .deviceDataCollection(dfReferenceID: "df-reference-id")
         )
 
         XCTAssertTrue(body.query.contains("mutation SignalCustomerActionComplete"))
@@ -18,7 +18,7 @@ class SignalCustomerActionCompleteGraphQLBody_Tests: XCTestCase {
 
     func testToDictionary_deviceDataCollection_omitsPaymentActionID() throws {
         let body = SignalCustomerActionCompleteGraphQLBody(
-            completedAction: .deviceDataCollection(dfReferenceId: "df-reference-id")
+            completedAction: .deviceDataCollection(dfReferenceID: "df-reference-id")
         )
 
         let dictionary = try body.toDictionary()

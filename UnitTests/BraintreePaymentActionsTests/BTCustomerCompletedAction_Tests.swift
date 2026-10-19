@@ -5,7 +5,7 @@ import XCTest
 class BTCustomerCompletedAction_Tests: XCTestCase {
 
     func testEncode_deviceDataCollection_encodesSingleKey() throws {
-        let action = BTCustomerCompletedAction.deviceDataCollection(dfReferenceId: "df-reference-id")
+        let action = BTCustomerCompletedAction.deviceDataCollection(dfReferenceID: "df-reference-id")
 
         let dictionary = try action.toDictionary()
 

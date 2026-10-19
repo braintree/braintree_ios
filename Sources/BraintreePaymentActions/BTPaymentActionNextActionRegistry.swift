@@ -30,6 +30,11 @@ final class BTPaymentActionNextActionRegistry {
     // MARK: - Internal Methods
 
     /// Registers a parsing closure for a `nextAction` union member, keyed on its GraphQL `__typename`.
+    ///
+    /// Not thread-safe — `factories` is a plain, unsynchronized dictionary on a shared singleton.
+    /// This is only intended to be called at initialization time (e.g. from `init()`), before
+    /// `resolve(json:)` is ever called concurrently; it is not safe to call at runtime alongside
+    /// in-flight `resolve(json:)` calls.
     func register(typeName: String, factory: @escaping (BTJSON) throws -> BTNextAction) {
         factories[typeName] = factory
     }
