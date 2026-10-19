@@ -18,7 +18,7 @@ enum BTCustomerCompletedAction: Encodable, Equatable {
     }
 
     private enum DeviceDataCollectionCodingKeys: String, CodingKey {
-        case dfReferenceId
+        case dfReferenceID
     }
 
     private enum ChallengeCodingKeys: String, CodingKey {
