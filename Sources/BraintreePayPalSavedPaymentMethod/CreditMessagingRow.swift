@@ -1,9 +1,8 @@
 import SwiftUI
 import UIKit
 
-/// The inline credit (Pay Later) messaging line rendered below the FI row.
-///
-/// Tapping "Learn more" hands the tap back through `onLearnMore` so the caller picks how the lander opens.
+/// The inline credit (Pay Later) messaging line rendered below the FI row. Tapping "Learn more" hands the tap
+/// back through `onLearnMore` so the caller picks how the lander opens.
 struct CreditMessagingRow: View {
 
     let style: PayPalSavedPaymentMethodViewStyle
