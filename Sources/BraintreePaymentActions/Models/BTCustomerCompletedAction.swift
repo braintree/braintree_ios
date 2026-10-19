@@ -5,7 +5,7 @@ import Foundation
 enum BTCustomerCompletedAction: Encodable, Equatable {
 
     /// Signals that device data collection (the 3D Secure authentication step) has completed.
-    case deviceDataCollection(dfReferenceId: String)
+    case deviceDataCollection(dfReferenceID: String)
 
     /// Signals that the 3D Secure challenge has completed.
     case challenge(cardinalAuthenticationJWT: String)
