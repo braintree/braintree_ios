@@ -29,7 +29,7 @@ enum BTCustomerCompletedAction: Encodable, Equatable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         switch self {
-        case .deviceDataCollection(let dfReferenceId):
+        case .deviceDataCollection(let dfReferenceID):
             var nested = container.nestedContainer(
                 keyedBy: DeviceDataCollectionCodingKeys.self,
                 forKey: .deviceDataCollection
