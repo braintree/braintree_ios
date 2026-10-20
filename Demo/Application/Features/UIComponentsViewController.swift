@@ -191,7 +191,7 @@ private struct UIComponentsDemoView: View {
                             userAction: .payNow
                         ),
                         color: selectedPayLaterColor,
-                        width: min(geo.size.width, 300)
+                        width: geo.size.width
                     ) { nonce, error in
                         DispatchQueue.main.async {
                             if let nonce {
@@ -202,6 +202,7 @@ private struct UIComponentsDemoView: View {
                             }
                         }
                     }
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                 }
                 .frame(height: 48)
             }
