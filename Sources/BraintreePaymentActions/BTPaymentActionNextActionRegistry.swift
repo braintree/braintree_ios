@@ -7,7 +7,7 @@ import BraintreeCore
 /// Resolves a `nextAction` union JSON payload into a `BTNextAction` by its `__typename`,
 /// so callers never have to branch on a raw type string.
 ///
-/// Each `nextAction` union member registers a parsing closure keyed on the GraphQL `__typename` it
+/// Each `nextAction` union member registers a parsing closure keyed on the GraphQL `__typename` i
 /// resolves. An unrecognized `__typename` — a union member this SDK version doesn't know about yet —
 /// resolves to `.unrecognized` rather than failing the response, since the schema is additive and new
 /// action types (redirect, QR code, CVV input, etc.) may be returned before this SDK supports them.
@@ -68,7 +68,7 @@ final class BTPaymentActionNextActionRegistry {
 
         register(typeName: "PaymentActionThreeDSecureChallenge") { json in
             guard let acsURL = json["acsUrl"].asURL(),
-                let challengePayload = json["challengePayload"].asString(), 
+                let challengePayload = json["challengePayload"].asString(),
                 !challengePayload.isEmpty else {
                 throw BTPaymentActionError.decodingFailure
             }
