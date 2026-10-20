@@ -400,6 +400,163 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertFalse(result is BTServerActionRequiredResult)
     }
     
+    // MARK: - internal getPaymentAction
+
+    func testGetPaymentAction_postsToGraphQLAPI_withNoIDArgument() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION"
+                ] as [String: Any]
+            ]
+        ])
+
+        let result = try await sut.getPaymentAction()
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertEqual(result.status, .requiresCustomerAction)
+    }
+
+    func testGetPaymentAction_parsesNextAction() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureAuthentication",
+                        "bin": "401288"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let result = try await sut.getPaymentAction()
+
+        XCTAssertEqual(
+            result.nextAction,
+            .threeDSecureAuthentication(BTPaymentActionThreeDSecureAuthenticationNextAction(bin: "401288"))
+        )
+    }
+
+    func testGetPaymentAction_missingID_throwsMissingID() async {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": ["status": "REQUIRES_CUSTOMER_ACTION"] as [String: Any]
+            ]
+        ])
+
+        do {
+            _ = try await sut.getPaymentAction()
+            XCTFail("Expected missingID error to be thrown")
+        } catch let error as BTPaymentActionError {
+            XCTAssertEqual(error, .missingID)
+        } catch {
+            XCTFail("Expected BTPaymentActionError.missingID, got \(error)")
+        }
+    }
+
+    func testGetPaymentAction_networkError_propagatesError() async {
+        let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+
+        do {
+            _ = try await sut.getPaymentAction()
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as NSError, mockError)
+        }
+    }
+
+    // MARK: - internal signalCustomerActionComplete
+
+    func testSignalCustomerActionComplete_postsToGraphQLAPI() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "signalCustomerActionComplete": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureChallenge",
+                            "acsUrl": "https://acs.example.com",
+                            "challengePayload": "payload-data"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let completedAction = BTCustomerCompletedAction.deviceDataCollection(dfReferenceID: "df-reference-id")
+        let result = try await sut.signalCustomerActionComplete(completedAction)
+
+        XCTAssertEqual(mockAPIClient.lastPOSTAPIClientHTTPType, .graphQLAPI)
+        XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertEqual(result.status, .requiresCustomerAction)
+        XCTAssertEqual(
+            result.nextAction,
+            .threeDSecureChallenge(
+                BTPaymentActionThreeDSecureChallengeNextAction(
+                    acsURL: URL(string: "https://acs.example.com")!,
+                    acsRenderingType: nil,
+                    challengePayload: "payload-data"
+                )
+            )
+        )
+    }
+
+    func testSignalCustomerActionComplete_readyForConfirmation_clearsNextAction() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "signalCustomerActionComplete": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "READY_FOR_CONFIRMATION"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let completedAction = BTCustomerCompletedAction.challenge(cardinalAuthenticationJWT: "jwt-value")
+        let result = try await sut.signalCustomerActionComplete(completedAction)
+
+        XCTAssertEqual(result.status, .readyForConfirmation)
+        XCTAssertNil(result.nextAction)
+    }
+
+    func testSignalCustomerActionComplete_missingStatus_throwsMissingStatus() async {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "signalCustomerActionComplete": [
+                    "paymentAction": ["id": "payment-action-id"] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        do {
+            _ = try await sut.signalCustomerActionComplete(.challenge(cardinalAuthenticationJWT: "jwt-value"))
+            XCTFail("Expected missingStatus error to be thrown")
+        } catch let error as BTPaymentActionError {
+            XCTAssertEqual(error, .missingStatus)
+        } catch {
+            XCTFail("Expected BTPaymentActionError.missingStatus, got \(error)")
+        }
+    }
+
+    func testSignalCustomerActionComplete_networkError_propagatesError() async {
+        let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+
+        do {
+            _ = try await sut.signalCustomerActionComplete(.challenge(cardinalAuthenticationJWT: "jwt-value"))
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as NSError, mockError)
+        }
+    }
+
     // MARK: - Helpers
 
     private func stubResponse(id: String, status: String) {
