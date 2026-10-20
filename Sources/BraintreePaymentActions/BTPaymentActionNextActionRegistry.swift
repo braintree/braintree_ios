@@ -68,7 +68,8 @@ final class BTPaymentActionNextActionRegistry {
 
         register(typeName: "PaymentActionThreeDSecureChallenge") { json in
             guard let acsURL = json["acsUrl"].asURL(),
-                let challengePayload = json["challengePayload"].asString(), !challengePayload.isEmpty else {
+                let challengePayload = json["challengePayload"].asString(), 
+                !challengePayload.isEmpty else {
                 throw BTPaymentActionError.decodingFailure
             }
 
