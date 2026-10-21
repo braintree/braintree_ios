@@ -130,8 +130,8 @@ struct PayPalSavedPaymentMethodStyleEditor: View {
             OptionalMetricRow(title: "Horizontal Padding", defaultValue: 0, value: $config.horizontalPadding)
             OptionalMetricRow(title: "Vertical Padding", defaultValue: 10, value: $config.verticalPadding)
             OptionalMetricRow(title: "Corner Radius", defaultValue: 0, range: 0...40, value: $config.cornerRadius)
-            OptionalColorRow(title: "Border Color", defaultColor: .gray, value: $config.borderColor)
-            OptionalMetricRow(title: "Border Width", defaultValue: 1, range: 0...10, value: $config.borderWidth)
+            OptionalColorRow(title: "Border Color", defaultColor: .clear, value: $config.borderColor)
+            OptionalMetricRow(title: "Border Width", defaultValue: 0, range: 0...10, value: $config.borderWidth)
         }
     }
 
@@ -139,7 +139,7 @@ struct PayPalSavedPaymentMethodStyleEditor: View {
         Section("Logo and Label") {
             OptionalMetricRow(title: "Logo Width", defaultValue: 48, range: 0...120, value: $config.logoWidth)
             OptionalMetricRow(title: "Label Font Size", defaultValue: 20, value: $config.labelFontSize)
-            OptionalMetricRow(title: "Label Leading Gap", defaultValue: 13, value: $config.labelLeadingGap)
+            OptionalMetricRow(title: "Label Leading Gap", defaultValue: 12.73, value: $config.labelLeadingGap)
         }
     }
 
@@ -179,7 +179,7 @@ private struct OptionalMetricRow: View {
             SwiftUI.Toggle(title, isOn: isSet)
 
             if let value {
-                Stepper("\(Int(value)) pt", value: amount, in: range)
+                Stepper("\(value.formatted()) pt", value: amount, in: range)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

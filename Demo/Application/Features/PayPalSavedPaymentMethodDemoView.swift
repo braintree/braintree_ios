@@ -10,9 +10,12 @@ struct PayPalSavedPaymentMethodDemoView: View {
     let onComplete: (BTPaymentMethodNonce?) -> Void
 
     @State private var amount = "10.00"
+    @State private var amountInput = "10.00"
     @State private var isAppSwitchEnabled = true
     @State private var isStyleEditorPresented = false
     @State private var styleConfig = PayPalSavedPaymentMethodStyleConfig()
+
+    @FocusState private var isAmountFocused: Bool
 
     private let currencyCode = "USD"
 
@@ -48,9 +51,15 @@ struct PayPalSavedPaymentMethodDemoView: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text("Amount")
 
-                TextField("Amount", text: $amount)
+                TextField("Amount", text: $amountInput)
                     .keyboardType(.decimalPad)
                     .textFieldStyle(.roundedBorder)
+                    .focused($isAmountFocused)
+                    .onChange(of: isAmountFocused) { isFocused in
+                        if !isFocused {
+                            amount = amountInput
+                        }
+                    }
             }
 
             SwiftUI.Toggle("PayPal App Switch", isOn: $isAppSwitchEnabled)
@@ -75,13 +84,15 @@ struct PayPalSavedPaymentMethodDemoView: View {
             fallbackURLScheme: "com.braintreepayments.Demo.payments",
             style: styleConfig.style
         ) { nonce, error in
-            if let error {
-                onProgress(error.localizedDescription)
+            guard let nonce else {
+                onProgress(error?.localizedDescription)
                 return
             }
 
             onComplete(nonce)
         }
+        // The component only fetches the credit message on appear, so turning it on needs a fresh instance.
+        .id(styleConfig.showPayPalCreditMessaging)
     }
 }
 
