@@ -17,6 +17,7 @@ class UIComponentsViewController: PaymentButtonBaseViewController {
             onProgress: { [weak self] message in self?.progressBlock(message) },
             onComplete: { [weak self] nonce in self?.completionBlock(nonce) }
         )
+        
         embed(demoView)
     }
 }
