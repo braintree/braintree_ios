@@ -84,7 +84,9 @@ public struct PayPalSavedPaymentMethodView: View {
     public var body: some View {
         Group {
             if hasNothingToShow {
-                EmptyView()
+                // A zero-size view rather than `EmptyView`, so the loader and lifecycle modifiers below stay
+                // attached if the component collapses mid-edit.
+                Color.clear.frame(width: 0, height: 0)
             } else {
                 container
             }
@@ -109,7 +111,6 @@ public struct PayPalSavedPaymentMethodView: View {
             content: {
                 EditFlowLoadingView()
                     .clearPresentationBackground()
-                    .interactiveDismissDisabled(true)
                     .onAppear { viewModel.editLoaderDidAppear() }
             }
         )
