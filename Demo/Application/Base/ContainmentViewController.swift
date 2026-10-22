@@ -172,12 +172,12 @@ class ContainmentViewController: UIViewController {
             currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .clientToken:
-            updateStatus("Fetching Client Token...")
-
             if BraintreeDemoSettings.currentEnvironment == .custom {
-                updateStatus("Switch the Authorization Type in settings to Tokenization Key to use the custom environment")
+                useCustomClientToken()
                 return
             }
+
+            updateStatus("Fetching Client Token...")
 
             BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
                 if let error {
@@ -217,6 +217,19 @@ class ContainmentViewController: UIViewController {
         }
     }
 
+    private func useCustomClientToken() {
+        guard
+            let customClientToken = UserDefaults.standard.string(forKey: BraintreeDemoSettings.CustomAuthorizationDefaultsKey),
+            !customClientToken.isEmpty
+        else {
+            updateStatus("Paste a client token into Custom Authorization in settings to use the custom environment")
+            return
+        }
+
+        updateStatus("Using Custom Client Token")
+        currentViewController = instantiateViewController(with: customClientToken)
+    }
+
     private func instantiateViewController(with authorization: String) -> BaseViewController? {
         guard let integrationName = UserDefaults.standard.string(forKey: "BraintreeDemoSettingsIntegration") else {
             return PayPalWebCheckoutViewController(authorization: authorization)
@@ -249,6 +262,8 @@ class ContainmentViewController: UIViewController {
             return UIComponentsViewController(authorization: authorization)
         case "PayPalMessagingViewController":
             return PayPalMessagingViewController(authorization: authorization)
+        case "PayPalSavedPaymentMethodViewController":
+            return PayPalSavedPaymentMethodViewController(authorization: authorization)
         default:
             return PayPalWebCheckoutViewController(authorization: authorization)
         }
