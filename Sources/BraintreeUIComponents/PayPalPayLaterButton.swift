@@ -38,8 +38,8 @@ public struct PayPalPayLaterButton: View {
     /// Optional: A custom URL scheme to use as a fallback if the universal link fails.
     let fallbackURLScheme: String?
     
-    /// private `BTAPIClient` to send analytic events
-    private let apiClient: BTAPIClient?
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient?
     
     /// Loading state of the button
     @State private var isLoading: Bool = false
@@ -94,14 +94,11 @@ public struct PayPalPayLaterButton: View {
             logoTopPadding: 11,
             logoBottomPadding: 8
         ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonSelected)
-            isLoading = true
-            spinnerRotation = 0
+            didSelectButton()
             invokePayPalFlow()
         }
         .onAppear {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonPresented)
-            isLoading = false
+            didAppear()
         }
         // spinner animation
         .onChange(of: isLoading) { loading in
@@ -120,8 +117,23 @@ public struct PayPalPayLaterButton: View {
         }
     }
     
+    // MARK: - Internal Methods
+
+    /// Exposed for testing to trigger the button's presented analytics event
+    func didAppear() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonPresented)
+        isLoading = false
+    }
+
+    /// Exposed for testing to trigger the button's selected analytics event
+    func didSelectButton() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonSelected)
+        isLoading = true
+        spinnerRotation = 0
+    }
+
     // MARK: - Private Methods
-    
+
     private func invokePayPalFlow() {
         let payPalClient = BTPayPalClient(authorization: authorization, universalLink: universalLink, fallbackURLScheme: fallbackURLScheme)
         

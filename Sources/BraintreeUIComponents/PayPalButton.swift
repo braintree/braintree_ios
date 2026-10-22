@@ -35,8 +35,8 @@ public struct PayPalButton: View {
     /// Optional: A custom URL scheme to use as a fallback if the universal link fails.
     let fallbackURLScheme: String?
 
-    /// private BTAPIClient to send analytic events
-    private let apiClient: BTAPIClient?
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient?
 
     /// Loading state of button
     @State private var isLoading: Bool = false
@@ -118,14 +118,11 @@ public struct PayPalButton: View {
             logoTopPadding: 11,
             logoBottomPadding: 8
         ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
-            isLoading = true
-            spinnerRotation = 0
+            didSelectButton()
             invokePayPalFlow(authorization: authorization)
         }
         .onAppear {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
-            isLoading = false
+            didAppear()
         }
         // Spinner animation
         .onChange(of: isLoading) { loading in
@@ -142,6 +139,21 @@ public struct PayPalButton: View {
                 isLoading = false
             }
         }
+    }
+
+    // MARK: - Internal Methods
+
+    /// Exposed for testing to trigger the button's presented analytics event
+    func didAppear() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonPresented)
+        isLoading = false
+    }
+
+    /// Exposed for testing to trigger the button's selected analytics event
+    func didSelectButton() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payPalButtonSelected)
+        isLoading = true
+        spinnerRotation = 0
     }
 
     private func invokePayPalFlow(authorization: String) {
