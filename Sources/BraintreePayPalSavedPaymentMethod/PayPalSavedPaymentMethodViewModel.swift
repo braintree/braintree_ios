@@ -25,14 +25,20 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         case instrument(PayPalSavedPaymentMethod)
         /// PayPal has no FI to show, but knows the buyer's email; `isEditable` says whether the buyer can change the FI.
         case displayOnly(email: String, isEditable: Bool)
-        /// The FI could not be fetched (e.g. a network failure), so only PayPal is identified.
+        /// PayPal can't show an FI or an email (a failed fetch, an empty response, or a failed refresh after an
+        /// edit), so only the PayPal brand mark is shown.
         case brandOnly
-        /// PayPal has neither an FI nor an email for the buyer, so there is nothing to show.
-        case hidden
     }
 
     /// The merchant's `(nonce, error)` for an edit.
     private typealias EditResult = (nonce: BTPayPalAccountNonce?, error: Error?)
+
+    /// An in-app "Learn more" lander.
+    struct Lander: Identifiable, Equatable {
+
+        let url: URL
+        var id: URL { url }
+    }
 
     /// Where the edit flow is, from the tap until the merchant receives the result.
     private enum EditPhase {
@@ -53,8 +59,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// What the FI region currently shows.
     @Published private(set) var fiState: FIState
 
-    /// Whether the in-app "Learn more" lander sheet is showing.
-    @Published var isLanderPresented = false
+    /// The "Learn more" lander showing in-app, or `nil`. Holds its own URL so the sheet stays filled even if the
+    /// credit message is cleared while it's open.
+    @Published var presentedLander: Lander?
 
     /// Whether the full-screen loader should be showing.
     var isEditing: Bool {
@@ -75,11 +82,6 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// Exposed for testing to inject a fake application.
     var application: URLOpener = UIApplication.shared
 
-    /// The "Learn more" lander URL of the current credit message.
-    var learnMoreURL: URL? {
-        creditMessage?.learnMore?.url
-    }
-
     /// The Pay Later offer is quoted against the pre-edit funding instrument and is only actionable if the
     /// buyer can change it, so it tracks the FI region and stays hidden once an edit completes.
     /// Derived rather than latched: the two fetches race, and this is re-read on every render.
@@ -91,7 +93,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             return true
         case .displayOnly(_, let isEditable):
             return isEditable
-        case .brandOnly, .hidden:
+        case .brandOnly:
             return false
         }
     }
@@ -195,8 +197,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
-    /// payer (email); else the component hides entirely (a network failure keeps the brand mark
-    /// via the `loadBuyerDefaultBillingAgreement` catch instead).
+    /// payer (email); else only the PayPal brand mark.
     static func state(from summary: PayPalSavedPaymentMethodSummary) -> FIState {
         if let instrument = summary.paymentMethods.first {
             return .instrument(instrument)
@@ -206,7 +207,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             // pencil we cannot confirm the buyer is allowed to use.
             return .displayOnly(email: email, isEditable: payer.isEditable ?? false)
         }
-        return .hidden
+        return .brandOnly
     }
 
     /// Starts the edit flow; taps while an edit or its loader is still up are ignored.
@@ -269,7 +270,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let learnMore = creditMessage?.learnMore else { return }
 
         if learnMore.isEmbeddable {
-            isLanderPresented = true
+            presentedLander = Lander(url: learnMore.url)
         } else {
             application.open(learnMore.url, options: [:], completionHandler: nil)
         }
@@ -353,7 +354,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
         fiRefetchTask?.cancel()
         guard let orderID = nonce.paymentID else {
-            fiState = .hidden
+            fiState = .brandOnly
             return
         }
 
@@ -363,7 +364,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         }
     }
 
-    /// Resolves the FI the buyer picked for `orderID`. A failure hides the row, since the pre-edit
+    /// Resolves the FI the buyer picked for `orderID`. A failure shows only the brand mark, since the pre-edit
     /// instrument is no longer the one that will be charged.
     private func loadBuyerUpdatedBillingAgreement(orderID: String, request: PayPalSavedPaymentMethodRequest) async {
         guard let fetchClient else { return }
@@ -377,7 +378,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             )
             state = Self.state(from: summary)
         } catch {
-            state = .hidden
+            state = .brandOnly
         }
 
         guard !Task.isCancelled else { return }

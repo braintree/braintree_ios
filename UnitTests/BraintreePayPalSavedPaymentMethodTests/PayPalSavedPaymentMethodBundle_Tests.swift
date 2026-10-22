@@ -9,7 +9,7 @@ final class PayPalSavedPaymentMethodBundle_Tests: XCTestCase {
     func testBundle_containsTheRowAssets() {
         let bundle = Bundle.payPalSavedPaymentMethod
 
-        for asset in ["CardFundingIcon", "BankFundingIcon", "EditPencil", "PayPalBadge"] {
+        for asset in ["CardFundingIcon", "BankFundingIcon", "EditPencil", "LoadingSpinner", "PayPalBadge"] {
             XCTAssertNotNil(
                 UIImage(named: asset, in: bundle, compatibleWith: nil),
                 "\(asset) missing from \(bundle.bundlePath)"

@@ -109,7 +109,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
-    /// Drives a real credit-messaging fetch so `creditMessage` and `learnMoreURL` are populated
+    /// Drives a real credit-messaging fetch so `creditMessage` and its "Learn more" link are populated
     /// the same way they are in production.
     private func seedCreditMessage(
         on sut: PayPalSavedPaymentMethodViewModel,
@@ -456,8 +456,8 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertFalse(sut.showsCreditMessaging)
     }
 
-    /// The pre-edit instrument will no longer be charged, so it must not be shown again.
-    func testEdit_whenTheRefetchFails_hidesTheRowButStillDeliversTheNonce() async throws {
+    /// The pre-edit instrument will no longer be charged, so only the brand mark is shown.
+    func testEdit_whenTheRefetchFails_showsTheBrandMarkAndStillDeliversTheNonce() async throws {
         try injectPayPalClient(nonce: "fake-nonce", orderID: "fake-order-id")
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         var receivedNonce: BTPayPalAccountNonce?
@@ -470,7 +470,8 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await settle(sut)
         sut.editLoaderDidDismiss()
 
-        XCTAssertEqual(sut.fiState, .hidden)
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertFalse(sut.showsCreditMessaging)
         XCTAssertEqual(receivedNonce?.nonce, "fake-nonce")
     }
 
@@ -515,8 +516,23 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertTrue(sut.isLanderPresented)
+        XCTAssertEqual(sut.presentedLander?.url.absoluteString, "https://example.com/lander")
         XCTAssertNil(fakeApplication.lastOpenURL)
+    }
+
+    /// The credit message can be cleared while the lander is open (e.g. a failed fetch for a new amount).
+    func testLearnMoreTapped_whenTheMessageIsClearedWhileOpen_keepsTheLanderURL() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        sut.learnMoreTapped()
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertNil(sut.creditMessage)
+        XCTAssertEqual(sut.presentedLander?.url.absoluteString, "https://example.com/lander")
     }
 
     func testLearnMoreTapped_whenTheMessageIsNotEmbeddable_opensExternally() async {
@@ -525,7 +541,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertFalse(sut.isLanderPresented)
+        XCTAssertNil(sut.presentedLander)
         XCTAssertEqual(fakeApplication.lastOpenURL?.absoluteString, "https://example.com/lander")
     }
 
@@ -536,7 +552,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.learnMoreTapped()
 
-        XCTAssertFalse(sut.isLanderPresented)
+        XCTAssertNil(sut.presentedLander)
         XCTAssertNil(fakeApplication.lastOpenURL)
     }
 
@@ -560,10 +576,10 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         }
     }
 
-    func testStateFromSummary_whenNeitherIsPresent_hidesTheComponent() throws {
+    func testStateFromSummary_whenNeitherIsPresent_showsTheBrandMark() throws {
         let summary = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: BTJSON(value: [:] as [String: Any])))
 
-        XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .hidden)
+        XCTAssertEqual(PayPalSavedPaymentMethodViewModel.state(from: summary), .brandOnly)
     }
 }
 
