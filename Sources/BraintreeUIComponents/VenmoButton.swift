@@ -29,8 +29,8 @@ public struct VenmoButton: View {
     /// The completion handler to handle Venmo tokenize request success or failure
     let completion: (BTVenmoAccountNonce?, Error?) -> Void
 
-    /// private BTAPIClient to send analytic events
-    private let apiClient: BTAPIClient?
+    /// Exposed for testing to get the instance of BTAPIClient
+    var apiClient: BTAPIClient?
 
     /// Loading state of button
     @State private var isLoading: Bool = false
@@ -78,14 +78,11 @@ public struct VenmoButton: View {
             logoTopPadding: 0,
             logoBottomPadding: 0
         ) {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
-            isLoading = true
-            spinnerRotation = 0
+            didSelectButton()
             invokeVenmoFlow()
         }
         .onAppear {
-            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
-            isLoading = false
+            didAppear()
         }
         // Spinner animation
         .onChange(of: isLoading) { loading in
@@ -102,6 +99,21 @@ public struct VenmoButton: View {
                 isLoading = false
             }
         }
+    }
+
+    // MARK: - Internal Methods
+
+    /// Exposed for testing to trigger the button's presented analytics event
+    func didAppear() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonPresented)
+        isLoading = false
+    }
+
+    /// Exposed for testing to trigger the button's selected analytics event
+    func didSelectButton() {
+        apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.venmoButtonSelected)
+        isLoading = true
+        spinnerRotation = 0
     }
 
     private func invokeVenmoFlow() {
