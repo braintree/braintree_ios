@@ -94,11 +94,13 @@ public struct PayPalPayLaterButton: View {
             logoTopPadding: 11,
             logoBottomPadding: 8
         ) {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonSelected)
             isLoading = true
             spinnerRotation = 0
             invokePayPalFlow()
         }
         .onAppear {
+            apiClient?.sendAnalyticsEvent(UIComponentsAnalytics.payLaterButtonPresented)
             isLoading = false
         }
         // spinner animation
