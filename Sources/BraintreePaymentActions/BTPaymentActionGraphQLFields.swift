@@ -14,6 +14,7 @@ enum BTPaymentActionGraphQLFields {
     """
      id
      status
+     version
      nextAction {
       __typename
       ... on PaymentActionThreeDSecureAuthentication {

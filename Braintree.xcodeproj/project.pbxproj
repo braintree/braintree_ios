@@ -122,6 +122,7 @@
 		45F766F62DE622640079016E /* BackgroundTaskManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F766F52DE622640079016E /* BackgroundTaskManaging.swift */; };
 		45F766F82DE8E1CE0079016E /* MockBackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F766F72DE8E1C10079016E /* MockBackgroundTaskManager.swift */; };
 		4C3A9B2D5D3D9E9AE49C4568 /* BTPaymentActionGraphQLFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7A9AAC09EDE303B52858D7 /* BTPaymentActionGraphQLFields.swift */; };
+		4D2AA8AC36B2BF82A1536CFB /* NextActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F06A1A2FC2DB56AF9470E48 /* NextActionHandler.swift */; };
 		5708E0A628809AD9007946B9 /* BTJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A528809AD9007946B9 /* BTJSON.swift */; };
 		5708E0A828809BC6007946B9 /* BTJSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708E0A728809BC6007946B9 /* BTJSONError.swift */; };
 		570B93D72853C29A0041BAFE /* BTLogLevelDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B93D62853C29A0041BAFE /* BTLogLevelDescription.swift */; };
@@ -183,6 +184,7 @@
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
 		62EC04AE302A4F3C0037FC81 /* AnyEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626E89543026769200AE6692 /* AnyEncodable.swift */; };
+		6607D5C4BC5A9C63926EDBE5 /* NextActionHandler_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9FB47C455B286C93B4C745 /* NextActionHandler_Tests.swift */; };
 		6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802F8EBBED394EB59C531040 /* CardFieldsConstants.swift */; };
 		701D2C1EC8604C8EBCB24E9A /* BraintreeShopperInsights_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743B93AD5C7644ABAC2D5436 /* BraintreeShopperInsights_IntegrationTests.swift */; };
 		800E78C429E0DD5300D1B0FC /* FPTIBatchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E78C329E0DD5300D1B0FC /* FPTIBatchData.swift */; };
@@ -1072,6 +1074,7 @@
 		62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTEligiblePaymentMethods.swift; sourceTree = "<group>"; };
 		62EC04B0302A51DD0037FC81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F06A1A2FC2DB56AF9470E48 /* NextActionHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NextActionHandler.swift; sourceTree = "<group>"; };
 		719F70D627DBF18DA4BE9228 /* BTPaymentActionNextActionRegistry_Tests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTPaymentActionNextActionRegistry_Tests.swift; sourceTree = "<group>"; };
 		731BD3E21BC44E928B80A155 /* CVVHintCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVVHintCard.swift; sourceTree = "<group>"; };
 		743B93AD5C7644ABAC2D5436 /* BraintreeShopperInsights_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeShopperInsights_IntegrationTests.swift; sourceTree = "<group>"; };
@@ -1353,6 +1356,7 @@
 		CD75103DAB234EEC64131C93 /* BTNextAction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTNextAction.swift; sourceTree = "<group>"; };
 		CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ApplicationState.swift"; sourceTree = "<group>"; };
 		FC7A9AAC09EDE303B52858D7 /* BTPaymentActionGraphQLFields.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTPaymentActionGraphQLFields.swift; sourceTree = "<group>"; };
+		FF9FB47C455B286C93B4C745 /* NextActionHandler_Tests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NextActionHandler_Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -1912,6 +1916,7 @@
 				40DAAECDCB298F6731DF06B5 /* BTCustomerCompletedAction_Tests.swift */,
 				B69448BA9B37097058DAB334 /* GetPaymentActionGraphQLBody_Tests.swift */,
 				8B490BCA090CF983925CA0EC /* SignalCustomerActionCompleteGraphQLBody_Tests.swift */,
+				FF9FB47C455B286C93B4C745 /* NextActionHandler_Tests.swift */,
 			);
 			path = BraintreePaymentActionsTests;
 			sourceTree = "<group>";
@@ -1948,6 +1953,7 @@
 				FC7A9AAC09EDE303B52858D7 /* BTPaymentActionGraphQLFields.swift */,
 				CD75103DAB234EEC64131C93 /* BTNextAction.swift */,
 				AAAAB6F4E6B8F5740ABDCC79 /* BTPaymentActionNextActionRegistry.swift */,
+				6F06A1A2FC2DB56AF9470E48 /* NextActionHandler.swift */,
 			);
 			path = BraintreePaymentActions;
 			sourceTree = "<group>";
@@ -4084,6 +4090,7 @@
 				4C3A9B2D5D3D9E9AE49C4568 /* BTPaymentActionGraphQLFields.swift in Sources */,
 				27471BD7973924F528E10D57 /* BTNextAction.swift in Sources */,
 				C9927A4CBB591A80011A493E /* BTPaymentActionNextActionRegistry.swift in Sources */,
+				4D2AA8AC36B2BF82A1536CFB /* NextActionHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4098,6 +4105,7 @@
 				BA357C2704DEC9B771E4C989 /* BTCustomerCompletedAction_Tests.swift in Sources */,
 				226CD9BC9B1D7C6006CB4603 /* GetPaymentActionGraphQLBody_Tests.swift in Sources */,
 				8727D9BDFFA9235E6DAB01AA /* SignalCustomerActionCompleteGraphQLBody_Tests.swift in Sources */,
+				6607D5C4BC5A9C63926EDBE5 /* NextActionHandler_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

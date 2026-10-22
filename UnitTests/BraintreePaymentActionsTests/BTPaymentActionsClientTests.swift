@@ -557,6 +557,117 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         }
     }
 
+    // MARK: - handleNextAction
+
+    func testHandleNextAction_requiresCustomerAction_returnsCustomerActionRequiredWithoutDriving3DS() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureAuthentication",
+                        "bin": "401288"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .customerActionRequired)
+        XCTAssertEqual(result.id, "payment-action-id")
+    }
+
+    func testHandleNextAction_readyForConfirmation_returnsServerActionRequiredConfirm() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": ["paymentAction": ["id": "payment-action-id", "status": "READY_FOR_CONFIRMATION"] as [String: Any]]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        let serverActionResult = try XCTUnwrap(result as? BTServerActionRequiredResult)
+        XCTAssertEqual(serverActionResult.serverAction, .confirm)
+    }
+
+    func testHandleNextAction_succeeded_returnsCompletedResult() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": ["paymentAction": ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any]]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .completed)
+    }
+
+    func testHandleNextAction_networkError_propagatesError() async {
+        let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertEqual(error as NSError, mockError)
+        }
+    }
+
+    @MainActor
+    func testHandleNextAction_calledWhileInFlight_throwsAlreadyInProgress() async {
+        sut.isHandlingNextAction = true
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected handleNextActionAlreadyInProgress error to be thrown")
+        } catch let error as BTPaymentActionError {
+            XCTAssertEqual(error, .handleNextActionAlreadyInProgress)
+        } catch {
+            XCTFail("Expected BTPaymentActionError.handleNextActionAlreadyInProgress, got \(error)")
+        }
+    }
+
+    func testHandleNextAction_afterPreviousCallCompletes_doesNotThrowAlreadyInProgress() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": ["paymentAction": ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any]]
+        ])
+
+        _ = try await sut.handleNextAction()
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .completed)
+    }
+
+    func testHandleNextAction_completion_success_returnsResult() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": ["paymentAction": ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any]]
+        ])
+
+        let expectation = expectation(description: "Completion called")
+
+        sut.handleNextAction { result, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(result?.type, .completed)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5)
+    }
+
+    func testHandleNextAction_completion_failure_returnsError() {
+        let mockError = NSError(domain: "TestErrorDomain", code: 1, userInfo: nil)
+        mockAPIClient.cannedResponseError = mockError
+
+        let expectation = expectation(description: "Completion called")
+
+        sut.handleNextAction { result, error in
+            XCTAssertNil(result)
+            XCTAssertEqual(error as? NSError, mockError)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5)
+    }
+
     // MARK: - Helpers
 
     private func stubResponse(id: String, status: String) {
