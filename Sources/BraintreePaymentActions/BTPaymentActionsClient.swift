@@ -10,7 +10,10 @@ import BraintreeCore
     
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
-    
+
+    /// Tracks whether a `handleNextAction` drive loop is already in flight on this client instance.
+    var isHandlingNextAction = false
+
     // MARK: - Initializer
     
     /// Creates a Payment Actions Client.
@@ -60,8 +63,52 @@ import BraintreeCore
         }
     }
     
+    /// Drives the Payment Action forward from its current server state until a terminal outcome or
+    /// a handoff boundary is reached.
+    /// - Parameter completion: A completion block invoked exactly once with the resulting
+    ///   `BTPaymentActionResult`, or an `Error` describing the failure.
+    @objc(handleNextActionWithCompletion:)
+    public func handleNextAction(completion: @escaping (BTPaymentActionResult?, Error?) -> Void) {
+        Task { @MainActor in
+            do {
+                let result = try await handleNextAction()
+                completion(result, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+
+    /// Drives the Payment Action forward from its current server state until a terminal outcome or
+    /// a handoff boundary is reached.
+    ///
+    /// This never starts device data collection or a 3D Secure challenge itself — if the Payment
+    /// Action is at `requires_customer_action`, this returns a `.customerActionRequired` result
+    /// rather than driving the customer action, since that boundary is owned by a separate flow.
+    /// - Returns: the resulting `BTPaymentActionResult`.
+    /// - Throws: `BTPaymentActionError.handleNextActionAlreadyInProgress` if called while a previous
+    ///   invocation on this instance hasn't completed, or the underlying fetch/decoding error.
+    @MainActor
+    public func handleNextAction() async throws -> BTPaymentActionResult {
+        guard !isHandlingNextAction else {
+            throw BTPaymentActionError.handleNextActionAlreadyInProgress
+        }
+
+        isHandlingNextAction = true
+        defer { isHandlingNextAction = false }
+
+        let handler = NextActionHandler { [weak self] in
+            guard let self else {
+                throw BTPaymentActionError.deallocated
+            }
+            return try await self.getPaymentAction()
+        }
+        let paymentAction = try await handler.drive()
+        return result(from: paymentAction)
+    }
+
     // MARK: - Internal Methods
-    
+
     /// Submits a payment method to the `setPaymentActionPaymentMethod` GraphQL mutation.
     /// - Parameter body: the GraphQL request body to submit, encoding the payment method
     ///   details and the fields to return on the `paymentAction` selection set.
