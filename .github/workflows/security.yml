@@ -10,7 +10,7 @@ permissions:
 
 on:
   pull_request:
-    branches: [ main, cocoapods-deprecation ]
+    branches: [ main ]
   push:
     branches: [ main ]
   workflow_dispatch:
