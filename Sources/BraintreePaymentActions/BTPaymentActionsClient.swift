@@ -85,6 +85,9 @@ import BraintreeCore
     /// This never starts device data collection or a 3D Secure challenge itself — if the Payment
     /// Action is at `requires_customer_action`, this returns a `.customerActionRequired` result
     /// rather than driving the customer action, since that boundary is owned by a separate flow.
+    ///
+    /// A `.processing` result means the SDK's own bounded internal retries were exhausted while the
+    /// Payment Action was still settling server-side — wait briefly, then call `handleNextAction` again.
     /// - Returns: the resulting `BTPaymentActionResult`.
     /// - Throws: `BTPaymentActionError.handleNextActionAlreadyInProgress` if called while a previous
     ///   invocation on this instance hasn't completed, or the underlying fetch/decoding error.
