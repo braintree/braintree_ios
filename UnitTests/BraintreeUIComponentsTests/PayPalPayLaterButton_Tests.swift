@@ -3,6 +3,7 @@ import SwiftUI
 @testable import BraintreeUIComponents
 @_spi(BraintreeUIComponents) @testable import BraintreePayPal
 @testable import BraintreeCore
+@testable import BraintreeTestShared
 
 final class PayPalPayLaterButton_Tests: XCTestCase {
 
@@ -73,6 +74,28 @@ final class PayPalPayLaterButton_Tests: XCTestCase {
         XCTAssertEqual(button.color, .blue)
         XCTAssertEqual(button.width, 300)
         XCTAssertNil(button.fallbackURLScheme)
+    }
+
+    // MARK: - Analytics
+
+    func testDidAppear_sendsPresentedAnalyticsEvent() {
+        var button = makeButton()
+        let mockAPIClient = MockAPIClient(authorization: tokenizationKey)
+        button.apiClient = mockAPIClient
+
+        button.didAppear()
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(UIComponentsAnalytics.payLaterButtonPresented))
+    }
+
+    func testDidSelectButton_sendsSelectedAnalyticsEvent() {
+        var button = makeButton()
+        let mockAPIClient = MockAPIClient(authorization: tokenizationKey)
+        button.apiClient = mockAPIClient
+
+        button.didSelectButton()
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(UIComponentsAnalytics.payLaterButtonSelected))
     }
 
     // MARK: - Body
