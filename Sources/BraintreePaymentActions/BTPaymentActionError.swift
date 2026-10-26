@@ -25,6 +25,30 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// 6. Deallocated BTPaymentActionsClient
     case deallocated
 
+    /// 7. The Payment Actions configuration is missing the Cardinal authentication JWT needed to
+    /// configure a 3D Secure session.
+    case missingCardinalAuthenticationJWT
+
+    /// 8. A 3D Secure device data collection or challenge step was attempted while the app was not
+    /// in the foreground — Cardinal requires a foregrounded app to present its UI.
+    case foregroundRequired
+
+    /// 9. A 3D Secure challenge did not resolve within the SDK's own bounded watchdog window.
+    case cardinalChallengeTimedOut
+
+    /// 10. CardinalMobile reported a validation failure (`.error`) during the 3D Secure challenge.
+    case cardinalChallengeFailed
+
+    /// 11. CardinalMobile returned an action code this SDK version does not recognize.
+    case unrecognizedCardinalActionCode
+
+    /// 12. CardinalMobile failed to validate the Cardinal authentication JWT during session setup.
+    case cardinalSetupValidationFailed
+
+    /// 13. A 3D Secure device data collection or challenge step was requested while a previous one on
+    /// the same provider instance was still in flight.
+    case cardinalInteractionAlreadyInProgress
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPaymentActionErrorDomain"
     }
@@ -45,6 +69,20 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return 5
         case .deallocated:
             return 6
+        case .missingCardinalAuthenticationJWT:
+            return 7
+        case .foregroundRequired:
+            return 8
+        case .cardinalChallengeTimedOut:
+            return 9
+        case .cardinalChallengeFailed:
+            return 10
+        case .unrecognizedCardinalActionCode:
+            return 11
+        case .cardinalSetupValidationFailed:
+            return 12
+        case .cardinalInteractionAlreadyInProgress:
+            return 13
         }
     }
     
@@ -64,6 +102,20 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "Payment Action version decreased between fetches during handleNextAction."
         case .deallocated:
             return "BTPaymentActionsClient has been deallocated."
+        case .missingCardinalAuthenticationJWT:
+            return "Payment Actions configuration is missing the Cardinal authentication JWT."
+        case .foregroundRequired:
+            return "A 3D Secure device data collection or challenge step requires the app to be in the foreground."
+        case .cardinalChallengeTimedOut:
+            return "The 3D Secure challenge did not resolve within the expected time."
+        case .cardinalChallengeFailed:
+            return "CardinalMobile reported a validation failure during the 3D Secure challenge."
+        case .unrecognizedCardinalActionCode:
+            return "CardinalMobile returned an action code this SDK version does not recognize."
+        case .cardinalSetupValidationFailed:
+            return "CardinalMobile failed to validate the Cardinal authentication JWT during session setup."
+        case .cardinalInteractionAlreadyInProgress:
+            return "A 3D Secure step was requested while a previous one was still in flight."
         }
     }
     

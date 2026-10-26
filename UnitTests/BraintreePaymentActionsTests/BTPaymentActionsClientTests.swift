@@ -1,4 +1,5 @@
 import XCTest
+import CardinalMobile
 @testable import BraintreeCore
 @testable import BraintreeTestShared
 @testable import BraintreePaymentActions
@@ -14,6 +15,11 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         mockAPIClient = MockAPIClient(authorization: authorization)
         sut = BTPaymentActionsClient(authorization: authorization)
         sut.apiClient = mockAPIClient
+
+        // handleNextAction fetches configuration to construct its CardinalMobile wrapper.
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "threeDSecure": ["cardinalAuthenticationJWT": "fake-cardinal-authentication-jwt"]
+        ])
     }
 
     // MARK: - Request Posting
@@ -501,7 +507,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
                 BTPaymentActionThreeDSecureChallengeNextAction(
                     acsURL: URL(string: "https://acs.example.com")!,
                     acsRenderingType: nil,
-                    challengePayload: "payload-data"
+                    challengePayload: "payload-data",
+                    mpiTransactionID: nil
                 )
             )
         )
@@ -559,16 +566,13 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
     // MARK: - handleNextAction
 
-    func testHandleNextAction_requiresCustomerAction_returnsCustomerActionRequiredWithoutDriving3DS() async throws {
+    func testHandleNextAction_requiresCustomerAction_unrecognizedNextAction_returnsCustomerActionRequired() async throws {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": [
                 "paymentAction": [
                     "id": "payment-action-id",
                     "status": "REQUIRES_CUSTOMER_ACTION",
-                    "nextAction": [
-                        "__typename": "PaymentActionThreeDSecureAuthentication",
-                        "bin": "401288"
-                    ] as [String: Any]
+                    "nextAction": ["__typename": "PaymentActionRedirectUrl"] as [String: Any]
                 ] as [String: Any]
             ]
         ])
@@ -576,6 +580,64 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let result = try await sut.handleNextAction()
 
         XCTAssertEqual(result.type, .customerActionRequired)
+        XCTAssertEqual(result.id, "payment-action-id")
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureAuthentication_drivesDDCAndContinues() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBodies = [
+            BTJSON(value: [
+                "data": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureAuthentication",
+                            "bin": "401288"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ]),
+            BTJSON(value: [
+                "data": [
+                    "signalCustomerActionComplete": [
+                        "paymentAction": ["id": "payment-action-id", "status": "READY_FOR_CONFIRMATION"] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ])
+        ]
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .serverActionRequired)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeAbandoned_returnsThreeDSecureCanceled() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .cancel
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureChallenge",
+                        "acsUrl": "https://acs.example.com",
+                        "challengePayload": "payload-data",
+                        "mpiTransactionId": "mpi-1"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .threeDSecureCanceled)
         XCTAssertEqual(result.id, "payment-action-id")
     }
 

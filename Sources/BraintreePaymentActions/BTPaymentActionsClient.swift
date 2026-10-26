@@ -1,4 +1,6 @@
 import Foundation
+import CardinalMobile
+import UIKit
 
 #if canImport(BraintreeCore)
 import BraintreeCore
@@ -10,6 +12,14 @@ import BraintreeCore
     
     /// Exposed for testing to get the instance of BTAPIClient
     var apiClient: BTAPIClient
+
+    /// Exposed for testing to inject a mock Cardinal session for the 3DS customer-action drive path.
+    var cardinalSession: CardinalSessionTestable = CardinalSession()
+
+    /// Exposed for testing to control the foreground gate without depending on the real `UIApplication`.
+    /// `nonisolated(unsafe)`: read-only, never mutated after assignment; same pattern as
+    /// `BTVenmoClient`'s `application: URLOpener` seam.
+    nonisolated(unsafe) var applicationStateProvider: ApplicationStateProviding = UIApplication.shared
 
     /// Tracks whether a `handleNextAction` drive loop is already in flight on this client instance.
     var isHandlingNextAction = false
@@ -82,15 +92,17 @@ import BraintreeCore
     /// Drives the Payment Action forward from its current server state until a terminal outcome or
     /// a handoff boundary is reached.
     ///
-    /// This never starts device data collection or a 3D Secure challenge itself — if the Payment
-    /// Action is at `requires_customer_action`, this returns a `.customerActionRequired` result
-    /// rather than driving the customer action, since that boundary is owned by a separate flow.
+    /// If the Payment Action reaches `requires_customer_action` with a recognized 3D Secure
+    /// `nextAction`, this drives device data collection and the challenge itself via an internal
+    /// CardinalMobile wrapper, signaling completion after each step, and continues the loop — the
+    /// merchant never sees an intermediate `.customerActionRequired` result for 3DS. A `nextAction`
+    /// this SDK doesn't recognize still surfaces `.customerActionRequired` immediately.
     ///
     /// A `.processing` result means the SDK's own bounded internal retries were exhausted while the
     /// Payment Action was still settling server-side — wait briefly, then call `handleNextAction` again.
     /// - Returns: the resulting `BTPaymentActionResult`.
     /// - Throws: `BTPaymentActionError.handleNextActionAlreadyInProgress` if called while a previous
-    ///   invocation on this instance hasn't completed, or the underlying fetch/decoding error.
+    ///   invocation on this instance hasn't completed, or the underlying fetch/decoding/3DS error.
     @MainActor
     public func handleNextAction() async throws -> BTPaymentActionResult {
         guard !isHandlingNextAction else {
@@ -100,14 +112,34 @@ import BraintreeCore
         isHandlingNextAction = true
         defer { isHandlingNextAction = false }
 
-        let handler = NextActionHandler { [weak self] in
-            guard let self else {
-                throw BTPaymentActionError.deallocated
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        let threeDSecureProvider = try BTPaymentActionThreeDSecureProvider(
+            configuration: configuration,
+            cardinalSession: cardinalSession,
+            applicationStateProvider: applicationStateProvider
+        )
+
+        let handler = NextActionHandler(
+            fetchPaymentAction: { [weak self] in
+                guard let self else {
+                    throw BTPaymentActionError.deallocated
+                }
+                return try await self.getPaymentAction()
+            },
+            resolveCustomerAction: { [weak self] nextAction in
+                guard let self else {
+                    throw BTPaymentActionError.deallocated
+                }
+                return try await self.resolveCustomerAction(nextAction, using: threeDSecureProvider)
             }
-            return try await self.getPaymentAction()
+        )
+
+        switch try await handler.drive() {
+        case .paymentAction(let paymentAction):
+            return result(from: paymentAction)
+        case .threeDSecureCanceled(let id):
+            return BTPaymentActionResult(type: .threeDSecureCanceled, id: id)
         }
-        let paymentAction = try await handler.drive()
-        return result(from: paymentAction)
     }
 
     // MARK: - Internal Methods
@@ -174,6 +206,39 @@ import BraintreeCore
         return try BTPaymentAction(json: paymentActionJSON)
     }
     
+    /// Drives a single recognized 3D Secure `nextAction` to completion via `threeDSecureProvider`,
+    /// signaling the result to the server afterward.
+    /// - Throws: the underlying Cardinal/network error, or `BTPaymentActionError.decodingFailure` if
+    ///   called with `.unrecognized` (never done by `NextActionHandler`, which handles that case itself).
+    func resolveCustomerAction(
+        _ nextAction: BTNextAction,
+        using threeDSecureProvider: BTPaymentActionThreeDSecureProvider
+    ) async throws -> NextActionHandler.CustomerActionOutcome {
+        switch nextAction {
+        case .threeDSecureAuthentication:
+            let dfReferenceID = try await threeDSecureProvider.collectDeviceData()
+            let paymentAction = try await signalCustomerActionComplete(.deviceDataCollection(dfReferenceID: dfReferenceID))
+            return .advanced(paymentAction)
+
+        case .threeDSecureChallenge(let challenge):
+            let outcome = try await threeDSecureProvider.presentChallenge(
+                transactionID: challenge.mpiTransactionID ?? "",
+                payload: challenge.challengePayload
+            )
+
+            switch outcome {
+            case .validated(let serverJWT):
+                let paymentAction = try await signalCustomerActionComplete(.challenge(cardinalAuthenticationJWT: serverJWT))
+                return .advanced(paymentAction)
+            case .abandoned:
+                return .abandoned
+            }
+
+        case .unrecognized:
+            throw BTPaymentActionError.decodingFailure
+        }
+    }
+
     /// Maps a raw `BTPaymentAction` (id + status from the GraphQL response) into the semantic
     /// `BTPaymentActionResult` the merchant acts on.
     func result(from paymentAction: BTPaymentAction) -> BTPaymentActionResult {
