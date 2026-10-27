@@ -24,9 +24,9 @@ extension UIApplication: ApplicationStateProviding {
 /// No Cardinal type escapes this wrapper — callers only see `String`/`ChallengeOutcome` and
 /// `BTPaymentActionError`.
 ///
-/// Built as a new type rather than reusing the legacy 3DS module's `BTThreeDSecureV2Provider`, so the
+/// Built as a new type rather than reusing the existing 3DS module's `BTThreeDSecureV2Provider`, so the
 /// M4 drive path's presentation requirements — a foreground guarantee, a watchdog, and full Cardinal
-/// action-code coverage — can be added with zero regression risk to the still-shipping legacy flow.
+/// action-code coverage — can be added with zero regression risk to the existing, still-shipping flow.
 /// Duplicates `BTThreeDSecureV2Provider`'s Cardinal setup sequence rather than sharing it, per the
 /// isolation decision in the Cardinal challenge spike.
 final class BTPaymentActionThreeDSecureProvider {
@@ -43,7 +43,7 @@ final class BTPaymentActionThreeDSecureProvider {
     /// The outcome of presenting a 3D Secure challenge.
     enum ChallengeOutcome: Equatable {
         /// Cardinal validated the challenge — successfully, with no action needed, or with a reported
-        /// failure the server makes the final call on (matching the legacy flow's treatment of
+        /// failure the server makes the final call on (matching the existing flow's treatment of
         /// `.failure`) — and returned a server JWT to report via `signalCustomerActionComplete`.
         case validated(serverJWT: String)
 
@@ -90,9 +90,14 @@ final class BTPaymentActionThreeDSecureProvider {
         self.applicationStateProvider = applicationStateProvider
         self.challengeWatchdogTimeoutNanoseconds = challengeWatchdogTimeoutNanoseconds
 
+        let isProduction = configuration.environment == "production"
+
         let cardinalConfiguration = CardinalSessionConfiguration()
-        cardinalConfiguration.deploymentEnvironment = configuration.environment == "production" ? .production : .staging
-        // `collectLogs` is intentionally left unset, matching the legacy 3DS flow's existing behavior.
+        cardinalConfiguration.deploymentEnvironment = isProduction ? .production : .staging
+        // Per Cardinal's own guidance: collect diagnostic logs in non-production environments to aid
+        // troubleshooting DDC/challenge flows, and disable them in production to avoid exposing
+        // internal logs.
+        cardinalConfiguration.collectLogs = !isProduction
         cardinalSession.configure(cardinalConfiguration)
     }
 

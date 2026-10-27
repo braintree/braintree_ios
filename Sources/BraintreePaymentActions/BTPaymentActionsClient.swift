@@ -117,7 +117,7 @@ import BraintreeCore
 
         // Shared across every customer-action step within this single handleNextAction call, so
         // device data collection and the challenge run on the same CardinalSession — Cardinal
-        // documents a session as spanning configure/setup/continueWith together, and the legacy 3DS
+        // documents a session as spanning configure/setup/continueWith together, and the existing 3DS
         // flow relies on this same-instance contract. Built lazily (only on the first recognized 3DS
         // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
         var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
