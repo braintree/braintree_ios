@@ -1,28 +1,94 @@
 name: Security
-# Slack: #help-product-security
 
 permissions:
-  contents: write         # Needed by both CodeQL and dependency review
-  pull-requests: write    # Needed by dependency review
-  statuses: write         # Needed by dependency review (to post checks)
-  security-events: write  # Needed by CodeQL to upload SARIF
-  packages: read          # Needed by CodeQL for private/internal packs
-  actions: read           # Needed by CodeQL to access internal actions
+  contents: write # Needed by both CodeQL and dependency review
+  pull-requests: write # Needed by dependency review
+  statuses: write # Needed by dependency review (to post checks)
+  security-events: write # Needed by CodeQL to upload SARIF
+  packages: read # Needed by CodeQL for private/internal packs
+  actions: read # Needed by CodeQL to access internal actions
 
 on:
   pull_request:
-    branches: [ main, remove-cocoapods-from-security-workflow ]
+    branches: [ main ]
   push:
-    branches: [ main, remove-cocoapods-from-security-workflow ]
+    branches: [ main ]
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  code-scanning:
-    uses: braintree/security-workflows/.github/workflows/codeql-ios.yml@removeCocoaPods
-    with:
-      mac-runner-version: 'macos-15-xlarge'
-      project: Demo/Demo.xcodeproj
-      scheme: Demo
+  sast:
+    name: SAST
+    runs-on: macOS-15-xlarge
+    timeout-minutes: 30
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.event_name == 'pull_request' || false }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Use Xcode 16.4.0
+        run: |
+          sudo xcode-select -switch /Applications/Xcode_16.4.0.app
+
+      # actions/cache does not expand shell variables in `path`, so use the
+      # `github.workspace` expression. This must match -clonedSourcePackagesDirPath below.
+      - name: Cache SwiftPM
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.swiftpm
+            ~/Library/Caches/org.swift.swiftpm
+            ${{ github.workspace }}/DerivedData/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: ${{ runner.os }}-spm-
+
+      - name: Resolve Swift Packages (Xcode)
+        run: |
+          args=(
+            -project Demo/Demo.xcodeproj
+            -scheme Demo
+            -derivedDataPath "${GITHUB_WORKSPACE}/DerivedData"
+            -clonedSourcePackagesDirPath "${GITHUB_WORKSPACE}/DerivedData/SourcePackages"
+            -scmProvider system
+          )
+          xcodebuild -resolvePackageDependencies "${args[@]}"
+
+      - name: CodeQL init
+        uses: braintree/security-workflows/sast/codeql-init@main
+        with:
+          language: swift
+          build-mode: manual
+
+      - name: Build
+        timeout-minutes: 20
+        run: |
+          args=(
+            -configuration Debug
+            -project Demo/Demo.xcodeproj
+            -scheme Demo
+            -derivedDataPath "${GITHUB_WORKSPACE}/DerivedData"
+            -clonedSourcePackagesDirPath "${GITHUB_WORKSPACE}/DerivedData/SourcePackages"
+            -scmProvider system
+            -sdk iphonesimulator
+            -destination 'platform=iOS Simulator,name=iPhone 16'
+            CODE_SIGN_IDENTITY=
+            CODESIGNING_REQUIRED=NO
+            CODE_SIGNING_ALLOWED=NO
+            clean
+            build
+          )
+          xcodebuild "${args[@]}"
+
+      - name: CodeQL analyze
+        uses: braintree/security-workflows/sast/codeql-analyze@main
+        with:
+          language: swift
 
   dependency-review:
     uses: braintree/security-workflows/.github/workflows/dependency-review.yml@main
