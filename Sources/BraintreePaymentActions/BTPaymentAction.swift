@@ -12,6 +12,7 @@ struct BTPaymentAction {
 
     let id: String
     let status: BTPaymentActionStatus
+    let version: Int?
     let nextAction: BTNextAction?
 
     // MARK: - Initializer
@@ -19,10 +20,12 @@ struct BTPaymentAction {
     init(
         id: String,
         status: BTPaymentActionStatus,
+        version: Int? = nil,
         nextAction: BTNextAction? = nil
     ) {
         self.id = id
         self.status = status
+        self.version = version
         self.nextAction = nextAction
     }
 
@@ -41,6 +44,7 @@ struct BTPaymentAction {
 
         self.id = id
         self.status = BTPaymentActionStatus.status(from: statusString)
+        self.version = json["version"].asNumber()?.intValue
         self.nextAction = try BTPaymentActionNextActionRegistry.shared.resolve(json: json["nextAction"])
     }
 }

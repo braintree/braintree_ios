@@ -30,6 +30,28 @@ class BTPaymentAction_Tests: XCTestCase {
         }
     }
 
+    // MARK: - init(json:) - version
+
+    func testInitJSON_withVersion_parsesVersion() throws {
+        let json = BTJSON(value: [
+            "id": "payment-action-id",
+            "status": "SUCCEEDED",
+            "version": 3
+        ] as [String: Any])
+
+        let paymentAction = try BTPaymentAction(json: json)
+
+        XCTAssertEqual(paymentAction.version, 3)
+    }
+
+    func testInitJSON_withoutVersion_versionIsNil() throws {
+        let json = BTJSON(value: ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any])
+
+        let paymentAction = try BTPaymentAction(json: json)
+
+        XCTAssertNil(paymentAction.version)
+    }
+
     // MARK: - init(json:) - nextAction
 
     func testInitJSON_withoutNextAction_nextActionIsNil() throws {
@@ -75,9 +97,10 @@ class BTPaymentAction_Tests: XCTestCase {
 
     // MARK: - memberwise init defaults
 
-    func testMemberwiseInit_defaultsNextActionToNil() {
+    func testMemberwiseInit_defaultsVersionAndNextActionToNil() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .succeeded)
 
+        XCTAssertNil(paymentAction.version)
         XCTAssertNil(paymentAction.nextAction)
     }
 }
