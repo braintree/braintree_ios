@@ -203,6 +203,10 @@ import UIKit
     // MARK: - Internal Static Methods
 
     static func authorizationType(for authorization: String) -> AuthorizationType {
+        guard authorization.contains("_") else {
+            return .clientToken
+        }
+
         let pattern: String = "([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)"
         guard let regularExpression = try? NSRegularExpression(pattern: pattern) else {
             return .invalidAuthorization
