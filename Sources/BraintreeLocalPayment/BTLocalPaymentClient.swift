@@ -141,6 +141,10 @@ import BraintreeDataCollector
     private func start(request: BTLocalPaymentRequest, configuration: BTConfiguration) async throws -> BTLocalPaymentResult {
         let localPaymentRequest = LocalPaymentPOSTBody(localPaymentRequest: request)
 
+        let encodedData = try? JSONEncoder().encode(localPaymentRequest)
+        let encodedString = encodedData.flatMap { String(data: $0, encoding: .utf8) }
+        NSLog("[BTLocalPaymentClient] POST v1/local_payments/create body: %@", encodedString ?? "<failed to encode>")
+
         let (body, _) = try await self.apiClient.post("v1/local_payments/create", parameters: localPaymentRequest)
 
         guard let body else {

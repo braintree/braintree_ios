@@ -16,31 +16,60 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     
     private override init() {}
     
-    func createCustomerAndFetchClientToken(completion: @escaping (String?, Error?) -> Void) {
+    func createCustomerAndFetchClientToken(
+        merchantAccountID: String? = nil,
+        completion: @escaping (String?, Error?) -> Void
+    ) {
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/client_token") else { return }
-        
+
+        var queryItems: [URLQueryItem] = []
+
         if BraintreeDemoSettings.customerPresent {
             if let id = BraintreeDemoSettings.customerIdentifier, !id.isEmpty {
-                urlComponents.queryItems = [URLQueryItem(name: "customer_id", value: id)]
+                queryItems.append(URLQueryItem(name: "customer_id", value: id))
             } else {
-                urlComponents.queryItems = [URLQueryItem(name: "customer_id", value: UUID().uuidString)]
+                queryItems.append(URLQueryItem(name: "customer_id", value: UUID().uuidString))
             }
+        }
+
+        if let merchantAccountID {
+            queryItems.append(URLQueryItem(name: "merchant_account_id", value: merchantAccountID))
+        }
+
+        if !queryItems.isEmpty {
+            urlComponents.queryItems = queryItems
         }
 
         guard let url = urlComponents.url else { return }
 
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+        NSLog("[client_token] Requesting: %@", url.absoluteString)
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let httpResponse = response as? HTTPURLResponse {
+                NSLog("[client_token] Response status: %d", httpResponse.statusCode)
+            }
+
             guard let data = data, error == nil else {
+                NSLog("[client_token] Request failed: %@", error?.localizedDescription ?? "unknown error")
                 DispatchQueue.main.async { completion(nil, error) }
                 return
             }
-            
+
+            NSLog("[client_token] Raw response body: %@", String(data: data, encoding: .utf8) ?? "<non-utf8 data>")
+
             let jsonDecoder = JSONDecoder()
             jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
             let clientToken = try? jsonDecoder.decode(ClientToken.self, from: data).clientToken
+
+            if let clientToken, let decoded = Data(base64Encoded: clientToken) {
+                NSLog("[client_token] Decoded client token: %@", String(data: decoded, encoding: .utf8) ?? "<non-utf8 data>")
+            } else {
+                NSLog("[client_token] Failed to decode client token or token is nil")
+            }
+
             DispatchQueue.main.async { completion(clientToken, nil) }
         }
-        
+
         task.resume()
     }
     
