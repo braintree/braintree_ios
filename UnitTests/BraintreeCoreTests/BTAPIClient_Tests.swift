@@ -53,6 +53,30 @@ class BTAPIClient_Tests: XCTestCase {
         XCTAssertEqual(apiClient.authorization.type, .clientToken)
     }
 
+    // MARK: - Authorization Type
+
+    func testAuthorizationType_withBase64ClientToken_returnsClientToken() {
+        XCTAssertEqual(BTAPIClient.authorizationType(for: TestClientTokenFactory.validClientToken), .clientToken)
+    }
+
+    func testAuthorizationType_withTokenizationKey_returnsTokenizationKey() {
+        XCTAssertEqual(BTAPIClient.authorizationType(for: "development_testing_integration_merchant_id"), .tokenizationKey)
+    }
+
+    func testAuthorizationType_withInvalidTokenizationKey_stillMatchesTokenizationKeyPattern() {
+        XCTAssertEqual(BTAPIClient.authorizationType(for: "not_a_valid_tokenization_key"), .tokenizationKey)
+    }
+
+    func testAuthorizationType_withLongBase64ClientToken_returnsQuickly() {
+        let clientToken = TestClientTokenFactory.validClientToken
+        let start = Date()
+        for _ in 0..<50 {
+            _ = BTAPIClient.authorizationType(for: clientToken)
+        }
+        let elapsed = Date().timeIntervalSince(start)
+        XCTAssertLessThan(elapsed, 1.0, "50 calls took \(elapsed) s")
+    }
+
     // MARK: - Dispatch Queue
 
     func testCallbacks_useMainDispatchQueue() async throws {
