@@ -16,7 +16,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         sut = BTPaymentActionsClient(authorization: authorization)
         sut.apiClient = mockAPIClient
 
-        // handleNextAction fetches configuration to construct its CardinalMobile wrapper.
+        // Only consulted when handleNextAction actually drives a 3DS nextAction; stubbed here so
+        // those specific tests don't need to repeat it.
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "threeDSecure": ["cardinalAuthenticationJWT": "fake-cardinal-authentication-jwt"]
         ])
@@ -566,6 +567,21 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
     // MARK: - handleNextAction
 
+    func testHandleNextAction_merchantNotConfiguredForThreeDSecure_nonCustomerActionFlowSucceeds() async throws {
+        // Simulates a merchant who isn't enrolled in 3DS at all: no Cardinal authentication JWT in
+        // their configuration. Since the Payment Action never reaches requires_customer_action with a
+        // 3DS nextAction, the CardinalMobile wrapper should never be constructed, and this must not fail.
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [:] as [String: Any])
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": ["paymentAction": ["id": "payment-action-id", "status": "READY_FOR_CONFIRMATION"] as [String: Any]]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .serverActionRequired)
+        XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
+    }
+
     func testHandleNextAction_requiresCustomerAction_unrecognizedNextAction_returnsCustomerActionRequired() async throws {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": [
@@ -615,7 +631,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
     }
 
-    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeAbandoned_returnsThreeDSecureCanceled() async throws {
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeAbandoned_returnsCustomerActionRequired() async throws {
         let mockCardinalSession = MockCardinalSession()
         mockCardinalSession.actionCodeToDeliver = .cancel
         sut.cardinalSession = mockCardinalSession
@@ -637,7 +653,9 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         let result = try await sut.handleNextAction()
 
-        XCTAssertEqual(result.type, .threeDSecureCanceled)
+        // Placeholder mapping until the customer-action public surface ticket adds a dedicated
+        // result type for this case — see the TODO on handleNextAction.
+        XCTAssertEqual(result.type, .customerActionRequired)
         XCTAssertEqual(result.id, "payment-action-id")
     }
 

@@ -18,10 +18,6 @@ import Foundation
     /// The Payment Action requires the customer to complete an additional action.
     case customerActionRequired
 
-    /// The customer abandoned or timed out of the 3D Secure challenge. The Payment Action is still
-    /// alive and retryable — this is never reported as a plain `.canceled`.
-    case threeDSecureCanceled
-    
     /// The Payment Action is still processing.
     case processing
     

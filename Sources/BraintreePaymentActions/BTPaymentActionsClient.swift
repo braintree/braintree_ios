@@ -95,8 +95,11 @@ import BraintreeCore
     /// If the Payment Action reaches `requires_customer_action` with a recognized 3D Secure
     /// `nextAction`, this drives device data collection and the challenge itself via an internal
     /// CardinalMobile wrapper, signaling completion after each step, and continues the loop — the
-    /// merchant never sees an intermediate `.customerActionRequired` result for 3DS. A `nextAction`
-    /// this SDK doesn't recognize still surfaces `.customerActionRequired` immediately.
+    /// merchant never sees an intermediate `.customerActionRequired` result for 3DS success. A
+    /// `nextAction` this SDK doesn't recognize still surfaces `.customerActionRequired` immediately.
+    ///
+    /// A customer-abandoned or timed-out challenge also currently maps to `.customerActionRequired`
+    /// as a placeholder — a dedicated result type for this case is added by a follow-up ticket.
     ///
     /// A `.processing` result means the SDK's own bounded internal retries were exhausted while the
     /// Payment Action was still settling server-side — wait briefly, then call `handleNextAction` again.
@@ -112,12 +115,12 @@ import BraintreeCore
         isHandlingNextAction = true
         defer { isHandlingNextAction = false }
 
-        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
-        let threeDSecureProvider = try BTPaymentActionThreeDSecureProvider(
-            configuration: configuration,
-            cardinalSession: cardinalSession,
-            applicationStateProvider: applicationStateProvider
-        )
+        // Shared across every customer-action step within this single handleNextAction call, so
+        // device data collection and the challenge run on the same CardinalSession — Cardinal
+        // documents a session as spanning configure/setup/continueWith together, and the legacy 3DS
+        // flow relies on this same-instance contract. Built lazily (only on the first recognized 3DS
+        // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
+        var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
 
         let handler = NextActionHandler(
             fetchPaymentAction: { [weak self] in
@@ -130,7 +133,16 @@ import BraintreeCore
                 guard let self else {
                     throw BTPaymentActionError.deallocated
                 }
-                return try await self.resolveCustomerAction(nextAction, using: threeDSecureProvider)
+
+                let provider: BTPaymentActionThreeDSecureProvider
+                if let existing = threeDSecureProvider {
+                    provider = existing
+                } else {
+                    provider = try await self.makeThreeDSecureProvider()
+                    threeDSecureProvider = provider
+                }
+
+                return try await self.resolveCustomerAction(nextAction, using: provider)
             }
         )
 
@@ -138,7 +150,9 @@ import BraintreeCore
         case .paymentAction(let paymentAction):
             return result(from: paymentAction)
         case .threeDSecureCanceled(let id):
-            return BTPaymentActionResult(type: .threeDSecureCanceled, id: id)
+            // TODO: map to the dedicated BTPaymentActionResultType case the customer-action public
+            // surface ticket adds, instead of reusing .customerActionRequired.
+            return BTPaymentActionResult(type: .customerActionRequired, id: id)
         }
     }
 
@@ -237,6 +251,18 @@ import BraintreeCore
         case .unrecognized:
             throw BTPaymentActionError.decodingFailure
         }
+    }
+
+    /// Fetches configuration and constructs a fresh `BTPaymentActionThreeDSecureProvider`.
+    /// - Throws: `BTPaymentActionError.missingCardinalAuthenticationJWT` if this merchant's
+    ///   configuration has no Cardinal authentication JWT.
+    func makeThreeDSecureProvider() async throws -> BTPaymentActionThreeDSecureProvider {
+        let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
+        return try BTPaymentActionThreeDSecureProvider(
+            configuration: configuration,
+            cardinalSession: cardinalSession,
+            applicationStateProvider: applicationStateProvider
+        )
     }
 
     /// Maps a raw `BTPaymentAction` (id + status from the GraphQL response) into the semantic
