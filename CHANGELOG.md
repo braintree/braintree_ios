@@ -1,8 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## unreleased
 * BraintreeCore
-  * Fix a bug sending an incorrect GraphQL version header.
+  * Fix a bug sending an incorrect GraphQL version header, resulting in 2 letter country code being returned as a 3 letter country code.
 
 ## 7.13.0 (2026-09-23)
 * BraintreePayPal
