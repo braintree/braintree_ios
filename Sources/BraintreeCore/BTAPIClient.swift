@@ -164,15 +164,24 @@ import UIKit
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
+        fiType: String? = nil,
         fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
+        isEditFIFlow: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
+        messageType: String? = nil,
         pageType: String? = nil,
         recurringBillingPlanType: String? = nil,
+        renderedEditTag: Bool? = nil,
+        renderedLabel: Bool? = nil,
+        renderedLogo: Bool? = nil,
+        renderedMessageSlot: Bool? = nil,
+        renderTrigger: String? = nil,
         shopperSessionID: String? = nil,
-        shouldRequestBillingAgreement: Bool? = nil
+        shouldRequestBillingAgreement: Bool? = nil,
+        shownContent: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
@@ -187,15 +196,24 @@ import UIKit
                 didPayPalServerAttemptAppSwitch: didPayPalServerAttemptAppSwitch,
                 errorDescription: errorDescription,
                 eventName: eventName,
+                fiType: fiType,
                 fundingSource: fundingSource,
                 isConfigFromCache: isConfigFromCache,
+                isEditFIFlow: isEditFIFlow,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
+                messageType: messageType,
                 pageType: pageType,
                 recurringBillingPlanType: recurringBillingPlanType,
+                renderedEditTag: renderedEditTag,
+                renderedLabel: renderedLabel,
+                renderedLogo: renderedLogo,
+                renderedMessageSlot: renderedMessageSlot,
+                renderTrigger: renderTrigger,
                 shopperSessionID: shopperSessionID,
-                shouldRequestBillingAgreement: shouldRequestBillingAgreement
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement,
+                shownContent: shownContent
             )
         )
     }
