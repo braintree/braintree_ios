@@ -12,6 +12,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
     @State private var amount = "10.00"
     @State private var amountInput = "10.00"
     @State private var isAppSwitchEnabled = true
+    @State private var userAction: BTPayPalRequestUserAction = .none
     @State private var isStyleEditorPresented = false
     @State private var styleConfig = PayPalSavedPaymentMethodStyleConfig()
 
@@ -64,6 +65,16 @@ struct PayPalSavedPaymentMethodDemoView: View {
 
             SwiftUI.Toggle("PayPal App Switch", isOn: $isAppSwitchEnabled)
 
+            HStack {
+                Text("User Action")
+                Spacer()
+                Picker("User Action", selection: $userAction) {
+                    Text("Continue").tag(BTPayPalRequestUserAction.none)
+                    Text("Pay Now").tag(BTPayPalRequestUserAction.payNow)
+                }
+                .pickerStyle(.menu)
+            }
+
             Button("Edit Style") {
                 isStyleEditorPresented = true
             }
@@ -78,6 +89,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
             payPalCheckoutRequest: BTPayPalCheckoutRequest(
                 amount: amount,
                 enablePayPalAppSwitch: isAppSwitchEnabled,
+                userAction: userAction,
                 currencyCode: currencyCode
             ),
             request: PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: currencyCode),
