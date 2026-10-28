@@ -70,6 +70,7 @@ final class BTPaymentActionThreeDSecureProvider {
     // BTVenmoClient's `application: URLOpener` seam — never mutated after init.
     private nonisolated(unsafe) let applicationStateProvider: ApplicationStateProviding
     private var challengeContinuation: CheckedContinuation<ChallengeOutcome, Error>?
+    private var watchdogTask: Task<Void, Never>?
 
     // MARK: - Initializer
 
@@ -166,8 +167,9 @@ final class BTPaymentActionThreeDSecureProvider {
                 validationDelegate: self
             )
 
-            Task { [challengeWatchdogTimeoutNanoseconds] in
+            self.watchdogTask = Task { [challengeWatchdogTimeoutNanoseconds] in
                 try? await Task.sleep(nanoseconds: challengeWatchdogTimeoutNanoseconds)
+                guard !Task.isCancelled else { return }
                 self.resolveChallengeTimedOut()
             }
         }
@@ -194,6 +196,8 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
     func resolveChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
         guard let continuation = challengeContinuation else { return }
         challengeContinuation = nil
+        watchdogTask?.cancel()
+        watchdogTask = nil
 
         switch actionCode {
         case .success, .noAction, .failure:
@@ -212,6 +216,7 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
     func resolveChallengeTimedOut() {
         guard let continuation = challengeContinuation else { return }
         challengeContinuation = nil
+        watchdogTask = nil
         continuation.resume(throwing: BTPaymentActionError.cardinalChallengeTimedOut)
     }
 }
