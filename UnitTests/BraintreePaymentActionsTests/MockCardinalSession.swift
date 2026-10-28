@@ -24,8 +24,12 @@ class MockCardinalSession: CardinalSessionTestable {
     /// (e.g. when a guard upstream should fail before any Cardinal call is made).
     private(set) var continueWithCallCount = 0
 
+    /// Captures the configuration passed to `configure`, so tests can assert on how
+    /// `BTThreeDSecureLaunchOptions` translated into `CardinalSessionConfiguration`.
+    private(set) var capturedConfiguration: CardinalSessionConfiguration?
+
     func configure(_ sessionConfig: CardinalSessionConfiguration) {
-        // do nothing
+        capturedConfiguration = sessionConfig
     }
 
     func setup(

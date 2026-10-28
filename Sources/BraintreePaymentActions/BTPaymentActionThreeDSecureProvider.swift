@@ -91,6 +91,7 @@ final class BTPaymentActionThreeDSecureProvider {
     ///   expression without requiring the caller to already be on the main actor.
     init(
         configuration: BTConfiguration,
+        threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions = BTThreeDSecureLaunchOptions(),
         cardinalSession: CardinalSessionTestable = CardinalSession(),
         applicationStateProvider: ApplicationStateProviding? = nil,
         challengeWatchdogTimeoutNanoseconds: UInt64 = BTPaymentActionThreeDSecureProvider.challengeWatchdogTimeoutNanoseconds
@@ -115,6 +116,17 @@ final class BTPaymentActionThreeDSecureProvider {
         // Set explicitly (matches Cardinal's own default) so our watchdog bound above is derived from
         // a known value rather than an assumed one.
         cardinalConfiguration.challengeTimeout = Self.cardinalChallengeTimeoutMinutes
+
+        cardinalConfiguration.uiType = threeDSecureLaunchOptions.uiType.cardinalValue
+        if let renderTypes = threeDSecureLaunchOptions.renderTypes {
+            cardinalConfiguration.renderType = renderTypes.compactMap { $0.cardinalValue }
+        }
+        if let uiCustomization = threeDSecureLaunchOptions.uiCustomization {
+            cardinalConfiguration.uiCustomization = uiCustomization.cardinalValue
+        }
+        if let requestorAppURL = threeDSecureLaunchOptions.requestorAppURL {
+            cardinalConfiguration.threeDSRequestorAppURL = requestorAppURL.absoluteString
+        }
         cardinalSession.configure(cardinalConfiguration)
     }
 
