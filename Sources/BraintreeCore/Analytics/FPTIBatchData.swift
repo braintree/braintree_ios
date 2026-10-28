@@ -189,7 +189,7 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
-            case messageType = "message_type"
+            case messageType = "presentment_message_type"
             case pageType = "page_type"
             case recurringBillingPlanType = "billing_plan_type"
             case renderedEditTag = "rendered_edit_tag"

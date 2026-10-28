@@ -313,7 +313,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             renderedEditTag: renderedEditTag,
             renderedLabel: style.showPayPalLabel,
             renderedLogo: style.showPayPalLogo,
-            renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging && creditMessage != nil,
+            renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging,
             renderTrigger: didCompleteEdit ? "fi_from_approved_checkout" : "sticky_fi",
             shownContent: shownContent
         )

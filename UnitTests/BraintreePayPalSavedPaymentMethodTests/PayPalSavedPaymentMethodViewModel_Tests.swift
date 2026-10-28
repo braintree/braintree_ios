@@ -597,7 +597,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedRenderedEditTag, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLogo, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLabel, false)
-        XCTAssertEqual(mockAPIClient.postedRenderedMessageSlot, false)
+        XCTAssertEqual(mockAPIClient.postedRenderedMessageSlot, true)
         XCTAssertNil(mockAPIClient.postedContextID)
     }
 
