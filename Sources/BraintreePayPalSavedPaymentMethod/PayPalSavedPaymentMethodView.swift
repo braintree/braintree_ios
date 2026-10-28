@@ -97,6 +97,12 @@ public struct PayPalSavedPaymentMethodView: View {
         .onChange(of: request) { newRequest in
             viewModel.requestChanged(newRequest, showCreditMessaging: style.showPayPalCreditMessaging)
         }
+        .onChange(of: viewModel.fiState) { _ in
+            viewModel.fiDidRender(style: style)
+        }
+        .onChange(of: viewModel.creditMessage) { _ in
+            viewModel.creditMessageDidRender()
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             viewModel.appReturnedToForeground()
         }

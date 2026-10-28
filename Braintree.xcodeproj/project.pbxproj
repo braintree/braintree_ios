@@ -470,6 +470,7 @@
 		FDCDC009DA7E4809AA4BCE98 /* ExpirationDateFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */; };
 		FE0200000000000000000001 /* PayPalFundingInstrumentFetchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000001 /* PayPalFundingInstrumentFetchType.swift */; };
 		FE0200000000000000000002 /* PayPalSavedPaymentMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000002 /* PayPalSavedPaymentMethodType.swift */; };
+		FE02000000000000000000B1 /* PayPalSavedPaymentMethodAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE01000000000000000000B1 /* PayPalSavedPaymentMethodAnalytics.swift */; };
 		FE0200000000000000000003 /* PayPalPayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000003 /* PayPalPayer.swift */; };
 		FE0200000000000000000004 /* PayPalSavedPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000004 /* PayPalSavedPaymentMethod.swift */; };
 		FE0200000000000000000005 /* PayPalSavedPaymentMethodSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000005 /* PayPalSavedPaymentMethodSummary.swift */; };
@@ -478,6 +479,7 @@
 		FE0200000000000000000090 /* PayPalSavedPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000090 /* PayPalSavedPaymentMethodRequest.swift */; };
 		FE0200000000000000000009 /* PayPalSavedPaymentMethodClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000009 /* PayPalSavedPaymentMethodClient.swift */; };
 		FE0200000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift */; };
+		FE02000000000000000000B2 /* PayPalSavedPaymentMethodAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE01000000000000000000B2 /* PayPalSavedPaymentMethodAnalytics_Tests.swift */; };
 		FE0200000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift */; };
 		FE0200000000000000000092 /* EditFIStyleGuard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000092 /* EditFIStyleGuard_Tests.swift */; };
 		FE0200000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0100000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift */; };
@@ -1371,6 +1373,7 @@
 		CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ApplicationState.swift"; sourceTree = "<group>"; };
 		FE0100000000000000000001 /* PayPalFundingInstrumentFetchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalFundingInstrumentFetchType.swift; sourceTree = "<group>"; };
 		FE0100000000000000000002 /* PayPalSavedPaymentMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodType.swift; sourceTree = "<group>"; };
+		FE01000000000000000000B1 /* PayPalSavedPaymentMethodAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodAnalytics.swift; sourceTree = "<group>"; };
 		FE0100000000000000000003 /* PayPalPayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalPayer.swift; sourceTree = "<group>"; };
 		FE0100000000000000000004 /* PayPalSavedPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethod.swift; sourceTree = "<group>"; };
 		FE0100000000000000000005 /* PayPalSavedPaymentMethodSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodSummary.swift; sourceTree = "<group>"; };
@@ -1379,6 +1382,7 @@
 		FE0100000000000000000090 /* PayPalSavedPaymentMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodRequest.swift; sourceTree = "<group>"; };
 		FE0100000000000000000009 /* PayPalSavedPaymentMethodClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodClient.swift; sourceTree = "<group>"; };
 		FE0100000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodClient_Tests.swift; sourceTree = "<group>"; };
+		FE01000000000000000000B2 /* PayPalSavedPaymentMethodAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodAnalytics_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000011 /* PayPalSavedPaymentMethodSummary_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodSummary_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000092 /* EditFIStyleGuard_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFIStyleGuard_Tests.swift; sourceTree = "<group>"; };
 		FE0100000000000000000094 /* PayPalSavedPaymentMethodFont_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodFont_Tests.swift; sourceTree = "<group>"; };
@@ -2154,6 +2158,7 @@
 			isa = PBXGroup;
 			children = (
 				FE0100000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift */,
+				FE01000000000000000000B2 /* PayPalSavedPaymentMethodAnalytics_Tests.swift */,
 				7EE6974392CC188D068C44D6 /* SavedPaymentMethodRenderTestCase.swift */,
 				C714F3581AFE24B17DFF3B74 /* PayPalSavedPaymentMethodBundle_Tests.swift */,
 				F993447D3AF9291C3765DD65 /* PayPalSavedPaymentMethodRows_RenderTests.swift */,
@@ -2671,6 +2676,7 @@
 				FE0100000000000000000004 /* PayPalSavedPaymentMethod.swift */,
 				FE0100000000000000000005 /* PayPalSavedPaymentMethodSummary.swift */,
 				FE0100000000000000000002 /* PayPalSavedPaymentMethodType.swift */,
+				FE01000000000000000000B1 /* PayPalSavedPaymentMethodAnalytics.swift */,
 				FE0100000000000000000003 /* PayPalPayer.swift */,
 				FE0100000000000000000090 /* PayPalSavedPaymentMethodRequest.swift */,
 				1E79542E9F427658B9629CB3 /* PayPalSavedPaymentMethod+Bundle.swift */,
@@ -3989,6 +3995,7 @@
 				FE0200000000000000000004 /* PayPalSavedPaymentMethod.swift in Sources */,
 				FE0200000000000000000005 /* PayPalSavedPaymentMethodSummary.swift in Sources */,
 				FE0200000000000000000002 /* PayPalSavedPaymentMethodType.swift in Sources */,
+				FE02000000000000000000B1 /* PayPalSavedPaymentMethodAnalytics.swift in Sources */,
 				FE0200000000000000000003 /* PayPalPayer.swift in Sources */,
 				4F73E0FC437630FD8018D5E5 /* PayPalSavedPaymentMethodSkeletonRow.swift in Sources */,
 				D04BC3F076EB65C0195500A8 /* PayPalCreditMessagingLanderView.swift in Sources */,
@@ -4012,6 +4019,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE0200000000000000000010 /* PayPalSavedPaymentMethodClient_Tests.swift in Sources */,
+				FE02000000000000000000B2 /* PayPalSavedPaymentMethodAnalytics_Tests.swift in Sources */,
 				BA2B6B59869C38440576FCE8 /* SavedPaymentMethodRenderTestCase.swift in Sources */,
 				ACA3F2F45BF298C8262C5900 /* PayPalSavedPaymentMethodBundle_Tests.swift in Sources */,
 				15EB8A2EEF9EA563EA5DB384 /* PayPalSavedPaymentMethodRows_RenderTests.swift in Sources */,

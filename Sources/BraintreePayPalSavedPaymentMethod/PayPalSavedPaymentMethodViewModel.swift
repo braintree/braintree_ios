@@ -9,6 +9,7 @@ import BraintreeCore
 @_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 #endif
 
+// swiftlint:disable type_body_length file_length
 /// View model backing `PayPalSavedPaymentMethodView`.
 ///
 /// Owns the FI load state and the "Learn more" lander presentation, and drives the
@@ -126,6 +127,15 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The request `creditMessage` was quoted for.
     private var creditMessageRequest: PayPalSavedPaymentMethodRequest?
 
+    /// The order approved by the last edit, sent as the `context_id` of the post-edit render.
+    private var approvedOrderID: String?
+
+    /// The type of the instrument on screen, for analytics.
+    private var fiType: String? {
+        guard case .instrument(let instrument) = fiState else { return nil }
+        return instrument.type?.rawValue
+    }
+
     // MARK: - Initializers
 
     /// Creates a view model that fetches through `fetchClient`.
@@ -216,7 +226,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         request: PayPalSavedPaymentMethodRequest
     ) {
         guard case .idle = editPhase else { return }
-        // TODO: emit the edit tapped analytics event once the catalog is approved.
+        fetchClient?.apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.editSelected, fiType: fiType)
         editPhase = .loaderRequested
         editTask = Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
@@ -266,14 +276,57 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Opens the "Learn more" lander in-app when PayPal allows embedding, otherwise in the browser.
     func learnMoreTapped() {
-        // TODO: emit the learn more tapped analytics event once the catalog is approved.
         guard let learnMore = creditMessage?.learnMore else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected,
+            messageType: creditMessage?.messageType
+        )
 
         if learnMore.isEmbeddable {
             presentedLander = Lander(url: learnMore.url)
         } else {
             application.open(learnMore.url, options: [:], completionHandler: nil)
         }
+    }
+
+    /// Called when `fiState` changes on screen. Reports the settled state as a render; the skeleton is not one.
+    func fiDidRender(style: PayPalSavedPaymentMethodViewStyle) {
+        let shownContent: String
+        let renderedEditTag: Bool
+
+        switch fiState {
+        case .loading:
+            return
+        case .instrument:
+            (shownContent, renderedEditTag) = ("funding_instrument", true)
+        case .displayOnly(_, let isEditable):
+            (shownContent, renderedEditTag) = ("email_only", isEditable)
+        case .brandOnly:
+            shownContent = style.showPayPalLogo || style.showPayPalLabel ? "brand_only" : "hidden"
+            renderedEditTag = false
+        }
+
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.renderSucceeded,
+            contextID: approvedOrderID,
+            fiType: fiType,
+            renderedEditTag: renderedEditTag,
+            renderedLabel: style.showPayPalLabel,
+            renderedLogo: style.showPayPalLogo,
+            renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging && creditMessage != nil,
+            renderTrigger: didCompleteEdit ? "fi_from_approved_checkout" : "sticky_fi",
+            shownContent: shownContent
+        )
+    }
+
+    /// Called when `creditMessage` changes on screen. Reports a shown message as a render.
+    func creditMessageDidRender() {
+        guard let creditMessage, showsCreditMessaging else { return }
+
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
+            messageType: creditMessage.messageType
+        )
     }
 
     // MARK: - Private Methods
@@ -353,6 +406,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         finishEdit(nonce: nonce, error: nil)
 
         fiRefetchTask?.cancel()
+        approvedOrderID = nonce.paymentID
         guard let orderID = nonce.paymentID else {
             fiState = .brandOnly
             return
