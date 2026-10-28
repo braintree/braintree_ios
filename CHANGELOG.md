@@ -2,7 +2,13 @@
 
 ## unreleased
 * BraintreeCore
-  * Fix a bug sending an incorrect GraphQL version header, resulting in 2 letter country code being returned as a 3 letter country code.
+  * Fix a bug sending an incorrect GraphQL version header.
+* BraintreeVenmo
+  * `countryCodeAlpha2` now correctly returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
+* BraintreeCard
+  * `BTBinData`
+    * `prepaid`, `healthcare`, `debit`, `durbinRegulated`, `commercial`, and `payroll` now return `YES`, `NO`, or `UNKNOWN` instead of `Yes`, `No`, or `Unknown`.
+    * `countryOfIssuance` now returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
 
 ## 7.13.0 (2026-09-23)
 * BraintreePayPal
