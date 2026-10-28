@@ -26,6 +26,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card, alternat
 - UI Components
     - [PayPal Button](https://developer.paypal.com/braintree/docs/guides/paypal/client-side/ios/v7/#using-our-payment-buttons)
     - [Venmo Button](https://developer.paypal.com/braintree/docs/guides/venmo/client-side/ios/v7/#use-our-payment-buttons)
+    - [PayPal Pay Later Button](#payment-buttons)
     - [Credit Card Fields](#card-fields)
 
 ## Installation
@@ -153,6 +154,31 @@ let paypalButtonView = PayPalButton(
     }
 }
 ```
+
+If you would like to draw a PayPal Pay Later branded button in your mobile app, you can do so like this:
+
+```swift
+import BraintreeUIComponents
+import BraintreePayPal
+
+let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+
+let payLaterButtonView = PayPalPayLaterButton(
+    authorization: authorization,
+    universalLink: URL(string: "https://example.com/braintree-payments")!,
+    request: paypalRequest,
+    color: .blue,
+    width: 300
+) { nonce, error in
+    if let nonce {
+        // handle successful PayPal Pay Later payment
+    } else if let error {
+        // handle PayPal Pay Later payment error
+    }
+}
+```
+
+The button is available in blue (default), black, and white. Width defaults to 300 points and is limited to a minimum of 158 and a maximum of 300 points. The button sets `offerPayLater` to `true` on the request you pass in. Pay Later availability depends on the buyer's country, currency, and order amount.
 
 ## Card Fields
 
