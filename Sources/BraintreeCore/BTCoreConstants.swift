@@ -18,7 +18,7 @@ public class BTCoreConstants: NSObject {
 
     static let apiVersion: String = "2016-10-07"
     
-    static let graphQLVersion: String = "2024-11-05"
+    static let graphQLVersion: String = "2024-08-23"
 
     // swiftlint:disable force_unwrapping
     static let payPalProductionURL = URL(string: "https://api.paypal.com")!
