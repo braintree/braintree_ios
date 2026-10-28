@@ -636,13 +636,33 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     func testCreditMessageDidRender_whenAMessageIsShown_sendsRenderSucceededEventWithTheMessageType() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
         await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
 
         sut.creditMessageDidRender()
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded)
         XCTAssertEqual(mockAPIClient.postedMessageType, "PLST_SQ")
+    }
+
+    /// The message can land before the FI. It is held until the FI settles, and dropped if the FI ends up brand-only.
+    func testVisibleCreditMessage_whenTheMessageArrivesBeforeTheFIFails_isNeverShownOrReported() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+
+        XCTAssertNil(sut.visibleCreditMessage)
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        sut.creditMessageDidRender()
+
+        XCTAssertNil(sut.visibleCreditMessage)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded))
     }
 
     // MARK: - state(from:)

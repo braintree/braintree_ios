@@ -99,6 +99,12 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         }
     }
 
+    /// The Pay Later message to show. Held until the FI settles, since the FI decides whether the row may show.
+    var visibleCreditMessage: CreditMessageContent? {
+        guard fiState != .loading, showsCreditMessaging else { return nil }
+        return creditMessage
+    }
+
     /// The latest buyer default billing agreement fetch. Exposed for testing.
     private(set) var fiFetchTask: Task<Void, Never>?
 
@@ -319,13 +325,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         )
     }
 
-    /// Called when `creditMessage` changes on screen. Reports a shown message as a render.
+    /// Called when `visibleCreditMessage` changes on screen. Reports a shown message as a render.
     func creditMessageDidRender() {
-        guard let creditMessage, showsCreditMessaging else { return }
+        guard let visibleCreditMessage else { return }
 
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
-            messageType: creditMessage.messageType
+            messageType: visibleCreditMessage.messageType
         )
     }
 
