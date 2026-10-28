@@ -18,11 +18,13 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
     }
 
     private func makeSut(
+        threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions = BTThreeDSecureLaunchOptions(),
         isApplicationActive: Bool = true,
         challengeWatchdogTimeoutNanoseconds: UInt64 = 60_000_000_000
     ) throws -> BTPaymentActionThreeDSecureProvider {
         try BTPaymentActionThreeDSecureProvider(
             configuration: configuration,
+            threeDSecureLaunchOptions: threeDSecureLaunchOptions,
             cardinalSession: mockCardinalSession,
             applicationStateProvider: StubApplicationStateProvider(isApplicationActive: isApplicationActive),
             challengeWatchdogTimeoutNanoseconds: challengeWatchdogTimeoutNanoseconds
@@ -39,6 +41,79 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
         ) { error in
             XCTAssertEqual(error as? BTPaymentActionError, .missingCardinalAuthenticationJWT)
         }
+    }
+
+    // MARK: - init(configuration:threeDSecureLaunchOptions:) - Cardinal configuration mapping
+
+    func testInit_defaultLaunchOptions_configuresCardinalWithLegacyEquivalentDefaults() throws {
+        // Cardinal's own `CardinalSessionConfiguration` pre-fills `renderType` (and, per the next
+        // assertion, `uiCustomization`) with its own non-nil defaults; when the launch option is nil,
+        // we leave that default untouched rather than overriding it — matching the existing 3DS
+        // flow's behavior of only setting these when non-nil.
+        let freshConfiguration = CardinalSessionConfiguration()
+        let untouchedRenderTypeDefault = freshConfiguration.renderType
+
+        _ = try makeSut()
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.uiType, .both)
+        XCTAssertEqual(cardinalConfiguration.renderType, untouchedRenderTypeDefault)
+
+        // Not XCTAssertNil/XCTAssertEqual: printing a failing Cardinal `UiCustomization` value for the
+        // assertion message crashes the test process (confirmed via a live crash reproduction), so this
+        // check never hands the object itself to anything that might print it.
+        if (cardinalConfiguration.uiCustomization == nil) != (freshConfiguration.uiCustomization == nil) {
+            XCTFail("Expected uiCustomization to remain Cardinal's own default when the launch option is nil")
+        }
+
+        XCTAssertNil(cardinalConfiguration.threeDSRequestorAppURL)
+    }
+
+    func testInit_customUIType_setsCardinalUIType() throws {
+        let options = BTThreeDSecureLaunchOptions()
+        options.uiType = .native
+
+        _ = try makeSut(threeDSecureLaunchOptions: options)
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.uiType, .native)
+    }
+
+    func testInit_renderTypesSet_setsCardinalRenderType() throws {
+        let options = BTThreeDSecureLaunchOptions()
+        options.renderTypes = [.otp, .html]
+
+        _ = try makeSut(threeDSecureLaunchOptions: options)
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.renderType, [CardinalSessionRenderTypeOTP, CardinalSessionRenderTypeHTML])
+    }
+
+    func testInit_uiCustomizationSet_setsCardinalUICustomization() throws {
+        let options = BTThreeDSecureLaunchOptions()
+        options.uiCustomization = BTThreeDSecureLaunchUICustomization()
+
+        _ = try makeSut(threeDSecureLaunchOptions: options)
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertNotNil(cardinalConfiguration.uiCustomization)
+    }
+
+    func testInit_requestorAppURLSet_passedToCardinalAsProvided() throws {
+        let options = BTThreeDSecureLaunchOptions()
+        options.requestorAppURL = URL(string: "https://merchant.example.com/return")!
+
+        _ = try makeSut(threeDSecureLaunchOptions: options)
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.threeDSRequestorAppURL, "https://merchant.example.com/return")
+    }
+
+    func testInit_requestorAppURLNil_nothingSetOnCardinal() throws {
+        _ = try makeSut()
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertNil(cardinalConfiguration.threeDSRequestorAppURL)
     }
 
     // MARK: - collectDeviceData()
