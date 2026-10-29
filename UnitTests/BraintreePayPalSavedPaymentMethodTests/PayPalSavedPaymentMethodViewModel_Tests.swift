@@ -573,6 +573,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.editSelected)
         XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
         XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
     }
 
     func testLearnMoreTapped_sendsLearnMoreSelectedEventWithTheMessageType() async {
