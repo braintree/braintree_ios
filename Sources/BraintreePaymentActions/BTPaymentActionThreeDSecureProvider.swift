@@ -57,10 +57,15 @@ final class BTPaymentActionThreeDSecureProvider {
     /// Cardinal's own challenge-screen timeout, in minutes. Matches `CardinalSessionConfiguration
     /// .challengeTimeout`'s documented default/minimum (5 minutes, per the vendored CardinalMobile
     /// header) — set explicitly below so this is a known value rather than an assumed default.
-    static let cardinalChallengeTimeoutMinutes: UInt = 5
+    ///
+    /// `nonisolated`: a plain immutable constant, safe to read from any context — needed so it (and
+    /// the watchdog bound derived from it, below) can be used as initializer default-argument values
+    /// without requiring main-actor isolation at the call site.
+    nonisolated static let cardinalChallengeTimeoutMinutes: UInt = 5
 
     /// Bounds how long `presentChallenge` waits for Cardinal before giving up.
-    static let challengeWatchdogTimeoutNanoseconds: UInt64 = UInt64(cardinalChallengeTimeoutMinutes + 1) * 60 * 1_000_000_000
+    nonisolated static let challengeWatchdogTimeoutNanoseconds: UInt64 =
+        UInt64(cardinalChallengeTimeoutMinutes + 1) * 60 * 1_000_000_000
 
     // MARK: - Internal Properties
 
@@ -80,10 +85,14 @@ final class BTPaymentActionThreeDSecureProvider {
 
     /// - Throws: `BTPaymentActionError.missingCardinalAuthenticationJWT` if `configuration` has no
     ///   Cardinal authentication JWT.
+    /// - Parameter applicationStateProvider: defaults to `UIApplication.shared` when `nil`. Resolved
+    ///   inside the initializer body, rather than as a default-argument value, since `UIApplication
+    ///   .shared` is itself main-actor-isolated and can't be referenced in a default-argument
+    ///   expression without requiring the caller to already be on the main actor.
     init(
         configuration: BTConfiguration,
         cardinalSession: CardinalSessionTestable = CardinalSession(),
-        applicationStateProvider: ApplicationStateProviding = UIApplication.shared,
+        applicationStateProvider: ApplicationStateProviding? = nil,
         challengeWatchdogTimeoutNanoseconds: UInt64 = BTPaymentActionThreeDSecureProvider.challengeWatchdogTimeoutNanoseconds
     ) throws {
         guard let cardinalAuthenticationJWT = configuration.cardinalAuthenticationJWT else {
@@ -92,7 +101,7 @@ final class BTPaymentActionThreeDSecureProvider {
 
         self.cardinalSession = cardinalSession
         self.cardinalAuthenticationJWT = cardinalAuthenticationJWT
-        self.applicationStateProvider = applicationStateProvider
+        self.applicationStateProvider = applicationStateProvider ?? UIApplication.shared
         self.challengeWatchdogTimeoutNanoseconds = challengeWatchdogTimeoutNanoseconds
 
         let isProduction = configuration.environment == "production"

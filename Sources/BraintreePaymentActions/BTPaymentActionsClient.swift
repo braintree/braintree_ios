@@ -16,10 +16,11 @@ import BraintreeCore
     /// Exposed for testing to inject a mock Cardinal session for the 3DS customer-action drive path.
     var cardinalSession: CardinalSessionTestable = CardinalSession()
 
-    /// Exposed for testing to control the foreground gate without depending on the real `UIApplication`.
-    /// `nonisolated(unsafe)`: read-only, never mutated after assignment; same pattern as
-    /// `BTVenmoClient`'s `application: URLOpener` seam.
-    nonisolated(unsafe) var applicationStateProvider: ApplicationStateProviding = UIApplication.shared
+    /// Exposed for testing to control the foreground gate without depending on the real
+    /// `UIApplication`. `nil` defaults to `UIApplication.shared`, resolved by
+    /// `BTPaymentActionThreeDSecureProvider`'s own initializer — not here, since `UIApplication.shared`
+    /// is main-actor-isolated and can't be used as a stored-property initializer value.
+    var applicationStateProvider: ApplicationStateProviding?
 
     /// Tracks whether a `handleNextAction` drive loop is already in flight on this client instance.
     var isHandlingNextAction = false
