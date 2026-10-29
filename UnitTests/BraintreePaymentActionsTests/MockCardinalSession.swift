@@ -24,8 +24,12 @@ class MockCardinalSession: CardinalSessionTestable {
     /// (e.g. when a guard upstream should fail before any Cardinal call is made).
     private(set) var continueWithCallCount = 0
 
+    /// Captures the configuration passed to `configure`, so tests can assert on how
+    /// `BTThreeDSecureLaunchOptions` translated into `CardinalSessionConfiguration`.
+    private(set) var capturedConfiguration: CardinalSessionConfiguration?
+
     func configure(_ sessionConfig: CardinalSessionConfiguration) {
-        // do nothing
+        capturedConfiguration = sessionConfig
     }
 
     func setup(
@@ -35,8 +39,7 @@ class MockCardinalSession: CardinalSessionTestable {
     ) {
         // `didValidateHandler` can't be invoked from a mock — its `CardinalResponse` parameter has no
         // accessible initializer (`NS_UNAVAILABLE`), so the setup-validation-failure path
-        // (`BTPaymentActionError.cardinalSetupValidationFailed`) isn't exercisable from test code,
-        // same limitation the Cardinal challenge spike found for `CardinalResponse` generally.
+        // (`BTPaymentActionError.cardinalSetupValidationFailed`) isn't exercisable from test code.
         didCompleteHandler(dfReferenceID)
     }
 

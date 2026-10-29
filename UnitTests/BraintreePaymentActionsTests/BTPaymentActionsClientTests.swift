@@ -23,6 +23,24 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         ])
     }
 
+    // MARK: - Initializer
+
+    func testInit_authorizationOnly_defaultsThreeDSecureLaunchOptions() {
+        let client = BTPaymentActionsClient(authorization: authorization)
+
+        XCTAssertEqual(client.threeDSecureLaunchOptions.uiType, .both)
+        XCTAssertNil(client.threeDSecureLaunchOptions.requestorAppURL)
+    }
+
+    func testInit_withThreeDSecureLaunchOptions_storesProvidedOptions() {
+        let options = BTThreeDSecureLaunchOptions()
+        options.uiType = .native
+
+        let client = BTPaymentActionsClient(authorization: authorization, threeDSecureLaunchOptions: options)
+
+        XCTAssertEqual(client.threeDSecureLaunchOptions.uiType, .native)
+    }
+
     // MARK: - Request Posting
 
     func testSubmitForPaymentAction_postsToGraphQLAPI() async throws {
@@ -132,12 +150,12 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
-    func testSubmitForPaymentAction_unknownServerStatus_returnsUnknownResult() async throws {
+    func testSubmitForPaymentAction_unknownServerStatus_returnsUnrecognizedResult() async throws {
         stubResponse(id: "payment-action-id", status: "SOME_NEW_SERVER_STATUS")
 
         let result = try await sut.submitForPaymentAction(MockPaymentActionRequest())
 
-        XCTAssertEqual(result.type, .unknown)
+        XCTAssertEqual(result.type, .unrecognized)
         XCTAssertEqual(result.id, "payment-action-id")
         XCTAssertFalse(result is BTServerActionRequiredResult)
     }
@@ -399,11 +417,11 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.type, .expired)
     }
 
-    func testResultFrom_unknown_mapsToUnknown() {
+    func testResultFrom_unknownStatus_mapsToUnrecognized() {
         let paymentAction = BTPaymentAction(id: "payment-action-id", status: .unknown)
         let result = sut.result(from: paymentAction)
 
-        XCTAssertEqual(result.type, .unknown)
+        XCTAssertEqual(result.type, .unrecognized)
         XCTAssertFalse(result is BTServerActionRequiredResult)
     }
     
@@ -631,7 +649,44 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
     }
 
-    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeAbandoned_returnsCustomerActionRequired() async throws {
+    func testHandleNextAction_customThreeDSecureLaunchOptions_appliedToCardinalSession() async throws {
+        let options = BTThreeDSecureLaunchOptions()
+        options.uiType = .native
+
+        let client = BTPaymentActionsClient(authorization: authorization, threeDSecureLaunchOptions: options)
+        client.apiClient = mockAPIClient
+        let mockCardinalSession = MockCardinalSession()
+        client.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBodies = [
+            BTJSON(value: [
+                "data": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureAuthentication",
+                            "bin": "401288"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ]),
+            BTJSON(value: [
+                "data": [
+                    "signalCustomerActionComplete": [
+                        "paymentAction": ["id": "payment-action-id", "status": "READY_FOR_CONFIRMATION"] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ])
+        ]
+
+        _ = try await client.handleNextAction()
+
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.uiType, .native)
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeAbandoned_returnsThreeDSecureCanceled() async throws {
         let mockCardinalSession = MockCardinalSession()
         mockCardinalSession.actionCodeToDeliver = .cancel
         sut.cardinalSession = mockCardinalSession
@@ -653,9 +708,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         let result = try await sut.handleNextAction()
 
-        // Placeholder mapping until the customer-action public surface ticket adds a dedicated
-        // result type for this case — see the TODO on handleNextAction.
-        XCTAssertEqual(result.type, .customerActionRequired)
+        XCTAssertEqual(result.type, .threeDSecureCanceled)
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
