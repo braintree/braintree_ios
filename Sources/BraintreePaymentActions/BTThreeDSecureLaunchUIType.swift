@@ -6,7 +6,7 @@ import CardinalMobile
 ///
 /// Deliberately duplicated from `BraintreeThreeDSecure`'s identical `BTThreeDSecureUIType` rather than
 /// shared, so this module's only dependency is the `CardinalMobile` binary — not the existing
-/// `BraintreeThreeDSecure` module — keeping the M4 drive path fully isolated from the existing 3DS flow.
+/// `BraintreeThreeDSecure` module — keeping the Payment Actions drive path fully isolated from the existing 3DS flow.
 @objc public enum BTThreeDSecureLaunchUIType: Int {
 
     /// Native

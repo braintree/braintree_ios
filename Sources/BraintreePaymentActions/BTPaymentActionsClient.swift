@@ -25,7 +25,7 @@ import BraintreeCore
     /// Tracks whether a `handleNextAction` drive loop is already in flight on this client instance.
     var isHandlingNextAction = false
 
-    /// Options customizing the 3D Secure challenge presented during the M4 drive path. Applies to
+    /// Options customizing the 3D Secure challenge presented during the Payment Actions drive path. Applies to
     /// every call this client makes — create a new client with the same options if the app is killed.
     let threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions
 
