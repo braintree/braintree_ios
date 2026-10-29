@@ -1,5 +1,15 @@
 # Braintree iOS SDK Release Notes
 
+## 7.13.1 (2026-10-29)
+* BraintreeCore
+  * Fix a bug sending an incorrect GraphQL version header.
+* BraintreeVenmo
+  * `countryCodeAlpha2` now correctly returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
+* BraintreeCard
+  * `BTBinData`
+    * `prepaid`, `healthcare`, `debit`, `durbinRegulated`, `commercial`, and `payroll` now return `YES`, `NO`, or `UNKNOWN` instead of `Yes`, `No`, or `Unknown`.
+    * `countryOfIssuance` now returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
+
 ## 7.13.0 (2026-09-23)
 * BraintreePayPal
     * Fix bug where the return tokenization request could fail to complete after the app was backgrounded during the PayPal app switch or browser flow, resulting in a network connection timeout error

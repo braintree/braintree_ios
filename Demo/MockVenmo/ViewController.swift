@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         UIApplication.shared.open(errorURL)
     }
 
-    @IBAction func didTapCancel(_ sender: UIBarButtonItem) {
+    @IBAction func didTapCancel(_ sender: UIButton) {
         guard let cancelURL = AppSwitcher.cancelURL else { return }
         UIApplication.shared.open(cancelURL)
     }
