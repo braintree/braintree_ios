@@ -1,6 +1,6 @@
 import Foundation
 
-/// Options for customizing the 3D Secure challenge presented during the M4 drive path.
+/// Options for customizing the 3D Secure challenge presented during the Payment Actions drive path.
 ///
 /// Replicates the four 3DS UI options from the existing `BTThreeDSecureRequest` (`uiType`,
 /// `renderTypes`, `v2UICustomization`, `requestorAppURL`) with the same legacy-equivalent defaults —

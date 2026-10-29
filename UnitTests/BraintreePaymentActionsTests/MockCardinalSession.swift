@@ -39,8 +39,7 @@ class MockCardinalSession: CardinalSessionTestable {
     ) {
         // `didValidateHandler` can't be invoked from a mock — its `CardinalResponse` parameter has no
         // accessible initializer (`NS_UNAVAILABLE`), so the setup-validation-failure path
-        // (`BTPaymentActionError.cardinalSetupValidationFailed`) isn't exercisable from test code,
-        // same limitation the Cardinal challenge spike found for `CardinalResponse` generally.
+        // (`BTPaymentActionError.cardinalSetupValidationFailed`) isn't exercisable from test code.
         didCompleteHandler(dfReferenceID)
     }
 

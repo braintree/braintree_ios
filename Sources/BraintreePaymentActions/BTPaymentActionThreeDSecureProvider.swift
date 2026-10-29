@@ -20,7 +20,8 @@ extension UIApplication: ApplicationStateProviding {
     }
 }
 
-/// Owns the Cardinal session and every CardinalMobile call for the M4 3D Secure customer-action flow.
+/// Owns the Cardinal session and every CardinalMobile call for the Payment Actions 3D Secure
+/// customer-action flow.
 /// No Cardinal type escapes this wrapper — callers only see `String`/`ChallengeOutcome` and
 /// `BTPaymentActionError`.
 ///
@@ -134,10 +135,9 @@ final class BTPaymentActionThreeDSecureProvider {
 
     /// Runs Cardinal's device data collection step.
     ///
-    /// The `PaymentActionThreeDSecureAuthentication` `nextAction`'s `bin` field is not used here —
-    /// confirmed with the Payment Actions backend team that `bin` is needed by the web SDK's device
-    /// data collection step only; CardinalMobile's non-deprecated `setup` overload on iOS/Android
-    /// takes no account number at all.
+    /// The `PaymentActionThreeDSecureAuthentication` `nextAction`'s `bin` field is not used here — it's
+    /// needed by the web SDK's device data collection step only. CardinalMobile's non-deprecated
+    /// `setup` overload on iOS/Android takes no account number at all.
     /// - Returns: the `dfReferenceId` to report via `signalCustomerActionComplete(.deviceDataCollection(...))`.
     /// - Throws: `BTPaymentActionError.cardinalInteractionAlreadyInProgress` if a previous call on this
     ///   instance hasn't completed, or `.cardinalSetupValidationFailed` if Cardinal rejects the JWT.
@@ -173,9 +173,8 @@ final class BTPaymentActionThreeDSecureProvider {
             throw BTPaymentActionError.cardinalInteractionAlreadyInProgress
         }
 
-        // Confirmed required by the Cardinal challenge spike's live reproduction: calling into
-        // Cardinal while backgrounded doesn't present the challenge — it silently redirects to an
-        // external Safari app-switch prompt the customer can ignore.
+        // Calling into Cardinal while backgrounded doesn't present the challenge — it silently
+        // redirects to an external Safari app-switch prompt the customer can ignore.
         guard applicationStateProvider.isApplicationActive else {
             throw BTPaymentActionError.foregroundRequired
         }
