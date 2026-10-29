@@ -235,8 +235,12 @@ import BraintreeCore
             return .advanced(paymentAction)
 
         case .threeDSecureChallenge(let challenge):
+            guard let mpiTransactionID = challenge.mpiTransactionID else {
+                throw BTPaymentActionError.missingMpiTransactionID
+            }
+
             let outcome = try await threeDSecureProvider.presentChallenge(
-                transactionID: challenge.mpiTransactionID ?? "",
+                transactionID: mpiTransactionID,
                 payload: challenge.challengePayload
             )
 
@@ -258,7 +262,7 @@ import BraintreeCore
     ///   configuration has no Cardinal authentication JWT.
     func makeThreeDSecureProvider() async throws -> BTPaymentActionThreeDSecureProvider {
         let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
-        return try BTPaymentActionThreeDSecureProvider(
+        return try await BTPaymentActionThreeDSecureProvider(
             configuration: configuration,
             cardinalSession: cardinalSession,
             applicationStateProvider: applicationStateProvider

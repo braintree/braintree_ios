@@ -659,6 +659,35 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.id, "payment-action-id")
     }
 
+    func testHandleNextAction_threeDSecureChallengeMissingMpiTransactionID_throwsWithoutCallingCardinal() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .success
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureChallenge",
+                        "acsUrl": "https://acs.example.com",
+                        "challengePayload": "payload-data"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected missingMpiTransactionID to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .missingMpiTransactionID)
+        }
+
+        XCTAssertEqual(mockCardinalSession.continueWithCallCount, 0)
+    }
+
     func testHandleNextAction_readyForConfirmation_returnsServerActionRequiredConfirm() async throws {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "data": ["paymentAction": ["id": "payment-action-id", "status": "READY_FOR_CONFIRMATION"] as [String: Any]]

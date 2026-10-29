@@ -24,11 +24,11 @@ extension UIApplication: ApplicationStateProviding {
 /// No Cardinal type escapes this wrapper — callers only see `String`/`ChallengeOutcome` and
 /// `BTPaymentActionError`.
 ///
-/// Built as a new type rather than reusing the existing 3DS module's `BTThreeDSecureV2Provider`, so the
-/// M4 drive path's presentation requirements — a foreground guarantee, a watchdog, and full Cardinal
+/// Built as a new type rather than reusing the existing 3DS module's `BTThreeDSecureV2Provider`, so
+/// payment action drive path's presentation requirements — a foreground guarantee, a watchdog, and full Cardinal
 /// action-code coverage — can be added with zero regression risk to the existing, still-shipping flow.
-/// Duplicates `BTThreeDSecureV2Provider`'s Cardinal setup sequence rather than sharing it, per the
-/// isolation decision in the Cardinal challenge spike.
+/// Duplicates `BTThreeDSecureV2Provider`'s Cardinal setup sequence rather than sharing it.
+@MainActor
 final class BTPaymentActionThreeDSecureProvider {
 
     // MARK: - Internal Types
@@ -54,7 +54,13 @@ final class BTPaymentActionThreeDSecureProvider {
 
     // MARK: - Internal Static Properties
 
-    static let challengeWatchdogTimeoutNanoseconds: UInt64 = 60_000_000_000
+    /// Cardinal's own challenge-screen timeout, in minutes. Matches `CardinalSessionConfiguration
+    /// .challengeTimeout`'s documented default/minimum (5 minutes, per the vendored CardinalMobile
+    /// header) — set explicitly below so this is a known value rather than an assumed default.
+    static let cardinalChallengeTimeoutMinutes: UInt = 5
+
+    /// Bounds how long `presentChallenge` waits for Cardinal before giving up.
+    static let challengeWatchdogTimeoutNanoseconds: UInt64 = UInt64(cardinalChallengeTimeoutMinutes + 1) * 60 * 1_000_000_000
 
     // MARK: - Internal Properties
 
@@ -66,9 +72,7 @@ final class BTPaymentActionThreeDSecureProvider {
     private let cardinalSession: CardinalSessionTestable
     private let cardinalAuthenticationJWT: String
     private let challengeWatchdogTimeoutNanoseconds: UInt64
-    // nonisolated(unsafe): read-only access to UIApplication's state, same pattern as
-    // BTVenmoClient's `application: URLOpener` seam — never mutated after init.
-    private nonisolated(unsafe) let applicationStateProvider: ApplicationStateProviding
+    private let applicationStateProvider: ApplicationStateProviding
     private var challengeContinuation: CheckedContinuation<ChallengeOutcome, Error>?
     private var watchdogTask: Task<Void, Never>?
 
@@ -99,6 +103,9 @@ final class BTPaymentActionThreeDSecureProvider {
         // troubleshooting DDC/challenge flows, and disable them in production to avoid exposing
         // internal logs.
         cardinalConfiguration.collectLogs = !isProduction
+        // Set explicitly (matches Cardinal's own default) so our watchdog bound above is derived from
+        // a known value rather than an assumed one.
+        cardinalConfiguration.challengeTimeout = Self.cardinalChallengeTimeoutMinutes
         cardinalSession.configure(cardinalConfiguration)
     }
 
@@ -167,7 +174,7 @@ final class BTPaymentActionThreeDSecureProvider {
                 validationDelegate: self
             )
 
-            self.watchdogTask = Task { [challengeWatchdogTimeoutNanoseconds] in
+            self.watchdogTask = Task { @MainActor [challengeWatchdogTimeoutNanoseconds] in
                 try? await Task.sleep(nanoseconds: challengeWatchdogTimeoutNanoseconds)
                 guard !Task.isCancelled else { return }
                 self.resolveChallengeTimedOut()
@@ -181,7 +188,7 @@ final class BTPaymentActionThreeDSecureProvider {
 extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
 
     // swiftlint:disable implicitly_unwrapped_optional
-    func cardinalSession(
+    nonisolated func cardinalSession(
         cardinalSession session: CardinalSession!,
         stepUpValidated validateResponse: CardinalResponse!,
         serverJWT: String!
@@ -193,7 +200,17 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
     /// The actual action-code mapping, split out from the `CardinalValidationDelegate` callback so it
     /// can be unit tested directly against `CardinalResponseActionCode` — `CardinalResponse` itself
     /// has no accessible initializer and can't be constructed in test code.
-    func resolveChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
+    ///
+    /// `nonisolated`, since Cardinal doesn't document this callback as main-thread-only (unlike
+    /// `setup`'s completion handlers) — hops onto the main actor itself via `finishChallenge` rather
+    /// than assuming the caller is already there.
+    nonisolated func resolveChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
+        Task { @MainActor in
+            self.finishChallenge(actionCode: actionCode, serverJWT: serverJWT)
+        }
+    }
+
+    private func finishChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
         guard let continuation = challengeContinuation else { return }
         challengeContinuation = nil
         watchdogTask?.cancel()

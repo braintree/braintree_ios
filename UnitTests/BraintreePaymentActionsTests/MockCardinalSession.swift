@@ -20,6 +20,10 @@ class MockCardinalSession: CardinalSessionTestable {
     var actionCodeToDeliver: CardinalResponseActionCode?
     var serverJWTToDeliver = "fake-server-jwt"
 
+    /// Tracks whether `continueWith` was ever called, so tests can assert Cardinal was never reached
+    /// (e.g. when a guard upstream should fail before any Cardinal call is made).
+    private(set) var continueWithCallCount = 0
+
     func configure(_ sessionConfig: CardinalSessionConfiguration) {
         // do nothing
     }
@@ -37,6 +41,7 @@ class MockCardinalSession: CardinalSessionTestable {
     }
 
     func continueWith(transactionId: String, payload: String, validationDelegate: CardinalValidationDelegate) {
+        continueWithCallCount += 1
         guard let actionCodeToDeliver,
               let provider = validationDelegate as? BTPaymentActionThreeDSecureProvider else {
             return

@@ -3,6 +3,7 @@ import CardinalMobile
 @testable import BraintreeCore
 @testable import BraintreePaymentActions
 
+@MainActor
 class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
 
     var mockCardinalSession: MockCardinalSession!

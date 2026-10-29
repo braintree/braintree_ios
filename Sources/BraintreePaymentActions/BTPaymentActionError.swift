@@ -49,6 +49,11 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// the same provider instance was still in flight.
     case cardinalInteractionAlreadyInProgress
 
+    /// 14. A `PaymentActionThreeDSecureChallenge` `nextAction` arrived with no `mpiTransactionId` —
+    /// required to drive the Cardinal challenge, and not expected to be absent when a challenge is
+    /// actually required.
+    case missingMpiTransactionID
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPaymentActionErrorDomain"
     }
@@ -83,6 +88,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return 12
         case .cardinalInteractionAlreadyInProgress:
             return 13
+        case .missingMpiTransactionID:
+            return 14
         }
     }
     
@@ -116,6 +123,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "CardinalMobile failed to validate the Cardinal authentication JWT during session setup."
         case .cardinalInteractionAlreadyInProgress:
             return "A 3D Secure step was requested while a previous one was still in flight."
+        case .missingMpiTransactionID:
+            return "The 3D Secure challenge is missing its required mpiTransactionId."
         }
     }
     
