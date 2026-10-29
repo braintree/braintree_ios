@@ -114,6 +114,7 @@ Pod::Spec.new do |s|
   s.subspec "PaymentActions" do |s|
     s.source_files = "Sources/BraintreePaymentActions/**/*.swift"
     s.dependency "Braintree/Core"
+    s.vendored_frameworks = "Frameworks/XCFrameworks/CardinalMobile.xcframework"
     s.resource_bundle = { "BraintreePaymentActions_PrivacyInfo" => "Sources/BraintreePaymentActions/PrivacyInfo.xcprivacy" }
   end
 

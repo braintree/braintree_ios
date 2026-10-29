@@ -26,4 +26,7 @@ struct BTPaymentActionThreeDSecureChallengeNextAction: Equatable {
     let acsURL: URL
     let acsRenderingType: String?
     let challengePayload: String
+
+    /// Cardinal's transaction id for this challenge, passed to `continueWith(transactionId:payload:...)`.
+    let mpiTransactionID: String?
 }

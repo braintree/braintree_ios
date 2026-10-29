@@ -17,7 +17,7 @@ import Foundation
     
     /// The Payment Action requires the customer to complete an additional action.
     case customerActionRequired
-    
+
     /// The Payment Action is still processing.
     case processing
     
