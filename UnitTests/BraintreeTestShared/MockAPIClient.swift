@@ -30,6 +30,8 @@ public class MockAPIClient: BTAPIClient {
     public var postedErrorDescription: String? = nil
     public var postedContextType: String? = nil
     public var postedFundingSource: String? = nil
+    public var postedFIBrand: String? = nil
+    public var postedFIID: String? = nil
     public var postedFIType: String? = nil
     public var postedIsEditFIFlow: Bool? = nil
     public var postedMessageType: String? = nil
@@ -111,6 +113,8 @@ public class MockAPIClient: BTAPIClient {
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
+        fiBrand: String? = nil,
+        fiID: String? = nil,
         fiType: String? = nil,
         fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
@@ -147,6 +151,8 @@ public class MockAPIClient: BTAPIClient {
         postedErrorDescription = errorDescription
         postedContextType = contextType
         postedFundingSource = fundingSource
+        postedFIBrand = fiBrand
+        postedFIID = fiID
         postedFIType = fiType
         postedIsEditFIFlow = isEditFIFlow
         postedMessageType = messageType

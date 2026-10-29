@@ -136,10 +136,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The order approved by the last edit, sent as the `context_id` of the post-edit render.
     private var approvedOrderID: String?
 
-    /// The type of the instrument on screen, for analytics.
-    private var fiType: String? {
+    /// The instrument on screen, for analytics.
+    private var instrument: PayPalSavedPaymentMethod? {
         guard case .instrument(let instrument) = fiState else { return nil }
-        return instrument.type?.rawValue
+        return instrument
     }
 
     // MARK: - Initializers
@@ -232,7 +232,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         request: PayPalSavedPaymentMethodRequest
     ) {
         guard case .idle = editPhase else { return }
-        fetchClient?.apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.editSelected, fiType: fiType)
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.editSelected,
+            fiBrand: instrument?.cardBrand,
+            fiType: instrument?.type?.rawValue
+        )
         editPhase = .loaderRequested
         editTask = Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
@@ -315,7 +319,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.renderSucceeded,
             contextID: approvedOrderID,
-            fiType: fiType,
+            fiBrand: instrument?.cardBrand,
+            fiID: instrument?.id,
+            fiType: instrument?.type?.rawValue,
             renderedEditTag: renderedEditTag,
             renderedLabel: style.showPayPalLabel,
             renderedLogo: style.showPayPalLogo,

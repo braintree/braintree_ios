@@ -88,7 +88,8 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
                                 "imageUrl": "https://example.com/visa.png",
                                 "lastDigits": "0199",
                                 "type": "CARD",
-                                "subtype": "SIGNATURE"
+                                "subtype": "SIGNATURE",
+                                "cardBrand": "VISA"
                             ]
                         ]
                     ]
@@ -105,6 +106,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(paymentMethod.imageURL, URL(string: "https://example.com/visa.png"))
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
         XCTAssertEqual(paymentMethod.subtype, "SIGNATURE")
+        XCTAssertEqual(paymentMethod.cardBrand, "VISA")
     }
 
     func testFetchPaymentMethod_whenOnlyPayerIsReturned_returnsSummaryWithPayer() async throws {
@@ -223,6 +225,8 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded]
         )
         XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
     }
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementFails_sendsStickyFIFetchFailedEvent() async {
@@ -270,6 +274,8 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         )
         XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
         XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
     }
 
     func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementFails_sendsFIRefreshFailedEventWithOrderID() async {
@@ -362,7 +368,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             "data": [
                 "paypalFundingInstrumentDetails": [
                     "payer": NSNull(),
-                    "paymentMethods": [["label": "Visa", "lastDigits": "0199", "type": "CARD"]]
+                    "paymentMethods": [["id": "CC-123", "label": "Visa", "lastDigits": "0199", "type": "CARD", "cardBrand": "VISA"]]
                 ]
             ]
         ] as [String: Any]

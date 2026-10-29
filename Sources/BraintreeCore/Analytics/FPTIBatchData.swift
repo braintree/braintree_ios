@@ -50,6 +50,10 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// The brand of the card funding instrument shown or selected, for example `VISA`.
+        let fiBrand: String?
+        /// PayPal's encrypted ID of the funding instrument shown or selected.
+        let fiID: String?
         /// The type of funding instrument shown or selected, for example `CARD`.
         let fiType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
@@ -113,6 +117,8 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            fiBrand: String? = nil,
+            fiID: String? = nil,
             fiType: String? = nil,
             fundingSource: String? = nil,
             isConfigFromCache: Bool? = nil,
@@ -148,6 +154,8 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.fiBrand = fiBrand
+            self.fiID = fiID
             self.fiType = fiType
             self.isConfigFromCache = isConfigFromCache
             self.isEditFIFlow = isEditFIFlow
@@ -183,6 +191,8 @@ struct FPTIBatchData: Codable {
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case fiBrand = "fi_brand"
+            case fiID = "fi_id"
             case fiType = "fi_type"
             case isConfigFromCache = "config_cached"
             case isEditFIFlow = "is_edit_fi"

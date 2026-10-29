@@ -55,7 +55,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
                 "data": [
                     "paypalFundingInstrumentDetails": [
                         "payer": NSNull(),
-                        "paymentMethods": [["label": label, "lastDigits": lastDigits, "type": "CARD"]]
+                        "paymentMethods": [
+                            ["id": "CC-123", "label": label, "lastDigits": lastDigits, "type": "CARD", "cardBrand": "VISA"]
+                        ]
                     ]
                 ]
             ] as [String: Any]
@@ -570,6 +572,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.editSelected)
         XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
     }
 
     func testLearnMoreTapped_sendsLearnMoreSelectedEventWithTheMessageType() async {
@@ -594,6 +597,8 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedRenderTrigger, "sticky_fi")
         XCTAssertEqual(mockAPIClient.postedShownContent, "funding_instrument")
         XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
         XCTAssertEqual(mockAPIClient.postedRenderedEditTag, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLogo, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLabel, false)
