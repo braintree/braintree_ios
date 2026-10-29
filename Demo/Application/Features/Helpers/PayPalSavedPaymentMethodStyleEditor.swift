@@ -82,16 +82,16 @@ struct PayPalSavedPaymentMethodStyleEditor: View {
                 logoAndLabelSection
                 fundingInstrumentSection
                 creditMessagingSection
+
+                Section {
+                    Button("Reset All", role: .destructive) {
+                        config = PayPalSavedPaymentMethodStyleConfig()
+                    }
+                }
             }
             .navigationTitle("Component Style")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Reset") {
-                        config = PayPalSavedPaymentMethodStyleConfig()
-                    }
-                }
-
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         dismiss()
