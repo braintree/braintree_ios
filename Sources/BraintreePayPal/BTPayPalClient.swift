@@ -343,7 +343,7 @@ import BraintreeDataCollector
         return try await performSwitchRequest(appSwitchURL: url, paymentType: paymentType)
     }
 
-    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
+    func invokedOpenURLSuccessfully(_ success: Bool, url: URL, fallbackURL: URL?, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         if success {
             apiClient.sendAnalyticsEvent(
                 BTPayPalAnalytics.appSwitchSucceeded,
@@ -374,11 +374,22 @@ import BraintreeDataCollector
                 recurringBillingPlanType: recurringBillingPlanType,
                 shouldRequestBillingAgreement: shouldRequestBillingAgreement
             )
-            
-            openURLInDefaultBrowser(url, completion: completion)
+
+            if let fallbackURL, let paymentType = payPalRequest?.paymentType {
+                Task {
+                    do {
+                        let nonce = try await handlePayPalRequest(with: fallbackURL, paymentType: paymentType)
+                        completion(nonce, nil)
+                    } catch {
+                        completion(nil, error)
+                    }
+                }
+            } else {
+                openURLInDefaultBrowser(url, completion: completion)
+            }
         }
     }
-    
+
     private func openURLInDefaultBrowser(_ url: URL, completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void) {
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.defaultBrowserStarted,
@@ -542,7 +553,7 @@ import BraintreeDataCollector
                     throw self.isVaultRequest ? BTPayPalError.missingBAToken : BTPayPalError.missingECToken
                 }
                 let merchantID = json["merchantId"].asString()
-                return try await self.launchPayPalApp(with: url, merchantID: merchantID)
+                return try await self.launchPayPalApp(with: url, fallbackURL: approvalURL.webApprovalURL, merchantID: merchantID)
             case .webBrowser(let url):
                 self.didPayPalServerAttemptAppSwitch = false
                 return try await self.handlePayPalRequest(with: url, paymentType: request.paymentType)
@@ -575,9 +586,9 @@ import BraintreeDataCollector
         return .payPal
     }
 
-    private func launchPayPalApp(with payPalAppRedirectURL: URL, merchantID: String? = nil) async throws -> BTPayPalAccountNonce {
+    private func launchPayPalApp(with payPalAppRedirectURL: URL, fallbackURL: URL?, merchantID: String? = nil) async throws -> BTPayPalAccountNonce {
         try await withCheckedThrowingContinuation { continuation in
-            launchPayPalApp(with: payPalAppRedirectURL, merchantID: merchantID) { nonce, error in
+            launchPayPalApp(with: payPalAppRedirectURL, fallbackURL: fallbackURL, merchantID: merchantID) { nonce, error in
                 if let error {
                     continuation.resume(throwing: error)
                 } else if let nonce {
@@ -589,6 +600,7 @@ import BraintreeDataCollector
 
     private func launchPayPalApp(
         with payPalAppRedirectURL: URL,
+        fallbackURL: URL?,
         merchantID: String? = nil,
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
@@ -649,7 +661,7 @@ import BraintreeDataCollector
         }
 
         application.open(redirectURL, options: [.universalLinksOnly: NSNumber(value: true)]) { success in
-            self.invokedOpenURLSuccessfully(success, url: redirectURL, completion: completion)
+            self.invokedOpenURLSuccessfully(success, url: redirectURL, fallbackURL: fallbackURL, completion: completion)
         }
     }
 
