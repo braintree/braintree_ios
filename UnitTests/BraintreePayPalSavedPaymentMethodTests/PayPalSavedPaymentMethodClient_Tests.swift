@@ -88,7 +88,8 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
                                 "imageUrl": "https://example.com/visa.png",
                                 "lastDigits": "0199",
                                 "type": "CARD",
-                                "subtype": "SIGNATURE"
+                                "subtype": "SIGNATURE",
+                                "cardBrand": "VISA"
                             ]
                         ]
                     ]
@@ -105,6 +106,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(paymentMethod.imageURL, URL(string: "https://example.com/visa.png"))
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
         XCTAssertEqual(paymentMethod.subtype, "SIGNATURE")
+        XCTAssertEqual(paymentMethod.cardBrand, "VISA")
     }
 
     func testFetchPaymentMethod_whenOnlyPayerIsReturned_returnsSummaryWithPayer() async throws {
@@ -211,6 +213,84 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         }
     }
 
+    // MARK: - Analytics
+
+    func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementSucceeds_sendsStickyFIFetchEvents() async throws {
+        mockAPIClient.cannedResponseBody = Self.cardResponse
+
+        _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded]
+        )
+        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+    }
+
+    func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementFails_sendsStickyFIFetchFailedEvent() async {
+        mockAPIClient.cannedResponseBody = nil
+
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
+        )
+        XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+    }
+
+    func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_sendsAuthorizationFailedEventOnly() async {
+        let tokenizationKey = "sandbox_merchant_1234567890abc"
+        mockAPIClient = MockAPIClient(authorization: tokenizationKey)
+        sut = PayPalSavedPaymentMethodClient(authorization: tokenizationKey, universalLink: universalLink)
+        sut.apiClient = mockAPIClient
+
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.authorizationFailed])
+        XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.invalidAuthorization.localizedDescription)
+    }
+
+    func testFetchPaymentMethod_whenClientTokenHasNoJWT_sendsPaymentMethodIDRequiredEventOnly() async {
+        let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
+        mockAPIClient = MockAPIClient(authorization: clientTokenWithoutJWT)
+        sut.apiClient = mockAPIClient
+
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.paymentMethodIDRequired])
+    }
+
+    func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementSucceeds_sendsFIRefreshEventsWithOrderID() async throws {
+        mockAPIClient.cannedResponseBody = Self.cardResponse
+
+        _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID: "fake-order-id")
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded]
+        )
+        XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
+        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+    }
+
+    func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementFails_sendsFIRefreshFailedEventWithOrderID() async {
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID: "fake-order-id")
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, PayPalSavedPaymentMethodAnalytics.fiRefreshFailed]
+        )
+        XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
+        XCTAssertNotNil(mockAPIClient.postedErrorDescription)
+    }
+
     // MARK: - editFundingInstrument
 
     func testEditFundingInstrument_returnsTheNonceWithEditBillingAgreementOnDuringTokenize() async throws {
@@ -280,4 +360,17 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
     }
+
+    // MARK: - Helpers
+
+    private static let cardResponse = BTJSON(
+        value: [
+            "data": [
+                "paypalFundingInstrumentDetails": [
+                    "payer": NSNull(),
+                    "paymentMethods": [["id": "CC-123", "label": "Visa", "lastDigits": "0199", "type": "CARD", "cardBrand": "VISA"]]
+                ]
+            ]
+        ] as [String: Any]
+    )
 }

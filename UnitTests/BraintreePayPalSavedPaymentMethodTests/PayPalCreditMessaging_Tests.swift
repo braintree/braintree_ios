@@ -249,6 +249,28 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
         }
     }
 
+    // MARK: - Analytics
+
+    func testFetchCreditPresentmentMessages_whenAMessageIsReturned_sendsFetchStartedEventOnly() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(value: Self.messagesResponse)
+
+        _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted])
+    }
+
+    func testFetchCreditPresentmentMessages_whenTheRequestFails_sendsFetchFailedEvent() async {
+        mockAPIClient.cannedResponseBody = nil
+
+        _ = try? await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed]
+        )
+        XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+    }
+
     // MARK: - Helpers
 
     /// A `PLST_SQ` payload as returned for a $55.00 order, with the tracking URLs stubbed.

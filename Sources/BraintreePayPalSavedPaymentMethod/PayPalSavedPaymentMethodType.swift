@@ -16,6 +16,12 @@ enum PayPalSavedPaymentMethodType: String {
     /// The buyer's PayPal Credit line.
     case payPalCredit = "PAYPAL_CREDIT"
 
+    /// The buyer's PayPal balance.
+    case balance = "BALANCE"
+
+    /// The buyer's PayPal Debit Card.
+    case payPalDebitCard = "PPDC"
+
     // MARK: - Initializer
 
     /// Parses the `type` field of a funding instrument.

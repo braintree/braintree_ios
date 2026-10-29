@@ -39,10 +39,14 @@ struct CreditMessageContent: Equatable {
     /// The "Learn more" link, or `nil` when PayPal sent no usable action.
     let learnMore: LearnMore?
 
+    /// The template the message was built from, for example `"PLST_SQ"`.
+    let messageType: String?
+
     /// Seeds content directly. Used by SwiftUI previews and tests, which have no network response.
-    init(message: String, learnMore: LearnMore?) {
+    init(message: String, learnMore: LearnMore?, messageType: String? = nil) {
         self.message = message
         self.learnMore = learnMore
+        self.messageType = messageType
     }
 
     /// Composes the content, or returns `nil` when there is no main copy to display (hide the row).
@@ -55,6 +59,7 @@ struct CreditMessageContent: Equatable {
         self.message = [mainText, disclaimerText].filter { !$0.isEmpty }.joined(separator: " ")
 
         self.learnMore = result.actionItems.lazy.compactMap(LearnMore.init(item:)).first
+        self.messageType = result.messageType
     }
 
     /// Resolves each block to its display text — `image` blocks use their `alternativeText`

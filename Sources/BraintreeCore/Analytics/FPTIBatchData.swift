@@ -50,9 +50,17 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
+        /// The brand of the card funding instrument shown or selected, for example `VISA`.
+        let fiBrand: String?
+        /// PayPal's encrypted ID of the funding instrument shown or selected.
+        let fiID: String?
+        /// The type of funding instrument shown or selected, for example `CARD`.
+        let fiType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
+        /// True if the PayPal checkout was started from the saved payment method edit flow
+        let isEditFIFlow: Bool?
         /// True if the PayPal or Venmo request is to be vaulted
         let isVaultRequest: Bool?
         /// The type of link the SDK will be handling, currently deeplink or universal
@@ -64,16 +72,30 @@ struct FPTIBatchData: Codable {
         let didPayPalServerAttemptAppSwitch: Bool?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
+        /// The template of the Pay Later message shown, for example `PLST_SQ`.
+        let messageType: String?
         /// The type of page where the payment button is displayed or where an event occurred.
         let pageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// Recurring billing plan type, or charge pattern.
         let recurringBillingPlanType: String?
+        /// Whether the edit affordance was rendered.
+        let renderedEditTag: Bool?
+        /// Whether the PayPal label was rendered.
+        let renderedLabel: Bool?
+        /// Whether the PayPal logo was rendered.
+        let renderedLogo: Bool?
+        /// Whether the Pay Later message slot was rendered.
+        let renderedMessageSlot: Bool?
+        /// What caused a component render, for example the initial fetch or a refresh after an edit.
+        let renderTrigger: String?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
         let shopperSessionID: String?
         /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
         let shouldRequestBillingAgreement: Bool?
+        /// What a component render showed, for example a funding instrument or only the brand mark.
+        let shownContent: String?
         /// UTC millisecond timestamp when a networking task initiated.
         let startTime: Int?
         let timestamp = String(Date().utcTimestampMilliseconds)
@@ -95,16 +117,27 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
+            fiBrand: String? = nil,
+            fiID: String? = nil,
+            fiType: String? = nil,
             fundingSource: String? = nil,
             isConfigFromCache: Bool? = nil,
+            isEditFIFlow: Bool? = nil,
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
+            messageType: String? = nil,
             pageType: String? = nil,
             recurringBillingPlanType: String? = nil,
+            renderedEditTag: Bool? = nil,
+            renderedLabel: Bool? = nil,
+            renderedLogo: Bool? = nil,
+            renderedMessageSlot: Bool? = nil,
+            renderTrigger: String? = nil,
             requestStartTime: Int? = nil,
             shopperSessionID: String? = nil,
             shouldRequestBillingAgreement: Bool? = nil,
+            shownContent: String? = nil,
             startTime: Int? = nil
         ) {
             self.applicationState = applicationState
@@ -121,15 +154,26 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
+            self.fiBrand = fiBrand
+            self.fiID = fiID
+            self.fiType = fiType
             self.isConfigFromCache = isConfigFromCache
+            self.isEditFIFlow = isEditFIFlow
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
+            self.messageType = messageType
             self.pageType = pageType
             self.recurringBillingPlanType = recurringBillingPlanType
+            self.renderedEditTag = renderedEditTag
+            self.renderedLabel = renderedLabel
+            self.renderedLogo = renderedLogo
+            self.renderedMessageSlot = renderedMessageSlot
+            self.renderTrigger = renderTrigger
             self.requestStartTime = requestStartTime
             self.shopperSessionID = shopperSessionID
             self.shouldRequestBillingAgreement = shouldRequestBillingAgreement
+            self.shownContent = shownContent
             self.startTime = startTime
             self.fundingSource = fundingSource
         }
@@ -147,17 +191,28 @@ struct FPTIBatchData: Codable {
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
+            case fiBrand = "fi_brand"
+            case fiID = "fi_id"
+            case fiType = "fi_type"
             case isConfigFromCache = "config_cached"
+            case isEditFIFlow = "is_edit_fi"
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
+            case messageType = "presentment_message_type"
             case pageType = "page_type"
             case recurringBillingPlanType = "billing_plan_type"
+            case renderedEditTag = "rendered_edit_tag"
+            case renderedLabel = "rendered_label"
+            case renderedLogo = "rendered_logo"
+            case renderedMessageSlot = "rendered_message_slot"
+            case renderTrigger = "render_trigger"
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
             case shopperSessionID = "shopper_session_id"
             case shouldRequestBillingAgreement = "is_billing_agreement"
+            case shownContent = "shown_content"
             case startTime = "start_time"
             case endTime = "end_time"
             case endpoint = "endpoint"

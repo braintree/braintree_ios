@@ -97,6 +97,12 @@ public struct PayPalSavedPaymentMethodView: View {
         .onChange(of: request) { newRequest in
             viewModel.requestChanged(newRequest, showCreditMessaging: style.showPayPalCreditMessaging)
         }
+        .onChange(of: viewModel.fiState) { _ in
+            viewModel.fiDidRender(style: style)
+        }
+        .onChange(of: viewModel.visibleCreditMessage) { _ in
+            viewModel.creditMessageDidRender()
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             viewModel.appReturnedToForeground()
         }
@@ -174,7 +180,7 @@ public struct PayPalSavedPaymentMethodView: View {
     @ViewBuilder private var creditRegion: some View {
         if style.showPayPalCreditMessaging, viewModel.showsCreditMessaging {
             Group {
-                if let content = viewModel.creditMessage {
+                if let content = viewModel.visibleCreditMessage {
                     CreditMessagingRow(
                         style: style,
                         message: content.message,

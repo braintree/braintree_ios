@@ -30,6 +30,17 @@ public class MockAPIClient: BTAPIClient {
     public var postedErrorDescription: String? = nil
     public var postedContextType: String? = nil
     public var postedFundingSource: String? = nil
+    public var postedFIBrand: String? = nil
+    public var postedFIID: String? = nil
+    public var postedFIType: String? = nil
+    public var postedIsEditFIFlow: Bool? = nil
+    public var postedMessageType: String? = nil
+    public var postedRenderedEditTag: Bool? = nil
+    public var postedRenderedLabel: Bool? = nil
+    public var postedRenderedLogo: Bool? = nil
+    public var postedRenderedMessageSlot: Bool? = nil
+    public var postedRenderTrigger: String? = nil
+    public var postedShownContent: String? = nil
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -102,15 +113,26 @@ public class MockAPIClient: BTAPIClient {
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
+        fiBrand: String? = nil,
+        fiID: String? = nil,
+        fiType: String? = nil,
         fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
+        isEditFIFlow: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
+        messageType: String? = nil,
         pageType: String? = nil,
         recurringBillingPlanType: String? = nil,
+        renderedEditTag: Bool? = nil,
+        renderedLabel: Bool? = nil,
+        renderedLogo: Bool? = nil,
+        renderedMessageSlot: Bool? = nil,
+        renderTrigger: String? = nil,
         shopperSessionID: String? = nil,
-        shouldRequestBillingAgreement: Bool? = nil
+        shouldRequestBillingAgreement: Bool? = nil,
+        shownContent: String? = nil
     ) {
         postedApplicationState = applicationState
         postedRecurringBillingPlanType = recurringBillingPlanType
@@ -129,6 +151,17 @@ public class MockAPIClient: BTAPIClient {
         postedErrorDescription = errorDescription
         postedContextType = contextType
         postedFundingSource = fundingSource
+        postedFIBrand = fiBrand
+        postedFIID = fiID
+        postedFIType = fiType
+        postedIsEditFIFlow = isEditFIFlow
+        postedMessageType = messageType
+        postedRenderedEditTag = renderedEditTag
+        postedRenderedLabel = renderedLabel
+        postedRenderedLogo = renderedLogo
+        postedRenderedMessageSlot = renderedMessageSlot
+        postedRenderTrigger = renderTrigger
+        postedShownContent = shownContent
         
         postedAnalyticsEvents.append(eventName)
     }
