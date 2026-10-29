@@ -239,6 +239,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.editSelected,
             fiBrand: instrument?.cardBrand,
+            fiID: instrument?.id,
             fiType: instrument?.type?.rawValue
         )
         editPhase = .loaderRequested
