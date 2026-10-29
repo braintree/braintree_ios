@@ -28,6 +28,5 @@ struct BTPaymentActionThreeDSecureChallengeNextAction: Equatable {
     let challengePayload: String
 
     /// Cardinal's transaction id for this challenge, passed to `continueWith(transactionId:payload:...)`.
-    /// Confirmed nullable on the wire (Payment Actions backend team, 2026-10).
     let mpiTransactionID: String?
 }
