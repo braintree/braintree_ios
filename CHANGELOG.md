@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+* Remove CocoaPods support -- `Braintree.podspec` has been deleted and CocoaPods integration artifacts removed from the repo
+
 ## 7.13.1 (2026-10-29)
 * BraintreeCore
   * Fix a bug sending an incorrect GraphQL version header.
