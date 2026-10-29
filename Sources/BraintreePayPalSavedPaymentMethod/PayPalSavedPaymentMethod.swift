@@ -9,6 +9,9 @@ struct PayPalSavedPaymentMethod: Equatable {
 
     // MARK: - Internal Properties
 
+    /// PayPal's encrypted funding instrument ID, for example `"CC-…"` or `"BA-…"`.
+    let id: String?
+
     /// The kind of funding instrument, or `nil` when PayPal returns a type this SDK version does not recognize.
     let type: PayPalSavedPaymentMethodType?
 
@@ -24,6 +27,9 @@ struct PayPalSavedPaymentMethod: Equatable {
     /// A further qualifier on `type`, for example the card's product name.
     let subtype: String?
 
+    /// The card brand, for example `"VISA"`. Only set for cards that PayPal can identify.
+    let cardBrand: String?
+
     // MARK: - Initializer
 
     /// Parses a single entry of the `paymentMethods` array.
@@ -33,10 +39,12 @@ struct PayPalSavedPaymentMethod: Equatable {
             return nil
         }
 
+        self.id = json["id"].asString()
         self.type = PayPalSavedPaymentMethodType(json: json["type"])
         self.label = json["label"].asString()
         self.imageURL = json["imageUrl"].asURL()
         self.lastDigits = json["lastDigits"].asString()
         self.subtype = json["subtype"].asString()
+        self.cardBrand = json["cardBrand"].asString()
     }
 }

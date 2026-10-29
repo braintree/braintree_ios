@@ -24,11 +24,13 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
                         editable
                     }
                     paymentMethods {
+                        id
                         label
                         imageUrl
                         lastDigits
                         type
                         subtype
+                        cardBrand
                     }
                 }
             }

@@ -147,6 +147,8 @@ final class PayPalSavedPaymentMethodClient {
             )
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded,
+                fiBrand: summary.paymentMethods.first?.cardBrand,
+                fiID: summary.paymentMethods.first?.id,
                 fiType: summary.paymentMethods.first?.type?.rawValue
             )
             return summary
@@ -182,6 +184,8 @@ final class PayPalSavedPaymentMethodClient {
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded,
                 contextID: orderID,
+                fiBrand: summary.paymentMethods.first?.cardBrand,
+                fiID: summary.paymentMethods.first?.id,
                 fiType: summary.paymentMethods.first?.type?.rawValue
             )
             return summary
