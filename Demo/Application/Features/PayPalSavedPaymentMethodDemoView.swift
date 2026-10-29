@@ -105,6 +105,8 @@ struct PayPalSavedPaymentMethodDemoView: View {
         }
         // The component only fetches the credit message on appear, so turning it on needs a fresh instance.
         .id(styleConfig.showPayPalCreditMessaging)
+        // A tap while typing would edit with the old amount, since the new one only applies on focus loss.
+        .disabled(isAmountFocused)
     }
 }
 
