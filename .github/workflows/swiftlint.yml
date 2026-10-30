@@ -6,12 +6,12 @@ concurrency:
 jobs:
   swiftlint:
     name: SwiftLint
-    runs-on: macOS-14-xlarge
+    runs-on: xcode-27-xlarge
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Use Xcode 15.0.1
-        run: sudo xcode-select -switch /Applications/Xcode_15.0.1.app
+      - name: Use Xcode 27
+        run: sudo xcode-select -switch /Applications/Xcode_27.0.app
       - name: Install SwiftLint
         # Pinned to 0.55.1 (the version documented in .swiftlint.yml / CLAUDE.md)
         # via the official release binary. An unpinned `brew install` pulls the
