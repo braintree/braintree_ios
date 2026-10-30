@@ -1,9 +1,6 @@
 import Foundation
 import CardinalMobile
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 // swiftlint:disable type_body_length
 @objcMembers public class BTThreeDSecureClient: NSObject {

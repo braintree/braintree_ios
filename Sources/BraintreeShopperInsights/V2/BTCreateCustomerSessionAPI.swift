@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The API used to create a customer session using the `CreateCustomerSession` GraphQL mutation.
 final class BTCreateCustomerSessionAPI {

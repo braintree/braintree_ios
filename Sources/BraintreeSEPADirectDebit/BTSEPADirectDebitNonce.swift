@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// A  payment method nonce representing a SEPA Direct Debit payment.
 @objcMembers public class BTSEPADirectDebitNonce: BTPaymentMethodNonce {

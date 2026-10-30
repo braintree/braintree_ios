@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 // swiftlint:disable type_body_length file_length function_body_length
 /// Used to process Venmo payments

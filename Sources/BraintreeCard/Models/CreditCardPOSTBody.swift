@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 // swiftlint:disable nesting
 /// The POST body for `v1/payment_methods/credit_cards`

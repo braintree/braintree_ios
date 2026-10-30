@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Information pertaining to the regulatory environment for a credit card if authentication insight is requested during tokenization.
 @objcMembers public class BTAuthenticationInsight: NSObject {

@@ -1,6 +1,15 @@
 {
-  "originHash" : "89e81c4eaf548fed8a72a26784911367e2a6c0a981ab8a1a167f6b7aac38ac8f",
+  "originHash" : "d3cd45d82981213d0116ef67a05720a938cebc41326e18e0254ec1ea94d75ed0",
   "pins" : [
+    {
+      "identity" : "paypal-messages-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypal-messages-ios.git",
+      "state" : {
+        "revision" : "e3ee08c5310096457ea709f49b8b22b6b385a916",
+        "version" : "2.0.0"
+      }
+    },
     {
       "identity" : "paypal-risk-ios",
       "kind" : "remoteSourceControl",

@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The result of a 3DS lookup.
 /// Contains liability shift and challenge information.

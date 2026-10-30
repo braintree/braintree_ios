@@ -1,3 +1,4 @@
+@import UIKit;
 @import OCMock;
 
 NS_ASSUME_NONNULL_BEGIN

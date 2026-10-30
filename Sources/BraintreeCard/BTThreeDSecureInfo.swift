@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Contains information about the 3D Secure status of a payment method
 @objcMembers public class BTThreeDSecureInfo: NSObject {

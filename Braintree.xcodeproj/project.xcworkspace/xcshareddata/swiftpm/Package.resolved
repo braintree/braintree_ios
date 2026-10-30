@@ -1,6 +1,24 @@
 {
-  "originHash" : "bad063ba048ac733551b3c27d65a05e54855db1dab74a858edb2a1a88da7f728",
+  "originHash" : "df3a5ea33997dee2f352acf77d6fbc7d0bdaa3fd126385c6c0411a1f16a03e2f",
   "pins" : [
+    {
+      "identity" : "ocmock",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/erikdoe/ocmock",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7f6e9e9b6c9ffa19a9040860da9f7a1f202b9f4d"
+      }
+    },
+    {
+      "identity" : "ohhttpstubs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AliSoftware/OHHTTPStubs",
+      "state" : {
+        "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+        "version" : "9.1.0"
+      }
+    },
     {
       "identity" : "paypal-messages-ios",
       "kind" : "remoteSourceControl",

@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Used to initialize a 3D Secure payment flow
 @objcMembers public class BTThreeDSecureRequest: NSObject {

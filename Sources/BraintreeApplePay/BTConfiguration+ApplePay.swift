@@ -1,9 +1,6 @@
 import Foundation
 import PassKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 extension BTConfiguration {
 
