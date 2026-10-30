@@ -148,7 +148,7 @@ jobs:
             MACH_O_TYPE = staticlib;' Braintree.xcodeproj/project.pbxproj
 
           # 2) Define all Schemes to build
-          SCHEMES=("BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreeLocalPayment" "BraintreePayPal" "BraintreePayPalMessaging" "BraintreeSEPADirectDebit" "BraintreeShopperInsights" "BraintreeThreeDSecure" "BraintreeVenmo")
+          SCHEMES=("BraintreeAmericanExpress" "BraintreeApplePay" "BraintreeCard" "BraintreeCore" "BraintreeDataCollector" "BraintreeLocalPayment" "BraintreePayPal" "BraintreePayPalMessaging" "BraintreeSEPADirectDebit" "BraintreeShopperInsights" "BraintreeThreeDSecure" "BraintreeUIComponents" "BraintreeVenmo")
 
           for scheme in "${SCHEMES[@]}"; do
             # 3) Build device archive

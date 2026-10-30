@@ -1,5 +1,8 @@
 # Braintree iOS SDK Release Notes
 
+## unreleased
+* Fix `Braintree_Static.xcframework.zip` release asset missing `BraintreeUIComponents`
+
 ## 7.13.1 (2026-10-29)
 * BraintreeCore
   * Fix a bug sending an incorrect GraphQL version header.
