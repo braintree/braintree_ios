@@ -50,7 +50,7 @@ import BraintreePayPal
 
 ### CocoaPods
 
-⚠️ **Deprecation Notice:** CocoaPods support for `braintree_ios` is deprecated and will be removed in a future release, in line with the [official CocoaPods deprecation announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). Going forward, we recommend migrating to **Swift Package Manager** (primary) or **Carthage**. See [#1869](https://github.com/braintree/braintree_ios/issues/1869) for migration guidance and removal timing updates.
+⚠️ **Deprecation Notice:** CocoaPods support for `braintree_ios` is no longer supported, the final version with CocoaPods support is version 7.13.1 in line with the [official CocoaPods deprecation announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). Going forward, we recommend migrating to **Swift Package Manager** (primary) or **Carthage**. You may also use the direct `xcframeworks` for manual integrations
 
 ```
 # Includes Cards and PayPal
