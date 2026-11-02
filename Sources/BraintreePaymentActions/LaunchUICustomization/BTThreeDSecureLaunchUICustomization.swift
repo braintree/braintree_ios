@@ -46,7 +46,27 @@ import CardinalMobile
         buttonType: BTThreeDSecureLaunchButtonType
     ) {
         let buttonCustomization = buttonCustomization.cardinalValue as? ButtonCustomization
-        let buttonType = ButtonType(UInt32(buttonType.rawValue))
-        cardinalValue.setButton(buttonCustomization, buttonType: buttonType)
+        cardinalValue.setButton(buttonCustomization, buttonType: buttonType.cardinalValue)
+    }
+}
+
+extension BTThreeDSecureLaunchButtonType {
+
+    /// Maps by name to Cardinal's `ButtonType`.
+    var cardinalValue: ButtonType {
+        switch self {
+        case .verify:
+            return ButtonTypeVerify
+        case .continue:
+            return ButtonTypeContinue
+        case .next:
+            return ButtonTypeNext
+        case .cancel:
+            return ButtonTypeCancel
+        case .resend:
+            return ButtonTypeResend
+        @unknown default:
+            return ButtonTypeVerify
+        }
     }
 }

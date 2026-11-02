@@ -12,9 +12,19 @@ class BTThreeDSecureLaunchUICustomization_Tests: XCTestCase {
         uiCustomization.toolbarCustomization = BTThreeDSecureLaunchToolbarCustomization()
 
         let cardinalUICustomization = uiCustomization.cardinalValue
-        XCTAssertNotNil(cardinalUICustomization.getButtonCustomization(ButtonType(3)))
+        XCTAssertNotNil(cardinalUICustomization.getButtonCustomization(ButtonTypeCancel))
         XCTAssertNotNil(cardinalUICustomization.getLabel())
         XCTAssertNotNil(cardinalUICustomization.getTextBox())
         XCTAssertNotNil(cardinalUICustomization.getToolbarCustomization())
+    }
+
+    // MARK: - BTThreeDSecureLaunchButtonType.cardinalValue
+
+    func testCardinalValue_mapsEveryCaseByNameNotRawValue() {
+        XCTAssertEqual(BTThreeDSecureLaunchButtonType.verify.cardinalValue, ButtonTypeVerify)
+        XCTAssertEqual(BTThreeDSecureLaunchButtonType.continue.cardinalValue, ButtonTypeContinue)
+        XCTAssertEqual(BTThreeDSecureLaunchButtonType.next.cardinalValue, ButtonTypeNext)
+        XCTAssertEqual(BTThreeDSecureLaunchButtonType.cancel.cardinalValue, ButtonTypeCancel)
+        XCTAssertEqual(BTThreeDSecureLaunchButtonType.resend.cardinalValue, ButtonTypeResend)
     }
 }
