@@ -1,3 +1,5 @@
+// swiftlint:disable file_length
+
 import Foundation
 import CardinalMobile
 import UIKit
@@ -186,7 +188,7 @@ import BraintreeCore
             switch driveResult {
             case .paymentAction(let paymentAction):
                 if didEngageThreeDSecure {
-                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifySucceeded)
+                    notifyThreeDSecureSuccess()
                 }
                 return result(from: paymentAction)
             case .threeDSecureCanceled(let id):
@@ -197,10 +199,7 @@ import BraintreeCore
             }
         } catch {
             if didEngageThreeDSecure {
-                if case BTPaymentActionError.versionAnomaly = error {
-                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.versionAnomaly)
-                }
-                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyFailed, errorDescription: error.localizedDescription)
+                notifyThreeDSecureFailure(with: error)
             }
             throw error
         }
@@ -395,5 +394,18 @@ import BraintreeCore
         case .unknown:
             return BTPaymentActionResult(type: .unrecognized, id: paymentAction.id)
         }
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifyThreeDSecureSuccess() {
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifySucceeded)
+    }
+
+    private func notifyThreeDSecureFailure(with error: Error) {
+        if case BTPaymentActionError.versionAnomaly = error {
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.versionAnomaly)
+        }
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyFailed, errorDescription: error.localizedDescription)
     }
 }
