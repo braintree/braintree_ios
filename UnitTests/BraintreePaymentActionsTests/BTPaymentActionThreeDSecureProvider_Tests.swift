@@ -159,6 +159,29 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
         XCTAssertEqual(outcome, .abandoned)
     }
 
+    func testResolveChallenge_successWithNilServerJWT_throwsMissingServerJWT() async throws {
+        let sut = try makeSut()
+        mockCardinalSession.actionCodeToDeliver = .success
+        mockCardinalSession.serverJWTToDeliver = nil
+
+        do {
+            _ = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
+            XCTFail("Expected missingServerJWT to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .missingServerJWT)
+        }
+    }
+
+    func testResolveChallenge_cancelWithNilServerJWT_resolvesAbandoned() async throws {
+        let sut = try makeSut()
+        mockCardinalSession.actionCodeToDeliver = .cancel
+        mockCardinalSession.serverJWTToDeliver = nil
+
+        let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
+
+        XCTAssertEqual(outcome, .abandoned)
+    }
+
     func testResolveChallenge_error_throwsCardinalChallengeFailed() async throws {
         let sut = try makeSut()
         mockCardinalSession.actionCodeToDeliver = .error

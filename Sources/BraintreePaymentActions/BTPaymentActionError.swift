@@ -54,6 +54,11 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// actually required.
     case missingMpiTransactionID
 
+    /// 15. CardinalMobile reported a successful/no-action/failure action code with no `serverJWT` —
+    /// required to signal the result via `signalCustomerActionComplete`, and not expected to be
+    /// absent for those action codes.
+    case missingServerJWT
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPaymentActionErrorDomain"
     }
@@ -90,6 +95,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return 13
         case .missingMpiTransactionID:
             return 14
+        case .missingServerJWT:
+            return 15
         }
     }
     
@@ -125,6 +132,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "A 3D Secure step was requested while a previous one was still in flight."
         case .missingMpiTransactionID:
             return "The 3D Secure challenge is missing its required mpiTransactionId."
+        case .missingServerJWT:
+            return "CardinalMobile reported a validated 3D Secure challenge with no serverJWT."
         }
     }
     

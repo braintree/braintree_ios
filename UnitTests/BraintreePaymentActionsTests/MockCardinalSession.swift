@@ -18,7 +18,7 @@ class MockCardinalSession: CardinalSessionTestable {
     /// simulating Cardinal's challenge completing. Left `nil`, `continueWith` does nothing (the
     /// continuation is left pending — used to exercise the watchdog).
     var actionCodeToDeliver: CardinalResponseActionCode?
-    var serverJWTToDeliver = "fake-server-jwt"
+    var serverJWTToDeliver: String? = "fake-server-jwt"
 
     /// Tracks whether `continueWith` was ever called, so tests can assert Cardinal was never reached
     /// (e.g. when a guard upstream should fail before any Cardinal call is made).

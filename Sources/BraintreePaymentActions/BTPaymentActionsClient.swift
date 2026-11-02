@@ -136,8 +136,8 @@ import BraintreeCore
                 }
 
                 let provider: BTPaymentActionThreeDSecureProvider
-                if let existing = threeDSecureProvider {
-                    provider = existing
+                if let existingThreeDSecureProvider = threeDSecureProvider {
+                    provider = existingThreeDSecureProvider
                 } else {
                     provider = try await self.makeThreeDSecureProvider()
                     threeDSecureProvider = provider

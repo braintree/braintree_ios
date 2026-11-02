@@ -200,7 +200,7 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
     nonisolated func cardinalSession(
         cardinalSession session: CardinalSession!,
         stepUpValidated validateResponse: CardinalResponse!,
-        serverJWT: String!
+        serverJWT: String?
     ) {
         // swiftlint:enable implicitly_unwrapped_optional
         resolveChallenge(actionCode: validateResponse.actionCode, serverJWT: serverJWT)
@@ -213,13 +213,17 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
     /// `nonisolated`, since Cardinal doesn't document this callback as main-thread-only (unlike
     /// `setup`'s completion handlers) — hops onto the main actor itself via `finishChallenge` rather
     /// than assuming the caller is already there.
-    nonisolated func resolveChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
+    ///
+    /// `serverJWT` is optional here (rather than force-unwrapping Cardinal's `String!`) since only
+    /// `.success`/`.noAction`/`.failure` actually need it — `.cancel`/`.timeout`/`.error` never read
+    /// it, so a `nil` on those action codes should never crash.
+    nonisolated func resolveChallenge(actionCode: CardinalResponseActionCode, serverJWT: String?) {
         Task { @MainActor in
             self.finishChallenge(actionCode: actionCode, serverJWT: serverJWT)
         }
     }
 
-    private func finishChallenge(actionCode: CardinalResponseActionCode, serverJWT: String) {
+    private func finishChallenge(actionCode: CardinalResponseActionCode, serverJWT: String?) {
         guard let continuation = challengeContinuation else { return }
         challengeContinuation = nil
         watchdogTask?.cancel()
@@ -227,6 +231,10 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
 
         switch actionCode {
         case .success, .noAction, .failure:
+            guard let serverJWT else {
+                continuation.resume(throwing: BTPaymentActionError.missingServerJWT)
+                return
+            }
             continuation.resume(returning: .validated(serverJWT: serverJWT))
         case .cancel, .timeout:
             continuation.resume(returning: .abandoned)
