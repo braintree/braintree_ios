@@ -199,7 +199,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        XCTAssertEqual(outcome, .validated(serverJWT: "server-jwt-success"))
+        XCTAssertEqual(outcome, .validated(serverJWT: "server-jwt-success", result: .succeeded))
     }
 
     func testResolveChallenge_noAction_resolvesValidated() async throws {
@@ -208,42 +208,40 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        if case .validated = outcome {
-            // expected
-        } else {
-            XCTFail("Expected .validated, got \(outcome)")
+        guard case .validated(_, let result) = outcome else {
+            return XCTFail("Expected .validated, got \(outcome)")
         }
+        XCTAssertEqual(result, .succeeded)
     }
 
-    func testResolveChallenge_failure_resolvesValidated() async throws {
+    func testResolveChallenge_failure_resolvesValidatedWithFailedResult() async throws {
         let sut = try makeSut()
         mockCardinalSession.actionCodeToDeliver = .failure
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        if case .validated = outcome {
-            // expected
-        } else {
-            XCTFail("Expected .validated, got \(outcome)")
+        guard case .validated(_, let result) = outcome else {
+            return XCTFail("Expected .validated, got \(outcome)")
         }
+        XCTAssertEqual(result, .failed)
     }
 
-    func testResolveChallenge_cancel_resolvesAbandoned() async throws {
+    func testResolveChallenge_cancel_resolvesAbandonedWithCanceledReason() async throws {
         let sut = try makeSut()
         mockCardinalSession.actionCodeToDeliver = .cancel
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        XCTAssertEqual(outcome, .abandoned)
+        XCTAssertEqual(outcome, .abandoned(reason: .canceled))
     }
 
-    func testResolveChallenge_timeout_resolvesAbandoned() async throws {
+    func testResolveChallenge_timeout_resolvesAbandonedWithTimedOutReason() async throws {
         let sut = try makeSut()
         mockCardinalSession.actionCodeToDeliver = .timeout
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        XCTAssertEqual(outcome, .abandoned)
+        XCTAssertEqual(outcome, .abandoned(reason: .timedOut))
     }
 
     func testResolveChallenge_successWithNilServerJWT_throwsMissingServerJWT() async throws {
@@ -266,7 +264,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
 
-        XCTAssertEqual(outcome, .abandoned)
+        XCTAssertEqual(outcome, .abandoned(reason: .canceled))
     }
 
     func testResolveChallenge_error_throwsCardinalChallengeFailed() async throws {
@@ -288,7 +286,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
         mockCardinalSession.actionCodeToDeliver = .success
 
         let outcome = try await sut.presentChallenge(transactionID: "txn-1", payload: "payload")
-        XCTAssertEqual(outcome, .validated(serverJWT: "fake-server-jwt"))
+        XCTAssertEqual(outcome, .validated(serverJWT: "fake-server-jwt", result: .succeeded))
 
         // The continuation was already consumed; a second resolve call (e.g. a duplicate delegate
         // callback) must not crash or resume anything a second time.

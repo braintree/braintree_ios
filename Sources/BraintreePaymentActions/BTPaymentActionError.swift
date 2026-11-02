@@ -56,6 +56,10 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// absent for those action codes.
     case missingServerJWT
 
+    /// 16. `BTPaymentActionsClient` was created with a tokenization key — Payment Actions requires a
+    /// client token, matching the existing 3D Secure module's same requirement.
+    case clientTokenRequired
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPaymentActionErrorDomain"
     }
@@ -92,6 +96,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return 14
         case .missingServerJWT:
             return 15
+        case .clientTokenRequired:
+            return 16
         }
     }
     
@@ -127,6 +133,8 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "The 3D Secure challenge is missing its required mpiTransactionId."
         case .missingServerJWT:
             return "CardinalMobile reported a validated 3D Secure challenge with no serverJWT."
+        case .clientTokenRequired:
+            return "A client token must be used for Payment Actions integrations."
         }
     }
     

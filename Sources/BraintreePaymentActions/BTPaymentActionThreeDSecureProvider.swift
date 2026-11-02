@@ -41,16 +41,31 @@ final class BTPaymentActionThreeDSecureProvider {
         case presentingChallenge
     }
 
+    /// Cardinal's own `.success`/`.noAction` vs. `.failure` distinction, preserved only for analytics —
+    /// both still produce a server JWT reported via `signalCustomerActionComplete`, so this has no
+    /// effect on control flow. The server makes the final liability-shift call either way, matching
+    /// the existing 3DS flow's treatment of `.failure`.
+    enum ValidationResult: Equatable {
+        case succeeded
+        case failed
+    }
+
+    /// Why the challenge was abandoned, preserved only for analytics — both still produce the same
+    /// `.abandoned` handling upstream (the Payment Action is still alive and retryable).
+    enum AbandonmentReason: Equatable {
+        case canceled
+        case timedOut
+    }
+
     /// The outcome of presenting a 3D Secure challenge.
     enum ChallengeOutcome: Equatable {
-        /// Cardinal validated the challenge — successfully, with no action needed, or with a reported
-        /// failure the server makes the final call on (matching the existing flow's treatment of
-        /// `.failure`) — and returned a server JWT to report via `signalCustomerActionComplete`.
-        case validated(serverJWT: String)
+        /// Cardinal validated the challenge and returned a server JWT to report via
+        /// `signalCustomerActionComplete`.
+        case validated(serverJWT: String, result: ValidationResult)
 
         /// The customer abandoned or timed out of the challenge. The Payment Action is still alive
         /// and retryable; this is never surfaced as a plain cancel.
-        case abandoned
+        case abandoned(reason: AbandonmentReason)
     }
 
     // MARK: - Internal Static Properties
@@ -241,14 +256,22 @@ extension BTPaymentActionThreeDSecureProvider: CardinalValidationDelegate {
         watchdogTask = nil
 
         switch actionCode {
-        case .success, .noAction, .failure:
+        case .success, .noAction:
             guard let serverJWT else {
                 continuation.resume(throwing: BTPaymentActionError.missingServerJWT)
                 return
             }
-            continuation.resume(returning: .validated(serverJWT: serverJWT))
-        case .cancel, .timeout:
-            continuation.resume(returning: .abandoned)
+            continuation.resume(returning: .validated(serverJWT: serverJWT, result: .succeeded))
+        case .failure:
+            guard let serverJWT else {
+                continuation.resume(throwing: BTPaymentActionError.missingServerJWT)
+                return
+            }
+            continuation.resume(returning: .validated(serverJWT: serverJWT, result: .failed))
+        case .cancel:
+            continuation.resume(returning: .abandoned(reason: .canceled))
+        case .timeout:
+            continuation.resume(returning: .abandoned(reason: .timedOut))
         case .error:
             continuation.resume(throwing: BTPaymentActionError.cardinalChallengeFailed)
         @unknown default:
