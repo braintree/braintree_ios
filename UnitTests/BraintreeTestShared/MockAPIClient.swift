@@ -37,6 +37,12 @@ public class MockAPIClient: BTAPIClient {
     public var cannedResponseError : NSError? = nil
     public var cannedHTTPURLResponse : HTTPURLResponse? = nil
     public var cannedResponseBody : BTJSON? = nil
+
+    /// Consumed in order (FIFO) by `post(...)`, one response per call, falling back to
+    /// `cannedResponseBody` once exhausted. Lets a test stub a sequence of different POST responses
+    /// for code paths that make more than one call (e.g. a multi-step drive loop).
+    public var cannedResponseBodies : [BTJSON] = []
+
     var cannedMetadata : BTClientMetadata? = nil
 
     var fetchedPaymentMethods = false
@@ -71,10 +77,14 @@ public class MockAPIClient: BTAPIClient {
         if let error = cannedResponseError {
             throw error
         }
-        
+
+        if !cannedResponseBodies.isEmpty {
+            return (cannedResponseBodies.removeFirst(), cannedHTTPURLResponse)
+        }
+
         return (cannedResponseBody, cannedHTTPURLResponse)
     }
-    
+
     public override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
         guard let responseBody = cannedConfigurationResponseBody else {
             completionBlock(nil, cannedConfigurationResponseError)

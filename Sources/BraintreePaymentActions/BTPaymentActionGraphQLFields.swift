@@ -24,6 +24,7 @@ enum BTPaymentActionGraphQLFields {
        acsUrl
        acsRenderingType
        challengePayload
+       mpiTransactionId
       }
      }
     """

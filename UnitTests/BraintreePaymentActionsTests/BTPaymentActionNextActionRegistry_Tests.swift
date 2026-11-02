@@ -48,7 +48,8 @@ class BTPaymentActionNextActionRegistry_Tests: XCTestCase {
             "__typename": "PaymentActionThreeDSecureChallenge",
             "acsUrl": "https://acs.example.com",
             "acsRenderingType": "otp",
-            "challengePayload": "payload-data"
+            "challengePayload": "payload-data",
+            "mpiTransactionId": "mpi-txn-1"
         ] as [String: Any])
 
         let resolved = try registry.resolve(json: json)
@@ -59,13 +60,14 @@ class BTPaymentActionNextActionRegistry_Tests: XCTestCase {
                 BTPaymentActionThreeDSecureChallengeNextAction(
                     acsURL: URL(string: "https://acs.example.com")!,
                     acsRenderingType: "otp",
-                    challengePayload: "payload-data"
+                    challengePayload: "payload-data",
+                    mpiTransactionID: "mpi-txn-1"
                 )
             )
         )
     }
 
-    func testResolve_threeDSecureChallenge_withoutOptionalRenderingType_succeeds() throws {
+    func testResolve_threeDSecureChallenge_withoutOptionalFields_succeeds() throws {
         let json = BTJSON(value: [
             "__typename": "PaymentActionThreeDSecureChallenge",
             "acsUrl": "https://acs.example.com",
@@ -80,7 +82,8 @@ class BTPaymentActionNextActionRegistry_Tests: XCTestCase {
                 BTPaymentActionThreeDSecureChallengeNextAction(
                     acsURL: URL(string: "https://acs.example.com")!,
                     acsRenderingType: nil,
-                    challengePayload: "payload-data"
+                    challengePayload: "payload-data",
+                    mpiTransactionID: nil
                 )
             )
         )

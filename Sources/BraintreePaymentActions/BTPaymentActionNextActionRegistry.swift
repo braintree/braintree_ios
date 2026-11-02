@@ -77,7 +77,8 @@ final class BTPaymentActionNextActionRegistry {
                 BTPaymentActionThreeDSecureChallengeNextAction(
                     acsURL: acsURL,
                     acsRenderingType: json["acsRenderingType"].asString(),
-                    challengePayload: challengePayload
+                    challengePayload: challengePayload,
+                    mpiTransactionID: json["mpiTransactionId"].asString()
                 )
             )
         }

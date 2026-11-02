@@ -6,7 +6,7 @@ import BraintreeCore
 
 /// The raw result of a Payment Actions GraphQL call returning a `paymentAction` selection —
 /// shared by `setPaymentActionPaymentMethod`, `getPaymentAction`, and `signalCustomerActionComplete`.
-struct BTPaymentAction {
+struct BTPaymentAction: Equatable {
 
     // MARK: - Internal Properties
 

@@ -61,7 +61,7 @@ let package = Package(
         ),
         .library(
             name: "BraintreePaymentActions",
-            targets: ["BraintreePaymentActions"]
+            targets: ["BraintreePaymentActions", "CardinalMobile"]
         )
     ],
     dependencies: [
@@ -152,7 +152,7 @@ let package = Package(
         ),
         .target(
             name: "BraintreePaymentActions",
-            dependencies: ["BraintreeCore"],
+            dependencies: ["BraintreeCore", "CardinalMobile"],
             resources: [.copy("PrivacyInfo.xcprivacy")]
         )
     ]
