@@ -2,6 +2,7 @@
 
 ## unreleased
 * Remove CocoaPods support -- `Braintree.podspec` has been deleted and CocoaPods integration artifacts removed from the SDK, please migrate to a supported package manager
+* Fix `Braintree_Static.xcframework.zip` release asset missing `BraintreeUIComponents`
 
 ## 7.13.1 (2026-10-29)
 * BraintreeCore
