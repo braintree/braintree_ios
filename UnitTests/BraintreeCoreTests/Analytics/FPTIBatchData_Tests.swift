@@ -26,9 +26,6 @@ final class FPTIBatchData_Tests: XCTestCase {
             endTime: 111222333444555,
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1", 
-            fiBrand: "VISA",
-            fiID: "CC-123",
-            fiType: "CARD",
             isConfigFromCache: false,
             isEditFIFlow: true,
             isVaultRequest: false,
@@ -40,6 +37,9 @@ final class FPTIBatchData_Tests: XCTestCase {
             renderedMessageSlot: false,
             renderTrigger: "sticky_fi",
             requestStartTime: 456,
+            savedMethodBrand: "VISA",
+            savedMethodID: "CC-123",
+            savedMethodType: "CARD",
             shownContent: "funding_instrument",
             startTime: 999888777666
         ),
@@ -139,12 +139,12 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
         XCTAssertEqual(eventParams[0]["application_state"] as? String, "active")
-        XCTAssertEqual(eventParams[0]["fi_brand"] as? String, "VISA")
-        XCTAssertNil(eventParams[1]["fi_brand"])
-        XCTAssertEqual(eventParams[0]["fi_id"] as? String, "CC-123")
-        XCTAssertNil(eventParams[1]["fi_id"])
-        XCTAssertEqual(eventParams[0]["fi_type"] as? String, "CARD")
-        XCTAssertNil(eventParams[1]["fi_type"])
+        XCTAssertEqual(eventParams[0]["saved_method_brand"] as? String, "VISA")
+        XCTAssertNil(eventParams[1]["saved_method_brand"])
+        XCTAssertEqual(eventParams[0]["saved_method_id"] as? String, "CC-123")
+        XCTAssertNil(eventParams[1]["saved_method_id"])
+        XCTAssertEqual(eventParams[0]["saved_method_type"] as? String, "CARD")
+        XCTAssertNil(eventParams[1]["saved_method_type"])
         XCTAssertEqual(eventParams[0]["is_edit_fi"] as? Bool, true)
         XCTAssertNil(eventParams[1]["is_edit_fi"])
         XCTAssertEqual(eventParams[0]["presentment_message_type"] as? String, "PLST_SQ")
