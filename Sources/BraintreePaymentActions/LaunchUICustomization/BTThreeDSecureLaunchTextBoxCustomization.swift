@@ -2,11 +2,6 @@ import Foundation
 import CardinalMobile
 
 /// Text box customization options for 3D Secure 2 flows.
-///
-/// Deliberately duplicated from `BraintreeThreeDSecure`'s identical `BTThreeDSecureV2TextBoxCustomization`
-/// rather than shared, so this module's only dependency is the `CardinalMobile` binary — not the
-/// existing `BraintreeThreeDSecure` module — keeping the Payment Actions drive path fully isolated from the
-/// existing 3DS flow.
 @objcMembers public class BTThreeDSecureLaunchTextBoxCustomization: BTThreeDSecureLaunchBaseCustomization {
 
     // MARK: - Public Properties
