@@ -319,10 +319,8 @@ import BraintreeCore
                     payload: challenge.challengePayload
                 )
             } catch {
-                // Only Cardinal's `.error` action code (surfaced as `.cardinalChallengeFailed`) counts
-                // as a challenge failure for analytics — other thrown errors here (foreground/watchdog/
-                // re-entrancy/unrecognized-action-code) aren't a Cardinal-reported challenge outcome,
-                // and still surface through the broader `verify:failed` lifecycle event regardless.
+                // Only Cardinal's `.error` counts as a challenge failure for analytics — other thrown
+                // errors still surface via `verify:failed`.
                 if case BTPaymentActionError.cardinalChallengeFailed = error {
                     apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengeFailed, errorDescription: error.localizedDescription)
                 }

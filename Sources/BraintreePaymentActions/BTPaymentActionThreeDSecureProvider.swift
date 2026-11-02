@@ -41,10 +41,8 @@ final class BTPaymentActionThreeDSecureProvider {
         case presentingChallenge
     }
 
-    /// Cardinal's own `.success`/`.noAction` vs. `.failure` distinction, preserved only for analytics —
-    /// both still produce a server JWT reported via `signalCustomerActionComplete`, so this has no
-    /// effect on control flow. The server makes the final liability-shift call either way, matching
-    /// the existing 3DS flow's treatment of `.failure`.
+    /// Cardinal's `.success`/`.noAction` vs. `.failure`, kept only for analytics — both still report a
+    /// server JWT, so there's no effect on control flow.
     enum ValidationResult: Equatable {
         case succeeded
         case failed
