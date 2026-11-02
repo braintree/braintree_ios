@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The card tokenization request represents raw credit or debit card data provided by the customer.
 /// Its main purpose is to serve as the input for tokenization.

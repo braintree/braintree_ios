@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 ///  `BTAmericanExpressClient` enables you to look up the rewards balance of American Express cards.
 @objc public class BTAmericanExpressClient: NSObject {
