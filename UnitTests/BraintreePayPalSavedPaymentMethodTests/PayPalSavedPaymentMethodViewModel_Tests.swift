@@ -571,9 +571,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.editSelected)
-        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
-        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
-        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
     }
 
     func testLearnMoreTapped_sendsLearnMoreSelectedEventWithTheMessageType() async {
@@ -597,9 +597,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.renderSucceeded)
         XCTAssertEqual(mockAPIClient.postedRenderTrigger, "sticky_fi")
         XCTAssertEqual(mockAPIClient.postedShownContent, "funding_instrument")
-        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
-        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
-        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
         XCTAssertEqual(mockAPIClient.postedRenderedEditTag, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLogo, true)
         XCTAssertEqual(mockAPIClient.postedRenderedLabel, false)

@@ -50,12 +50,6 @@ struct FPTIBatchData: Codable {
         let endTime: Int?
         let errorDescription: String?
         let eventName: String
-        /// The brand of the card funding instrument shown or selected, for example `VISA`.
-        let fiBrand: String?
-        /// PayPal's encrypted ID of the funding instrument shown or selected.
-        let fiID: String?
-        /// The type of funding instrument shown or selected, for example `CARD`.
-        let fiType: String?
         /// True if the `BTConfiguration` was retrieved from local cache after `tokenize()` call.
         /// False if the `BTConfiguration` was fetched remotely after `tokenize()` call.
         let isConfigFromCache: Bool?
@@ -90,6 +84,12 @@ struct FPTIBatchData: Codable {
         let renderedMessageSlot: Bool?
         /// What caused a component render, for example the initial fetch or a refresh after an edit.
         let renderTrigger: String?
+        /// The brand of the card saved payment method shown or selected, for example `VISA`.
+        let savedMethodBrand: String?
+        /// PayPal's encrypted ID of the saved payment method shown or selected.
+        let savedMethodID: String?
+        /// The type of saved payment method shown or selected, for example `CARD`.
+        let savedMethodType: String?
         /// The Shopper Insights customer session ID created by a merchant's server SDK or graphQL integration.
         let shopperSessionID: String?
         /// Whether or not billing agreement will be created - customer opted to save PayPal for future purchases and a vaulted billing agreement was created with the charge.
@@ -117,9 +117,6 @@ struct FPTIBatchData: Codable {
             endTime: Int? = nil,
             errorDescription: String? = nil,
             eventName: String,
-            fiBrand: String? = nil,
-            fiID: String? = nil,
-            fiType: String? = nil,
             fundingSource: String? = nil,
             isConfigFromCache: Bool? = nil,
             isEditFIFlow: Bool? = nil,
@@ -135,6 +132,9 @@ struct FPTIBatchData: Codable {
             renderedMessageSlot: Bool? = nil,
             renderTrigger: String? = nil,
             requestStartTime: Int? = nil,
+            savedMethodBrand: String? = nil,
+            savedMethodID: String? = nil,
+            savedMethodType: String? = nil,
             shopperSessionID: String? = nil,
             shouldRequestBillingAgreement: Bool? = nil,
             shownContent: String? = nil,
@@ -154,9 +154,6 @@ struct FPTIBatchData: Codable {
             self.endTime = endTime
             self.errorDescription = errorDescription
             self.eventName = eventName
-            self.fiBrand = fiBrand
-            self.fiID = fiID
-            self.fiType = fiType
             self.isConfigFromCache = isConfigFromCache
             self.isEditFIFlow = isEditFIFlow
             self.isVaultRequest = isVaultRequest
@@ -171,6 +168,9 @@ struct FPTIBatchData: Codable {
             self.renderedMessageSlot = renderedMessageSlot
             self.renderTrigger = renderTrigger
             self.requestStartTime = requestStartTime
+            self.savedMethodBrand = savedMethodBrand
+            self.savedMethodID = savedMethodID
+            self.savedMethodType = savedMethodType
             self.shopperSessionID = shopperSessionID
             self.shouldRequestBillingAgreement = shouldRequestBillingAgreement
             self.shownContent = shownContent
@@ -191,9 +191,6 @@ struct FPTIBatchData: Codable {
             case didPayPalServerAttemptAppSwitch = "attempted_app_switch"
             case errorDescription = "error_desc"
             case eventName = "event_name"
-            case fiBrand = "fi_brand"
-            case fiID = "fi_id"
-            case fiType = "fi_type"
             case isConfigFromCache = "config_cached"
             case isEditFIFlow = "is_edit_fi"
             case isVaultRequest = "is_vault"
@@ -210,6 +207,9 @@ struct FPTIBatchData: Codable {
             case requestStartTime = "request_start_time"
             case timestamp = "t"
             case tenantName = "tenant_name"
+            case savedMethodBrand = "saved_method_brand"
+            case savedMethodID = "saved_method_id"
+            case savedMethodType = "saved_method_type"
             case shopperSessionID = "shopper_session_id"
             case shouldRequestBillingAgreement = "is_billing_agreement"
             case shownContent = "shown_content"

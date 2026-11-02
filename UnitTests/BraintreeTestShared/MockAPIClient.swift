@@ -30,9 +30,9 @@ public class MockAPIClient: BTAPIClient {
     public var postedErrorDescription: String? = nil
     public var postedContextType: String? = nil
     public var postedFundingSource: String? = nil
-    public var postedFIBrand: String? = nil
-    public var postedFIID: String? = nil
-    public var postedFIType: String? = nil
+    public var postedSavedMethodBrand: String? = nil
+    public var postedSavedMethodID: String? = nil
+    public var postedSavedMethodType: String? = nil
     public var postedIsEditFIFlow: Bool? = nil
     public var postedMessageType: String? = nil
     public var postedRenderedEditTag: Bool? = nil
@@ -113,9 +113,6 @@ public class MockAPIClient: BTAPIClient {
         didEnablePayPalAppSwitch: Bool? = nil,
         didPayPalServerAttemptAppSwitch: Bool? = nil,
         errorDescription: String? = nil,
-        fiBrand: String? = nil,
-        fiID: String? = nil,
-        fiType: String? = nil,
         fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
         isEditFIFlow: Bool? = nil,
@@ -130,6 +127,9 @@ public class MockAPIClient: BTAPIClient {
         renderedLogo: Bool? = nil,
         renderedMessageSlot: Bool? = nil,
         renderTrigger: String? = nil,
+        savedMethodBrand: String? = nil,
+        savedMethodID: String? = nil,
+        savedMethodType: String? = nil,
         shopperSessionID: String? = nil,
         shouldRequestBillingAgreement: Bool? = nil,
         shownContent: String? = nil
@@ -151,9 +151,9 @@ public class MockAPIClient: BTAPIClient {
         postedErrorDescription = errorDescription
         postedContextType = contextType
         postedFundingSource = fundingSource
-        postedFIBrand = fiBrand
-        postedFIID = fiID
-        postedFIType = fiType
+        postedSavedMethodBrand = savedMethodBrand
+        postedSavedMethodID = savedMethodID
+        postedSavedMethodType = savedMethodType
         postedIsEditFIFlow = isEditFIFlow
         postedMessageType = messageType
         postedRenderedEditTag = renderedEditTag

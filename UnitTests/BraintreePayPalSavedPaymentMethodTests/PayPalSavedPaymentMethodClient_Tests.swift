@@ -224,9 +224,9 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             mockAPIClient.postedAnalyticsEvents,
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded]
         )
-        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
-        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
-        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
     }
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementFails_sendsStickyFIFetchFailedEvent() async {
@@ -273,9 +273,9 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded]
         )
         XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
-        XCTAssertEqual(mockAPIClient.postedFIType, "CARD")
-        XCTAssertEqual(mockAPIClient.postedFIBrand, "VISA")
-        XCTAssertEqual(mockAPIClient.postedFIID, "CC-123")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
+        XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
     }
 
     func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementFails_sendsFIRefreshFailedEventWithOrderID() async {

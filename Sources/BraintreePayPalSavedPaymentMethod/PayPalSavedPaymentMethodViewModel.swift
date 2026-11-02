@@ -234,9 +234,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard case .idle = editPhase else { return }
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.editSelected,
-            fiBrand: instrument?.cardBrand,
-            fiID: instrument?.id,
-            fiType: instrument?.type?.rawValue
+            savedMethodBrand: instrument?.cardBrand,
+            savedMethodID: instrument?.id,
+            savedMethodType: instrument?.type?.rawValue
         )
         editPhase = .loaderRequested
         editTask = Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
@@ -320,14 +320,14 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.renderSucceeded,
             contextID: approvedOrderID,
-            fiBrand: instrument?.cardBrand,
-            fiID: instrument?.id,
-            fiType: instrument?.type?.rawValue,
             renderedEditTag: renderedEditTag,
             renderedLabel: style.showPayPalLabel,
             renderedLogo: style.showPayPalLogo,
             renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging,
             renderTrigger: didCompleteEdit ? "fi_from_approved_checkout" : "sticky_fi",
+            savedMethodBrand: instrument?.cardBrand,
+            savedMethodID: instrument?.id,
+            savedMethodType: instrument?.type?.rawValue,
             shownContent: shownContent
         )
     }
