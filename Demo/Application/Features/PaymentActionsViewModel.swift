@@ -113,7 +113,9 @@ final class PaymentActionsViewModel: ObservableObject {
         case .paymentMethodRequired:
             clearCardFields()
             showDeclineMessage()
-        case .customerActionRequired, .processing, .canceled, .expired, .unknown:
+        case .threeDSecureCanceled:
+            onProgress("3D Secure challenge abandoned or timed out — Payment Action \(result.id) is still active. Try again.")
+        case .customerActionRequired, .processing, .canceled, .expired, .unrecognized:
             onProgress("Payment Action \(result.id): \(result.type)")
         @unknown default:
             onProgress("Payment Action \(result.id) case not handled.")
