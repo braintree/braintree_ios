@@ -22,9 +22,6 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
     /// drive loop, which should never happen and indicates a stale or out-of-order response.
     case versionAnomaly
 
-    /// 6. Deallocated BTPaymentActionsClient
-    case deallocated
-
     /// 7. The Payment Actions configuration is missing the Cardinal authentication JWT needed to
     /// configure a 3D Secure session.
     case missingCardinalAuthenticationJWT
@@ -77,8 +74,6 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return 4
         case .versionAnomaly:
             return 5
-        case .deallocated:
-            return 6
         case .missingCardinalAuthenticationJWT:
             return 7
         case .foregroundRequired:
@@ -114,8 +109,6 @@ public enum BTPaymentActionError: Error, CustomNSError, LocalizedError, Equatabl
             return "handleNextAction was called while a previous invocation on this client was still in flight."
         case .versionAnomaly:
             return "Payment Action version decreased between fetches during handleNextAction."
-        case .deallocated:
-            return "BTPaymentActionsClient has been deallocated."
         case .missingCardinalAuthenticationJWT:
             return "Payment Actions configuration is missing the Cardinal authentication JWT."
         case .foregroundRequired:

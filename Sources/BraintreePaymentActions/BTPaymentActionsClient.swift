@@ -141,18 +141,15 @@ import BraintreeCore
         // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
         var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
 
+        // Not `[weak self]`: `handler` is a local value that never outlives this call, so there's no
+        // stored reference or retain cycle to break, and `self` is guaranteed alive for the full
+        // duration of this already-executing instance method — a `self == nil` branch here would be
+        // unreachable dead code on a public error enum.
         let handler = NextActionHandler(
-            fetchPaymentAction: { [weak self] in
-                guard let self else {
-                    throw BTPaymentActionError.deallocated
-                }
-                return try await self.getPaymentAction()
+            fetchPaymentAction: {
+                try await self.getPaymentAction()
             },
-            resolveCustomerAction: { [weak self] nextAction in
-                guard let self else {
-                    throw BTPaymentActionError.deallocated
-                }
-
+            resolveCustomerAction: { nextAction in
                 let provider: BTPaymentActionThreeDSecureProvider
                 if let existingThreeDSecureProvider = threeDSecureProvider {
                     provider = existingThreeDSecureProvider
