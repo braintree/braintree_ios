@@ -77,10 +77,10 @@ final class PayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> PayPalCreditMessagingResult {
-        try validateClientToken()
-
         apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted)
         do {
+            try validateClientToken()
+
             let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
 
             let (body, _) = try await apiClient.post(
@@ -97,6 +97,7 @@ final class PayPalSavedPaymentMethodClient {
                 throw PayPalSavedPaymentMethodError.missingPreferredMessage
             }
 
+            apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded)
             return result
         } catch {
             apiClient.sendAnalyticsEvent(
@@ -124,19 +125,9 @@ final class PayPalSavedPaymentMethodClient {
     // MARK: - Private Methods
 
     private func fetchBuyerDefaultBillingAgreement(merchantAccountID: String?) async throws -> PayPalSavedPaymentMethodSummary {
-        let paymentMethodIDJWT: String
-        do {
-            paymentMethodIDJWT = try self.paymentMethodIDJWT()
-        } catch {
-            let eventName = error as? PayPalSavedPaymentMethodError == .invalidAuthorization
-                ? PayPalSavedPaymentMethodAnalytics.authorizationFailed
-                : PayPalSavedPaymentMethodAnalytics.paymentMethodIDRequired
-            apiClient.sendAnalyticsEvent(eventName, errorDescription: error.localizedDescription)
-            throw error
-        }
-
         apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted)
         do {
+            let paymentMethodIDJWT = try self.paymentMethodIDJWT()
             let summary = try await postFundingInstrumentDetails(
                 PayPalFundingInstrumentDetailsGraphQLBody(
                     fundingInstrumentType: .buyerDefaultBillingAgreement,
