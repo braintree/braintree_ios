@@ -241,7 +241,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
     }
 
-    func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_sendsAuthorizationFailedEventOnly() async {
+    func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_sendsStickyFIFetchFailedEvent() async {
         let tokenizationKey = "sandbox_merchant_1234567890abc"
         mockAPIClient = MockAPIClient(authorization: tokenizationKey)
         sut = PayPalSavedPaymentMethodClient(authorization: tokenizationKey, universalLink: universalLink)
@@ -249,18 +249,25 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.authorizationFailed])
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
+        )
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.invalidAuthorization.localizedDescription)
     }
 
-    func testFetchPaymentMethod_whenClientTokenHasNoJWT_sendsPaymentMethodIDRequiredEventOnly() async {
+    func testFetchPaymentMethod_whenClientTokenHasNoJWT_sendsStickyFIFetchFailedEvent() async {
         let clientTokenWithoutJWT = TestClientTokenFactory.token(withVersion: 3)
         mockAPIClient = MockAPIClient(authorization: clientTokenWithoutJWT)
         sut.apiClient = mockAPIClient
 
         _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.paymentMethodIDRequired])
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
+        )
+        XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.missingPaymentMethodIDJWT.localizedDescription)
     }
 
     func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementSucceeds_sendsFIRefreshEventsWithOrderID() async throws {

@@ -251,12 +251,15 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
 
     // MARK: - Analytics
 
-    func testFetchCreditPresentmentMessages_whenAMessageIsReturned_sendsFetchStartedEventOnly() async throws {
+    func testFetchCreditPresentmentMessages_whenAMessageIsReturned_sendsFetchStartedAndSucceededEvents() async throws {
         mockAPIClient.cannedResponseBody = BTJSON(value: Self.messagesResponse)
 
         _ = try await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
 
-        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted])
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents,
+            [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded]
+        )
     }
 
     func testFetchCreditPresentmentMessages_whenTheRequestFails_sendsFetchFailedEvent() async {

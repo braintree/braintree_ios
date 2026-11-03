@@ -3,14 +3,6 @@ import XCTest
 
 final class PayPalSavedPaymentMethodAnalytics_Tests: XCTestCase {
 
-    func testInitializationAnalyticsEvents_sendExpectedEventNames() {
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.authorizationFailed, "paypal-saved-payment-method:init:authorization-failed")
-        XCTAssertEqual(
-            PayPalSavedPaymentMethodAnalytics.paymentMethodIDRequired,
-            "paypal-saved-payment-method:init:payment-method-id-required"
-        )
-    }
-
     func testFundingInstrumentAnalyticsEvents_sendExpectedEventNames() {
         XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, "paypal-saved-payment-method:sticky-fi:fetch-started")
         XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded, "paypal-saved-payment-method:sticky-fi:fetch-succeeded")
@@ -26,6 +18,10 @@ final class PayPalSavedPaymentMethodAnalytics_Tests: XCTestCase {
         XCTAssertEqual(
             PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted,
             "paypal-saved-payment-method:credit-messaging:fetch-started"
+        )
+        XCTAssertEqual(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded,
+            "paypal-saved-payment-method:credit-messaging:fetch-succeeded"
         )
         XCTAssertEqual(
             PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,

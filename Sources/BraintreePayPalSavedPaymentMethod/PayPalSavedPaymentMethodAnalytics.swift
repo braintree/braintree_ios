@@ -2,11 +2,6 @@ import Foundation
 
 enum PayPalSavedPaymentMethodAnalytics {
 
-    // MARK: - Initialization Events
-
-    static let authorizationFailed = "paypal-saved-payment-method:init:authorization-failed"
-    static let paymentMethodIDRequired = "paypal-saved-payment-method:init:payment-method-id-required"
-
     // MARK: - Funding Instrument Events
 
     static let stickyFIFetchStarted = "paypal-saved-payment-method:sticky-fi:fetch-started"
@@ -23,6 +18,7 @@ enum PayPalSavedPaymentMethodAnalytics {
     // MARK: - Credit Messaging Events
 
     static let creditMessagingFetchStarted = "paypal-saved-payment-method:credit-messaging:fetch-started"
+    static let creditMessagingFetchSucceeded = "paypal-saved-payment-method:credit-messaging:fetch-succeeded"
     static let creditMessagingFetchFailed = "paypal-saved-payment-method:credit-messaging:fetch-failed"
     static let creditMessagingRenderSucceeded = "paypal-saved-payment-method:credit-messaging:render-succeeded"
     static let creditMessagingLearnMoreSelected = "paypal-saved-payment-method:credit-messaging-learn-more:selected"
