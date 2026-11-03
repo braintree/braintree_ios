@@ -12,20 +12,20 @@ import Foundation
 /// different thing). It applies to every call the client makes — if the app is killed, re-create the
 /// client with the same options, since a challenge restarted with different options can mismatch
 /// what the issuer was already told.
-@objcMembers public class BTThreeDSecureLaunchOptions: NSObject {
+@objcMembers public class BTPaymentActionThreeDSecureOptions: NSObject {
 
     // MARK: - Public Properties
 
     /// Sets all UI types that the device supports for displaying specific challenge user interfaces
     /// in the 3D Secure challenge. Defaults to `.both`.
-    public var uiType: BTThreeDSecureLaunchUIType = .both
+    public var uiType: BTPaymentActionThreeDSecureUIType = .both
 
     /// Optional: list of all the render types that the device supports for displaying specific
     /// challenge user interfaces. `nil` is derived from `uiType`.
-    public var renderTypes: [BTThreeDSecureLaunchRenderType]?
+    public var renderTypes: [BTPaymentActionThreeDSecureRenderType]?
 
     /// Optional: UI customization for 3DS2 challenge views.
-    public var uiCustomization: BTThreeDSecureLaunchUICustomization?
+    public var uiCustomization: BTPaymentActionThreeDSecureUICustomization?
 
     /// Optional: the 3DS requestor app URL, declaring this app's URL within the CReq message, for an
     /// out-of-band bank app to return the customer to this app. `nil`: the SDK derives a

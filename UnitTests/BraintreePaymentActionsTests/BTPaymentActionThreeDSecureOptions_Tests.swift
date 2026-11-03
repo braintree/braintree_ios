@@ -1,10 +1,10 @@
 import XCTest
 @testable import BraintreePaymentActions
 
-class BTThreeDSecureLaunchOptions_Tests: XCTestCase {
+class BTPaymentActionThreeDSecureOptions_Tests: XCTestCase {
 
     func testInit_defaultsMatchLegacyEquivalentDefaults() {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
 
         XCTAssertEqual(options.uiType, .both)
         XCTAssertNil(options.renderTypes)
@@ -13,12 +13,12 @@ class BTThreeDSecureLaunchOptions_Tests: XCTestCase {
     }
 
     func testProperties_areSettable() {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         let url = URL(string: "https://example.com/return")!
 
         options.uiType = .native
         options.renderTypes = [.otp, .html]
-        options.uiCustomization = BTThreeDSecureLaunchUICustomization()
+        options.uiCustomization = BTPaymentActionThreeDSecureUICustomization()
         options.requestorAppURL = url
 
         XCTAssertEqual(options.uiType, .native)

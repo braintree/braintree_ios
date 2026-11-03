@@ -2,7 +2,7 @@ import Foundation
 import CardinalMobile
 
 /// Button types that can be customized in 3D Secure 2 flows.
-@objc public enum BTThreeDSecureLaunchButtonType: Int {
+@objc public enum BTPaymentActionThreeDSecureButtonType: Int {
 
     /// Verify button
     case verify
@@ -21,7 +21,7 @@ import CardinalMobile
 }
 
 /// Button customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchButtonCustomization: BTThreeDSecureLaunchBaseCustomization {
+@objcMembers public class BTPaymentActionThreeDSecureButtonCustomization: BTPaymentActionThreeDSecureBaseCustomization {
 
     // MARK: - Public Properties
 

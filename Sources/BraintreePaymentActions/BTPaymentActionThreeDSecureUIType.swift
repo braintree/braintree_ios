@@ -3,7 +3,7 @@ import CardinalMobile
 
 /// The interface types that the device supports for displaying specific challenge user interfaces
 /// within the 3D Secure challenge.
-@objc public enum BTThreeDSecureLaunchUIType: Int {
+@objc public enum BTPaymentActionThreeDSecureUIType: Int {
 
     /// Native
     case native

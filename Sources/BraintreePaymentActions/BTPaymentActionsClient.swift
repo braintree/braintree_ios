@@ -27,7 +27,7 @@ import BraintreeCore
 
     /// Options customizing the 3D Secure challenge presented during the Payment Actions drive path. Applies to
     /// every call this client makes — create a new client with the same options if the app is killed.
-    let threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions
+    let threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions
 
     // MARK: - Initializer
 
@@ -36,7 +36,7 @@ import BraintreeCore
     @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(authorization: authorization)
-        self.threeDSecureLaunchOptions = BTThreeDSecureLaunchOptions()
+        self.threeDSecureLaunchOptions = BTPaymentActionThreeDSecureOptions()
     }
 
     /// Creates a Payment Actions Client with 3D Secure challenge customization.
@@ -46,7 +46,7 @@ import BraintreeCore
     ///    server-side `threeDSecureOptions` field used when creating the Payment Action, which is a
     ///    different thing.
     @objc(initWithAuthorization:threeDSecureLaunchOptions:)
-    public init(authorization: String, threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions) {
+    public init(authorization: String, threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions) {
         self.apiClient = BTAPIClient(authorization: authorization)
         self.threeDSecureLaunchOptions = threeDSecureLaunchOptions
     }

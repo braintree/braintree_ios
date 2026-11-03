@@ -2,7 +2,7 @@ import Foundation
 import CardinalMobile
 
 /// Base customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchBaseCustomization: NSObject {
+@objcMembers public class BTPaymentActionThreeDSecureBaseCustomization: NSObject {
 
     // MARK: - Public Properties
 

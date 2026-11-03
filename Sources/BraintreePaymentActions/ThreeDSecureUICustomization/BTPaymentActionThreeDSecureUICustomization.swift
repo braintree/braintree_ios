@@ -2,12 +2,12 @@ import Foundation
 import CardinalMobile
 
 /// UI customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchUICustomization: NSObject {
+@objcMembers public class BTPaymentActionThreeDSecureUICustomization: NSObject {
 
     // MARK: - Public Properties
 
     /// Toolbar customization options for 3D Secure 2 flows.
-    public var toolbarCustomization: BTThreeDSecureLaunchToolbarCustomization? {
+    public var toolbarCustomization: BTPaymentActionThreeDSecureToolbarCustomization? {
         didSet {
             let toolbarCustomization = toolbarCustomization?.cardinalValue as? ToolbarCustomization
             cardinalValue.setToolbar(toolbarCustomization)
@@ -15,7 +15,7 @@ import CardinalMobile
     }
 
     /// Label customization options for 3D Secure 2 flows.
-    public var labelCustomization: BTThreeDSecureLaunchLabelCustomization? {
+    public var labelCustomization: BTPaymentActionThreeDSecureLabelCustomization? {
         didSet {
             let labelCustomization = labelCustomization?.cardinalValue as? LabelCustomization
             cardinalValue.setLabel(labelCustomization)
@@ -23,7 +23,7 @@ import CardinalMobile
     }
 
     /// Text box customization options for 3D Secure 2 flows.
-    public var textBoxCustomization: BTThreeDSecureLaunchTextBoxCustomization? {
+    public var textBoxCustomization: BTPaymentActionThreeDSecureTextBoxCustomization? {
         didSet {
             let textBoxCustomization = textBoxCustomization?.cardinalValue as? TextBoxCustomization
             cardinalValue.setTextBox(textBoxCustomization)
@@ -42,15 +42,15 @@ import CardinalMobile
     ///   - buttonType: Button type
     @objc(setButtonCustomization:buttonType:)
     public func setButton(
-        _ buttonCustomization: BTThreeDSecureLaunchButtonCustomization,
-        buttonType: BTThreeDSecureLaunchButtonType
+        _ buttonCustomization: BTPaymentActionThreeDSecureButtonCustomization,
+        buttonType: BTPaymentActionThreeDSecureButtonType
     ) {
         let buttonCustomization = buttonCustomization.cardinalValue as? ButtonCustomization
         cardinalValue.setButton(buttonCustomization, buttonType: buttonType.cardinalValue)
     }
 }
 
-extension BTThreeDSecureLaunchButtonType {
+extension BTPaymentActionThreeDSecureButtonType {
 
     /// Maps by name to Cardinal's `ButtonType`.
     var cardinalValue: ButtonType {

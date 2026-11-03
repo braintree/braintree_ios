@@ -92,7 +92,7 @@ final class BTPaymentActionThreeDSecureProvider {
     ///   expression without requiring the caller to already be on the main actor.
     init(
         configuration: BTConfiguration,
-        threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions = BTThreeDSecureLaunchOptions(),
+        threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions = BTPaymentActionThreeDSecureOptions(),
         cardinalSession: CardinalSessionTestable = CardinalSession(),
         applicationStateProvider: ApplicationStateProviding? = nil,
         challengeWatchdogTimeoutNanoseconds: UInt64 = BTPaymentActionThreeDSecureProvider.challengeWatchdogTimeoutNanoseconds

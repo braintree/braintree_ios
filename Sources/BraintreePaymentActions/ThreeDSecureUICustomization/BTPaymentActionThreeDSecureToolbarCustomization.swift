@@ -2,7 +2,7 @@ import Foundation
 import CardinalMobile
 
 /// Toolbar customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchToolbarCustomization: BTThreeDSecureLaunchBaseCustomization {
+@objcMembers public class BTPaymentActionThreeDSecureToolbarCustomization: BTPaymentActionThreeDSecureBaseCustomization {
 
     // MARK: - Public Properties
 

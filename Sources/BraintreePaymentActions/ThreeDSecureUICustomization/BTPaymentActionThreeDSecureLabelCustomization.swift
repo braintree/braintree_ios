@@ -2,7 +2,7 @@ import Foundation
 import CardinalMobile
 
 /// Label customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchLabelCustomization: BTThreeDSecureLaunchBaseCustomization {
+@objcMembers public class BTPaymentActionThreeDSecureLabelCustomization: BTPaymentActionThreeDSecureBaseCustomization {
 
     // MARK: - Public Properties
 

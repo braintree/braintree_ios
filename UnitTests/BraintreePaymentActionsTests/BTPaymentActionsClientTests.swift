@@ -33,7 +33,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     }
 
     func testInit_withThreeDSecureLaunchOptions_storesProvidedOptions() {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         options.uiType = .native
 
         let client = BTPaymentActionsClient(authorization: authorization, threeDSecureLaunchOptions: options)
@@ -650,7 +650,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
     }
 
     func testHandleNextAction_customThreeDSecureLaunchOptions_appliedToCardinalSession() async throws {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         options.uiType = .native
 
         let client = BTPaymentActionsClient(authorization: authorization, threeDSecureLaunchOptions: options)

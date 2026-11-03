@@ -18,7 +18,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
     }
 
     private func makeSut(
-        threeDSecureLaunchOptions: BTThreeDSecureLaunchOptions = BTThreeDSecureLaunchOptions(),
+        threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions = BTPaymentActionThreeDSecureOptions(),
         isApplicationActive: Bool = true,
         challengeWatchdogTimeoutNanoseconds: UInt64 = 60_000_000_000
     ) throws -> BTPaymentActionThreeDSecureProvider {
@@ -70,7 +70,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
     }
 
     func testInit_customUIType_setsCardinalUIType() throws {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         options.uiType = .native
 
         _ = try makeSut(threeDSecureLaunchOptions: options)
@@ -80,7 +80,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
     }
 
     func testInit_renderTypesSet_setsCardinalRenderType() throws {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         options.renderTypes = [.otp, .html]
 
         _ = try makeSut(threeDSecureLaunchOptions: options)
@@ -89,9 +89,21 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
         XCTAssertEqual(cardinalConfiguration.renderType, [CardinalSessionRenderTypeOTP, CardinalSessionRenderTypeHTML])
     }
 
+    func testInit_unrecognizedRenderTypeMixedWithValidOne_filtersOutUnrecognizedValue() throws {
+        let options = BTPaymentActionThreeDSecureOptions()
+        options.renderTypes = [.otp, BTPaymentActionThreeDSecureRenderType(rawValue: 99)]
+
+        _ = try makeSut(threeDSecureLaunchOptions: options)
+
+        // The unrecognized value is dropped entirely, rather than passed through to Cardinal as an
+        // empty string.
+        let cardinalConfiguration = try XCTUnwrap(mockCardinalSession.capturedConfiguration)
+        XCTAssertEqual(cardinalConfiguration.renderType, [CardinalSessionRenderTypeOTP])
+    }
+
     func testInit_uiCustomizationSet_setsCardinalUICustomization() throws {
-        let options = BTThreeDSecureLaunchOptions()
-        options.uiCustomization = BTThreeDSecureLaunchUICustomization()
+        let options = BTPaymentActionThreeDSecureOptions()
+        options.uiCustomization = BTPaymentActionThreeDSecureUICustomization()
 
         _ = try makeSut(threeDSecureLaunchOptions: options)
 
@@ -100,7 +112,7 @@ class BTPaymentActionThreeDSecureProvider_Tests: XCTestCase {
     }
 
     func testInit_requestorAppURLSet_passedToCardinalAsProvided() throws {
-        let options = BTThreeDSecureLaunchOptions()
+        let options = BTPaymentActionThreeDSecureOptions()
         options.requestorAppURL = URL(string: "https://merchant.example.com/return")!
 
         _ = try makeSut(threeDSecureLaunchOptions: options)

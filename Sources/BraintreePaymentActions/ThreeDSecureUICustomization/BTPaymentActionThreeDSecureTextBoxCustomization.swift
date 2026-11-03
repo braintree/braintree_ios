@@ -2,7 +2,7 @@ import Foundation
 import CardinalMobile
 
 /// Text box customization options for 3D Secure 2 flows.
-@objcMembers public class BTThreeDSecureLaunchTextBoxCustomization: BTThreeDSecureLaunchBaseCustomization {
+@objcMembers public class BTPaymentActionThreeDSecureTextBoxCustomization: BTPaymentActionThreeDSecureBaseCustomization {
 
     // MARK: - Public Properties
 
