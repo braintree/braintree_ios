@@ -29,6 +29,7 @@
 		45DDDDA92C08FB0B00C262E5 /* PayPalMessages in Frameworks */ = {isa = PBXBuildFile; productRef = 45DDDDA82C08FB0B00C262E5 /* PayPalMessages */; };
 		62070627300A8EE100C430AA /* IdealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62070626300A8ED500C430AA /* IdealView.swift */; };
 		62240F5A2B67FE1100ECE5C9 /* TextFieldWithLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */; };
+		623D31603093DD3A00157839 /* PayLaterButton_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623D315F3093DD3100157839 /* PayLaterButton_UITests.swift */; };
 		625257C7301935CD00B69488 /* CardFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625257C6301935C800B69488 /* CardFormView.swift */; };
 		62DD4F483013E8BA002D79E7 /* CardTokenizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */; };
 		62F1F560304B5E9400C180C2 /* AmexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F1F55F304B5E9400C180C2 /* AmexView.swift */; };
@@ -162,6 +163,7 @@
 		570B93D32853A6D30041BAFE /* BraintreeCoreSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BraintreeCoreSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62070626300A8ED500C430AA /* IdealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdealView.swift; sourceTree = "<group>"; };
 		62240F592B67FE1100ECE5C9 /* TextFieldWithLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabel.swift; sourceTree = "<group>"; };
+		623D315F3093DD3100157839 /* PayLaterButton_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayLaterButton_UITests.swift; sourceTree = "<group>"; };
 		625257C6301935C800B69488 /* CardFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFormView.swift; sourceTree = "<group>"; };
 		62DD4F473013E8B4002D79E7 /* CardTokenizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationView.swift; sourceTree = "<group>"; };
 		62F1F55F304B5E9400C180C2 /* AmexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmexView.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 		08A83F682EE8D0F10076BD28 /* Payment Button UI Tests */ = {
 			isa = PBXGroup;
 			children = (
+				623D315F3093DD3100157839 /* PayLaterButton_UITests.swift */,
 				08A83F692EE9AB5A0076BD28 /* VenmoButton_UITests.swift */,
 				08A83F6B2EE9CC730076BD28 /* PayPalButton_UITests.swift */,
 			);
@@ -698,9 +701,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -774,6 +781,7 @@
 				BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */,
 				08A83F6C2EE9CC730076BD28 /* PayPalButton_UITests.swift in Sources */,
 				A9C4E07B24EC290F002F6FF2 /* PayPal_Vault_UITests.swift in Sources */,
+				623D31603093DD3A00157839 /* PayLaterButton_UITests.swift in Sources */,
 				A9C4E07D24EC297F002F6FF2 /* ThreeDSecure_V2_UITests.swift in Sources */,
 				42456E3E25474B620018374E /* BTUITest.swift in Sources */,
 			);
