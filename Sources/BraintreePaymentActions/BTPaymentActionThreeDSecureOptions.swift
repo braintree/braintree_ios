@@ -7,7 +7,7 @@ import Foundation
 /// an options value built with no arguments configures Cardinal exactly as those defaults do. No
 /// Cardinal type is ever on this type's (or its leaf types') public surface.
 ///
-/// Pass this as the optional third argument when creating a `BTPaymentActionsClient` (not the
+/// Pass this as the optional second argument when creating a `BTPaymentActionsClient` (not the
 /// server-side `threeDSecureOptions` field used when creating the Payment Action, which is a
 /// different thing). It applies to every call the client makes — if the app is killed, re-create the
 /// client with the same options, since a challenge restarted with different options can mismatch
