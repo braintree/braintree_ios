@@ -1758,6 +1758,8 @@ class BTPayPalClient_Tests: XCTestCase {
         wait(for: [expectation], timeout: 1)
 
         XCTAssertTrue(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedIsEditFIFlow, false)
+        XCTAssertNil(mockAPIClient.postedButtonSessionID)
         XCTAssertEqual(mockAPIClient.postedContextType, "BA-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
         XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
@@ -1794,10 +1796,25 @@ class BTPayPalClient_Tests: XCTestCase {
         wait(for: [expectation], timeout: 1)
 
         XCTAssertFalse(mockAPIClient.postedIsVaultRequest)
+        XCTAssertEqual(mockAPIClient.postedIsEditFIFlow, false)
+        XCTAssertNil(mockAPIClient.postedButtonSessionID)
         XCTAssertEqual(mockAPIClient.postedContextType, "EC-TOKEN")
         XCTAssertEqual(mockAPIClient.postedFundingSource, "paypal")
         XCTAssertFalse(mockAPIClient.postedShouldRequestBillingAgreement)
         XCTAssertNil(mockAPIClient.postedRecurringBillingPlanType)
+    }
+
+    @MainActor
+    func testTokenize_whenCheckoutRequestIsAnEditBillingAgreement_setsEditFIFlowAnalyticsTags() async {
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
+
+        _ = try? await checkoutRequest.withEditBillingAgreement(buttonSessionID: "fake-button-session-id") {
+            try await payPalClient.tokenize(checkoutRequest)
+        }
+
+        XCTAssertEqual(mockAPIClient.postedIsEditFIFlow, true)
+        XCTAssertTrue(payPalClient.isEditFIFlow)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, "fake-button-session-id")
     }
     
     func testTokenize_whenCheckoutCreditRequest_setsCorrectAnalyticsTags() {

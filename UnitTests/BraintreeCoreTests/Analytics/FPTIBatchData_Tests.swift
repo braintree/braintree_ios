@@ -18,6 +18,7 @@ final class FPTIBatchData_Tests: XCTestCase {
     let eventParams = [
         FPTIBatchData.Event(
             applicationState: "active",
+            buttonSessionID: "fake-button-session-id",
             connectionStartTime: 123,
             contextID: "fake-order-id",
             contextType: "BA-TOKEN",
@@ -27,9 +28,20 @@ final class FPTIBatchData_Tests: XCTestCase {
             errorDescription: "fake-error-description-1",
             eventName: "fake-event-1", 
             isConfigFromCache: false,
+            isEditFIFlow: true,
             isVaultRequest: false,
             linkType: LinkType.universal.rawValue,
+            messageType: "PLST_SQ",
+            renderedEditTag: true,
+            renderedLabel: true,
+            renderedLogo: false,
+            renderedMessageSlot: false,
+            renderTrigger: "sticky_fi",
             requestStartTime: 456,
+            savedMethodBrand: "VISA",
+            savedMethodID: "CC-123",
+            savedMethodType: "CARD",
+            shownContent: "funding_instrument",
             startTime: 999888777666
         ),
         FPTIBatchData.Event(
@@ -128,6 +140,27 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
         XCTAssertEqual(eventParams[0]["application_state"] as? String, "active")
+        XCTAssertEqual(eventParams[0]["button_session_id"] as? String, "fake-button-session-id")
+        XCTAssertNil(eventParams[1]["button_session_id"])
+        XCTAssertEqual(eventParams[0]["saved_method_brand"] as? String, "VISA")
+        XCTAssertNil(eventParams[1]["saved_method_brand"])
+        XCTAssertEqual(eventParams[0]["saved_method_id"] as? String, "CC-123")
+        XCTAssertNil(eventParams[1]["saved_method_id"])
+        XCTAssertEqual(eventParams[0]["saved_method_type"] as? String, "CARD")
+        XCTAssertNil(eventParams[1]["saved_method_type"])
+        XCTAssertEqual(eventParams[0]["is_edit_fi"] as? Bool, true)
+        XCTAssertNil(eventParams[1]["is_edit_fi"])
+        XCTAssertEqual(eventParams[0]["presentment_message_type"] as? String, "PLST_SQ")
+        XCTAssertNil(eventParams[1]["presentment_message_type"])
+        XCTAssertEqual(eventParams[0]["rendered_edit_tag"] as? Bool, true)
+        XCTAssertEqual(eventParams[0]["rendered_label"] as? Bool, true)
+        XCTAssertEqual(eventParams[0]["rendered_logo"] as? Bool, false)
+        XCTAssertEqual(eventParams[0]["rendered_message_slot"] as? Bool, false)
+        XCTAssertNil(eventParams[1]["rendered_logo"])
+        XCTAssertEqual(eventParams[0]["render_trigger"] as? String, "sticky_fi")
+        XCTAssertNil(eventParams[1]["render_trigger"])
+        XCTAssertEqual(eventParams[0]["shown_content"] as? String, "funding_instrument")
+        XCTAssertNil(eventParams[1]["shown_content"])
     }
 }
 

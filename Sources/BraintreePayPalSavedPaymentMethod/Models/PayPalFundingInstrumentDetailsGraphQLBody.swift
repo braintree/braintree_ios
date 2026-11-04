@@ -14,7 +14,8 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
         fundingInstrumentType: PayPalFundingInstrumentFetchType,
         paymentMethodIDJWT: String?,
         orderID: String?,
-        merchantAccountID: String?
+        merchantAccountID: String?,
+        buttonSessionID: String
     ) {
         query = """
             query PaypalFundingInstrumentDetails($input: PayPalFundingInstrumentDetailsInput!) {
@@ -24,11 +25,13 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
                         editable
                     }
                     paymentMethods {
+                        id
                         label
                         imageUrl
                         lastDigits
                         type
                         subtype
+                        cardBrand
                     }
                 }
             }
@@ -38,7 +41,8 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
                 fundingInstrumentType: fundingInstrumentType.rawValue,
                 paymentMethodIDJWT: paymentMethodIDJWT,
                 orderID: orderID,
-                merchantAccountID: merchantAccountID
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
             )
         )
     }
@@ -58,6 +62,7 @@ struct PayPalFundingInstrumentDetailsInput: Encodable {
     let paymentMethodIDJWT: String?
     let orderID: String?
     let merchantAccountID: String?
+    let buttonSessionID: String
 
     enum CodingKeys: String, CodingKey {
         case fundingInstrumentType
@@ -66,5 +71,6 @@ struct PayPalFundingInstrumentDetailsInput: Encodable {
         case paymentMethodIDJWT = "paymentMethodIdJwt"
         case orderID = "orderId"
         case merchantAccountID = "merchantAccountId"
+        case buttonSessionID = "buttonSessionId"
     }
 }

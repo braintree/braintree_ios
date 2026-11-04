@@ -157,6 +157,7 @@ import UIKit
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
+        buttonSessionID: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,
         contextType: String? = nil,
@@ -166,19 +167,31 @@ import UIKit
         errorDescription: String? = nil,
         fundingSource: String? = nil,
         isConfigFromCache: Bool? = nil,
+        isEditFIFlow: Bool? = nil,
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
+        messageType: String? = nil,
         pageType: String? = nil,
         recurringBillingPlanType: String? = nil,
+        renderedEditTag: Bool? = nil,
+        renderedLabel: Bool? = nil,
+        renderedLogo: Bool? = nil,
+        renderedMessageSlot: Bool? = nil,
+        renderTrigger: String? = nil,
+        savedMethodBrand: String? = nil,
+        savedMethodID: String? = nil,
+        savedMethodType: String? = nil,
         shopperSessionID: String? = nil,
-        shouldRequestBillingAgreement: Bool? = nil
+        shouldRequestBillingAgreement: Bool? = nil,
+        shownContent: String? = nil
     ) {
         analyticsService?.sendAnalyticsEvent(
             FPTIBatchData.Event(
                 applicationState: applicationState,
                 appSwitchURL: appSwitchURL,
                 buttonOrder: buttonOrder,
+                buttonSessionID: buttonSessionID,
                 buttonType: buttonType,
                 contextID: contextID,
                 contextType: contextType,
@@ -189,13 +202,24 @@ import UIKit
                 eventName: eventName,
                 fundingSource: fundingSource,
                 isConfigFromCache: isConfigFromCache,
+                isEditFIFlow: isEditFIFlow,
                 isVaultRequest: isVaultRequest,
                 linkType: linkType?.rawValue,
                 merchantExperiment: merchantExperiment,
+                messageType: messageType,
                 pageType: pageType,
                 recurringBillingPlanType: recurringBillingPlanType,
+                renderedEditTag: renderedEditTag,
+                renderedLabel: renderedLabel,
+                renderedLogo: renderedLogo,
+                renderedMessageSlot: renderedMessageSlot,
+                renderTrigger: renderTrigger,
+                savedMethodBrand: savedMethodBrand,
+                savedMethodID: savedMethodID,
+                savedMethodType: savedMethodType,
                 shopperSessionID: shopperSessionID,
-                shouldRequestBillingAgreement: shouldRequestBillingAgreement
+                shouldRequestBillingAgreement: shouldRequestBillingAgreement,
+                shownContent: shownContent
             )
         )
     }
