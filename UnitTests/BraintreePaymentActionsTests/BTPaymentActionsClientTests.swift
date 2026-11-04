@@ -6,7 +6,7 @@ import CardinalMobile
 
 class BTPaymentActionsClient_Tests: XCTestCase {
 
-    let authorization: String = "development_tokenization_key"
+    let authorization: String = TestClientTokenFactory.token(withVersion: 3)
     var mockAPIClient: MockAPIClient!
     var sut: BTPaymentActionsClient!
 
@@ -39,6 +39,32 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         let client = BTPaymentActionsClient(authorization: authorization, threeDSecureLaunchOptions: options)
 
         XCTAssertEqual(client.threeDSecureLaunchOptions.uiType, .native)
+    }
+
+    // MARK: - Client Token Requirement
+
+    func testSubmitForPaymentAction_tokenizationKey_throwsClientTokenRequired() async {
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        sut.apiClient = mockAPIClient
+
+        do {
+            _ = try await sut.submitForPaymentAction(MockPaymentActionRequest())
+            XCTFail("Expected clientTokenRequired to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .clientTokenRequired)
+        }
+    }
+
+    func testHandleNextAction_tokenizationKey_throwsClientTokenRequired() async {
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")
+        sut.apiClient = mockAPIClient
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected clientTokenRequired to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .clientTokenRequired)
+        }
     }
 
     // MARK: - Request Posting
@@ -531,6 +557,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
                 )
             )
         )
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentActionAnalytics.signalSucceeded))
     }
 
     func testSignalCustomerActionComplete_readyForConfirmation_clearsNextAction() async throws {
@@ -581,6 +608,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         } catch {
             XCTAssertEqual(error as NSError, mockError)
         }
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentActionAnalytics.signalFailed))
     }
 
     // MARK: - handleNextAction
@@ -598,6 +627,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .serverActionRequired)
         XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.isEmpty, "No 3DS analytics should fire when 3DS is never engaged")
     }
 
     func testHandleNextAction_requiresCustomerAction_unrecognizedNextAction_returnsCustomerActionRequired() async throws {
@@ -647,6 +677,13 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .serverActionRequired)
         XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.ddcStarted,
+            BTPaymentActionAnalytics.ddcSucceeded,
+            BTPaymentActionAnalytics.signalSucceeded,
+            BTPaymentActionAnalytics.verifySucceeded
+        ])
     }
 
     func testHandleNextAction_customThreeDSecureLaunchOptions_appliedToCardinalSession() async throws {
@@ -710,6 +747,213 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(result.type, .threeDSecureCanceled)
         XCTAssertEqual(result.id, "payment-action-id")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.challengePresented,
+            BTPaymentActionAnalytics.verifyCanceled
+        ])
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeTimedOut_firesVerifyFailedNotCanceled() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .timeout
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureChallenge",
+                        "acsUrl": "https://acs.example.com",
+                        "challengePayload": "payload-data",
+                        "mpiTransactionId": "mpi-1"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .threeDSecureCanceled)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.challengePresented,
+            BTPaymentActionAnalytics.verifyFailed
+        ])
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeSucceeded_firesChallengeAndVerifySucceeded() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .success
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBodies = [
+            BTJSON(value: [
+                "data": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureChallenge",
+                            "acsUrl": "https://acs.example.com",
+                            "challengePayload": "payload-data",
+                            "mpiTransactionId": "mpi-1"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ]),
+            BTJSON(value: [
+                "data": [
+                    "signalCustomerActionComplete": [
+                        "paymentAction": ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ])
+        ]
+
+        let result = try await sut.handleNextAction()
+
+        XCTAssertEqual(result.type, .completed)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.challengePresented,
+            BTPaymentActionAnalytics.challengeSucceeded,
+            BTPaymentActionAnalytics.signalSucceeded,
+            BTPaymentActionAnalytics.verifySucceeded
+        ])
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeFailure_firesChallengeFailedButStillAdvances() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .failure
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBodies = [
+            BTJSON(value: [
+                "data": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureChallenge",
+                            "acsUrl": "https://acs.example.com",
+                            "challengePayload": "payload-data",
+                            "mpiTransactionId": "mpi-1"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ]),
+            BTJSON(value: [
+                "data": [
+                    "signalCustomerActionComplete": [
+                        "paymentAction": ["id": "payment-action-id", "status": "SUCCEEDED"] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ])
+        ]
+
+        let result = try await sut.handleNextAction()
+
+        // A Cardinal-reported `.failure` still signals the server with a JWT — the server makes the
+        // final liability-shift call — so the overall drive loop still advances/succeeds even though
+        // `challengeFailed` fires for analytics.
+        XCTAssertEqual(result.type, .completed)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.challengePresented,
+            BTPaymentActionAnalytics.challengeFailed,
+            BTPaymentActionAnalytics.signalSucceeded,
+            BTPaymentActionAnalytics.verifySucceeded
+        ])
+    }
+
+    func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeError_firesChallengeFailedAndVerifyFailed() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        mockCardinalSession.actionCodeToDeliver = .error
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "paymentAction": [
+                    "id": "payment-action-id",
+                    "status": "REQUIRES_CUSTOMER_ACTION",
+                    "nextAction": [
+                        "__typename": "PaymentActionThreeDSecureChallenge",
+                        "acsUrl": "https://acs.example.com",
+                        "challengePayload": "payload-data",
+                        "mpiTransactionId": "mpi-1"
+                    ] as [String: Any]
+                ] as [String: Any]
+            ]
+        ])
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected cardinalChallengeFailed to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .cardinalChallengeFailed)
+        }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.challengePresented,
+            BTPaymentActionAnalytics.challengeFailed,
+            BTPaymentActionAnalytics.verifyFailed
+        ])
+    }
+
+    func testHandleNextAction_versionAnomalyWhileThreeDSecureEngaged_firesVersionAnomalyAndVerifyFailed() async throws {
+        let mockCardinalSession = MockCardinalSession()
+        sut.cardinalSession = mockCardinalSession
+
+        mockAPIClient.cannedResponseBodies = [
+            BTJSON(value: [
+                "data": [
+                    "paymentAction": [
+                        "id": "payment-action-id",
+                        "version": 2,
+                        "status": "REQUIRES_CUSTOMER_ACTION",
+                        "nextAction": [
+                            "__typename": "PaymentActionThreeDSecureAuthentication",
+                            "bin": "401288"
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ]),
+            BTJSON(value: [
+                "data": [
+                    "signalCustomerActionComplete": [
+                        "paymentAction": [
+                            "id": "payment-action-id",
+                            "version": 1,
+                            "status": "REQUIRES_CUSTOMER_ACTION",
+                            "nextAction": [
+                                "__typename": "PaymentActionThreeDSecureAuthentication",
+                                "bin": "401288"
+                            ] as [String: Any]
+                        ] as [String: Any]
+                    ] as [String: Any]
+                ]
+            ])
+        ]
+
+        do {
+            _ = try await sut.handleNextAction()
+            XCTFail("Expected versionAnomaly to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .versionAnomaly)
+        }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.verifyStarted,
+            BTPaymentActionAnalytics.ddcStarted,
+            BTPaymentActionAnalytics.ddcSucceeded,
+            BTPaymentActionAnalytics.signalSucceeded,
+            BTPaymentActionAnalytics.versionAnomaly,
+            BTPaymentActionAnalytics.verifyFailed
+        ])
     }
 
     func testHandleNextAction_threeDSecureChallengeMissingMpiTransactionID_throwsWithoutCallingCardinal() async throws {
@@ -739,6 +983,31 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         }
 
         XCTAssertEqual(mockCardinalSession.continueWithCallCount, 0)
+    }
+
+    // `ddcFailed` can only be exercised by forcing the provider into an already-in-progress state
+    // directly — `collectDeviceData()`'s other failure mode (`cardinalSetupValidationFailed`) isn't
+    // reachable from `MockCardinalSession`, matching the same documented limitation as the provider's
+    // own unit tests.
+    @MainActor
+    func testResolveCustomerAction_threeDSecureAuthenticationAlreadyInProgress_firesDdcFailed() async throws {
+        let provider = try await sut.makeThreeDSecureProvider()
+        provider.state = .collectingDeviceData
+
+        do {
+            _ = try await sut.resolveCustomerAction(
+                .threeDSecureAuthentication(BTPaymentActionThreeDSecureAuthenticationNextAction(bin: "401288")),
+                using: provider
+            )
+            XCTFail("Expected cardinalInteractionAlreadyInProgress to be thrown")
+        } catch {
+            XCTAssertEqual(error as? BTPaymentActionError, .cardinalInteractionAlreadyInProgress)
+        }
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
+            BTPaymentActionAnalytics.ddcStarted,
+            BTPaymentActionAnalytics.ddcFailed
+        ])
     }
 
     func testHandleNextAction_readyForConfirmation_returnsServerActionRequiredConfirm() async throws {
