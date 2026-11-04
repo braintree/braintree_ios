@@ -64,4 +64,26 @@ final class PayLaterButton_UITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].waitForExistence(timeout: 2))
     }
+    
+    func testPayLaterButton_reenabledAfterCancel() {
+        let button = app.buttons["PayPal Pay Later"]
+        XCTAssertTrue(button.waitForExistence(timeout: 5))
+
+        button.tap()
+        XCTAssertFalse(button.isEnabled, "Button should be disabled while loading")
+
+        // Dismiss the auth consent dialog instead of continuing
+        XCTAssertTrue(
+            springboard.buttons["Cancel"].waitForExistence(timeout: 20.0),
+            "Auth dialog 'Cancel' button did not appear"
+        )
+        springboard.buttons["Cancel"].tap()
+
+        // Re-enabling is async, so wait for it instead of asserting immediately
+        expectation(for: NSPredicate(format: "isEnabled == true"), evaluatedWith: button)
+        waitForExpectations(timeout: 10)
+
+        XCTAssertEqual(button.identifier, "ready", "Button should return to ready state after cancel")
+        XCTAssertTrue(button.isHittable, "Button should be tappable again")
+    }
 }
