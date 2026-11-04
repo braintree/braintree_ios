@@ -30,6 +30,16 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Button Session ID
+
+    func testButtonSessionID_isANewDashlessUUIDForEachClient() {
+        let other = PayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
+
+        XCTAssertEqual(sut.buttonSessionID.count, 32)
+        XCTAssertFalse(sut.buttonSessionID.contains("-"))
+        XCTAssertNotEqual(sut.buttonSessionID, other.buttonSessionID)
+    }
+
     // MARK: - Request
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_postsQueryWithPaymentMethodIDJWT() async throws {
@@ -48,6 +58,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(input["osType"] as? String, "IOS")
         XCTAssertEqual(input["paymentMethodIdJwt"] as? String, "fake-payment-method-id-jwt")
         XCTAssertEqual(input["merchantAccountId"] as? String, "fake-merchant-account-id")
+        XCTAssertEqual(input["buttonSessionId"] as? String, sut.buttonSessionID)
         XCTAssertNil(input["orderId"])
     }
 
@@ -63,6 +74,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(input["orderId"] as? String, "fake-order-id")
         XCTAssertNil(input["paymentMethodIdJwt"])
         XCTAssertNil(input["merchantAccountId"])
+        XCTAssertEqual(input["buttonSessionId"] as? String, sut.buttonSessionID)
     }
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_ignoresOrderID() async throws {
@@ -224,6 +236,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             mockAPIClient.postedAnalyticsEvents,
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded]
         )
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
         XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
         XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
@@ -239,6 +252,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
         )
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
     }
 
     func testFetchPaymentMethod_whenAuthorizationIsATokenizationKey_sendsStickyFIFetchFailedEvent() async {
@@ -253,6 +267,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             mockAPIClient.postedAnalyticsEvents,
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
         )
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.invalidAuthorization.localizedDescription)
     }
 
@@ -268,6 +283,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed]
         )
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.missingPaymentMethodIDJWT.localizedDescription)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
     }
 
     func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementSucceeds_sendsFIRefreshEventsWithOrderID() async throws {
@@ -280,6 +296,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded]
         )
         XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
         XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
         XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
@@ -295,6 +312,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, PayPalSavedPaymentMethodAnalytics.fiRefreshFailed]
         )
         XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
         XCTAssertNotNil(mockAPIClient.postedErrorDescription)
     }
 
@@ -310,6 +328,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         XCTAssertEqual(nonce.nonce, "fake-nonce")
         XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertEqual(mockPayPalClient.buttonSessionIDDuringTokenize, sut.buttonSessionID)
         XCTAssertFalse(request.editBillingAgreement)
     }
 

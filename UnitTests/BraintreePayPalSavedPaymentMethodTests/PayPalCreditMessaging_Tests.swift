@@ -260,6 +260,7 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
             mockAPIClient.postedAnalyticsEvents,
             [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded]
         )
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
     }
 
     func testFetchCreditPresentmentMessages_whenTheRequestFails_sendsFetchFailedEvent() async {
@@ -272,6 +273,7 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
             [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed]
         )
         XCTAssertEqual(mockAPIClient.postedErrorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
     }
 
     // MARK: - Helpers

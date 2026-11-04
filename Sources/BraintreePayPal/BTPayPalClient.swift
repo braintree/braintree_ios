@@ -49,6 +49,9 @@ import BraintreeDataCollector
     /// True if `tokenize()` was called from the saved payment method edit flow. Stored because
     /// `editBillingAgreement` is only set during the call, not when the buyer returns.
     var isEditFIFlow: Bool = false
+
+    /// The saved payment method component's render ID for an edit, stored for the same reason as `isEditFIFlow`.
+    var buttonSessionID: String?
     
     /// Tracks if we have already called `UIApplication.shared.open` and have an active session in progress
     var hasOpenedURL = false
@@ -170,6 +173,7 @@ import BraintreeDataCollector
     public func tokenize(_ request: BTPayPalVaultRequest) async throws -> BTPayPalAccountNonce {
         isVaultRequest = true
         isEditFIFlow = false
+        buttonSessionID = nil
         contextType = "BA-TOKEN"
         fundingSource = getFundingSource(from: request)
         shouldRequestBillingAgreement = false
@@ -217,6 +221,7 @@ import BraintreeDataCollector
     public func tokenize(_ request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         isVaultRequest = false
         isEditFIFlow = request.editBillingAgreement
+        buttonSessionID = EditBillingAgreementScope.buttonSessionID
         contextType = "EC-TOKEN"
         fundingSource = getFundingSource(from: request)
         shouldRequestBillingAgreement = request.requestBillingAgreement
@@ -237,6 +242,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.handleReturnStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -315,6 +321,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchSucceeded,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                buttonSessionID: buttonSessionID,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -332,6 +339,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.appSwitchFailed,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: url,
+                buttonSessionID: buttonSessionID,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -352,6 +360,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.defaultBrowserStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -380,6 +389,7 @@ import BraintreeDataCollector
             eventName,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: url,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -444,6 +454,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeStarted,
             applicationState: UIApplication.shared.applicationStateString,
+            buttonSessionID: buttonSessionID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
             fundingSource: fundingSource?.rawValue,
@@ -575,6 +586,7 @@ import BraintreeDataCollector
                 BTPayPalAnalytics.tokenizeDuplicateRequest,
                 applicationState: UIApplication.shared.applicationStateString,
                 appSwitchURL: payPalAppRedirectURL,
+                buttonSessionID: buttonSessionID,
                 contextID: contextID,
                 contextType: contextType,
                 didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -597,6 +609,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.appSwitchStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: payPalAppRedirectURL,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -637,6 +650,7 @@ import BraintreeDataCollector
             BTPayPalAnalytics.browserPresentationStarted,
             applicationState: UIApplication.shared.applicationStateString,
             appSwitchURL: appSwitchURL,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -699,6 +713,7 @@ import BraintreeDataCollector
                         BTPayPalAnalytics.browserPresentationSucceeded,
                         applicationState: UIApplication.shared.applicationStateString,
                         appSwitchURL: appSwitchURL,
+                        buttonSessionID: buttonSessionID,
                         contextID: contextID,
                         contextType: contextType,
                         didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -716,6 +731,7 @@ import BraintreeDataCollector
                         BTPayPalAnalytics.browserPresentationFailed,
                         applicationState: UIApplication.shared.applicationStateString,
                         appSwitchURL: appSwitchURL,
+                        buttonSessionID: buttonSessionID,
                         contextID: contextID,
                         contextType: contextType,
                         didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -737,6 +753,7 @@ import BraintreeDataCollector
                         BTPayPalAnalytics.browserLoginAlertCanceled,
                         applicationState: UIApplication.shared.applicationStateString,
                         appSwitchURL: appSwitchURL,
+                        buttonSessionID: buttonSessionID,
                         contextID: contextID,
                         contextType: contextType,
                         didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -760,6 +777,7 @@ import BraintreeDataCollector
                     BTPayPalAnalytics.tokenizeDuplicateRequest,
                     applicationState: UIApplication.shared.applicationStateString,
                     appSwitchURL: appSwitchURL,
+                    buttonSessionID: buttonSessionID,
                     contextID: contextID,
                     contextType: contextType,
                     didEnablePayPalAppSwitch: payPalRequest?.enablePayPalAppSwitch,
@@ -809,6 +827,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeSucceeded,
             applicationState: UIApplication.shared.applicationStateString,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -828,6 +847,7 @@ import BraintreeDataCollector
         apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.tokenizeFailed,
             applicationState: UIApplication.shared.applicationStateString,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },
@@ -846,6 +866,7 @@ import BraintreeDataCollector
     private func notifyCancel() {
         self.apiClient.sendAnalyticsEvent(
             BTPayPalAnalytics.browserLoginCanceled,
+            buttonSessionID: buttonSessionID,
             contextID: contextID,
             contextType: contextType,
             correlationID: contextID.flatMap { clientMetadataIDs[$0] },

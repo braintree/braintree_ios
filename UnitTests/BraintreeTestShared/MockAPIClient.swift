@@ -30,6 +30,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedErrorDescription: String? = nil
     public var postedContextType: String? = nil
     public var postedFundingSource: String? = nil
+    public var postedButtonSessionID: String? = nil
     public var postedSavedMethodBrand: String? = nil
     public var postedSavedMethodID: String? = nil
     public var postedSavedMethodType: String? = nil
@@ -106,6 +107,7 @@ public class MockAPIClient: BTAPIClient {
         applicationState: String? = nil,
         appSwitchURL: URL? = nil,
         buttonOrder: String? = nil,
+        buttonSessionID: String? = nil,
         buttonType: String? = nil,
         contextID: String? = nil,
         contextType: String? = nil,
@@ -151,6 +153,7 @@ public class MockAPIClient: BTAPIClient {
         postedErrorDescription = errorDescription
         postedContextType = contextType
         postedFundingSource = fundingSource
+        postedButtonSessionID = buttonSessionID
         postedSavedMethodBrand = savedMethodBrand
         postedSavedMethodID = savedMethodID
         postedSavedMethodType = savedMethodType

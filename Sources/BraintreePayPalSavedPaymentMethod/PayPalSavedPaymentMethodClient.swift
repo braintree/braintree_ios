@@ -20,6 +20,10 @@ final class PayPalSavedPaymentMethodClient {
     /// Exposed for testing to inject a mock BTPayPalClient
     var payPalClient: BTPayPalClient
 
+    /// A new ID for each render of the component, sent on the FI fetch and on every analytics event so they can be
+    /// linked with PayPal's own events. Created once because the view model, and so this client, lives for one render.
+    let buttonSessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+
     // MARK: - Initializer
 
     /// Creates a `PayPalSavedPaymentMethodClient`
@@ -77,7 +81,7 @@ final class PayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> PayPalCreditMessagingResult {
-        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted)
+        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, buttonSessionID: buttonSessionID)
         do {
             try validateClientToken()
 
@@ -97,11 +101,12 @@ final class PayPalSavedPaymentMethodClient {
                 throw PayPalSavedPaymentMethodError.missingPreferredMessage
             }
 
-            apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded)
+            apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded, buttonSessionID: buttonSessionID)
             return result
         } catch {
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,
+                buttonSessionID: buttonSessionID,
                 errorDescription: error.localizedDescription
             )
             throw error
@@ -117,7 +122,7 @@ final class PayPalSavedPaymentMethodClient {
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         _ = try paymentMethodIDJWT()
 
-        return try await request.withEditBillingAgreement {
+        return try await request.withEditBillingAgreement(buttonSessionID: buttonSessionID) {
             try await payPalClient.tokenize(request)
         }
     }
@@ -125,7 +130,7 @@ final class PayPalSavedPaymentMethodClient {
     // MARK: - Private Methods
 
     private func fetchBuyerDefaultBillingAgreement(merchantAccountID: String?) async throws -> PayPalSavedPaymentMethodSummary {
-        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted)
+        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, buttonSessionID: buttonSessionID)
         do {
             let paymentMethodIDJWT = try self.paymentMethodIDJWT()
             let summary = try await postFundingInstrumentDetails(
@@ -133,11 +138,13 @@ final class PayPalSavedPaymentMethodClient {
                     fundingInstrumentType: .buyerDefaultBillingAgreement,
                     paymentMethodIDJWT: paymentMethodIDJWT,
                     orderID: nil,
-                    merchantAccountID: merchantAccountID
+                    merchantAccountID: merchantAccountID,
+                    buttonSessionID: buttonSessionID
                 )
             )
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded,
+                buttonSessionID: buttonSessionID,
                 savedMethodBrand: summary.paymentMethods.first?.cardBrand,
                 savedMethodID: summary.paymentMethods.first?.id,
                 savedMethodType: summary.paymentMethods.first?.type?.rawValue
@@ -146,6 +153,7 @@ final class PayPalSavedPaymentMethodClient {
         } catch {
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed,
+                buttonSessionID: buttonSessionID,
                 errorDescription: error.localizedDescription
             )
             throw error
@@ -156,7 +164,11 @@ final class PayPalSavedPaymentMethodClient {
         orderID: String?,
         merchantAccountID: String?
     ) async throws -> PayPalSavedPaymentMethodSummary {
-        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, contextID: orderID)
+        apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fiRefreshStarted,
+            buttonSessionID: buttonSessionID,
+            contextID: orderID
+        )
         do {
             try validateClientToken()
 
@@ -169,11 +181,13 @@ final class PayPalSavedPaymentMethodClient {
                     fundingInstrumentType: .buyerUpdatedBillingAgreement,
                     paymentMethodIDJWT: nil,
                     orderID: orderID,
-                    merchantAccountID: merchantAccountID
+                    merchantAccountID: merchantAccountID,
+                    buttonSessionID: buttonSessionID
                 )
             )
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded,
+                buttonSessionID: buttonSessionID,
                 contextID: orderID,
                 savedMethodBrand: summary.paymentMethods.first?.cardBrand,
                 savedMethodID: summary.paymentMethods.first?.id,
@@ -183,6 +197,7 @@ final class PayPalSavedPaymentMethodClient {
         } catch {
             apiClient.sendAnalyticsEvent(
                 PayPalSavedPaymentMethodAnalytics.fiRefreshFailed,
+                buttonSessionID: buttonSessionID,
                 contextID: orderID,
                 errorDescription: error.localizedDescription
             )
