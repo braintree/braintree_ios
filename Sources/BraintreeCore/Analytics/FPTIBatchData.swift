@@ -35,6 +35,8 @@ struct FPTIBatchData: Codable {
         let appSwitchURL: String?
         /// The order or ranking in which payment buttons appear.
         let buttonOrder: String?
+        /// An ID unique to each render of the saved payment method component.
+        let buttonSessionID: String?
         /// The type of button displayed or presented
         let buttonType: String?
         /// UTC millisecond timestamp when a networking task started establishing a TCP connection. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
@@ -106,6 +108,7 @@ struct FPTIBatchData: Codable {
             applicationState: String? = nil,
             appSwitchURL: URL? = nil,
             buttonOrder: String? = nil,
+            buttonSessionID: String? = nil,
             buttonType: String? = nil,
             connectionStartTime: Int? = nil,
             contextID: String? = nil,
@@ -143,6 +146,7 @@ struct FPTIBatchData: Codable {
             self.applicationState = applicationState
             self.appSwitchURL = appSwitchURL?.absoluteString
             self.buttonOrder = buttonOrder
+            self.buttonSessionID = buttonSessionID
             self.buttonType = buttonType
             self.connectionStartTime = connectionStartTime
             self.contextID = contextID
@@ -182,6 +186,7 @@ struct FPTIBatchData: Codable {
             case applicationState = "application_state"
             case appSwitchURL = "url"
             case buttonOrder = "button_position"
+            case buttonSessionID = "button_session_id"
             case buttonType = "button_type"
             case connectionStartTime = "connect_start_time"
             case contextID = "context_id"

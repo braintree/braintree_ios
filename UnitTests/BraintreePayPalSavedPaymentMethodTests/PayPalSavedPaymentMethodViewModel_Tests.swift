@@ -588,6 +588,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.editSelected)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
         XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
         XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
@@ -600,6 +601,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.learnMoreTapped()
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedMessageType, "PLST_SQ")
     }
 
@@ -612,6 +614,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle(showPayPalLabel: false))
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.renderSucceeded)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedRenderTrigger, "sticky_fi")
         XCTAssertEqual(mockAPIClient.postedShownContent, "funding_instrument")
         XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
@@ -634,6 +637,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.renderSucceeded)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedRenderTrigger, "fi_from_approved_checkout")
         XCTAssertEqual(mockAPIClient.postedContextID, "fake-order-id")
     }
@@ -668,6 +672,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.creditMessageDidRender()
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded)
+        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
         XCTAssertEqual(mockAPIClient.postedMessageType, "PLST_SQ")
     }
 

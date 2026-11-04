@@ -18,6 +18,7 @@ final class FPTIBatchData_Tests: XCTestCase {
     let eventParams = [
         FPTIBatchData.Event(
             applicationState: "active",
+            buttonSessionID: "fake-button-session-id",
             connectionStartTime: 123,
             contextID: "fake-order-id",
             contextType: "BA-TOKEN",
@@ -139,6 +140,8 @@ final class FPTIBatchData_Tests: XCTestCase {
         XCTAssertEqual(eventParams[0]["request_start_time"] as? Int, 456)
         XCTAssertNil(eventParams[1]["request_start_time"])
         XCTAssertEqual(eventParams[0]["application_state"] as? String, "active")
+        XCTAssertEqual(eventParams[0]["button_session_id"] as? String, "fake-button-session-id")
+        XCTAssertNil(eventParams[1]["button_session_id"])
         XCTAssertEqual(eventParams[0]["saved_method_brand"] as? String, "VISA")
         XCTAssertNil(eventParams[1]["saved_method_brand"])
         XCTAssertEqual(eventParams[0]["saved_method_id"] as? String, "CC-123")

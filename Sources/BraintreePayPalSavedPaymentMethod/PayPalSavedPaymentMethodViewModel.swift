@@ -238,6 +238,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard case .idle = editPhase else { return }
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.editSelected,
+            buttonSessionID: fetchClient?.buttonSessionID,
             savedMethodBrand: instrument?.cardBrand,
             savedMethodID: instrument?.id,
             savedMethodType: instrument?.type?.rawValue
@@ -294,6 +295,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let learnMore = creditMessage?.learnMore else { return }
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected,
+            buttonSessionID: fetchClient?.buttonSessionID,
             messageType: creditMessage?.messageType
         )
 
@@ -325,6 +327,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.renderSucceeded,
+            buttonSessionID: fetchClient?.buttonSessionID,
             contextID: approvedOrderID,
             renderedEditTag: renderedEditTag,
             renderedLabel: style.showPayPalLabel,
@@ -344,6 +347,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
+            buttonSessionID: fetchClient?.buttonSessionID,
             messageType: visibleCreditMessage.messageType
         )
     }
