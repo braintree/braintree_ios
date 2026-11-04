@@ -25,13 +25,30 @@ import BraintreeCore
     /// Tracks whether a `handleNextAction` drive loop is already in flight on this client instance.
     var isHandlingNextAction = false
 
+    /// Options customizing the 3D Secure challenge presented during the Payment Actions drive path. Applies to
+    /// every call this client makes — create a new client with the same options if the app is killed.
+    let threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions
+
     // MARK: - Initializer
-    
+
     /// Creates a Payment Actions Client.
     /// - Parameter authorization: A valid client token or tokenization key used to authorize API calls.
     @objc(initWithAuthorization:)
     public init(authorization: String) {
         self.apiClient = BTAPIClient(authorization: authorization)
+        self.threeDSecureLaunchOptions = BTPaymentActionThreeDSecureOptions()
+    }
+
+    /// Creates a Payment Actions Client with 3D Secure challenge customization.
+    /// - Parameters:
+    ///    - authorization: A valid client token or tokenization key used to authorize API calls.
+    ///    - threeDSecureLaunchOptions: Options customizing the 3D Secure challenge. Not the
+    ///    server-side `threeDSecureOptions` field used when creating the Payment Action, which is a
+    ///    different thing.
+    @objc(initWithAuthorization:threeDSecureLaunchOptions:)
+    public init(authorization: String, threeDSecureLaunchOptions: BTPaymentActionThreeDSecureOptions) {
+        self.apiClient = BTAPIClient(authorization: authorization)
+        self.threeDSecureLaunchOptions = threeDSecureLaunchOptions
     }
     
     // MARK: - Public Methods
@@ -99,8 +116,9 @@ import BraintreeCore
     /// merchant never sees an intermediate `.customerActionRequired` result for 3DS success. A
     /// `nextAction` this SDK doesn't recognize still surfaces `.customerActionRequired` immediately.
     ///
-    /// A customer-abandoned or timed-out challenge also currently maps to `.customerActionRequired`
-    /// as a placeholder — a dedicated result type for this case is added by a follow-up ticket.
+    /// A customer-abandoned or timed-out challenge surfaces `.threeDSecureCanceled` — the Payment
+    /// Action is still alive and retryable, and this is never conflated with the general `.canceled`
+    /// terminal status.
     ///
     /// A `.processing` result means the SDK's own bounded internal retries were exhausted while the
     /// Payment Action was still settling server-side — wait briefly, then call `handleNextAction` again.
@@ -123,18 +141,15 @@ import BraintreeCore
         // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
         var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
 
+        // Not `[weak self]`: `handler` is a local value that never outlives this call, so there's no
+        // stored reference or retain cycle to break, and `self` is guaranteed alive for the full
+        // duration of this already-executing instance method — a `self == nil` branch here would be
+        // unreachable dead code on a public error enum.
         let handler = NextActionHandler(
-            fetchPaymentAction: { [weak self] in
-                guard let self else {
-                    throw BTPaymentActionError.deallocated
-                }
-                return try await self.getPaymentAction()
+            fetchPaymentAction: {
+                try await self.getPaymentAction()
             },
-            resolveCustomerAction: { [weak self] nextAction in
-                guard let self else {
-                    throw BTPaymentActionError.deallocated
-                }
-
+            resolveCustomerAction: { nextAction in
                 let provider: BTPaymentActionThreeDSecureProvider
                 if let existingThreeDSecureProvider = threeDSecureProvider {
                     provider = existingThreeDSecureProvider
@@ -151,9 +166,7 @@ import BraintreeCore
         case .paymentAction(let paymentAction):
             return result(from: paymentAction)
         case .threeDSecureCanceled(let id):
-            // TODO: map to the dedicated BTPaymentActionResultType case the customer-action public
-            // surface ticket adds, instead of reusing .customerActionRequired.
-            return BTPaymentActionResult(type: .customerActionRequired, id: id)
+            return BTPaymentActionResult(type: .threeDSecureCanceled, id: id)
         }
     }
 
@@ -265,6 +278,7 @@ import BraintreeCore
         let configuration = try await apiClient.fetchOrReturnRemoteConfiguration()
         return try await BTPaymentActionThreeDSecureProvider(
             configuration: configuration,
+            threeDSecureLaunchOptions: threeDSecureLaunchOptions,
             cardinalSession: cardinalSession,
             applicationStateProvider: applicationStateProvider
         )
@@ -291,7 +305,7 @@ import BraintreeCore
         case .expired:
             return BTPaymentActionResult(type: .expired, id: paymentAction.id)
         case .unknown:
-            return BTPaymentActionResult(type: .unknown, id: paymentAction.id)
+            return BTPaymentActionResult(type: .unrecognized, id: paymentAction.id)
         }
     }
 }
