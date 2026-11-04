@@ -302,20 +302,22 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Called when `fiState` changes on screen. Reports the settled state as a render; the skeleton is not one.
     func fiDidRender(style: PayPalSavedPaymentMethodViewStyle) {
-        let shownContent: String
+        let shownContent: PayPalSavedPaymentMethodAnalytics.ShownContent
         let renderedEditTag: Bool
 
         switch fiState {
         case .loading:
             return
         case .instrument:
-            (shownContent, renderedEditTag) = ("funding_instrument", true)
+            (shownContent, renderedEditTag) = (.fundingInstrument, true)
         case .displayOnly(_, let isEditable):
-            (shownContent, renderedEditTag) = ("email_only", isEditable)
+            (shownContent, renderedEditTag) = (.emailOnly, isEditable)
         case .brandOnly:
-            shownContent = style.showPayPalLogo || style.showPayPalLabel ? "brand_only" : "hidden"
+            shownContent = style.showPayPalLogo || style.showPayPalLabel ? .brandOnly : .hidden
             renderedEditTag = false
         }
+
+        let renderTrigger: PayPalSavedPaymentMethodAnalytics.RenderTrigger = didCompleteEdit ? .fiFromApprovedCheckout : .stickyFI
 
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.renderSucceeded,
@@ -324,11 +326,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             renderedLabel: style.showPayPalLabel,
             renderedLogo: style.showPayPalLogo,
             renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging,
-            renderTrigger: didCompleteEdit ? "fi_from_approved_checkout" : "sticky_fi",
+            renderTrigger: renderTrigger.rawValue,
             savedMethodBrand: instrument?.cardBrand,
             savedMethodID: instrument?.id,
             savedMethodType: instrument?.type?.rawValue,
-            shownContent: shownContent
+            shownContent: shownContent.rawValue
         )
     }
 
