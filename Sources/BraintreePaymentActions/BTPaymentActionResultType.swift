@@ -28,6 +28,6 @@ import Foundation
     /// The Payment Action has expired.
     case expired
 
-    /// The Payment Action status, or `nextAction`, was not recognized by this SDK version.
+    /// The Payment Action status was not recognized by this SDK version.
     case unrecognized
 }
