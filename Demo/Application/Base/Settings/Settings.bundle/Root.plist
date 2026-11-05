@@ -118,6 +118,14 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Payment Method Token</string>
+			<key>Key</key>
+			<string>BraintreeDemoPaymentMethodToken</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Customer</string>

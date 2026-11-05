@@ -26,6 +26,7 @@ class BraintreeDemoSettings: NSObject {
     static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
     static let CustomAuthorizationDefaultsKey = "BraintreeDemoSettingsCustomAuthorizationKey"
     static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
+    static let PaymentMethodTokenDefaultsKey = "BraintreeDemoPaymentMethodToken"
 
     static var currentEnvironment: BraintreeDemoEnvironment {
         BraintreeDemoEnvironment(
@@ -71,6 +72,10 @@ class BraintreeDemoSettings: NSObject {
     
     static var customerIdentifier: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoCustomerIdentifier")
+    }
+
+    static var paymentMethodToken: String? {
+        return UserDefaults.standard.string(forKey: PaymentMethodTokenDefaultsKey)
     }
 
     static var clientTokenVersion: String? {
