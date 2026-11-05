@@ -53,76 +53,30 @@ struct IdealView: View {
             postalCode: "2585 GJ"
         )
         
-        let paymentType = "ideal"
-        let amount = "1.01"
-        let currencyCode = "EUR"
-        let paymentTypeCountryCode = "NL"
-        let merchantAccountID = "ideal_eur"
-
         let request = BTLocalPaymentRequest(
-            paymentType: paymentType,
-            amount: amount,
-            currencyCode: currencyCode,
-            paymentTypeCountryCode: paymentTypeCountryCode,
-            merchantAccountID: merchantAccountID,
+            paymentType: "ideal",
+            amount: "1.00",
+            currencyCode: "EUR",
+            paymentTypeCountryCode: "NL",
+            merchantAccountID: "ideal_eur",
             address: postalAddress,
             email: "lingo-buyer@paypal.com",
             givenName: "Linh",
             surname: "Ngo",
             phone: "639847934"
         )
-
+        
         request.localPaymentFlowDelegate = flowCoordinator
-
-        NSLog(
-            "[iDEAL] Starting request — paymentType: %@, merchantAccountID: %@, amount: %@, currency: %@, country: %@",
-            paymentType,
-            merchantAccountID,
-            amount,
-            currencyCode,
-            paymentTypeCountryCode
-        )
-
+        
         do {
             let result = try await localPaymentClient.start(request)
-            NSLog("[iDEAL] Local payment succeeded — nonce: %@", result.nonce)
             onComplete(BTPaymentMethodNonce(nonce: result.nonce))
         } catch {
             if error as? BTLocalPaymentError == .canceled("") {
                 onProgress("Canceled 🎲")
             } else {
-                logAndReportFailure(error)
+                onProgress("Error: \(error.localizedDescription)")
             }
-        }
-    }
-
-    private func logAndReportFailure(_ error: Error) {
-        let nsError = error as NSError
-        NSLog("iDEAL payment failed: %@ userInfo: %@", nsError, nsError.userInfo)
-
-        let httpResponse = nsError.userInfo[BTCoreConstants.urlResponseKey] as? HTTPURLResponse
-        let debugID = httpResponse?.value(forHTTPHeaderField: "Paypal-Debug-Id")
-
-        let json = nsError.userInfo[BTCoreConstants.jsonResponseBodyKey] as? BTJSON
-        let correlationID = json?["correlationId"].asString()
-
-        if let debugID {
-            NSLog("iDEAL PayPal-Debug-Id: %@", debugID)
-        }
-        if let correlationID {
-            NSLog("iDEAL correlationId: %@", correlationID)
-        }
-        if let json {
-            NSLog("iDEAL error response body: %@", json.asDictionary() ?? [:])
-        } else {
-            NSLog("iDEAL error response body: <unparsed or missing>")
-        }
-
-        let supportID = debugID ?? correlationID
-        if let supportID {
-            onProgress("Error: \(error.localizedDescription) (Debug ID: \(supportID))")
-        } else {
-            onProgress("Error: \(error.localizedDescription)")
         }
     }
 }
@@ -137,7 +91,6 @@ final class LocalPaymentFlowCoordinator: NSObject, ObservableObject, BTLocalPaym
         paymentID: String,
         start: @escaping () -> Void
     ) {
-        NSLog("[iDEAL] localPaymentStarted — paymentID: %@", paymentID)
         Task { @MainActor in
             self.paymentID = paymentID
         }
