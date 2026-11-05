@@ -11,6 +11,12 @@ class BraintreeDemoMerchantAPIClient: NSObject {
 
         let message: String
     }
+
+    private struct VaultResponse: Codable {
+
+        let message: String
+        let token: String?
+    }
     
     static let shared = BraintreeDemoMerchantAPIClient()
     
@@ -19,12 +25,22 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     func createCustomerAndFetchClientToken(completion: @escaping (String?, Error?) -> Void) {
         guard var urlComponents = URLComponents(string: BraintreeDemoSettings.currentEnvironmentURLString + "/client_token") else { return }
         
+        var queryItems: [URLQueryItem] = []
+
         if BraintreeDemoSettings.customerPresent {
             if let id = BraintreeDemoSettings.customerIdentifier, !id.isEmpty {
-                urlComponents.queryItems = [URLQueryItem(name: "customer_id", value: id)]
+                queryItems.append(URLQueryItem(name: "customer_id", value: id))
             } else {
-                urlComponents.queryItems = [URLQueryItem(name: "customer_id", value: UUID().uuidString)]
+                queryItems.append(URLQueryItem(name: "customer_id", value: UUID().uuidString))
             }
+        }
+
+        if let paymentMethodToken = BraintreeDemoSettings.paymentMethodToken, !paymentMethodToken.isEmpty {
+            queryItems.append(URLQueryItem(name: "preferred_payment_method_token", value: paymentMethodToken))
+        }
+
+        if !queryItems.isEmpty {
+            urlComponents.queryItems = queryItems
         }
 
         guard let url = urlComponents.url else { return }
@@ -81,5 +97,45 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         }
         
         task.resume()
+    }
+
+    func vaultPaymentMethod(paymentMethodNonce: String, completion: @escaping (_ paymentMethodToken: String?, _ message: String?) -> Void) {
+        let customerURLString = BraintreeDemoSettings.currentEnvironmentURLString + "/customers/" + UUID().uuidString
+
+        guard
+            let customerURL = URL(string: customerURLString),
+            var vaultURLComponents = URLComponents(string: customerURLString + "/vault")
+        else { return }
+
+        vaultURLComponents.queryItems = [URLQueryItem(name: "nonce", value: paymentMethodNonce)]
+
+        guard let vaultURL = vaultURLComponents.url else { return }
+
+        var customerRequest = URLRequest(url: customerURL)
+        customerRequest.httpMethod = "PUT"
+
+        let customerTask = URLSession.shared.dataTask(with: customerRequest) { _, _, error in
+            if let error {
+                DispatchQueue.main.async { completion(nil, error.localizedDescription) }
+                return
+            }
+
+            var vaultRequest = URLRequest(url: vaultURL)
+            vaultRequest.httpMethod = "POST"
+
+            let vaultTask = URLSession.shared.dataTask(with: vaultRequest) { data, _, error in
+                guard let data, error == nil else {
+                    DispatchQueue.main.async { completion(nil, error?.localizedDescription) }
+                    return
+                }
+
+                let response = try? JSONDecoder().decode(VaultResponse.self, from: data)
+                DispatchQueue.main.async { completion(response?.token, response?.message) }
+            }
+
+            vaultTask.resume()
+        }
+
+        customerTask.resume()
     }
 }

@@ -15,10 +15,13 @@ struct PayPalSavedPaymentMethodDemoView: View {
     @State private var userAction: BTPayPalRequestUserAction = .none
     @State private var isStyleEditorPresented = false
     @State private var styleConfig = PayPalSavedPaymentMethodStyleConfig()
+    @State private var payPalClient: BTPayPalClient?
+    @State private var isVaulting = false
 
     @FocusState private var isAmountFocused: Bool
 
     private let currencyCode = "USD"
+    private let fallbackURLScheme = "com.braintreepayments.Demo.payments"
 
     // swiftlint:disable:next force_unwrapping
     private let universalLink = URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
@@ -36,6 +39,8 @@ struct PayPalSavedPaymentMethodDemoView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                vaultSetup
+                Divider()
                 configuration
                 Divider()
                 savedPaymentMethod
@@ -45,6 +50,22 @@ struct PayPalSavedPaymentMethodDemoView: View {
         .sheet(isPresented: $isStyleEditorPresented) {
             PayPalSavedPaymentMethodStyleEditor(config: $styleConfig)
         }
+    }
+
+    private var vaultSetup: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("Payment Method Token")
+
+            Button(isVaulting ? "Processing..." : "Vault PayPal Account") {
+                vaultPayPalAccount()
+            }
+            .disabled(isVaulting)
+
+            Text("Vaults a PayPal account and saves its token to Settings.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .padding(.top)
     }
 
     private var configuration: some View {
@@ -79,7 +100,6 @@ struct PayPalSavedPaymentMethodDemoView: View {
                 isStyleEditorPresented = true
             }
         }
-        .padding(.top)
     }
 
     private var savedPaymentMethod: some View {
@@ -93,7 +113,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
                 currencyCode: currencyCode
             ),
             request: PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: currencyCode),
-            fallbackURLScheme: "com.braintreepayments.Demo.payments",
+            fallbackURLScheme: fallbackURLScheme,
             style: styleConfig.style
         ) { nonce, error in
             guard let nonce else {
@@ -107,6 +127,33 @@ struct PayPalSavedPaymentMethodDemoView: View {
         .id(styleConfig.showPayPalCreditMessaging)
         // A tap while typing would edit with the old amount, since the new one only applies on focus loss.
         .disabled(isAmountFocused)
+    }
+
+    private func vaultPayPalAccount() {
+        isVaulting = true
+
+        let client = BTPayPalClient(authorization: authorization, universalLink: universalLink, fallbackURLScheme: fallbackURLScheme)
+        payPalClient = client
+
+        client.tokenize(BTPayPalVaultRequest(enablePayPalAppSwitch: isAppSwitchEnabled)) { nonce, error in
+            guard let nonce else {
+                isVaulting = false
+                onProgress(error?.localizedDescription)
+                return
+            }
+
+            BraintreeDemoMerchantAPIClient.shared.vaultPaymentMethod(paymentMethodNonce: nonce.nonce) { paymentMethodToken, message in
+                isVaulting = false
+
+                guard let paymentMethodToken else {
+                    onProgress(message)
+                    return
+                }
+
+                UserDefaults.standard.set(paymentMethodToken, forKey: BraintreeDemoSettings.PaymentMethodTokenDefaultsKey)
+                onProgress("Saved payment method token \(paymentMethodToken) to Settings. Tap refresh to load it.")
+            }
+        }
     }
 }
 

@@ -174,12 +174,12 @@ class ContainmentViewController: UIViewController {
             currentViewController = instantiateViewController(with: tokenizationKey)
 
         case .clientToken:
+            updateStatus("Fetching Client Token...")
+
             if BraintreeDemoSettings.currentEnvironment == .custom {
-                useCustomClientToken()
+                updateStatus("Switch the Authorization Type in settings to Tokenization Key to use the custom environment")
                 return
             }
-
-            updateStatus("Fetching Client Token...")
 
             BraintreeDemoMerchantAPIClient.shared.createCustomerAndFetchClientToken { clientToken, error in
                 if let error {
@@ -217,19 +217,6 @@ class ContainmentViewController: UIViewController {
             let uiTestClientToken = "eyJ2ZXJzaW9uIjozLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxYzM5N2E5OGZmZGRkNDQwM2VjNzEzYWRjZTI3NTNiMzJlODc2MzBiY2YyN2M3NmM2OWVmZjlkMTE5MjljOTVkfGNyZWF0ZWRfYXQ9MjAxNy0wNC0wNVQwNjowNzowOC44MTUwOTkzMjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ=="
             currentViewController = instantiateViewController(with: uiTestClientToken)
         }
-    }
-
-    private func useCustomClientToken() {
-        guard
-            let customClientToken = UserDefaults.standard.string(forKey: BraintreeDemoSettings.CustomAuthorizationDefaultsKey),
-            !customClientToken.isEmpty
-        else {
-            updateStatus("Paste a client token into Custom Authorization in settings to use the custom environment")
-            return
-        }
-
-        updateStatus("Using Custom Client Token")
-        currentViewController = instantiateViewController(with: customClientToken)
     }
 
     private func instantiateViewController(with authorization: String) -> BaseViewController? {
