@@ -1,11 +1,8 @@
 import SwiftUI
+import BraintreeCore
 
 #if canImport(BraintreePayPal)
 import BraintreePayPal
-#endif
-
-#if canImport(BraintreeCore)
-import BraintreeCore
 #endif
 
 /// PayPal payment button. Available in the colors PayPal blue, black, and white.
