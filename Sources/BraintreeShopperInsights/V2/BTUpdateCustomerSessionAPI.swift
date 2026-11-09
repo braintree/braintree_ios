@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The API used to update a customer session using the `UpdateCustomerSession` GraphQL mutation.
 final class BTUpdateCustomerSessionAPI {

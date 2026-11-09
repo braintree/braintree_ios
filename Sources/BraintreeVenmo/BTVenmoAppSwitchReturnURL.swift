@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 enum BTVenmoAppSwitchReturnURLState {
     case unknown

@@ -1,8 +1,5 @@
 import Foundation
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The POST body for `/three_d_secure/authenticate_from_jwt`
 struct ThreeDSecureAuthenticateJWTPOSTBody: Encodable {

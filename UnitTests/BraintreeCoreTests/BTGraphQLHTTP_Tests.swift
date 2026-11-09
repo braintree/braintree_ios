@@ -128,7 +128,7 @@ final class BTGraphQLHTTP_Tests: XCTestCase {
         http?.session = fakeSession
         let (body, _) = try await http!.post("", configuration: fakeConfiguration)
         let httpRequest = BTHTTPTestProtocol.parseRequestFromTestResponseBody(body)
-        XCTAssertEqual(httpRequest.allHTTPHeaderFields!["Braintree-Version"], "2018-03-06")
+        XCTAssertEqual(httpRequest.allHTTPHeaderFields!["Braintree-Version"], "2024-08-23")
     }
 
     func testRequests_whenUsingTokenizationKey_sendsItInHeaders() async throws {

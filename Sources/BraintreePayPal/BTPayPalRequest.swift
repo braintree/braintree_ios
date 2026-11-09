@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// Defines the structure and requirements for PayPal Checkout and PayPal Vault flows.
 protocol BTPayPalRequest {
