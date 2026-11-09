@@ -55,10 +55,10 @@ struct IdealView: View {
         
         let request = BTLocalPaymentRequest(
             paymentType: "ideal",
-            amount: "1.01",
+            amount: "1.00",
             currencyCode: "EUR",
             paymentTypeCountryCode: "NL",
-            merchantAccountID: "altpay_eur",
+            merchantAccountID: "ideal_eur",
             address: postalAddress,
             email: "lingo-buyer@paypal.com",
             givenName: "Linh",

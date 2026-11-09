@@ -9,7 +9,7 @@ class IdealViewController: PaymentButtonBaseViewController {
         title = "iDEAL"
         
         let demoView = IdealView(
-            client: BTLocalPaymentClient(authorization: "sandbox_d54x7ckf_hh4cpc39zq4rgjcg"),
+            client: BTLocalPaymentClient(authorization: "sandbox_9dbg82cq_dcpspy2brwdjr3qn"),
             onProgress: progressBlock,
             onComplete: completionBlock
         )
