@@ -207,7 +207,7 @@ final class HybridPaymentActionsStub: @unchecked Sendable {
 
     // MARK: - Real Gateway Lookup
 
-    /// The legacy flow's own lookup call, which is where a real challenge payload comes from.
+    /// The existing 3DS flow's own lookup call, which is where a real challenge payload comes from.
     /// Returns `nil` when the Gateway decides no challenge is needed.
     private func lookUpChallenge(nonce: String, dfReferenceID: String, clientToken: String) throws -> Challenge? {
         let box = ResultBox()
