@@ -9,7 +9,7 @@ import BraintreeCore
 struct GetPaymentActionGraphQLBody: BTGraphQLEncodableBody {
 
     // swiftlint:disable indentation_width
-    var query: String {
+    let query =
         """
         query GetPaymentAction {
          paymentAction {
@@ -17,7 +17,7 @@ struct GetPaymentActionGraphQLBody: BTGraphQLEncodableBody {
          }
         }
         """
-    }
+
 
     let variables = Variables()
 

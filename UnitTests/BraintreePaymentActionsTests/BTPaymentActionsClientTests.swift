@@ -68,6 +68,10 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(lastPostParameters as NSObject, expectedDictionary as NSObject)
+        XCTAssertEqual(
+            (lastPostParameters["query"] as? String)?.contains("mutation SetPaymentActionPaymentMethod"),
+            true
+        )
     }
 
     // MARK: - Status -> Result Mapping (async/await API)
