@@ -1,12 +1,6 @@
 import SwiftUI
-
-#if canImport(BraintreePayPal)
 @_spi(BraintreeUIComponents) import BraintreePayPal
-#endif
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// PayPal Pay Later payment button. Available in the colors PayPal blue, black, and white.
 public struct PayPalPayLaterButton: View {

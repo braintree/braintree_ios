@@ -1,9 +1,8 @@
 import XCTest
 import SwiftUI
 @testable import BraintreeUIComponents
-@_spi(BraintreeUIComponents) @testable import BraintreePayPal
-@testable import BraintreeCore
 @testable import BraintreeTestShared
+@_spi(BraintreeUIComponents) @testable import BraintreePayPal
 
 final class PayPalPayLaterButton_Tests: XCTestCase {
 
