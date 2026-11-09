@@ -1,12 +1,5 @@
 import Foundation
 
-
-// THESE PLUS
-
-// DDC
-
-// STart and end of Payment actions flow (separate from this task)
-
 enum BTThreeDSecureAnalytics {
     
     // MARK: Conversion Events
