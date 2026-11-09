@@ -981,7 +981,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(mockCardinalSession.continueWithCallCount, 0)
     }
 
-    // `ddcFailed` can only be exercised by forcing the provider into an already-in-progress state
+    // `deviceDataCollectionFailed` can only be exercised by forcing the provider into an already-in-progress state
     // directly — `collectDeviceData()`'s other failure mode (`cardinalSetupValidationFailed`) isn't
     // reachable from `MockCardinalSession`, matching the same documented limitation as the provider's
     // own unit tests.

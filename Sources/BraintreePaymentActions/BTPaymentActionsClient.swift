@@ -283,7 +283,10 @@ import BraintreeCore
             do {
                 dfReferenceID = try await threeDSecureProvider.collectDeviceData()
             } catch {
-                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionFailed, errorDescription: error.localizedDescription)
+                apiClient.sendAnalyticsEvent(
+                    BTPaymentActionAnalytics.deviceDataCollectionFailed,
+                    errorDescription: error.localizedDescription
+                )
                 throw error
             }
             apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionSucceeded)

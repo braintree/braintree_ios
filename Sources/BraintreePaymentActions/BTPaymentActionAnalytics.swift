@@ -19,9 +19,9 @@ enum BTPaymentActionAnalytics {
 
     // MARK: - Device Data Collection Events
 
-    static let deviceDataCollectionStarted = "payment-actions:ddc:started"
-    static let deviceDataCollectionSucceeded = "payment-actions:ddc:succeeded"
-    static let deviceDataCollectionFailed = "payment-actions:ddc:failed"
+    static let deviceDataCollectionStarted = "payment-actions:device-data-collection:started"
+    static let deviceDataCollectionSucceeded = "payment-actions:device-data-collection:succeeded"
+    static let deviceDataCollectionFailed = "payment-actions:device-data-collection:failed"
 
     // MARK: - 3D Secure Challenge Events
 
