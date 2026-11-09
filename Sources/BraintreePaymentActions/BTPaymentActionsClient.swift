@@ -1,5 +1,3 @@
-// swiftlint:disable file_length
-
 import Foundation
 import CardinalMobile
 import UIKit
@@ -154,7 +152,7 @@ import BraintreeCore
         // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
         var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
 
-        // Tracks whether this call ever actually drove a 3DS action, so the `payment-actions:3ds:verify:*`
+        // Tracks whether this call ever actually drove a 3DS action, so the `payment-actions:verify:*`
         // lifecycle events only fire for calls that engaged 3DS — many `handleNextAction` calls never
         // touch 3DS at all (e.g. a Payment Action that's already `.readyForConfirmation`).
         var didEngageThreeDSecure = false
@@ -253,32 +251,20 @@ import BraintreeCore
 
     /// Signals that the customer has completed the current `nextAction` (e.g. device data collection
     /// or a 3D Secure challenge), advancing the Payment Action to its next state.
-    ///
-    /// Fires `signal:succeeded`/`signal:failed` for every call, regardless of which `nextAction`
-    /// triggered it — distinct from (and in addition to) the `ddc:*`/`challenge:*` events, which
-    /// cover the customer-action step itself rather than the act of reporting its result.
     /// - Parameter completedAction: the completed action's payload — mirrors the GraphQL `@oneOf` input.
     /// - Returns: the resulting `BTPaymentAction`, which may carry a new `nextAction` if another
     ///   customer action is required.
     /// - Throws: the underlying error from the network layer or GraphQL response.
     func signalCustomerActionComplete(_ completedAction: BTCustomerCompletedAction) async throws -> BTPaymentAction {
-        do {
-            let (responseBody, _) = try await apiClient.post(
-                "",
-                parameters: SignalCustomerActionCompleteGraphQLBody(completedAction: completedAction),
-                httpType: .graphQLAPI
-            )
+        let (responseBody, _) = try await apiClient.post(
+            "",
+            parameters: SignalCustomerActionCompleteGraphQLBody(completedAction: completedAction),
+            httpType: .graphQLAPI
+        )
 
-            let paymentActionJSON: BTJSON = responseBody?["data"]["signalCustomerActionComplete"]["paymentAction"]
-                ?? BTJSON()
-            let paymentAction = try BTPaymentAction(json: paymentActionJSON)
-
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.signalSucceeded)
-            return paymentAction
-        } catch {
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.signalFailed, errorDescription: error.localizedDescription)
-            throw error
-        }
+        let paymentActionJSON: BTJSON = responseBody?["data"]["signalCustomerActionComplete"]["paymentAction"]
+            ?? BTJSON()
+        return try BTPaymentAction(json: paymentActionJSON)
     }
     
     /// Drives a single recognized 3D Secure `nextAction` to completion via `threeDSecureProvider`,
@@ -310,8 +296,6 @@ import BraintreeCore
                 throw BTPaymentActionError.missingMpiTransactionID
             }
 
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengePresented)
-
             let outcome: BTPaymentActionThreeDSecureProvider.ChallengeOutcome
             do {
                 outcome = try await threeDSecureProvider.presentChallenge(
@@ -329,6 +313,8 @@ import BraintreeCore
 
             switch outcome {
             case let .validated(serverJWT, result):
+                // A Cardinal-reported failure still signals the server, which makes the final call, so the
+                // flow continues and can still end in `verify:succeeded`.
                 switch result {
                 case .succeeded:
                     apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengeSucceeded)
@@ -346,7 +332,10 @@ import BraintreeCore
                 case .canceled:
                     apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyCanceled)
                 case .timedOut:
-                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyFailed)
+                    apiClient.sendAnalyticsEvent(
+                        BTPaymentActionAnalytics.verifyFailed,
+                        errorDescription: BTPaymentActionError.cardinalChallengeTimedOut.localizedDescription
+                    )
                 }
                 return .abandoned
             }
@@ -401,9 +390,6 @@ import BraintreeCore
     }
 
     private func notifyThreeDSecureFailure(with error: Error) {
-        if case BTPaymentActionError.versionAnomaly = error {
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.versionAnomaly)
-        }
         apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyFailed, errorDescription: error.localizedDescription)
     }
 }

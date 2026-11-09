@@ -557,7 +557,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
                 )
             )
         )
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentActionAnalytics.signalSucceeded))
     }
 
     func testSignalCustomerActionComplete_readyForConfirmation_clearsNextAction() async throws {
@@ -609,7 +608,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             XCTAssertEqual(error as NSError, mockError)
         }
 
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(BTPaymentActionAnalytics.signalFailed))
     }
 
     // MARK: - handleNextAction
@@ -681,7 +679,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             BTPaymentActionAnalytics.verifyStarted,
             BTPaymentActionAnalytics.ddcStarted,
             BTPaymentActionAnalytics.ddcSucceeded,
-            BTPaymentActionAnalytics.signalSucceeded,
             BTPaymentActionAnalytics.verifySucceeded
         ])
     }
@@ -749,7 +746,6 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.id, "payment-action-id")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.challengePresented,
             BTPaymentActionAnalytics.verifyCanceled
         ])
     }
@@ -779,9 +775,12 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.type, .threeDSecureCanceled)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.challengePresented,
             BTPaymentActionAnalytics.verifyFailed
         ])
+        XCTAssertEqual(
+            mockAPIClient.postedErrorDescription,
+            BTPaymentActionError.cardinalChallengeTimedOut.localizedDescription
+        )
     }
 
     func testHandleNextAction_requiresCustomerAction_threeDSecureChallengeSucceeded_firesChallengeAndVerifySucceeded() async throws {
@@ -818,9 +817,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.type, .completed)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.challengePresented,
             BTPaymentActionAnalytics.challengeSucceeded,
-            BTPaymentActionAnalytics.signalSucceeded,
             BTPaymentActionAnalytics.verifySucceeded
         ])
     }
@@ -862,9 +859,7 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual(result.type, .completed)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.challengePresented,
             BTPaymentActionAnalytics.challengeFailed,
-            BTPaymentActionAnalytics.signalSucceeded,
             BTPaymentActionAnalytics.verifySucceeded
         ])
     }
@@ -898,13 +893,12 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.challengePresented,
             BTPaymentActionAnalytics.challengeFailed,
             BTPaymentActionAnalytics.verifyFailed
         ])
     }
 
-    func testHandleNextAction_versionAnomalyWhileThreeDSecureEngaged_firesVersionAnomalyAndVerifyFailed() async throws {
+    func testHandleNextAction_versionAnomalyWhileThreeDSecureEngaged_firesVerifyFailedWithVersionAnomalyDescription() async throws {
         let mockCardinalSession = MockCardinalSession()
         sut.cardinalSession = mockCardinalSession
 
@@ -950,10 +944,12 @@ class BTPaymentActionsClient_Tests: XCTestCase {
             BTPaymentActionAnalytics.verifyStarted,
             BTPaymentActionAnalytics.ddcStarted,
             BTPaymentActionAnalytics.ddcSucceeded,
-            BTPaymentActionAnalytics.signalSucceeded,
-            BTPaymentActionAnalytics.versionAnomaly,
             BTPaymentActionAnalytics.verifyFailed
         ])
+        XCTAssertEqual(
+            mockAPIClient.postedErrorDescription,
+            BTPaymentActionError.versionAnomaly.localizedDescription
+        )
     }
 
     func testHandleNextAction_threeDSecureChallengeMissingMpiTransactionID_throwsWithoutCallingCardinal() async throws {

@@ -10,29 +10,21 @@ enum BTPaymentActionAnalytics {
 
     // MARK: - 3D Secure Lifecycle Events
 
-    static let verifyStarted = "payment-actions:3ds:verify:started"
-    static let verifySucceeded = "payment-actions:3ds:verify:succeeded"
-    static let verifyFailed = "payment-actions:3ds:verify:failed"
-    static let verifyCanceled = "payment-actions:3ds:verify:canceled"
+    static let verifyStarted = "payment-actions:verify:started"
+    /// The SDK completed the 3DS flow without an error. This is not an authentication or payment result:
+    /// a Cardinal-reported challenge failure still ends here, since the server makes the final call.
+    static let verifySucceeded = "payment-actions:verify:succeeded"
+    static let verifyFailed = "payment-actions:verify:failed"
+    static let verifyCanceled = "payment-actions:verify:canceled"
 
-    // MARK: - 3D Secure Device Data Collection Events
+    // MARK: - Device Data Collection Events
 
-    static let ddcStarted = "payment-actions:3ds:verify:ddc:started"
-    static let ddcSucceeded = "payment-actions:3ds:verify:ddc:succeeded"
-    static let ddcFailed = "payment-actions:3ds:verify:ddc:failed"
+    static let ddcStarted = "payment-actions:ddc:started"
+    static let ddcSucceeded = "payment-actions:ddc:succeeded"
+    static let ddcFailed = "payment-actions:ddc:failed"
 
     // MARK: - 3D Secure Challenge Events
 
-    static let challengePresented = "payment-actions:3ds:verify:challenge:presented"
-    static let challengeSucceeded = "payment-actions:3ds:verify:challenge:succeeded"
-    static let challengeFailed = "payment-actions:3ds:verify:challenge:failed"
-
-    // MARK: - 3D Secure Signal Events
-
-    static let signalSucceeded = "payment-actions:3ds:verify:signal:succeeded"
-    static let signalFailed = "payment-actions:3ds:verify:signal:failed"
-
-    // MARK: - 3D Secure Version Anomaly Event
-
-    static let versionAnomaly = "payment-actions:3ds:verify:version-anomaly"
+    static let challengeSucceeded = "payment-actions:verify:challenge:succeeded"
+    static let challengeFailed = "payment-actions:verify:challenge:failed"
 }
