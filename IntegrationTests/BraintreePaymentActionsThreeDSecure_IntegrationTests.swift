@@ -111,7 +111,7 @@ class BTPaymentActionsThreeDSecure_IntegrationTests: XCTestCase {
     // MARK: - Soft Decline
     //
     // These run against the fake server's assumed contract (`processing` then `requires_customer_action`);
-    // ADR 0027 is unmerged and nonce reuse is server-side, so re-verify against real sandbox once deployed.
+    // The ADR is unmerged and nonce reuse is server-side, so re-verify against real sandbox once deployed.
 
     func testHandleNextAction_autoConfirmSoftDecline_authenticatesAndCompletes() async throws {
         fakeServer = FakePaymentActionsServer(confirmation: .automatic, authentication: .challenge, softDeclines: true)
