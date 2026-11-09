@@ -3,10 +3,6 @@ import XCTest
 @testable import BraintreePaymentActions
 
 /// End-to-end 3D Secure journeys through the real `BTPaymentActionsClient` drive loop.
-///
-/// The Payment Actions server schema isn't deployed to sandbox yet, so the server is a
-/// `FakePaymentActionsServer` and Cardinal is a `MockCardinalSession` — everything in between (config
-/// fetch, request encoding, drive loop, analytics) is the real SDK.
 class BTPaymentActionsThreeDSecure_IntegrationTests: XCTestCase {
 
     // MARK: - Properties
