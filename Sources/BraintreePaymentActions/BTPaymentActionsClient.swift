@@ -77,10 +77,15 @@ import BraintreeCore
     /// Submit a payment method for a Payment Action.
     /// - Parameter request: The payment method details to submit — e.g. a `BTCardPaymentActionRequest`.
     /// - Returns: the resulting `BTPaymentActionStatus`.
-    /// - Throws: an `Error` describing the failure.
+    /// - Throws: `BTPaymentActionError.clientTokenRequired` if this client was created with a
+    ///   tokenization key, or an `Error` describing the underlying failure.
     public func submitForPaymentAction(
         _ request: BTPaymentActionRequest
     ) async throws -> BTPaymentActionResult {
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPaymentActionError.clientTokenRequired
+        }
+
         do {
             let body = try SetPaymentActionPaymentMethodGraphQLBody(request: request)
             let paymentAction = try await setPaymentActionPaymentMethod(body)
@@ -123,10 +128,16 @@ import BraintreeCore
     /// A `.processing` result means the SDK's own bounded internal retries were exhausted while the
     /// Payment Action was still settling server-side — wait briefly, then call `handleNextAction` again.
     /// - Returns: the resulting `BTPaymentActionResult`.
-    /// - Throws: `BTPaymentActionError.handleNextActionAlreadyInProgress` if called while a previous
-    ///   invocation on this instance hasn't completed, or the underlying fetch/decoding/3DS error.
+    /// - Throws: `BTPaymentActionError.clientTokenRequired` if this client was created with a
+    ///   tokenization key, `BTPaymentActionError.handleNextActionAlreadyInProgress` if called while a
+    ///   previous invocation on this instance hasn't completed, or the underlying fetch/decoding/3DS
+    ///   error.
     @MainActor
     public func handleNextAction() async throws -> BTPaymentActionResult {
+        guard apiClient.authorization.type == .clientToken else {
+            throw BTPaymentActionError.clientTokenRequired
+        }
+
         guard !isHandlingNextAction else {
             throw BTPaymentActionError.handleNextActionAlreadyInProgress
         }
@@ -141,6 +152,11 @@ import BraintreeCore
         // nextAction), not at the top of this method, so non-3DS merchants never construct it at all.
         var threeDSecureProvider: BTPaymentActionThreeDSecureProvider?
 
+        // Tracks whether this call ever actually drove a 3DS action, so the `payment-actions:verify:*`
+        // lifecycle events only fire for calls that engaged 3DS — many `handleNextAction` calls never
+        // touch 3DS at all (e.g. a Payment Action that's already `.readyForConfirmation`).
+        var didEngageThreeDSecure = false
+
         // Not `[weak self]`: `handler` is a local value that never outlives this call, so there's no
         // stored reference or retain cycle to break, and `self` is guaranteed alive for the full
         // duration of this already-executing instance method — a `self == nil` branch here would be
@@ -154,6 +170,8 @@ import BraintreeCore
                 if let existingThreeDSecureProvider = threeDSecureProvider {
                     provider = existingThreeDSecureProvider
                 } else {
+                    self.apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyStarted)
+                    didEngageThreeDSecure = true
                     provider = try await self.makeThreeDSecureProvider()
                     threeDSecureProvider = provider
                 }
@@ -162,11 +180,26 @@ import BraintreeCore
             }
         )
 
-        switch try await handler.drive() {
-        case .paymentAction(let paymentAction):
-            return result(from: paymentAction)
-        case .threeDSecureCanceled(let id):
-            return BTPaymentActionResult(type: .threeDSecureCanceled, id: id)
+        do {
+            let driveResult = try await handler.drive()
+
+            switch driveResult {
+            case .paymentAction(let paymentAction):
+                if didEngageThreeDSecure {
+                    notifyThreeDSecureSuccess()
+                }
+                return result(from: paymentAction)
+            case .threeDSecureCanceled(let id):
+                // The canceled/failed lifecycle event for an abandoned challenge already fired in
+                // `resolveCustomerAction`, at the point the abandonment reason (cancel vs. timeout)
+                // was actually known.
+                return BTPaymentActionResult(type: .threeDSecureCanceled, id: id)
+            }
+        } catch {
+            if didEngageThreeDSecure {
+                notifyThreeDSecureFailure(with: error)
+            }
+            throw error
         }
     }
 
@@ -244,7 +277,20 @@ import BraintreeCore
     ) async throws -> NextActionHandler.CustomerActionOutcome {
         switch nextAction {
         case .threeDSecureAuthentication:
-            let dfReferenceID = try await threeDSecureProvider.collectDeviceData()
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionStarted)
+
+            let dfReferenceID: String
+            do {
+                dfReferenceID = try await threeDSecureProvider.collectDeviceData()
+            } catch {
+                apiClient.sendAnalyticsEvent(
+                    BTPaymentActionAnalytics.deviceDataCollectionFailed,
+                    errorDescription: error.localizedDescription
+                )
+                throw error
+            }
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionSucceeded)
+
             let paymentAction = try await signalCustomerActionComplete(.deviceDataCollection(dfReferenceID: dfReferenceID))
             return .advanced(paymentAction)
 
@@ -253,16 +299,47 @@ import BraintreeCore
                 throw BTPaymentActionError.missingMpiTransactionID
             }
 
-            let outcome = try await threeDSecureProvider.presentChallenge(
-                transactionID: mpiTransactionID,
-                payload: challenge.challengePayload
-            )
+            let outcome: BTPaymentActionThreeDSecureProvider.ChallengeOutcome
+            do {
+                outcome = try await threeDSecureProvider.presentChallenge(
+                    transactionID: mpiTransactionID,
+                    payload: challenge.challengePayload
+                )
+            } catch {
+                // Only Cardinal's `.error` counts as a challenge failure for analytics — other thrown
+                // errors still surface via `verify:failed`.
+                if case BTPaymentActionError.cardinalChallengeFailed = error {
+                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengeFailed, errorDescription: error.localizedDescription)
+                }
+                throw error
+            }
 
             switch outcome {
-            case .validated(let serverJWT):
+            case let .validated(serverJWT, result):
+                // A Cardinal-reported failure still signals the server, which makes the final call, so the
+                // flow continues and can still end in `verify:succeeded`.
+                switch result {
+                case .succeeded:
+                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengeSucceeded)
+                case .failed:
+                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.challengeFailed)
+                }
+
                 let paymentAction = try await signalCustomerActionComplete(.challenge(cardinalAuthenticationJWT: serverJWT))
                 return .advanced(paymentAction)
-            case .abandoned:
+
+            case .abandoned(let reason):
+                // No `challenge:*` event fires for either reason, per the analytics ticket — only the
+                // top-level lifecycle event differs: cancel maps to `canceled`, timeout to `failed`.
+                switch reason {
+                case .canceled:
+                    apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyCanceled)
+                case .timedOut:
+                    apiClient.sendAnalyticsEvent(
+                        BTPaymentActionAnalytics.verifyFailed,
+                        errorDescription: BTPaymentActionError.cardinalChallengeTimedOut.localizedDescription
+                    )
+                }
                 return .abandoned
             }
 
@@ -307,5 +384,15 @@ import BraintreeCore
         case .unknown:
             return BTPaymentActionResult(type: .unrecognized, id: paymentAction.id)
         }
+    }
+
+    // MARK: - Analytics Helper Methods
+
+    private func notifyThreeDSecureSuccess() {
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifySucceeded)
+    }
+
+    private func notifyThreeDSecureFailure(with error: Error) {
+        apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.verifyFailed, errorDescription: error.localizedDescription)
     }
 }
