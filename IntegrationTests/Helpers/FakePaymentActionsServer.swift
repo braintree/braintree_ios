@@ -7,7 +7,7 @@ import OHHTTPStubs
 /// 3DS integration tests can still run the real SDK drive loop end to end. Only the Payment Actions
 /// GraphQL operations are stubbed; configuration fetches still hit the real sandbox.
 ///
-/// Remove this file, `MockCardinalSession`, and the tests that use them once the sandbox schema is
+/// TODO: Remove this file, `MockCardinalSession`, and the tests that use them once the sandbox schema is
 /// deployed, and point `BTPaymentActionsThreeDSecure_IntegrationTests` at real sandbox flows.
 final class FakePaymentActionsServer: @unchecked Sendable {
 
@@ -251,6 +251,8 @@ final class FakePaymentActionsServer: @unchecked Sendable {
 
 /// Cardinal stand-in for the integration tests, which can't present a real challenge UI. Duplicated
 /// from `BraintreePaymentActionsTests` since test targets can't share files.
+///
+/// TODO: Remove along with `FakePaymentActionsServer` once real sandbox flows replace the fake server.
 final class MockCardinalSession: CardinalSessionTestable {
 
     /// The action code Cardinal "reports" when the challenge completes. `nil` leaves the challenge pending.
