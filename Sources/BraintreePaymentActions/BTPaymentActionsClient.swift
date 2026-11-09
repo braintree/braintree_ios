@@ -277,16 +277,16 @@ import BraintreeCore
     ) async throws -> NextActionHandler.CustomerActionOutcome {
         switch nextAction {
         case .threeDSecureAuthentication:
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.ddcStarted)
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionStarted)
 
             let dfReferenceID: String
             do {
                 dfReferenceID = try await threeDSecureProvider.collectDeviceData()
             } catch {
-                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.ddcFailed, errorDescription: error.localizedDescription)
+                apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionFailed, errorDescription: error.localizedDescription)
                 throw error
             }
-            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.ddcSucceeded)
+            apiClient.sendAnalyticsEvent(BTPaymentActionAnalytics.deviceDataCollectionSucceeded)
 
             let paymentAction = try await signalCustomerActionComplete(.deviceDataCollection(dfReferenceID: dfReferenceID))
             return .advanced(paymentAction)

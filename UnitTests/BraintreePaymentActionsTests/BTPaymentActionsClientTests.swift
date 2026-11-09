@@ -677,8 +677,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         XCTAssertEqual((result as? BTServerActionRequiredResult)?.serverAction, .confirm)
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.ddcStarted,
-            BTPaymentActionAnalytics.ddcSucceeded,
+            BTPaymentActionAnalytics.deviceDataCollectionStarted,
+            BTPaymentActionAnalytics.deviceDataCollectionSucceeded,
             BTPaymentActionAnalytics.verifySucceeded
         ])
     }
@@ -942,8 +942,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
             BTPaymentActionAnalytics.verifyStarted,
-            BTPaymentActionAnalytics.ddcStarted,
-            BTPaymentActionAnalytics.ddcSucceeded,
+            BTPaymentActionAnalytics.deviceDataCollectionStarted,
+            BTPaymentActionAnalytics.deviceDataCollectionSucceeded,
             BTPaymentActionAnalytics.verifyFailed
         ])
         XCTAssertEqual(
@@ -1001,8 +1001,8 @@ class BTPaymentActionsClient_Tests: XCTestCase {
         }
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [
-            BTPaymentActionAnalytics.ddcStarted,
-            BTPaymentActionAnalytics.ddcFailed
+            BTPaymentActionAnalytics.deviceDataCollectionStarted,
+            BTPaymentActionAnalytics.deviceDataCollectionFailed
         ])
     }
 
