@@ -68,10 +68,10 @@ struct FPTIBatchData: Codable {
         let didPayPalServerAttemptAppSwitch: Bool?
         /// The experiment details associated with a shopper insights flow
         let merchantExperiment: String?
-        /// The template of the Pay Later message shown, for example `PLST_SQ`.
-        let messageType: String?
         /// The type of page where the payment button is displayed or where an event occurred.
         let pageType: String?
+        /// The template of the Pay Later message shown, for example `PLST_SQ`.
+        let presentmentMessageType: String?
         /// UTC millisecond timestamp when a networking task started requesting a resource. See [Apple's docs](https://developer.apple.com/documentation/foundation/urlsessiontasktransactionmetrics#3162615).
         let requestStartTime: Int?
         /// Recurring billing plan type, or charge pattern.
@@ -126,8 +126,8 @@ struct FPTIBatchData: Codable {
             isVaultRequest: Bool? = nil,
             linkType: String? = nil,
             merchantExperiment: String? = nil,
-            messageType: String? = nil,
             pageType: String? = nil,
+            presentmentMessageType: String? = nil,
             recurringBillingPlanType: String? = nil,
             renderedEditTag: Bool? = nil,
             renderedLabel: Bool? = nil,
@@ -163,8 +163,8 @@ struct FPTIBatchData: Codable {
             self.isVaultRequest = isVaultRequest
             self.linkType = linkType
             self.merchantExperiment = merchantExperiment
-            self.messageType = messageType
             self.pageType = pageType
+            self.presentmentMessageType = presentmentMessageType
             self.recurringBillingPlanType = recurringBillingPlanType
             self.renderedEditTag = renderedEditTag
             self.renderedLabel = renderedLabel
@@ -201,8 +201,8 @@ struct FPTIBatchData: Codable {
             case isVaultRequest = "is_vault"
             case linkType = "link_type"
             case merchantExperiment = "experiment"
-            case messageType = "presentment_message_type"
             case pageType = "page_type"
+            case presentmentMessageType = "presentment_message_type"
             case recurringBillingPlanType = "billing_plan_type"
             case renderedEditTag = "rendered_edit_tag"
             case renderedLabel = "rendered_label"

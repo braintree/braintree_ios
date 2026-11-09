@@ -577,7 +577,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
     }
 
-    func testLearnMoreTapped_sendsLearnMoreSelectedEventWithTheMessageType() async {
+    func testLearnMoreTapped_sendsLearnMoreSelectedEventWithThePresentmentMessageType() async {
         let sut = makeSUT()
         await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
 
@@ -585,7 +585,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected)
         XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
-        XCTAssertEqual(mockAPIClient.postedMessageType, "PLST_SQ")
+        XCTAssertEqual(mockAPIClient.postedPresentmentMessageType, "PLST_SQ")
     }
 
     func testFIDidRender_afterTheInitialFetch_sendsRenderSucceededEventForTheStickyFI() async {
@@ -645,7 +645,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.isEmpty)
     }
 
-    func testCreditMessageDidRender_whenAMessageIsShown_sendsRenderSucceededEventWithTheMessageType() async {
+    func testCreditMessageDidRender_whenAMessageIsShown_sendsRenderSucceededEventWithThePresentmentMessageType() async {
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
@@ -656,7 +656,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded)
         XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
-        XCTAssertEqual(mockAPIClient.postedMessageType, "PLST_SQ")
+        XCTAssertEqual(mockAPIClient.postedPresentmentMessageType, "PLST_SQ")
     }
 
     /// The message can land before the FI. It is held until the FI settles, and dropped if the FI ends up brand-only.

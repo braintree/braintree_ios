@@ -31,7 +31,7 @@ final class FPTIBatchData_Tests: XCTestCase {
             isEditFIFlow: true,
             isVaultRequest: false,
             linkType: LinkType.universal.rawValue,
-            messageType: "PLST_SQ",
+            presentmentMessageType: "PLST_SQ",
             renderedEditTag: true,
             renderedLabel: true,
             renderedLogo: false,

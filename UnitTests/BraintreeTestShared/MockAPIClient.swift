@@ -35,7 +35,7 @@ public class MockAPIClient: BTAPIClient {
     public var postedSavedMethodID: String? = nil
     public var postedSavedMethodType: String? = nil
     public var postedIsEditFIFlow: Bool? = nil
-    public var postedMessageType: String? = nil
+    public var postedPresentmentMessageType: String? = nil
     public var postedRenderedEditTag: Bool? = nil
     public var postedRenderedLabel: Bool? = nil
     public var postedRenderedLogo: Bool? = nil
@@ -121,8 +121,8 @@ public class MockAPIClient: BTAPIClient {
         isVaultRequest: Bool? = nil,
         linkType: LinkType? = nil,
         merchantExperiment: String? = nil,
-        messageType: String? = nil,
         pageType: String? = nil,
+        presentmentMessageType: String? = nil,
         recurringBillingPlanType: String? = nil,
         renderedEditTag: Bool? = nil,
         renderedLabel: Bool? = nil,
@@ -158,7 +158,7 @@ public class MockAPIClient: BTAPIClient {
         postedSavedMethodID = savedMethodID
         postedSavedMethodType = savedMethodType
         postedIsEditFIFlow = isEditFIFlow
-        postedMessageType = messageType
+        postedPresentmentMessageType = presentmentMessageType
         postedRenderedEditTag = renderedEditTag
         postedRenderedLabel = renderedLabel
         postedRenderedLogo = renderedLogo

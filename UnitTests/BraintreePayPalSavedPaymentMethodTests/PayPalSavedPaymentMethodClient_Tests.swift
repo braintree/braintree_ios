@@ -242,6 +242,23 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
     }
 
+    func testFetchPaymentMethod_whenTypeIsUnrecognized_sendsTheRawTypeInTheSucceededEvent() async throws {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "paypalFundingInstrumentDetails": [
+                        "payer": NSNull(),
+                        "paymentMethods": [["id": "XX-123", "label": "Mystery", "type": "SOME_FUTURE_TYPE"]]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+
+        _ = try await sut.fetchPaymentMethod(fundingInstrumentType: .buyerDefaultBillingAgreement)
+
+        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "SOME_FUTURE_TYPE")
+    }
+
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreementFails_sendsStickyFIFetchFailedEvent() async {
         mockAPIClient.cannedResponseBody = nil
 
