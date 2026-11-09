@@ -241,7 +241,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             buttonSessionID: fetchClient?.buttonSessionID,
             savedMethodBrand: instrument?.cardBrand,
             savedMethodID: instrument?.id,
-            savedMethodType: instrument?.type?.rawValue
+            savedMethodType: instrument?.rawType
         )
         editPhase = .loaderRequested
         editTask = Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
@@ -296,7 +296,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected,
             buttonSessionID: fetchClient?.buttonSessionID,
-            messageType: creditMessage?.messageType
+            presentmentMessageType: creditMessage?.messageType
         )
 
         if learnMore.isEmbeddable {
@@ -336,7 +336,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             renderTrigger: renderTrigger.rawValue,
             savedMethodBrand: instrument?.cardBrand,
             savedMethodID: instrument?.id,
-            savedMethodType: instrument?.type?.rawValue,
+            savedMethodType: instrument?.rawType,
             shownContent: shownContent.rawValue
         )
     }
@@ -348,7 +348,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
             buttonSessionID: fetchClient?.buttonSessionID,
-            messageType: visibleCreditMessage.messageType
+            presentmentMessageType: visibleCreditMessage.messageType
         )
     }
 

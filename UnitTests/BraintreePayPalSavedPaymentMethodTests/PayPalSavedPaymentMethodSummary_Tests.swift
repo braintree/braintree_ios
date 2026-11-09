@@ -53,6 +53,7 @@ final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         let paymentMethod = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json)?.paymentMethods.first)
 
         XCTAssertNil(paymentMethod.type)
+        XCTAssertEqual(paymentMethod.rawType, "SOME_FUTURE_TYPE")
         XCTAssertEqual(paymentMethod.label, "Visa")
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
     }

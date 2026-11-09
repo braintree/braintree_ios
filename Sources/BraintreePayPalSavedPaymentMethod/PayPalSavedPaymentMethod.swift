@@ -12,8 +12,14 @@ struct PayPalSavedPaymentMethod: Equatable {
     /// PayPal's encrypted funding instrument ID, for example `"CC-…"` or `"BA-…"`.
     let id: String?
 
+    /// The `type` string as returned by PayPal. Sent to analytics so types this SDK version does not recognize
+    /// are still reported.
+    let rawType: String?
+
     /// The kind of funding instrument, or `nil` when PayPal returns a type this SDK version does not recognize.
-    let type: PayPalSavedPaymentMethodType?
+    var type: PayPalSavedPaymentMethodType? {
+        rawType.flatMap(PayPalSavedPaymentMethodType.init(rawValue:))
+    }
 
     /// The display name of the funding instrument, for example `"Visa"` or `"CREDIT UNION 1"`.
     let label: String?
@@ -40,7 +46,7 @@ struct PayPalSavedPaymentMethod: Equatable {
         }
 
         self.id = json["id"].asString()
-        self.type = PayPalSavedPaymentMethodType(json: json["type"])
+        self.rawType = json["type"].asString()
         self.label = json["label"].asString()
         self.imageURL = json["imageUrl"].asURL()
         self.lastDigits = json["lastDigits"].asString()

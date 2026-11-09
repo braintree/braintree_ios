@@ -147,7 +147,7 @@ final class PayPalSavedPaymentMethodClient {
                 buttonSessionID: buttonSessionID,
                 savedMethodBrand: summary.paymentMethods.first?.cardBrand,
                 savedMethodID: summary.paymentMethods.first?.id,
-                savedMethodType: summary.paymentMethods.first?.type?.rawValue
+                savedMethodType: summary.paymentMethods.first?.rawType
             )
             return summary
         } catch {
@@ -191,7 +191,7 @@ final class PayPalSavedPaymentMethodClient {
                 contextID: orderID,
                 savedMethodBrand: summary.paymentMethods.first?.cardBrand,
                 savedMethodID: summary.paymentMethods.first?.id,
-                savedMethodType: summary.paymentMethods.first?.type?.rawValue
+                savedMethodType: summary.paymentMethods.first?.rawType
             )
             return summary
         } catch {
