@@ -1,4 +1,5 @@
 import SwiftUI
+import BraintreePaymentActions
 
 @MainActor
 final class PaymentActionsViewModel: ObservableObject {
@@ -107,7 +108,7 @@ final class PaymentActionsViewModel: ObservableObject {
         outcome = finalOutcome
         onProgress("Payment Action \(finalOutcome.paymentActionID) finished.")
 
-        if case .declined = finalOutcome {
+        if finalOutcome.status == .declined {
             clearCardFields()
         }
     }
@@ -133,10 +134,10 @@ final class PaymentActionsViewModel: ObservableObject {
         postalCode = ""
     }
 
-    /// Builds card details from the card form fields, or `nil` if a required field is
+    /// Builds a `BTCreditCard` from the card form fields, or `nil` if a required field is
     /// missing/malformed. Mirrors the validation `CardTokenizationView.makeCard()` uses for the
     /// shared `CardFormView`, so both features stay in sync if the form's requirements change.
-    private func makeCard() -> PaymentCardDetails? {
+    private func makeCard() -> BTCreditCard? {
         guard !cardNumber.isEmpty, !cvv.isEmpty else { return nil }
 
         let parts = expirationDate.split(separator: "/")
@@ -147,8 +148,15 @@ final class PaymentActionsViewModel: ObservableObject {
             return nil
         }
 
-        return PaymentCardDetails(
+        (service as? HybridPaymentActionsFlowService)?.rawCard = PaymentCardDetails( // MOCK-REMOVAL
             number: cardNumber,
+            expirationMonth: String(month),
+            expirationYear: String(year),
+            cvv: cvv
+        )
+
+        return BTCreditCard(
+            cardNumber: cardNumber,
             expirationMonth: String(month),
             expirationYear: String(year),
             cvv: cvv,

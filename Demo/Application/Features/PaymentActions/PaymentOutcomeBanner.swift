@@ -41,7 +41,7 @@ struct PaymentOutcomeBanner: View {
     }
 
     private var style: Style {
-        switch outcome {
+        switch outcome.status {
         case .success:
             return Style(
                 title: "Payment succeeded",
@@ -112,22 +112,6 @@ struct PaymentOutcomeBanner: View {
                 systemImage: "checkmark.shield.fill",
                 color: .teal
             )
-        }
-    }
-}
-
-extension PaymentOutcome {
-
-    var paymentActionID: String {
-        switch self {
-        case .success(let id), .capturePending(let id), .declined(let id):
-            return id
-        case .threeDSecureCanceled(let id), .canceled(let id), .expired(let id):
-            return id
-        case .unrecognized(let id), .processing(let id):
-            return id
-        case .customerActionRequired(let id), .confirmationRequired(let id):
-            return id
         }
     }
 }

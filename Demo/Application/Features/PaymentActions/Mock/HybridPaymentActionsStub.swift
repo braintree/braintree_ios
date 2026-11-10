@@ -2,6 +2,8 @@ import Foundation
 import BraintreeCore
 import OHHTTPStubs
 
+/// TODO: Remove once the Payment Actions backend is ready.
+///
 /// Stands in for the Payment Actions GraphQL server only. The real SDK talks to it, and every 3DS
 /// step is real: the challenge payload comes from the sandbox Gateway's lookup, and Cardinal
 /// presents the actual challenge.

@@ -42,17 +42,9 @@ class LivePaymentActionsFlowService: PaymentActionsFlowService {
         return (response.clientToken, response.paymentAction.id)
     }
 
-    func submit(card: PaymentCardDetails) async throws -> PaymentOutcome {
+    func submit(card: BTCreditCard) async throws -> PaymentOutcome {
         guard let client else { throw PaymentActionsDemoError.noActivePaymentAction }
-
-        let request = BTCreditCard(
-            cardNumber: card.number,
-            expirationMonth: card.expirationMonth,
-            expirationYear: card.expirationYear,
-            cvv: card.cvv,
-            postalCode: card.postalCode
-        )
-        return PaymentOutcome(try await client.submitForPaymentAction(request))
+        return PaymentOutcome(try await client.submitForPaymentAction(card))
     }
 
     func confirm(paymentActionID: String) async throws {
@@ -68,29 +60,35 @@ class LivePaymentActionsFlowService: PaymentActionsFlowService {
 private extension PaymentOutcome {
 
     init(_ result: BTPaymentActionResult) {
-        let id = result.id
+        self.init(status: Status(result), paymentActionID: result.id)
+    }
+}
+
+private extension PaymentOutcome.Status {
+
+    init(_ result: BTPaymentActionResult) {
         switch result.type {
         case .completed:
-            self = .success(id: id)
+            self = .success
         case .serverActionRequired:
             let serverAction = (result as? BTServerActionRequiredResult)?.serverAction
-            self = serverAction == .capture ? .capturePending(id: id) : .confirmationRequired(id: id)
+            self = serverAction == .capture ? .capturePending : .confirmationRequired
         case .paymentMethodRequired:
-            self = .declined(id: id)
+            self = .declined
         case .customerActionRequired:
-            self = .customerActionRequired(id: id)
+            self = .customerActionRequired
         case .threeDSecureCanceled:
-            self = .threeDSecureCanceled(id: id)
+            self = .threeDSecureCanceled
         case .canceled:
-            self = .canceled(id: id)
+            self = .canceled
         case .expired:
-            self = .expired(id: id)
+            self = .expired
         case .processing:
-            self = .processing(id: id)
+            self = .processing
         case .unrecognized:
-            self = .unrecognized(id: id)
+            self = .unrecognized
         @unknown default:
-            self = .unrecognized(id: id)
+            self = .unrecognized
         }
     }
 }

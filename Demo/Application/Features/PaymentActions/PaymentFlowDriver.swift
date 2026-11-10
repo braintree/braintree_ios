@@ -1,4 +1,5 @@
 import Foundation
+import BraintreePaymentActions
 
 /// Runs one payment from card submission to a final outcome, playing the merchant for MANUAL
 /// confirmation. After every confirm it re-enters via `handleNextAction` instead of assuming the
@@ -12,16 +13,16 @@ struct PaymentFlowDriver {
     let confirmation: PaymentActionMode
     let onProgress: (String) -> Void
 
-    func run(card: PaymentCardDetails) async throws -> PaymentOutcome {
+    func run(card: BTCreditCard) async throws -> PaymentOutcome {
         onProgress("Submitting payment method...")
         var outcome = try await service.submit(card: card)
         var isSubmitResult = true
 
         for _ in 0..<Self.maxSteps {
-            switch outcome {
-            case .confirmationRequired(let id) where confirmation == .manual:
+            switch outcome.status {
+            case .confirmationRequired where confirmation == .manual:
                 onProgress("Merchant confirming Payment Action...")
-                try await service.confirm(paymentActionID: id)
+                try await service.confirm(paymentActionID: outcome.paymentActionID)
                 onProgress("Continuing from the Payment Action's state...")
                 outcome = try await service.handleNextAction()
                 isSubmitResult = false

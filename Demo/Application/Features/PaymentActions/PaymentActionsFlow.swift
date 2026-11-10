@@ -1,4 +1,5 @@
 import Foundation
+import BraintreePaymentActions
 
 /// Whether the merchant (or the Payment Actions server) performs a step automatically or on demand.
 enum PaymentActionMode: String, CaseIterable, Identifiable {
@@ -22,28 +23,24 @@ struct PaymentActionOptions: Equatable {
     var capture: PaymentActionMode = .automatic
 }
 
-struct PaymentCardDetails: Equatable {
-
-    let number: String
-    let expirationMonth: String
-    let expirationYear: String
-    let cvv: String
-    let postalCode: String?
-}
-
 /// What the shopper and merchant see at the end of a step, independent of where it came from.
-enum PaymentOutcome: Equatable {
+struct PaymentOutcome: Equatable {
 
-    case success(id: String)
-    case capturePending(id: String)
-    case declined(id: String)
-    case threeDSecureCanceled(id: String)
-    case canceled(id: String)
-    case expired(id: String)
-    case unrecognized(id: String)
-    case processing(id: String)
-    case customerActionRequired(id: String)
-    case confirmationRequired(id: String)
+    enum Status: Equatable {
+        case success
+        case capturePending
+        case declined
+        case threeDSecureCanceled
+        case canceled
+        case expired
+        case unrecognized
+        case processing
+        case customerActionRequired
+        case confirmationRequired
+    }
+
+    let status: Status
+    let paymentActionID: String
 }
 
 enum PaymentActionsDemoError: LocalizedError {
@@ -74,7 +71,7 @@ protocol PaymentActionsFlowService: AnyObject {
 
     func createPaymentAction(options: PaymentActionOptions) async throws -> String
 
-    func submit(card: PaymentCardDetails) async throws -> PaymentOutcome
+    func submit(card: BTCreditCard) async throws -> PaymentOutcome
 
     /// Plays the merchant server confirming the Payment Action.
     func confirm(paymentActionID: String) async throws

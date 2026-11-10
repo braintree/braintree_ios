@@ -1,6 +1,6 @@
 import Foundation
 
-// Once the real backend is ready, delete the `Mock/` folder, remove every line tagged `MOCK-REMOVAL`
+// TODO: Once the real backend is ready, delete the `Mock/` folder, remove every line tagged `MOCK-REMOVAL`
 // (grep for it), point `.threeDSecure` at `LivePaymentActionsFlowService` with 3DS requested from the
 // sample merchant, and drop the Podfile's OHHTTPStubs line.
 
