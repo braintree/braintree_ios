@@ -64,6 +64,7 @@ jobs:
           - PayPalButton_UITests
           - VenmoButton_UITests
           - CardFields_UITests
+          - PayLaterButton_UITests
       fail-fast: false  # Continue running other test suites if one fails
     steps:
       - name: Checkout repository

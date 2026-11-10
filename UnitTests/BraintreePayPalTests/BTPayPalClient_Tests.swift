@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-@testable import BraintreePayPal
+@_spi(BraintreeUIComponents) @testable import BraintreePayPal
 @testable import BraintreeTestShared
 @testable import BraintreeCore
 

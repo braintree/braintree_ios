@@ -3,6 +3,8 @@
 ## unreleased
 * Remove CocoaPods support -- `Braintree.podspec` has been deleted and CocoaPods integration artifacts removed from the SDK, please migrate to a supported package manager
 * Fix `Braintree_Static.xcframework.zip` release asset missing `BraintreeUIComponents`
+* BraintreeUIComponents
+    * Add `PayPalPayLaterButton(authorization:universalLink:fallbackURLScheme:request:color:width:completion:)` to generate a PayPal Pay Later-branded button for launching PayPal Pay Later flow
 
 ## 7.13.1 (2026-10-29)
 * BraintreeCore

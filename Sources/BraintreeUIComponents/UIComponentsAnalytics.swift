@@ -16,4 +16,9 @@ enum UIComponentsAnalytics {
 
     static let venmoButtonPresented = "ui-components:venmo-button:presented"
     static let venmoButtonSelected = "ui-components:venmo-button:selected"
+
+    // MARK: - PayPal Pay Later Button Events
+
+    static let payLaterButtonPresented = "ui-components:pay-later-button:presented"
+    static let payLaterButtonSelected = "ui-components:pay-later-button:selected"
 }
