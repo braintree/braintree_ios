@@ -12,7 +12,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
     @State private var amount = "80.00"
     @State private var amountInput = "80.00"
     @State private var isAppSwitchEnabled = true
-    @State private var userAction: BTPayPalRequestUserAction = .none
+    @State private var userAction: BTPayPalRequestUserAction = .payNow
     @State private var isStyleEditorPresented = false
     @State private var styleConfig = PayPalSavedPaymentMethodStyleConfig()
     @State private var payPalClient: BTPayPalClient?
