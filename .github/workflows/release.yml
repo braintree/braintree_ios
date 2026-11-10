@@ -215,6 +215,10 @@ jobs:
           # Clean up JSON build artifacts before switching branches
           rm -f braintree-*.json swiftDoc.json
 
+          # xcodebuild/sourcekitten re-resolve SPM packages and rewrite tracked Package.resolved files,
+          # which would block the branch switch. Discard those changes.
+          git checkout -- Package.resolved Demo/Demo.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
           # Store current branch to return to it later
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
