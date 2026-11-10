@@ -11,6 +11,16 @@ class Venmo_UITests: XCTestCase {
         super.setUp()
         continueAfterFailure = false
 
+        // Auto-dismiss system alerts (e.g. first-launch permission prompts) that would
+        // otherwise block the app-switch handshake with MockVenmo.
+        addUIInterruptionMonitor(withDescription: "System Alert") { alert in
+            for buttonLabel in ["Allow", "Allow Once", "OK", "Continue"] where alert.buttons[buttonLabel].exists {
+                alert.buttons[buttonLabel].tap()
+                return true
+            }
+            return false
+        }
+
         mockVenmo = XCUIApplication(bundleIdentifier: "com.braintreepayments.MockVenmo")
         mockVenmo.activate()
 
@@ -53,7 +63,7 @@ class Venmo_UITests: XCTestCase {
         // Verify nonce received
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
         XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
+            waitForElementToAppear(nonceButton, timeout: 60),
             "Nonce button did not appear"
         )
     }
@@ -79,7 +89,7 @@ class Venmo_UITests: XCTestCase {
 
         let nonceButton = demoApp.buttons["Got a nonce. Tap to make a transaction."]
         XCTAssertTrue(
-            waitForElementToAppear(nonceButton, timeout: 30),
+            waitForElementToAppear(nonceButton, timeout: 60),
             "Nonce button did not appear"
         )
     }

@@ -108,6 +108,28 @@ final class CardNumberFieldValidatorTests: XCTestCase {
         XCTAssertEqual(validator.detectBrand(from: "9999999999999999"), .unknown)
     }
 
+    func testDetectBrand_hiper_returnsHiper() {
+        XCTAssertEqual(validator.detectBrand(from: "6370950000000000"), .hiper)
+    }
+
+    func testDetectBrand_hipercard_returnsHipercard() {
+        XCTAssertEqual(validator.detectBrand(from: "6062820000000000"), .hipercard)
+    }
+
+    // MARK: - Regex Anchoring
+
+    func testDetectBrand_prefixMatchIsAnchoredAtStart_returnsUnknown() {
+        // "4" appears in the string but not at the start, so the visa pattern
+        // (`^4\d*`) must not match — verifies prefix matching is anchored, not a substring search.
+        XCTAssertEqual(validator.detectBrand(from: "1400000000000000"), .unknown)
+    }
+
+    func testDetectBrand_relaxedPrefixMatchIsAnchoredAtStart_returnsUnknown() {
+        // "6" appears in the string but not at the start, so Maestro's relaxed pattern
+        // (`^6\d*`) must not match.
+        XCTAssertEqual(validator.detectBrand(from: "1600000000000000"), .unknown)
+    }
+
     // MARK: - Length Validation
 
     func testValidate_amex15Digits_returnsValid() {

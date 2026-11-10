@@ -1,13 +1,40 @@
 {
-  "originHash" : "1bc9f2ac5ce3e7b7333b5cd9855429f9a60c65fc32be228cb6cd9b3c926648de",
+  "originHash" : "df3a5ea33997dee2f352acf77d6fbc7d0bdaa3fd126385c6c0411a1f16a03e2f",
   "pins" : [
+    {
+      "identity" : "ocmock",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/erikdoe/ocmock",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7f6e9e9b6c9ffa19a9040860da9f7a1f202b9f4d"
+      }
+    },
+    {
+      "identity" : "ohhttpstubs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AliSoftware/OHHTTPStubs",
+      "state" : {
+        "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+        "version" : "9.1.0"
+      }
+    },
     {
       "identity" : "paypal-messages-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/paypal/paypal-messages-ios",
       "state" : {
-        "revision" : "86bb29908a7493c67af29d6039e3b737229f077a",
-        "version" : "1.0.0"
+        "revision" : "e3ee08c5310096457ea709f49b8b22b6b385a916",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "paypal-risk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/paypal/paypal-risk-ios",
+      "state" : {
+        "revision" : "97d70968d508992f99ac9c46dd1da4c0cf0a2d97",
+        "version" : "5.6.0"
       }
     }
   ],

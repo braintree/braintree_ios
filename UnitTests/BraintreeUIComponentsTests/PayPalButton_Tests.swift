@@ -1,8 +1,48 @@
 import XCTest
 import SwiftUI
 @testable import BraintreeUIComponents
+@testable import BraintreePayPal
+@testable import BraintreeCore
+@testable import BraintreeTestShared
 
 final class PayPalButton_Tests: XCTestCase {
+
+    private let tokenizationKey = "sandbox_9dbg82cq_dcpspy2brwdjr3qn"
+    // swiftlint:disable:next force_unwrapping
+    private let universalLink = URL(string: "https://www.example.com/paypal")!
+
+    private func makeButton() -> PayPalButton {
+        PayPalButton(
+            authorization: tokenizationKey,
+            universalLink: universalLink,
+            request: BTPayPalCheckoutRequest(amount: "10"),
+            completion: { _, _ in }
+        )
+    }
+
+    // MARK: - Analytics
+
+    func testDidAppear_sendsPresentedAnalyticsEvent() {
+        var button = makeButton()
+        let mockAPIClient = MockAPIClient(authorization: tokenizationKey)
+        button.apiClient = mockAPIClient
+
+        button.didAppear()
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(UIComponentsAnalytics.payPalButtonPresented))
+    }
+
+    func testDidSelectButton_sendsSelectedAnalyticsEvent() {
+        var button = makeButton()
+        let mockAPIClient = MockAPIClient(authorization: tokenizationKey)
+        button.apiClient = mockAPIClient
+
+        button.didSelectButton()
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains(UIComponentsAnalytics.payPalButtonSelected))
+    }
+
+    // MARK: - Color
 
     func testPayPalButtonColor_blue_hasCorrectProperties() {
         let color = PayPalButtonColor.blue

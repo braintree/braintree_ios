@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 final class BTCustomerRecommendationsAPI {
     
@@ -43,6 +40,7 @@ final class BTCustomerRecommendationsAPI {
             
             let sessionID = body["data"]["generateCustomerRecommendations"]["sessionId"].asString()
             let isInPayPalNetwork = body["data"]["generateCustomerRecommendations"]["isInPayPalNetwork"].asBool()
+            let expiresAt = body["data"]["generateCustomerRecommendations"]["expiresAt"].asString()
             var paymentOptions: [BTPaymentOptions]? = []
             if let paymentRecommendations = body["data"]["generateCustomerRecommendations"]["paymentRecommendations"].asArray() {
                 for recommendation in paymentRecommendations {
@@ -62,7 +60,8 @@ final class BTCustomerRecommendationsAPI {
             return BTCustomerRecommendationsResult(
                 sessionID: sessionID,
                 isInPayPalNetwork: isInPayPalNetwork,
-                paymentRecommendations: paymentOptions
+                paymentRecommendations: paymentOptions,
+                expiresAt: expiresAt
             )
         } catch {
             apiClient.sendAnalyticsEvent(

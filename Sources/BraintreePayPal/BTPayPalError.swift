@@ -48,6 +48,9 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
     /// 14. Missing EC Token for App Switch
     case missingECToken
 
+    /// 15. The background task wrapping the handle return tokenization request expired
+    case returnBackgroundTaskExpired
+
     public static var errorDomain: String {
         "com.braintreepayments.BTPayPalErrorDomain"
     }
@@ -84,6 +87,8 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return 13
         case .missingECToken:
             return 14
+        case .returnBackgroundTaskExpired:
+            return 15
         }
     }
 
@@ -121,6 +126,10 @@ public enum BTPayPalError: Error, CustomNSError, LocalizedError, Equatable {
             return "The PayPal Request was missing or invalid."
         case .missingECToken:
             return "Missing EC Token for PayPal App Switch."
+        case .returnBackgroundTaskExpired:
+            // swiftlint:disable line_length
+            return "The PayPal tokenization request did not finish before the app's background execution time expired. The app was backgrounded for too long after returning from PayPal."
+            // swiftlint:enable line_length
         }
     }
 

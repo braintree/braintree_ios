@@ -5,90 +5,38 @@ import PassKit
 class ApplePayViewController: PaymentButtonBaseViewController {
 
     lazy var applePayClient = BTApplePayClient(authorization: authorization)
-    // swiftlint:disable:next force_unwrapping
-    let managementURL = URL(string: "https://www.merchant.com/update-payment")!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Apple Pay"
+
+        let demoView = ApplePayView(
+            client: applePayClient,
+            onProgress: progressBlock,
+            onComplete: completionBlock
+        ) { [weak self] paymentRequest in
+            self?.presentPaymentSheet(with: paymentRequest)
+        }
+
+        embed(demoView)
     }
 
+    // TODO: Remove or change createPaymentButton during full SwiftUI migration
+    // This is to suppress Constraint warnings when the payment button is not overriden. The actual Payment Button is within the SwiftUI view
     override func createPaymentButton() -> UIView {
-        applePayClient.isApplePaySupported { isSupported in
-            if !isSupported {
-                self.progressBlock("canMakePayments returned false, hiding Apple Pay button")
-                return
-            }
+        let placeholderView = UIView()
+        placeholderView.translatesAutoresizingMaskIntoConstraints = false
+        return placeholderView
+    }
+
+    private func presentPaymentSheet(with paymentRequest: PKPaymentRequest) {
+        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
+            progressBlock("Could not create PKPaymentAuthorizationViewController")
+            return
         }
-
-        let applePayButton = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
-        applePayButton.translatesAutoresizingMaskIntoConstraints = false
-        applePayButton.addTarget(self, action: #selector(tappedApplePayButton), for: .touchUpInside)
-
-        NSLayoutConstraint.activate([applePayButton.heightAnchor.constraint(equalToConstant: 50)])
-
-        return applePayButton
-    }
-
-    @objc func tappedApplePayButton() {
-        progressBlock("Constructing PKPaymentRequest")
-
-        applePayClient.makePaymentRequest { request, error in
-            guard let request else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            let paymentRequest = self.constructPaymentRequest(with: request)
-            guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
-                self.progressBlock("Could not create PKPaymentAuthorizationViewController")
-                return
-            }
-            paymentAuthorizationViewController.delegate = self
-
-            paymentRequest.recurringPaymentRequest = self.recurringPaymentRequest()
-
-            self.progressBlock("Presenting Apple Pay Sheet")
-            self.present(paymentAuthorizationViewController, animated: true)
-        }
-    }
-
-    private func recurringPaymentRequest() -> PKRecurringPaymentRequest {
-        let recurringPaymentRequest = PKRecurringPaymentRequest(
-            paymentDescription: "Payment description.",
-            regularBilling: PKRecurringPaymentSummaryItem(label: "Payment label", amount: 10.99),
-            managementURL: managementURL
-        )
-        return recurringPaymentRequest
-    }
-
-    private func constructPaymentRequest(with paymentRequest: PKPaymentRequest) -> PKPaymentRequest {
-        paymentRequest.requiredBillingContactFields = [PKContactField.name]
-
-        let shippingMethod1 = PKShippingMethod(label: "✈️ Fast Shipping", amount: 4.99)
-        shippingMethod1.detail = "Fast but expensive"
-        shippingMethod1.identifier = "fast"
-
-        let shippingMethod2 = PKShippingMethod(label: "🐢 Slow Shipping", amount: 0.00)
-        shippingMethod2.detail = "Slow but free"
-        shippingMethod2.identifier = "slow"
-
-        let shippingMethod3 = PKShippingMethod(label: "💣 Unavailable Shipping", amount: NSDecimalNumber(string: "0xdeadbeef"))
-        shippingMethod3.detail = "It will make Apple Pay fail"
-        shippingMethod3.identifier = "fail"
-
-        paymentRequest.shippingMethods = [shippingMethod1, shippingMethod2, shippingMethod3]
-        paymentRequest.requiredShippingContactFields = [PKContactField.name, PKContactField.phoneNumber, PKContactField.emailAddress]
-
-        paymentRequest.paymentSummaryItems = [
-            PKPaymentSummaryItem(label: "SOME ITEM", amount: 10),
-            PKPaymentSummaryItem(label: "SHIPPING", amount: shippingMethod1.amount),
-            PKPaymentSummaryItem(label: "BRAINTREE", amount: 14.99)
-        ]
-
-        paymentRequest.merchantCapabilities = .capability3DS
-        return paymentRequest
+        paymentAuthorizationViewController.delegate = self
+        present(paymentAuthorizationViewController, animated: true)
     }
 }
 

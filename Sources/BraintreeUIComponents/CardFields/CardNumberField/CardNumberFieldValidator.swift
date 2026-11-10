@@ -45,19 +45,26 @@ struct CardNumberFieldValidator: CardFieldsValidatorProtocol {
     func detectBrand(from digits: String) -> CardBrand {
         // Pass 1: strict prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.prefixPatterns where digits.prefixMatch(of: pattern) != nil {
+            for pattern in brand.prefixPatterns where matches(pattern, in: digits) {
                 return brand
             }
         }
 
         // Pass 2: relaxed prefixes
         for brand in CardBrand.allCases {
-            for pattern in brand.relaxedPrefixPatterns where digits.prefixMatch(of: pattern) != nil {
+            for pattern in brand.relaxedPrefixPatterns where matches(pattern, in: digits) {
                 return brand
             }
         }
 
         return .unknown
+    }
+
+    /// NEXT_MAJOR_VERSION: switch back to `Regex<Substring>`/`prefixMatch(of:)` when minimum target moved to iOS 16 or higher
+    private func matches(_ pattern: String, in digits: String) -> Bool {
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
+        let range = NSRange(digits.startIndex..., in: digits)
+        return regex.firstMatch(in: digits, range: range) != nil
     }
 
     /// Luhn algorithm - Processes digits right to left, doubling every second digit.

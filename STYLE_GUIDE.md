@@ -52,7 +52,7 @@ class MyViewController: UIViewController, UITableViewDataSource, UIScrollViewDel
 }
 ```
 
-**Note**: Classes or structs that conform to `Encodable` should be placed within a `Models` directory for relevant payment method types. This helps maintain a clear separation between data models and other components.
+**Note**: The `Models` directory in each module is reserved for network/GraphQL data models — types that only exist to shape a request or response body (e.g. `CreditCardPOSTBody`, `PayPalVaultPOSTBody`). Conforming to `Encodable` alone does not qualify a type for `Models`: public request/business-logic types (e.g. `BTPayPalRequest`, `BTPayPalCampaign`) also conform to `Encodable` but belong alongside the other client-facing types in the module's top-level directory, not in `Models`.
 
 ### Nested structs
 
@@ -207,7 +207,23 @@ var employees: Dictionary<Int, String>
 var faxNumber: Optional<Int>
 ```
 
+### Structs vs. Classes
+
+Default to `struct`/`enum` for new Swift types. Reach for `class` only when you specifically need:
+
+- **Reference semantics** — e.g. a `BT<Name>Client` holding mutable session state across async calls, or a SwiftUI `ObservableObject` view model.
+- **Objective-C interop** — `@objc`/`@objcMembers` types, or anything bridged to Objective-C callers.
+- **`NSSecureCoding` conformance** — e.g. `BTPaymentMethodNonce` subclasses.
+
+If none of those apply, prefer a value type.
+
 ## Naming
+
+### Type Prefix
+
+All public types use the `BT` prefix (`BTCardClient`, `BTPayPalRequest`). Internal types do too, by default.
+
+**Exception**: SwiftUI view code (views, view models, and their supporting types) may drop the `BT` prefix, public and internal alike, for cleaner call-site naming (`PayPalButton(color: .blue)` instead of `BTPayPalButton`). `BraintreeUIComponents` is the existing precedent (`PayPalButton`, `PayPalButtonColor`, `CardFields`, `CardFieldsViewModel`). This applies to the SwiftUI view layer only — the `BT`-prefixed client/request/nonce types it wraps (`BTPayPalClient`, `BTPayPalCheckoutRequest`) keep their prefix as normal, and non-UI code elsewhere continues to prefix everything with `BT`.
 
 ### Abbreviations
 

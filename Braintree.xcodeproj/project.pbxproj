@@ -27,8 +27,8 @@
 		078A2E98A65AFB196E116F96 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0F08462435EF3B671689B7D9 /* PrivacyInfo.xcprivacy */; };
 		081F74702EF09793002D53EA /* PayPalButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */; };
 		081F74712EF09793002D53EA /* PayPalButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */; };
+		487A9188FEED1B775187C1B3 /* UIComponentsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317D2A947184896591C36700 /* UIComponentsAnalytics_Tests.swift */; };
 		081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
-		081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */; };
 		084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */; };
 		084135422ED0CBAD00884FE9 /* VenmoButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084135402ED0CBAD00884FE9 /* VenmoButtonColor.swift */; };
 		084135432ED0CBAD00884FE9 /* UIComponents+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */; };
@@ -63,10 +63,10 @@
 		08F6DB282F6AEC67002FA6EE /* ExpirationDateFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB272F6AEC67002FA6EE /* ExpirationDateFieldViewModel.swift */; };
 		08F6DB2A2F6AEC83002FA6EE /* CardNumberFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F6DB292F6AEC83002FA6EE /* CardNumberFieldViewModel.swift */; };
 		0917F6E42A27BDC700ACED2E /* BTVenmoLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */; };
-		1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */; };
+		13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */; };
+		13A9C0D32F11B65000A1B2C3 /* ShopperInsightsCampaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */; };
 		2786AB6520BA4E79A5EFB08B /* CVVHintCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731BD3E21BC44E928B80A155 /* CVVHintCard.swift */; };
 		2863A507CC454374A3E14E6B /* CardNumberFieldViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863A507CC454374A3E14E6A /* CardNumberFieldViewModelTests.swift */; };
-		28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */; };
 		3B0EF89429B28C0800456973 /* BTAmericanExpressAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89329B28C0800456973 /* BTAmericanExpressAnalytics.swift */; };
 		3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EF89529B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift */; };
 		3B14BFDF29B647AF0047426A /* BTCardAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B14BFDE29B647AF0047426A /* BTCardAnalytics_Tests.swift */; };
@@ -117,7 +117,7 @@
 		45EFC3972C2DBF32005E7F5B /* ConfigurationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */; };
 		45F58CAE2DF22DB7004973F5 /* UpdateCustomerSessionMutationGraphQLBody_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F58CAD2DF22DB2004973F5 /* UpdateCustomerSessionMutationGraphQLBody_Tests.swift */; };
 		45F58CB02DF231FA004973F5 /* CreateCustomerSessionMutationGraphQLBody_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F58CAF2DF231F5004973F5 /* CreateCustomerSessionMutationGraphQLBody_Tests.swift */; };
-		45F766F62DE622640079016E /* BackgroundTaskManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F766F52DE622640079016E /* BackgroundTaskManaging.swift */; };
+		45F766F62DE622640079016E /* UIApplication+BackgroundTaskManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F766F52DE622640079016E /* UIApplication+BackgroundTaskManaging.swift */; };
 		45F766F82DE8E1CE0079016E /* MockBackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F766F72DE8E1C10079016E /* MockBackgroundTaskManager.swift */; };
 		46281C7F655EA24A0CB4B01E /* BraintreeTestShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A903E1A624F9D34000C314E1 /* BraintreeTestShared.framework */; };
 		48695478D16376FDE66870F1 /* EditFIStyleGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CCA5D16D44FF2922679CAD /* EditFIStyleGuard.swift */; };
@@ -150,12 +150,15 @@
 		621149DE2E0201C7006D7687 /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621149DD2E0201C3006D7687 /* Variables.swift */; };
 		62236E1A2B98CFB000CDCC37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */; };
 		622B0B422F9BCA2D004FB0BD /* BraintreeLocalPayment_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B0B412F9BCA20004FB0BD /* BraintreeLocalPayment_IntegrationTests.swift */; };
+		62417F4F30827E95000CE5CC /* PayPalPayLaterButton_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62417F4E30827E89000CE5CC /* PayPalPayLaterButton_Tests.swift */; };
 		624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */; };
 		624B27F72B6AE0C2000AC08A /* BTShopperInsightsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */; };
 		625010722F9FF5E000EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */; };
 		625719C52F0DBAF6008D019E /* BTHTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */; };
 		62970D102B5AF2C000BAB584 /* BTShopperInsightsAnalytics_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */; };
 		6298A1992B91010600E46EDF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */; };
+		62A6466C30795C140013122B /* PayPalPayLaterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A6466B30795C040013122B /* PayPalPayLaterButton.swift */; };
+		62A6466E307968C60013122B /* PayPalPayLaterButtonColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A6466D307968BC0013122B /* PayPalPayLaterButtonColor.swift */; };
 		62A659A42B98CB23008DFD67 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */; };
 		62A746412B9255AC003D32FF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */; };
 		62BEEB8A2E0B11EA002C848D /* BTGenerateCustomerRecommendationAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BEEB892E0B11DE002C848D /* BTGenerateCustomerRecommendationAPI_Tests.swift */; };
@@ -164,6 +167,8 @@
 		62BF860E2DD2BF0300A05064 /* BTCreateCustomerSessionAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BF860D2DD2BEF100A05064 /* BTCreateCustomerSessionAPI_Tests.swift */; };
 		62C458D32DD291AE00B4F9B3 /* BTCreateCustomerSessionAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C458D22DD2918600B4F9B3 /* BTCreateCustomerSessionAPI.swift */; };
 		62C458D52DD292D900B4F9B3 /* BTCustomerSessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C458D42DD292CF00B4F9B3 /* BTCustomerSessionRequest.swift */; };
+		62C59A8A305B1B5B0043BD10 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 62C59A89305B1B5B0043BD10 /* OCMock */; };
+		62C59A8D305B1C080043BD10 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */; };
 		62D5754A2D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D575492D5299A700DCDAC1 /* ThreeDSecureAuthenticateJWTPOSTBody.swift */; };
 		62DE8FBF2B9656BF00F08F53 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 62DE8FBE2B9656BF00F08F53 /* PrivacyInfo.xcprivacy */; };
 		62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA90482B63071800DD79BC /* BTEligiblePaymentMethods.swift */; };
@@ -228,7 +233,7 @@
 		82126281DE107144305B9835 /* BraintreePayPalSavedPaymentMethod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39ABA2B42572DEBBF6C96943 /* BraintreePayPalSavedPaymentMethod.framework */; };
 		95BE4D282F101743003C139D /* BTPayPalFundingSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BE4D272F10173D003C139D /* BTPayPalFundingSource.swift */; };
 		9BEC89010C077DF79C76B0AC /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B93AC285397520041BAFE /* BraintreeCore.framework */; };
-		9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
+		967D1038303DDC76001F605F /* PayPalRisk in Frameworks */ = {isa = PBXBuildFile; productRef = 967D1037303DDC76001F605F /* PayPalRisk */; };
 		9C3F55EF275E80DA00C21C8A /* BTAmericanExpressError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */; };
 		9C67362827E247270089BD99 /* CreateMandateResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */; };
 		9C67362E27E3DAB90089BD99 /* BTSEPADirectDebitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C67362D27E3DAB90089BD99 /* BTSEPADirectDebitError.swift */; };
@@ -460,7 +465,6 @@
 		BEF388C32BE9340C000965C8 /* BTAPITimingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF388C22BE9340C000965C8 /* BTAPITimingDelegate.swift */; };
 		BEF3F17E27CE9EDF00072467 /* BTSEPADirectDebitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF3F17127CE9E6C00072467 /* BTSEPADirectDebitClient.swift */; };
 		BEF5D2E6294A18B300FFD56D /* BTPayPalLineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF5D2E5294A18B300FFD56D /* BTPayPalLineItem.swift */; };
-		BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */; };
 		BEFE6DA427E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA327E26399002BE9C8 /* SEPADirectDebitAPI_Tests.swift */; };
 		BEFE6DAA27E28A0B002BE9C8 /* MockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE6DA927E28A0B002BE9C8 /* MockViewController.swift */; };
 		BEFE9A3B29C8EC6B00BF69AB /* BTCardClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFE9A3A29C8EC6B00BF69AB /* BTCardClient.swift */; };
@@ -932,6 +936,7 @@
 		04B0010F2D0CF46900C0060D /* BTExperimentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTExperimentType.swift; sourceTree = "<group>"; };
 		081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalButton_Tests.swift; sourceTree = "<group>"; };
 		081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton_Tests.swift; sourceTree = "<group>"; };
+		317D2A947184896591C36700 /* UIComponentsAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentsAnalytics_Tests.swift; sourceTree = "<group>"; };
 		0841353B2ED0CBAD00884FE9 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		0841353C2ED0CBAD00884FE9 /* UIComponents+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIComponents+Color.swift"; sourceTree = "<group>"; };
 		0841353D2ED0CBAD00884FE9 /* VenmoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenmoButton.swift; sourceTree = "<group>"; };
@@ -967,6 +972,8 @@
 		096C6B2529CCDCEB00912863 /* BTVenmoLineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoLineItem.swift; sourceTree = "<group>"; };
 		0F08462435EF3B671689B7D9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1592D0E018219589392C6A9A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalCampaign.swift; sourceTree = "<group>"; };
+		13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopperInsightsCampaign.swift; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON_Tests.swift; sourceTree = "<group>"; };
 		1E79542E9F427658B9629CB3 /* PayPalSavedPaymentMethod+Bundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "PayPalSavedPaymentMethod+Bundle.swift"; sourceTree = "<group>"; };
@@ -1035,11 +1042,9 @@
 		45EFC3962C2DBF32005E7F5B /* ConfigurationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationLoader.swift; sourceTree = "<group>"; };
 		45F58CAD2DF22DB2004973F5 /* UpdateCustomerSessionMutationGraphQLBody_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCustomerSessionMutationGraphQLBody_Tests.swift; sourceTree = "<group>"; };
 		45F58CAF2DF231F5004973F5 /* CreateCustomerSessionMutationGraphQLBody_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomerSessionMutationGraphQLBody_Tests.swift; sourceTree = "<group>"; };
-		45F766F52DE622640079016E /* BackgroundTaskManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManaging.swift; sourceTree = "<group>"; };
+		45F766F52DE622640079016E /* UIApplication+BackgroundTaskManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BackgroundTaskManaging.swift"; sourceTree = "<group>"; };
 		45F766F72DE8E1C10079016E /* MockBackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBackgroundTaskManager.swift; sourceTree = "<group>"; };
-		463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		4D05C640999FB242D56FDB06 /* PayPalSavedPaymentMethodFont.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodFont.swift; sourceTree = "<group>"; };
-		541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BraintreeCoreTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		56AEED9E7828E56F1D1F4EC8 /* PayPalSavedPaymentMethodViewStyle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PayPalSavedPaymentMethodViewStyle.swift; sourceTree = "<group>"; };
 		5708E0A528809AD9007946B9 /* BTJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSON.swift; sourceTree = "<group>"; };
 		5708E0A728809BC6007946B9 /* BTJSONError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTJSONError.swift; sourceTree = "<group>"; };
@@ -1064,19 +1069,21 @@
 		57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalLocaleCode.swift; sourceTree = "<group>"; };
 		57D9436F296CC79B0079EAB1 /* BraintreePayPal_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreePayPal_IntegrationTests.swift; sourceTree = "<group>"; };
 		57D94371296CCA2F0079EAB1 /* String+NonceValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NonceValidation.swift"; sourceTree = "<group>"; };
-		59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		620C3C642BA21E5700C40A03 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		621149D92E01E999006D7687 /* BTCustomerRecommendationsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCustomerRecommendationsAPI.swift; sourceTree = "<group>"; };
 		621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCustomerRecommendationsGraphQLBody.swift; sourceTree = "<group>"; };
 		621149DD2E0201C3006D7687 /* Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
 		62236E192B98CFB000CDCC37 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		622B0B412F9BCA20004FB0BD /* BraintreeLocalPayment_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraintreeLocalPayment_IntegrationTests.swift; sourceTree = "<group>"; };
+		62417F4E30827E89000CE5CC /* PayPalPayLaterButton_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalPayLaterButton_Tests.swift; sourceTree = "<group>"; };
 		624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomerSessionMutationGraphQLBody.swift; sourceTree = "<group>"; };
 		624B27F62B6AE0C2000AC08A /* BTShopperInsightsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsError.swift; sourceTree = "<group>"; };
 		625010712F9FF5D700EFB8E0 /* BTSEPADirectDebitClient_IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSEPADirectDebitClient_IntegrationTests.swift; sourceTree = "<group>"; };
 		625719C42F0DBAE2008D019E /* BTHTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTHTTPMethod.swift; sourceTree = "<group>"; };
 		62970D0E2B5AE1E400BAB584 /* BTShopperInsightsAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTShopperInsightsAnalytics_Tests.swift; sourceTree = "<group>"; };
 		6298A1982B91010600E46EDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		62A6466B30795C040013122B /* PayPalPayLaterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalPayLaterButton.swift; sourceTree = "<group>"; };
+		62A6466D307968BC0013122B /* PayPalPayLaterButtonColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalPayLaterButtonColor.swift; sourceTree = "<group>"; };
 		62A659A32B98CB23008DFD67 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		62BEEB892E0B11DE002C848D /* BTGenerateCustomerRecommendationAPI_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTGenerateCustomerRecommendationAPI_Tests.swift; sourceTree = "<group>"; };
@@ -1151,11 +1158,7 @@
 		80FF7DD3258827BF001C32EF /* BTThreeDSecureV2TextBoxCustomization_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureV2TextBoxCustomization_Tests.swift; sourceTree = "<group>"; };
 		842B68F01BCF083E0039634F /* BTAPIClient_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAPIClient_Tests.swift; sourceTree = "<group>"; };
 		844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDataCollector_Tests.swift; sourceTree = "<group>"; };
-		85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_IntegrationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_BraintreeCoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		95BE4D272F10173D003C139D /* BTPayPalFundingSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalFundingSource.swift; sourceTree = "<group>"; };
-		9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:XEZPTDFLAS:changching chi"; lastKnownFileType = wrapper.xcframework; name = PPRiskMagnes.xcframework; path = Frameworks/XCFrameworks/PPRiskMagnes.xcframework; sourceTree = "<group>"; };
-		9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PPRiskMagnes.framework; path = Frameworks/FatFrameworks/PPRiskMagnes.framework; sourceTree = "<group>"; };
 		9C36BD4E26B3124900F0A559 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CardinalMobile.framework; path = Frameworks/FatFrameworks/CardinalMobile.framework; sourceTree = "<group>"; };
 		9C3F55EE275E80DA00C21C8A /* BTAmericanExpressError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressError.swift; sourceTree = "<group>"; };
 		9C67362727E247270089BD99 /* CreateMandateResult_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMandateResult_Tests.swift; sourceTree = "<group>"; };
@@ -1344,7 +1347,6 @@
 		BEDB820329B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTApplePayAnalytics_Tests.swift; sourceTree = "<group>"; };
 		BEDB820729B675DC00075AF3 /* BTVenmoAccountNonce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoAccountNonce.swift; sourceTree = "<group>"; };
 		BEDB820929B7A9E600075AF3 /* BTVenmoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTVenmoClient.swift; sourceTree = "<group>"; };
-		BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.release.xcconfig"; path = "Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.release.xcconfig"; sourceTree = "<group>"; };
 		BEDEAF102AC1D049004EA970 /* BTPayPalAccountNonce_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTPayPalAccountNonce_Tests.swift; sourceTree = "<group>"; };
 		BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAnalyticsService_Tests.swift; sourceTree = "<group>"; };
 		BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAnalyticsService.swift; sourceTree = "<group>"; };
@@ -1433,8 +1435,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C36BD4A26B310BC00F0A559 /* PPRiskMagnes.xcframework in Frameworks */,
-				1FEB89E614CB6BF0B9858EE4 /* Pods_Tests_IntegrationTests.framework in Frameworks */,
 				E943983246FD4C94BAA4C009 /* BraintreeShopperInsights.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1485,8 +1485,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				967D1038303DDC76001F605F /* PayPalRisk in Frameworks */,
 				BE7FA4C7291ACAD8003C6B63 /* BraintreeCore.framework in Frameworks */,
-				BEFD1AF4284F92130070076E /* PPRiskMagnes.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1610,7 +1610,8 @@
 			files = (
 				045241652EBED39400C25EA6 /* BraintreeCore.framework in Frameworks */,
 				A9E5C23324FD6DAE00EE691F /* BraintreeTestShared.framework in Frameworks */,
-				28873D59EF44EE6327794A6D /* Pods_Tests_BraintreeCoreTests.framework in Frameworks */,
+				62C59A8A305B1B5B0043BD10 /* OCMock in Frameworks */,
+				62C59A8D305B1C080043BD10 /* OHHTTPStubsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1694,6 +1695,7 @@
 		045241112EBEB3E700C25EA6 /* BraintreeUIComponentsTests */ = {
 			isa = PBXGroup;
 			children = (
+				62417F4E30827E89000CE5CC /* PayPalPayLaterButton_Tests.swift */,
 				0452413A2EBECC7300C25EA6 /* Info.plist */,
 				081F746F2EF09793002D53EA /* PayPalButton_Tests.swift */,
 				081F74722EF099D8002D53EA /* VenmoButton_Tests.swift */,
@@ -1703,6 +1705,7 @@
 				08804D482F86D61E005ED3AC /* CVVFieldValidatorTests.swift */,
 				0848260B2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift */,
 				C8A6A6CDCC4845908AF49560 /* ExpirationDateFieldViewModelTests.swift */,
+				317D2A947184896591C36700 /* UIComponentsAnalytics_Tests.swift */,
 			);
 			path = BraintreeUIComponentsTests;
 			sourceTree = "<group>";
@@ -1710,6 +1713,8 @@
 		0452416A2EC4F80F00C25EA6 /* BraintreeUIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				62A6466D307968BC0013122B /* PayPalPayLaterButtonColor.swift */,
+				62A6466B30795C040013122B /* PayPalPayLaterButton.swift */,
 				08F6DB032F69FB34002FA6EE /* CardFields */,
 				0841353F2ED0CBAD00884FE9 /* Resources */,
 				045241682EC4F80F00C25EA6 /* PayPalButton.swift */,
@@ -1796,7 +1801,6 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
-				95BE4D272F10173D003C139D /* BTPayPalFundingSource.swift */,
 				57544821294A3B6900DEB7B0 /* BTConfiguration+PayPal.swift */,
 				B8BA342D2D4811560030423C /* BTContactInformation.swift */,
 				B8A330FE2D83746D00BC18EC /* BTContactPreference.swift */,
@@ -1804,11 +1808,13 @@
 				57544F572952298900DEB7B0 /* BTPayPalAccountNonce.swift */,
 				3B7A261029C0CAA40087059D /* BTPayPalAnalytics.swift */,
 				8014221B2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift */,
+				13A9C0D02F11B65000A1B2C3 /* BTPayPalCampaign.swift */,
 				BE8E5CEE294B6937001BF017 /* BTPayPalCheckoutRequest.swift */,
 				57544F5929524E4D00DEB7B0 /* BTPayPalClient.swift */,
 				5754481F294A2EBE00DEB7B0 /* BTPayPalCreditFinancing.swift */,
 				5754481D294A2A1D00DEB7B0 /* BTPayPalCreditFinancingAmount.swift */,
 				57544F5D295258AC00DEB7B0 /* BTPayPalError.swift */,
+				95BE4D272F10173D003C139D /* BTPayPalFundingSource.swift */,
 				BEF5D2E5294A18B300FFD56D /* BTPayPalLineItem.swift */,
 				57D9436D2968A8080079EAB1 /* BTPayPalLocaleCode.swift */,
 				451508352D400C050071E385 /* BTPayPalPaymentType.swift */,
@@ -1888,6 +1894,7 @@
 				BE7FA4C5291AC9B6003C6B63 /* Info.plist */,
 				62A746402B9255AC003D32FF /* PrivacyInfo.xcprivacy */,
 				CE836A9F2E4FDCE000AC7FCA /* UIApplication+ApplicationState.swift */,
+				45F766F52DE622640079016E /* UIApplication+BackgroundTaskManaging.swift */,
 				80A6C6182B21205900416D50 /* UIApplication+URLOpener.swift */,
 				8053F05829FB2F700076F988 /* URL+IsPayPal.swift */,
 				08CA32A92F0C5EFF0000CFCB /* BTGraphQLRequestResult.swift */,
@@ -1900,6 +1907,7 @@
 		624454DA2DDE37CA00A3383B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				13A9C0D22F11B65000A1B2C3 /* ShopperInsightsCampaign.swift */,
 				621149DD2E0201C3006D7687 /* Variables.swift */,
 				621149DB2E01EC74006D7687 /* GenerateCustomerRecommendationsGraphQLBody.swift */,
 				624454DD2DDE398200A3383B /* CreateCustomerSessionMutationGraphQLBody.swift */,
@@ -1949,17 +1957,6 @@
 				800ED7822B4F5B66007D8A30 /* BTEligiblePaymentsRequest.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		6A50887E9E10BEB122A9F45D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */,
-				463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */,
-				59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */,
-				BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		800BB3EF2BFCAC1100F30CE8 /* Authorization */ = {
@@ -2048,7 +2045,6 @@
 				BEE2E4A628FDB64400C03FDD /* BTAnalyticsService_Tests.swift */,
 				BEDA919F28EDDE64007441D9 /* FakeAnalyticsService.swift */,
 				8053F05329FAB6B00076F988 /* FPTIBatchData_Tests.swift */,
-				45F766F72DE8E1C10079016E /* MockBackgroundTaskManager.swift */,
 				457D7FC92C2A250E00EF6523 /* RepeatingTimer_Tests.swift */,
 			);
 			path = Analytics;
@@ -2125,7 +2121,6 @@
 		80F4F4D529F8A628003EACB1 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				45F766F52DE622640079016E /* BackgroundTaskManaging.swift */,
 				808E4A152C581CD40006A737 /* AnalyticsSendable.swift */,
 				BE549F132BF6576300B6F441 /* BTAnalyticsEventsStorage.swift */,
 				BEE2E4E329007FF100C03FDD /* BTAnalyticsService.swift */,
@@ -2197,7 +2192,6 @@
 				57108A0E2832E1DE004EB870 /* Package.swift */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
-				6A50887E9E10BEB122A9F45D /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
 				80824659252C19F5000AD8FF /* Sources */,
 				808249F8252C1F97000AD8FF /* UnitTests */,
@@ -2253,13 +2247,9 @@
 				A75DA3541921394200D997A2 /* Foundation.framework */,
 				A7A6DD241B43144D008857E1 /* MessageUI.framework */,
 				A7C889891B5EF737007A0E9C /* PassKit.framework */,
-				9C36BD4626B30C2F00F0A559 /* PPRiskMagnes.framework */,
-				9C36BD4226B30AA600F0A559 /* PPRiskMagnes.xcframework */,
 				A7A6DD281B43145D008857E1 /* SystemConfiguration.framework */,
 				A50C3BC41C1B3F1500612D90 /* UIKit.framework */,
 				A903E1B524F9D37B00C314E1 /* XCTest.framework */,
-				9239C9FE850C3587DE61A3A2 /* Pods_Tests_BraintreeCoreTests.framework */,
-				85BD589D380436A0C9D1DEC1 /* Pods_Tests_IntegrationTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2320,6 +2310,7 @@
 		A7C889911B5F043B007A0E9C /* BraintreeCard */ = {
 			isa = PBXGroup;
 			children = (
+				BE500C9E3041E57200A5FB81 /* Models */,
 				BE80C00429C54F2000793A6C /* BTAuthenticationInsight.swift */,
 				BE80C00C29C8B4B900793A6C /* BTCard.swift */,
 				BE01A82A29CCB22E000DFA24 /* BTCardAnalytics.swift */,
@@ -2327,8 +2318,6 @@
 				BEFE9A3C29C8ECAA00BF69AB /* BTCardError.swift */,
 				BE80C00A29C66F4800793A6C /* BTCardNonce.swift */,
 				BE80C00629C5516E00793A6C /* BTThreeDSecureInfo.swift */,
-				B8F870132D48435D000FCE3C /* CreditCardGraphQLBody.swift */,
-				B8F870142D48435D000FCE3C /* CreditCardPOSTBody.swift */,
 				806C85622B90EBED00A2754C /* PrivacyInfo.xcprivacy */,
 			);
 			path = BraintreeCard;
@@ -2362,6 +2351,7 @@
 				A948D70224FACF4E00F4F178 /* FakeHTTP.swift */,
 				A903E1A924F9D34000C314E1 /* Info.plist */,
 				A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */,
+				45F766F72DE8E1C10079016E /* MockBackgroundTaskManager.swift */,
 				BEBD05232A1FEE150003C15C /* MockWebAuthenticationSession.swift */,
 				A977A06A24FECFC3006049AB /* NonceValidator.swift */,
 				BEBC6F2C2937DE1A004E25A0 /* String+Extension.swift */,
@@ -2544,6 +2534,15 @@
 				454BCF762E1C60610099E674 /* MockPresentationContext.swift */,
 			);
 			path = BraintreeCoreTests;
+			sourceTree = "<group>";
+		};
+		BE500C9E3041E57200A5FB81 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B8F870132D48435D000FCE3C /* CreditCardGraphQLBody.swift */,
+				B8F870142D48435D000FCE3C /* CreditCardPOSTBody.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BE5496E92E313A3B003CCA60 /* V1 */ = {
@@ -3029,11 +3028,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7ABD65A1B702FD900A1223C /* Build configuration list for PBXNativeTarget "IntegrationTests" */;
 			buildPhases = (
-				356114CCDD2F8BD4A20E655A /* [CP] Check Pods Manifest.lock */,
 				A7ABD64F1B702FD800A1223C /* Sources */,
 				A7ABD6511B702FD800A1223C /* Resources */,
 				0B301426A8383084777148A4 /* Frameworks */,
-				CDAB67F3BC5BE564FCFFD6BC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3286,11 +3283,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A9E5C22E24FD6D0800EE691F /* Build configuration list for PBXNativeTarget "BraintreeCoreTests" */;
 			buildPhases = (
-				8C3FA3D1B7E43D0E85F9D382 /* [CP] Check Pods Manifest.lock */,
 				A9E5C22024FD6D0800EE691F /* Sources */,
 				A9E5C22124FD6D0800EE691F /* Frameworks */,
 				A9E5C22224FD6D0800EE691F /* Resources */,
-				7613C68129DDF0C2CFF1376D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3298,6 +3293,10 @@
 				A9E5C23224FD6DAA00EE691F /* PBXTargetDependency */,
 			);
 			name = BraintreeCoreTests;
+			packageProductDependencies = (
+				62C59A89305B1B5B0043BD10 /* OCMock */,
+				62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */,
+			);
 			productName = BraintreeCoreTests;
 			productReference = A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3520,6 +3519,9 @@
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
 				BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */,
+				967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */,
+				62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */,
+				62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -3789,70 +3791,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		356114CCDD2F8BD4A20E655A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-IntegrationTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7613C68129DDF0C2CFF1376D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-BraintreeCoreTests/Pods-Tests-BraintreeCoreTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8C3FA3D1B7E43D0E85F9D382 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-BraintreeCoreTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		BE676C532C417B8F000A6579 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -3871,26 +3809,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\n\nif test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		CDAB67F3BC5BE564FCFFD6BC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3931,6 +3849,7 @@
 				0889DB142ED4C0350023AA64 /* PaymentButtonStyle.swift in Sources */,
 				0878313B2F7C2839003BB460 /* CardFieldsContainerView.swift in Sources */,
 				6BE88A2459BC408288DC463C /* CardFieldsConstants.swift in Sources */,
+				62A6466E307968C60013122B /* PayPalPayLaterButtonColor.swift in Sources */,
 				084135412ED0CBAD00884FE9 /* PaymentButtonView.swift in Sources */,
 				08F6DB282F6AEC67002FA6EE /* ExpirationDateFieldViewModel.swift in Sources */,
 				086D56D02F8566B500120B47 /* CardBrand.swift in Sources */,
@@ -3948,6 +3867,7 @@
 				08F6DB052F69FBC7002FA6EE /* CardFields.swift in Sources */,
 				08F6DB162F6AE18E002FA6EE /* CVVFieldValidator.swift in Sources */,
 				08F6DB112F69FD27002FA6EE /* CVVFieldView.swift in Sources */,
+				62A6466C30795C140013122B /* PayPalPayLaterButton.swift in Sources */,
 				084135472ED0DCCC00884FE9 /* PaymentButtonColorProtocol.swift in Sources */,
 				0878313D2F83FBDA003BB460 /* CVVCharacter.swift in Sources */,
 				2786AB6520BA4E79A5EFB08B /* CVVHintCard.swift in Sources */,
@@ -3968,10 +3888,12 @@
 				081F74712EF09793002D53EA /* PayPalButton_Tests.swift in Sources */,
 				0848260C2FAB8DAD008C754F /* ExpirationDateFieldValidatorTests.swift in Sources */,
 				FDCDC009DA7E4809AA4BCE98 /* ExpirationDateFieldViewModelTests.swift in Sources */,
+				62417F4F30827E95000CE5CC /* PayPalPayLaterButton_Tests.swift in Sources */,
 				081F74732EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				08804D492F86D61E005ED3AC /* CVVFieldViewModelTests.swift in Sources */,
 				2863A507CC454374A3E14E6B /* CardNumberFieldViewModelTests.swift in Sources */,
 				08804D4A2F86D61E005ED3AC /* CVVFieldValidatorTests.swift in Sources */,
+				487A9188FEED1B775187C1B3 /* UIComponentsAnalytics_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4049,6 +3971,7 @@
 				5754481E294A2A1D00DEB7B0 /* BTPayPalCreditFinancingAmount.swift in Sources */,
 				57D9436E2968A8080079EAB1 /* BTPayPalLocaleCode.swift in Sources */,
 				45E8CE4C2D1F29BA00D7A2DC /* PayPalCheckoutPOSTBody.swift in Sources */,
+				13A9C0D12F11B65000A1B2C3 /* BTPayPalCampaign.swift in Sources */,
 				57544F582952298900DEB7B0 /* BTPayPalAccountNonce.swift in Sources */,
 				451508362D400C050071E385 /* BTPayPalPaymentType.swift in Sources */,
 				8014221C2BAE935B009F9999 /* BTPayPalApprovalURLParser.swift in Sources */,
@@ -4102,7 +4025,7 @@
 				570B93D92853C6180041BAFE /* BTLogLevel.swift in Sources */,
 				80A6C6192B21205900416D50 /* UIApplication+URLOpener.swift in Sources */,
 				579DAEC5286E04A700FCE87F /* BTAppContextSwitcher.swift in Sources */,
-				45F766F62DE622640079016E /* BackgroundTaskManaging.swift in Sources */,
+				45F766F62DE622640079016E /* UIApplication+BackgroundTaskManaging.swift in Sources */,
 				570B93D72853C29A0041BAFE /* BTLogLevelDescription.swift in Sources */,
 				57CBBCE828B033760037F4EE /* BTGraphQLHTTP.swift in Sources */,
 				80AD35F22BFBB1DD00BF890E /* TokenizationKeyError.swift in Sources */,
@@ -4156,6 +4079,7 @@
 				04AA31202D07990E0043ACAB /* BTButtonOrder.swift in Sources */,
 				621149DE2E0201C7006D7687 /* Variables.swift in Sources */,
 				62EA90492B63071800DD79BC /* BTEligiblePaymentMethods.swift in Sources */,
+				13A9C0D32F11B65000A1B2C3 /* ShopperInsightsCampaign.swift in Sources */,
 				804698392B27C53E0090878E /* BTShopperInsightsResult.swift in Sources */,
 				624454DE2DDE399D00A3383B /* CreateCustomerSessionMutationGraphQLBody.swift in Sources */,
 				455AA2762DEE0577008D99AB /* BTCustomerRecommendationsResult.swift in Sources */,
@@ -4268,6 +4192,7 @@
 				A948D70324FACF4E00F4F178 /* FakeHTTP.swift in Sources */,
 				A903E1B324F9D35500C314E1 /* FakeDevice.swift in Sources */,
 				A903E1B424F9D35500C314E1 /* MockAPIClient.swift in Sources */,
+				45F766F82DE8E1CE0079016E /* MockBackgroundTaskManager.swift in Sources */,
 				A903E1B124F9D35500C314E1 /* FakeApplication.swift in Sources */,
 				BEBD05242A1FEE150003C15C /* MockWebAuthenticationSession.swift in Sources */,
 				A9A76CA724F9E92E0044EAEE /* TestClientTokenFactory.swift in Sources */,
@@ -4345,7 +4270,6 @@
 			files = (
 				A948D6D124FAB8BA00F4F178 /* BTAmericanExpressClient_Tests.swift in Sources */,
 				A948D6D224FAB8BA00F4F178 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */,
-				BEDB820429B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift in Sources */,
 				3B0EF89629B28F3800456973 /* BTAmericanExpressAnalytics_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4357,6 +4281,7 @@
 				A95229CB24FD9E41006F7D25 /* BTConfiguration+ApplePay_Tests.swift in Sources */,
 				A948D6E724FAC71A00F4F178 /* BTApplePay_Tests.swift in Sources */,
 				800FC544257FDC5100DEE132 /* BTApplePayCardNonce_Tests.swift in Sources */,
+				BEDB820429B10ADA00075AF3 /* BTApplePayAnalytics_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4417,12 +4342,10 @@
 			files = (
 				80BA3C292B23892700900BBB /* FakeRequest.swift in Sources */,
 				A95229C524FD8F15006F7D25 /* BTVersion_Tests.swift in Sources */,
-				45F766F82DE8E1CE0079016E /* MockBackgroundTaskManager.swift in Sources */,
 				454BCF772E1C60610099E674 /* MockPresentationContext.swift in Sources */,
 				BE54C0332912B68E009C6CEE /* BTHTTP_Tests.swift in Sources */,
 				A908437124FD8BB0004134CA /* BTPostalAddress_Tests.swift in Sources */,
 				BEBC6F3229380B82004E25A0 /* BTExceptionCatcher.m in Sources */,
-				081F74702EF09793002D53EA /* PayPalButton_Tests.swift in Sources */,
 				8053F05429FAB6B00076F988 /* FPTIBatchData_Tests.swift in Sources */,
 				45227FC52C330FDE00A15018 /* MockURLSessionTask.swift in Sources */,
 				A908436B24FD89DA004134CA /* BTJSON_Tests.swift in Sources */,
@@ -4438,7 +4361,6 @@
 				A95229C424FD8EEE006F7D25 /* BTURLUtils_Tests.swift in Sources */,
 				A908436324FD82C0004134CA /* BTBinData_Tests.swift in Sources */,
 				A908436224FD82A9004134CA /* BTAppContextSwitcher_Tests.swift in Sources */,
-				081F74742EF099D8002D53EA /* VenmoButton_Tests.swift in Sources */,
 				BEBC6F282937BD1F004E25A0 /* BTGraphQLHTTP_Tests.swift in Sources */,
 				BE54C0352912B6BC009C6CEE /* BTHTTPTestProtocol.swift in Sources */,
 				4585707C2C34B7B5009CEF7A /* MockConfigurationLoader.swift in Sources */,
@@ -4864,7 +4786,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4920,7 +4842,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4976,7 +4898,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5026,7 +4948,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5083,7 +5005,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5142,7 +5064,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5198,7 +5120,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UnitTests/BraintreeUIComponentsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -5238,7 +5160,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UnitTests/BraintreeUIComponentsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -5301,7 +5223,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5367,7 +5289,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5481,7 +5403,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5542,7 +5464,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5599,7 +5521,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -5663,7 +5585,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -5722,7 +5644,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeShopperInsightsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -5762,7 +5684,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeShopperInsightsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -5920,7 +5842,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5977,7 +5899,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -6037,7 +5959,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6095,7 +6017,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6158,7 +6080,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6214,7 +6136,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6235,7 +6157,6 @@
 		};
 		A7ABD65B1B702FD900A1223C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59A4135427B90CD7AE94D5CC /* Pods-Tests-IntegrationTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
@@ -6277,7 +6198,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6294,7 +6215,6 @@
 		};
 		A7ABD65C1B702FD900A1223C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEDE06942FEDCD2F91884DA9 /* Pods-Tests-IntegrationTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
@@ -6331,7 +6251,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6388,7 +6308,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6444,7 +6364,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6505,7 +6425,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6562,7 +6482,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6620,7 +6540,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeTestShared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6674,7 +6594,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeTestShared/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6727,7 +6647,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeLocalPaymentTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6773,7 +6693,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeLocalPaymentTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6827,7 +6747,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Sources/BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6880,7 +6800,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Sources/BraintreeCore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6934,7 +6854,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeThreeDSecureTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6980,7 +6900,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeThreeDSecureTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7026,7 +6946,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeAmericanExpressTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7067,7 +6987,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeAmericanExpressTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7112,7 +7032,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeApplePayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7155,7 +7075,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeApplePayTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7201,7 +7121,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeVenmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7242,7 +7162,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeVenmoTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7288,7 +7208,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCardTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7330,7 +7250,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCardTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7376,7 +7296,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeDataCollectorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7417,7 +7337,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeDataCollectorTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7462,7 +7382,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7504,7 +7424,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7523,7 +7443,6 @@
 		};
 		A9E5C22C24FD6D0800EE691F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 541AEE40A1F01913E0638CC9 /* Pods-Tests-BraintreeCoreTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
@@ -7550,7 +7469,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7570,7 +7489,6 @@
 		};
 		A9E5C22D24FD6D0800EE691F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 463DED22C0F426A474E6D7E2 /* Pods-Tests-BraintreeCoreTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
@@ -7592,7 +7510,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UnitTests/BraintreeCoreTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7620,7 +7538,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
 				SWIFT_VERSION = 5.0;
 			};
@@ -7636,7 +7554,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 43253H4X22;
 				INFOPLIST_FILE = UnitTests/BraintreeSEPADirectDebitTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_NAME = BraintreeSEPADirectDebitTests;
 				SWIFT_VERSION = 5.0;
 			};
@@ -7689,7 +7607,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7750,7 +7668,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7798,7 +7716,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7840,7 +7758,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = UnitTests/BraintreePayPalMessagingTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7905,7 +7823,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7970,7 +7888,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8334,17 +8252,56 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/erikdoe/ocmock";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+		967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paypal/paypal-risk-ios";
+			requirement = {
+				kind = exactVersion;
+				version = 5.6.0;
+			};
+		};
 		BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paypal/paypal-messages-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.0;
+				version = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		62C59A89305B1B5B0043BD10 /* OCMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A88305B1B5B0043BD10 /* XCRemoteSwiftPackageReference "ocmock" */;
+			productName = OCMock;
+		};
+		62C59A8C305B1C080043BD10 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 62C59A8B305B1C080043BD10 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
+		967D1037303DDC76001F605F /* PayPalRisk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 967D1036303DDC76001F605F /* XCRemoteSwiftPackageReference "paypal-risk-ios" */;
+			productName = PayPalRisk;
+		};
 		BEA0F9192B235E7A00C21EFA /* PayPalMessages */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BEA0F9182B235E7A00C21EFA /* XCRemoteSwiftPackageReference "paypal-messages-ios" */;

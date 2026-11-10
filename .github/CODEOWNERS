@@ -1,2 +1,2 @@
-* @team-sdk/sdk
 * @braintree/team-sdk-ios
+/.github/CODEOWNERS @mzlangreder @jaxdesmarais

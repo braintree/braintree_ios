@@ -1,8 +1,5 @@
 import UIKit
-
-#if canImport(BraintreeCore)
 import BraintreeCore
-#endif
 
 /// The POST body for `v1/paypal_hermes/create_payment_resource`
 struct PayPalCheckoutPOSTBody: Encodable {
@@ -27,6 +24,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
     private var merchantAccountID: String?
     private var osType: String?
     private var osVersion: String?
+    private var payPalCampaigns: [BTPayPalCampaign]?
     private var recipientPhoneNumber: BTPayPalPhoneNumber?
     private var recipientEmail: String?
     private var recurringBillingDetails: BTPayPalRecurringBillingDetails?
@@ -65,6 +63,10 @@ struct PayPalCheckoutPOSTBody: Encodable {
         self.offerPayLater = payPalRequest.offerPayLater
         self.offerCredit = payPalRequest.offerCredit
         self.amountBreakdown = payPalRequest.amountBreakdown
+
+        if let campaigns = payPalRequest.campaigns, !campaigns.isEmpty {
+            self.payPalCampaigns = campaigns
+        }
         
         let currencyIsoCode = payPalRequest.currencyCode != nil ? payPalRequest.currencyCode : configuration.currencyIsoCode
         
@@ -177,6 +179,7 @@ struct PayPalCheckoutPOSTBody: Encodable {
         case offerCredit = "offer_paypal_credit"
         case osType = "os_type"
         case osVersion = "os_version"
+        case payPalCampaigns = "paypal_campaigns"
         case recipientPhoneNumber = "international_phone"
         case recipientEmail = "recipient_email"
         case recurringBillingDetails = "plan_metadata"

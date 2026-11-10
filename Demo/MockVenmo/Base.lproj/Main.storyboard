@@ -46,6 +46,14 @@
                                             <action selector="didTapError:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eng-kb-nWu"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cN2-3k-8pQ">
+                                        <rect key="frame" x="0.0" y="187.5" width="307" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="didTapCancel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fVh-8m-2rT"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -56,13 +64,7 @@
                             <constraint firstItem="DU8-s0-e71" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Rtd-pX-A7j"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Mock Venmo" id="4c8-0s-Z3t">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="sA7-WW-Ufg">
-                            <connections>
-                                <action selector="didTapCancel:" destination="BYZ-38-t0r" id="6iU-jq-s7r"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Mock Venmo" id="4c8-0s-Z3t"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

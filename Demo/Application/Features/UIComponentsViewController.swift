@@ -17,7 +17,7 @@ class UIComponentsViewController: PaymentButtonBaseViewController {
             onProgress: { [weak self] message in self?.progressBlock(message) },
             onComplete: { [weak self] nonce in self?.completionBlock(nonce) }
         )
-
+        
         embed(demoView)
     }
 }
@@ -32,6 +32,7 @@ private struct UIComponentsDemoView: View {
     @State private var submit: (() -> Void)?
     @State private var venmoColorIndex: Int = 0
     @State private var payPalColorIndex: Int = 0
+    @State private var payLaterColorIndex: Int = 0
 
     private var selectedVenmoColor: VenmoButtonColor {
         switch venmoColorIndex {
@@ -49,10 +50,18 @@ private struct UIComponentsDemoView: View {
         }
     }
 
+    private var selectedPayLaterColor: PayPalPayLaterButtonColor {
+        switch payLaterColorIndex {
+        case 1: return .black
+        case 2: return .white
+        default: return .blue
+        }
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-
+         
                 // Color toggles
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
@@ -66,7 +75,7 @@ private struct UIComponentsDemoView: View {
                         }
                         .pickerStyle(.segmented)
                     }
-
+             
                     VStack(alignment: .leading, spacing: 4) {
                         Text("PayPal")
                             .font(.caption)
@@ -78,8 +87,20 @@ private struct UIComponentsDemoView: View {
                         }
                         .pickerStyle(.segmented)
                     }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Pay Later")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Picker("Pay Later Color", selection: $payLaterColorIndex) {
+                            Text("Blue").tag(0)
+                            Text("Black").tag(1)
+                            Text("White").tag(2)
+                        }
+                        .pickerStyle(.segmented)
+                    }
                 }
-
+     
                 // Card fields
                 CardFields(
                     authorization: authorization,
@@ -95,7 +116,7 @@ private struct UIComponentsDemoView: View {
                     isFormValid = valid
                     submit = tokenize
                 }
-
+                
                 // Pay button for card fields
                 Button("Pay") {
                     onProgress("Tokenizing card...")
@@ -109,7 +130,7 @@ private struct UIComponentsDemoView: View {
                 .background(isFormValid ? Color.black : Color.black.opacity(0.3))
                 .clipShape(Capsule())
                 .padding(.horizontal, 8)
-
+                
                 // Venmo + PayPal buttons side by side
                 GeometryReader { geo in
                     let buttonWidth = (geo.size.width - 12) / 2
@@ -131,7 +152,7 @@ private struct UIComponentsDemoView: View {
                                 }
                             }
                         }
-
+                        
                         PayPalButton(
                             authorization: authorization,
                             // swiftlint:disable:next force_unwrapping
@@ -155,6 +176,34 @@ private struct UIComponentsDemoView: View {
                             }
                         }
                     }
+                }
+                .frame(height: 48)
+                
+                // Pay Later Button
+                GeometryReader { geo in
+                    PayPalPayLaterButton(
+                        authorization: authorization,
+                        // swiftlint:disable:next force_unwrapping
+                        universalLink: URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!,
+                        request: BTPayPalCheckoutRequest(
+                            amount: "10.00",
+                            enablePayPalAppSwitch: true,
+                            userAuthenticationEmail: nil,
+                            userAction: .payNow
+                        ),
+                        color: selectedPayLaterColor,
+                        width: geo.size.width
+                    ) { nonce, error in
+                        DispatchQueue.main.async {
+                            if let nonce {
+                                onProgress("Got a nonce 💎!")
+                                onComplete(nonce)
+                            } else if let error {
+                                onProgress((error as? BTPayPalError) == .canceled ? "Canceled 🔰" : error.localizedDescription)
+                            }
+                        }
+                    }
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                 }
                 .frame(height: 48)
             }

@@ -32,7 +32,10 @@ final class PayPalButton_UITests: XCTestCase {
     func testPayPalButton_tapLaunchesPayPalFlow() {
         app.buttons["Pay with PayPal"].tap()
 
-        _ = springboard.buttons["Continue"].waitForExistence(timeout: 20.0)
+        XCTAssertTrue(
+            springboard.buttons["Continue"].waitForExistence(timeout: 20.0),
+            "Auth dialog 'Continue' button did not appear"
+        )
         springboard.buttons["Continue"].tap()
 
         let webviewElementsQuery = app.webViews.element.otherElements

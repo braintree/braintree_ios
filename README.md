@@ -8,7 +8,7 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card, alternative payments, and display streamlined UI in your iOS app.
 
-**The Braintree iOS SDK permits a deployment target of iOS 16.0 or higher**. It requires Xcode 16.2+ and Swift 5.10+.
+**The Braintree iOS SDK permits a deployment target of iOS 15.0 or higher**. It requires Xcode 16.2+ and Swift 5.10+.
 
 ## Supported Payment Methods & Features
 
@@ -26,6 +26,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card, alternat
 - UI Components
     - [PayPal Button](https://developer.paypal.com/braintree/docs/guides/paypal/client-side/ios/v7/#using-our-payment-buttons)
     - [Venmo Button](https://developer.paypal.com/braintree/docs/guides/venmo/client-side/ios/v7/#use-our-payment-buttons)
+    - [PayPal Pay Later Button](#payment-buttons)
     - [Credit Card Fields](#card-fields)
 
 ## Installation
@@ -49,6 +50,9 @@ import BraintreePayPal
 ```
 
 ### CocoaPods
+
+⚠️ **Deprecation Notice:** CocoaPods support for `braintree_ios` is no longer supported, the final version with CocoaPods support is version 7.13.1 in line with the [official CocoaPods deprecation announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). Going forward, we recommend migrating to **Swift Package Manager** (primary) or **Carthage**. You may also use the direct `xcframeworks` for manual integrations
+
 ```
 # Includes Cards and PayPal
 pod 'Braintree'
@@ -57,7 +61,16 @@ pod 'Braintree'
 pod 'Braintree/DataCollector'
 pod 'Braintree/Venmo'
 ```
-*Note:* [CocoaPods will no longer be supported in late 2026](https://blog.cocoapods.org/CocoaPods-Specs-Repo/) - please migrate to SPM or Carthage as we will be removing CocoaPods support in late 2026.
+
+#### Migrating from CocoaPods to Swift Package Manager
+
+1. Remove the `Braintree` pod(s) from your `Podfile` and run `pod deintegrate`.
+2. In Xcode, go to **File → Add Package Dependencies…** and enter `https://github.com/braintree/braintree_ios` as the repository URL.
+3. Select the specific Braintree libraries you need (e.g. `BraintreeCore`, `BraintreeCard`, `BraintreePayPal`) — see the [Swift Package Manager](#swift-package-manager) section above.
+4. Update import statements if needed; module names are unchanged.
+5. Delete `Podfile`, `Podfile.lock`, and the `.xcworkspace` (if it existed only for CocoaPods), and reopen the project via `Braintree.xcodeproj`.
+
+If SPM isn't an option, Carthage remains supported below.
 
 ### Carthage
 Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
@@ -153,6 +166,31 @@ let paypalButtonView = PayPalButton(
     }
 }
 ```
+
+If you would like to draw a PayPal Pay Later branded button in your mobile app, you can do so like this:
+
+```swift
+import BraintreeUIComponents
+import BraintreePayPal
+
+let paypalRequest = BTPayPalCheckoutRequest(amount: "10.00")
+
+let payLaterButtonView = PayPalPayLaterButton(
+    authorization: authorization,
+    universalLink: URL(string: "https://example.com/braintree-payments")!,
+    request: paypalRequest,
+    color: .blue,
+    width: 300
+) { nonce, error in
+    if let nonce {
+        // handle successful PayPal Pay Later payment
+    } else if let error {
+        // handle PayPal Pay Later payment error
+    }
+}
+```
+
+The button is available in blue (default), black, and white. Width defaults to 300 points and is limited to a minimum of 158 and a maximum of 300 points. The button sets `offerPayLater` to `true` on the request you pass in. Pay Later availability depends on the buyer's country, currency, and order amount.
 
 ## Card Fields
 

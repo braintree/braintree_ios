@@ -1,5 +1,60 @@
 # Braintree iOS SDK Release Notes
 
+## ## unreleased
+* BraintreePayPal
+    * Send the `edit_billing_agreement_jwt` sourced from the client token for the PayPal Edit FI beta flow
+* BraintreePayPalSavedPaymentMethod
+    * Add `PayPalSavedPaymentMethodView` (beta) to show a returning buyer's saved PayPal funding instrument at checkout and let them change it
+* Remove CocoaPods support -- `Braintree.podspec` has been deleted and CocoaPods integration artifacts removed from the SDK, please migrate to a supported package manager
+* Fix `Braintree_Static.xcframework.zip` release asset missing `BraintreeUIComponents`
+* BraintreeUIComponents
+    * Add `PayPalPayLaterButton(authorization:universalLink:fallbackURLScheme:request:color:width:completion:)` to generate a PayPal Pay Later-branded button for launching PayPal Pay Later flow
+
+## 7.13.1 (2026-10-29)
+* BraintreeCore
+  * Fix a bug sending an incorrect GraphQL version header.
+* BraintreeVenmo
+  * `countryCodeAlpha2` now correctly returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
+* BraintreeCard
+  * `BTBinData`
+    * `prepaid`, `healthcare`, `debit`, `durbinRegulated`, `commercial`, and `payroll` now return `YES`, `NO`, or `UNKNOWN` instead of `Yes`, `No`, or `Unknown`.
+    * `countryOfIssuance` now returns a 2-character ISO 3166-1 alpha-2 country code instead of a 3-character alpha-3 country code.
+
+## 7.13.0 (2026-09-23)
+* BraintreePayPal
+    * Fix bug where the return tokenization request could fail to complete after the app was backgrounded during the PayPal app switch or browser flow, resulting in a network connection timeout error
+    * Add `BTPayPalError.returnBackgroundTaskExpired` (code 15), returned if background execution time runs out before the request completes
+* Lower minimum deployment target from iOS 16.0 to iOS 15.0
+
+## 7.12.0 (2026-09-16)
+* Add support for Xcode 27 / iOS 27
+* BraintreePayPalMessaging
+  * Update `PayPalMessages` dependency to 2.0.0
+
+## 7.11.0 (2026-08-28)
+* BraintreeDataCollector
+  * Fix bug with revoked Magnes certificate (fixes #1857) - Error: The signature of "PPRiskMagnes.xcframework" 
+    cannot be validated and may have been compromised. Validation Error: The signing certificate has been 
+    revoked (CSSMERR_TP_CERT_REVOKED)
+  * Migrate PPRiskMagnes from a locally vendored xcframework to a remotely hosted binary artifact at https://github.com/paypal/paypal-risk-ios (v5.6.0)
+  * This version of the PPRiskMagnes framework is dynamic (previously static) to support package managers
+  * SPM: Package.swift now depends on the `paypal-risk-ios` package and references its `PayPalRisk` product -- no consumer action required
+  * CocoaPods: DataCollector subspec now depends on the `PayPalRisk` pod instead of vendoring the xcframework locally
+    * If your Podfile uses `use_frameworks! :linkage => :static` (or omits `use_frameworks!` entirely), note that PPRiskMagnes is now a dynamic framework and will be embedded in your app
+  * Carthage: Cartfile now references the JSON manifest from the paypal-risk-ios repository instead of a local xcframework
+    * Run `carthage update --use-xcframeworks` after upgrading
+    * **Action required:** Because PPRiskMagnes is now dynamic, add `PPRiskMagnes.xcframework` to your target's "Embed Frameworks" build phase (copy-frameworks Input Files) -- this was not required when the framework was static
+  * No source code changes required -- `import PPRiskMagnes` remains unchanged
+
+## 7.10.0 (2026-08-27)
+* BraintreeShopperInsights
+  * Add `payPalCampaigns` to `BTCustomerSessionRequest` for customer session and recommendations requests so eligible PayPal campaign context can be recorded during the shopping journey.
+  * Add `expiresAt` as an optional ISO-8601 `String` to `BTCustomerRecommendationsResult` to expose the recommendation expiration timestamp.
+* BraintreePayPal
+  * Add `campaigns` to `BTPayPalCheckoutRequest` so eligible campaign context can be persisted during order creation and surfaced in the PayPal checkout experience.
+* BraintreeVenmo
+  * Fix `BTVenmoAccountNonce.externalID` returning `nil` after vaulting a Venmo account with a client token
+
 ## unreleased
 * BraintreePayPal
   * Send the `edit_billing_agreement_jwt` sourced from the client token for the PayPal Edit FI beta flow

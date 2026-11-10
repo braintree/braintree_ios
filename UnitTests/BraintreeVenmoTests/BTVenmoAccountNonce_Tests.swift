@@ -107,4 +107,27 @@ class BTVenmoAccountNonce_Tests: XCTestCase {
         XCTAssertEqual(venmoAccountNonce.username, "jane.doe.username@example.com")
         XCTAssertTrue(venmoAccountNonce.isDefault)
     }
+
+    func testBTVenmoAccountNonceWithJSON_mapsCommonIDToExternalID() {
+        let venmoAccountNonce = BTVenmoAccountNonce.venmoAccount(
+            with: BTJSON(
+                value: [
+                    "consumed": false,
+                    "description": "VenmoAccount",
+                    "details": [
+                        "username": "jane.doe.username@example.com",
+                        "cardType": "Discover",
+                        "commonId": "9999999999999999999"
+                    ],
+                    "isLocked": false,
+                    "nonce": "a-nonce",
+                    "securityQuestions": [] as [Any?],
+                    "type": "VenmoAccount",
+                    "default": true
+                ] as [String: Any]
+            )
+        )
+
+        XCTAssertEqual(venmoAccountNonce.externalID, "9999999999999999999")
+    }
 }

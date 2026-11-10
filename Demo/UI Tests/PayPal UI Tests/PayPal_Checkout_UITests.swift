@@ -25,7 +25,10 @@ class PayPal_Checkout_UITests: XCTestCase {
     }
     
     private func waitForAuthDialogAndTapButton(named buttonName: String) {
-        _ = springboard.buttons[buttonName].waitForExistence(timeout: 20.0)
+        XCTAssertTrue(
+            springboard.buttons[buttonName].waitForExistence(timeout: 20.0),
+            "Auth dialog button '\(buttonName)' did not appear"
+        )
         springboard.buttons[buttonName].tap()
     }
 
