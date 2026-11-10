@@ -74,7 +74,7 @@ struct PayPalSavedPaymentMethodStyleEditor: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             Form {
                 visibilitySection
                 appearanceSection
@@ -99,6 +99,7 @@ struct PayPalSavedPaymentMethodStyleEditor: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
 
     private var visibilitySection: some View {

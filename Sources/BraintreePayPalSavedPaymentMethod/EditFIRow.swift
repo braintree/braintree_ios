@@ -61,9 +61,15 @@ struct EditFIRow: View {
     var body: some View {
         // At large accessibility text sizes the brand mark and the pill no longer fit side by side;
         // stacking keeps the funding instrument legible instead of truncating it.
-        ViewThatFits(in: .horizontal) {
-            sideBySideLayout
+        if #available(iOS 16, *) {
+            ViewThatFits(in: .horizontal) {
+                sideBySideLayout
+                stackedLayout
+            }
+        } else if dynamicTypeSize.isAccessibilitySize {
             stackedLayout
+        } else {
+            sideBySideLayout
         }
     }
 
