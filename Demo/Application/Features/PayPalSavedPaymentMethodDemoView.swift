@@ -20,7 +20,8 @@ struct PayPalSavedPaymentMethodDemoView: View {
 
     @FocusState private var isAmountFocused: Bool
 
-    private let currencyCode = "USD"
+    // The Demo merchant's PayPal account is French, so PayPal returns no Pay Later message for USD.
+    private let currencyCode = "EUR"
     private let fallbackURLScheme = "com.braintreepayments.Demo.payments"
 
     // swiftlint:disable:next force_unwrapping
