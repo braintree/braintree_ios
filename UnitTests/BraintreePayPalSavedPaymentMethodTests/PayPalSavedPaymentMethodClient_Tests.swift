@@ -333,6 +333,14 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertNotNil(mockAPIClient.postedErrorDescription)
     }
 
+    func testFetchPaymentMethod_whenBuyerUpdatedBillingAgreementIsCancelled_doesNotSendFIRefreshFailedEvent() async {
+        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
+
+        _ = try? await sut.fetchPaymentMethod(fundingInstrumentType: .buyerUpdatedBillingAgreement, orderID: "fake-order-id")
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.fiRefreshStarted])
+    }
+
     // MARK: - editFundingInstrument
 
     func testEditFundingInstrument_returnsTheNonceWithEditBillingAgreementOnDuringTokenize() async throws {
