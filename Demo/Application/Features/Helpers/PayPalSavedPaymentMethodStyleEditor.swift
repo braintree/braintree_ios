@@ -37,27 +37,27 @@ struct PayPalSavedPaymentMethodStyleConfig {
             showPayPalLogo: showPayPalLogo,
             showPayPalLabel: showPayPalLabel,
             showPayPalCreditMessaging: showPayPalCreditMessaging,
-            componentAppearance: .init(
+            componentAppearance: PayPalSavedPaymentMethodViewStyle.ComponentAppearance(
                 backgroundColor: backgroundColor.map { UIColor($0) },
                 textColor: textColor.map { UIColor($0) },
                 baseFontSize: baseFontSize,
                 fontName: fontName
             ),
-            container: .init(
+            container: PayPalSavedPaymentMethodViewStyle.ContainerStyle(
                 height: height,
                 horizontalPadding: horizontalPadding,
                 verticalPadding: verticalPadding,
                 cornerRadius: cornerRadius,
                 borderColor: borderColor.map { UIColor($0) },
                 borderWidth: borderWidth,
-                logo: .init(width: logoWidth),
-                label: .init(fontSize: labelFontSize, leadingGap: labelLeadingGap),
-                fundingInstrument: .init(
+                logo: PayPalSavedPaymentMethodViewStyle.PayPalLogoStyle(width: logoWidth),
+                label: PayPalSavedPaymentMethodViewStyle.PayPalLabelStyle(fontSize: labelFontSize, leadingGap: labelLeadingGap),
+                fundingInstrument: PayPalSavedPaymentMethodViewStyle.FundingInstrumentStyle(
                     textFontSize: fundingInstrumentTextFontSize,
                     editIconSize: editIconSize,
                     leadingGap: fundingInstrumentLeadingGap
                 ),
-                creditMessaging: .init(
+                creditMessaging: PayPalSavedPaymentMethodViewStyle.CreditMessagingStyle(
                     fontSize: creditMessagingFontSize,
                     linkColor: creditMessagingLinkColor.map { UIColor($0) }
                 )
