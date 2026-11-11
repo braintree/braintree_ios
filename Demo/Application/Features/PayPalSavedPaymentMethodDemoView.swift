@@ -113,7 +113,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
                 userAction: userAction,
                 currencyCode: currencyCode
             ),
-            request: PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: currencyCode),
+            savedPaymentMethodRequest: PayPalSavedPaymentMethodRequest(amount: amount, currencyCode: currencyCode),
             fallbackURLScheme: fallbackURLScheme,
             style: styleConfig.style
         ) { nonce, error in
