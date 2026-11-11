@@ -279,6 +279,14 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
         XCTAssertEqual(mockAPIClient.postedButtonSessionID, sut.buttonSessionID)
     }
 
+    func testFetchCreditPresentmentMessages_whenTheRequestIsCancelled_doesNotSendFetchFailedEvent() async {
+        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
+
+        _ = try? await sut.fetchCreditPresentmentMessages(amount: "55.00", currencyCode: "USD")
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents, [PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted])
+    }
+
     // MARK: - Helpers
 
     /// A `PLST_SQ` payload as returned for a $55.00 order, with the tracking URLs stubbed.

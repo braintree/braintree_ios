@@ -104,11 +104,13 @@ final class PayPalSavedPaymentMethodClient {
             apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded, buttonSessionID: buttonSessionID)
             return result
         } catch {
-            apiClient.sendAnalyticsEvent(
-                PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,
-                buttonSessionID: buttonSessionID,
-                errorDescription: error.localizedDescription
-            )
+            if !Self.isCancellation(error) {
+                apiClient.sendAnalyticsEvent(
+                    PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,
+                    buttonSessionID: buttonSessionID,
+                    errorDescription: error.localizedDescription
+                )
+            }
             throw error
         }
     }
@@ -151,11 +153,13 @@ final class PayPalSavedPaymentMethodClient {
             )
             return summary
         } catch {
-            apiClient.sendAnalyticsEvent(
-                PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed,
-                buttonSessionID: buttonSessionID,
-                errorDescription: error.localizedDescription
-            )
+            if !Self.isCancellation(error) {
+                apiClient.sendAnalyticsEvent(
+                    PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed,
+                    buttonSessionID: buttonSessionID,
+                    errorDescription: error.localizedDescription
+                )
+            }
             throw error
         }
     }
@@ -195,12 +199,14 @@ final class PayPalSavedPaymentMethodClient {
             )
             return summary
         } catch {
-            apiClient.sendAnalyticsEvent(
-                PayPalSavedPaymentMethodAnalytics.fiRefreshFailed,
-                buttonSessionID: buttonSessionID,
-                contextID: orderID,
-                errorDescription: error.localizedDescription
-            )
+            if !Self.isCancellation(error) {
+                apiClient.sendAnalyticsEvent(
+                    PayPalSavedPaymentMethodAnalytics.fiRefreshFailed,
+                    buttonSessionID: buttonSessionID,
+                    contextID: orderID,
+                    errorDescription: error.localizedDescription
+                )
+            }
             throw error
         }
     }
@@ -219,6 +225,11 @@ final class PayPalSavedPaymentMethodClient {
         }
 
         return summary
+    }
+
+    /// A fetch cancelled because a newer one replaced it is expected, so it is not reported as a failure.
+    private static func isCancellation(_ error: Error) -> Bool {
+        error is CancellationError || (error as? URLError)?.code == .cancelled
     }
 
     private func validateClientToken() throws {
