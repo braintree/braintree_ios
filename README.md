@@ -48,6 +48,20 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
+### CocoaPods
+
+⚠️ **Deprecation Notice:** CocoaPods support for `braintree_ios` is no longer supported, the final version with CocoaPods support is version 7.13.1 in line with the [official CocoaPods deprecation announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). Going forward, we recommend migrating to **Swift Package Manager** (primary) or **Carthage**. You may also use the direct `xcframeworks` for manual integrations
+
+#### Migrating from CocoaPods to Swift Package Manager
+
+1. Remove the `Braintree` pod(s) from your `Podfile` and run `pod deintegrate`.
+2. In Xcode, go to **File → Add Package Dependencies…** and enter `https://github.com/braintree/braintree_ios` as the repository URL.
+3. Select the specific Braintree libraries you need (e.g. `BraintreeCore`, `BraintreeCard`, `BraintreePayPal`) — see the [Swift Package Manager](#swift-package-manager) section above.
+4. Update import statements if needed; module names are unchanged.
+5. Delete `Podfile`, `Podfile.lock`, and the `.xcworkspace` (if it existed only for CocoaPods), and reopen the project via `Braintree.xcodeproj`.
+
+If SPM isn't an option, Carthage remains supported below.
+
 ### Carthage
 Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
 
