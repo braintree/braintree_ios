@@ -34,3 +34,4 @@ SampleApps/SPMTest/SPMTest.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Pa
 Braintree.xcworkspace/xcshareddata/swiftpm/
 
 *.pid
+/Package.resolved
