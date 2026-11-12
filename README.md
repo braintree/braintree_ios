@@ -1,6 +1,5 @@
 # Braintree iOS SDK
 
-[![CocoaPods compatible](https://img.shields.io/cocoapods/v/Braintree.svg?style=flat)](https://cocoapods.org/pods/Braintree)
 [![Swift Package Manager compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -31,7 +30,7 @@ Welcome to Braintree's iOS SDK. This library will help you accept card, alternat
 
 ## Installation
 
-We recommend using [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](https://github.com/CocoaPods/CocoaPods), or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
+We recommend using [Swift Package Manager](https://swift.org/package-manager/) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Swift Package Manager
 
@@ -49,29 +48,6 @@ import BraintreeApplePay
 import BraintreePayPal
 ```
 
-### CocoaPods
-
-⚠️ **Deprecation Notice:** CocoaPods support for `braintree_ios` is no longer supported, the final version with CocoaPods support is version 7.13.1 in line with the [official CocoaPods deprecation announcement](https://blog.cocoapods.org/CocoaPods-Specs-Repo/). Going forward, we recommend migrating to **Swift Package Manager** (primary) or **Carthage**. You may also use the direct `xcframeworks` for manual integrations
-
-```
-# Includes Cards and PayPal
-pod 'Braintree'
-
-# Optionally include additional Pods
-pod 'Braintree/DataCollector'
-pod 'Braintree/Venmo'
-```
-
-#### Migrating from CocoaPods to Swift Package Manager
-
-1. Remove the `Braintree` pod(s) from your `Podfile` and run `pod deintegrate`.
-2. In Xcode, go to **File → Add Package Dependencies…** and enter `https://github.com/braintree/braintree_ios` as the repository URL.
-3. Select the specific Braintree libraries you need (e.g. `BraintreeCore`, `BraintreeCard`, `BraintreePayPal`) — see the [Swift Package Manager](#swift-package-manager) section above.
-4. Update import statements if needed; module names are unchanged.
-5. Delete `Podfile`, `Podfile.lock`, and the `.xcworkspace` (if it existed only for CocoaPods), and reopen the project via `Braintree.xcodeproj`.
-
-If SPM isn't an option, Carthage remains supported below.
-
 ### Carthage
 Braintree 6.0.0+ requires Carthage 0.38.0+ and the `--use-xcframeworks` option when running `carthage update`.
 
@@ -86,10 +62,6 @@ If you're looking to update to a newer version of our SDK, please see our recomm
 ### Using Swift Package Manager
 
  To update using Swift Package Manager, select _File→ Packages → Update to Latest Package Versions_.
-
-### Using Cocoapods 
-
-You can either update all pods listed within your Podfile using `pod update` or specific pods as needed using `pod update PODNAME`. For additional details, see the [Cocoapods guidelines](https://guides.cocoapods.org/using/pod-install-vs-update.html).
 
 ### Using Carthage
 
