@@ -212,17 +212,20 @@ jobs:
             --theme fullwidth \
             --output "${RELEASE_VERSION}"
 
-          # Clean up JSON build artifacts before switching branches
+          # Clean up JSON build artifacts
           rm -f braintree-*.json swiftDoc.json
+          
+          # Publish from a separate worktree so tracked files rewritten by
+          # xcodebuild/sourcekitten in this checkout can't block anything.
+          GH_PAGES_DIR="${RUNNER_TEMP}/gh-pages"
+          git fetch origin gh-pages
+          git worktree add -B gh-pages "${GH_PAGES_DIR}" origin/gh-pages
 
-          # Store current branch to return to it later
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          rm -rf "${GH_PAGES_DIR:?}/${RELEASE_VERSION}"
+          mv "${RELEASE_VERSION}" "${GH_PAGES_DIR}/"
 
-          git checkout gh-pages
+          cd "${GH_PAGES_DIR}"
           ln -sfn "${RELEASE_VERSION}" current
           git add current "${RELEASE_VERSION}"
           git commit -m "Publish ${RELEASE_VERSION} docs to github pages"
-          git push
-
-          # Return to original branch to leave a clean working tree
-          git checkout "${CURRENT_BRANCH}"
+          git push origin HEAD:gh-pages
