@@ -10,7 +10,7 @@ import BraintreeCore
 struct SignalCustomerActionCompleteGraphQLBody: BTGraphQLEncodableBody {
 
     // swiftlint:disable indentation_width
-    var query: String {
+    let query =
         """
         mutation SignalCustomerActionComplete($input: SignalCustomerActionCompleteInput!) {
          signalCustomerActionComplete(input: $input) {
@@ -20,7 +20,7 @@ struct SignalCustomerActionCompleteGraphQLBody: BTGraphQLEncodableBody {
          }
         }
         """
-    }
+
 
     let variables: Variables
 

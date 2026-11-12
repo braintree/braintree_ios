@@ -8,6 +8,7 @@ inhibit_all_warnings!
 target 'Demo' do
   project 'Demo/Demo'
   pod 'InAppSettingsKit'
+  pod 'OHHTTPStubs/Swift' # MOCK-REMOVAL: lets the Demo's hybrid backend stub Payment Actions GraphQL
 end
 
 abstract_target 'Tests' do

@@ -16,6 +16,16 @@ class SignalCustomerActionCompleteGraphQLBody_Tests: XCTestCase {
         XCTAssertTrue(body.query.contains("nextAction"))
     }
 
+    func testToDictionary_includesQueryOnTheWire() throws {
+        let body = SignalCustomerActionCompleteGraphQLBody(
+            completedAction: .challenge(cardinalAuthenticationJWT: "jwt-value")
+        )
+
+        let dictionary = try body.toDictionary()
+
+        XCTAssertEqual((dictionary["query"] as? String)?.contains("mutation SignalCustomerActionComplete"), true)
+    }
+
     func testToDictionary_deviceDataCollection_omitsPaymentActionID() throws {
         let body = SignalCustomerActionCompleteGraphQLBody(
             completedAction: .deviceDataCollection(dfReferenceID: "df-reference-id")

@@ -21,6 +21,12 @@ class GetPaymentActionGraphQLBody_Tests: XCTestCase {
         XCTAssertTrue(body.query.contains("__typename"))
     }
 
+    func testToDictionary_includesQueryOnTheWire() throws {
+        let dictionary = try GetPaymentActionGraphQLBody().toDictionary()
+
+        XCTAssertEqual((dictionary["query"] as? String)?.contains("query GetPaymentAction"), true)
+    }
+
     func testToDictionary_hasNoVariables() throws {
         let body = GetPaymentActionGraphQLBody()
 

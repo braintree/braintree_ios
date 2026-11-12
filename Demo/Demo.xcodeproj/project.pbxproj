@@ -97,6 +97,14 @@
 		BEE930492A98FE9200C85779 /* DataCollectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE930482A98FE9200C85779 /* DataCollectorViewController.swift */; };
 		BEE9304B2A992F6200C85779 /* CardTokenizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */; };
 		BEF137E52B3381CD00B9B225 /* PayPalMessaging_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */; };
+		62BDD25D295CD6E7A161E146 /* PaymentActionsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12470AC8003684594A0702F7 /* PaymentActionsFlow.swift */; };
+		90CE6389FBFB0ECB3B7B21B9 /* PaymentFlowDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F970C12BE062F690F8BBB /* PaymentFlowDriver.swift */; };
+		3102BBE994BEFF81DF4F8DAE /* LivePaymentActionsFlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECEFECD476DAD5A4B28770A5 /* LivePaymentActionsFlowService.swift */; };
+		2FB944392097E2BCA5418E33 /* PaymentActionsServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DE598BF3A4B1A9BA939746 /* PaymentActionsServiceFactory.swift */; };
+		8BC8FE3AB44E0C906DC39821 /* PaymentOutcomeBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5775BEBED7E9C7C4CCB46D /* PaymentOutcomeBanner.swift */; };
+		FAC180D6B2E6E1B465E55130 /* HybridPaymentActionsStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6577428C2F6D6BC64E5A22 /* HybridPaymentActionsStub.swift */; };
+		4D3334955D46AF783B52901A /* HybridPaymentActionsFlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD2D2490CA4C616E8C4BF14 /* HybridPaymentActionsFlowService.swift */; };
+		A299E490BBED2CF3DFC8DF07 /* StubbedServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A37DFE702393E0FA6C8BBC2 /* StubbedServerNotice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +240,14 @@
 		BEE9304A2A992F6200C85779 /* CardTokenizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTokenizationViewController.swift; sourceTree = "<group>"; };
 		BEF137E42B3381CD00B9B225 /* PayPalMessaging_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayPalMessaging_UITests.swift; sourceTree = "<group>"; };
 		C8E5BAD1DA81AAD310B19786 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		12470AC8003684594A0702F7 /* PaymentActionsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentActionsFlow.swift; sourceTree = "<group>"; };
+		BD3F970C12BE062F690F8BBB /* PaymentFlowDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentFlowDriver.swift; sourceTree = "<group>"; };
+		ECEFECD476DAD5A4B28770A5 /* LivePaymentActionsFlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePaymentActionsFlowService.swift; sourceTree = "<group>"; };
+		65DE598BF3A4B1A9BA939746 /* PaymentActionsServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentActionsServiceFactory.swift; sourceTree = "<group>"; };
+		7F5775BEBED7E9C7C4CCB46D /* PaymentOutcomeBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentOutcomeBanner.swift; sourceTree = "<group>"; };
+		CC6577428C2F6D6BC64E5A22 /* HybridPaymentActionsStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybridPaymentActionsStub.swift; sourceTree = "<group>"; };
+		5FD2D2490CA4C616E8C4BF14 /* HybridPaymentActionsFlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybridPaymentActionsFlowService.swift; sourceTree = "<group>"; };
+		3A37DFE702393E0FA6C8BBC2 /* StubbedServerNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubbedServerNotice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,6 +438,7 @@
 				BEBD52862AABA513005D6687 /* ThreeDSecureViewController.swift */,
 				80D36DED2A7967F20035380E /* VenmoViewController.swift */,
 				809E86A42ACF6607004998B0 /* Helpers */,
+				D6F15333AB59E0F64C3CBA0B /* PaymentActions */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -521,6 +538,29 @@
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		7F18AC52680254E110B22392 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				3A37DFE702393E0FA6C8BBC2 /* StubbedServerNotice.swift */,
+				CC6577428C2F6D6BC64E5A22 /* HybridPaymentActionsStub.swift */,
+				5FD2D2490CA4C616E8C4BF14 /* HybridPaymentActionsFlowService.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		D6F15333AB59E0F64C3CBA0B /* PaymentActions */ = {
+			isa = PBXGroup;
+			children = (
+				12470AC8003684594A0702F7 /* PaymentActionsFlow.swift */,
+				BD3F970C12BE062F690F8BBB /* PaymentFlowDriver.swift */,
+				ECEFECD476DAD5A4B28770A5 /* LivePaymentActionsFlowService.swift */,
+				65DE598BF3A4B1A9BA939746 /* PaymentActionsServiceFactory.swift */,
+				7F5775BEBED7E9C7C4CCB46D /* PaymentOutcomeBanner.swift */,
+				7F18AC52680254E110B22392 /* Mock */,
+			);
+			path = PaymentActions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -776,6 +816,14 @@
 				A0988F9224DB44B20095EEEE /* BraintreeDemoSettings.swift in Sources */,
 				91E24EA930E1F3EFF3329A16 /* UIViewController+Embed.swift in Sources */,
 				62303A6330508E0E00748DE0 /* PaymentActionsView.swift in Sources */,
+				A299E490BBED2CF3DFC8DF07 /* StubbedServerNotice.swift in Sources */,
+				FAC180D6B2E6E1B465E55130 /* HybridPaymentActionsStub.swift in Sources */,
+				4D3334955D46AF783B52901A /* HybridPaymentActionsFlowService.swift in Sources */,
+				62BDD25D295CD6E7A161E146 /* PaymentActionsFlow.swift in Sources */,
+				90CE6389FBFB0ECB3B7B21B9 /* PaymentFlowDriver.swift in Sources */,
+				3102BBE994BEFF81DF4F8DAE /* LivePaymentActionsFlowService.swift in Sources */,
+				2FB944392097E2BCA5418E33 /* PaymentActionsServiceFactory.swift in Sources */,
+				8BC8FE3AB44E0C906DC39821 /* PaymentOutcomeBanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
