@@ -42,6 +42,26 @@ public class MockAPIClient: BTAPIClient {
     public var postedRenderedMessageSlot: Bool? = nil
     public var postedRenderTrigger: String? = nil
     public var postedShownContent: String? = nil
+    /// The tags of each analytics event, keyed by event name, for actions that send more than one event.
+    public var postedAnalyticsEventTags: [String: PostedAnalyticsEventTags] = [:]
+
+    /// The tags sent with one analytics event.
+    public struct PostedAnalyticsEventTags {
+
+        public let buttonSessionID: String?
+        public let contextID: String?
+        public let errorDescription: String?
+        public let presentmentMessageType: String?
+        public let renderedEditTag: Bool?
+        public let renderedLabel: Bool?
+        public let renderedLogo: Bool?
+        public let renderedMessageSlot: Bool?
+        public let renderTrigger: String?
+        public let savedMethodBrand: String?
+        public let savedMethodID: String?
+        public let savedMethodType: String?
+        public let shownContent: String?
+    }
     
     @objc public var cannedConfigurationResponseBody : BTJSON? = nil
     @objc public var cannedConfigurationResponseError : NSError? = nil
@@ -165,6 +185,21 @@ public class MockAPIClient: BTAPIClient {
         postedRenderedMessageSlot = renderedMessageSlot
         postedRenderTrigger = renderTrigger
         postedShownContent = shownContent
+        postedAnalyticsEventTags[eventName] = PostedAnalyticsEventTags(
+            buttonSessionID: buttonSessionID,
+            contextID: contextID,
+            errorDescription: errorDescription,
+            presentmentMessageType: presentmentMessageType,
+            renderedEditTag: renderedEditTag,
+            renderedLabel: renderedLabel,
+            renderedLogo: renderedLogo,
+            renderedMessageSlot: renderedMessageSlot,
+            renderTrigger: renderTrigger,
+            savedMethodBrand: savedMethodBrand,
+            savedMethodID: savedMethodID,
+            savedMethodType: savedMethodType,
+            shownContent: shownContent
+        )
         
         postedAnalyticsEvents.append(eventName)
     }

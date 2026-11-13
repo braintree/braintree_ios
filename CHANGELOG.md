@@ -6,7 +6,7 @@
   * Send `is_edit_fi` and `button_session_id` to PayPal's analytics service (FPTI) for the PayPal Edit FI beta flow
 * BraintreePayPalSavedPaymentMethod
   * Add `PayPalSavedPaymentMethodView` (beta) to show a returning buyer's saved PayPal funding instrument at checkout and let them change it
-  * Send fetch, render and edit events for `PayPalSavedPaymentMethodView` to PayPal's analytics service (FPTI)
+  * Send render, funding instrument and Pay Later message events for `PayPalSavedPaymentMethodView` to PayPal's analytics service (FPTI)
 
 ## 7.9.0 (2026-07-21)
 * BraintreeUIComponents

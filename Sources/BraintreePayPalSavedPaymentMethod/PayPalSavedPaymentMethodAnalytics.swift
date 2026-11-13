@@ -2,36 +2,32 @@ import Foundation
 
 enum PayPalSavedPaymentMethodAnalytics {
 
+    // MARK: - Render Events
+
+    static let renderStarted = "paypal-saved-payment-method:render:started"
+    static let renderPresented = "paypal-saved-payment-method:render:presented"
+
     // MARK: - Funding Instrument Events
 
-    static let stickyFIFetchStarted = "paypal-saved-payment-method:sticky-fi:fetch-started"
-    static let stickyFIFetchSucceeded = "paypal-saved-payment-method:sticky-fi:fetch-succeeded"
-    static let stickyFIFetchFailed = "paypal-saved-payment-method:sticky-fi:fetch-failed"
-
-    static let fiRefreshStarted = "paypal-saved-payment-method:fi-refresh:started"
-    static let fiRefreshSucceeded = "paypal-saved-payment-method:fi-refresh:succeeded"
-    static let fiRefreshFailed = "paypal-saved-payment-method:fi-refresh:failed"
-
-    static let renderSucceeded = "paypal-saved-payment-method:render:succeeded"
-    static let editSelected = "paypal-saved-payment-method:edit:selected"
+    static let fundingInstrumentPresented = "paypal-saved-payment-method:render:funding-instrument:presented"
+    static let fundingInstrumentFailed = "paypal-saved-payment-method:render:funding-instrument:failed"
+    static let fundingInstrumentEditSelected = "paypal-saved-payment-method:render:funding-instrument-edit:selected"
 
     // MARK: - Credit Messaging Events
 
-    static let creditMessagingFetchStarted = "paypal-saved-payment-method:credit-messaging:fetch-started"
-    static let creditMessagingFetchSucceeded = "paypal-saved-payment-method:credit-messaging:fetch-succeeded"
-    static let creditMessagingFetchFailed = "paypal-saved-payment-method:credit-messaging:fetch-failed"
-    static let creditMessagingRenderSucceeded = "paypal-saved-payment-method:credit-messaging:render-succeeded"
-    static let creditMessagingLearnMoreSelected = "paypal-saved-payment-method:credit-messaging-learn-more:selected"
+    static let creditMessagingPresented = "paypal-saved-payment-method:render:credit-messaging:presented"
+    static let creditMessagingFailed = "paypal-saved-payment-method:render:credit-messaging:failed"
+    static let creditMessagingLearnMoreSelected = "paypal-saved-payment-method:render:credit-messaging-learn-more:selected"
 
     // MARK: - Render Dimensions
 
-    /// What caused a `renderSucceeded` event.
+    /// Whether a render follows the initial funding instrument fetch or the refetch after an edit.
     enum RenderTrigger: String {
         case stickyFI = "sticky_fi"
         case fiFromApprovedCheckout = "fi_from_approved_checkout"
     }
 
-    /// What a `renderSucceeded` event showed.
+    /// What a `renderPresented` event showed.
     enum ShownContent: String {
         case fundingInstrument = "funding_instrument"
         case emailOnly = "email_only"

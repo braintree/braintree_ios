@@ -3,37 +3,38 @@ import XCTest
 
 final class PayPalSavedPaymentMethodAnalytics_Tests: XCTestCase {
 
+    func testRenderAnalyticsEvents_sendExpectedEventNames() {
+        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.renderStarted, "paypal-saved-payment-method:render:started")
+        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.renderPresented, "paypal-saved-payment-method:render:presented")
+    }
+
     func testFundingInstrumentAnalyticsEvents_sendExpectedEventNames() {
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, "paypal-saved-payment-method:sticky-fi:fetch-started")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded, "paypal-saved-payment-method:sticky-fi:fetch-succeeded")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed, "paypal-saved-payment-method:sticky-fi:fetch-failed")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.fiRefreshStarted, "paypal-saved-payment-method:fi-refresh:started")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded, "paypal-saved-payment-method:fi-refresh:succeeded")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.fiRefreshFailed, "paypal-saved-payment-method:fi-refresh:failed")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.renderSucceeded, "paypal-saved-payment-method:render:succeeded")
-        XCTAssertEqual(PayPalSavedPaymentMethodAnalytics.editSelected, "paypal-saved-payment-method:edit:selected")
+        XCTAssertEqual(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented,
+            "paypal-saved-payment-method:render:funding-instrument:presented"
+        )
+        XCTAssertEqual(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed,
+            "paypal-saved-payment-method:render:funding-instrument:failed"
+        )
+        XCTAssertEqual(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected,
+            "paypal-saved-payment-method:render:funding-instrument-edit:selected"
+        )
     }
 
     func testCreditMessagingAnalyticsEvents_sendExpectedEventNames() {
         XCTAssertEqual(
-            PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted,
-            "paypal-saved-payment-method:credit-messaging:fetch-started"
+            PayPalSavedPaymentMethodAnalytics.creditMessagingPresented,
+            "paypal-saved-payment-method:render:credit-messaging:presented"
         )
         XCTAssertEqual(
-            PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded,
-            "paypal-saved-payment-method:credit-messaging:fetch-succeeded"
-        )
-        XCTAssertEqual(
-            PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,
-            "paypal-saved-payment-method:credit-messaging:fetch-failed"
-        )
-        XCTAssertEqual(
-            PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
-            "paypal-saved-payment-method:credit-messaging:render-succeeded"
+            PayPalSavedPaymentMethodAnalytics.creditMessagingFailed,
+            "paypal-saved-payment-method:render:credit-messaging:failed"
         )
         XCTAssertEqual(
             PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected,
-            "paypal-saved-payment-method:credit-messaging-learn-more:selected"
+            "paypal-saved-payment-method:render:credit-messaging-learn-more:selected"
         )
     }
 }
