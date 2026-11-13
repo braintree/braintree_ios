@@ -312,6 +312,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         sut.requestChanged(makeRequest(amount: "50.00"), showCreditMessaging: true)
         let olderFetch = sut.creditTask
+        await apiClient.waitUntilHolding(1)
         sut.requestChanged(makeRequest(amount: "70.00"), showCreditMessaging: true)
         await apiClient.waitUntilHolding(2)
 
@@ -321,6 +322,22 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         await olderFetch?.value
 
         XCTAssertEqual(sut.creditMessage?.message, "Pay in 4 on 70.00")
+    }
+
+    /// Typing an amount changes the request on every keystroke; only the value it settles on is fetched.
+    func testRequestChanged_whenTheAmountChangesAgainBeforeThePause_fetchesOnlyTheLatestAmount() async {
+        let sut = makeSUT()
+
+        sut.requestChanged(makeRequest(amount: "5.00"), showCreditMessaging: true)
+        let supersededFetch = sut.creditTask
+        sut.requestChanged(makeRequest(amount: "50.00"), showCreditMessaging: true)
+        await supersededFetch?.value
+
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "")
+
+        await settle(sut)
+
+        XCTAssertEqual(Self.creditAmount(in: mockAPIClient.lastPOSTParameters as? [String: Any]), "50.00")
     }
 
     // MARK: - appReturnedToForeground

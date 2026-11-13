@@ -10,7 +10,6 @@ struct PayPalSavedPaymentMethodDemoView: View {
     let onComplete: (BTPaymentMethodNonce?) -> Void
 
     @State private var amount = "20.00"
-    @State private var amountInput = "20.00"
     @State private var isAppSwitchEnabled = true
     @State private var userAction: BTPayPalRequestUserAction = .payNow
     @State private var isStyleEditorPresented = false
@@ -18,11 +17,13 @@ struct PayPalSavedPaymentMethodDemoView: View {
     @State private var payPalClient: BTPayPalClient?
     @State private var isVaulting = false
 
-    @FocusState private var isAmountFocused: Bool
-
     // The Demo merchant's PayPal account is French, so PayPal returns no Pay Later message for USD.
     private let currencyCode = "EUR"
     private let fallbackURLScheme = "com.braintreepayments.Demo.payments"
+
+    private var isSandbox: Bool {
+        BraintreeDemoSettings.currentEnvironment == .sandbox
+    }
 
     // swiftlint:disable:next force_unwrapping
     private let universalLink = URL(string: "https://mobile-sdk-demo-site-838cead5d3ab.herokuapp.com/braintree-payments")!
@@ -60,9 +61,10 @@ struct PayPalSavedPaymentMethodDemoView: View {
             Button(isVaulting ? "Processing..." : "Vault PayPal Account") {
                 vaultPayPalAccount()
             }
-            .disabled(isVaulting)
+            .disabled(isVaulting || !isSandbox)
 
-            Text("Vaults a PayPal account and saves its token to Settings.")
+            // The Demo merchant is also used for production testing, where this would vault a real PayPal account.
+            Text(isSandbox ? "Vaults a PayPal account and saves its token to Settings." : "Only available in Sandbox.")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
@@ -74,15 +76,9 @@ struct PayPalSavedPaymentMethodDemoView: View {
             VStack(alignment: .leading, spacing: 5) {
                 Text("Amount")
 
-                TextField("Amount", text: $amountInput)
+                TextField("Amount", text: $amount)
                     .keyboardType(.decimalPad)
                     .textFieldStyle(.roundedBorder)
-                    .focused($isAmountFocused)
-                    .onChange(of: isAmountFocused) { isFocused in
-                        if !isFocused {
-                            amount = amountInput
-                        }
-                    }
             }
 
             SwiftUI.Toggle("PayPal App Switch", isOn: $isAppSwitchEnabled)
@@ -126,8 +122,6 @@ struct PayPalSavedPaymentMethodDemoView: View {
         }
         // The component only fetches the credit message on appear, so turning it on needs a fresh instance.
         .id(styleConfig.showPayPalCreditMessaging)
-        // A tap while typing would edit with the old amount, since the new one only applies on focus loss.
-        .disabled(isAmountFocused)
     }
 
     private func vaultPayPalAccount() {

@@ -14,7 +14,7 @@ class BraintreeDemoMerchantAPIClient: NSObject {
 
     private struct VaultResponse: Codable {
 
-        let message: String
+        let message: String?
         let token: String?
     }
     
@@ -35,7 +35,9 @@ class BraintreeDemoMerchantAPIClient: NSObject {
             }
         }
 
-        if let paymentMethodToken = BraintreeDemoSettings.paymentMethodToken, !paymentMethodToken.isEmpty {
+        // Neither the client token nor the funding instrument fetch ties this token to `customer_id`, so a token vaulted
+        // to the throwaway customer in `vaultPaymentMethod` still resolves here.
+        if let paymentMethodToken = BraintreeDemoSettings.savedPaymentMethodToken {
             queryItems.append(URLQueryItem(name: "preferred_payment_method_token", value: paymentMethodToken))
         }
 
@@ -105,18 +107,30 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         guard
             let customerURL = URL(string: customerURLString),
             var vaultURLComponents = URLComponents(string: customerURLString + "/vault")
-        else { return }
+        else {
+            completion(nil, "Invalid merchant server URL")
+            return
+        }
 
         vaultURLComponents.queryItems = [URLQueryItem(name: "nonce", value: paymentMethodNonce)]
 
-        guard let vaultURL = vaultURLComponents.url else { return }
+        guard let vaultURL = vaultURLComponents.url else {
+            completion(nil, "Invalid merchant server URL")
+            return
+        }
 
         var customerRequest = URLRequest(url: customerURL)
         customerRequest.httpMethod = "PUT"
 
-        let customerTask = URLSession.shared.dataTask(with: customerRequest) { _, _, error in
+        let customerTask = URLSession.shared.dataTask(with: customerRequest) { _, response, error in
             if let error {
                 DispatchQueue.main.async { completion(nil, error.localizedDescription) }
+                return
+            }
+
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            guard (200..<300).contains(statusCode) else {
+                DispatchQueue.main.async { completion(nil, "Couldn't create a customer on the merchant server (HTTP \(statusCode))") }
                 return
             }
 
@@ -130,7 +144,8 @@ class BraintreeDemoMerchantAPIClient: NSObject {
                 }
 
                 let response = try? JSONDecoder().decode(VaultResponse.self, from: data)
-                DispatchQueue.main.async { completion(response?.token, response?.message) }
+                let message = response?.message ?? (response?.token == nil ? "Couldn't vault the payment method" : nil)
+                DispatchQueue.main.async { completion(response?.token, message) }
             }
 
             vaultTask.resume()

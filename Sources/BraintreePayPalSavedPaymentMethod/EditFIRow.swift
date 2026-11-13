@@ -133,7 +133,7 @@ struct EditFIRow: View {
                         .font(fiFont)
                         .foregroundColor(pillContentColor)
                         .lineLimit(1)
-                        .truncationMode(.middle)
+                        .truncationMode(.tail)
                     if isEditable {
                         editGlyph
                     }
