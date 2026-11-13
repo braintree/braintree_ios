@@ -26,6 +26,7 @@ class BraintreeDemoSettings: NSObject {
     static let AuthorizationTypeDefaultsKey = "BraintreeDemoSettingsAuthorizationTypeKey"
     static let CustomAuthorizationDefaultsKey = "BraintreeDemoSettingsCustomAuthorizationKey"
     static let ThreeDSecureRequiredDefaultsKey = "BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey"
+    static let PaymentMethodTokenDefaultsKey = "BraintreeDemoPaymentMethodToken"
 
     static var currentEnvironment: BraintreeDemoEnvironment {
         BraintreeDemoEnvironment(
@@ -71,6 +72,24 @@ class BraintreeDemoSettings: NSObject {
     
     static var customerIdentifier: String? {
         return UserDefaults.standard.string(forKey: "BraintreeDemoCustomerIdentifier")
+    }
+
+    static var paymentMethodToken: String? {
+        return UserDefaults.standard.string(forKey: PaymentMethodTokenDefaultsKey)
+    }
+
+    /// The payment method token to send with the client token request. Only sent for the saved payment method
+    /// screen in Sandbox, so a stale token can't break client token requests for other integrations.
+    static var savedPaymentMethodToken: String? {
+        guard
+            currentEnvironment == .sandbox,
+            UserDefaults.standard.string(forKey: "BraintreeDemoSettingsIntegration") == "PayPalSavedPaymentMethodViewController",
+            let paymentMethodToken,
+            !paymentMethodToken.isEmpty
+        else {
+            return nil
+        }
+        return paymentMethodToken
     }
 
     static var clientTokenVersion: String? {
