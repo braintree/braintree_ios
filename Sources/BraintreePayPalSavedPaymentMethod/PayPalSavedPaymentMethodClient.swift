@@ -81,38 +81,25 @@ final class PayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> PayPalCreditMessagingResult {
-        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchStarted, buttonSessionID: buttonSessionID)
-        do {
-            try validateClientToken()
+        try validateClientToken()
 
-            let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
+        let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
 
-            let (body, _) = try await apiClient.post(
-                "/v2/credit/fetch-presentment-messages",
-                parameters: parameters,
-                httpType: .payPalAPI
-            )
+        let (body, _) = try await apiClient.post(
+            "/v2/credit/fetch-presentment-messages",
+            parameters: parameters,
+            httpType: .payPalAPI
+        )
 
-            guard let body else {
-                throw PayPalSavedPaymentMethodError.emptyBodyReturned
-            }
-
-            guard let result = PayPalCreditMessagingResult(json: body) else {
-                throw PayPalSavedPaymentMethodError.missingPreferredMessage
-            }
-
-            apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.creditMessagingFetchSucceeded, buttonSessionID: buttonSessionID)
-            return result
-        } catch {
-            if !Self.isCancellation(error) {
-                apiClient.sendAnalyticsEvent(
-                    PayPalSavedPaymentMethodAnalytics.creditMessagingFetchFailed,
-                    buttonSessionID: buttonSessionID,
-                    errorDescription: error.localizedDescription
-                )
-            }
-            throw error
+        guard let body else {
+            throw PayPalSavedPaymentMethodError.emptyBodyReturned
         }
+
+        guard let result = PayPalCreditMessagingResult(json: body) else {
+            throw PayPalSavedPaymentMethodError.missingPreferredMessage
+        }
+
+        return result
     }
 
     /// Tokenizes the edit of the buyer's funding instrument through the PayPal paysheet.
@@ -132,83 +119,36 @@ final class PayPalSavedPaymentMethodClient {
     // MARK: - Private Methods
 
     private func fetchBuyerDefaultBillingAgreement(merchantAccountID: String?) async throws -> PayPalSavedPaymentMethodSummary {
-        apiClient.sendAnalyticsEvent(PayPalSavedPaymentMethodAnalytics.stickyFIFetchStarted, buttonSessionID: buttonSessionID)
-        do {
-            let paymentMethodIDJWT = try self.paymentMethodIDJWT()
-            let summary = try await postFundingInstrumentDetails(
-                PayPalFundingInstrumentDetailsGraphQLBody(
-                    fundingInstrumentType: .buyerDefaultBillingAgreement,
-                    paymentMethodIDJWT: paymentMethodIDJWT,
-                    orderID: nil,
-                    merchantAccountID: merchantAccountID,
-                    buttonSessionID: buttonSessionID
-                )
+        try await postFundingInstrumentDetails(
+            PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: .buyerDefaultBillingAgreement,
+                paymentMethodIDJWT: try paymentMethodIDJWT(),
+                orderID: nil,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
             )
-            apiClient.sendAnalyticsEvent(
-                PayPalSavedPaymentMethodAnalytics.stickyFIFetchSucceeded,
-                buttonSessionID: buttonSessionID,
-                savedMethodBrand: summary.paymentMethods.first?.cardBrand,
-                savedMethodID: summary.paymentMethods.first?.id,
-                savedMethodType: summary.paymentMethods.first?.rawType
-            )
-            return summary
-        } catch {
-            if !Self.isCancellation(error) {
-                apiClient.sendAnalyticsEvent(
-                    PayPalSavedPaymentMethodAnalytics.stickyFIFetchFailed,
-                    buttonSessionID: buttonSessionID,
-                    errorDescription: error.localizedDescription
-                )
-            }
-            throw error
-        }
+        )
     }
 
     private func fetchBuyerUpdatedBillingAgreement(
         orderID: String?,
         merchantAccountID: String?
     ) async throws -> PayPalSavedPaymentMethodSummary {
-        apiClient.sendAnalyticsEvent(
-            PayPalSavedPaymentMethodAnalytics.fiRefreshStarted,
-            buttonSessionID: buttonSessionID,
-            contextID: orderID
-        )
-        do {
-            try validateClientToken()
+        try validateClientToken()
 
-            guard let orderID else {
-                throw PayPalSavedPaymentMethodError.missingOrderID
-            }
-
-            let summary = try await postFundingInstrumentDetails(
-                PayPalFundingInstrumentDetailsGraphQLBody(
-                    fundingInstrumentType: .buyerUpdatedBillingAgreement,
-                    paymentMethodIDJWT: nil,
-                    orderID: orderID,
-                    merchantAccountID: merchantAccountID,
-                    buttonSessionID: buttonSessionID
-                )
-            )
-            apiClient.sendAnalyticsEvent(
-                PayPalSavedPaymentMethodAnalytics.fiRefreshSucceeded,
-                buttonSessionID: buttonSessionID,
-                contextID: orderID,
-                savedMethodBrand: summary.paymentMethods.first?.cardBrand,
-                savedMethodID: summary.paymentMethods.first?.id,
-                savedMethodType: summary.paymentMethods.first?.rawType
-            )
-            return summary
-        } catch {
-            if !Self.isCancellation(error) {
-                apiClient.sendAnalyticsEvent(
-                    PayPalSavedPaymentMethodAnalytics.fiRefreshFailed,
-                    buttonSessionID: buttonSessionID,
-                    contextID: orderID,
-                    errorDescription: error.localizedDescription
-                )
-            }
-            throw error
+        guard let orderID else {
+            throw PayPalSavedPaymentMethodError.missingOrderID
         }
+
+        return try await postFundingInstrumentDetails(
+            PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: .buyerUpdatedBillingAgreement,
+                paymentMethodIDJWT: nil,
+                orderID: orderID,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
+            )
+        )
     }
 
     private func postFundingInstrumentDetails(
@@ -225,11 +165,6 @@ final class PayPalSavedPaymentMethodClient {
         }
 
         return summary
-    }
-
-    /// A fetch cancelled because a newer one replaced it is expected, so it is not reported as a failure.
-    private static func isCancellation(_ error: Error) -> Bool {
-        error is CancellationError || (error as? URLError)?.code == .cancelled
     }
 
     private func validateClientToken() throws {

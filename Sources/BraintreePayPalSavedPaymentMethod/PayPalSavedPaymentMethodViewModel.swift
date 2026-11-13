@@ -136,8 +136,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The request `creditMessage` was quoted for.
     private var creditMessageRequest: PayPalSavedPaymentMethodRequest?
 
-    /// The order approved by the last edit, sent as the `context_id` of the post-edit render.
+    /// The order approved by the last edit, sent as the `context_id` of the post-edit funding instrument events.
     private var approvedOrderID: String?
+
+    /// `render:started` is sent once per component, not on every re-appear.
+    private var didSendRenderStarted = false
 
     /// The instrument on screen, for analytics.
     private var instrument: PayPalSavedPaymentMethod? {
@@ -202,6 +205,14 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         // replace the post-edit instrument with the pre-edit one the API still returns.
         guard !didCompleteEdit else { return }
 
+        if !didSendRenderStarted {
+            didSendRenderStarted = true
+            fetchClient?.apiClient.sendAnalyticsEvent(
+                PayPalSavedPaymentMethodAnalytics.renderStarted,
+                buttonSessionID: fetchClient?.buttonSessionID
+            )
+        }
+
         fiFetchTask = Task { [weak self] in await self?.loadBuyerDefaultBillingAgreement(request: request) }
 
         if showCreditMessaging {
@@ -237,7 +248,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     ) {
         guard case .idle = editPhase else { return }
         fetchClient?.apiClient.sendAnalyticsEvent(
-            PayPalSavedPaymentMethodAnalytics.editSelected,
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected,
             buttonSessionID: fetchClient?.buttonSessionID,
             savedMethodBrand: instrument?.cardBrand,
             savedMethodID: instrument?.id,
@@ -326,18 +337,25 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         let renderTrigger: PayPalSavedPaymentMethodAnalytics.RenderTrigger = didCompleteEdit ? .fiFromApprovedCheckout : .stickyFI
 
         fetchClient?.apiClient.sendAnalyticsEvent(
-            PayPalSavedPaymentMethodAnalytics.renderSucceeded,
+            PayPalSavedPaymentMethodAnalytics.renderPresented,
             buttonSessionID: fetchClient?.buttonSessionID,
-            contextID: approvedOrderID,
             renderedEditTag: renderedEditTag,
             renderedLabel: style.showPayPalLabel,
             renderedLogo: style.showPayPalLogo,
             renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging,
             renderTrigger: renderTrigger.rawValue,
-            savedMethodBrand: instrument?.cardBrand,
-            savedMethodID: instrument?.id,
-            savedMethodType: instrument?.rawType,
             shownContent: shownContent.rawValue
+        )
+
+        guard let instrument else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            contextID: approvedOrderID,
+            renderTrigger: renderTrigger.rawValue,
+            savedMethodBrand: instrument.cardBrand,
+            savedMethodID: instrument.id,
+            savedMethodType: instrument.rawType
         )
     }
 
@@ -346,7 +364,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let visibleCreditMessage else { return }
 
         fetchClient?.apiClient.sendAnalyticsEvent(
-            PayPalSavedPaymentMethodAnalytics.creditMessagingRenderSucceeded,
+            PayPalSavedPaymentMethodAnalytics.creditMessagingPresented,
             buttonSessionID: fetchClient?.buttonSessionID,
             presentmentMessageType: visibleCreditMessage.messageType
         )
@@ -361,6 +379,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return } // preview: state is pre-seeded
 
         let state: FIState
+        var failure: Error?
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .buyerDefaultBillingAgreement,
@@ -370,11 +389,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         } catch {
             guard fiState == .loading else { return }
             state = .brandOnly
+            failure = error
         }
 
         // An edit may have completed while this was in flight; the post-edit refetch owns `fiState` from then on.
         guard !didCompleteEdit else { return }
         fiState = state
+        sendFundingInstrumentFailedIfNeeded(failure, renderTrigger: .stickyFI, orderID: nil)
     }
 
     /// Cancels any in-flight credit fetch (or one still waiting out `delay`) and starts one for `request`.
@@ -393,6 +414,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return }
 
         let content: CreditMessageContent?
+        var failure: Error?
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
                 amount: request.amount,
@@ -402,11 +424,20 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         } catch {
             guard request != creditMessageRequest else { return }
             content = nil
+            failure = error
         }
 
         guard !Task.isCancelled, !didCompleteEdit else { return }
         creditMessage = content
         creditMessageRequest = request
+
+        // A fetched message with no main copy can't be shown either.
+        guard content == nil, !Self.isCancellation(failure) else { return }
+        fetchClient.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingFailed,
+            buttonSessionID: fetchClient.buttonSessionID,
+            errorDescription: (failure ?? PayPalSavedPaymentMethodError.missingPreferredMessage).localizedDescription
+        )
     }
 
     /// Runs the edit, hands the result to `finishEdit`, then refreshes the FI for the approved order. The FI
@@ -451,6 +482,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return }
 
         let state: FIState
+        var failure: Error?
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .buyerUpdatedBillingAgreement,
@@ -460,10 +492,33 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             state = Self.state(from: summary)
         } catch {
             state = .brandOnly
+            failure = error
         }
 
         guard !Task.isCancelled else { return }
         fiState = state
+        sendFundingInstrumentFailedIfNeeded(failure, renderTrigger: .fiFromApprovedCheckout, orderID: orderID)
+    }
+
+    /// Reports a funding instrument that couldn't be loaded. A fetch cancelled because a newer one replaced it is
+    /// expected, so it is not reported.
+    private func sendFundingInstrumentFailedIfNeeded(
+        _ failure: Error?,
+        renderTrigger: PayPalSavedPaymentMethodAnalytics.RenderTrigger,
+        orderID: String?
+    ) {
+        guard let failure, !Self.isCancellation(failure) else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            contextID: orderID,
+            errorDescription: failure.localizedDescription,
+            renderTrigger: renderTrigger.rawValue
+        )
+    }
+
+    private static func isCancellation(_ error: Error?) -> Bool {
+        error is CancellationError || (error as? URLError)?.code == .cancelled
     }
 
     /// Delivers now if the loader is gone, otherwise holds it until dismissal: iOS drops a modal shown over another.
