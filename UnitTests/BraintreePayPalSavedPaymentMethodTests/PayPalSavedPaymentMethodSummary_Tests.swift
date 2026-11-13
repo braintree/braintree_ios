@@ -10,6 +10,7 @@ final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
                 "payer": NSNull(),
                 "paymentMethods": [
                     [
+                        "id": "BA-FLCJUCGXLU76U",
                         "label": "CREDIT UNION 1",
                         "imageUrl": "https://www.paypalobjects.com/ui-web/money-icons/bank/generic_bank.png",
                         "lastDigits": "3357",
@@ -24,6 +25,7 @@ final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         let paymentMethod = try XCTUnwrap(summary.paymentMethods.first)
 
         XCTAssertNil(summary.payer)
+        XCTAssertEqual(paymentMethod.id, "BA-FLCJUCGXLU76U")
         XCTAssertEqual(paymentMethod.type, .bank)
         XCTAssertEqual(paymentMethod.label, "CREDIT UNION 1")
         XCTAssertEqual(
@@ -32,6 +34,7 @@ final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         )
         XCTAssertEqual(paymentMethod.lastDigits, "3357")
         XCTAssertNil(paymentMethod.subtype)
+        XCTAssertNil(paymentMethod.cardBrand)
     }
 
     func testInit_whenTypeIsUnrecognized_leavesTypeNilAndKeepsTheRestOfTheInstrument() throws {
@@ -50,6 +53,7 @@ final class PayPalSavedPaymentMethodSummary_Tests: XCTestCase {
         let paymentMethod = try XCTUnwrap(PayPalSavedPaymentMethodSummary(json: json)?.paymentMethods.first)
 
         XCTAssertNil(paymentMethod.type)
+        XCTAssertEqual(paymentMethod.rawType, "SOME_FUTURE_TYPE")
         XCTAssertEqual(paymentMethod.label, "Visa")
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
     }

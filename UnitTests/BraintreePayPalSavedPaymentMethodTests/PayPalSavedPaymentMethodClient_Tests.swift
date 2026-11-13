@@ -30,6 +30,16 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Button Session ID
+
+    func testButtonSessionID_isANewDashlessUUIDForEachClient() {
+        let other = PayPalSavedPaymentMethodClient(authorization: clientToken, universalLink: universalLink)
+
+        XCTAssertEqual(sut.buttonSessionID.count, 32)
+        XCTAssertFalse(sut.buttonSessionID.contains("-"))
+        XCTAssertNotEqual(sut.buttonSessionID, other.buttonSessionID)
+    }
+
     // MARK: - Request
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_postsQueryWithPaymentMethodIDJWT() async throws {
@@ -48,6 +58,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(input["osType"] as? String, "IOS")
         XCTAssertEqual(input["paymentMethodIdJwt"] as? String, "fake-payment-method-id-jwt")
         XCTAssertEqual(input["merchantAccountId"] as? String, "fake-merchant-account-id")
+        XCTAssertEqual(input["buttonSessionId"] as? String, sut.buttonSessionID)
         XCTAssertNil(input["orderId"])
     }
 
@@ -63,6 +74,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(input["orderId"] as? String, "fake-order-id")
         XCTAssertNil(input["paymentMethodIdJwt"])
         XCTAssertNil(input["merchantAccountId"])
+        XCTAssertEqual(input["buttonSessionId"] as? String, sut.buttonSessionID)
     }
 
     func testFetchPaymentMethod_whenBuyerDefaultBillingAgreement_ignoresOrderID() async throws {
@@ -88,7 +100,8 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
                                 "imageUrl": "https://example.com/visa.png",
                                 "lastDigits": "0199",
                                 "type": "CARD",
-                                "subtype": "SIGNATURE"
+                                "subtype": "SIGNATURE",
+                                "cardBrand": "VISA"
                             ]
                         ]
                     ]
@@ -105,6 +118,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
         XCTAssertEqual(paymentMethod.imageURL, URL(string: "https://example.com/visa.png"))
         XCTAssertEqual(paymentMethod.lastDigits, "0199")
         XCTAssertEqual(paymentMethod.subtype, "SIGNATURE")
+        XCTAssertEqual(paymentMethod.cardBrand, "VISA")
     }
 
     func testFetchPaymentMethod_whenOnlyPayerIsReturned_returnsSummaryWithPayer() async throws {
@@ -223,6 +237,7 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         XCTAssertEqual(nonce.nonce, "fake-nonce")
         XCTAssertEqual(mockPayPalClient.editBillingAgreementDuringTokenize, true)
+        XCTAssertEqual(mockPayPalClient.buttonSessionIDDuringTokenize, sut.buttonSessionID)
         XCTAssertFalse(request.editBillingAgreement)
     }
 
@@ -280,4 +295,5 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
     }
+
 }

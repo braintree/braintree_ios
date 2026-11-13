@@ -9,6 +9,7 @@ import BraintreeCore
 @_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 #endif
 
+// swiftlint:disable type_body_length file_length
 /// View model backing `PayPalSavedPaymentMethodView`.
 ///
 /// Owns the FI load state and the "Learn more" lander presentation, and drives the
@@ -98,6 +99,12 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         }
     }
 
+    /// The Pay Later message to show. Held until the FI settles, since the FI decides whether the row may show.
+    var visibleCreditMessage: CreditMessageContent? {
+        guard fiState != .loading, showsCreditMessaging else { return nil }
+        return creditMessage
+    }
+
     /// The latest buyer default billing agreement fetch. Exposed for testing.
     private(set) var fiFetchTask: Task<Void, Never>?
 
@@ -125,6 +132,18 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// The request `creditMessage` was quoted for.
     private var creditMessageRequest: PayPalSavedPaymentMethodRequest?
+
+    /// The order approved by the last edit, sent as the `context_id` of the post-edit funding instrument events.
+    private var approvedOrderID: String?
+
+    /// `render:started` is sent once per component, not on every re-appear.
+    private var didSendRenderStarted = false
+
+    /// The instrument on screen, for analytics.
+    private var instrument: PayPalSavedPaymentMethod? {
+        guard case .instrument(let instrument) = fiState else { return nil }
+        return instrument
+    }
 
     // MARK: - Initializers
 
@@ -183,6 +202,14 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         // replace the post-edit instrument with the pre-edit one the API still returns.
         guard !didCompleteEdit else { return }
 
+        if !didSendRenderStarted {
+            didSendRenderStarted = true
+            fetchClient?.apiClient.sendAnalyticsEvent(
+                PayPalSavedPaymentMethodAnalytics.renderStarted,
+                buttonSessionID: fetchClient?.buttonSessionID
+            )
+        }
+
         fiFetchTask = Task { [weak self] in await self?.loadBuyerDefaultBillingAgreement(request: request) }
 
         if showCreditMessaging {
@@ -216,7 +243,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         request: PayPalSavedPaymentMethodRequest
     ) {
         guard case .idle = editPhase else { return }
-        // TODO: emit the edit tapped analytics event once the catalog is approved.
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            savedMethodBrand: instrument?.cardBrand,
+            savedMethodID: instrument?.id,
+            savedMethodType: instrument?.rawType
+        )
         editPhase = .loaderRequested
         editTask = Task { [weak self] in await self?.performEdit(checkoutRequest: checkoutRequest, request: request) }
     }
@@ -266,14 +299,71 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
 
     /// Opens the "Learn more" lander in-app when PayPal allows embedding, otherwise in the browser.
     func learnMoreTapped() {
-        // TODO: emit the learn more tapped analytics event once the catalog is approved.
         guard let learnMore = creditMessage?.learnMore else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            presentmentMessageType: creditMessage?.messageType
+        )
 
         if learnMore.isEmbeddable {
             presentedLander = Lander(url: learnMore.url)
         } else {
             application.open(learnMore.url, options: [:], completionHandler: nil)
         }
+    }
+
+    /// Called when `fiState` changes on screen. Reports the settled state as a render; the skeleton is not one.
+    func fiDidRender(style: PayPalSavedPaymentMethodViewStyle) {
+        let shownContent: PayPalSavedPaymentMethodAnalytics.ShownContent
+        let renderedEditTag: Bool
+
+        switch fiState {
+        case .loading:
+            return
+        case .instrument:
+            (shownContent, renderedEditTag) = (.fundingInstrument, true)
+        case .displayOnly(_, let isEditable):
+            (shownContent, renderedEditTag) = (.emailOnly, isEditable)
+        case .brandOnly:
+            shownContent = style.showPayPalLogo || style.showPayPalLabel ? .brandOnly : .hidden
+            renderedEditTag = false
+        }
+
+        let renderTrigger: PayPalSavedPaymentMethodAnalytics.RenderTrigger = didCompleteEdit ? .fiFromApprovedCheckout : .stickyFI
+
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.renderPresented,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            renderedEditTag: renderedEditTag,
+            renderedLabel: style.showPayPalLabel,
+            renderedLogo: style.showPayPalLogo,
+            renderedMessageSlot: style.showPayPalCreditMessaging && showsCreditMessaging,
+            renderTrigger: renderTrigger.rawValue,
+            shownContent: shownContent.rawValue
+        )
+
+        guard let instrument else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            contextID: approvedOrderID,
+            renderTrigger: renderTrigger.rawValue,
+            savedMethodBrand: instrument.cardBrand,
+            savedMethodID: instrument.id,
+            savedMethodType: instrument.rawType
+        )
+    }
+
+    /// Called when `visibleCreditMessage` changes on screen. Reports a shown message as a render.
+    func creditMessageDidRender() {
+        guard let visibleCreditMessage else { return }
+
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingPresented,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            presentmentMessageType: visibleCreditMessage.messageType
+        )
     }
 
     // MARK: - Private Methods
@@ -285,6 +375,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return } // preview: state is pre-seeded
 
         let state: FIState
+        var failure: Error?
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .buyerDefaultBillingAgreement,
@@ -294,11 +385,13 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         } catch {
             guard fiState == .loading else { return }
             state = .brandOnly
+            failure = error
         }
 
         // An edit may have completed while this was in flight; the post-edit refetch owns `fiState` from then on.
         guard !didCompleteEdit else { return }
         fiState = state
+        sendFundingInstrumentFailedIfNeeded(failure, renderTrigger: .stickyFI, orderID: nil)
     }
 
     /// Cancels any in-flight credit fetch and starts one for `request`.
@@ -313,6 +406,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return }
 
         let content: CreditMessageContent?
+        var failure: Error?
         do {
             let result = try await fetchClient.fetchCreditPresentmentMessages(
                 amount: request.amount,
@@ -322,11 +416,20 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         } catch {
             guard request != creditMessageRequest else { return }
             content = nil
+            failure = error
         }
 
         guard !Task.isCancelled, !didCompleteEdit else { return }
         creditMessage = content
         creditMessageRequest = request
+
+        // A fetched message with no main copy can't be shown either.
+        guard content == nil, !Self.isCancellation(failure) else { return }
+        fetchClient.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.creditMessagingFailed,
+            buttonSessionID: fetchClient.buttonSessionID,
+            errorDescription: (failure ?? PayPalSavedPaymentMethodError.missingPreferredMessage).localizedDescription
+        )
     }
 
     /// Runs the edit, hands the result to `finishEdit`, then refreshes the FI for the approved order. The FI
@@ -353,6 +456,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         finishEdit(nonce: nonce, error: nil)
 
         fiRefetchTask?.cancel()
+        approvedOrderID = nonce.paymentID
         guard let orderID = nonce.paymentID else {
             fiState = .brandOnly
             return
@@ -370,6 +474,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         guard let fetchClient else { return }
 
         let state: FIState
+        var failure: Error?
         do {
             let summary = try await fetchClient.fetchPaymentMethod(
                 fundingInstrumentType: .buyerUpdatedBillingAgreement,
@@ -379,10 +484,33 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             state = Self.state(from: summary)
         } catch {
             state = .brandOnly
+            failure = error
         }
 
         guard !Task.isCancelled else { return }
         fiState = state
+        sendFundingInstrumentFailedIfNeeded(failure, renderTrigger: .fiFromApprovedCheckout, orderID: orderID)
+    }
+
+    /// Reports a funding instrument that couldn't be loaded. A fetch cancelled because a newer one replaced it is
+    /// expected, so it is not reported.
+    private func sendFundingInstrumentFailedIfNeeded(
+        _ failure: Error?,
+        renderTrigger: PayPalSavedPaymentMethodAnalytics.RenderTrigger,
+        orderID: String?
+    ) {
+        guard let failure, !Self.isCancellation(failure) else { return }
+        fetchClient?.apiClient.sendAnalyticsEvent(
+            PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed,
+            buttonSessionID: fetchClient?.buttonSessionID,
+            contextID: orderID,
+            errorDescription: failure.localizedDescription,
+            renderTrigger: renderTrigger.rawValue
+        )
+    }
+
+    private static func isCancellation(_ error: Error?) -> Bool {
+        error is CancellationError || (error as? URLError)?.code == .cancelled
     }
 
     /// Delivers now if the loader is gone, otherwise holds it until dismissal: iOS drops a modal shown over another.

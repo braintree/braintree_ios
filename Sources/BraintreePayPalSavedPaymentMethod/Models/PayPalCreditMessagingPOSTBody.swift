@@ -45,7 +45,12 @@ struct PayPalCreditMessagingPOSTBody: Encodable {
 
     struct FlowContext: Encodable {
 
-        let attributes = ["BRAND_BRAINTREE", "EXPERIENCE_IOS_SDK"]
+        let attributes = [
+            "BRAND_BRAINTREE",
+            "EXPERIENCE_IOS_SDK",
+            "EXPERIENCE_VIEW_EDIT_FUNDING_INSTRUMENT",
+            "EXPERIENCE_EXTERNAL_DIRECT"
+        ]
         let channel = "MOBILE_APP"
         let flowSpecifier = "EARLY_PRESENTMENT"
 

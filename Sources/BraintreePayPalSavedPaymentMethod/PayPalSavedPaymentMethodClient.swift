@@ -20,6 +20,10 @@ final class PayPalSavedPaymentMethodClient {
     /// Exposed for testing to inject a mock BTPayPalClient
     var payPalClient: BTPayPalClient
 
+    /// A new ID for each render of the component, sent on the FI fetch and on every analytics event so they can be
+    /// linked with PayPal's own events. Created once because the view model, and so this client, lives for one render.
+    let buttonSessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+
     // MARK: - Initializer
 
     /// Creates a `PayPalSavedPaymentMethodClient`
@@ -55,45 +59,13 @@ final class PayPalSavedPaymentMethodClient {
         orderID: String? = nil,
         merchantAccountID: String? = nil
     ) async throws -> PayPalSavedPaymentMethodSummary {
-        // TODO: emit the default and updated billing agreement analytics events once the catalog is approved.
-
-        try validateClientToken()
-
         // The API rejects the request unless exactly the identity field matching the fetch type is sent.
-        let parameters: PayPalFundingInstrumentDetailsGraphQLBody
-
         switch fundingInstrumentType {
         case .buyerDefaultBillingAgreement:
-            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
-                fundingInstrumentType: fundingInstrumentType,
-                paymentMethodIDJWT: try paymentMethodIDJWT(),
-                orderID: nil,
-                merchantAccountID: merchantAccountID
-            )
+            return try await fetchBuyerDefaultBillingAgreement(merchantAccountID: merchantAccountID)
         case .buyerUpdatedBillingAgreement:
-            guard let orderID else {
-                throw PayPalSavedPaymentMethodError.missingOrderID
-            }
-
-            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
-                fundingInstrumentType: fundingInstrumentType,
-                paymentMethodIDJWT: nil,
-                orderID: orderID,
-                merchantAccountID: merchantAccountID
-            )
+            return try await fetchBuyerUpdatedBillingAgreement(orderID: orderID, merchantAccountID: merchantAccountID)
         }
-
-        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
-
-        guard let body else {
-            throw PayPalSavedPaymentMethodError.emptyBodyReturned
-        }
-
-        guard let summary = PayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
-            throw PayPalSavedPaymentMethodError.failedToParseSummary
-        }
-
-        return summary
     }
 
     /// Fetches the PayPal Pay Later message to display alongside the funding instrument.
@@ -109,8 +81,6 @@ final class PayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> PayPalCreditMessagingResult {
-        // TODO: emit the credit messaging analytics events once the catalog is approved.
-
         try validateClientToken()
 
         let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
@@ -141,12 +111,61 @@ final class PayPalSavedPaymentMethodClient {
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         _ = try paymentMethodIDJWT()
 
-        return try await request.withEditBillingAgreement {
+        return try await request.withEditBillingAgreement(buttonSessionID: buttonSessionID) {
             try await payPalClient.tokenize(request)
         }
     }
 
     // MARK: - Private Methods
+
+    private func fetchBuyerDefaultBillingAgreement(merchantAccountID: String?) async throws -> PayPalSavedPaymentMethodSummary {
+        try await postFundingInstrumentDetails(
+            PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: .buyerDefaultBillingAgreement,
+                paymentMethodIDJWT: try paymentMethodIDJWT(),
+                orderID: nil,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
+            )
+        )
+    }
+
+    private func fetchBuyerUpdatedBillingAgreement(
+        orderID: String?,
+        merchantAccountID: String?
+    ) async throws -> PayPalSavedPaymentMethodSummary {
+        try validateClientToken()
+
+        guard let orderID else {
+            throw PayPalSavedPaymentMethodError.missingOrderID
+        }
+
+        return try await postFundingInstrumentDetails(
+            PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: .buyerUpdatedBillingAgreement,
+                paymentMethodIDJWT: nil,
+                orderID: orderID,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
+            )
+        )
+    }
+
+    private func postFundingInstrumentDetails(
+        _ parameters: PayPalFundingInstrumentDetailsGraphQLBody
+    ) async throws -> PayPalSavedPaymentMethodSummary {
+        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
+
+        guard let body else {
+            throw PayPalSavedPaymentMethodError.emptyBodyReturned
+        }
+
+        guard let summary = PayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
+            throw PayPalSavedPaymentMethodError.failedToParseSummary
+        }
+
+        return summary
+    }
 
     private func validateClientToken() throws {
         guard apiClient.authorization.type == .clientToken else {
