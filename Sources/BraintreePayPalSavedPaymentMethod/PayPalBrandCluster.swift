@@ -41,9 +41,7 @@ struct PayPalBrandCluster: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: logoSide, height: logoSide)
-                    .accessibilityLabel("PayPal")
-                    // The label already reads "PayPal", so the logo only speaks when the label is hidden.
-                    .accessibilityHidden(style.showPayPalLabel)
+                    .accessibilityLabel("PayPal logo")
             }
             if style.showPayPalLabel {
                 Text("PayPal")

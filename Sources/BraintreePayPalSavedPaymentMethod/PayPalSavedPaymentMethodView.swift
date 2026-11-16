@@ -26,7 +26,7 @@ public struct PayPalSavedPaymentMethodView: View {
     /// Held on the view rather than the view model: `@StateObject` builds the view model once, so
     /// anything stored there would keep the values from the first render.
     private let payPalCheckoutRequest: BTPayPalCheckoutRequest
-    private let request: PayPalSavedPaymentMethodRequest
+    private let savedPaymentMethodRequest: PayPalSavedPaymentMethodRequest
     private let style: PayPalSavedPaymentMethodViewStyle
 
     // MARK: - Initializer
@@ -39,7 +39,7 @@ public struct PayPalSavedPaymentMethodView: View {
     ///   - universalLink: Required. The URL to use for the PayPal app switch flow. Must be a valid
     ///     HTTPS URL dedicated to Braintree app switch returns, allow-listed in your Control Panel.
     ///   - payPalCheckoutRequest: Required. The PayPal checkout request used for the edit tokenization.
-    ///   - request: Required. The amount, currency, and merchant account used to resolve the saved
+    ///   - savedPaymentMethodRequest: Required. The amount, currency, and merchant account used to resolve the saved
     ///     funding instrument and its Pay Later message.
     ///   - fallbackURLScheme: Optional. A custom URL scheme to use as a fallback if the universal link fails.
     ///   - style: Optional. Styling overrides. Defaults to the shipped `PayPalSavedPaymentMethodViewStyle`.
@@ -48,13 +48,13 @@ public struct PayPalSavedPaymentMethodView: View {
         authorization: String,
         universalLink: URL,
         payPalCheckoutRequest: BTPayPalCheckoutRequest,
-        request: PayPalSavedPaymentMethodRequest,
+        savedPaymentMethodRequest: PayPalSavedPaymentMethodRequest,
         fallbackURLScheme: String? = nil,
         style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle(),
         completion: @escaping (BTPayPalAccountNonce?, Error?) -> Void
     ) {
         self.payPalCheckoutRequest = payPalCheckoutRequest
-        self.request = request
+        self.savedPaymentMethodRequest = savedPaymentMethodRequest
         self.style = style
         _viewModel = StateObject(
             wrappedValue: PayPalSavedPaymentMethodViewModel(
@@ -70,11 +70,11 @@ public struct PayPalSavedPaymentMethodView: View {
     init(
         viewModel: PayPalSavedPaymentMethodViewModel,
         payPalCheckoutRequest: BTPayPalCheckoutRequest = BTPayPalCheckoutRequest(amount: "0"),
-        request: PayPalSavedPaymentMethodRequest = PayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD"),
+        savedPaymentMethodRequest: PayPalSavedPaymentMethodRequest = PayPalSavedPaymentMethodRequest(amount: "0", currencyCode: "USD"),
         style: PayPalSavedPaymentMethodViewStyle = PayPalSavedPaymentMethodViewStyle()
     ) {
         self.payPalCheckoutRequest = payPalCheckoutRequest
-        self.request = request
+        self.savedPaymentMethodRequest = savedPaymentMethodRequest
         self.style = style
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -92,9 +92,9 @@ public struct PayPalSavedPaymentMethodView: View {
             }
         }
         .onAppear {
-            viewModel.onAppear(request: request, showCreditMessaging: style.showPayPalCreditMessaging)
+            viewModel.onAppear(request: savedPaymentMethodRequest, showCreditMessaging: style.showPayPalCreditMessaging)
         }
-        .onChange(of: request) { newRequest in
+        .onChange(of: savedPaymentMethodRequest) { newRequest in
             viewModel.requestChanged(newRequest, showCreditMessaging: style.showPayPalCreditMessaging)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
@@ -225,7 +225,7 @@ public struct PayPalSavedPaymentMethodView: View {
     // MARK: - Private Methods
 
     private func editTapped() {
-        viewModel.editTapped(checkoutRequest: payPalCheckoutRequest, request: request)
+        viewModel.editTapped(checkoutRequest: payPalCheckoutRequest, request: savedPaymentMethodRequest)
     }
 }
 

@@ -9,6 +9,7 @@ import BraintreeCore
 @_spi(BraintreePayPalSavedPaymentMethod) import BraintreePayPal
 #endif
 
+// swiftlint:disable file_length
 /// View model backing `PayPalSavedPaymentMethodView`.
 ///
 /// Owns the FI load state and the "Learn more" lander presentation, and drives the
@@ -123,6 +124,9 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// Drives `isEditing` and holds the edit result until the loader is gone.
     @Published private var editPhase = EditPhase.idle
 
+    /// How long `requestChanged` waits, in nanoseconds, for the request to stop changing before fetching.
+    private static let requestChangeDelay: UInt64 = 300_000_000
+
     /// The request `creditMessage` was quoted for.
     private var creditMessageRequest: PayPalSavedPaymentMethodRequest?
 
@@ -190,10 +194,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         }
     }
 
-    /// Refetches the Pay Later message when the merchant changes the amount or currency.
+    /// Refetches the Pay Later message when the merchant changes the amount or currency. Waits for a short pause
+    /// first, so typing an amount fetches only the final value.
     func requestChanged(_ request: PayPalSavedPaymentMethodRequest, showCreditMessaging: Bool) {
         guard showCreditMessaging, !didCompleteEdit else { return }
-        startCreditFetch(request: request)
+        startCreditFetch(request: request, after: Self.requestChangeDelay)
     }
 
     /// Maps a fetched summary into a render state. Funding instrument wins; else the display-only
@@ -301,10 +306,14 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         fiState = state
     }
 
-    /// Cancels any in-flight credit fetch and starts one for `request`.
-    private func startCreditFetch(request: PayPalSavedPaymentMethodRequest) {
+    /// Cancels any in-flight credit fetch (or one still waiting out `delay`) and starts one for `request`.
+    private func startCreditFetch(request: PayPalSavedPaymentMethodRequest, after delay: UInt64 = 0) {
         creditTask?.cancel()
-        creditTask = Task { [weak self] in await self?.loadCreditMessaging(request: request) }
+        creditTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: delay)
+            guard !Task.isCancelled else { return }
+            await self?.loadCreditMessaging(request: request)
+        }
     }
 
     /// Fetches the Pay Later message. Additive — a failure hides the row, except a failed refresh for the
