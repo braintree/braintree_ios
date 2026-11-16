@@ -123,6 +123,8 @@
 			<string>Payment Method Token</string>
 			<key>Key</key>
 			<string>BraintreeDemoPaymentMethodToken</string>
+			<key>IsSecure</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>

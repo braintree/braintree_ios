@@ -146,7 +146,7 @@ struct PayPalSavedPaymentMethodDemoView: View {
                 }
 
                 UserDefaults.standard.set(paymentMethodToken, forKey: BraintreeDemoSettings.PaymentMethodTokenDefaultsKey)
-                onProgress("Saved payment method token \(paymentMethodToken) to Settings. Tap refresh to load it.")
+                onProgress("Saved the payment method token to Settings. Tap refresh to load it.")
             }
         }
     }

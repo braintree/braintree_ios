@@ -19,7 +19,11 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     }
     
     static let shared = BraintreeDemoMerchantAPIClient()
-    
+
+    /// The customer the last client token was generated for, or `nil` if it had none. The merchant server creates
+    /// this customer when it generates the client token.
+    private var clientTokenCustomerID: String?
+
     private override init() {}
     
     func createCustomerAndFetchClientToken(completion: @escaping (String?, Error?) -> Void) {
@@ -27,16 +31,15 @@ class BraintreeDemoMerchantAPIClient: NSObject {
         
         var queryItems: [URLQueryItem] = []
 
+        clientTokenCustomerID = nil
         if BraintreeDemoSettings.customerPresent {
-            if let id = BraintreeDemoSettings.customerIdentifier, !id.isEmpty {
-                queryItems.append(URLQueryItem(name: "customer_id", value: id))
-            } else {
-                queryItems.append(URLQueryItem(name: "customer_id", value: UUID().uuidString))
-            }
+            let id = BraintreeDemoSettings.customerIdentifier.flatMap { $0.isEmpty ? nil : $0 } ?? UUID().uuidString
+            clientTokenCustomerID = id
+            queryItems.append(URLQueryItem(name: "customer_id", value: id))
         }
 
         // Neither the client token nor the funding instrument fetch ties this token to `customer_id`, so a token vaulted
-        // to the throwaway customer in `vaultPaymentMethod` still resolves here.
+        // to a different customer in `vaultPaymentMethod` still resolves here.
         if let paymentMethodToken = BraintreeDemoSettings.savedPaymentMethodToken {
             queryItems.append(URLQueryItem(name: "preferred_payment_method_token", value: paymentMethodToken))
         }
@@ -102,19 +105,15 @@ class BraintreeDemoMerchantAPIClient: NSObject {
     }
 
     func vaultPaymentMethod(paymentMethodNonce: String, completion: @escaping (_ paymentMethodToken: String?, _ message: String?) -> Void) {
-        let customerURLString = BraintreeDemoSettings.currentEnvironmentURLString + "/customers/" + UUID().uuidString
-
-        guard
-            let customerURL = URL(string: customerURLString),
-            var vaultURLComponents = URLComponents(string: customerURLString + "/vault")
-        else {
-            completion(nil, "Invalid merchant server URL")
+        // A nonce created with a customer's client token belongs to that customer, and the server rejects vaulting it
+        // to a different one ("Customer ID is invalid"), so it is vaulted to the client token's customer.
+        if let clientTokenCustomerID {
+            vault(paymentMethodNonce: paymentMethodNonce, customerID: clientTokenCustomerID, completion: completion)
             return
         }
 
-        vaultURLComponents.queryItems = [URLQueryItem(name: "nonce", value: paymentMethodNonce)]
-
-        guard let vaultURL = vaultURLComponents.url else {
+        let customerID = UUID().uuidString
+        guard let customerURL = URL(string: BraintreeDemoSettings.currentEnvironmentURLString + "/customers/" + customerID) else {
             completion(nil, "Invalid merchant server URL")
             return
         }
@@ -134,23 +133,49 @@ class BraintreeDemoMerchantAPIClient: NSObject {
                 return
             }
 
-            var vaultRequest = URLRequest(url: vaultURL)
-            vaultRequest.httpMethod = "POST"
-
-            let vaultTask = URLSession.shared.dataTask(with: vaultRequest) { data, _, error in
-                guard let data, error == nil else {
-                    DispatchQueue.main.async { completion(nil, error?.localizedDescription) }
-                    return
-                }
-
-                let response = try? JSONDecoder().decode(VaultResponse.self, from: data)
-                let message = response?.message ?? (response?.token == nil ? "Couldn't vault the payment method" : nil)
-                DispatchQueue.main.async { completion(response?.token, message) }
+            DispatchQueue.main.async {
+                self.vault(paymentMethodNonce: paymentMethodNonce, customerID: customerID, completion: completion)
             }
-
-            vaultTask.resume()
         }
 
         customerTask.resume()
+    }
+
+    private func vault(
+        paymentMethodNonce: String,
+        customerID: String,
+        completion: @escaping (_ paymentMethodToken: String?, _ message: String?) -> Void
+    ) {
+        guard
+            var vaultURLComponents = URLComponents(
+                string: BraintreeDemoSettings.currentEnvironmentURLString + "/customers/" + customerID + "/vault"
+            )
+        else {
+            completion(nil, "Invalid merchant server URL")
+            return
+        }
+
+        vaultURLComponents.queryItems = [URLQueryItem(name: "nonce", value: paymentMethodNonce)]
+
+        guard let vaultURL = vaultURLComponents.url else {
+            completion(nil, "Invalid merchant server URL")
+            return
+        }
+
+        var vaultRequest = URLRequest(url: vaultURL)
+        vaultRequest.httpMethod = "POST"
+
+        let vaultTask = URLSession.shared.dataTask(with: vaultRequest) { data, _, error in
+            guard let data, error == nil else {
+                DispatchQueue.main.async { completion(nil, error?.localizedDescription) }
+                return
+            }
+
+            let response = try? JSONDecoder().decode(VaultResponse.self, from: data)
+            let message = response?.message ?? (response?.token == nil ? "Couldn't vault the payment method" : nil)
+            DispatchQueue.main.async { completion(response?.token, message) }
+        }
+
+        vaultTask.resume()
     }
 }
