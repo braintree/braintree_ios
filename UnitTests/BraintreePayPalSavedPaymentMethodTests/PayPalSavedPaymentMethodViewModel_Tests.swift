@@ -605,22 +605,24 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected)
-        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
-        XCTAssertEqual(mockAPIClient.postedSavedMethodType, "CARD")
-        XCTAssertEqual(mockAPIClient.postedSavedMethodBrand, "VISA")
-        XCTAssertEqual(mockAPIClient.postedSavedMethodID, "CC-123")
-        XCTAssertNil(mockAPIClient.postedContextID)
+        let selected = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected])
+        XCTAssertEqual(selected.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(selected.savedMethodType, "CARD")
+        XCTAssertEqual(selected.savedMethodBrand, "VISA")
+        XCTAssertEqual(selected.savedMethodID, "CC-123")
+        XCTAssertNil(selected.contextID)
     }
 
-    func testLearnMoreTapped_sendsLearnMoreSelectedEventWithThePresentmentMessageType() async {
+    func testLearnMoreTapped_sendsLearnMoreSelectedEventWithThePresentmentMessageType() async throws {
         let sut = makeSUT()
         await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
 
         sut.learnMoreTapped()
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected)
-        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
-        XCTAssertEqual(mockAPIClient.postedPresentmentMessageType, "PLST_SQ")
+        let selected = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected])
+        XCTAssertEqual(selected.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(selected.presentmentMessageType, "PLST_SQ")
     }
 
     func testFIDidRender_afterTheInitialFetch_sendsRenderPresentedThenFundingInstrumentPresented() async throws {
@@ -700,7 +702,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
-    func testFIDidRender_whenOnlyTheBrandMarkIsLeftAndItIsHidden_sendsHiddenContentAndNoFundingInstrument() async {
+    func testFIDidRender_whenOnlyTheBrandMarkIsLeftAndItIsHidden_sendsHiddenContentAndNoFundingInstrument() async throws {
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
@@ -709,8 +711,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false))
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.renderPresented)
-        XCTAssertEqual(mockAPIClient.postedShownContent, "hidden")
-        XCTAssertEqual(mockAPIClient.postedRenderedEditTag, false)
+        let render = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.renderPresented])
+        XCTAssertEqual(render.shownContent, "hidden")
+        XCTAssertEqual(render.renderedEditTag, false)
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented))
     }
 
@@ -807,7 +810,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(failed.errorDescription, PayPalSavedPaymentMethodError.missingOrderID.localizedDescription)
     }
 
-    func testCreditMessageDidRender_whenAMessageIsShown_sendsCreditMessagingPresentedWithThePresentmentMessageType() async {
+    func testCreditMessageDidRender_whenAMessageIsShown_sendsCreditMessagingPresentedWithThePresentmentMessageType() async throws {
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)
@@ -817,8 +820,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         sut.creditMessageDidRender()
 
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingPresented)
-        XCTAssertEqual(mockAPIClient.postedButtonSessionID, fetchClient.buttonSessionID)
-        XCTAssertEqual(mockAPIClient.postedPresentmentMessageType, "PLST_SQ")
+        let presented = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingPresented])
+        XCTAssertEqual(presented.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(presented.presentmentMessageType, "PLST_SQ")
     }
 
     func testRequestChanged_whenTheCreditFetchFails_sendsCreditMessagingFailedWithTheReason() async throws {
@@ -838,8 +842,11 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
     }
 
     func testRequestChanged_whenTheCreditFetchIsCancelled_sendsNoFailedEvent() async {
-        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
 
         sut.requestChanged(makeRequest(), showCreditMessaging: true)
         await settle(sut)
@@ -849,7 +856,10 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
     /// A failed refresh for the same request keeps the message on screen, so nothing failed for the buyer.
     func testRequestChanged_whenARefreshForTheSameRequestFails_sendsNoFailedEvent() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
         await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
         mockAPIClient.cannedResponseBody = nil
         mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)

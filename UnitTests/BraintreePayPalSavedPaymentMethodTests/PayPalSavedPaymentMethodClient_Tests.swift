@@ -295,5 +295,4 @@ final class PayPalSavedPaymentMethodClient_Tests: XCTestCase {
 
         XCTAssertEqual(mockPayPalClient.tokenizeCallCount, 0)
     }
-
 }
