@@ -37,10 +37,6 @@ public class MockAPIClient: BTAPIClient {
     public var postedIsEditFIFlow: Bool? = nil
     public var postedPresentmentMessageType: String? = nil
     public var postedRenderedEditTag: Bool? = nil
-    public var postedRenderedLabel: Bool? = nil
-    public var postedRenderedLogo: Bool? = nil
-    public var postedRenderedMessageSlot: Bool? = nil
-    public var postedRenderTrigger: String? = nil
     public var postedShownContent: String? = nil
     /// The tags of each analytics event, keyed by event name, for actions that send more than one event.
     public var postedAnalyticsEventTags: [String: PostedAnalyticsEventTags] = [:]
@@ -220,10 +216,6 @@ public class MockAPIClient: BTAPIClient {
         postedIsEditFIFlow = isEditFIFlow
         postedPresentmentMessageType = presentmentMessageType
         postedRenderedEditTag = renderedEditTag
-        postedRenderedLabel = renderedLabel
-        postedRenderedLogo = renderedLogo
-        postedRenderedMessageSlot = renderedMessageSlot
-        postedRenderTrigger = renderTrigger
         postedShownContent = shownContent
         postedAnalyticsEventTags[eventName] = PostedAnalyticsEventTags(
             buttonSessionID: buttonSessionID,

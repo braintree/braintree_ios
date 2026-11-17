@@ -59,13 +59,45 @@ final class PayPalSavedPaymentMethodClient {
         orderID: String? = nil,
         merchantAccountID: String? = nil
     ) async throws -> PayPalSavedPaymentMethodSummary {
+        try validateClientToken()
+
         // The API rejects the request unless exactly the identity field matching the fetch type is sent.
+        let parameters: PayPalFundingInstrumentDetailsGraphQLBody
+
         switch fundingInstrumentType {
         case .buyerDefaultBillingAgreement:
-            return try await fetchBuyerDefaultBillingAgreement(merchantAccountID: merchantAccountID)
+            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: fundingInstrumentType,
+                paymentMethodIDJWT: try paymentMethodIDJWT(),
+                orderID: nil,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
+            )
         case .buyerUpdatedBillingAgreement:
-            return try await fetchBuyerUpdatedBillingAgreement(orderID: orderID, merchantAccountID: merchantAccountID)
+            guard let orderID else {
+                throw PayPalSavedPaymentMethodError.missingOrderID
+            }
+
+            parameters = PayPalFundingInstrumentDetailsGraphQLBody(
+                fundingInstrumentType: fundingInstrumentType,
+                paymentMethodIDJWT: nil,
+                orderID: orderID,
+                merchantAccountID: merchantAccountID,
+                buttonSessionID: buttonSessionID
+            )
         }
+
+        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
+
+        guard let body else {
+            throw PayPalSavedPaymentMethodError.emptyBodyReturned
+        }
+
+        guard let summary = PayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
+            throw PayPalSavedPaymentMethodError.failedToParseSummary
+        }
+
+        return summary
     }
 
     /// Fetches the PayPal Pay Later message to display alongside the funding instrument.
@@ -117,55 +149,6 @@ final class PayPalSavedPaymentMethodClient {
     }
 
     // MARK: - Private Methods
-
-    private func fetchBuyerDefaultBillingAgreement(merchantAccountID: String?) async throws -> PayPalSavedPaymentMethodSummary {
-        try await postFundingInstrumentDetails(
-            PayPalFundingInstrumentDetailsGraphQLBody(
-                fundingInstrumentType: .buyerDefaultBillingAgreement,
-                paymentMethodIDJWT: try paymentMethodIDJWT(),
-                orderID: nil,
-                merchantAccountID: merchantAccountID,
-                buttonSessionID: buttonSessionID
-            )
-        )
-    }
-
-    private func fetchBuyerUpdatedBillingAgreement(
-        orderID: String?,
-        merchantAccountID: String?
-    ) async throws -> PayPalSavedPaymentMethodSummary {
-        try validateClientToken()
-
-        guard let orderID else {
-            throw PayPalSavedPaymentMethodError.missingOrderID
-        }
-
-        return try await postFundingInstrumentDetails(
-            PayPalFundingInstrumentDetailsGraphQLBody(
-                fundingInstrumentType: .buyerUpdatedBillingAgreement,
-                paymentMethodIDJWT: nil,
-                orderID: orderID,
-                merchantAccountID: merchantAccountID,
-                buttonSessionID: buttonSessionID
-            )
-        )
-    }
-
-    private func postFundingInstrumentDetails(
-        _ parameters: PayPalFundingInstrumentDetailsGraphQLBody
-    ) async throws -> PayPalSavedPaymentMethodSummary {
-        let (body, _) = try await apiClient.post("", parameters: parameters, httpType: .graphQLAPI)
-
-        guard let body else {
-            throw PayPalSavedPaymentMethodError.emptyBodyReturned
-        }
-
-        guard let summary = PayPalSavedPaymentMethodSummary(json: body["data"]["paypalFundingInstrumentDetails"]) else {
-            throw PayPalSavedPaymentMethodError.failedToParseSummary
-        }
-
-        return summary
-    }
 
     private func validateClientToken() throws {
         guard apiClient.authorization.type == .clientToken else {

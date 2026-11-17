@@ -139,6 +139,10 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
     /// The order approved by the last edit, sent as the `context_id` of the post-edit funding instrument events.
     private var approvedOrderID: String?
 
+    /// A Pay Later fetch failure not reported yet. Held until the FI settles, like the message itself, since the FI
+    /// may hide the row altogether.
+    private var unreportedCreditMessagingFailure: Error?
+
     /// `render:started` is sent once per component, not on every re-appear.
     private var didSendRenderStarted = false
 
@@ -346,6 +350,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
             renderTrigger: renderTrigger.rawValue,
             shownContent: shownContent.rawValue
         )
+        sendCreditMessagingFailedIfNeeded()
 
         guard let instrument else { return }
         fetchClient?.apiClient.sendAnalyticsEvent(
@@ -432,11 +437,19 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         creditMessageRequest = request
 
         // A fetched message with no main copy can't be shown either.
-        guard content == nil, !Self.isCancellation(failure) else { return }
-        fetchClient.apiClient.sendAnalyticsEvent(
+        let isShowable = content != nil || Self.isCancellation(failure)
+        unreportedCreditMessagingFailure = isShowable ? nil : failure ?? PayPalSavedPaymentMethodError.missingPreferredMessage
+        sendCreditMessagingFailedIfNeeded()
+    }
+
+    /// Reports a Pay Later message that couldn't be shown, once the FI has settled with the row on screen.
+    private func sendCreditMessagingFailedIfNeeded() {
+        guard fiState != .loading, showsCreditMessaging, let failure = unreportedCreditMessagingFailure else { return }
+        unreportedCreditMessagingFailure = nil
+        fetchClient?.apiClient.sendAnalyticsEvent(
             PayPalSavedPaymentMethodAnalytics.creditMessagingFailed,
-            buttonSessionID: fetchClient.buttonSessionID,
-            errorDescription: (failure ?? PayPalSavedPaymentMethodError.missingPreferredMessage).localizedDescription
+            buttonSessionID: fetchClient?.buttonSessionID,
+            errorDescription: failure.localizedDescription
         )
     }
 
@@ -467,6 +480,11 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         approvedOrderID = nonce.paymentID
         guard let orderID = nonce.paymentID else {
             fiState = .brandOnly
+            sendFundingInstrumentFailedIfNeeded(
+                PayPalSavedPaymentMethodError.missingOrderID,
+                renderTrigger: .fiFromApprovedCheckout,
+                orderID: nil
+            )
             return
         }
 
