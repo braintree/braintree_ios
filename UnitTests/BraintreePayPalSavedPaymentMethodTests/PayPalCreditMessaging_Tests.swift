@@ -41,7 +41,10 @@ final class PayPalCreditMessaging_Tests: XCTestCase {
 
         XCTAssertEqual(flowContext["channel"] as? String, "MOBILE_APP")
         XCTAssertEqual(flowContext["flow_specifier"] as? String, "EARLY_PRESENTMENT")
-        XCTAssertEqual(flowContext["attributes"] as? [String], ["BRAND_BRAINTREE", "EXPERIENCE_IOS_SDK"])
+        XCTAssertEqual(
+            flowContext["attributes"] as? [String],
+            ["BRAND_BRAINTREE", "EXPERIENCE_IOS_SDK", "EXPERIENCE_VIEW_EDIT_FUNDING_INSTRUMENT", "EXPERIENCE_EXTERNAL_DIRECT"]
+        )
         XCTAssertEqual(amount["value"] as? String, "55.00")
         XCTAssertEqual(amount["currency_code"] as? String, "USD")
         XCTAssertEqual(
