@@ -68,10 +68,10 @@ final class PayPalSavedPaymentMethodClient {
         case .buyerDefaultBillingAgreement:
             parameters = PayPalFundingInstrumentDetailsGraphQLBody(
                 fundingInstrumentType: fundingInstrumentType,
+                buttonSessionID: buttonSessionID,
                 paymentMethodIDJWT: try paymentMethodIDJWT(),
                 orderID: nil,
-                merchantAccountID: merchantAccountID,
-                buttonSessionID: buttonSessionID
+                merchantAccountID: merchantAccountID
             )
         case .buyerUpdatedBillingAgreement:
             guard let orderID else {
@@ -80,10 +80,10 @@ final class PayPalSavedPaymentMethodClient {
 
             parameters = PayPalFundingInstrumentDetailsGraphQLBody(
                 fundingInstrumentType: fundingInstrumentType,
+                buttonSessionID: buttonSessionID,
                 paymentMethodIDJWT: nil,
                 orderID: orderID,
-                merchantAccountID: merchantAccountID,
-                buttonSessionID: buttonSessionID
+                merchantAccountID: merchantAccountID
             )
         }
 

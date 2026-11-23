@@ -12,10 +12,10 @@ struct PayPalFundingInstrumentDetailsGraphQLBody: BTGraphQLEncodableBody {
 
     init(
         fundingInstrumentType: PayPalFundingInstrumentFetchType,
+        buttonSessionID: String,
         paymentMethodIDJWT: String?,
         orderID: String?,
-        merchantAccountID: String?,
-        buttonSessionID: String
+        merchantAccountID: String?
     ) {
         query = """
             query PaypalFundingInstrumentDetails($input: PayPalFundingInstrumentDetailsInput!) {

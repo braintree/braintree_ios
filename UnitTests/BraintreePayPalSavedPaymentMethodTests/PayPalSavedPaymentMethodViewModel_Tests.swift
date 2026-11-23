@@ -755,7 +755,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         )
     }
 
-    func testOnAppear_whenTheFIFetchIsCancelled_showsTheBrandWithoutAFailedEvent() async {
+    func testOnAppear_whenTheFIFetchIsCanceled_showsTheBrandWithoutAFailedEvent() async {
         mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
         let sut = makeSUT()
 
@@ -841,7 +841,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
         XCTAssertEqual(failed.errorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
     }
 
-    func testRequestChanged_whenTheCreditFetchIsCancelled_sendsNoFailedEvent() async {
+    func testRequestChanged_whenTheCreditFetchIsCanceled_sendsNoFailedEvent() async {
         mockAPIClient.cannedResponseBody = Self.instrumentResponse()
         let sut = makeSUT()
         sut.onAppear(request: makeRequest(), showCreditMessaging: false)

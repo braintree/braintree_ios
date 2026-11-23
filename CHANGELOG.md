@@ -3,10 +3,8 @@
 ## ## unreleased
 * BraintreePayPal
     * Send the `edit_billing_agreement_jwt` sourced from the client token for the PayPal Edit FI beta flow
-    * Send `is_edit_fi` and `button_session_id` to PayPal's analytics service (FPTI) for the PayPal Edit FI beta flow
 * BraintreePayPalSavedPaymentMethod
     * Add `PayPalSavedPaymentMethodView` (beta) to show a returning buyer's saved PayPal funding instrument at checkout and let them change it
-    * Send render, funding instrument and Pay Later message events for `PayPalSavedPaymentMethodView` to PayPal's analytics service (FPTI)
 * Remove CocoaPods support -- `Braintree.podspec` has been deleted and CocoaPods integration artifacts removed from the SDK, please migrate to a supported package manager
 * Fix `Braintree_Static.xcframework.zip` release asset missing `BraintreeUIComponents`
 * BraintreeUIComponents

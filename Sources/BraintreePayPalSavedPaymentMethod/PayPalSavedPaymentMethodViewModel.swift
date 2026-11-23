@@ -518,7 +518,7 @@ final class PayPalSavedPaymentMethodViewModel: ObservableObject {
         sendFundingInstrumentFailedIfNeeded(failure, renderTrigger: .fiFromApprovedCheckout, orderID: orderID)
     }
 
-    /// Reports a funding instrument that couldn't be loaded. A fetch cancelled because a newer one replaced it is
+    /// Reports a funding instrument that couldn't be loaded. A fetch canceled because a newer one replaced it is
     /// expected, so it is not reported.
     private func sendFundingInstrumentFailedIfNeeded(
         _ failure: Error?,

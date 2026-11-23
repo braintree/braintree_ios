@@ -18,7 +18,7 @@ struct PayPalSavedPaymentMethod: Equatable {
 
     /// The kind of funding instrument, or `nil` when PayPal returns a type this SDK version does not recognize.
     var type: PayPalSavedPaymentMethodType? {
-        rawType.flatMap(PayPalSavedPaymentMethodType.init(rawValue:))
+        rawType.flatMap { PayPalSavedPaymentMethodType(rawValue: $0) }
     }
 
     /// The display name of the funding instrument, for example `"Visa"` or `"CREDIT UNION 1"`.
