@@ -258,14 +258,18 @@ import BraintreeCore
 extension BTPayPalCheckoutRequest {
 
     /// Marks `editBillingAgreement` for the duration of `body` only, without modifying the request.
+    /// - Parameter buttonSessionID: The saved payment method component's render ID, sent on the tokenize analytics events.
     @_documentation(visibility: private)
     @_spi(BraintreePayPalSavedPaymentMethod)
     @nonobjc
     public func withEditBillingAgreement(
+        buttonSessionID: String? = nil,
         _ body: () async throws -> BTPayPalAccountNonce
     ) async rethrows -> BTPayPalAccountNonce {
         try await EditBillingAgreementScope.$isActive.withValue(true) {
-            try await body()
+            try await EditBillingAgreementScope.$buttonSessionID.withValue(buttonSessionID) {
+                try await body()
+            }
         }
     }
 }
@@ -273,4 +277,5 @@ extension BTPayPalCheckoutRequest {
 /// Task-local, so overlapping edits each see only their own value and nothing is left set if a call never returns.
 enum EditBillingAgreementScope {
     @TaskLocal static var isActive: Bool = false
+    @TaskLocal static var buttonSessionID: String?
 }

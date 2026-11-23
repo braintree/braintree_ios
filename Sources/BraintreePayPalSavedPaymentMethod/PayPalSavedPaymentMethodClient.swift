@@ -20,6 +20,10 @@ final class PayPalSavedPaymentMethodClient {
     /// Exposed for testing to inject a mock BTPayPalClient
     var payPalClient: BTPayPalClient
 
+    /// A new ID for each render of the component, sent on the FI fetch and on every analytics event so they can be
+    /// linked with PayPal's own events. Created once because the view model, and so this client, lives for one render.
+    let buttonSessionID = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+
     // MARK: - Initializer
 
     /// Creates a `PayPalSavedPaymentMethodClient`
@@ -55,8 +59,6 @@ final class PayPalSavedPaymentMethodClient {
         orderID: String? = nil,
         merchantAccountID: String? = nil
     ) async throws -> PayPalSavedPaymentMethodSummary {
-        // TODO: emit the default and updated billing agreement analytics events once the catalog is approved.
-
         try validateClientToken()
 
         // The API rejects the request unless exactly the identity field matching the fetch type is sent.
@@ -66,6 +68,7 @@ final class PayPalSavedPaymentMethodClient {
         case .buyerDefaultBillingAgreement:
             parameters = PayPalFundingInstrumentDetailsGraphQLBody(
                 fundingInstrumentType: fundingInstrumentType,
+                buttonSessionID: buttonSessionID,
                 paymentMethodIDJWT: try paymentMethodIDJWT(),
                 orderID: nil,
                 merchantAccountID: merchantAccountID
@@ -77,6 +80,7 @@ final class PayPalSavedPaymentMethodClient {
 
             parameters = PayPalFundingInstrumentDetailsGraphQLBody(
                 fundingInstrumentType: fundingInstrumentType,
+                buttonSessionID: buttonSessionID,
                 paymentMethodIDJWT: nil,
                 orderID: orderID,
                 merchantAccountID: merchantAccountID
@@ -109,8 +113,6 @@ final class PayPalSavedPaymentMethodClient {
         amount: String,
         currencyCode: String
     ) async throws -> PayPalCreditMessagingResult {
-        // TODO: emit the credit messaging analytics events once the catalog is approved.
-
         try validateClientToken()
 
         let parameters = PayPalCreditMessagingPOSTBody(amount: amount, currencyCode: currencyCode)
@@ -141,7 +143,7 @@ final class PayPalSavedPaymentMethodClient {
     func editFundingInstrument(request: BTPayPalCheckoutRequest) async throws -> BTPayPalAccountNonce {
         _ = try paymentMethodIDJWT()
 
-        return try await request.withEditBillingAgreement {
+        return try await request.withEditBillingAgreement(buttonSessionID: buttonSessionID) {
             try await payPalClient.tokenize(request)
         }
     }

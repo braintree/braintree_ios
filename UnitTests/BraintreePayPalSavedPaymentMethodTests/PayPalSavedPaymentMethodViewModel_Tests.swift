@@ -55,7 +55,9 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
                 "data": [
                     "paypalFundingInstrumentDetails": [
                         "payer": NSNull(),
-                        "paymentMethods": [["label": label, "lastDigits": lastDigits, "type": "CARD"]]
+                        "paymentMethods": [
+                            ["id": "CC-123", "label": label, "lastDigits": lastDigits, "type": "CARD", "cardBrand": "VISA"]
+                        ]
                     ]
                 ]
             ] as [String: Any]
@@ -91,6 +93,7 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
                 "messages": [
                     [
                         "preferred_message": [
+                            "type": "PLST_SQ",
                             "content": [
                                 "main_items": [["type": "TEXT", "text": "Or 4 interest-free payments."]],
                                 "action_items": [
@@ -571,6 +574,355 @@ final class PayPalSavedPaymentMethodViewModel_Tests: XCTestCase {
 
         XCTAssertNil(sut.presentedLander)
         XCTAssertNil(fakeApplication.lastOpenURL)
+    }
+
+    // MARK: - Analytics
+
+    /// `onAppear` refires on tab switches; the component only starts rendering once.
+    func testOnAppear_sendsRenderStartedOnce() async {
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.filter { $0 == PayPalSavedPaymentMethodAnalytics.renderStarted }.count, 1)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.first, PayPalSavedPaymentMethodAnalytics.renderStarted)
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.renderStarted]?.buttonSessionID,
+            fetchClient.buttonSessionID
+        )
+    }
+
+    func testEditTapped_sendsFundingInstrumentEditSelectedEventWithTheFI() async throws {
+        try injectPayPalClient(nonce: "fake-nonce")
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected)
+        let selected = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentEditSelected])
+        XCTAssertEqual(selected.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(selected.savedMethodType, "CARD")
+        XCTAssertEqual(selected.savedMethodBrand, "VISA")
+        XCTAssertEqual(selected.savedMethodID, "CC-123")
+        XCTAssertNil(selected.contextID)
+    }
+
+    func testLearnMoreTapped_sendsLearnMoreSelectedEventWithThePresentmentMessageType() async throws {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+
+        sut.learnMoreTapped()
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected)
+        let selected = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingLearnMoreSelected])
+        XCTAssertEqual(selected.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(selected.presentmentMessageType, "PLST_SQ")
+    }
+
+    func testFIDidRender_afterTheInitialFetch_sendsRenderPresentedThenFundingInstrumentPresented() async throws {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle(showPayPalLabel: false))
+
+        XCTAssertEqual(
+            Array(mockAPIClient.postedAnalyticsEvents.suffix(2)),
+            [PayPalSavedPaymentMethodAnalytics.renderPresented, PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented]
+        )
+
+        let render = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.renderPresented])
+        XCTAssertEqual(render.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(render.renderTrigger, "sticky_fi")
+        XCTAssertEqual(render.shownContent, "funding_instrument")
+        XCTAssertEqual(render.renderedEditTag, true)
+        XCTAssertEqual(render.renderedLogo, true)
+        XCTAssertEqual(render.renderedLabel, false)
+        XCTAssertEqual(render.renderedMessageSlot, true)
+        XCTAssertNil(render.savedMethodType)
+        XCTAssertNil(render.contextID)
+
+        let instrument = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented])
+        XCTAssertEqual(instrument.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(instrument.renderTrigger, "sticky_fi")
+        XCTAssertEqual(instrument.savedMethodType, "CARD")
+        XCTAssertEqual(instrument.savedMethodBrand, "VISA")
+        XCTAssertEqual(instrument.savedMethodID, "CC-123")
+        XCTAssertNil(instrument.contextID)
+        XCTAssertNil(instrument.shownContent)
+    }
+
+    func testFIDidRender_afterAnEdit_sendsFundingInstrumentPresentedWithTheApprovedOrderID() async throws {
+        try injectPayPalClient(nonce: "fake-nonce", orderID: "fake-order-id")
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        await settle(sut)
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+
+        let render = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.renderPresented])
+        XCTAssertEqual(render.renderTrigger, "fi_from_approved_checkout")
+        XCTAssertNil(render.contextID)
+
+        let instrument = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented])
+        XCTAssertEqual(instrument.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(instrument.renderTrigger, "fi_from_approved_checkout")
+        XCTAssertEqual(instrument.contextID, "fake-order-id")
+    }
+
+    /// Analytics must still report a type this SDK version doesn't recognize.
+    func testFIDidRender_whenTheTypeIsUnrecognized_sendsTheRawType() async {
+        mockAPIClient.cannedResponseBody = BTJSON(
+            value: [
+                "data": [
+                    "paypalFundingInstrumentDetails": [
+                        "payer": NSNull(),
+                        "paymentMethods": [["id": "XX-123", "label": "Mystery", "type": "SOME_FUTURE_TYPE"]]
+                    ]
+                ]
+            ] as [String: Any]
+        )
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented]?.savedMethodType,
+            "SOME_FUTURE_TYPE"
+        )
+    }
+
+    func testFIDidRender_whenOnlyTheBrandMarkIsLeftAndItIsHidden_sendsHiddenContentAndNoFundingInstrument() async throws {
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle(showPayPalLogo: false, showPayPalLabel: false))
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.renderPresented)
+        let render = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.renderPresented])
+        XCTAssertEqual(render.shownContent, "hidden")
+        XCTAssertEqual(render.renderedEditTag, false)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.fundingInstrumentPresented))
+    }
+
+    func testFIDidRender_whileLoading_sendsNoEvent() {
+        let sut = makeSUT()
+
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.isEmpty)
+    }
+
+    func testOnAppear_whenTheFIFetchFails_sendsFundingInstrumentFailedForTheStickyFI() async throws {
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed)
+        let failed = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed])
+        XCTAssertEqual(failed.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(failed.renderTrigger, "sticky_fi")
+        XCTAssertNotNil(failed.errorDescription)
+        XCTAssertNil(failed.contextID)
+    }
+
+    func testOnAppear_whenTheClientTokenHasNoJWT_sendsFundingInstrumentFailedWithTheReason() async {
+        let apiClient = MockAPIClient(authorization: TestClientTokenFactory.token(withVersion: 3))
+        fetchClient.apiClient = apiClient
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        XCTAssertEqual(
+            apiClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed]?.errorDescription,
+            PayPalSavedPaymentMethodError.missingPaymentMethodIDJWT.localizedDescription
+        )
+    }
+
+    func testOnAppear_whenTheFIFetchIsCanceled_showsTheBrandWithoutAFailedEvent() async {
+        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
+        let sut = makeSUT()
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed))
+    }
+
+    /// A failed refetch on re-appear keeps the FI on screen, so nothing failed from the buyer's point of view.
+    func testOnAppear_whenARefetchFailsWhileTheFIIsShown_sendsNoFailedEvent() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed))
+    }
+
+    func testEditTapped_whenThePostEditRefetchFails_sendsFundingInstrumentFailedWithTheOrderID() async throws {
+        try injectPayPalClient(nonce: "fake-nonce", orderID: "fake-order-id")
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        let sut = makeSUT()
+
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        await settle(sut)
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        let failed = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed])
+        XCTAssertEqual(failed.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(failed.renderTrigger, "fi_from_approved_checkout")
+        XCTAssertEqual(failed.contextID, "fake-order-id")
+        XCTAssertNotNil(failed.errorDescription)
+    }
+
+    func testEditTapped_whenTheEditReturnsNoOrderID_sendsFundingInstrumentFailed() async throws {
+        try injectPayPalClient(nonce: "fake-nonce")
+        let sut = makeSUT()
+
+        sut.editTapped(checkoutRequest: BTPayPalCheckoutRequest(amount: "1"), request: makeRequest())
+        await settle(sut)
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        let failed = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.fundingInstrumentFailed])
+        XCTAssertEqual(failed.renderTrigger, "fi_from_approved_checkout")
+        XCTAssertNil(failed.contextID)
+        XCTAssertEqual(failed.errorDescription, PayPalSavedPaymentMethodError.missingOrderID.localizedDescription)
+    }
+
+    func testCreditMessageDidRender_whenAMessageIsShown_sendsCreditMessagingPresentedWithThePresentmentMessageType() async throws {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+
+        sut.creditMessageDidRender()
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingPresented)
+        let presented = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingPresented])
+        XCTAssertEqual(presented.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(presented.presentmentMessageType, "PLST_SQ")
+    }
+
+    func testRequestChanged_whenTheCreditFetchFails_sendsCreditMessagingFailedWithTheReason() async throws {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        mockAPIClient.cannedResponseBody = nil
+
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last, PayPalSavedPaymentMethodAnalytics.creditMessagingFailed)
+        let failed = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingFailed])
+        XCTAssertEqual(failed.buttonSessionID, fetchClient.buttonSessionID)
+        XCTAssertEqual(failed.errorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+    }
+
+    func testRequestChanged_whenTheCreditFetchIsCanceled_sendsNoFailedEvent() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        mockAPIClient.cannedResponseError = URLError(.cancelled) as NSError
+
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingFailed))
+    }
+
+    /// A failed refresh for the same request keeps the message on screen, so nothing failed for the buyer.
+    func testRequestChanged_whenARefreshForTheSameRequestFails_sendsNoFailedEvent() async {
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        let sut = makeSUT()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertNotNil(sut.creditMessage)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingFailed))
+    }
+
+    /// The message can land before the FI. It is held until the FI settles, and dropped if the FI ends up brand-only.
+    func testVisibleCreditMessage_whenTheMessageArrivesBeforeTheFIFails_isNeverShownOrReported() async {
+        let sut = makeSUT()
+        await seedCreditMessage(on: sut, clickURL: "https://example.com/lander", isEmbeddable: true)
+
+        XCTAssertNil(sut.visibleCreditMessage)
+
+        mockAPIClient.cannedResponseBody = nil
+        mockAPIClient.cannedResponseError = NSError(domain: "com.example.error", code: 1)
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        sut.creditMessageDidRender()
+
+        XCTAssertNil(sut.visibleCreditMessage)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingPresented))
+    }
+
+    /// Like the message, a failure is only reported once the FI settles with the row shown.
+    func testCreditMessagingFailed_whenTheFetchFailsBeforeTheFISettles_isSentOnceTheRowShows() async throws {
+        mockAPIClient.cannedResponseBody = nil
+        let sut = makeSUT()
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await settle(sut)
+
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingFailed))
+
+        mockAPIClient.cannedResponseBody = Self.instrumentResponse()
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+
+        XCTAssertEqual(
+            mockAPIClient.postedAnalyticsEvents.filter { $0 == PayPalSavedPaymentMethodAnalytics.creditMessagingFailed }.count,
+            1
+        )
+        let failed = try XCTUnwrap(mockAPIClient.postedAnalyticsEventTags[PayPalSavedPaymentMethodAnalytics.creditMessagingFailed])
+        XCTAssertEqual(failed.errorDescription, PayPalSavedPaymentMethodError.emptyBodyReturned.localizedDescription)
+    }
+
+    func testCreditMessagingFailed_whenTheFIEndsBrandOnly_isNotSent() async {
+        mockAPIClient.cannedResponseBody = nil
+        let sut = makeSUT()
+        sut.requestChanged(makeRequest(), showCreditMessaging: true)
+        await settle(sut)
+
+        sut.onAppear(request: makeRequest(), showCreditMessaging: false)
+        await settle(sut)
+        sut.fiDidRender(style: PayPalSavedPaymentMethodViewStyle())
+
+        XCTAssertEqual(sut.fiState, .brandOnly)
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains(PayPalSavedPaymentMethodAnalytics.creditMessagingFailed))
     }
 
     // MARK: - state(from:)
