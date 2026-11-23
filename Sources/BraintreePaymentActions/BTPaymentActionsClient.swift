@@ -118,8 +118,10 @@ import BraintreeCore
     /// If the Payment Action reaches `requires_customer_action` with a recognized 3D Secure
     /// `nextAction`, this drives device data collection and the challenge itself via an internal
     /// CardinalMobile wrapper, signaling completion after each step, and continues the loop — the
-    /// merchant never sees an intermediate `.customerActionRequired` result for 3DS success. A
-    /// `nextAction` this SDK doesn't recognize still surfaces `.customerActionRequired` immediately.
+    /// merchant never sees an intermediate `.customerActionRequired` result for 3DS success. Each step
+    /// runs at most once per call; if the server asks for the same step again, that surfaces
+    /// `.customerActionRequired`. A `nextAction` this SDK doesn't recognize also surfaces
+    /// `.customerActionRequired` immediately.
     ///
     /// A customer-abandoned or timed-out challenge surfaces `.threeDSecureCanceled` — the Payment
     /// Action is still alive and retryable, and this is never conflated with the general `.canceled`

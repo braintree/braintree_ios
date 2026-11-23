@@ -41,6 +41,13 @@ final class NextActionHandler {
     static let maxProcessingAttempts = 3
     static let processingRetryDelayNanoseconds: UInt64 = 1_000_000_000
 
+    // MARK: - Private Types
+
+    private enum ResolvedStep {
+        case deviceDataCollection
+        case challenge
+    }
+
     // MARK: - Private Properties
 
     private let fetchPaymentAction: () async throws -> BTPaymentAction
@@ -75,6 +82,7 @@ final class NextActionHandler {
         var paymentAction = try await fetchPaymentAction()
         var lastVersion: Int?
         var processingAttempts = 0
+        var resolvedSteps = Set<ResolvedStep>()
 
         while true {
             if let lastVersion, let version = paymentAction.version, version < lastVersion {
@@ -103,6 +111,16 @@ final class NextActionHandler {
 
                 case .threeDSecureAuthentication, .threeDSecureChallenge:
                     guard let resolveCustomerAction else {
+                        return .paymentAction(paymentAction)
+                    }
+
+                    // A repeated step is handed back instead of driven again.
+                    let step: ResolvedStep = if case .threeDSecureChallenge = nextAction {
+                        .challenge
+                    } else {
+                        .deviceDataCollection
+                    }
+                    guard resolvedSteps.insert(step).inserted else {
                         return .paymentAction(paymentAction)
                     }
 

@@ -210,6 +210,88 @@ class NextActionHandler_Tests: XCTestCase {
         XCTAssertEqual(resolveCount, 1)
     }
 
+    func testDrive_requiresCustomerAction_deviceDataRequestedAgain_returnsWithoutResolvingTwice() async throws {
+        let nextAction = BTNextAction.threeDSecureAuthentication(BTPaymentActionThreeDSecureAuthenticationNextAction(bin: "401288"))
+        var resolveCount = 0
+
+        let handler = NextActionHandler(
+            processingRetryDelayNanoseconds: 0,
+            fetchPaymentAction: {
+                BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: nextAction)
+            },
+            resolveCustomerAction: { _ in
+                resolveCount += 1
+                // The server keeps asking for device data collection.
+                return .advanced(BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: nextAction))
+            }
+        )
+
+        let result = try await handler.drive()
+
+        XCTAssertEqual(paymentAction(from: result)?.status, .requiresCustomerAction)
+        XCTAssertEqual(resolveCount, 1)
+    }
+
+    func testDrive_requiresCustomerAction_challengeRequestedAgain_returnsWithoutResolvingTwice() async throws {
+        let challenge = BTNextAction.threeDSecureChallenge(
+            BTPaymentActionThreeDSecureChallengeNextAction(
+                acsURL: URL(string: "https://acs.example.com")!,
+                acsRenderingType: nil,
+                challengePayload: "payload",
+                mpiTransactionID: "mpi-1"
+            )
+        )
+        var resolveCount = 0
+
+        let handler = NextActionHandler(
+            processingRetryDelayNanoseconds: 0,
+            fetchPaymentAction: {
+                BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: challenge)
+            },
+            resolveCustomerAction: { _ in
+                resolveCount += 1
+                return .advanced(BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: challenge))
+            }
+        )
+
+        let result = try await handler.drive()
+
+        XCTAssertEqual(paymentAction(from: result)?.status, .requiresCustomerAction)
+        XCTAssertEqual(resolveCount, 1)
+    }
+
+    func testDrive_requiresCustomerAction_deviceDataThenChallenge_resolvesEachStepOnce() async throws {
+        let deviceData = BTNextAction.threeDSecureAuthentication(BTPaymentActionThreeDSecureAuthenticationNextAction(bin: "401288"))
+        let challenge = BTNextAction.threeDSecureChallenge(
+            BTPaymentActionThreeDSecureChallengeNextAction(
+                acsURL: URL(string: "https://acs.example.com")!,
+                acsRenderingType: nil,
+                challengePayload: "payload",
+                mpiTransactionID: "mpi-1"
+            )
+        )
+        var resolvedActions: [BTNextAction] = []
+
+        let handler = NextActionHandler(
+            processingRetryDelayNanoseconds: 0,
+            fetchPaymentAction: {
+                BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: deviceData)
+            },
+            resolveCustomerAction: { nextAction in
+                resolvedActions.append(nextAction)
+                if resolvedActions.count == 1 {
+                    return .advanced(BTPaymentAction(id: "pa-id", status: .requiresCustomerAction, nextAction: challenge))
+                }
+                return .advanced(BTPaymentAction(id: "pa-id", status: .readyForConfirmation))
+            }
+        )
+
+        let result = try await handler.drive()
+
+        XCTAssertEqual(paymentAction(from: result)?.status, .readyForConfirmation)
+        XCTAssertEqual(resolvedActions, [deviceData, challenge])
+    }
+
     func testDrive_requiresCustomerAction_resolverAbandoned_returnsThreeDSecureCanceled() async throws {
         let nextAction = BTNextAction.threeDSecureChallenge(
             BTPaymentActionThreeDSecureChallengeNextAction(
